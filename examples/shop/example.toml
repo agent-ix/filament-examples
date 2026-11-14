@@ -415,3 +415,25 @@ status = "running"
 expect_exit = 20
 expect_verdict = "refused: unknown profile"
 serves = "Checks: profiles"
+
+[[case]]
+id = "engines-interpreter"
+rule = "PaidInFull"
+statement = "The interpreter is the default engine and can be named explicitly."
+file = "rules/paid-in-full.fsl"
+command = "run requests/paid-in-full.json --engine interpreter"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "Checks: engines"
+
+[[case]]
+id = "engines-aot-unavailable"
+rule = "PaidInFull"
+statement = "A compiled engine that is not available ends the run unsupported, and the interpreter does not take over."
+file = "rules/paid-in-full.fsl"
+command = "run requests/paid-in-full.json --engine aot"
+status = "running"
+expect_exit = 21
+expect_verdict = "unsupported"
+serves = "Checks: engines"

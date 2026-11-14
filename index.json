@@ -2086,6 +2086,40 @@
       "exit": 20,
       "waits_on": null,
       "needs": null
+    },
+    {
+      "system": "shop",
+      "case": "engines-interpreter",
+      "status": "running",
+      "rule": "PaidInFull",
+      "statement": "The interpreter is the default engine and can be named explicitly.",
+      "rule_file": "examples/shop/rules/paid-in-full.fsl",
+      "data_files": [
+        "examples/shop/data/paid-in-full.json"
+      ],
+      "request_file": "examples/shop/requests/paid-in-full.json",
+      "expected_file": "examples/shop/expected/engines-interpreter.json",
+      "verdict": "holds",
+      "exit": 0,
+      "waits_on": null,
+      "needs": null
+    },
+    {
+      "system": "shop",
+      "case": "engines-aot-unavailable",
+      "status": "running",
+      "rule": "PaidInFull",
+      "statement": "A compiled engine that is not available ends the run unsupported, and the interpreter does not take over.",
+      "rule_file": "examples/shop/rules/paid-in-full.fsl",
+      "data_files": [
+        "examples/shop/data/paid-in-full.json"
+      ],
+      "request_file": "examples/shop/requests/paid-in-full.json",
+      "expected_file": "examples/shop/expected/engines-aot-unavailable.json",
+      "verdict": "unsupported",
+      "exit": 21,
+      "waits_on": null,
+      "needs": null
     }
   ]
 }
