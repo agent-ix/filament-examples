@@ -130,7 +130,7 @@ make install-test
 
 ## Contributing
 
-Open a pull request. [CONTENT_RIGHTS.md](CONTENT_RIGHTS.md) lists what may be committed.
+Read [CONTRIBUTING.md](CONTRIBUTING.md) before you open a pull request: every contribution needs a signed Contributor License Agreement (CLA). [CONTENT_RIGHTS.md](CONTENT_RIGHTS.md) lists what may be committed.
 
 ## License
 
