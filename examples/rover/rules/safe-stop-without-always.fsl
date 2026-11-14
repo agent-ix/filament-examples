@@ -1,0 +1,10 @@
+language "ix:native" edition "1-draft";
+profile inf = "quire.temporal.infinite-trace/v1";
+model Rover = "example/rover";
+
+// The safe-stop rule written without `always`. A rule is read at position 0,
+// so this asks only whether a lidar loss at the first state is followed by a
+// stop within three control steps.
+temporal SafeStopWithoutAlways using inf over (r: Rover::Rover) clock "model-steps" on origin {
+  holds(not r.lidarOk) implies eventually[0,3] holds(r.stopped)
+}

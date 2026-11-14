@@ -1,0 +1,55 @@
+{
+  "format": "native-run/1",
+  "request": {
+    "models": [
+      {
+        "format": "semantic-ir/2.0.0",
+        "source": {
+          "file": "../model/rover.semantic-ir.json",
+          "authority": "example",
+          "identity": "example:rover/model",
+          "document": "model",
+          "formal_revision": 1
+        }
+      }
+    ],
+    "program": {
+      "source": {
+        "file": "../rules/safe-stop-steps.fsl",
+        "authority": "example",
+        "identity": "example:rover/safe-stop-steps",
+        "document": "safestopsteps",
+        "formal_revision": 1
+      }
+    },
+    "clause": {
+      "selection": {
+        "temporal": {
+          "name": "SafeStopWithin3Steps",
+          "trace": {
+            "finite": [
+              "t0-driving",
+              "t1-lidar-lost",
+              "u2-still-driving",
+              "u3-still-driving",
+              "u4-still-driving"
+            ]
+          },
+          "over": {
+            "reference": {
+              "population": "ix://example/rover/rovers",
+              "key": "r1"
+            }
+          }
+        }
+      },
+      "observations": {
+        "t0-driving": "../data/t0-driving.json",
+        "t1-lidar-lost": "../data/t1-lidar-lost.json",
+        "u2-still-driving": "../data/u2-still-driving.json",
+        "u3-still-driving": "../data/u3-still-driving.json",
+        "u4-still-driving": "../data/u4-still-driving.json"
+      }
+    }
+  }
+}

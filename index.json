@@ -757,6 +757,394 @@
     },
     {
       "system": "rover",
+      "case": "recording-cut-short",
+      "status": "running",
+      "rule": "SafeStopWithin3Steps",
+      "statement": "Whenever the lidar is lost, the rover is stopped within three control steps.",
+      "rule_file": "examples/rover/rules/safe-stop-steps.fsl",
+      "data_files": [
+        "examples/rover/data/t0-driving.json",
+        "examples/rover/data/t1-lidar-lost.json",
+        "examples/rover/data/u2-still-driving.json"
+      ],
+      "request_file": "examples/rover/requests/recording-cut-short.json",
+      "expected_file": "examples/rover/expected/recording-cut-short.json",
+      "verdict": "pending",
+      "exit": 0,
+      "waits_on": null
+    },
+    {
+      "system": "rover",
+      "case": "recording-in-time",
+      "status": "running",
+      "rule": "SafeStopWithin3Steps",
+      "statement": "Whenever the lidar is lost, the rover is stopped within three control steps.",
+      "rule_file": "examples/rover/rules/safe-stop-steps.fsl",
+      "data_files": [
+        "examples/rover/data/t0-driving.json",
+        "examples/rover/data/t1-lidar-lost.json",
+        "examples/rover/data/t2-braking.json",
+        "examples/rover/data/t3-stopped.json"
+      ],
+      "request_file": "examples/rover/requests/recording-in-time.json",
+      "expected_file": "examples/rover/expected/recording-in-time.json",
+      "verdict": "pending",
+      "exit": 0,
+      "waits_on": null
+    },
+    {
+      "system": "rover",
+      "case": "recording-late",
+      "status": "running",
+      "rule": "SafeStopWithin3Steps",
+      "statement": "Whenever the lidar is lost, the rover is stopped within three control steps.",
+      "rule_file": "examples/rover/rules/safe-stop-steps.fsl",
+      "data_files": [
+        "examples/rover/data/t0-driving.json",
+        "examples/rover/data/t1-lidar-lost.json",
+        "examples/rover/data/u2-still-driving.json",
+        "examples/rover/data/u3-still-driving.json",
+        "examples/rover/data/u4-still-driving.json"
+      ],
+      "request_file": "examples/rover/requests/recording-late.json",
+      "expected_file": "examples/rover/expected/recording-late.json",
+      "verdict": "violated",
+      "exit": 10,
+      "waits_on": null
+    },
+    {
+      "system": "rover",
+      "case": "safe-stop-late-without-always",
+      "status": "running",
+      "rule": "SafeStopWithoutAlways",
+      "statement": "Written without always, the safe-stop rule is read only at the first state.",
+      "rule_file": "examples/rover/rules/safe-stop-without-always.fsl",
+      "data_files": [
+        "examples/rover/data/t0-driving.json",
+        "examples/rover/data/t1-lidar-lost.json",
+        "examples/rover/data/u2-still-driving.json",
+        "examples/rover/data/u3-still-driving.json",
+        "examples/rover/data/u4-still-driving.json",
+        "examples/rover/data/u5-stopped.json"
+      ],
+      "request_file": "examples/rover/requests/safe-stop-late-without-always.json",
+      "expected_file": "examples/rover/expected/safe-stop-late-without-always.json",
+      "verdict": "holds",
+      "exit": 0,
+      "waits_on": null
+    },
+    {
+      "system": "rover",
+      "case": "in-time-small-budget",
+      "status": "running",
+      "rule": "SafeStopWithin3Steps",
+      "statement": "Whenever the lidar is lost, the rover is stopped within three control steps.",
+      "rule_file": "examples/rover/rules/safe-stop-steps.fsl",
+      "data_files": [
+        "examples/rover/data/t0-driving.json",
+        "examples/rover/data/t1-lidar-lost.json",
+        "examples/rover/data/t2-braking.json",
+        "examples/rover/data/t3-stopped.json"
+      ],
+      "request_file": "examples/rover/requests/in-time-small-budget.json",
+      "expected_file": "examples/rover/expected/in-time-small-budget.json",
+      "verdict": "incomplete: work budget of 5 units",
+      "exit": 22,
+      "waits_on": null
+    },
+    {
+      "system": "rover",
+      "case": "keeps-sampling",
+      "status": "running",
+      "rule": "KeepsSampling",
+      "statement": "If the rover keeps sampling, it is stopped again and again.",
+      "rule_file": "examples/rover/rules/keeps-sampling.fsl",
+      "data_files": [
+        "examples/rover/data/t0-driving.json",
+        "examples/rover/data/t1-lidar-lost.json",
+        "examples/rover/data/t2-braking.json",
+        "examples/rover/data/t3-stopped.json"
+      ],
+      "request_file": "examples/rover/requests/keeps-sampling.json",
+      "expected_file": "examples/rover/expected/keeps-sampling.json",
+      "verdict": "unsupported: a recorded trace carries no fairness premise",
+      "exit": 21,
+      "waits_on": null
+    },
+    {
+      "system": "rover",
+      "case": "op-within-3",
+      "status": "running",
+      "rule": "StoppedWithin3",
+      "statement": "The rover is stopped within three steps.",
+      "rule_file": "examples/rover/rules/time-operators.fsl",
+      "data_files": [
+        "examples/rover/data/t0-driving.json",
+        "examples/rover/data/t1-lidar-lost.json",
+        "examples/rover/data/t2-braking.json",
+        "examples/rover/data/t3-stopped.json"
+      ],
+      "request_file": "examples/rover/requests/op-within-3.json",
+      "expected_file": "examples/rover/expected/op-within-3.json",
+      "verdict": "holds",
+      "exit": 0,
+      "waits_on": null
+    },
+    {
+      "system": "rover",
+      "case": "op-eventually",
+      "status": "running",
+      "rule": "EventuallyStopped",
+      "statement": "The rover is eventually stopped.",
+      "rule_file": "examples/rover/rules/time-operators.fsl",
+      "data_files": [
+        "examples/rover/data/t0-driving.json",
+        "examples/rover/data/t1-lidar-lost.json",
+        "examples/rover/data/t2-braking.json",
+        "examples/rover/data/t3-stopped.json"
+      ],
+      "request_file": "examples/rover/requests/op-eventually.json",
+      "expected_file": "examples/rover/expected/op-eventually.json",
+      "verdict": "holds",
+      "exit": 0,
+      "waits_on": null
+    },
+    {
+      "system": "rover",
+      "case": "op-eventually-from-2",
+      "status": "running",
+      "rule": "StoppedFrom2",
+      "statement": "The rover is stopped at some position two or more steps on.",
+      "rule_file": "examples/rover/rules/time-operators.fsl",
+      "data_files": [
+        "examples/rover/data/t0-driving.json",
+        "examples/rover/data/t1-lidar-lost.json",
+        "examples/rover/data/t2-braking.json",
+        "examples/rover/data/t3-stopped.json"
+      ],
+      "request_file": "examples/rover/requests/op-eventually-from-2.json",
+      "expected_file": "examples/rover/expected/op-eventually-from-2.json",
+      "verdict": "holds",
+      "exit": 0,
+      "waits_on": null
+    },
+    {
+      "system": "rover",
+      "case": "op-always",
+      "status": "running",
+      "rule": "SpeedCapped",
+      "statement": "The speed never exceeds 800 mm/s.",
+      "rule_file": "examples/rover/rules/time-operators.fsl",
+      "data_files": [
+        "examples/rover/data/t0-driving.json",
+        "examples/rover/data/t1-lidar-lost.json",
+        "examples/rover/data/t2-braking.json",
+        "examples/rover/data/t3-stopped.json"
+      ],
+      "request_file": "examples/rover/requests/op-always.json",
+      "expected_file": "examples/rover/expected/op-always.json",
+      "verdict": "holds",
+      "exit": 0,
+      "waits_on": null
+    },
+    {
+      "system": "rover",
+      "case": "op-until",
+      "status": "running",
+      "rule": "MovesUntilStopped",
+      "statement": "The rover moves until it stops, and it does stop.",
+      "rule_file": "examples/rover/rules/time-operators.fsl",
+      "data_files": [
+        "examples/rover/data/t0-driving.json",
+        "examples/rover/data/t1-lidar-lost.json",
+        "examples/rover/data/t2-braking.json",
+        "examples/rover/data/t3-stopped.json"
+      ],
+      "request_file": "examples/rover/requests/op-until.json",
+      "expected_file": "examples/rover/expected/op-until.json",
+      "verdict": "holds",
+      "exit": 0,
+      "waits_on": null
+    },
+    {
+      "system": "rover",
+      "case": "op-release",
+      "status": "running",
+      "rule": "CappedUntilStopped",
+      "statement": "The speed stays capped up to and including the first stopped position.",
+      "rule_file": "examples/rover/rules/time-operators.fsl",
+      "data_files": [
+        "examples/rover/data/t0-driving.json",
+        "examples/rover/data/t1-lidar-lost.json",
+        "examples/rover/data/t2-braking.json",
+        "examples/rover/data/t3-stopped.json"
+      ],
+      "request_file": "examples/rover/requests/op-release.json",
+      "expected_file": "examples/rover/expected/op-release.json",
+      "verdict": "holds",
+      "exit": 0,
+      "waits_on": null
+    },
+    {
+      "system": "rover",
+      "case": "op-once",
+      "status": "running",
+      "rule": "LidarLostBefore",
+      "statement": "At position 3, the lidar was lost one step before.",
+      "rule_file": "examples/rover/rules/time-operators.fsl",
+      "data_files": [
+        "examples/rover/data/t0-driving.json",
+        "examples/rover/data/t1-lidar-lost.json",
+        "examples/rover/data/t2-braking.json",
+        "examples/rover/data/t3-stopped.json"
+      ],
+      "request_file": "examples/rover/requests/op-once.json",
+      "expected_file": "examples/rover/expected/op-once.json",
+      "verdict": "holds",
+      "exit": 0,
+      "waits_on": null
+    },
+    {
+      "system": "rover",
+      "case": "op-historically",
+      "status": "running",
+      "rule": "LidarLostThrough",
+      "statement": "At position 3, the lidar has been lost for the last three positions.",
+      "rule_file": "examples/rover/rules/time-operators.fsl",
+      "data_files": [
+        "examples/rover/data/t0-driving.json",
+        "examples/rover/data/t1-lidar-lost.json",
+        "examples/rover/data/t2-braking.json",
+        "examples/rover/data/t3-stopped.json"
+      ],
+      "request_file": "examples/rover/requests/op-historically.json",
+      "expected_file": "examples/rover/expected/op-historically.json",
+      "verdict": "holds",
+      "exit": 0,
+      "waits_on": null
+    },
+    {
+      "system": "rover",
+      "case": "op-since",
+      "status": "running",
+      "rule": "LostSinceWorking",
+      "statement": "At position 3, the lidar has been lost ever since it last worked.",
+      "rule_file": "examples/rover/rules/time-operators.fsl",
+      "data_files": [
+        "examples/rover/data/t0-driving.json",
+        "examples/rover/data/t1-lidar-lost.json",
+        "examples/rover/data/t2-braking.json",
+        "examples/rover/data/t3-stopped.json"
+      ],
+      "request_file": "examples/rover/requests/op-since.json",
+      "expected_file": "examples/rover/expected/op-since.json",
+      "verdict": "holds",
+      "exit": 0,
+      "waits_on": null
+    },
+    {
+      "system": "rover",
+      "case": "op-triggered",
+      "status": "running",
+      "rule": "LossCoveredByStop",
+      "statement": "At position 3, every earlier position either lost the lidar or was followed by a stop.",
+      "rule_file": "examples/rover/rules/time-operators.fsl",
+      "data_files": [
+        "examples/rover/data/t0-driving.json",
+        "examples/rover/data/t1-lidar-lost.json",
+        "examples/rover/data/t2-braking.json",
+        "examples/rover/data/t3-stopped.json"
+      ],
+      "request_file": "examples/rover/requests/op-triggered.json",
+      "expected_file": "examples/rover/expected/op-triggered.json",
+      "verdict": "holds",
+      "exit": 0,
+      "waits_on": null
+    },
+    {
+      "system": "rover",
+      "case": "stop-after-loss-in-time",
+      "status": "running",
+      "rule": "StopAfterLoss",
+      "statement": "At every position where the lidar is lost, the rover is stopped within three steps.",
+      "rule_file": "examples/rover/rules/time-operators.fsl",
+      "data_files": [
+        "examples/rover/data/t0-driving.json",
+        "examples/rover/data/t1-lidar-lost.json",
+        "examples/rover/data/t2-braking.json",
+        "examples/rover/data/t3-stopped.json"
+      ],
+      "request_file": "examples/rover/requests/stop-after-loss-in-time.json",
+      "expected_file": "examples/rover/expected/stop-after-loss-in-time.json",
+      "verdict": "holds",
+      "exit": 0,
+      "waits_on": null
+    },
+    {
+      "system": "rover",
+      "case": "stop-after-loss-late",
+      "status": "running",
+      "rule": "StopAfterLoss",
+      "statement": "At every position where the lidar is lost, the rover is stopped within three steps.",
+      "rule_file": "examples/rover/rules/time-operators.fsl",
+      "data_files": [
+        "examples/rover/data/t0-driving.json",
+        "examples/rover/data/t1-lidar-lost.json",
+        "examples/rover/data/u2-still-driving.json",
+        "examples/rover/data/u3-still-driving.json",
+        "examples/rover/data/u4-still-driving.json",
+        "examples/rover/data/u5-stopped.json"
+      ],
+      "request_file": "examples/rover/requests/stop-after-loss-late.json",
+      "expected_file": "examples/rover/expected/stop-after-loss-late.json",
+      "verdict": "violated",
+      "exit": 10,
+      "waits_on": null
+    },
+    {
+      "system": "rover",
+      "case": "timed-safe-stop-compiles",
+      "status": "running",
+      "rule": "SafeStopWithin200msModelTime",
+      "statement": "When the lidar is lost, the rover is stopped within 200 ms of model time.",
+      "rule_file": "examples/rover/rules/timed-safe-stop.fsl",
+      "data_files": [],
+      "request_file": "examples/rover/requests/timed-safe-stop-compiles.json",
+      "expected_file": "examples/rover/expected/timed-safe-stop-compiles.json",
+      "verdict": "checked timed rule",
+      "exit": 0,
+      "waits_on": null
+    },
+    {
+      "system": "rover",
+      "case": "staged-stops-in-four-events",
+      "status": "staged",
+      "rule": null,
+      "statement": "Counted by recorded event, the rover is stopped within four events.",
+      "rule_file": "examples/rover/rules/staged-stops-in-four-events.fsl",
+      "data_files": [],
+      "request_file": "examples/rover/requests/staged-stops-in-four-events.json",
+      "expected_file": "examples/rover/expected/staged-stops-in-four-events.json",
+      "verdict": null,
+      "exit": 20,
+      "waits_on": "QSL-1964"
+    },
+    {
+      "system": "rover",
+      "case": "staged-stops-in-four-samples",
+      "status": "staged",
+      "rule": null,
+      "statement": "Counted by fixed-rate sample, the rover is stopped within four samples.",
+      "rule_file": "examples/rover/rules/staged-stops-in-four-samples.fsl",
+      "data_files": [],
+      "request_file": "examples/rover/requests/staged-stops-in-four-samples.json",
+      "expected_file": "examples/rover/expected/staged-stops-in-four-samples.json",
+      "verdict": null,
+      "exit": 20,
+      "waits_on": "QSL-1964"
+    },
+    {
+      "system": "rover",
       "case": "control-loop-compiles",
       "status": "running",
       "rule": null,

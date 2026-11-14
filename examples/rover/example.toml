@@ -119,6 +119,241 @@ expect_verdict = "violated: stopped 4 steps after the lidar was lost"
 serves = "Learn L4; Guide: read a counterexample"
 
 [[case]]
+id = "recording-cut-short"
+rule = "SafeStopWithin3Steps"
+statement = "Whenever the lidar is lost, the rover is stopped within three control steps."
+file = "rules/safe-stop-steps.fsl"
+command = "run requests/recording-cut-short.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "pending"
+serves = "Learn: when a recording ends"
+
+[[case]]
+id = "recording-in-time"
+rule = "SafeStopWithin3Steps"
+statement = "Whenever the lidar is lost, the rover is stopped within three control steps."
+file = "rules/safe-stop-steps.fsl"
+command = "run requests/recording-in-time.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "pending"
+serves = "Learn: when a recording ends"
+
+[[case]]
+id = "recording-late"
+rule = "SafeStopWithin3Steps"
+statement = "Whenever the lidar is lost, the rover is stopped within three control steps."
+file = "rules/safe-stop-steps.fsl"
+command = "run requests/recording-late.json"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
+serves = "Learn: when a recording ends"
+
+[[case]]
+id = "safe-stop-late-without-always"
+rule = "SafeStopWithoutAlways"
+statement = "Written without always, the safe-stop rule is read only at the first state."
+file = "rules/safe-stop-without-always.fsl"
+command = "run requests/safe-stop-late-without-always.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "Learn: how time works (common misreading)"
+
+[[case]]
+id = "in-time-small-budget"
+rule = "SafeStopWithin3Steps"
+statement = "Whenever the lidar is lost, the rover is stopped within three control steps."
+file = "rules/safe-stop-steps.fsl"
+command = "run requests/in-time-small-budget.json"
+status = "running"
+expect_exit = 22
+expect_verdict = "incomplete: work budget of 5 units"
+serves = "Time reference (results: limits)"
+
+[[case]]
+id = "keeps-sampling"
+rule = "KeepsSampling"
+statement = "If the rover keeps sampling, it is stopped again and again."
+file = "rules/keeps-sampling.fsl"
+command = "run requests/keeps-sampling.json"
+status = "running"
+expect_exit = 21
+expect_verdict = "unsupported: a recorded trace carries no fairness premise"
+serves = "Time reference (temporal rules: fairness)"
+
+[[case]]
+id = "op-within-3"
+rule = "StoppedWithin3"
+statement = "The rover is stopped within three steps."
+file = "rules/time-operators.fsl"
+command = "run requests/op-within-3.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "Time reference (operators)"
+
+[[case]]
+id = "op-eventually"
+rule = "EventuallyStopped"
+statement = "The rover is eventually stopped."
+file = "rules/time-operators.fsl"
+command = "run requests/op-eventually.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "Time reference (operators)"
+
+[[case]]
+id = "op-eventually-from-2"
+rule = "StoppedFrom2"
+statement = "The rover is stopped at some position two or more steps on."
+file = "rules/time-operators.fsl"
+command = "run requests/op-eventually-from-2.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "Time reference (operators)"
+
+[[case]]
+id = "op-always"
+rule = "SpeedCapped"
+statement = "The speed never exceeds 800 mm/s."
+file = "rules/time-operators.fsl"
+command = "run requests/op-always.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "Time reference (operators)"
+
+[[case]]
+id = "op-until"
+rule = "MovesUntilStopped"
+statement = "The rover moves until it stops, and it does stop."
+file = "rules/time-operators.fsl"
+command = "run requests/op-until.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "Time reference (operators)"
+
+[[case]]
+id = "op-release"
+rule = "CappedUntilStopped"
+statement = "The speed stays capped up to and including the first stopped position."
+file = "rules/time-operators.fsl"
+command = "run requests/op-release.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "Time reference (operators)"
+
+[[case]]
+id = "op-once"
+rule = "LidarLostBefore"
+statement = "At position 3, the lidar was lost one step before."
+file = "rules/time-operators.fsl"
+command = "run requests/op-once.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "Time reference (operators)"
+
+[[case]]
+id = "op-historically"
+rule = "LidarLostThrough"
+statement = "At position 3, the lidar has been lost for the last three positions."
+file = "rules/time-operators.fsl"
+command = "run requests/op-historically.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "Time reference (operators)"
+
+[[case]]
+id = "op-since"
+rule = "LostSinceWorking"
+statement = "At position 3, the lidar has been lost ever since it last worked."
+file = "rules/time-operators.fsl"
+command = "run requests/op-since.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "Time reference (operators)"
+
+[[case]]
+id = "op-triggered"
+rule = "LossCoveredByStop"
+statement = "At position 3, every earlier position either lost the lidar or was followed by a stop."
+file = "rules/time-operators.fsl"
+command = "run requests/op-triggered.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "Time reference (operators)"
+
+[[case]]
+id = "stop-after-loss-in-time"
+rule = "StopAfterLoss"
+statement = "At every position where the lidar is lost, the rover is stopped within three steps."
+file = "rules/time-operators.fsl"
+command = "run requests/stop-after-loss-in-time.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "Time reference (temporal rules: activation)"
+
+[[case]]
+id = "stop-after-loss-late"
+rule = "StopAfterLoss"
+statement = "At every position where the lidar is lost, the rover is stopped within three steps."
+file = "rules/time-operators.fsl"
+command = "run requests/stop-after-loss-late.json"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
+serves = "Time reference (temporal rules: activation)"
+
+[[case]]
+id = "timed-safe-stop-compiles"
+rule = "SafeStopWithin200msModelTime"
+statement = "When the lidar is lost, the rover is stopped within 200 ms of model time."
+file = "rules/timed-safe-stop.fsl"
+command = "compile requests/timed-safe-stop-compiles.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "checked timed rule"
+serves = "Time reference (timed rules and models)"
+
+[[case]]
+id = "staged-stops-in-four-events"
+rule = ""
+statement = "Counted by recorded event, the rover is stopped within four events."
+file = "rules/staged-stops-in-four-events.fsl"
+command = "compile requests/staged-stops-in-four-events.json"
+status = "staged"
+expect_exit = 20
+ready_exit = 0
+waits_on = "QSL-1964"
+why = "event-position temporal rule is refused at S4: no selected clock configuration"
+serves = "Time reference (clocks and the end of a trace)"
+
+[[case]]
+id = "staged-stops-in-four-samples"
+rule = ""
+statement = "Counted by fixed-rate sample, the rover is stopped within four samples."
+file = "rules/staged-stops-in-four-samples.fsl"
+command = "compile requests/staged-stops-in-four-samples.json"
+status = "staged"
+expect_exit = 20
+ready_exit = 0
+waits_on = "QSL-1964"
+why = "fixed-sample temporal rule is refused at S4: no selected clock configuration"
+serves = "Time reference (clocks and the end of a trace)"
+
+[[case]]
 id = "control-loop-compiles"
 rule = ""
 statement = "The rover's control loop: sensor fusion every 10 ms, the stop monitor every 20 ms, path planning every 50 ms."

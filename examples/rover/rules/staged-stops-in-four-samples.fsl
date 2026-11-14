@@ -1,0 +1,8 @@
+language "ix:native" edition "1-draft";
+profile t = "quire.temporal.fixed-sample.false-extension/v1";
+model Rover = "example/rover";
+
+// Counted by fixed-rate sample: the rover is stopped within four samples.
+temporal StopsInFourSamples using t over (r: Rover::Rover) clock "samples" on origin {
+  eventually[0,4] holds(r.stopped)
+}

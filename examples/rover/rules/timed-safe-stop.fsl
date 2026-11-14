@@ -1,0 +1,15 @@
+language "ix:native" edition "1-draft";
+profile v = "quire.temporal.complete/v1";
+profile t = "quire.temporal.timed/v1";
+model Rover = "example/rover";
+dimension Time;
+unit s : Time = rational(1, 1);
+unit ms : Time = rational(1, 1000) * s;
+
+// Model time advances 50 ms with each `sample` step.
+time Rover tick Rover::Rover::sample period 50 ms unit ms;
+
+// When the lidar is lost, the rover is stopped within 200 ms of model time.
+temporal SafeStopWithin200msModelTime using t over (r: Rover::Rover) clock "model-time" on origin {
+  always (holds(not r.lidarOk) implies eventually[0 ms, 200 ms] holds(r.stopped))
+}
