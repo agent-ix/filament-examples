@@ -1,0 +1,24 @@
+{
+  "format": "native-run/1",
+  "request": {
+    "models": [],
+    "program": {
+      "source": {
+        "file": "../../../rules/values/functions/fn-predicate.fsl",
+        "authority": "example",
+        "identity": "example:shop/values/functions/fn-predicate",
+        "document": "fn-predicate",
+        "formal_revision": 1
+      }
+    },
+    "call": {
+      "function": "bulkLine",
+      "arguments": [
+        {
+          "parameter": "q",
+          "value": 12
+        }
+      ]
+    }
+  }
+}

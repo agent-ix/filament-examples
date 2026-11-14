@@ -1,0 +1,28 @@
+{
+  "format": "native-run/1",
+  "request": {
+    "models": [],
+    "program": {
+      "source": {
+        "file": "../../../rules/values/unions/union-opt-coupon.fsl",
+        "authority": "example",
+        "identity": "example:shop/values/unions/union-opt-coupon",
+        "document": "union-opt-coupon",
+        "formal_revision": 1
+      }
+    },
+    "call": {
+      "function": "couponValue",
+      "arguments": [
+        {
+          "parameter": "has",
+          "value": 1
+        },
+        {
+          "parameter": "total",
+          "value": 900
+        }
+      ]
+    }
+  }
+}

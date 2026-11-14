@@ -1,0 +1,8 @@
+language "ix:native" edition "1-draft";
+profile v = "quire.value.complete/v1";
+
+type Cents = Int[0, 1000000];
+
+function prices using v(): Sequence<Cents>[0, 2] pure { sequence[1250, 1250, 300] }
+
+function lineCount using v(): Int[0, 2] pure { size(prices()) }

@@ -1,0 +1,6 @@
+language "ix:native" edition "1-draft";
+profile v = "quire.value.complete/v1";
+
+enum Carrier { Post, Courier = "courier service" }
+
+function differ using v(): Boolean pure { Carrier::Post != Carrier::Courier }

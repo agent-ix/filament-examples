@@ -1,0 +1,11 @@
+language "ix:native" edition "1-draft";
+profile v = "quire.value.complete/v1";
+
+dimension Length;
+dimension Time;
+dimension Speed = Length / Time;
+unit m: Length = rational(1, 1);
+unit s: Time = rational(1, 1);
+unit mps: Speed = rational(1, 1);
+
+function fast using v(): Boolean pure { 9 mps > 3 mps }

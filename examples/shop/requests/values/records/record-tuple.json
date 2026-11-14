@@ -1,0 +1,28 @@
+{
+  "format": "native-run/1",
+  "request": {
+    "models": [],
+    "program": {
+      "source": {
+        "file": "../../../rules/values/records/record-tuple.fsl",
+        "authority": "example",
+        "identity": "example:shop/values/records/record-tuple",
+        "document": "record-tuple",
+        "formal_revision": 1
+      }
+    },
+    "call": {
+      "function": "samePair",
+      "arguments": [
+        {
+          "parameter": "price",
+          "value": 1250
+        },
+        {
+          "parameter": "qty",
+          "value": 3
+        }
+      ]
+    }
+  }
+}

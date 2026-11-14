@@ -1,0 +1,9 @@
+language "ix:native" edition "1-draft";
+profile v = "quire.value.complete/v1";
+
+type Qty = Int[1, 99];
+type BulkQty = Int[1, 200];
+
+function takeQty using v(q: Qty): Qty pure { q }
+
+function bulkOf using v(b: BulkQty): Qty pure { takeQty(b) }

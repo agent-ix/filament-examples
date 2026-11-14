@@ -1,0 +1,17 @@
+language "ix:native" edition "1-draft";
+profile v = "quire.value.complete/v1";
+
+type Cents = Int[0, 1000000];
+
+union Payment { Card(Int[0, 9999]), Cash, Voucher(Cents) }
+
+function fee using v(kind: Int[0, 2], voucher: Cents): Cents pure {
+  let p = if kind = 0 then Payment::Cash
+          else if kind = 1 then Payment::Card(1234)
+          else Payment::Voucher(voucher) in
+    case p {
+      Cash: 0;
+      Card(last4): 30;
+      Voucher(amount): amount;
+    }
+}

@@ -1,0 +1,9 @@
+language "ix:native" edition "1-draft";
+profile v = "quire.value.complete/v1";
+
+type Cents = Int[0, 1000000];
+type CentsRational = Rational[0, 1000000; 1, 1];
+
+function asRational using v(price: Cents): Boolean pure {
+  convert<CentsRational>(price) = convert<CentsRational>(price)
+}

@@ -1,0 +1,12 @@
+language "ix:native" edition "1-draft";
+profile v = "quire.value.complete/v1";
+
+type Cents = Int[0, 1000000];
+type Qty = Int[1, 99];
+type CentsEach = Rational[0, 1000000; 1, 99];
+
+function oneThird using v(): CentsEach pure { rational(1000, 3) }
+
+function splitsInThirds using v(total: Cents, qty: Qty): Boolean pure {
+  total / qty = oneThird()
+}

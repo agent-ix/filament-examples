@@ -1,0 +1,8 @@
+language "ix:native" edition "1-draft";
+profile v = "quire.value.complete/v1";
+
+ordered enum Speed { Economy, Standard, Express }
+
+function atLeastStandard using v(n: Int[0, 2]): Boolean pure {
+  let s = if n = 0 then Speed::Economy else Speed::Express in s >= Speed::Standard
+}

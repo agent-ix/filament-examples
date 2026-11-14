@@ -1,0 +1,24 @@
+{
+  "format": "native-run/1",
+  "request": {
+    "models": [],
+    "program": {
+      "source": {
+        "file": "../../../rules/values/records/record-ordered-enum.fsl",
+        "authority": "example",
+        "identity": "example:shop/values/records/record-ordered-enum",
+        "document": "record-ordered-enum",
+        "formal_revision": 1
+      }
+    },
+    "call": {
+      "function": "atLeastStandard",
+      "arguments": [
+        {
+          "parameter": "n",
+          "value": 2
+        }
+      ]
+    }
+  }
+}

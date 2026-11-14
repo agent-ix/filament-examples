@@ -1,0 +1,17 @@
+language "ix:native" edition "1-draft";
+profile v = "quire.value.complete/v1";
+
+type Down = Decimal[0, 1000; 0, 2; toward-zero];
+type Up = Decimal[0, 1000; 0, 2; toward-positive];
+type Even = Decimal[0, 1000; 0, 2; nearest-even];
+type Away = Decimal[0, 1000; 0, 2; nearest-away];
+
+function oneDown using v(): Down pure { decimal(100, 2) }
+function oneUp using v(): Up pure { decimal(100, 2) }
+function oneEven using v(): Even pure { decimal(100, 2) }
+function oneAway using v(): Away pure { decimal(100, 2) }
+
+function eighthTowardZero using v(): Boolean pure { oneDown() / decimal(8, 0) = decimal(12, 2) }
+function eighthTowardPositive using v(): Boolean pure { oneUp() / decimal(8, 0) = decimal(13, 2) }
+function eighthNearestEven using v(): Boolean pure { oneEven() / decimal(8, 0) = decimal(12, 2) }
+function eighthNearestAway using v(): Boolean pure { oneAway() / decimal(8, 0) = decimal(13, 2) }

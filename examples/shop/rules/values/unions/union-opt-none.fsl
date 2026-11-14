@@ -1,0 +1,8 @@
+language "ix:native" edition "1-draft";
+profile v = "quire.value.complete/v1";
+
+type Cents = Int[0, 1000000];
+
+record Order { total: Cents; coupon: Cents?; }
+
+function noCoupon using v(): Order pure { Order { total: 1, coupon: none } }

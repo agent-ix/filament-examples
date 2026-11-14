@@ -1,0 +1,10 @@
+language "ix:native" edition "1-draft";
+profile v = "quire.value.complete/v1";
+
+type Single = Float32[nearest-even];
+
+function largest using v(): Single pure { float32(bits: 0x7f7fffff) }
+
+function spills using v(): Boolean pure {
+  largest() + largest() = float32(bits: 0x7f800000)
+}

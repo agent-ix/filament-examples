@@ -1,0 +1,8 @@
+language "ix:native" edition "1-draft";
+profile v = "quire.value.complete/v1";
+
+type Qty = Int[1, 99];
+
+function nextQty using v(q: Qty): Qty pure { q }
+
+function unused using v(q: Qty): Qty pure { q + 1 }

@@ -1,0 +1,11 @@
+language "ix:native" edition "1-draft";
+profile v = "quire.value.complete/v1";
+
+type Cents = Int[0, 1000000];
+type Qty = Int[1, 99];
+
+record LineItem { price: Cents; qty: Qty; }
+
+function itemPrice using v(price: Cents): Cents pure {
+  LineItem { price: price }.price
+}
