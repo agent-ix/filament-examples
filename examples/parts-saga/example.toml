@@ -104,3 +104,278 @@ status = "running"
 expect_exit = 0
 expect_verdict = "checked: choice and repeat"
 serves = "Learn: protocols between services"
+
+[[case]]
+id = "declaration-minimal"
+rule = ""
+statement = "The smallest protocol has one role, an empty run sequence and a closing finish."
+file = "rules/protocols/declaration/declaration-minimal.fsl"
+command = "compile requests/protocols/declaration/declaration-minimal.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "checked: one role, empty run, finish"
+serves = "Protocols reference (declaration)"
+
+[[case]]
+id = "declaration-no-finish"
+rule = ""
+statement = "A protocol with no finish record is refused before any name is checked."
+file = "rules/protocols/declaration/declaration-no-finish.fsl"
+command = "compile requests/protocols/declaration/declaration-no-finish.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: expected finish"
+serves = "Protocols reference (declaration)"
+
+[[case]]
+id = "declaration-on-each"
+rule = ""
+statement = "A protocol can start one instance for each work order that is ready, and keep the part number of its job."
+file = "rules/protocols/declaration/declaration-on-each.fsl"
+command = "compile requests/protocols/declaration/declaration-on-each.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "checked: on each with capture"
+serves = "Protocols reference (declaration)"
+
+[[case]]
+id = "declaration-terminal-scheduling"
+rule = ""
+statement = "A protocol can declare that every end state is intended and that no thread is served fairly by default."
+file = "rules/protocols/declaration/declaration-terminal-scheduling.fsl"
+command = "compile requests/protocols/declaration/declaration-terminal-scheduling.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "checked: terminal and scheduling members"
+serves = "Protocols reference (declaration)"
+
+[[case]]
+id = "declaration-second-terminal"
+rule = ""
+statement = "A protocol declares at most one terminal member."
+file = "rules/protocols/declaration/declaration-second-terminal.fsl"
+command = "compile requests/protocols/declaration/declaration-second-terminal.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ambiguous terminal"
+serves = "Protocols reference (declaration)"
+
+[[case]]
+id = "roles-replicated"
+rule = ""
+statement = "Up to two machining stations work on a job at once, each drawn from the machining population."
+file = "rules/protocols/roles-and-channels/roles-replicated.fsl"
+command = "compile requests/protocols/roles-and-channels/roles-replicated.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "checked: replicated role"
+serves = "Protocols reference (roles and channels)"
+
+[[case]]
+id = "roles-replicated-max-zero"
+rule = ""
+statement = "A replicated role allows at least one live instance."
+file = "rules/protocols/roles-and-channels/roles-replicated-max-zero.fsl"
+command = "compile requests/protocols/roles-and-channels/roles-replicated-max-zero.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: replicated role allows 0 instances"
+serves = "Protocols reference (roles and channels)"
+
+[[case]]
+id = "roles-duplicate-role"
+rule = ""
+statement = "Two roles of a protocol cannot share a name."
+file = "rules/protocols/roles-and-channels/roles-duplicate-role.fsl"
+command = "compile requests/protocols/roles-and-channels/roles-duplicate-role.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: two roles of one name"
+serves = "Protocols reference (roles and channels)"
+
+[[case]]
+id = "channels-loss-head"
+rule = ""
+statement = "A release channel may lose messages and drops the oldest queued one when it is full."
+file = "rules/protocols/roles-and-channels/channels-loss-head.fsl"
+command = "compile requests/protocols/roles-and-channels/channels-loss-head.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "checked: lossy channel"
+serves = "Protocols reference (roles and channels)"
+
+[[case]]
+id = "channels-loss-needs-selector"
+rule = ""
+statement = "A loss overflow policy names which message is lost."
+file = "rules/protocols/roles-and-channels/channels-loss-needs-selector.fsl"
+command = "compile requests/protocols/roles-and-channels/channels-loss-needs-selector.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: loss needs head, tail or new"
+serves = "Protocols reference (roles and channels)"
+
+[[case]]
+id = "channels-object-payload"
+rule = ""
+statement = "The payload of a channel is a message type, and an object type is refused."
+file = "rules/protocols/roles-and-channels/channels-object-payload.fsl"
+command = "compile requests/protocols/roles-and-channels/channels-object-payload.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: payload is an object type"
+serves = "Protocols reference (roles and channels)"
+
+[[case]]
+id = "steps-all-kinds"
+rule = ""
+statement = "A protocol uses a send, a receive, an attempt, an effect, a check, a commit and a fence."
+file = "rules/protocols/steps/steps-all-kinds.fsl"
+command = "compile requests/protocols/steps/steps-all-kinds.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "checked: every kind of step"
+serves = "Protocols reference (steps)"
+
+[[case]]
+id = "steps-effect-of-send"
+rule = ""
+statement = "An effect records the result of an attempt, so it cannot name a send."
+file = "rules/protocols/steps/steps-effect-of-send.fsl"
+command = "compile requests/protocols/steps/steps-effect-of-send.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: effect names a send"
+serves = "Protocols reference (steps)"
+
+[[case]]
+id = "steps-receive-other-channel"
+rule = ""
+statement = "A receive takes a message from the channel its send used."
+file = "rules/protocols/steps/steps-receive-other-channel.fsl"
+command = "compile requests/protocols/steps/steps-receive-other-channel.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: receive on another channel"
+serves = "Protocols reference (steps)"
+
+[[case]]
+id = "steps-unknown-contract"
+rule = ""
+statement = "An attempt lists only the precondition and postcondition clauses of the unit."
+file = "rules/protocols/steps/steps-unknown-contract.fsl"
+command = "compile requests/protocols/steps/steps-unknown-contract.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: contract names no clause"
+serves = "Protocols reference (steps)"
+
+[[case]]
+id = "control-parallel-all"
+rule = ""
+statement = "Machining reserves a machine while assembly runs, and the protocol continues when both are done."
+file = "rules/protocols/control-flow/control-parallel-all.fsl"
+command = "compile requests/protocols/control-flow/control-parallel-all.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "checked: parallel with join all"
+serves = "Protocols reference (control flow)"
+
+[[case]]
+id = "control-parallel-any-cancel"
+rule = ""
+statement = "A join can settle on the first branch that completes and cancel the other."
+file = "rules/protocols/control-flow/control-parallel-any-cancel.fsl"
+command = "compile requests/protocols/control-flow/control-parallel-any-cancel.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "checked: parallel with join any"
+serves = "Protocols reference (control flow)"
+
+[[case]]
+id = "control-join-omits-branch"
+rule = ""
+statement = "A join all lists every branch of its parallel."
+file = "rules/protocols/control-flow/control-join-omits-branch.fsl"
+command = "compile requests/protocols/control-flow/control-join-omits-branch.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: join all omits a branch"
+serves = "Protocols reference (control flow)"
+
+[[case]]
+id = "control-one-branch"
+rule = ""
+statement = "A parallel has at least two branches."
+file = "rules/protocols/control-flow/control-one-branch.fsl"
+command = "compile requests/protocols/control-flow/control-one-branch.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: parallel needs two branches"
+serves = "Protocols reference (control flow)"
+
+[[case]]
+id = "control-repeat-progress"
+rule = ""
+statement = "Inspection sends a part back for machining while it needs rework."
+file = "rules/protocols/control-flow/control-repeat-progress.fsl"
+command = "compile requests/protocols/control-flow/control-repeat-progress.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "checked: repeat that takes a step"
+serves = "Protocols reference (control flow)"
+
+[[case]]
+id = "control-repeat-no-progress"
+rule = ""
+statement = "The body of a repeat takes a step on every pass."
+file = "rules/protocols/control-flow/control-repeat-no-progress.fsl"
+command = "compile requests/protocols/control-flow/control-repeat-no-progress.json"
+status = "running"
+expect_exit = 21
+expect_verdict = "unsupported: repeat body takes no step"
+serves = "Protocols reference (control flow)"
+
+[[case]]
+id = "timeouts-await"
+rule = ""
+statement = "Machining waits up to 120 seconds for inspection to answer, and a late answer takes the timeout branch."
+file = "rules/protocols/retries-and-timeouts/timeouts-await.fsl"
+command = "compile requests/protocols/retries-and-timeouts/timeouts-await.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "checked: await with a timeout branch"
+serves = "Protocols reference (retries and timeouts)"
+
+[[case]]
+id = "timeouts-await-without-profile"
+rule = ""
+statement = "An await needs a temporal profile in the unit header."
+file = "rules/protocols/retries-and-timeouts/timeouts-await-without-profile.fsl"
+command = "compile requests/protocols/retries-and-timeouts/timeouts-await-without-profile.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: await reads a clock the unit does not select"
+serves = "Protocols reference (retries and timeouts)"
+
+[[case]]
+id = "timeouts-reversed-interval"
+rule = ""
+statement = "The wait of an await is a closed interval with the lower end at most the upper end."
+file = "rules/protocols/retries-and-timeouts/timeouts-reversed-interval.fsl"
+command = "compile requests/protocols/retries-and-timeouts/timeouts-reversed-interval.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: interval is not closed"
+serves = "Protocols reference (retries and timeouts)"
+
+[[case]]
+id = "compensation-zero-attempts"
+rule = ""
+statement = "A compensation template allows at least one attempt."
+file = "rules/protocols/compensation/compensation-zero-attempts.fsl"
+command = "compile requests/protocols/compensation/compensation-zero-attempts.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: attempts must be at least 1"
+serves = "Protocols reference (compensation)"

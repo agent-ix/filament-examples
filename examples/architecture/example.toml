@@ -200,3 +200,231 @@ status = "running"
 expect_exit = 20
 expect_verdict = "refused: qualitative-threshold"
 serves = "Learn: rules about chance (common misreading)"
+
+[[case]]
+id = "models-repeated-support-value"
+rule = ""
+statement = "A random parameter lists each value once."
+file = "rules/probability/models/models-repeated-support-value.fsl"
+command = "compile requests/probability/models/models-repeated-support-value.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: repeated-support-value"
+serves = "Probability reference (models)"
+
+[[case]]
+id = "models-zero-weight"
+rule = ""
+statement = "Every weight of a random parameter is positive."
+file = "rules/probability/models/models-zero-weight.fsl"
+command = "compile requests/probability/models/models-zero-weight.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: invalid-weight"
+serves = "Probability reference (models)"
+
+[[case]]
+id = "models-random-in-precondition"
+rule = ""
+statement = "A precondition cannot read a random parameter, because a draw happens after the operation is chosen."
+file = "rules/probability/models/models-random-in-precondition.fsl"
+command = "compile requests/probability/models/models-random-in-precondition.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: random-read-in-precondition"
+serves = "Probability reference (models)"
+
+[[case]]
+id = "models-unknown-workload-operation"
+rule = ""
+statement = "A workload weights only operations of its own model."
+file = "rules/probability/models/models-unknown-workload-operation.fsl"
+command = "compile requests/probability/models/models-unknown-workload-operation.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: unknown-operation"
+serves = "Probability reference (models)"
+
+[[case]]
+id = "models-reward-reads-state"
+rule = ""
+statement = "A reward reads the parameters of its operation and constants, never the state."
+file = "rules/probability/models/models-reward-reads-state.fsl"
+command = "compile requests/probability/models/models-reward-reads-state.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: state-read-in-reward"
+serves = "Probability reference (models)"
+
+[[case]]
+id = "models-duplicate-workload"
+rule = ""
+statement = "A workload name is declared once in a package."
+file = "rules/probability/models/models-duplicate-workload.fsl"
+command = "compile requests/probability/models/models-duplicate-workload.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: duplicate-declaration"
+serves = "Probability reference (models)"
+
+[[case]]
+id = "claims-probability-every-scheduler"
+rule = ""
+statement = "Each service stays up for the next 10 steps with probability at least 0.99, however the calls are scheduled."
+file = "rules/probability/claims/claims-probability-every-scheduler.fsl"
+command = "compile requests/probability/claims/claims-probability-every-scheduler.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "checked: probability claim"
+serves = "Probability reference (claims)"
+
+[[case]]
+id = "claims-quantile-steps"
+rule = ""
+statement = "Once a service is up, it is down within 5 steps on at least 95% of runs."
+file = "rules/probability/claims/claims-quantile-steps.fsl"
+command = "compile requests/probability/claims/claims-quantile-steps.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "checked: quantile claim"
+serves = "Probability reference (claims)"
+
+[[case]]
+id = "claims-mean-of-fraction"
+rule = ""
+statement = "A service is up for at least 90% of the next 10 steps on average."
+file = "rules/probability/claims/claims-mean-of-fraction.fsl"
+command = "compile requests/probability/claims/claims-mean-of-fraction.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "checked: mean of a fraction"
+serves = "Probability reference (claims)"
+
+[[case]]
+id = "claims-long-run-fraction"
+rule = ""
+statement = "A service is up for at least 99% of the time in the long run."
+file = "rules/probability/claims/claims-long-run-fraction.fsl"
+command = "compile requests/probability/claims/claims-long-run-fraction.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "checked: long-run fraction"
+serves = "Probability reference (claims)"
+
+[[case]]
+id = "claims-unbounded-reachability"
+rule = ""
+statement = "A service comes up with probability at least 0.9, however long it takes."
+file = "rules/probability/claims/claims-unbounded-reachability.fsl"
+command = "compile requests/probability/claims/claims-unbounded-reachability.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "checked: unbounded reachability"
+serves = "Probability reference (claims)"
+
+[[case]]
+id = "claims-qualitative-threshold"
+rule = ""
+statement = "A threshold of 1 is refused, because it states a property of every run."
+file = "rules/probability/claims/claims-qualitative-threshold.fsl"
+command = "compile requests/probability/claims/claims-qualitative-threshold.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: qualitative-threshold"
+serves = "Probability reference (claims)"
+
+[[case]]
+id = "claims-unbounded-event"
+rule = ""
+statement = "A probability event under a bounded profile has an interval on every operator."
+file = "rules/probability/claims/claims-unbounded-event.fsl"
+command = "compile requests/probability/claims/claims-unbounded-event.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: unbounded-event"
+serves = "Probability reference (claims)"
+
+[[case]]
+id = "claims-quantile-over-fraction"
+rule = ""
+statement = "A quantile is stated over a latency, and a fraction takes a mean."
+file = "rules/probability/claims/claims-quantile-over-fraction.fsl"
+command = "compile requests/probability/claims/claims-quantile-over-fraction.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: quantile-over-fraction"
+serves = "Probability reference (claims)"
+
+[[case]]
+id = "claims-confidence-out-of-range"
+rule = ""
+statement = "The indifference region around a threshold stays inside 0 to 1."
+file = "rules/probability/claims/claims-confidence-out-of-range.fsl"
+command = "compile requests/probability/claims/claims-confidence-out-of-range.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: invalid-confidence"
+serves = "Probability reference (claims)"
+
+[[case]]
+id = "claims-partial-confidence"
+rule = ""
+statement = "A with clause states alpha, beta and indifference together."
+file = "rules/probability/claims/claims-partial-confidence.fsl"
+command = "compile requests/probability/claims/claims-partial-confidence.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: partial-confidence"
+serves = "Probability reference (claims)"
+
+[[case]]
+id = "claims-unknown-workload"
+rule = ""
+statement = "A claim names a workload that the unit declares."
+file = "rules/probability/claims/claims-unknown-workload.fsl"
+command = "compile requests/probability/claims/claims-unknown-workload.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: missing-name"
+serves = "Probability reference (claims)"
+
+[[case]]
+id = "schedulers-fair-weak"
+rule = ""
+statement = "A claim over every scheduler can limit the schedulers to those that serve the call operation fairly."
+file = "rules/probability/schedulers/schedulers-fair-weak.fsl"
+command = "compile requests/probability/schedulers/schedulers-fair-weak.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "checked: fairness set"
+serves = "Probability reference (schedulers)"
+
+
+[[case]]
+id = "staged-sampling-claim"
+rule = ""
+statement = "Each call fails 1 time in 1,000, and checkout stays up through 10 calls with probability at least 0.99, measured with stated error bounds."
+file = "rules/probability/sampling/staged-sampling-claim.fsl"
+command = "compile requests/probability/sampling/staged-sampling-claim.json"
+status = "staged"
+expect_exit = 21
+ready_exit = 0
+waits_on = "QSL-2000"
+why = "A random parameter is refused when the package is written, so the claim cannot be checked yet."
+needs = "probability"
+serves = "Probability reference (sampling)"
+
+
+[[case]]
+id = "staged-exact-reachability"
+rule = ""
+statement = "A service comes up with probability at least 0.9 however the calls are scheduled, decided by exact computation."
+file = "rules/probability/exact/staged-exact-reachability.fsl"
+command = "compile requests/probability/exact/staged-exact-reachability.json"
+status = "staged"
+expect_exit = 21
+ready_exit = 0
+waits_on = "QSL-2000"
+why = "A random parameter is refused when the package is written, so the claim cannot be checked yet."
+needs = "probability"
+serves = "Probability reference (exact)"

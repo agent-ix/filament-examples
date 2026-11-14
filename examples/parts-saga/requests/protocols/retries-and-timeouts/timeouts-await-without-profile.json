@@ -1,0 +1,26 @@
+{
+  "format": "native-compile/1",
+  "request": {
+    "models": [
+      {
+        "format": "semantic-ir/2.0.0",
+        "source": {
+          "file": "../../../model/parts-saga.semantic-ir.json",
+          "authority": "example",
+          "identity": "example:parts-saga/model",
+          "document": "model",
+          "formal_revision": 1
+        }
+      }
+    ],
+    "program": {
+      "source": {
+        "file": "../../../rules/protocols/retries-and-timeouts/timeouts-await-without-profile.fsl",
+        "authority": "example",
+        "identity": "example:parts-saga/timeouts-await-without-profile",
+        "document": "timeoutsawaitwithoutprofile",
+        "formal_revision": 1
+      }
+    }
+  }
+}

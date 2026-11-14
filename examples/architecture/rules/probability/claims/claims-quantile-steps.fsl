@@ -1,0 +1,9 @@
+language "ix:native" edition "1-draft";
+profile v = "quire.model.complete/v1";
+profile ev = "quire.temporal.event-position.false-extension/v1";
+profile inf = "quire.temporal.infinite-trace/v1";
+model Arch = "example/architecture";
+
+probabilistic DownSoon using ev on Arch over (s: Arch::Service) under every scheduler on origin {
+  quantile 0.95 of (steps from holds(s.up) until holds(not s.up) within 10) <= 5
+}

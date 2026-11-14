@@ -1,0 +1,1 @@
+{"artifacts":[],"category":"refusal","diagnostics":[{"cause":"unexpected-token","code":"invalid_syntax","locus":{"end":580,"kind":"region","source":{"authority":"example","identity":"example:parts-saga/control-one-branch"},"start":579},"message":"expected `branch`"}],"format":"quire-outcome/1","items":[],"last_stage":"S1","operation":"package","result":null}

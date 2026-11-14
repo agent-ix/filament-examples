@@ -75,3 +75,7 @@ These cases are staged until the language supports them.
 - `staged-availability`: 99% availability over 10 calls with 1-in-1,000 failures. Needs packaging of random parameters.
 
 `example.toml` records the exact reason and ticket for each.
+
+## Probability reference cases
+
+The folder `rules/probability` holds one subfolder for each page of the probability reference: `models`, `claims`, `schedulers`, `sampling` and `exact`. The claims that quantify over every scheduler compile. The two staged cases use a random parameter, which the driver refuses when it writes the package.
