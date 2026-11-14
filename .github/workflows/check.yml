@@ -21,6 +21,7 @@ on:
 
 permissions:
   contents: read
+  packages: read
 
 jobs:
   examples:
@@ -28,7 +29,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # The default path: run the checks in the toolchain image.
+      # The default path: run the checks in the toolchain image. The login lets the
+      # pull work while the package is not public; it is harmless once it is.
+      - name: Log in to the registry
+        if: inputs.driver == 'image'
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
+
       - name: Check running cases and staged cases in the image
         if: inputs.driver == 'image'
         env:
