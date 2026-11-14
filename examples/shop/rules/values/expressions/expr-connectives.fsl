@@ -1,0 +1,8 @@
+language "ix:native" edition "1-draft";
+profile v = "quire.value.complete/v1";
+
+type LineCents = Int[0, 99000000];
+
+function freeDelivery using v(subtotal: LineCents, member: Boolean): Boolean pure {
+  member or subtotal >= 5000
+}

@@ -1,0 +1,10 @@
+language "ix:native" edition "1-draft";
+profile v = "quire.value.complete/v1";
+
+type Money = Decimal[0, 1000000; 0, 2; exact];
+
+function tenEuros using v(): Money pure { decimal(1000, 2) }
+
+function thirdOfTen using v(): Boolean pure {
+  tenEuros() / decimal(3, 0) = decimal(333, 2)
+}

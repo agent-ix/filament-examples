@@ -1,0 +1,6 @@
+language "ix:native" edition "1-draft";
+profile v = "quire.value.complete/v1";
+
+type Sku = Text[1, 12; nfc];
+
+function sku using v(): Sku pure { "AB-100" }

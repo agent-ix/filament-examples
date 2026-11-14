@@ -1,0 +1,19 @@
+{
+  "format": "native-run/1",
+  "request": {
+    "models": [],
+    "program": {
+      "source": {
+        "file": "../../../rules/values/numbers/num-rounding.fsl",
+        "authority": "example",
+        "identity": "example:shop/values/numbers/num-rounding",
+        "document": "num-rounding",
+        "formal_revision": 1
+      }
+    },
+    "call": {
+      "function": "eighthNearestEven",
+      "arguments": []
+    }
+  }
+}

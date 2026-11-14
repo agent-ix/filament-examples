@@ -22,6 +22,12 @@ temporal ServedIfAcquireIsWeaklyFair using inf over (m: Mutex::Lock) clock "mode
   always eventually holds(m.owner = 1)
 }
 
+// The same rule, when some acquire that is enabled again and again is taken.
+temporal ServedIfAcquireIsStronglyFair using inf over (m: Mutex::Lock) clock "model-steps" on origin {
+  fair strong Mutex::Lock::acquire;
+  always eventually holds(m.owner = 1)
+}
+
 // The same rule, when each acquire that is enabled continuously is taken.
 temporal ServedIfEachAcquireIsWeaklyFair using inf over (m: Mutex::Lock) clock "model-steps" on origin {
   fair weak each Mutex::Lock::acquire;

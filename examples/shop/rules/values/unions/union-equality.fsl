@@ -1,0 +1,8 @@
+language "ix:native" edition "1-draft";
+profile v = "quire.value.complete/v1";
+
+union Payment { Card(Int[0, 9999]), Cash }
+
+function sameMember using v(): Boolean pure {
+  Payment::Card(1) = Payment::Card(1) and Payment::Cash != Payment::Card(1)
+}

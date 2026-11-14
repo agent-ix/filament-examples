@@ -1,0 +1,10 @@
+language "ix:native" edition "1-draft";
+profile v = "quire.value.complete/v1";
+
+dimension Mass;
+unit kg: Mass = rational(1, 1);
+unit g: Mass = rational(1, 1000) * kg;
+
+function weighsThreeAndAHalf using v(): Boolean pure {
+  convert<Quantity<kg>>(3500 g) = 3.5 kg
+}

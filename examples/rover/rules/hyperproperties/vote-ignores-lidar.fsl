@@ -8,8 +8,8 @@ post SampleRecordsVote using v on Rover::Rover::sample {
   self.voteWrong = ((faultA and faultB) or (faultA and faultC) or (faultB and faultC))
 }
 
-// Two runs that sample the same sensor faults at every step record the same
-// vote, whatever the lidar did in either run.
+// Two runs that take the same steps with the same sensor faults record the
+// same vote.
 hyper VoteIgnoresLidar using inf over behaviours (r: Rover::Rover)
   forall trace a of Rover
   forall trace b of Rover

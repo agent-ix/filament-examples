@@ -7,7 +7,7 @@ You can check the mode rules as invariants over a snapshot, call the voting func
 ## The model
 
 - `Rover` has a mode (driving, degraded, safe stop or failsafe), a speed and a stopped flag. It also has a lidar flag, three range readings, a clock in ms and a flag for a wrong vote.
-- Its operations give the mode a shape. `loseLidar` takes a driving rover to degraded mode and slows it. `brake` takes a degraded rover to safe-stop mode. `halt` stops a rover in safe-stop mode. `enterFailsafe` takes a stopped rover to failsafe mode, where it stays. `sample` reads the three sensors in every mode but failsafe.
+- Its operations give the mode a shape. `loseLidar` takes a driving rover to degraded mode and slows it. `brake` takes a degraded rover to safe-stop mode. `halt` stops a rover in safe-stop mode. `enterFailsafe` takes a stopped rover to failsafe mode, where it stays. `sample` reads the three sensors in every mode but failsafe. Statements about the mode machine start from a driving rover with a working lidar that has not stopped.
 - A second model, `rover-spec`, declares a `Vehicle` that can be stopped. It is used by the refinement example.
 
 The models are in [model](model). The preconditions and postconditions of the operations are in [rules/model-checking/mode-machine.fsl](rules/model-checking/mode-machine.fsl).

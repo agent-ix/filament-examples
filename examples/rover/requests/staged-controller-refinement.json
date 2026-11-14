@@ -25,7 +25,7 @@
     ],
     "program": {
       "source": {
-        "file": "../rules/staged-controller-refinement.fsl",
+        "file": "../rules/refinement-controller.fsl",
         "authority": "example",
         "identity": "example:rover/staged-controller-refinement",
         "document": "stagedcontrollerrefinement",

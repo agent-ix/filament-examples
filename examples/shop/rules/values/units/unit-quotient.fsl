@@ -1,0 +1,11 @@
+language "ix:native" edition "1-draft";
+profile v = "quire.value.complete/v1";
+
+dimension Mass;
+dimension Time;
+unit kg: Mass = rational(1, 1);
+unit s: Time = rational(1, 1);
+
+function sameRate using v(): Boolean pure {
+  6 kg / 2 s = 3 kg / 1 s
+}

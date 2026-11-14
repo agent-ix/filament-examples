@@ -1,0 +1,28 @@
+{
+  "format": "native-run/1",
+  "request": {
+    "models": [],
+    "program": {
+      "source": {
+        "file": "../../../rules/values/numbers/staged-integer-division.fsl",
+        "authority": "example",
+        "identity": "example:shop/values/numbers/staged-integer-division",
+        "document": "staged-integer-division",
+        "formal_revision": 1
+      }
+    },
+    "call": {
+      "function": "fullPacks",
+      "arguments": [
+        {
+          "parameter": "qty",
+          "value": 30
+        },
+        {
+          "parameter": "pack",
+          "value": 12
+        }
+      ]
+    }
+  }
+}

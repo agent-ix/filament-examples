@@ -1,0 +1,1 @@
+{"artifacts":[],"category":"unsupported","diagnostics":[{"cause":"not-yet-implemented","code":"unsupported_construct","locus":null,"message":"random-parameter `call(ok)` cannot be written to a checked-package/v2 graph yet"}],"format":"quire-outcome/1","items":[],"last_stage":"S4","operation":"package","result":null}

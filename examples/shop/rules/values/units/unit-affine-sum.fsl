@@ -1,0 +1,8 @@
+language "ix:native" edition "1-draft";
+profile v = "quire.value.complete/v1";
+
+dimension Temperature;
+unit K: Temperature = rational(1, 1);
+unit degC: Temperature = rational(1, 1) * K + decimal(27315, 2);
+
+function warmer using v(): Boolean pure { 5 degC + 5 degC > 5 degC }

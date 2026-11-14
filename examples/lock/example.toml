@@ -26,6 +26,17 @@ expect_verdict = "compiled"
 serves = "Model checking reference (fairness)"
 
 [[case]]
+id = "fairness-strong-whole"
+rule = "ServedIfAcquireIsStronglyFair"
+statement = "Process 1 holds the lock again and again, if some acquire that is enabled again and again is taken: process 2 can still take every turn."
+file = "rules/fairness/one-served.fsl"
+command = "compile requests/fairness/one-served.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "compiled"
+serves = "Model checking reference (fairness)"
+
+[[case]]
 id = "fairness-weak-each"
 rule = "ServedIfEachAcquireIsWeaklyFair"
 statement = "Process 1 holds the lock again and again, if every acquire that stays enabled is taken."

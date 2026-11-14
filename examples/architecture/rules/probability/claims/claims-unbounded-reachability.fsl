@@ -1,0 +1,10 @@
+language "ix:native" edition "1-draft";
+profile v = "quire.model.complete/v1";
+profile ev = "quire.temporal.event-position.false-extension/v1";
+profile inf = "quire.temporal.infinite-trace/v1";
+model Arch = "example/architecture";
+
+// The claim states that a service comes up with probability at least 0.9 under every scheduler.
+probabilistic ComesUp using inf on Arch over (s: Arch::Service) under every scheduler on origin {
+  probability >= 0.9 [ eventually holds(s.up) ]
+}

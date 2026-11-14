@@ -1,0 +1,9 @@
+language "ix:native" edition "1-draft";
+profile v = "quire.model.complete/v1";
+profile ev = "quire.temporal.event-position.false-extension/v1";
+profile inf = "quire.temporal.infinite-trace/v1";
+model Arch = "example/architecture";
+
+probabilistic Q using ev on Arch over (s: Arch::Service) under every scheduler on origin {
+  quantile 0.5 of (fraction holds(s.up) over [0, 10]) <= rational(1, 2)
+}

@@ -1,0 +1,10 @@
+language "ix:native" edition "1-draft";
+profile v = "quire.value.complete/v1";
+
+type Share = Rational[0, 1; 1, 100];
+
+function half using v(): Share pure { rational(1, 2) }
+
+function twoHalves using v(): Boolean pure {
+  half() + half() = rational(1, 1)
+}

@@ -1,0 +1,13 @@
+language "ix:native" edition "1-draft";
+profile v = "quire.value.complete/v1";
+
+type Third = Rational[0, 9; 1, 9];
+type Hundredths = Decimal[0, 1000; 2, 2; toward-zero];
+
+function twoThirds using v(): Third pure { rational(2, 3) }
+
+function toHundredths using v(x: Third): Hundredths pure { convert<Hundredths>(x) }
+
+function isSixtySix using v(): Boolean pure {
+  toHundredths(twoThirds()) = decimal(66, 2)
+}

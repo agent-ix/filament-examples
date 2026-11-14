@@ -45,10 +45,10 @@ post SampleRecordsVote using v on Rover::Rover::sample {
   self.voteWrong = ((faultA and faultB) or (faultA and faultC) or (faultB and faultC))
 }
 
-// Failsafe is where the rover parks, so it is an intended terminal state.
+// Failsafe is the rover's parking mode, so it is an intended terminal state.
 terminal Parked using v on Rover when { self.mode = Rover::Mode::Failsafe };
 
-// A rover that loses its lidar is eventually stopped, if braking and halting
+// From a driving rover with a working lidar: a rover that loses its lidar is eventually stopped, if braking and halting
 // are never postponed for ever.
 temporal StopsAfterLidarLoss using inf over (r: Rover::Rover) clock "model-steps" on origin {
   fair weak Rover::Rover::brake;
@@ -56,7 +56,7 @@ temporal StopsAfterLidarLoss using inf over (r: Rover::Rover) clock "model-steps
   always (holds(not r.lidarOk) implies eventually holds(r.stopped))
 }
 
-// From every initial state, some path reaches failsafe.
+// From a driving rover with a working lidar, some path reaches failsafe.
 possible FailsafeReachable using v over (r: Rover::Rover) { r.mode = Rover::Mode::Failsafe }
 
 // From every degraded state, some path ends with the rover stopped.

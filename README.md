@@ -7,7 +7,7 @@ You can read a rule, run it against a passing and a failing case, and compare yo
 ## The three families
 
 - **Shop (first steps).** Values, rules about data, and rules about operations, in an online shop.
-- **Enterprise and distributed systems.** Rules over a service architecture, a protocol for a parts-processing saga, and two processes that share a lock.
+- **Enterprise and distributed systems.** Rules over a service architecture, and a protocol for a parts-processing saga.
 - **Safety systems.** A press guard interlock, robot speed and separation, and a delivery rover with failsafe modes and sensor voting.
 
 ## Systems
@@ -16,13 +16,12 @@ The table lists each system with the number of cases that run today and the numb
 
 | System | Family | Running | Staged |
 | --- | --- | --- | --- |
-| [shop](examples/shop) | Shop | 35 | 3 |
-| [architecture](examples/architecture) | Enterprise | 21 | 2 |
-| [parts-saga](examples/parts-saga) | Distributed | 7 | 2 |
+| [shop](examples/shop) | Shop | 30 | 2 |
+| [architecture](examples/architecture) | Enterprise | 34 | 4 |
+| [parts-saga](examples/parts-saga) | Distributed | 32 | 2 |
 | [cell](examples/cell) | Safety | 13 | 0 |
-| [rover](examples/rover) | Safety | 49 | 8 |
+| [rover](examples/rover) | Safety | 32 | 8 |
 | [library](examples/library) | Shop | 2 | 0 |
-| [lock](examples/lock) | Distributed | 7 | 2 |
 
 ## Getting started
 

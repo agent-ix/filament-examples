@@ -1,0 +1,12 @@
+language "ix:native" edition "1-draft";
+profile v = "quire.value.complete/v1";
+
+type Cents = Int[0, 1000000];
+
+record Order { total: Cents; coupon: Cents?; }
+
+function couponValue using v(has: Boolean, total: Cents): Cents pure {
+  let o = if has then Order { total: total, coupon: 500 }
+          else Order { total: total, coupon: null } in
+    if present(o.coupon) then value(o.coupon) else 0
+}

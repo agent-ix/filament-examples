@@ -1,0 +1,8 @@
+language "ix:native" edition "1-draft";
+profile v = "quire.value.complete/v1";
+
+type Qty = Int[1, 99];
+
+predicate isBulk using v(q: Qty): Boolean { q >= 10 }
+
+function bulkLine using v(q: Qty): Boolean pure { isBulk(q) }

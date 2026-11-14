@@ -1,0 +1,6 @@
+language "ix:native" edition "1-draft";
+profile v = "quire.value.complete/v1";
+
+tuple PriceQty(Int[0, 9], Int[0, 9]);
+
+function first using v(a: Int[0, 9]): Int[0, 9] pure { PriceQty(a, a).0 }

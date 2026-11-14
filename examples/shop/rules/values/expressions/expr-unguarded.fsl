@@ -1,0 +1,8 @@
+language "ix:native" edition "1-draft";
+profile v = "quire.value.complete/v1";
+
+type Stock = Int[0, 100];
+
+function afterOneSale using v(stock: Stock): Stock pure {
+  stock - 1
+}
