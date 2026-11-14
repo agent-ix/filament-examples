@@ -6,8 +6,8 @@ export default {
     Press: {
       fields: { guardClosed: "Boolean", ramMoving: "Boolean", mode: "PressMode", ramSpeed: "Speed", estop: "Boolean" },
       ops: {
-        start: { modifies: ["ramMoving", "mode", "ramSpeed"] },
-        openGuard: { modifies: ["guardClosed", "ramMoving", "mode", "ramSpeed"] },
+        start: { returns: "Boolean", modifies: ["ramMoving", "mode", "ramSpeed"] },
+        openGuard: { returns: "Boolean", modifies: ["guardClosed", "ramMoving", "mode", "ramSpeed"] },
       },
     },
     Robot: { fields: { speed: "Speed", separation: "Distance", personInCell: "Boolean" } },

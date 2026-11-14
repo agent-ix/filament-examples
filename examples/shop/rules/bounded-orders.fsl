@@ -1,0 +1,11 @@
+language "ix:native" edition "1-draft";
+profile v = "quire.model.complete/v1";
+model Shop = "example/shop";
+
+// The shop's order population has at most one member.
+bound OrderCap on Shop::orders [1]
+
+// Holds for any order; the run is refused when the snapshot breaks the bound.
+invariant OrderCapKept using v on Shop::Order at current {
+  true
+}

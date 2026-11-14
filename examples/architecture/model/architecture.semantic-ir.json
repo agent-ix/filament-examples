@@ -647,6 +647,42 @@
           }
         }
       ],
+      "relationships": [
+        {
+          "category": "structural",
+          "composite": false,
+          "direction": "source-to-target",
+          "identity": "ix://example/architecture/relationship/Service-calls-Service",
+          "origin": {
+            "source": {
+              "sourceIdentity": "ix://example/architecture/spec",
+              "path": "spec.qspec",
+              "startLine": 1,
+              "startColumn": 1
+            }
+          },
+          "sourceEnd": {
+            "multiplicity": {
+              "lower": 0,
+              "upper": 8,
+              "ordered": false,
+              "unique": true
+            },
+            "role": "calls",
+            "type": "ix://example/architecture/Service"
+          },
+          "targetEnd": {
+            "multiplicity": {
+              "lower": 0,
+              "upper": 8,
+              "ordered": false,
+              "unique": true
+            },
+            "role": "calledBy",
+            "type": "ix://example/architecture/Service"
+          }
+        }
+      ],
       "operations": [
         {
           "identity": "ix://example/architecture/Service/call",
