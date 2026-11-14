@@ -156,6 +156,91 @@
     },
     {
       "system": "architecture",
+      "case": "no-call-cycle-ok",
+      "status": "running",
+      "rule": "NoCallCycle",
+      "statement": "Following calls at run time never leads back to where it started.",
+      "rule_file": "examples/architecture/rules/architecture.fsl",
+      "data_files": [
+        "examples/architecture/data/call-chain.json"
+      ],
+      "request_file": "examples/architecture/requests/no-call-cycle-ok.json",
+      "expected_file": "examples/architecture/expected/no-call-cycle-ok.json",
+      "verdict": "holds",
+      "exit": 0,
+      "waits_on": null,
+      "needs": null
+    },
+    {
+      "system": "architecture",
+      "case": "no-call-cycle-loop",
+      "status": "running",
+      "rule": "NoCallCycle",
+      "statement": "Following calls at run time never leads back to where it started.",
+      "rule_file": "examples/architecture/rules/architecture.fsl",
+      "data_files": [
+        "examples/architecture/data/call-loop.json"
+      ],
+      "request_file": "examples/architecture/requests/no-call-cycle-loop.json",
+      "expected_file": "examples/architecture/expected/no-call-cycle-loop.json",
+      "verdict": "violated: payments -> ledger -> payments",
+      "exit": 10,
+      "waits_on": null,
+      "needs": null
+    },
+    {
+      "system": "architecture",
+      "case": "no-call-cycle-partial",
+      "status": "running",
+      "rule": "NoCallCycle",
+      "statement": "Following calls at run time never leads back to where it started.",
+      "rule_file": "examples/architecture/rules/architecture.fsl",
+      "data_files": [
+        "examples/architecture/data/call-partial.json"
+      ],
+      "request_file": "examples/architecture/requests/no-call-cycle-partial.json",
+      "expected_file": "examples/architecture/expected/no-call-cycle-partial.json",
+      "verdict": "incomplete",
+      "exit": 22,
+      "waits_on": null,
+      "needs": null
+    },
+    {
+      "system": "architecture",
+      "case": "no-call-edge-ok",
+      "status": "running",
+      "rule": "NoCallsIntoTheEdge",
+      "statement": "Nothing calls an edge service at run time: edge services sit at the front door.",
+      "rule_file": "examples/architecture/rules/architecture.fsl",
+      "data_files": [
+        "examples/architecture/data/call-chain.json"
+      ],
+      "request_file": "examples/architecture/requests/no-call-edge-ok.json",
+      "expected_file": "examples/architecture/expected/no-call-edge-ok.json",
+      "verdict": "holds",
+      "exit": 0,
+      "waits_on": null,
+      "needs": null
+    },
+    {
+      "system": "architecture",
+      "case": "no-call-edge-called",
+      "status": "running",
+      "rule": "NoCallsIntoTheEdge",
+      "statement": "Nothing calls an edge service at run time: edge services sit at the front door.",
+      "rule_file": "examples/architecture/rules/architecture.fsl",
+      "data_files": [
+        "examples/architecture/data/call-edge.json"
+      ],
+      "request_file": "examples/architecture/requests/no-call-edge-called.json",
+      "expected_file": "examples/architecture/expected/no-call-edge-called.json",
+      "verdict": "violated",
+      "exit": 10,
+      "waits_on": null,
+      "needs": null
+    },
+    {
+      "system": "architecture",
       "case": "personal-data-ok",
       "status": "running",
       "rule": "PersonalDataBoundary",
@@ -531,6 +616,36 @@
       "expected_file": "examples/cell/expected/interlock-backwards.json",
       "verdict": "holds on a dangerous state",
       "exit": 0,
+      "waits_on": null,
+      "needs": null
+    },
+    {
+      "system": "library",
+      "case": "compile-ok",
+      "status": "running",
+      "rule": "OnLoanHasCopies",
+      "statement": "A book on loan has at least one copy.",
+      "rule_file": "examples/library/rules/library.fsl",
+      "data_files": [],
+      "request_file": "examples/library/requests/compile-ok.json",
+      "expected_file": "examples/library/expected/compile-ok.json",
+      "verdict": "compiles",
+      "exit": 0,
+      "waits_on": null,
+      "needs": null
+    },
+    {
+      "system": "library",
+      "case": "compile-misspelled",
+      "status": "running",
+      "rule": "OnLoanHasCopies",
+      "statement": "A rule that names a field the model does not have is refused.",
+      "rule_file": "examples/library/rules/misspelled.fsl",
+      "data_files": [],
+      "request_file": "examples/library/requests/compile-misspelled.json",
+      "expected_file": "examples/library/expected/compile-misspelled.json",
+      "verdict": "refused: no field copy",
+      "exit": 20,
       "waits_on": null,
       "needs": null
     },
@@ -1884,6 +1999,72 @@
     },
     {
       "system": "shop",
+      "case": "no-overcharge-ok",
+      "status": "running",
+      "rule": "NoOvercharge",
+      "statement": "No order in the shop has been charged more than its total.",
+      "rule_file": "examples/shop/rules/populations.fsl",
+      "data_files": [
+        "examples/shop/data/paid-in-full.json"
+      ],
+      "request_file": "examples/shop/requests/no-overcharge-ok.json",
+      "expected_file": "examples/shop/expected/no-overcharge-ok.json",
+      "verdict": "holds",
+      "exit": 0,
+      "waits_on": null,
+      "needs": null
+    },
+    {
+      "system": "shop",
+      "case": "no-overcharge-other-order",
+      "status": "running",
+      "rule": "NoOvercharge",
+      "statement": "No order in the shop has been charged more than its total.",
+      "rule_file": "examples/shop/rules/populations.fsl",
+      "data_files": [
+        "examples/shop/data/two-orders.json"
+      ],
+      "request_file": "examples/shop/requests/no-overcharge-other-order.json",
+      "expected_file": "examples/shop/expected/no-overcharge-other-order.json",
+      "verdict": "violated",
+      "exit": 10,
+      "waits_on": null,
+      "needs": null
+    },
+    {
+      "system": "shop",
+      "case": "orders-over-bound",
+      "status": "running",
+      "rule": "OrderCapKept",
+      "statement": "A snapshot with more orders than the population's bound is refused.",
+      "rule_file": "examples/shop/rules/bounded-orders.fsl",
+      "data_files": [
+        "examples/shop/data/two-orders.json"
+      ],
+      "request_file": "examples/shop/requests/orders-over-bound.json",
+      "expected_file": "examples/shop/expected/orders-over-bound.json",
+      "verdict": "refused: cardinality_out_of_bound",
+      "exit": 20,
+      "waits_on": null,
+      "needs": null
+    },
+    {
+      "system": "shop",
+      "case": "result-without-result",
+      "status": "running",
+      "rule": "NoteReturnsNothing",
+      "statement": "A post rule cannot read the result of an operation that returns none.",
+      "rule_file": "examples/shop/rules/result-without-result.fsl",
+      "data_files": [],
+      "request_file": "examples/shop/requests/result-without-result.json",
+      "expected_file": "examples/shop/expected/result-without-result.json",
+      "verdict": "refused: wrong_snapshot",
+      "exit": 20,
+      "waits_on": null,
+      "needs": null
+    },
+    {
+      "system": "shop",
       "case": "staged-charge-adds-amount",
       "status": "staged",
       "rule": null,
@@ -1896,6 +2077,21 @@
       "exit": 20,
       "waits_on": "QSL-1901",
       "needs": "exact post-conditions"
+    },
+    {
+      "system": "shop",
+      "case": "staged-optional-parameter",
+      "status": "staged",
+      "rule": null,
+      "statement": "A rule can test whether an optional operation parameter is present.",
+      "rule_file": "examples/shop/rules/staged-optional-parameter.fsl",
+      "data_files": [],
+      "request_file": "examples/shop/requests/staged-optional-parameter.json",
+      "expected_file": "examples/shop/expected/staged-optional-parameter.json",
+      "verdict": null,
+      "exit": 20,
+      "waits_on": "QSL-1983",
+      "needs": "optional operation parameters"
     },
     {
       "system": "shop",
