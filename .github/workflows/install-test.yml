@@ -14,11 +14,13 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        runner: [ubuntu-latest, ubuntu-24.04-arm]
         include:
-          - { driver: release, shell: bash }
-          - { driver: release, shell: zsh }
-          - { driver: source, shell: bash }
+          - { runner: ubuntu-latest, driver: release, shell: bash }
+          - { runner: ubuntu-latest, driver: release, shell: zsh }
+          - { runner: ubuntu-latest, driver: source, shell: bash }
+          - { runner: ubuntu-24.04-arm, driver: release, shell: bash }
+          - { runner: ubuntu-24.04-arm, driver: release, shell: zsh }
+          - { runner: ubuntu-24.04-arm, driver: source, shell: bash }
     name: install (${{ matrix.driver }}, ${{ matrix.shell }}, ${{ matrix.runner }})
     runs-on: ${{ matrix.runner }}
     steps:
