@@ -1,0 +1,34 @@
+{
+  "format": "native-compile/1",
+  "request": {
+    "models": [
+      {
+        "format": "semantic-ir/2.0.0",
+        "source": {
+          "file": "../../model/library.semantic-ir.json",
+          "authority": "example",
+          "identity": "example:library/model",
+          "document": "model",
+          "formal_revision": 1
+        }
+      }
+    ],
+    "program": [
+      {
+        "file": "../../rules/packages/multi-types.fsl",
+        "authority": "example",
+        "identity": "example:library/multi-types",
+        "document": "multi-types",
+        "formal_revision": 1
+      },
+      {
+        "file": "../../rules/packages/multi-rules.fsl",
+        "authority": "example",
+        "identity": "example:library/multi-rules",
+        "document": "multi-rules",
+        "formal_revision": 1
+      }
+    ],
+    "libraries": []
+  }
+}

@@ -464,14 +464,25 @@ expect_verdict = "incomplete"
 serves = "Checks: limits"
 
 [[case]]
-id = "profiles-sum-under-core"
-rule = "RefundsWithinCharge"
-statement = "A rule that sums a collection is outside the smallest state layer and is not supported under it."
-file = "rules/profiles/sum-under-core.fsl"
-command = "run requests/profiles/sum-under-core.json"
+id = "profiles-count-under-core"
+rule = "AtMostTwoRefunds"
+statement = "A rule that counts a collection is outside the smallest state layer and is not supported under it."
+file = "rules/profiles/count-under-core.fsl"
+command = "run requests/profiles/count-under-core.json"
 status = "running"
 expect_exit = 21
 expect_verdict = "unsupported"
+serves = "Checks: profiles"
+
+[[case]]
+id = "profiles-count-under-queries"
+rule = "AtMostTwoRefunds"
+statement = "The same rule under the query layer runs and holds."
+file = "rules/profiles/count-under-queries.fsl"
+command = "run requests/profiles/count-under-queries.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
 serves = "Checks: profiles"
 
 [[case]]
@@ -1601,3 +1612,47 @@ status = "running"
 expect_exit = 0
 expect_verdict = "false"
 serves = "Types reference (unions, optionals and case)"
+
+[[case]]
+id = "limits-observation-document-bytes"
+rule = "PaidInFull"
+statement = "A data file larger than the request's document limit ends the run before the rule is evaluated."
+file = "rules/paid-in-full.fsl"
+command = "run requests/limits/observation-document-bytes.json"
+status = "running"
+expect_exit = 22
+expect_verdict = "incomplete: resource_exhausted"
+serves = "Checks: limits"
+
+[[case]]
+id = "limits-accounting-flag-overrides"
+rule = "PaidInFull"
+statement = "A work limit on the command line replaces the one in the request, even when it is lower."
+file = "rules/paid-in-full.fsl"
+command = "run requests/limits/accounting-override.json --limit accounting.work_units=3"
+status = "running"
+expect_exit = 22
+expect_verdict = "incomplete"
+serves = "Checks: limits"
+
+[[case]]
+id = "limits-call-work-units"
+rule = "lineTotal"
+statement = "A call that runs out of work units names the counter, its bound and the setting."
+file = "rules/values.fsl"
+command = "run requests/limits/call-work-units.json"
+status = "running"
+expect_exit = 22
+expect_verdict = "incomplete"
+serves = "Checks: limits"
+
+[[case]]
+id = "outcomes-undefined-call"
+rule = "remainder"
+statement = "A call that divides by zero has no value, which is the category undefined and exit status 10."
+file = "rules/outcomes/remainder.fsl"
+command = "run requests/outcomes/remainder-zero.json"
+status = "running"
+expect_exit = 10
+expect_verdict = "undefined"
+serves = "Checks: outcomes"

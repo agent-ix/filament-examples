@@ -1,0 +1,10 @@
+language "ix:native" edition "1-draft";
+profile v = "quire.state.queries/v1";
+model Shop = "example/shop";
+
+type Total = Int[0, 8000000];
+
+// An order has at most two refunds, counted under the query layer.
+invariant AtMostTwoRefunds using v on Shop::Order at current {
+  count<Total>(r in self.refunds: true) <= 2
+}
