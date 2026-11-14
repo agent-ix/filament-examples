@@ -132,6 +132,28 @@ expect_verdict = "incomplete"
 serves = "State reference: Reachability over a relationship end"
 
 [[case]]
+id = "no-call-edge-ok"
+rule = "NoCallsIntoTheEdge"
+statement = "Nothing calls an edge service at run time: edge services sit at the front door."
+file = "rules/architecture.fsl"
+command = "run requests/no-call-edge-ok.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "State reference: navigating a relationship end"
+
+[[case]]
+id = "no-call-edge-called"
+rule = "NoCallsIntoTheEdge"
+statement = "Nothing calls an edge service at run time: edge services sit at the front door."
+file = "rules/architecture.fsl"
+command = "run requests/no-call-edge-called.json"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
+serves = "State reference: navigating a relationship end"
+
+[[case]]
 id = "personal-data-ok"
 rule = "PersonalDataBoundary"
 statement = "A service that reads personal data must be marked as handling it."

@@ -24,6 +24,7 @@ The rules in [rules/architecture.fsl](rules/architecture.fsl) check one service 
 | `DataTierStaysDown` | A data service depends only on data services | `data-tier-ok` | `data-tier-calls-core` |
 | `NoDependencyCycle` | Following dependencies never leads back to the start | `no-cycle-ok` | `no-cycle-loop` |
 | `NoCallCycle` | Following calls at run time never leads back to the start | `no-call-cycle-ok` | `no-call-cycle-loop` |
+| `NoCallsIntoTheEdge` | Nothing calls an edge service at run time | `no-call-edge-ok` | `no-call-edge-called` |
 | `PersonalDataBoundary` | A reader of personal data is marked as handling it | `personal-data-ok` | `personal-data-leak` |
 
 Each rule is checked for one service, the one the request names. The case `no-cycle-checked-for-web` checks `NoDependencyCycle` for the web service on the architecture where payments and ledger depend on each other. Web is on no cycle, so the rule holds.

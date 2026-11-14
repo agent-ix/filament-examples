@@ -31,3 +31,8 @@ invariant PersonalDataBoundary using v on Arch::Service at current {
 invariant NoCallCycle using v on Arch::Service at current {
   not reaches(self, self, calls)
 }
+
+// Nothing calls an edge service at run time: edge services sit at the front door.
+invariant NoCallsIntoTheEdge using v on Arch::Service at current {
+  forall(c in self.calls: deref(c).tier != Arch::Tier::Edge)
+}
