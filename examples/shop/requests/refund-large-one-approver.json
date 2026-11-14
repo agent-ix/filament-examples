@@ -31,7 +31,7 @@
       },
       "observations": {
         "invocation": "../data/refund-large-one.json",
-        "pre": "../data/open-order.json"
+        "pre": "../data/paid-order.json"
       }
     }
   }

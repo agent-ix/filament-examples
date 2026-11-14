@@ -1450,7 +1450,7 @@
       "status": "running",
       "rule": "PaidInFull",
       "statement": "A paid order has been charged its full total.",
-      "rule_file": "examples/shop/rules/orders.fsl",
+      "rule_file": "examples/shop/rules/paid-in-full.fsl",
       "data_files": [
         "examples/shop/data/paid-in-full.json"
       ],
@@ -1467,7 +1467,7 @@
       "status": "running",
       "rule": "PaidInFull",
       "statement": "A paid order has been charged its full total.",
-      "rule_file": "examples/shop/rules/orders.fsl",
+      "rule_file": "examples/shop/rules/paid-in-full.fsl",
       "data_files": [
         "examples/shop/data/paid-short.json"
       ],
@@ -1484,7 +1484,7 @@
       "status": "running",
       "rule": "PaidInFull",
       "statement": "A paid order has been charged its full total. An open order that is only partly charged does not break it.",
-      "rule_file": "examples/shop/rules/orders.fsl",
+      "rule_file": "examples/shop/rules/paid-in-full.fsl",
       "data_files": [
         "examples/shop/data/open-unpaid.json"
       ],
@@ -1670,11 +1670,11 @@
       "case": "refund-small",
       "status": "running",
       "rule": "RefundApproval",
-      "statement": "Refunds over $500 need a second approver.",
+      "statement": "Refunds over $20 need a second approver.",
       "rule_file": "examples/shop/rules/operations.fsl",
       "data_files": [
         "examples/shop/data/refund-small.json",
-        "examples/shop/data/open-order.json"
+        "examples/shop/data/paid-order.json"
       ],
       "request_file": "examples/shop/requests/refund-small.json",
       "expected_file": "examples/shop/expected/refund-small.json",
@@ -1688,11 +1688,11 @@
       "case": "refund-large-one-approver",
       "status": "running",
       "rule": "RefundApproval",
-      "statement": "Refunds over $500 need a second approver.",
+      "statement": "Refunds over $20 need a second approver.",
       "rule_file": "examples/shop/rules/operations.fsl",
       "data_files": [
         "examples/shop/data/refund-large-one.json",
-        "examples/shop/data/open-order.json"
+        "examples/shop/data/paid-order.json"
       ],
       "request_file": "examples/shop/requests/refund-large-one-approver.json",
       "expected_file": "examples/shop/expected/refund-large-one-approver.json",
@@ -1706,11 +1706,11 @@
       "case": "refund-large-two-approvers",
       "status": "running",
       "rule": "RefundApproval",
-      "statement": "Refunds over $500 need a second approver.",
+      "statement": "Refunds over $20 need a second approver.",
       "rule_file": "examples/shop/rules/operations.fsl",
       "data_files": [
         "examples/shop/data/refund-large-two.json",
-        "examples/shop/data/open-order.json"
+        "examples/shop/data/paid-order.json"
       ],
       "request_file": "examples/shop/requests/refund-large-two-approvers.json",
       "expected_file": "examples/shop/expected/refund-large-two-approvers.json",
@@ -1752,6 +1752,44 @@
       ],
       "request_file": "examples/shop/requests/charge-leaves-open.json",
       "expected_file": "examples/shop/expected/charge-leaves-open.json",
+      "verdict": "violated",
+      "exit": 10,
+      "waits_on": null,
+      "needs": null
+    },
+    {
+      "system": "shop",
+      "case": "charge-partial",
+      "status": "running",
+      "rule": "PaidWhenCovered",
+      "statement": "A charge that covers the rest of the total leaves the order Paid. A charge that covers only part of it leaves the status free.",
+      "rule_file": "examples/shop/rules/operations.fsl",
+      "data_files": [
+        "examples/shop/data/charge-partial.json",
+        "examples/shop/data/open-order.json",
+        "examples/shop/data/after-charge-partial.json"
+      ],
+      "request_file": "examples/shop/requests/charge-partial.json",
+      "expected_file": "examples/shop/expected/charge-partial.json",
+      "verdict": "holds",
+      "exit": 0,
+      "waits_on": null,
+      "needs": null
+    },
+    {
+      "system": "shop",
+      "case": "charge-partial-without-pre",
+      "status": "running",
+      "rule": "PaidWhenCoveredWithoutPre",
+      "statement": "A charge that covers the rest of the total leaves the order Paid, written without pre(): the amount is counted twice, so a partial charge is wrongly required to leave the order Paid.",
+      "rule_file": "examples/shop/rules/paid-when-covered-without-pre.fsl",
+      "data_files": [
+        "examples/shop/data/charge-partial.json",
+        "examples/shop/data/open-order.json",
+        "examples/shop/data/after-charge-partial.json"
+      ],
+      "request_file": "examples/shop/requests/charge-partial-without-pre.json",
+      "expected_file": "examples/shop/expected/charge-partial-without-pre.json",
       "verdict": "violated",
       "exit": 10,
       "waits_on": null,

@@ -1,0 +1,8 @@
+language "ix:native" edition "1-draft";
+profile v = "quire.model.complete/v1";
+model Shop = "example/shop";
+
+// A paid order has been charged its full total.
+invariant PaidInFull using v on Shop::Order at current {
+  self.status = Shop::OrderStatus::Paid implies self.charged = self.total
+}

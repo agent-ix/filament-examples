@@ -28,7 +28,7 @@ The functions in [rules/values.fsl](rules/values.fsl) compute a line total and a
 
 ## Rules about data
 
-The rules in [rules/orders.fsl](rules/orders.fsl) check one object of a snapshot. The table lists each rule with its requirement and a passing and a failing case.
+The rules in [rules/orders.fsl](rules/orders.fsl) check one object of a snapshot. [rules/paid-in-full.fsl](rules/paid-in-full.fsl) holds `PaidInFull` alone, for the first Learn page. The table lists each rule with its requirement and a passing and a failing case.
 
 | Rule | Requirement | Passing | Failing |
 | --- | --- | --- | --- |
@@ -47,11 +47,11 @@ The rules in [rules/operations.fsl](rules/operations.fsl) check an operation cal
 
 | Rule | Requirement | Passing | Failing |
 | --- | --- | --- | --- |
-| `RefundApproval` | A refund over 500 dollars needs two approvers | `refund-large-two-approvers` | `refund-large-one-approver` |
+| `RefundApproval` | A refund over 20 dollars needs two approvers | `refund-large-two-approvers` | `refund-large-one-approver` |
 | `PaidWhenCovered` | A charge that covers the total leaves the order Paid | `charge-completes` | `charge-leaves-open` |
 | Frame of `charge` | A charge changes only the amount charged and the status | `charge-frame-ok` | `charge-changes-total` |
 
-The case `refund-small` is a refund under the limit with one approver, and it passes. The case `charge-changes-total-post` exits 20 because the charge breaks its frame, and the driver declines to judge the postcondition.
+The case `refund-small` is a refund under the limit with one approver, and it passes. The case `charge-changes-total-post` exits 20 because the charge breaks its frame, and the driver declines to judge the postcondition. The case `charge-partial` charges part of the rest and `PaidWhenCovered` holds; `charge-partial-without-pre` writes the rule without `pre(...)`, counts the amount twice and is violated (exit 10).
 
 ## Run a passing and a failing case
 
