@@ -9,7 +9,7 @@ import { readFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { test } from "node:test";
 import { fileURLToPath } from "node:url";
-import { buildScript, extractSteps, parseArgs, readMarkers, selectSteps, shellCommand } from "./steps.mjs";
+import { buildScript, checkRecords, extractSteps, parseArgs, readMarkers, selectSteps, shellCommand } from "./steps.mjs";
 
 const REPO = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 
@@ -64,15 +64,41 @@ test("shell state carries from one step to the next, as in one terminal", () => 
   assert.match(run.stdout, /^7 \/$/m);
 });
 
+test("a step marked expect-exit runs with errexit off and reports its status", () => {
+  const md = "```bash step=a\necho before\n```\n```bash step=b expect-exit=3\necho oops >&2\nexit_three() { return 3; }\nexit_three\n```\n```bash step=c\necho after\n```\n";
+  const steps = extractSteps(md);
+  assert.equal(steps[1].expectExit, 3);
+  assert.throws(() => extractSteps("```bash step=a expect-exit=x\n```\n"), /expect-exit must be an integer/);
+  const run = spawnSync("bash", ["-s"], { input: buildScript(steps), encoding: "utf8" });
+  assert.equal(run.status, 0);
+  const { records } = readMarkers(run.stdout.split("\n"));
+  assert.deepEqual(records.map((r) => [r.id, r.exit, r.output]), [["a", null, "before\n"], ["b", 3, "oops\n"], ["c", null, "after\n"]]);
+  assert.deepEqual(checkRecords(steps, records, {}), []);
+  assert.match(checkRecords(extractSteps(md.replace("expect-exit=3", "expect-exit=4")), records, {})[0], /b: exit 3, expected 4/);
+});
+
+test("checkRecords compares output with the expected folder", () => {
+  const dir = mkdtempSync(resolve(tmpdir(), "expected-"));
+  writeFileSync(resolve(dir, "a.txt"), "one\n");
+  const steps = extractSteps("```bash step=a\n```\n```bash step=b\n```\n");
+  const rec = (a) => [{ id: "a", output: a, exit: null }, { id: "b", output: "anything\n", exit: null }];
+  assert.deepEqual(checkRecords(steps, rec("one\n"), { expected: dir }), []);
+  assert.match(checkRecords(steps, rec("two\n"), { expected: dir })[0], /a: output differs/);
+  assert.deepEqual(checkRecords(steps, rec("two\n"), { expected: dir, record: true }), []);
+});
+
 test("readMarkers turns marker lines into step durations", () => {
   const { records, last } = readMarkers(["@@STEP a 100", "noise", "@@STEP b 130", "@@STEP end 135"]);
-  assert.deepEqual(records, [{ id: "a", seconds: 30 }, { id: "b", seconds: 5 }]);
+  assert.deepEqual(records, [
+    { id: "a", seconds: 30, output: "noise\n", exit: null },
+    { id: "b", seconds: 5, output: "", exit: null },
+  ]);
   assert.equal(last, "end");
 });
 
 test("parseArgs reads skip and image", () => {
   assert.deepEqual(parseArgs(["run", "f.md", "--image", "ubuntu:22.04", "--skip", "a,b"]), {
-    command: "run", file: "f.md", skip: ["a", "b"], image: "ubuntu:22.04", shell: "bash", host: false,
+    command: "run", file: "f.md", skip: ["a", "b"], image: "ubuntu:22.04", shell: "bash", host: false, copy: null, expected: null, record: false,
   });
   assert.deepEqual(parseArgs(["run", "f.md", "--host", "--shell", "zsh"]).shell, "zsh");
   assert.throws(() => parseArgs(["run", "f.md", "--bogus"]), /unknown argument/);
@@ -98,7 +124,9 @@ test("shellCommand starts zsh in a bare container after installing it, and on th
   assert.equal(zsh.cmd, "docker");
   assert.match(zsh.args.at(-1), /apt-get install -y -qq zsh .*exec zsh -f -s$/);
   assert.match(shellCommand({ host: false, image: "i", shell: "bash" }).args.at(-1), /^exec bash -s$/);
-  assert.deepEqual(shellCommand({ host: true, shell: "zsh" }), { cmd: "zsh", args: ["-f", "-s"] });
+  assert.deepEqual(shellCommand({ host: true, shell: "zsh" }), { cmd: "zsh", args: ["-f", "-s"], cwd: null });
+  const copy = shellCommand({ host: false, image: "i", shell: "bash", copy: "." });
+  assert.match(copy.args.join(" "), /:\/src:ro .* cp -R \/src \/work && cd \/work && exec bash -s$/);
 });
 
 // The checksum step ran only under bash for a while and failed every time under
