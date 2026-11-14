@@ -41,13 +41,19 @@ docker build -f image/Dockerfile -t filament-toolchain .
 docker run --rm filament-toolchain smoke.sh
 ```
 
-The build compiles the driver from the public [quire-driver](https://github.com/agent-ix/quire-driver) repository with link-time optimization off, which takes a few minutes. To download a prebuilt driver instead, pass the address of the release archive. The archive is a `.tar.gz` file that holds the `quire` binary, and `{target}` becomes `x86_64-unknown-linux-gnu` or `aarch64-unknown-linux-gnu`:
+The build downloads the driver release archive for its platform and checks it against the `SHA256SUMS.txt` file of the same release. `FSL_VERSION` picks the release, and its default is the newest one:
 
 ```
-docker build -f image/Dockerfile --build-arg FSL_BINARY_URL=https://example.com/quire-vVERSION-{target}.tar.gz -t filament-toolchain .
+docker build -f image/Dockerfile --build-arg FSL_VERSION=0.1.1 -t filament-toolchain .
 ```
 
-The manual workflow [image.yml](../.github/workflows/image.yml) builds each platform on a native runner, runs `smoke.sh` on each build, and publishes one multi-platform tag for each tag in its `tags` input.
+To compile the driver from the public [quire-driver](https://github.com/agent-ix/quire-driver) repository instead, set `FSL_SOURCE=source`. The compile uses link-time optimization off, and takes several minutes:
+
+```
+docker build -f image/Dockerfile --build-arg FSL_SOURCE=source -t filament-toolchain .
+```
+
+The manual workflow [image.yml](../.github/workflows/image.yml) builds each platform on a native runner, runs `smoke.sh` on each build, and publishes one multi-platform tag for each tag in its `tags` input. The inputs `fsl_version` and `fsl_source` select the driver.
 
 ## License
 

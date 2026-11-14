@@ -39,6 +39,8 @@ The rules in [rules/orders.fsl](rules/orders.fsl) check one object of a snapshot
 
 Two more cases show data the driver cannot judge. `dangling-charge` refers to a charge that is not in the data and exits 20. `partial-data` has an incomplete population and exits 22. Neither is a failed rule.
 
+Three cases show common mistakes. `paid-in-full-open` runs `PaidInFull` on an open order that is only partly charged; the rule holds, because it says nothing about orders that are not paid. `misspelled-field` writes `self.paid` for `self.charged`, and the checker refuses the rule before it reads any data (exit 20). `charge-once-self-pair` writes `ChargeAtMostOnce` without `a = b or`, so each charge is compared with itself and an order with two distinct keys breaks the rule (exit 10).
+
 ## Rules over a whole population
 
 The rule in [rules/populations.fsl](rules/populations.fsl) names the population `Shop::orders` and checks every order in it, whichever order the run names as `self`. In `no-overcharge-ok` the shop has one order and the rule holds. In `no-overcharge-other-order` the run names the order `o1`, which is fine, and the rule is violated because `o2` is overcharged.

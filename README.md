@@ -16,7 +16,7 @@ The table lists each system with the number of cases that run today and the numb
 
 | System | Family | Running | Staged |
 | --- | --- | --- | --- |
-| [shop](examples/shop) | Shop | 26 | 2 |
+| [shop](examples/shop) | Shop | 29 | 2 |
 | [architecture](examples/architecture) | Enterprise | 14 | 2 |
 | [parts-saga](examples/parts-saga) | Distributed | 6 | 2 |
 | [cell](examples/cell) | Safety | 12 | 0 |
@@ -40,13 +40,19 @@ To run a clone of this repository, or your own changes, mount the folder:
 docker run --rm --volume "$PWD:/work" --workdir /work ghcr.io/agent-ix/filament-toolchain make check staged
 ```
 
-The [image folder](image/README.md) describes the image. The [install steps](install-test/steps.md) install the same toolchain on a clean Ubuntu 22.04 machine, and a manual workflow runs them.
+The [image folder](image/README.md) describes the image. 
+
+### With a release binary
+
+The [install steps](install-test/steps.md) list every command for a clean Ubuntu 22.04 machine, and a manual workflow runs them. You need Node.js 20 or later, `make` and `curl`. Each [quire-driver release](https://github.com/agent-ix/quire-driver/releases) has an archive for Linux and macOS on x86_64 and arm64, and a `SHA256SUMS.txt` file. The install steps download the archive for your platform, check its checksum and install the driver as `fsl`. The Makefile reads the driver path from one variable, `FSL`, set in [config.mk](config.mk). Its default is `fsl`.
+
+```
+make check staged
+```
 
 ### From source
 
-You need Node.js 20 or later, `make`, a Rust toolchain and the FSL command-line driver. The Makefile reads the driver path from one variable, `FSL`, set in [config.mk](config.mk). Its default is `fsl`.
-
-The driver is built from the public [quire-driver](https://github.com/agent-ix/quire-driver) repository. Its binary is still named `quire` until the rename to `fsl`. Pass its path:
+You need a Rust toolchain besides Node.js and `make`. Build the driver from the public [quire-driver](https://github.com/agent-ix/quire-driver) repository. Its binary is still named `quire` until the rename to `fsl`. Pass its path:
 
 ```
 git clone https://github.com/agent-ix/quire-driver
@@ -78,7 +84,7 @@ Each case prints a line such as `shop/paid-short: exit 10 ok`. The exit code is 
 
 A staged case is an example for a feature the language does not support yet. It is written anyway, kept in the repository and run in CI, and the docs and landing page do not show it until it passes.
 
-Every case has an entry in its system's `example.toml`. A staged entry records the exit code it gives today, the exit code it should give when the feature exists, the ticket it waits on, and a one-line reason.
+Every case has an entry in its system's `example.toml`. A staged entry records the exit code it gives today and the exit code it should give when the feature exists. It also records the ticket it waits on, a short phrase for what it needs, and a one-line reason.
 
 - `make staged` fails a staged case that no longer fails as recorded.
 - A staged case that now gives its ready exit code makes the target fail with `promote <case>`.
@@ -102,7 +108,7 @@ Each system folder holds the following.
 
 ## Index
 
-[index.json](index.json) has one entry per case. An entry gives the system, case id, status, rule file, data files, request file and recorded output file. It also gives the verdict, the exit code, the ticket a staged case waits on and a one-line statement of the rule. The docs site and landing page read it. All paths are relative to the repository root.
+[index.json](index.json) has one entry per case. An entry gives the system, case id, status, rule file, data files, request file and recorded output file. It also gives the verdict, the exit code and a one-line statement of the rule. A staged case adds the ticket it waits on and a plain-language phrase for what it needs. The docs site and landing page read it. All paths are relative to the repository root.
 
 ## Models
 

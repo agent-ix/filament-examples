@@ -1,0 +1,9 @@
+language "ix:native" edition "1-draft";
+profile v = "quire.model.complete/v1";
+model Shop = "example/shop";
+
+// No two charges of an order carry the same idempotency key,
+// written without `a = b or`: each charge is also paired with itself.
+invariant ChargeAtMostOnceSelfPair using v on Shop::Order at current {
+  forall(a in self.charges: forall(b in self.charges: deref(a).key != deref(b).key))
+}

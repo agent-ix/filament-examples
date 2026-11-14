@@ -114,7 +114,7 @@ async function main(argv) {
     return 0;
   }
   if (opts.command !== "run" || !opts.image) throw new Error("usage: steps.mjs run <steps.md> --image <image> [--skip id,id]");
-  const { code, lines } = await runInDocker(opts.image, script, ["FSL_BINARY_URL"]);
+  const { code, lines } = await runInDocker(opts.image, script, []);
   const { records, last } = readMarkers(lines);
   console.log("\nstep durations");
   for (const r of records) console.log(`  ${r.id.padEnd(16)} ${r.seconds}s`);

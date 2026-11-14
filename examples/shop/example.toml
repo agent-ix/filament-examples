@@ -81,6 +81,28 @@ expect_verdict = "violated"
 serves = "Learn L1 first rule"
 
 [[case]]
+id = "paid-in-full-open"
+rule = "PaidInFull"
+statement = "A paid order has been charged its full total. An open order that is only partly charged does not break it."
+file = "rules/orders.fsl"
+command = "run requests/paid-in-full-open.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "Learn L1 first rule (common misreading: implies)"
+
+[[case]]
+id = "misspelled-field"
+rule = "PaidInFull"
+statement = "A rule names only fields the model declares: `self.paid` is not a field of Order."
+file = "rules/misspelled-field.fsl"
+command = "run requests/misspelled-field.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed, the field paid is not on Order"
+serves = "Learn L2 (the rule is checked against the model)"
+
+[[case]]
 id = "dangling-charge"
 rule = "PaidInFull"
 statement = "A paid order has been charged its full total."
@@ -145,6 +167,17 @@ status = "running"
 expect_exit = 10
 expect_verdict = "violated"
 serves = "Landing hero H4; card U8"
+
+[[case]]
+id = "charge-once-self-pair"
+rule = "ChargeAtMostOnceSelfPair"
+statement = "No two charges share an idempotency key, written without `a = b or`: each charge is paired with itself, so an order with distinct keys breaks it."
+file = "rules/charge-once-self-pair.fsl"
+command = "run requests/charge-once-self-pair.json"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
+serves = "Learn L3 state and invariants (common misreading: forall pairs include a charge with itself)"
 
 [[case]]
 id = "two-people-ok"
@@ -300,6 +333,7 @@ expect_exit = 20
 ready_exit = 0
 waits_on = "QSL-1901"
 why = "post `self.charged = pre(self.charged) + amount` is refused undefined_expression/unproved-range: FR-577 (preconditions discharge a postcondition's range obligations) is specified but not implemented"
+needs = "exact post-conditions"
 serves = "Learn L3 (preferred form of the post rule)"
 
 [[case]]
@@ -312,5 +346,6 @@ status = "staged"
 expect_exit = 20
 ready_exit = 0
 waits_on = "QSL-1983"
+needs = "optional operation parameters"
 why = "present(secondApprover) is refused ill_typed/type-mismatch: an optional operation parameter is typed as a required value, and a call cannot omit it"
 serves = "State and models: optional operation parameters"
