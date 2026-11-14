@@ -18,15 +18,15 @@ export default {
     MachiningStation: {
       fields: { reserved: "Boolean", busy: "Boolean" },
       ops: {
-        reserve: { modifies: ["reserved"] },
-        process: { modifies: ["busy"] },
-        release: { modifies: ["reserved", "busy"] },
+        reserve: { returns: "Boolean", modifies: ["reserved"] },
+        process: { returns: "Boolean", modifies: ["busy"] },
+        release: { returns: "Boolean", modifies: ["reserved", "busy"] },
       },
     },
     InspectionStation: { fields: { queue: "Count" } },
     AssemblyStation: {
       fields: { reserved: "Boolean" },
-      ops: { assemble: { modifies: ["reserved"] } },
+      ops: { assemble: { returns: "Boolean", modifies: ["reserved"] } },
     },
   },
   populations: { jobs: ["Job"], planning: ["PlanningService"], machining: ["MachiningStation"], inspection: ["InspectionStation"], assembly: ["AssemblyStation"] },

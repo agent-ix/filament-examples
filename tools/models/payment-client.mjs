@@ -5,10 +5,10 @@ export default {
     Payment: {
       fields: { attempts: "Count", keySeen: "Boolean" },
       ops: {
-        send: { modifies: ["attempts"] },
-        retry: { modifies: ["attempts"] },
-        apply: { modifies: ["keySeen"] },
-        dropDuplicate: { modifies: [] },
+        send: { returns: "Boolean", modifies: ["attempts"] },
+        retry: { returns: "Boolean", modifies: ["attempts"] },
+        apply: { returns: "Boolean", modifies: ["keySeen"] },
+        dropDuplicate: { returns: "Boolean", modifies: [] },
       },
     },
   },

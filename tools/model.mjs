@@ -14,7 +14,8 @@
 // }
 // field = "Cents" | "Boolean" | "Integer" | "Order" (reference) |
 //         { type, optional: true } | { type, many: [lower, upper], ordered, unique }
-// op = { params: { name: field }, modifies: ["field"], returns: "Boolean" }
+// op = { params: { name: field }, modifies: ["field"], returns: "Boolean" }   (no returns: the operation has no result)
+// relationships (on an object type) = [{ role, to, toRole, many: [lower, upper|null], ordered, unique }]
 import { writeFileSync } from "node:fs";
 import { pathToFileURL } from "node:url";
 import { resolve } from "node:path";
@@ -45,6 +46,17 @@ const construct = (name, meaning, shape = "record", members = {}) => ({
   kind: { module: P, name }, moduleVersion: "1.0.0",
   construct: { identity: "none", shape, members, meaning },
 });
+// relationship = { role, to, toRole?, many: [lower, upper|null], ordered, unique, sourceMany?, direction? }
+// The role names the source end: `self.<role>` navigates to the target end, whose
+// multiplicity `many` is the type of the navigation.
+const mult = ([lower, upper], ordered = false, unique = true) => ({ lower, ...(upper === null ? {} : { upper }), ordered: !!ordered, unique: unique !== false });
+const relationship = (from, r) => ({
+  category: "structural", composite: false, direction: r.direction ?? "source-to-target",
+  identity: id(`relationship/${from}-${r.role}-${r.to}`),
+  origin: { source: { sourceIdentity: id("spec"), path: "spec.qspec", startLine: 1, startColumn: 1 } },
+  sourceEnd: { multiplicity: mult(r.sourceMany ?? [0, null]), role: r.role, type: id(from) },
+  targetEnd: { multiplicity: mult(r.many ?? [0, 1], r.ordered, r.unique), ...(r.toRole ? { role: r.toRole } : {}), type: id(r.to) },
+});
 const types = [];
 for (const [name, [min, max]] of Object.entries(d.values ?? {})) {
   const identity = id(name);
@@ -72,12 +84,13 @@ for (const [name, o] of Object.entries(d.objects ?? {})) {
     identity, displayName: name, kind: { module: P, name: "object_type" }, roles: [],
     origin: gen(identity), constraints: [], extensions: [], unknownPolicy: "reject", supertypes: [],
     fields: Object.entries(o.fields ?? {}).map(([f, s]) => member(name, f, s)),
+    ...(o.relationships?.length ? { relationships: o.relationships.map((r) => relationship(name, r)) } : {}),
     operations: Object.entries(o.ops ?? {}).map(([op, s]) => {
       const oid = id(`${name}/${op}`);
       return {
         identity: oid, name: op,
         params: Object.entries(s.params ?? {}).map(([p, ps]) => member(`${name}/${op}`, p, ps)),
-        returns: { typeRef: typeRef(s.returns ?? "Boolean"), multiplicity: one, nullable: false },
+        ...(s.returns ? { returns: { typeRef: typeRef(s.returns), multiplicity: one, nullable: false } } : {}),
         pre: [], post: [], origin: gen(oid),
         frame: { modifies: (s.modifies ?? []).map((f) => id(`${name}/${f}`)), creates: [], deletes: [] },
       };

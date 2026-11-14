@@ -1,0 +1,9 @@
+language "ix:native" edition "1-draft";
+profile v = "quire.model.complete/v1";
+model Shop = "example/shop";
+
+// A second approver named in a note, when there is one, is a member of staff
+// with a badge.
+pre NoteApproverOnFile using v on Shop::Order::note {
+  present(secondApprover) implies deref(value(secondApprover)).badge >= 0
+}

@@ -11,7 +11,7 @@ You can run each rule against a good architecture and against a broken variant o
 - `Store` has a classification (public, internal or personal) and an owning service.
 - `Instance` has a serving flag and a release.
 
-The model is in [model/architecture.semantic-ir.json](model/architecture.semantic-ir.json). Dependencies are an ordered sequence because the reachability check accepts only single, optional and ordered edges.
+The model is in [model/architecture.semantic-ir.json](model/architecture.semantic-ir.json). Dependencies are an ordered sequence field, which a reachability check over a field accepts. The relationship `calls` links a service to the services it calls at run time. It is a set of up to eight links, and a reachability check over a relationship end accepts it.
 
 ## Rules about the architecture
 
@@ -23,9 +23,13 @@ The rules in [rules/architecture.fsl](rules/architecture.fsl) check one service 
 | `NothingCallsTheEdge` | No service depends on an edge service | `edge-ok` | `edge-called` |
 | `DataTierStaysDown` | A data service depends only on data services | `data-tier-ok` | `data-tier-calls-core` |
 | `NoDependencyCycle` | Following dependencies never leads back to the start | `no-cycle-ok` | `no-cycle-loop` |
+| `NoCallCycle` | Following calls at run time never leads back to the start | `no-call-cycle-ok` | `no-call-cycle-loop` |
+| `NoCallsIntoTheEdge` | Nothing calls an edge service at run time | `no-call-edge-ok` | `no-call-edge-called` |
 | `PersonalDataBoundary` | A reader of personal data is marked as handling it | `personal-data-ok` | `personal-data-leak` |
 
 Each rule is checked for one service, the one the request names. The case `no-cycle-checked-for-web` checks `NoDependencyCycle` for the web service on the architecture where payments and ledger depend on each other. Web is on no cycle, so the rule holds.
+
+The rule `NoCallCycle` reads the links of the `calls` relationship from the snapshot. `no-call-cycle-partial` lists only some links and marks them incomplete, so the run ends incomplete (exit 22) instead of guessing.
 
 ## Rolling deploy
 

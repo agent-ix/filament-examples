@@ -9,8 +9,8 @@ export default {
         rangeA: "Range", rangeB: "Range", rangeC: "Range", clock: "Millis", voteWrong: "Boolean",
       },
       ops: {
-        enterFailsafe: { modifies: ["mode", "speed", "stopped"] },
-        sample: { params: { faultA: "Boolean", faultB: "Boolean", faultC: "Boolean" }, modifies: ["voteWrong"] },
+        enterFailsafe: { returns: "Boolean", modifies: ["mode", "speed", "stopped"] },
+        sample: { returns: "Boolean", params: { faultA: "Boolean", faultB: "Boolean", faultC: "Boolean" }, modifies: ["voteWrong"] },
       },
     },
   },

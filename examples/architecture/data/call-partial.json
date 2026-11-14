@@ -1,0 +1,299 @@
+{
+  "format": "quire.state.snapshot/v1",
+  "identity": {
+    "authority": "example",
+    "identity": "ix://example/architecture/data/call-partial"
+  },
+  "model": {
+    "identity": "example/architecture"
+  },
+  "observation": "current",
+  "anchor": {
+    "kind": "handler",
+    "name": "validate"
+  },
+  "populations": [
+    {
+      "population": "ix://example/architecture/teams",
+      "complete": true,
+      "objects": [
+        {
+          "key": "storefront",
+          "type": "ix://example/architecture/Team",
+          "fields": {
+            "size": {
+              "integer": "6"
+            }
+          }
+        },
+        {
+          "key": "payments",
+          "type": "ix://example/architecture/Team",
+          "fields": {
+            "size": {
+              "integer": "4"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "population": "ix://example/architecture/stores",
+      "complete": true,
+      "objects": [
+        {
+          "key": "catalog",
+          "type": "ix://example/architecture/Store",
+          "fields": {
+            "classification": {
+              "variant": {
+                "type": "ix://example/architecture/Classification",
+                "case": "Public"
+              }
+            },
+            "owner": {
+              "reference": {
+                "population": "ix://example/architecture/services",
+                "key": "web"
+              }
+            }
+          }
+        },
+        {
+          "key": "customers",
+          "type": "ix://example/architecture/Store",
+          "fields": {
+            "classification": {
+              "variant": {
+                "type": "ix://example/architecture/Classification",
+                "case": "Personal"
+              }
+            },
+            "owner": {
+              "reference": {
+                "population": "ix://example/architecture/services",
+                "key": "ledger"
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "population": "ix://example/architecture/services",
+      "complete": true,
+      "objects": [
+        {
+          "key": "web",
+          "type": "ix://example/architecture/Service",
+          "fields": {
+            "tier": {
+              "variant": {
+                "type": "ix://example/architecture/Tier",
+                "case": "Edge"
+              }
+            },
+            "owner": {
+              "present": {
+                "reference": {
+                  "population": "ix://example/architecture/teams",
+                  "key": "storefront"
+                }
+              }
+            },
+            "dependsOn": {
+              "sequence": [
+                {
+                  "reference": {
+                    "population": "ix://example/architecture/services",
+                    "key": "checkout"
+                  }
+                }
+              ]
+            },
+            "reads": {
+              "set": [
+                {
+                  "reference": {
+                    "population": "ix://example/architecture/stores",
+                    "key": "catalog"
+                  }
+                }
+              ]
+            },
+            "handlesPersonalData": {
+              "boolean": false
+            },
+            "minServing": {
+              "integer": "1"
+            },
+            "instances": {
+              "set": []
+            },
+            "up": {
+              "boolean": true
+            }
+          }
+        },
+        {
+          "key": "checkout",
+          "type": "ix://example/architecture/Service",
+          "fields": {
+            "tier": {
+              "variant": {
+                "type": "ix://example/architecture/Tier",
+                "case": "Core"
+              }
+            },
+            "owner": {
+              "present": {
+                "reference": {
+                  "population": "ix://example/architecture/teams",
+                  "key": "storefront"
+                }
+              }
+            },
+            "dependsOn": {
+              "sequence": [
+                {
+                  "reference": {
+                    "population": "ix://example/architecture/services",
+                    "key": "payments"
+                  }
+                }
+              ]
+            },
+            "reads": {
+              "set": []
+            },
+            "handlesPersonalData": {
+              "boolean": false
+            },
+            "minServing": {
+              "integer": "1"
+            },
+            "instances": {
+              "set": []
+            },
+            "up": {
+              "boolean": true
+            }
+          }
+        },
+        {
+          "key": "payments",
+          "type": "ix://example/architecture/Service",
+          "fields": {
+            "tier": {
+              "variant": {
+                "type": "ix://example/architecture/Tier",
+                "case": "Core"
+              }
+            },
+            "owner": {
+              "present": {
+                "reference": {
+                  "population": "ix://example/architecture/teams",
+                  "key": "payments"
+                }
+              }
+            },
+            "dependsOn": {
+              "sequence": [
+                {
+                  "reference": {
+                    "population": "ix://example/architecture/services",
+                    "key": "ledger"
+                  }
+                }
+              ]
+            },
+            "reads": {
+              "set": []
+            },
+            "handlesPersonalData": {
+              "boolean": false
+            },
+            "minServing": {
+              "integer": "1"
+            },
+            "instances": {
+              "set": []
+            },
+            "up": {
+              "boolean": true
+            }
+          }
+        },
+        {
+          "key": "ledger",
+          "type": "ix://example/architecture/Service",
+          "fields": {
+            "tier": {
+              "variant": {
+                "type": "ix://example/architecture/Tier",
+                "case": "Data"
+              }
+            },
+            "owner": {
+              "present": {
+                "reference": {
+                  "population": "ix://example/architecture/teams",
+                  "key": "payments"
+                }
+              }
+            },
+            "dependsOn": {
+              "sequence": []
+            },
+            "reads": {
+              "set": [
+                {
+                  "reference": {
+                    "population": "ix://example/architecture/stores",
+                    "key": "customers"
+                  }
+                }
+              ]
+            },
+            "handlesPersonalData": {
+              "boolean": true
+            },
+            "minServing": {
+              "integer": "1"
+            },
+            "instances": {
+              "set": []
+            },
+            "up": {
+              "boolean": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "population": "ix://example/architecture/instances",
+      "complete": true,
+      "objects": []
+    }
+  ],
+  "relationships": [
+    {
+      "relationship": "ix://example/architecture/relationship/Service-calls-Service",
+      "complete": false,
+      "instances": [
+        {
+          "source": {
+            "population": "ix://example/architecture/services",
+            "key": "web"
+          },
+          "target": {
+            "population": "ix://example/architecture/services",
+            "key": "checkout"
+          }
+        }
+      ]
+    }
+  ]
+}
