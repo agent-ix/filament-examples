@@ -393,3 +393,25 @@ status = "running"
 expect_exit = 22
 expect_verdict = "incomplete"
 serves = "Checks: limits"
+
+[[case]]
+id = "profiles-sum-under-core"
+rule = "RefundsWithinCharge"
+statement = "A rule that sums a collection is outside the smallest state layer and is not supported under it."
+file = "rules/profiles/sum-under-core.fsl"
+command = "run requests/profiles/sum-under-core.json"
+status = "running"
+expect_exit = 21
+expect_verdict = "unsupported"
+serves = "Checks: profiles"
+
+[[case]]
+id = "profiles-unknown-id"
+rule = "PaidInFull"
+statement = "A profile identity that the language does not define is refused."
+file = "rules/profiles/unknown-id.fsl"
+command = "run requests/profiles/unknown-id.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: unknown profile"
+serves = "Checks: profiles"

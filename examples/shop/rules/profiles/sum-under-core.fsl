@@ -1,0 +1,10 @@
+language "ix:native" edition "1-draft";
+profile v = "quire.state.core/v1";
+model Shop = "example/shop";
+
+type Total = Int[0, 8000000];
+
+// Refunds never add up to more than was charged, written under the smallest state layer.
+invariant RefundsWithinCharge using v on Shop::Order at current {
+  sum<Total>(r in self.refunds: deref(r).amount) <= self.charged
+}
