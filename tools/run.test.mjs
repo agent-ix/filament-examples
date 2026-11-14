@@ -39,6 +39,7 @@ expect_exit = 21
 ready_exit = 0
 waits_on = "QSL-1"
 why = "not built yet"
+needs = "a feature"
 serves = "a page"
 `;
 
@@ -60,7 +61,7 @@ test("parseManifest validates cases", () => {
   const bad = (body, re) => assert.throws(() => parseManifest(`[[case]]\nstatement = "s"\nfile = "f"\n${body}`), re);
   bad('id = "a"\ncommand = "run x"\nstatus = "runs"\nexpect_exit = 0\n', /status must be running or staged/);
   bad('id = "a"\ncommand = "run x"\nstatus = "running"\nexpect_exit = 0\n', /expect_verdict must be a string/);
-  bad('id = "a"\ncommand = "run x"\nstatus = "staged"\nexpect_exit = 21\nready_exit = 21\nwaits_on = "QSL-9"\nwhy = "w"\n', /ready_exit equals expect_exit/);
+  bad('id = "a"\ncommand = "run x"\nstatus = "staged"\nexpect_exit = 21\nready_exit = 21\nwaits_on = "QSL-9"\nwhy = "w"\nneeds = "n"\n', /ready_exit equals expect_exit/);
   assert.throws(() => parseManifest(`${MANIFEST}\n[[case]]\nstatement = "s"\nfile = "f"\nid = "good"\ncommand = "c"\nstatus = "running"\nexpect_exit = 0\nexpect_verdict = "v"\n`), /duplicate case id good/);
 });
 
@@ -98,7 +99,7 @@ test("evaluateCase tells the author to promote a staged case that now passes", (
 test("promoteText flips only the named case and keeps the rest", () => {
   const out = promoteText(MANIFEST, "later", "holds");
   assert.match(out, /id = "later"[\s\S]*status = "running"\nexpect_exit = 0\nexpect_verdict = "holds"\nserves = "a page"/);
-  assert.doesNotMatch(out, /ready_exit|waits_on|why =/);
+  assert.doesNotMatch(out, /ready_exit|waits_on|why =|needs =/);
   assert.match(out, /# A comment between cases\./);
   assert.equal(parseManifest(out).cases[1].status, "running");
   assert.throws(() => promoteText(MANIFEST, "good", "x"), /no ready_exit/);
@@ -211,10 +212,17 @@ test("a missing FSL is reported, not ignored", () => {
 });
 
 test("a staged case without a ticket id is rejected", () => {
-  const staged = (waits) => `[[case]]\nid = "a"\nstatement = "s"\nfile = "f"\ncommand = "run x"\nstatus = "staged"\nexpect_exit = 21\nready_exit = 0\n${waits}why = "w"\n`;
+  const staged = (waits) => `[[case]]\nid = "a"\nstatement = "s"\nfile = "f"\ncommand = "run x"\nstatus = "staged"\nexpect_exit = 21\nready_exit = 0\n${waits}why = "w"\nneeds = "a feature"\n`;
   assert.throws(() => parseManifest(staged("")), /waits_on must be a string/);
   assert.throws(() => parseManifest(staged('waits_on = "no ticket - planning gap"\n')), /waits_on must be a ticket id/);
   assert.equal(parseManifest(staged('waits_on = "QSL-2000"\n')).cases.length, 1);
+});
+
+test("a staged case needs a plain-language needs phrase", () => {
+  const staged = (needs) => `[[case]]\nid = "a"\nstatement = "s"\nfile = "f"\ncommand = "run x"\nstatus = "staged"\nexpect_exit = 21\nready_exit = 0\nwaits_on = "QSL-9"\nwhy = "w"\n${needs}`;
+  assert.throws(() => parseManifest(staged("")), /needs must be a string/);
+  assert.throws(() => parseManifest(staged('needs = " "\n')), /needs must be a short phrase/);
+  assert.equal(parseManifest(staged('needs = "probability"\n')).cases[0].needs, "probability");
 });
 
 test("every case in this repository is complete and every staged case names a ticket", () => {
@@ -222,7 +230,10 @@ test("every case in this repository is complete and every staged case names a ti
     const { cases } = parseManifest(readFileSync(join(dir, "example.toml"), "utf8"), dir);
     for (const c of cases) {
       assert.ok(c.statement.length > 0, c.id);
-      if (c.status === "staged") assert.match(c.waits_on, /^[A-Z]+-\d+$/, c.id);
+      if (c.status === "staged") {
+        assert.match(c.waits_on, /^[A-Z]+-\d+$/, c.id);
+        assert.ok(c.needs.length > 0, c.id);
+      }
     }
   }
 });
@@ -268,6 +279,8 @@ test("buildIndex lists repo-relative paths, verdict, exit and waits_on", () => {
   assert.equal(good.verdict, "holds");
   assert.equal(good.waits_on, null);
   assert.equal(later.waits_on, "QSL-1");
+  assert.equal(later.needs, "a feature");
+  assert.equal(good.needs, null);
   assert.equal(later.verdict, null);
   assert.equal(later.statement, "A later rule.");
 });

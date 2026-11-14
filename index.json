@@ -15,7 +15,8 @@
       "expected_file": "examples/architecture/expected/owned-ok.json",
       "verdict": "holds",
       "exit": 0,
-      "waits_on": null
+      "waits_on": null,
+      "needs": null
     },
     {
       "system": "architecture",
@@ -31,7 +32,8 @@
       "expected_file": "examples/architecture/expected/owned-orphan.json",
       "verdict": "violated",
       "exit": 10,
-      "waits_on": null
+      "waits_on": null,
+      "needs": null
     },
     {
       "system": "architecture",
@@ -47,7 +49,8 @@
       "expected_file": "examples/architecture/expected/edge-ok.json",
       "verdict": "holds",
       "exit": 0,
-      "waits_on": null
+      "waits_on": null,
+      "needs": null
     },
     {
       "system": "architecture",
@@ -63,7 +66,8 @@
       "expected_file": "examples/architecture/expected/edge-called.json",
       "verdict": "violated",
       "exit": 10,
-      "waits_on": null
+      "waits_on": null,
+      "needs": null
     },
     {
       "system": "architecture",
@@ -79,7 +83,8 @@
       "expected_file": "examples/architecture/expected/data-tier-ok.json",
       "verdict": "holds",
       "exit": 0,
-      "waits_on": null
+      "waits_on": null,
+      "needs": null
     },
     {
       "system": "architecture",
@@ -95,7 +100,8 @@
       "expected_file": "examples/architecture/expected/data-tier-calls-core.json",
       "verdict": "violated",
       "exit": 10,
-      "waits_on": null
+      "waits_on": null,
+      "needs": null
     },
     {
       "system": "architecture",
@@ -111,7 +117,8 @@
       "expected_file": "examples/architecture/expected/no-cycle-ok.json",
       "verdict": "holds",
       "exit": 0,
-      "waits_on": null
+      "waits_on": null,
+      "needs": null
     },
     {
       "system": "architecture",
@@ -127,7 +134,8 @@
       "expected_file": "examples/architecture/expected/no-cycle-loop.json",
       "verdict": "violated: payments -> ledger -> payments",
       "exit": 10,
-      "waits_on": null
+      "waits_on": null,
+      "needs": null
     },
     {
       "system": "architecture",
@@ -143,7 +151,8 @@
       "expected_file": "examples/architecture/expected/personal-data-ok.json",
       "verdict": "holds",
       "exit": 0,
-      "waits_on": null
+      "waits_on": null,
+      "needs": null
     },
     {
       "system": "architecture",
@@ -159,7 +168,8 @@
       "expected_file": "examples/architecture/expected/personal-data-leak.json",
       "verdict": "violated",
       "exit": 10,
-      "waits_on": null
+      "waits_on": null,
+      "needs": null
     },
     {
       "system": "architecture",
@@ -175,7 +185,8 @@
       "expected_file": "examples/architecture/expected/deploy-step-ok.json",
       "verdict": "holds",
       "exit": 0,
-      "waits_on": null
+      "waits_on": null,
+      "needs": null
     },
     {
       "system": "architecture",
@@ -191,7 +202,8 @@
       "expected_file": "examples/architecture/expected/deploy-step-too-many.json",
       "verdict": "violated",
       "exit": 10,
-      "waits_on": null
+      "waits_on": null,
+      "needs": null
     },
     {
       "system": "architecture",
@@ -211,7 +223,8 @@
       "expected_file": "examples/architecture/expected/deploy-plan-one-at-a-time.json",
       "verdict": "holds",
       "exit": 0,
-      "waits_on": null
+      "waits_on": null,
+      "needs": null
     },
     {
       "system": "architecture",
@@ -229,7 +242,8 @@
       "expected_file": "examples/architecture/expected/deploy-plan-two-at-a-time.json",
       "verdict": "violated at step 1",
       "exit": 10,
-      "waits_on": null
+      "waits_on": null,
+      "needs": null
     },
     {
       "system": "architecture",
@@ -243,7 +257,8 @@
       "expected_file": "examples/architecture/expected/staged-deploy-bounded.json",
       "verdict": null,
       "exit": 20,
-      "waits_on": "QSL-1964"
+      "waits_on": "QSL-1964",
+      "needs": "clock selection for counted windows"
     },
     {
       "system": "architecture",
@@ -257,7 +272,8 @@
       "expected_file": "examples/architecture/expected/staged-availability.json",
       "verdict": null,
       "exit": 21,
-      "waits_on": "QSL-2000"
+      "waits_on": "QSL-2000",
+      "needs": "probability"
     },
     {
       "system": "cell",
@@ -273,7 +289,8 @@
       "expected_file": "examples/cell/expected/guard-closed-running.json",
       "verdict": "holds",
       "exit": 0,
-      "waits_on": null
+      "waits_on": null,
+      "needs": null
     },
     {
       "system": "cell",
@@ -289,7 +306,8 @@
       "expected_file": "examples/cell/expected/guard-open-running.json",
       "verdict": "violated",
       "exit": 10,
-      "waits_on": null
+      "waits_on": null,
+      "needs": null
     },
     {
       "system": "cell",
@@ -305,7 +323,8 @@
       "expected_file": "examples/cell/expected/estop-holds.json",
       "verdict": "holds",
       "exit": 0,
-      "waits_on": null
+      "waits_on": null,
+      "needs": null
     },
     {
       "system": "cell",
@@ -321,7 +340,8 @@
       "expected_file": "examples/cell/expected/estop-moving.json",
       "verdict": "violated",
       "exit": 10,
-      "waits_on": null
+      "waits_on": null,
+      "needs": null
     },
     {
       "system": "cell",
@@ -337,7 +357,8 @@
       "expected_file": "examples/cell/expected/setup-slow.json",
       "verdict": "holds",
       "exit": 0,
-      "waits_on": null
+      "waits_on": null,
+      "needs": null
     },
     {
       "system": "cell",
@@ -353,7 +374,8 @@
       "expected_file": "examples/cell/expected/setup-fast.json",
       "verdict": "violated",
       "exit": 10,
-      "waits_on": null
+      "waits_on": null,
+      "needs": null
     },
     {
       "system": "cell",
@@ -370,7 +392,8 @@
       "expected_file": "examples/cell/expected/start-guard-closed.json",
       "verdict": "holds",
       "exit": 0,
-      "waits_on": null
+      "waits_on": null,
+      "needs": null
     },
     {
       "system": "cell",
@@ -387,7 +410,8 @@
       "expected_file": "examples/cell/expected/start-guard-open.json",
       "verdict": "violated",
       "exit": 10,
-      "waits_on": null
+      "waits_on": null,
+      "needs": null
     },
     {
       "system": "cell",
@@ -405,7 +429,8 @@
       "expected_file": "examples/cell/expected/open-guard-stops.json",
       "verdict": "holds",
       "exit": 0,
-      "waits_on": null
+      "waits_on": null,
+      "needs": null
     },
     {
       "system": "cell",
@@ -423,7 +448,8 @@
       "expected_file": "examples/cell/expected/open-guard-keeps-moving.json",
       "verdict": "violated",
       "exit": 10,
-      "waits_on": null
+      "waits_on": null,
+      "needs": null
     },
     {
       "system": "cell",
@@ -439,7 +465,8 @@
       "expected_file": "examples/cell/expected/separation-ok.json",
       "verdict": "holds",
       "exit": 0,
-      "waits_on": null
+      "waits_on": null,
+      "needs": null
     },
     {
       "system": "cell",
@@ -455,7 +482,8 @@
       "expected_file": "examples/cell/expected/separation-too-close.json",
       "verdict": "violated",
       "exit": 10,
-      "waits_on": null
+      "waits_on": null,
+      "needs": null
     },
     {
       "system": "parts-saga",
@@ -471,7 +499,8 @@
       "expected_file": "examples/parts-saga/expected/jobs-rework-tracked.json",
       "verdict": "holds",
       "exit": 0,
-      "waits_on": null
+      "waits_on": null,
+      "needs": null
     },
     {
       "system": "parts-saga",
@@ -487,7 +516,8 @@
       "expected_file": "examples/parts-saga/expected/jobs-rework-untracked.json",
       "verdict": "violated",
       "exit": 10,
-      "waits_on": null
+      "waits_on": null,
+      "needs": null
     },
     {
       "system": "parts-saga",
@@ -503,7 +533,8 @@
       "expected_file": "examples/parts-saga/expected/jobs-third-rework.json",
       "verdict": "violated",
       "exit": 10,
-      "waits_on": null
+      "waits_on": null,
+      "needs": null
     },
     {
       "system": "parts-saga",
@@ -517,7 +548,8 @@
       "expected_file": "examples/parts-saga/expected/protocol-compiles.json",
       "verdict": "checked: roles, channels, choice, repeat",
       "exit": 0,
-      "waits_on": null
+      "waits_on": null,
+      "needs": null
     },
     {
       "system": "parts-saga",
@@ -531,7 +563,8 @@
       "expected_file": "examples/parts-saga/expected/protocol-overlapping-verdict.json",
       "verdict": "refused: guards of choice Verdict not exclusive (duplicate-arm)",
       "exit": 20,
-      "waits_on": null
+      "waits_on": null,
+      "needs": null
     },
     {
       "system": "parts-saga",
@@ -545,7 +578,8 @@
       "expected_file": "examples/parts-saga/expected/protocol-wrong-role.json",
       "verdict": "refused: Again reads inspected, no fact of Machining",
       "exit": 20,
-      "waits_on": null
+      "waits_on": null,
+      "needs": null
     },
     {
       "system": "parts-saga",
@@ -559,7 +593,8 @@
       "expected_file": "examples/parts-saga/expected/staged-saga-compensation.json",
       "verdict": null,
       "exit": 20,
-      "waits_on": "QSL-1964"
+      "waits_on": "QSL-1964",
+      "needs": "clock selection for timeouts"
     },
     {
       "system": "parts-saga",
@@ -573,7 +608,8 @@
       "expected_file": "examples/parts-saga/expected/staged-saga-deadlock-free.json",
       "verdict": null,
       "exit": 21,
-      "waits_on": "QSL-1976"
+      "waits_on": "QSL-1976",
+      "needs": "model checking from the command line"
     },
     {
       "system": "rover",
@@ -587,7 +623,8 @@
       "expected_file": "examples/rover/expected/vote-two-of-three.json",
       "verdict": "true",
       "exit": 0,
-      "waits_on": null
+      "waits_on": null,
+      "needs": null
     },
     {
       "system": "rover",
@@ -601,7 +638,8 @@
       "expected_file": "examples/rover/expected/vote-one-of-three.json",
       "verdict": "false",
       "exit": 0,
-      "waits_on": null
+      "waits_on": null,
+      "needs": null
     },
     {
       "system": "rover",
@@ -617,7 +655,8 @@
       "expected_file": "examples/rover/expected/failsafe-still.json",
       "verdict": "holds",
       "exit": 0,
-      "waits_on": null
+      "waits_on": null,
+      "needs": null
     },
     {
       "system": "rover",
@@ -633,7 +672,8 @@
       "expected_file": "examples/rover/expected/failsafe-rolling.json",
       "verdict": "violated",
       "exit": 10,
-      "waits_on": null
+      "waits_on": null,
+      "needs": null
     },
     {
       "system": "rover",
@@ -649,7 +689,8 @@
       "expected_file": "examples/rover/expected/degraded-slow.json",
       "verdict": "holds",
       "exit": 0,
-      "waits_on": null
+      "waits_on": null,
+      "needs": null
     },
     {
       "system": "rover",
@@ -665,7 +706,8 @@
       "expected_file": "examples/rover/expected/degraded-fast.json",
       "verdict": "violated",
       "exit": 10,
-      "waits_on": null
+      "waits_on": null,
+      "needs": null
     },
     {
       "system": "rover",
@@ -681,7 +723,8 @@
       "expected_file": "examples/rover/expected/obstacle-crawl.json",
       "verdict": "holds",
       "exit": 0,
-      "waits_on": null
+      "waits_on": null,
+      "needs": null
     },
     {
       "system": "rover",
@@ -697,7 +740,8 @@
       "expected_file": "examples/rover/expected/obstacle-fast.json",
       "verdict": "violated",
       "exit": 10,
-      "waits_on": null
+      "waits_on": null,
+      "needs": null
     },
     {
       "system": "rover",
@@ -713,7 +757,8 @@
       "expected_file": "examples/rover/expected/obstacle-outvoted.json",
       "verdict": "holds: one sensor is outvoted",
       "exit": 0,
-      "waits_on": null
+      "waits_on": null,
+      "needs": null
     },
     {
       "system": "rover",
@@ -732,7 +777,8 @@
       "expected_file": "examples/rover/expected/safe-stop-in-time.json",
       "verdict": "holds",
       "exit": 0,
-      "waits_on": null
+      "waits_on": null,
+      "needs": null
     },
     {
       "system": "rover",
@@ -753,7 +799,8 @@
       "expected_file": "examples/rover/expected/safe-stop-late.json",
       "verdict": "violated: stopped 4 steps after the lidar was lost",
       "exit": 10,
-      "waits_on": null
+      "waits_on": null,
+      "needs": null
     },
     {
       "system": "rover",
@@ -771,7 +818,8 @@
       "expected_file": "examples/rover/expected/recording-cut-short.json",
       "verdict": "pending",
       "exit": 0,
-      "waits_on": null
+      "waits_on": null,
+      "needs": null
     },
     {
       "system": "rover",
@@ -790,7 +838,8 @@
       "expected_file": "examples/rover/expected/recording-in-time.json",
       "verdict": "pending",
       "exit": 0,
-      "waits_on": null
+      "waits_on": null,
+      "needs": null
     },
     {
       "system": "rover",
@@ -810,7 +859,8 @@
       "expected_file": "examples/rover/expected/recording-late.json",
       "verdict": "violated",
       "exit": 10,
-      "waits_on": null
+      "waits_on": null,
+      "needs": null
     },
     {
       "system": "rover",
@@ -831,7 +881,8 @@
       "expected_file": "examples/rover/expected/safe-stop-late-without-always.json",
       "verdict": "holds",
       "exit": 0,
-      "waits_on": null
+      "waits_on": null,
+      "needs": null
     },
     {
       "system": "rover",
@@ -850,7 +901,8 @@
       "expected_file": "examples/rover/expected/in-time-small-budget.json",
       "verdict": "incomplete: work budget of 5 units",
       "exit": 22,
-      "waits_on": null
+      "waits_on": null,
+      "needs": null
     },
     {
       "system": "rover",
@@ -869,7 +921,8 @@
       "expected_file": "examples/rover/expected/keeps-sampling.json",
       "verdict": "unsupported: a recorded trace carries no fairness premise",
       "exit": 21,
-      "waits_on": null
+      "waits_on": null,
+      "needs": null
     },
     {
       "system": "rover",
@@ -888,7 +941,8 @@
       "expected_file": "examples/rover/expected/op-within-3.json",
       "verdict": "holds",
       "exit": 0,
-      "waits_on": null
+      "waits_on": null,
+      "needs": null
     },
     {
       "system": "rover",
@@ -907,7 +961,8 @@
       "expected_file": "examples/rover/expected/op-eventually.json",
       "verdict": "holds",
       "exit": 0,
-      "waits_on": null
+      "waits_on": null,
+      "needs": null
     },
     {
       "system": "rover",
@@ -926,7 +981,8 @@
       "expected_file": "examples/rover/expected/op-eventually-from-2.json",
       "verdict": "holds",
       "exit": 0,
-      "waits_on": null
+      "waits_on": null,
+      "needs": null
     },
     {
       "system": "rover",
@@ -945,7 +1001,8 @@
       "expected_file": "examples/rover/expected/op-always.json",
       "verdict": "holds",
       "exit": 0,
-      "waits_on": null
+      "waits_on": null,
+      "needs": null
     },
     {
       "system": "rover",
@@ -964,7 +1021,8 @@
       "expected_file": "examples/rover/expected/op-until.json",
       "verdict": "holds",
       "exit": 0,
-      "waits_on": null
+      "waits_on": null,
+      "needs": null
     },
     {
       "system": "rover",
@@ -983,7 +1041,8 @@
       "expected_file": "examples/rover/expected/op-release.json",
       "verdict": "holds",
       "exit": 0,
-      "waits_on": null
+      "waits_on": null,
+      "needs": null
     },
     {
       "system": "rover",
@@ -1002,7 +1061,8 @@
       "expected_file": "examples/rover/expected/op-once.json",
       "verdict": "holds",
       "exit": 0,
-      "waits_on": null
+      "waits_on": null,
+      "needs": null
     },
     {
       "system": "rover",
@@ -1021,7 +1081,8 @@
       "expected_file": "examples/rover/expected/op-historically.json",
       "verdict": "holds",
       "exit": 0,
-      "waits_on": null
+      "waits_on": null,
+      "needs": null
     },
     {
       "system": "rover",
@@ -1040,7 +1101,8 @@
       "expected_file": "examples/rover/expected/op-since.json",
       "verdict": "holds",
       "exit": 0,
-      "waits_on": null
+      "waits_on": null,
+      "needs": null
     },
     {
       "system": "rover",
@@ -1059,7 +1121,8 @@
       "expected_file": "examples/rover/expected/op-triggered.json",
       "verdict": "holds",
       "exit": 0,
-      "waits_on": null
+      "waits_on": null,
+      "needs": null
     },
     {
       "system": "rover",
@@ -1078,7 +1141,8 @@
       "expected_file": "examples/rover/expected/stop-after-loss-in-time.json",
       "verdict": "holds",
       "exit": 0,
-      "waits_on": null
+      "waits_on": null,
+      "needs": null
     },
     {
       "system": "rover",
@@ -1099,7 +1163,8 @@
       "expected_file": "examples/rover/expected/stop-after-loss-late.json",
       "verdict": "violated",
       "exit": 10,
-      "waits_on": null
+      "waits_on": null,
+      "needs": null
     },
     {
       "system": "rover",
@@ -1113,7 +1178,8 @@
       "expected_file": "examples/rover/expected/timed-safe-stop-compiles.json",
       "verdict": "checked timed rule",
       "exit": 0,
-      "waits_on": null
+      "waits_on": null,
+      "needs": null
     },
     {
       "system": "rover",
@@ -1127,7 +1193,8 @@
       "expected_file": "examples/rover/expected/staged-stops-in-four-events.json",
       "verdict": null,
       "exit": 20,
-      "waits_on": "QSL-1964"
+      "waits_on": "QSL-1964",
+      "needs": "clock selection for counted windows"
     },
     {
       "system": "rover",
@@ -1141,7 +1208,8 @@
       "expected_file": "examples/rover/expected/staged-stops-in-four-samples.json",
       "verdict": null,
       "exit": 20,
-      "waits_on": "QSL-1964"
+      "waits_on": "QSL-1964",
+      "needs": "clock selection for counted windows"
     },
     {
       "system": "rover",
@@ -1155,7 +1223,8 @@
       "expected_file": "examples/rover/expected/control-loop-compiles.json",
       "verdict": "checked task set",
       "exit": 0,
-      "waits_on": null
+      "waits_on": null,
+      "needs": null
     },
     {
       "system": "rover",
@@ -1169,7 +1238,8 @@
       "expected_file": "examples/rover/expected/staged-control-loop-schedulable.json",
       "verdict": null,
       "exit": 21,
-      "waits_on": "QSL-1976"
+      "waits_on": "QSL-1976",
+      "needs": "schedulability analysis from the command line"
     },
     {
       "system": "rover",
@@ -1183,7 +1253,8 @@
       "expected_file": "examples/rover/expected/staged-safe-stop-200ms.json",
       "verdict": null,
       "exit": 20,
-      "waits_on": "QSL-1964"
+      "waits_on": "QSL-1964",
+      "needs": "clock selection for timed rules"
     },
     {
       "system": "rover",
@@ -1197,7 +1268,8 @@
       "expected_file": "examples/rover/expected/staged-mode-machine.json",
       "verdict": null,
       "exit": 21,
-      "waits_on": "QSL-1976"
+      "waits_on": "QSL-1976",
+      "needs": "model checking from the command line"
     },
     {
       "system": "rover",
@@ -1211,7 +1283,8 @@
       "expected_file": "examples/rover/expected/staged-vote-probability.json",
       "verdict": null,
       "exit": 21,
-      "waits_on": "QSL-2000"
+      "waits_on": "QSL-2000",
+      "needs": "probability"
     },
     {
       "system": "rover",
@@ -1225,7 +1298,8 @@
       "expected_file": "examples/rover/expected/staged-controller-refinement.json",
       "verdict": null,
       "exit": 21,
-      "waits_on": "QSL-1976"
+      "waits_on": "QSL-1976",
+      "needs": "refinement checking from the command line"
     },
     {
       "system": "rover",
@@ -1239,7 +1313,8 @@
       "expected_file": "examples/rover/expected/staged-safe-stop-monitor.json",
       "verdict": null,
       "exit": 21,
-      "waits_on": "QSL-1977"
+      "waits_on": "QSL-1977",
+      "needs": "runtime monitoring"
     },
     {
       "system": "shop",
@@ -1253,7 +1328,8 @@
       "expected_file": "examples/shop/expected/values-line-total.json",
       "verdict": "3750",
       "exit": 0,
-      "waits_on": null
+      "waits_on": null,
+      "needs": null
     },
     {
       "system": "shop",
@@ -1267,7 +1343,8 @@
       "expected_file": "examples/shop/expected/values-with-shipping.json",
       "verdict": "4249",
       "exit": 0,
-      "waits_on": null
+      "waits_on": null,
+      "needs": null
     },
     {
       "system": "shop",
@@ -1281,7 +1358,8 @@
       "expected_file": "examples/shop/expected/values-free-shipping.json",
       "verdict": "false",
       "exit": 0,
-      "waits_on": null
+      "waits_on": null,
+      "needs": null
     },
     {
       "system": "shop",
@@ -1295,7 +1373,8 @@
       "expected_file": "examples/shop/expected/values-qty-zero.json",
       "verdict": "refused: argument outside Qty",
       "exit": 20,
-      "waits_on": null
+      "waits_on": null,
+      "needs": null
     },
     {
       "system": "shop",
@@ -1309,7 +1388,8 @@
       "expected_file": "examples/shop/expected/values-too-narrow.json",
       "verdict": "refused: undefined_expression unproved-range",
       "exit": 20,
-      "waits_on": null
+      "waits_on": null,
+      "needs": null
     },
     {
       "system": "shop",
@@ -1325,7 +1405,8 @@
       "expected_file": "examples/shop/expected/paid-in-full.json",
       "verdict": "holds",
       "exit": 0,
-      "waits_on": null
+      "waits_on": null,
+      "needs": null
     },
     {
       "system": "shop",
@@ -1341,7 +1422,8 @@
       "expected_file": "examples/shop/expected/paid-short.json",
       "verdict": "violated",
       "exit": 10,
-      "waits_on": null
+      "waits_on": null,
+      "needs": null
     },
     {
       "system": "shop",
@@ -1389,7 +1471,8 @@
       "expected_file": "examples/shop/expected/dangling-charge.json",
       "verdict": "refused: charge c1 not in the data",
       "exit": 20,
-      "waits_on": null
+      "waits_on": null,
+      "needs": null
     },
     {
       "system": "shop",
@@ -1405,7 +1488,8 @@
       "expected_file": "examples/shop/expected/partial-data.json",
       "verdict": "incomplete",
       "exit": 22,
-      "waits_on": null
+      "waits_on": null,
+      "needs": null
     },
     {
       "system": "shop",
@@ -1421,7 +1505,8 @@
       "expected_file": "examples/shop/expected/refunds-within-charge.json",
       "verdict": "holds",
       "exit": 0,
-      "waits_on": null
+      "waits_on": null,
+      "needs": null
     },
     {
       "system": "shop",
@@ -1437,7 +1522,8 @@
       "expected_file": "examples/shop/expected/over-refunded.json",
       "verdict": "violated",
       "exit": 10,
-      "waits_on": null
+      "waits_on": null,
+      "needs": null
     },
     {
       "system": "shop",
@@ -1453,7 +1539,8 @@
       "expected_file": "examples/shop/expected/charge-once-retry-new-key.json",
       "verdict": "holds",
       "exit": 0,
-      "waits_on": null
+      "waits_on": null,
+      "needs": null
     },
     {
       "system": "shop",
@@ -1469,7 +1556,8 @@
       "expected_file": "examples/shop/expected/charge-once-charged-twice.json",
       "verdict": "violated",
       "exit": 10,
-      "waits_on": null
+      "waits_on": null,
+      "needs": null
     },
     {
       "system": "shop",
@@ -1501,7 +1589,8 @@
       "expected_file": "examples/shop/expected/two-people-ok.json",
       "verdict": "holds",
       "exit": 0,
-      "waits_on": null
+      "waits_on": null,
+      "needs": null
     },
     {
       "system": "shop",
@@ -1517,7 +1606,8 @@
       "expected_file": "examples/shop/expected/two-people-same.json",
       "verdict": "violated",
       "exit": 10,
-      "waits_on": null
+      "waits_on": null,
+      "needs": null
     },
     {
       "system": "shop",
@@ -1534,7 +1624,8 @@
       "expected_file": "examples/shop/expected/refund-small.json",
       "verdict": "holds",
       "exit": 0,
-      "waits_on": null
+      "waits_on": null,
+      "needs": null
     },
     {
       "system": "shop",
@@ -1551,7 +1642,8 @@
       "expected_file": "examples/shop/expected/refund-large-one-approver.json",
       "verdict": "violated",
       "exit": 10,
-      "waits_on": null
+      "waits_on": null,
+      "needs": null
     },
     {
       "system": "shop",
@@ -1568,7 +1660,8 @@
       "expected_file": "examples/shop/expected/refund-large-two-approvers.json",
       "verdict": "holds",
       "exit": 0,
-      "waits_on": null
+      "waits_on": null,
+      "needs": null
     },
     {
       "system": "shop",
@@ -1586,7 +1679,8 @@
       "expected_file": "examples/shop/expected/charge-completes.json",
       "verdict": "holds",
       "exit": 0,
-      "waits_on": null
+      "waits_on": null,
+      "needs": null
     },
     {
       "system": "shop",
@@ -1604,7 +1698,8 @@
       "expected_file": "examples/shop/expected/charge-leaves-open.json",
       "verdict": "violated",
       "exit": 10,
-      "waits_on": null
+      "waits_on": null,
+      "needs": null
     },
     {
       "system": "shop",
@@ -1622,7 +1717,8 @@
       "expected_file": "examples/shop/expected/charge-frame-ok.json",
       "verdict": "holds",
       "exit": 0,
-      "waits_on": null
+      "waits_on": null,
+      "needs": null
     },
     {
       "system": "shop",
@@ -1640,7 +1736,8 @@
       "expected_file": "examples/shop/expected/charge-changes-total.json",
       "verdict": "violated: frame (total changed)",
       "exit": 10,
-      "waits_on": null
+      "waits_on": null,
+      "needs": null
     },
     {
       "system": "shop",
@@ -1658,7 +1755,8 @@
       "expected_file": "examples/shop/expected/charge-changes-total-post.json",
       "verdict": "refused: frame_violation",
       "exit": 20,
-      "waits_on": null
+      "waits_on": null,
+      "needs": null
     },
     {
       "system": "shop",
@@ -1672,7 +1770,8 @@
       "expected_file": "examples/shop/expected/staged-charge-adds-amount.json",
       "verdict": null,
       "exit": 20,
-      "waits_on": "QSL-1901"
+      "waits_on": "QSL-1901",
+      "needs": "exact post-conditions"
     }
   ]
 }

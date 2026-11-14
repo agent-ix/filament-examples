@@ -1,21 +1,23 @@
 name: Install test
 
 # Manual only. Runs the commands in install-test/steps.md on a bare
-# ubuntu:22.04 container on an x86_64 runner.
+# ubuntu:22.04 container, once per path (release download, source build) on
+# each of an x86_64 and an arm64 runner.
 on:
   workflow_dispatch:
-    inputs:
-      fsl_binary_url:
-        description: "URL of a prebuilt FSL driver release archive, with {target} for the platform. Leave empty to build the driver from source."
-        required: false
-        default: ""
 
 permissions:
   contents: read
 
 jobs:
   install:
-    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        driver: [release, source]
+        runner: [ubuntu-latest, ubuntu-24.04-arm]
+    name: install (${{ matrix.driver }}, ${{ matrix.runner }})
+    runs-on: ${{ matrix.runner }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -24,6 +26,4 @@ jobs:
       - name: Runner tests
         run: make test
       - name: Run the install steps
-        env:
-          FSL_BINARY_URL: ${{ inputs.fsl_binary_url }}
-        run: make install-test INSTALL_DRIVER=${{ inputs.fsl_binary_url != '' && 'release' || 'source' }}
+        run: make install-test INSTALL_DRIVER=${{ matrix.driver }}

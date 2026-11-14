@@ -10,10 +10,16 @@ on:
         description: "Tags to publish, separated by spaces."
         required: true
         default: "latest"
-      fsl_binary_url:
-        description: "URL of a prebuilt FSL driver release archive ({target} becomes x86_64-unknown-linux-gnu or aarch64-unknown-linux-gnu). Leave empty to build the driver from source."
-        required: false
-        default: ""
+      fsl_version:
+        description: "Driver release to put in the image, such as 0.1.1. \"latest\" is the newest release."
+        required: true
+        default: "latest"
+      fsl_source:
+        description: "release downloads the driver release archive and checks its checksum. source builds quire-driver from its repository."
+        required: true
+        type: choice
+        options: [release, source]
+        default: release
 
 env:
   IMAGE: ghcr.io/agent-ix/filament-toolchain
@@ -53,7 +59,8 @@ jobs:
           load: true
           tags: smoke:local
           build-args: |
-            FSL_BINARY_URL=${{ inputs.fsl_binary_url }}
+            FSL_VERSION=${{ inputs.fsl_version }}
+            FSL_SOURCE=${{ inputs.fsl_source }}
 
       - name: Smoke test
         run: docker run --rm smoke:local smoke.sh
@@ -71,7 +78,8 @@ jobs:
           file: image/Dockerfile
           platforms: ${{ matrix.platform }}
           build-args: |
-            FSL_BINARY_URL=${{ inputs.fsl_binary_url }}
+            FSL_VERSION=${{ inputs.fsl_version }}
+            FSL_SOURCE=${{ inputs.fsl_source }}
           labels: |
             org.opencontainers.image.source=https://github.com/${{ github.repository }}
             org.opencontainers.image.description=FSL driver, Markdown tool, quoin, jq, make, git and Node for the Filament examples and tutorials

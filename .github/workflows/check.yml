@@ -5,22 +5,23 @@ on:
   workflow_dispatch:
     inputs:
       driver:
-        description: "Where the FSL driver comes from: image (the published toolchain image), binary (a prebuilt release archive at fsl_binary_url) or source (build quire-driver)."
+        description: "Where the FSL driver comes from: image (the published toolchain image), release (a driver release archive, checked against its checksum) or source (build quire-driver)."
         required: true
         type: choice
-        options: [image, binary, source]
+        options: [image, release, source]
         default: image
       image:
         description: "Toolchain image to run in when driver is image."
         required: false
         default: ghcr.io/agent-ix/filament-toolchain:latest
-      fsl_binary_url:
-        description: "URL of a prebuilt FSL driver release archive, with {target} for the platform. Used when driver is binary."
+      fsl_version:
+        description: "Driver release to download when driver is release, such as 0.1.1. latest is the newest release."
         required: false
-        default: ""
+        default: latest
 
 permissions:
   contents: read
+  packages: read
 
 jobs:
   examples:
@@ -28,7 +29,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # The default path: run the checks in the toolchain image.
+      # The default path: run the checks in the toolchain image. The login lets the
+      # pull work while the package is not public; it is harmless once it is.
+      - name: Log in to the registry
+        if: inputs.driver == 'image'
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
+
       - name: Check running cases and staged cases in the image
         if: inputs.driver == 'image'
         env:
@@ -46,12 +52,21 @@ jobs:
         id: driver
         env:
           DRIVER: ${{ inputs.driver }}
-          FSL_BINARY_URL: ${{ inputs.fsl_binary_url }}
+          FSL_VERSION: ${{ inputs.fsl_version }}
         run: |
-          if [ "$DRIVER" = binary ]; then
-            url=$(echo "$FSL_BINARY_URL" | sed "s/{target}/x86_64-unknown-linux-gnu/")
+          if [ "$DRIVER" = release ]; then
+            repo=https://github.com/agent-ix/quire-driver
+            if [ "$FSL_VERSION" = latest ]; then
+              tag=$(curl -sSf --location --output /dev/null --write-out '%{url_effective}' "$repo/releases/latest")
+              tag=${tag##*/}
+            else tag=v${FSL_VERSION#v}; fi
+            archive="quire-$tag-x86_64-unknown-linux-gnu.tar.gz"
             mkdir "$RUNNER_TEMP/fsl-bin"
-            curl --fail --location "$url" | tar -xz -C "$RUNNER_TEMP/fsl-bin" quire
+            cd "$RUNNER_TEMP/fsl-bin"
+            curl -sSf --location --remote-name "$repo/releases/download/$tag/$archive"
+            curl -sSf --location --remote-name "$repo/releases/download/$tag/SHA256SUMS.txt"
+            grep " $archive\$" SHA256SUMS.txt | sha256sum --check -
+            tar -xzf "$archive" quire
             echo "path=$RUNNER_TEMP/fsl-bin/quire" >> "$GITHUB_OUTPUT"
           else
             git clone --depth 1 https://github.com/agent-ix/quire-driver "$RUNNER_TEMP/quire-driver"

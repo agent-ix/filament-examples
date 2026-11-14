@@ -34,10 +34,9 @@ test:
 	$(NODE) --test tools/*.test.mjs
 
 # Run the documented install steps on a bare ubuntu:22.04 container (needs Docker).
-# INSTALL_DRIVER=release skips the Rust build and downloads the binary at
-# FSL_BINARY_URL instead.
-INSTALL_DRIVER ?= source
-INSTALL_SKIP_source = driver-release
-INSTALL_SKIP_release = rust,driver-source
+# INSTALL_DRIVER=release (default) downloads the driver release; source builds it.
+INSTALL_DRIVER ?= release
+INSTALL_SKIP_release = build-tools,rust,driver-source,driver-name
+INSTALL_SKIP_source = driver-target,driver-download,driver-verify,driver-install
 install-test:
 	$(NODE) tools/steps.mjs run install-test/steps.md --image ubuntu:22.04 --skip $(INSTALL_SKIP_$(INSTALL_DRIVER))
