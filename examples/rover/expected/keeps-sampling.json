@@ -1,0 +1,1 @@
+{"artifacts":[],"category":"unsupported","diagnostics":[],"format":"quire-outcome/1","items":[{"category":"unsupported","cause":{"code":"unsupported_projection","kind":"missing-fairness-premise"},"clause":"KeepsSampling","request_index":0,"result":"unsupported"}],"last_stage":"S6a","operation":"monitor","result":null}

@@ -1,0 +1,52 @@
+language "ix:native" edition "1-draft";
+profile inf = "quire.temporal.infinite-trace/v1";
+model Rover = "example/rover";
+
+// One rule per temporal operator and interval form, over the rover's trace.
+// A past operator read at position 0 sees only position 0, so the past forms
+// are read at position 3 with eventually[3,3].
+
+// The rover is stopped within three steps.
+temporal StoppedWithin3 using inf over (r: Rover::Rover) clock "model-steps" on origin {
+  eventually[0,3] holds(r.stopped)
+}
+// The rover is eventually stopped.
+temporal EventuallyStopped using inf over (r: Rover::Rover) clock "model-steps" on origin {
+  eventually holds(r.stopped)
+}
+// The rover is stopped at some position two or more steps on.
+temporal StoppedFrom2 using inf over (r: Rover::Rover) clock "model-steps" on origin {
+  eventually[2,*] holds(r.stopped)
+}
+// The speed never exceeds 800 mm/s.
+temporal SpeedCapped using inf over (r: Rover::Rover) clock "model-steps" on origin {
+  always holds(r.speed <= 800)
+}
+// The rover moves until it stops, and it does stop.
+temporal MovesUntilStopped using inf over (r: Rover::Rover) clock "model-steps" on origin {
+  holds(not r.stopped) until holds(r.stopped)
+}
+// The speed stays capped up to and including the first stopped position.
+temporal CappedUntilStopped using inf over (r: Rover::Rover) clock "model-steps" on origin {
+  holds(r.stopped) release holds(r.speed <= 800)
+}
+// At position 3, the lidar was lost one step before.
+temporal LidarLostBefore using inf over (r: Rover::Rover) clock "model-steps" on origin {
+  eventually[3,3] once[1,1] holds(not r.lidarOk)
+}
+// At position 3, the lidar has been lost for the last three positions.
+temporal LidarLostThrough using inf over (r: Rover::Rover) clock "model-steps" on origin {
+  eventually[3,3] historically[0,2] holds(not r.lidarOk)
+}
+// At position 3, the lidar has been lost ever since it last worked.
+temporal LostSinceWorking using inf over (r: Rover::Rover) clock "model-steps" on origin {
+  eventually[3,3] (holds(not r.lidarOk) since holds(r.lidarOk))
+}
+// At position 3, every earlier position either lost the lidar or was followed by a stop.
+temporal LossCoveredByStop using inf over (r: Rover::Rover) clock "model-steps" on origin {
+  eventually[3,3] (holds(r.stopped) triggered holds(not r.lidarOk))
+}
+// At every position where the lidar is lost, the rover is stopped within three steps.
+temporal StopAfterLoss using inf over (r: Rover::Rover) clock "model-steps" on each (e: Rover::Rover) when (not e.lidarOk) {
+  eventually[0,3] holds(r.stopped)
+}

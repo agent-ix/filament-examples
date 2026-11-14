@@ -1,0 +1,8 @@
+language "ix:native" edition "1-draft";
+profile t = "quire.temporal.event-position.false-extension/v1";
+model Rover = "example/rover";
+
+// Counted by recorded event: the rover is stopped within four events.
+temporal StopsInFourEvents using t over (r: Rover::Rover) clock "events" on origin {
+  eventually[0,4] holds(r.stopped)
+}

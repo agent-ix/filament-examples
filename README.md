@@ -20,7 +20,7 @@ The table lists each system with the number of cases that run today and the numb
 | [architecture](examples/architecture) | Enterprise | 14 | 2 |
 | [parts-saga](examples/parts-saga) | Distributed | 6 | 2 |
 | [cell](examples/cell) | Safety | 12 | 0 |
-| [rover](examples/rover) | Safety | 12 | 6 |
+| [rover](examples/rover) | Safety | 31 | 8 |
 
 ## Getting started
 

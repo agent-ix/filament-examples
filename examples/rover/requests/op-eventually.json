@@ -1,0 +1,57 @@
+{
+  "format": "native-run/1",
+  "request": {
+    "models": [
+      {
+        "format": "semantic-ir/2.0.0",
+        "source": {
+          "file": "../model/rover.semantic-ir.json",
+          "authority": "example",
+          "identity": "example:rover/model",
+          "document": "model",
+          "formal_revision": 1
+        }
+      }
+    ],
+    "program": {
+      "source": {
+        "file": "../rules/time-operators.fsl",
+        "authority": "example",
+        "identity": "example:rover/time-operators",
+        "document": "timeoperators",
+        "formal_revision": 1
+      }
+    },
+    "clause": {
+      "selection": {
+        "temporal": {
+          "name": "EventuallyStopped",
+          "trace": {
+            "lasso": {
+              "prefix": [
+                "t0-driving",
+                "t1-lidar-lost",
+                "t2-braking"
+              ],
+              "loop": [
+                "t3-stopped"
+              ]
+            }
+          },
+          "over": {
+            "reference": {
+              "population": "ix://example/rover/rovers",
+              "key": "r1"
+            }
+          }
+        }
+      },
+      "observations": {
+        "t0-driving": "../data/t0-driving.json",
+        "t1-lidar-lost": "../data/t1-lidar-lost.json",
+        "t2-braking": "../data/t2-braking.json",
+        "t3-stopped": "../data/t3-stopped.json"
+      }
+    }
+  }
+}
