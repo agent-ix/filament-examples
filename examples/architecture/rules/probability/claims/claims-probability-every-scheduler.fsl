@@ -1,0 +1,12 @@
+language "ix:native" edition "1-draft";
+profile v = "quire.model.complete/v1";
+profile ev = "quire.temporal.event-position.false-extension/v1";
+profile inf = "quire.temporal.infinite-trace/v1";
+model Arch = "example/architecture";
+
+// The claim states that each service stays up for the next 10 steps with probability at least 0.99
+// under every scheduler. The model has no random parameter, so the scheduler chooses each call's
+// argument and an every-scheduler probability is 0 or 1.
+probabilistic CheckoutAvailable using ev on Arch over (s: Arch::Service) under every scheduler on origin {
+  probability >= 0.99 [ always[0,10] holds(s.up) ]
+}
