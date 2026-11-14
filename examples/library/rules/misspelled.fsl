@@ -1,0 +1,8 @@
+language "ix:native" edition "1-draft";
+profile v = "quire.model.complete/v1";
+model Library = "my/library";
+
+// The same rule with the field misspelled: the model has copies, not copy.
+invariant OnLoanHasCopies using v on Library::Book at current {
+  self.status = Library::Status::OnLoan implies self.copy >= 1
+}

@@ -1,0 +1,336 @@
+{
+  "contractVersion": "2.0.0",
+  "canonicalization": {
+    "algorithm": "rfc8785-v1"
+  },
+  "source": {
+    "identity": "ix://my/library/spec",
+    "version": "1.0.0",
+    "dialect": "spec-bundle"
+  },
+  "package": {
+    "identity": "my/library",
+    "version": "1.0.0",
+    "mappingVersions": [],
+    "profileVersions": []
+  },
+  "occurrences": [],
+  "extensions": [],
+  "constructs": [
+    {
+      "kind": {
+        "module": "my/library",
+        "name": "object_type"
+      },
+      "moduleVersion": "1.0.0",
+      "construct": {
+        "identity": "none",
+        "shape": "record",
+        "members": {},
+        "meaning": "quire.meaning.model.object-type/v1"
+      }
+    },
+    {
+      "kind": {
+        "module": "my/library",
+        "name": "population"
+      },
+      "moduleVersion": "1.0.0",
+      "construct": {
+        "identity": "none",
+        "shape": "record",
+        "members": {},
+        "meaning": "quire.meaning.model.population/v1"
+      }
+    },
+    {
+      "kind": {
+        "module": "my/library",
+        "name": "value_type"
+      },
+      "moduleVersion": "1.0.0",
+      "construct": {
+        "identity": "none",
+        "shape": "record",
+        "members": {},
+        "meaning": "quire.meaning.model.value-type/v1"
+      }
+    },
+    {
+      "kind": {
+        "module": "my/library",
+        "name": "variant_type"
+      },
+      "moduleVersion": "1.0.0",
+      "construct": {
+        "identity": "none",
+        "shape": "enumeration",
+        "members": {
+          "variants": "required"
+        },
+        "meaning": "quire.meaning.model.variant-type/v1"
+      }
+    }
+  ],
+  "types": [
+    {
+      "identity": "ix://my/library/Copies",
+      "displayName": "Copies",
+      "kind": {
+        "module": "my/library",
+        "name": "value_type"
+      },
+      "roles": [],
+      "origin": {
+        "generated": {
+          "generatorIdentity": "ix://my/library/Copies",
+          "generatorVersion": "1.0.0",
+          "inputIdentities": [
+            "ix://my/library/Copies"
+          ]
+        }
+      },
+      "extensions": [],
+      "unknownPolicy": "reject",
+      "scalar": "integer",
+      "constraints": [
+        {
+          "identity": "ix://my/library/Copies/constraints/min",
+          "keyword": "min",
+          "operands": {
+            "value": "0"
+          },
+          "appliesTo": "ix://quire/native/Integer",
+          "diagnosticCode": "bound.min",
+          "origin": {
+            "generated": {
+              "generatorIdentity": "ix://my/library/Copies",
+              "generatorVersion": "1.0.0",
+              "inputIdentities": [
+                "ix://my/library/Copies"
+              ]
+            }
+          }
+        },
+        {
+          "identity": "ix://my/library/Copies/constraints/max",
+          "keyword": "max",
+          "operands": {
+            "value": "1000"
+          },
+          "appliesTo": "ix://quire/native/Integer",
+          "diagnosticCode": "bound.max",
+          "origin": {
+            "generated": {
+              "generatorIdentity": "ix://my/library/Copies",
+              "generatorVersion": "1.0.0",
+              "inputIdentities": [
+                "ix://my/library/Copies"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "identity": "ix://my/library/Status",
+      "displayName": "Status",
+      "kind": {
+        "module": "my/library",
+        "name": "variant_type"
+      },
+      "roles": [],
+      "origin": {
+        "generated": {
+          "generatorIdentity": "ix://my/library/Status",
+          "generatorVersion": "1.0.0",
+          "inputIdentities": [
+            "ix://my/library/Status"
+          ]
+        }
+      },
+      "constraints": [],
+      "extensions": [],
+      "unknownPolicy": "reject",
+      "variants": [
+        {
+          "identity": "ix://my/library/variant/Status-Available",
+          "name": "Available",
+          "origin": {
+            "source": {
+              "sourceIdentity": "ix://my/library/spec",
+              "path": "spec.qspec",
+              "startLine": 1,
+              "startColumn": 1
+            }
+          }
+        },
+        {
+          "identity": "ix://my/library/variant/Status-OnLoan",
+          "name": "OnLoan",
+          "origin": {
+            "source": {
+              "sourceIdentity": "ix://my/library/spec",
+              "path": "spec.qspec",
+              "startLine": 1,
+              "startColumn": 1
+            }
+          }
+        }
+      ]
+    },
+    {
+      "identity": "ix://my/library/Book",
+      "displayName": "Book",
+      "kind": {
+        "module": "my/library",
+        "name": "object_type"
+      },
+      "roles": [],
+      "origin": {
+        "generated": {
+          "generatorIdentity": "ix://my/library/Book",
+          "generatorVersion": "1.0.0",
+          "inputIdentities": [
+            "ix://my/library/Book"
+          ]
+        }
+      },
+      "constraints": [],
+      "extensions": [],
+      "unknownPolicy": "reject",
+      "supertypes": [],
+      "fields": [
+        {
+          "identity": "ix://my/library/Book/copies",
+          "name": "copies",
+          "typeRef": "ix://my/library/Copies",
+          "presence": "required",
+          "nullable": false,
+          "defaultKind": "none",
+          "multiplicity": {
+            "lower": 1,
+            "upper": 1,
+            "ordered": false,
+            "unique": true
+          },
+          "origin": {
+            "generated": {
+              "generatorIdentity": "ix://my/library/Book/copies",
+              "generatorVersion": "1.0.0",
+              "inputIdentities": [
+                "ix://my/library/Book/copies"
+              ]
+            }
+          }
+        },
+        {
+          "identity": "ix://my/library/Book/status",
+          "name": "status",
+          "typeRef": "ix://my/library/Status",
+          "presence": "required",
+          "nullable": false,
+          "defaultKind": "none",
+          "multiplicity": {
+            "lower": 1,
+            "upper": 1,
+            "ordered": false,
+            "unique": true
+          },
+          "origin": {
+            "generated": {
+              "generatorIdentity": "ix://my/library/Book/status",
+              "generatorVersion": "1.0.0",
+              "inputIdentities": [
+                "ix://my/library/Book/status"
+              ]
+            }
+          }
+        }
+      ],
+      "operations": [
+        {
+          "identity": "ix://my/library/Book/lend",
+          "name": "lend",
+          "params": [
+            {
+              "identity": "ix://my/library/Book/lend/count",
+              "name": "count",
+              "typeRef": "ix://my/library/Copies",
+              "presence": "required",
+              "nullable": false,
+              "defaultKind": "none",
+              "multiplicity": {
+                "lower": 1,
+                "upper": 1,
+                "ordered": false,
+                "unique": true
+              },
+              "origin": {
+                "generated": {
+                  "generatorIdentity": "ix://my/library/Book/lend/count",
+                  "generatorVersion": "1.0.0",
+                  "inputIdentities": [
+                    "ix://my/library/Book/lend/count"
+                  ]
+                }
+              }
+            }
+          ],
+          "returns": {
+            "typeRef": "ix://quire/native/Boolean",
+            "multiplicity": {
+              "lower": 1,
+              "upper": 1,
+              "ordered": false,
+              "unique": true
+            },
+            "nullable": false
+          },
+          "pre": [],
+          "post": [],
+          "origin": {
+            "generated": {
+              "generatorIdentity": "ix://my/library/Book/lend",
+              "generatorVersion": "1.0.0",
+              "inputIdentities": [
+                "ix://my/library/Book/lend"
+              ]
+            }
+          },
+          "frame": {
+            "modifies": [
+              "ix://my/library/Book/copies",
+              "ix://my/library/Book/status"
+            ],
+            "creates": [],
+            "deletes": []
+          }
+        }
+      ]
+    }
+  ],
+  "populations": [
+    {
+      "identity": "ix://my/library/books",
+      "displayName": "books",
+      "kind": {
+        "module": "my/library",
+        "name": "population"
+      },
+      "members": [
+        "ix://my/library/Book"
+      ],
+      "extent": "closed",
+      "origin": {
+        "generated": {
+          "generatorIdentity": "ix://my/library/books",
+          "generatorVersion": "1.0.0",
+          "inputIdentities": [
+            "ix://my/library/books"
+          ]
+        }
+      }
+    }
+  ]
+}
