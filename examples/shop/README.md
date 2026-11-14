@@ -39,6 +39,12 @@ The rules in [rules/orders.fsl](rules/orders.fsl) check one object of a snapshot
 
 Two more cases show data the driver cannot judge. `dangling-charge` refers to a charge that is not in the data and exits 20. `partial-data` has an incomplete population and exits 22. Neither is a failed rule.
 
+## Rules over a whole population
+
+The rule in [rules/populations.fsl](rules/populations.fsl) names the population `Shop::orders` and checks every order in it, whichever order the run names as `self`. In `no-overcharge-ok` the shop has one order and the rule holds. In `no-overcharge-other-order` the run names the order `o1`, which is fine, and the rule is violated because `o2` is overcharged.
+
+The rule in [rules/bounded-orders.fsl](rules/bounded-orders.fsl) adds a `bound` that limits the population to one member. In `orders-over-bound` the snapshot holds two orders, so the run is refused with exit 20.
+
 ## Rules about operations
 
 The rules in [rules/operations.fsl](rules/operations.fsl) check an operation call with the state before and after it.
@@ -88,3 +94,5 @@ The two request files differ only in the data file they name. Run all cases with
 ## Staged
 
 The case `staged-charge-adds-amount` states that a charge adds exactly its amount. The checker cannot prove the arithmetic yet, so the case stays staged. See `example.toml` for the reason.
+
+The case `staged-optional-parameter` tests an optional operation parameter with `present`. The checker types the parameter as a required value, so the case stays staged.

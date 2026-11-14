@@ -1,0 +1,11 @@
+language "ix:native" edition "1-draft";
+profile v = "quire.model.complete/v1";
+model Shop = "example/shop";
+
+// The shop's order population has at most one member.
+bound OrderCap on Shop::orders [1]
+
+// No order in the shop has been charged more than its total.
+invariant NoOverchargeBounded using v on Shop::Order at current {
+  forall(o in Shop::orders: deref(o).charged <= deref(o).total)
+}

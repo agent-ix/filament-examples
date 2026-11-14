@@ -1,0 +1,8 @@
+language "ix:native" edition "1-draft";
+profile v = "quire.model.complete/v1";
+model Shop = "example/shop";
+
+// A note names a second approver only when it has one.
+pre NoteHasApprover using v on Shop::Order::note {
+  present(secondApprover)
+}

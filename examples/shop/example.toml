@@ -257,6 +257,39 @@ expect_verdict = "refused: frame_violation"
 serves = "Learn L3 frames"
 
 [[case]]
+id = "no-overcharge-ok"
+rule = "NoOvercharge"
+statement = "No order in the shop has been charged more than its total."
+file = "rules/populations.fsl"
+command = "run requests/no-overcharge-ok.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "State and models: populations"
+
+[[case]]
+id = "no-overcharge-other-order"
+rule = "NoOvercharge"
+statement = "No order in the shop has been charged more than its total."
+file = "rules/populations.fsl"
+command = "run requests/no-overcharge-other-order.json"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
+serves = "State and models: populations"
+
+[[case]]
+id = "orders-over-bound"
+rule = "NoOverchargeBounded"
+statement = "The shop's order population has at most one member."
+file = "rules/bounded-orders.fsl"
+command = "run requests/orders-over-bound.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: cardinality_out_of_bound"
+serves = "State and models: population bound"
+
+[[case]]
 id = "staged-charge-adds-amount"
 rule = ""
 statement = "A charge adds exactly its amount to what the order has been charged."
@@ -268,3 +301,16 @@ ready_exit = 0
 waits_on = "QSL-1901"
 why = "post `self.charged = pre(self.charged) + amount` is refused undefined_expression/unproved-range: FR-577 (preconditions discharge a postcondition's range obligations) is specified but not implemented"
 serves = "Learn L3 (preferred form of the post rule)"
+
+[[case]]
+id = "staged-optional-parameter"
+rule = ""
+statement = "A rule can test whether an optional operation parameter is present."
+file = "rules/staged-optional-parameter.fsl"
+command = "compile requests/staged-optional-parameter.json"
+status = "staged"
+expect_exit = 20
+ready_exit = 0
+waits_on = "QSL-1983"
+why = "present(secondApprover) is refused ill_typed/type-mismatch: an optional operation parameter is typed as a required value, and a call cannot omit it"
+serves = "State and models: optional operation parameters"

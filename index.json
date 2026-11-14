@@ -1614,6 +1614,54 @@
     },
     {
       "system": "shop",
+      "case": "no-overcharge-ok",
+      "status": "running",
+      "rule": "NoOvercharge",
+      "statement": "No order in the shop has been charged more than its total.",
+      "rule_file": "examples/shop/rules/populations.fsl",
+      "data_files": [
+        "examples/shop/data/paid-in-full.json"
+      ],
+      "request_file": "examples/shop/requests/no-overcharge-ok.json",
+      "expected_file": "examples/shop/expected/no-overcharge-ok.json",
+      "verdict": "holds",
+      "exit": 0,
+      "waits_on": null
+    },
+    {
+      "system": "shop",
+      "case": "no-overcharge-other-order",
+      "status": "running",
+      "rule": "NoOvercharge",
+      "statement": "No order in the shop has been charged more than its total.",
+      "rule_file": "examples/shop/rules/populations.fsl",
+      "data_files": [
+        "examples/shop/data/two-orders.json"
+      ],
+      "request_file": "examples/shop/requests/no-overcharge-other-order.json",
+      "expected_file": "examples/shop/expected/no-overcharge-other-order.json",
+      "verdict": "violated",
+      "exit": 10,
+      "waits_on": null
+    },
+    {
+      "system": "shop",
+      "case": "orders-over-bound",
+      "status": "running",
+      "rule": "NoOverchargeBounded",
+      "statement": "The shop's order population has at most one member.",
+      "rule_file": "examples/shop/rules/bounded-orders.fsl",
+      "data_files": [
+        "examples/shop/data/two-orders.json"
+      ],
+      "request_file": "examples/shop/requests/orders-over-bound.json",
+      "expected_file": "examples/shop/expected/orders-over-bound.json",
+      "verdict": "refused: cardinality_out_of_bound",
+      "exit": 20,
+      "waits_on": null
+    },
+    {
+      "system": "shop",
       "case": "staged-charge-adds-amount",
       "status": "staged",
       "rule": null,
@@ -1625,6 +1673,20 @@
       "verdict": null,
       "exit": 20,
       "waits_on": "QSL-1901"
+    },
+    {
+      "system": "shop",
+      "case": "staged-optional-parameter",
+      "status": "staged",
+      "rule": null,
+      "statement": "A rule can test whether an optional operation parameter is present.",
+      "rule_file": "examples/shop/rules/staged-optional-parameter.fsl",
+      "data_files": [],
+      "request_file": "examples/shop/requests/staged-optional-parameter.json",
+      "expected_file": "examples/shop/expected/staged-optional-parameter.json",
+      "verdict": null,
+      "exit": 20,
+      "waits_on": "QSL-1983"
     }
   ]
 }
