@@ -7,7 +7,7 @@ import { tmpdir } from "node:os";
 import { dirname, join, resolve } from "node:path";
 import { test } from "node:test";
 import { fileURLToPath } from "node:url";
-import { buildIndex, discoverSystems, evaluateCase, findCase, main, parseManifest, promoteText, renderOutput, syncReadmes, verdictOf } from "./run.mjs";
+import { buildIndex, discoverSystems, syncGenerated, evaluateCase, findCase, main, parseManifest, promoteText, renderOutput, syncReadmes, verdictOf } from "./run.mjs";
 
 const REPO = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const RUNNER = resolve(dirname(fileURLToPath(import.meta.url)), "run.mjs");
@@ -283,4 +283,10 @@ test("buildIndex lists repo-relative paths, verdict, exit and waits_on", () => {
   assert.equal(good.needs, null);
   assert.equal(later.verdict, null);
   assert.equal(later.statement, "A later rule.");
+});
+
+test("a stale index.json says what to do about it", () => {
+  const { root, systems } = demoSystem();
+  const problems = syncGenerated(systems, root, false);
+  assert.ok(problems.includes("index.json is stale: merge origin/main, then run make index"), problems.join("\n"));
 });
