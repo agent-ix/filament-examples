@@ -1,0 +1,26 @@
+{
+  "format": "native-compile/1",
+  "request": {
+    "models": [
+      {
+        "format": "semantic-ir/2.0.0",
+        "source": {
+          "file": "../model/shop.semantic-ir.json",
+          "authority": "example",
+          "identity": "example:shop/model",
+          "document": "model",
+          "formal_revision": 1
+        }
+      }
+    ],
+    "program": {
+      "source": {
+        "file": "../rules/result-without-result.fsl",
+        "authority": "example",
+        "identity": "example:shop/result-without-result",
+        "document": "resultwithoutresult",
+        "formal_revision": 1
+      }
+    }
+  }
+}

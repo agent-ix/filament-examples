@@ -192,16 +192,6 @@
               }
             }
           ],
-          "returns": {
-            "typeRef": "ix://quire/native/Boolean",
-            "multiplicity": {
-              "lower": 1,
-              "upper": 1,
-              "ordered": false,
-              "unique": true
-            },
-            "nullable": false
-          },
           "pre": [],
           "post": [],
           "origin": {
@@ -225,16 +215,6 @@
           "identity": "ix://example/lock/Lock/release",
           "name": "release",
           "params": [],
-          "returns": {
-            "typeRef": "ix://quire/native/Boolean",
-            "multiplicity": {
-              "lower": 1,
-              "upper": 1,
-              "ordered": false,
-              "unique": true
-            },
-            "nullable": false
-          },
           "pre": [],
           "post": [],
           "origin": {

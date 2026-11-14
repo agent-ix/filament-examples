@@ -1,0 +1,9 @@
+language "ix:native" edition "1-draft";
+profile v = "quire.model.complete/v1";
+model Shop = "example/shop";
+
+// No order in the shop has been charged more than its total, whichever order
+// the run names as self.
+invariant NoOvercharge using v on Shop::Order at current {
+  forall(o in Shop::orders: deref(o).charged <= deref(o).total)
+}

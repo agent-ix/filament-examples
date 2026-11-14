@@ -16,8 +16,8 @@ The table lists each system with the number of cases that run today and the numb
 
 | System | Family | Running | Staged |
 | --- | --- | --- | --- |
-| [shop](examples/shop) | Shop | 31 | 2 |
-| [architecture](examples/architecture) | Enterprise | 16 | 2 |
+| [shop](examples/shop) | Shop | 35 | 3 |
+| [architecture](examples/architecture) | Enterprise | 21 | 2 |
 | [parts-saga](examples/parts-saga) | Distributed | 7 | 2 |
 | [cell](examples/cell) | Safety | 13 | 0 |
 | [rover](examples/rover) | Safety | 49 | 8 |
