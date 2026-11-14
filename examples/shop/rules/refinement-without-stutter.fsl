@@ -1,0 +1,24 @@
+language "ix:native" edition "1-draft";
+profile v = "quire.model.complete/v1";
+profile inf = "quire.temporal.infinite-trace/v1";
+model Spec = "example/payment-spec";
+model Client = "example/payment-client";
+
+// The specification: a payment is charged at most once.
+pre ChargeOnce using v on Spec::Payment::charge { not self.charged }
+post Charged using v on Spec::Payment::charge { self.charged }
+
+// The client sends a charge request with an idempotency key and retries it
+// when no answer comes. The server applies a key it has not seen and drops
+// a request whose key it has seen.
+pre ApplyNewKey using v on Client::Payment::apply { not self.keySeen }
+post ApplyRecordsKey using v on Client::Payment::apply { self.keySeen }
+pre DropSeenKey using v on Client::Payment::dropDuplicate { self.keySeen }
+
+// The stutter rows are left out, on the idea that steps which change nothing
+// the specification sees need no mapping. The checker refuses it.
+refinement NoStutterRows using inf abstract Spec concrete Client {
+  population Spec::payments from Client::payments;
+  object Spec::Payment from Client::Payment { charged = self.keySeen; }
+  step Client::Payment::apply -> Spec::Payment::charge(self);
+}

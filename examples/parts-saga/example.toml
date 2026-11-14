@@ -93,3 +93,14 @@ waits_on = "QSL-1976"
 why = "exhaustive check of the protocol (deadlock freedom, every part ends assembled, scrapped or given up) needs `quire analyze`, which exits 21 and prints nothing"
 needs = "model checking from the command line"
 serves = "Learn L5/L6; Guide: check a model exhaustively"
+
+[[case]]
+id = "inspection-compiles"
+rule = "Inspect"
+statement = "Inspection passes a part to assembly, sends it back for rework at most twice, or scraps it and frees the machine."
+file = "rules/inspection.fsl"
+command = "compile requests/inspection-compiles.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "checked: choice and repeat"
+serves = "Learn: protocols between services"

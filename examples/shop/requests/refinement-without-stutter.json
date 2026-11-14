@@ -1,0 +1,36 @@
+{
+  "format": "native-compile/1",
+  "request": {
+    "models": [
+      {
+        "format": "semantic-ir/2.0.0",
+        "source": {
+          "file": "../model/payment-spec.semantic-ir.json",
+          "authority": "example",
+          "identity": "example:shop/payment-spec",
+          "document": "paymentspec",
+          "formal_revision": 1
+        }
+      },
+      {
+        "format": "semantic-ir/2.0.0",
+        "source": {
+          "file": "../model/payment-client.semantic-ir.json",
+          "authority": "example",
+          "identity": "example:shop/payment-client",
+          "document": "paymentclient",
+          "formal_revision": 1
+        }
+      }
+    ],
+    "program": {
+      "source": {
+        "file": "../rules/refinement-without-stutter.fsl",
+        "authority": "example",
+        "identity": "example:shop/refinement-without-stutter",
+        "document": "refinementwithoutstutter",
+        "formal_revision": 1
+      }
+    }
+  }
+}

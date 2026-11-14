@@ -338,3 +338,25 @@ waits_on = "QSL-1976"
 needs = "refinement checking from the command line"
 why = "the refinement compiles (both models admitted); checking it needs `quire analyze`, which exits 21"
 serves = "Learn: refinement"
+
+[[case]]
+id = "client-retry-charges"
+rule = "RetryCharges"
+statement = "A refinement that maps every retry to a second charge compiles: compiling evaluates no rule."
+file = "rules/client-retry-charges.fsl"
+command = "compile requests/client-retry-charges.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "success: compiled, nothing checked"
+serves = "Learn: evidence (common misreading)"
+
+[[case]]
+id = "refinement-without-stutter"
+rule = "NoStutterRows"
+statement = "A refinement without its stutter rows is refused: every operation of the design needs a step row."
+file = "rules/refinement-without-stutter.fsl"
+command = "compile requests/refinement-without-stutter.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: missing_declaration"
+serves = "Learn: refining a specification (common misreading)"

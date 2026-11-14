@@ -293,6 +293,21 @@
       "needs": "probability"
     },
     {
+      "system": "architecture",
+      "case": "probability-as-percent",
+      "status": "running",
+      "rule": "UpAsPercent",
+      "statement": "A probability threshold written as a percentage, 99, is refused: a threshold lies strictly between 0 and 1.",
+      "rule_file": "examples/architecture/rules/probability-as-percent.fsl",
+      "data_files": [],
+      "request_file": "examples/architecture/requests/probability-as-percent.json",
+      "expected_file": "examples/architecture/expected/probability-as-percent.json",
+      "verdict": "refused: qualitative-threshold",
+      "exit": 20,
+      "waits_on": null,
+      "needs": null
+    },
+    {
       "system": "cell",
       "case": "guard-closed-running",
       "status": "running",
@@ -644,6 +659,21 @@
       "exit": 21,
       "waits_on": "QSL-1976",
       "needs": "model checking from the command line"
+    },
+    {
+      "system": "parts-saga",
+      "case": "inspection-compiles",
+      "status": "running",
+      "rule": "Inspect",
+      "statement": "Inspection passes a part to assembly, sends it back for rework at most twice, or scraps it and frees the machine.",
+      "rule_file": "examples/parts-saga/rules/inspection.fsl",
+      "data_files": [],
+      "request_file": "examples/parts-saga/requests/inspection-compiles.json",
+      "expected_file": "examples/parts-saga/expected/inspection-compiles.json",
+      "verdict": "checked: choice and repeat",
+      "exit": 0,
+      "waits_on": null,
+      "needs": null
     },
     {
       "system": "rover",
@@ -1881,6 +1911,36 @@
       "exit": 21,
       "waits_on": "QSL-1976",
       "needs": "refinement checking from the command line"
+    },
+    {
+      "system": "shop",
+      "case": "client-retry-charges",
+      "status": "running",
+      "rule": "RetryCharges",
+      "statement": "A refinement that maps every retry to a second charge compiles: compiling evaluates no rule.",
+      "rule_file": "examples/shop/rules/client-retry-charges.fsl",
+      "data_files": [],
+      "request_file": "examples/shop/requests/client-retry-charges.json",
+      "expected_file": "examples/shop/expected/client-retry-charges.json",
+      "verdict": "success: compiled, nothing checked",
+      "exit": 0,
+      "waits_on": null,
+      "needs": null
+    },
+    {
+      "system": "shop",
+      "case": "refinement-without-stutter",
+      "status": "running",
+      "rule": "NoStutterRows",
+      "statement": "A refinement without its stutter rows is refused: every operation of the design needs a step row.",
+      "rule_file": "examples/shop/rules/refinement-without-stutter.fsl",
+      "data_files": [],
+      "request_file": "examples/shop/requests/refinement-without-stutter.json",
+      "expected_file": "examples/shop/expected/refinement-without-stutter.json",
+      "verdict": "refused: missing_declaration",
+      "exit": 20,
+      "waits_on": null,
+      "needs": null
     }
   ]
 }

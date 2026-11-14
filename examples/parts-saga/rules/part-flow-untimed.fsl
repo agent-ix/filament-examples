@@ -13,7 +13,7 @@ post MachineReleased using v on Parts::MachiningStation::release { not self.rese
 // processes the part and hands it to inspection. Inspection passes the part
 // to assembly, sends it back for rework (at most twice), or scraps it.
 // Scrapping releases the machine. This version has no timers or
-// compensation templates, so it compiles today.
+// compensation templates.
 protocol PartFlow using p over (job: Parts::Job) on origin {
   role Planning on Parts::PlanningService;
   role Machining on Parts::MachiningStation;
