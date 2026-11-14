@@ -1,0 +1,9 @@
+language "ix:native" edition "1-draft";
+profile v = "quire.model.complete/v1";
+import "example:library/copies" as lib;
+model Library = "my/library";
+
+// A book on loan has at least one copy, using the function of the imported library.
+invariant OnLoanHasCopies using v on Library::Book at current {
+  self.status = Library::Status::OnLoan implies lib::enough(self.copies)
+}

@@ -875,6 +875,36 @@
       "needs": null
     },
     {
+      "system": "library",
+      "case": "packages-link-ok",
+      "status": "running",
+      "rule": "OnLoanHasCopies",
+      "statement": "A rule can call a function from a library it imports, and the two compile together.",
+      "rule_file": "examples/library/rules/packages/linked.fsl",
+      "data_files": [],
+      "request_file": "examples/library/requests/packages/link-ok.json",
+      "expected_file": "examples/library/expected/packages-link-ok.json",
+      "verdict": "compiles",
+      "exit": 0,
+      "waits_on": null,
+      "needs": null
+    },
+    {
+      "system": "library",
+      "case": "packages-link-missing",
+      "status": "running",
+      "rule": "OnLoanHasCopies",
+      "statement": "An import with no library supplied under that name is refused.",
+      "rule_file": "examples/library/rules/packages/linked.fsl",
+      "data_files": [],
+      "request_file": "examples/library/requests/packages/link-missing.json",
+      "expected_file": "examples/library/expected/packages-link-missing.json",
+      "verdict": "refused: missing import",
+      "exit": 20,
+      "waits_on": null,
+      "needs": null
+    },
+    {
       "system": "parts-saga",
       "case": "jobs-rework-tracked",
       "status": "running",
@@ -2675,6 +2705,125 @@
       "expected_file": "examples/shop/expected/refinement-without-stutter.json",
       "verdict": "refused: missing_declaration",
       "exit": 20,
+      "waits_on": null,
+      "needs": null
+    },
+    {
+      "system": "shop",
+      "case": "limits-source-bytes",
+      "status": "running",
+      "rule": "PaidInFull",
+      "statement": "A source larger than the source byte limit stops the run before the rule is read.",
+      "rule_file": "examples/shop/rules/paid-in-full.fsl",
+      "data_files": [
+        "examples/shop/data/paid-in-full.json"
+      ],
+      "request_file": "examples/shop/requests/limits/source-bytes.json",
+      "expected_file": "examples/shop/expected/limits-source-bytes.json",
+      "verdict": "incomplete",
+      "exit": 22,
+      "waits_on": null,
+      "needs": null
+    },
+    {
+      "system": "shop",
+      "case": "limits-source-bytes-raised",
+      "status": "running",
+      "rule": "PaidInFull",
+      "statement": "The same run with the source byte limit raised finishes and the rule holds.",
+      "rule_file": "examples/shop/rules/paid-in-full.fsl",
+      "data_files": [
+        "examples/shop/data/paid-in-full.json"
+      ],
+      "request_file": "examples/shop/requests/limits/source-bytes.json",
+      "expected_file": "examples/shop/expected/limits-source-bytes-raised.json",
+      "verdict": "holds",
+      "exit": 0,
+      "waits_on": null,
+      "needs": null
+    },
+    {
+      "system": "shop",
+      "case": "limits-work-units",
+      "status": "running",
+      "rule": "PaidInFull",
+      "statement": "A work budget of three units runs out before the rule is evaluated.",
+      "rule_file": "examples/shop/rules/paid-in-full.fsl",
+      "data_files": [
+        "examples/shop/data/paid-in-full.json"
+      ],
+      "request_file": "examples/shop/requests/limits/work-units.json",
+      "expected_file": "examples/shop/expected/limits-work-units.json",
+      "verdict": "incomplete",
+      "exit": 22,
+      "waits_on": null,
+      "needs": null
+    },
+    {
+      "system": "shop",
+      "case": "profiles-sum-under-core",
+      "status": "running",
+      "rule": "RefundsWithinCharge",
+      "statement": "A rule that sums a collection is outside the smallest state layer and is not supported under it.",
+      "rule_file": "examples/shop/rules/profiles/sum-under-core.fsl",
+      "data_files": [
+        "examples/shop/data/refund-ok.json"
+      ],
+      "request_file": "examples/shop/requests/profiles/sum-under-core.json",
+      "expected_file": "examples/shop/expected/profiles-sum-under-core.json",
+      "verdict": "unsupported",
+      "exit": 21,
+      "waits_on": null,
+      "needs": null
+    },
+    {
+      "system": "shop",
+      "case": "profiles-unknown-id",
+      "status": "running",
+      "rule": "PaidInFull",
+      "statement": "A profile identity that the language does not define is refused.",
+      "rule_file": "examples/shop/rules/profiles/unknown-id.fsl",
+      "data_files": [
+        "examples/shop/data/paid-in-full.json"
+      ],
+      "request_file": "examples/shop/requests/profiles/unknown-id.json",
+      "expected_file": "examples/shop/expected/profiles-unknown-id.json",
+      "verdict": "refused: unknown profile",
+      "exit": 20,
+      "waits_on": null,
+      "needs": null
+    },
+    {
+      "system": "shop",
+      "case": "engines-interpreter",
+      "status": "running",
+      "rule": "PaidInFull",
+      "statement": "The interpreter is the default engine and can be named explicitly.",
+      "rule_file": "examples/shop/rules/paid-in-full.fsl",
+      "data_files": [
+        "examples/shop/data/paid-in-full.json"
+      ],
+      "request_file": "examples/shop/requests/paid-in-full.json",
+      "expected_file": "examples/shop/expected/engines-interpreter.json",
+      "verdict": "holds",
+      "exit": 0,
+      "waits_on": null,
+      "needs": null
+    },
+    {
+      "system": "shop",
+      "case": "engines-aot-unavailable",
+      "status": "running",
+      "rule": "PaidInFull",
+      "statement": "A compiled engine that is not available ends the run unsupported, and the interpreter does not take over.",
+      "rule_file": "examples/shop/rules/paid-in-full.fsl",
+      "data_files": [
+        "examples/shop/data/paid-in-full.json"
+      ],
+      "request_file": "examples/shop/requests/paid-in-full.json",
+      "expected_file": "examples/shop/expected/engines-aot-unavailable.json",
+      "verdict": "unsupported",
+      "exit": 21,
       "waits_on": null,
       "needs": null
     },

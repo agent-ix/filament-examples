@@ -1,0 +1,7 @@
+language "ix:native" edition "1-draft";
+profile v = "quire.value.complete/v1";
+
+type Copies = Int [0, 1000];
+
+// A book has enough copies when at least one is on the shelf.
+function enough using v(c: Copies): Boolean pure { c >= 1 }
