@@ -57,4 +57,22 @@ The manual workflow [image.yml](../.github/workflows/image.yml) builds each plat
 
 ## License
 
-MIT. See the [license file](../LICENSE).
+The programs in the image, `fsl`, `quire` and `quoin`, are licensed under the GNU Affero General Public License, version 3 or any later version (`AGPL-3.0-or-later`). The Filament examples in `/opt/filament-examples` are licensed under the MIT license. This repository is MIT; see the [license file](../LICENSE).
+
+The image holds the other components under their own licenses: Node.js, the Rust crates built into the three programs, and the Ubuntu packages. Its label `org.opencontainers.image.licenses` names the licenses of the first-party parts, `AGPL-3.0-or-later AND MIT`.
+
+The license texts, a notice for every bundled component, and the places where the source code of each program is published are in `/usr/share/licenses/filament-toolchain`:
+
+```
+docker run --rm ghcr.io/agent-ix/filament-toolchain cat /usr/share/licenses/filament-toolchain/README.md
+```
+
+The same files are in [image/licenses](licenses). The source of the three programs is public, at the tag each was built from:
+
+| Program | Source |
+| --- | --- |
+| `fsl` | [agent-ix/filament-driver](https://github.com/agent-ix/filament-driver) |
+| `quire` | [agent-ix/quire-cli](https://github.com/agent-ix/quire-cli) |
+| `quoin` | [agent-ix/quoin](https://github.com/agent-ix/quoin) |
+
+The Ubuntu copyright files stay in `/usr/share/doc/<package>/copyright`. The image build fails when the installed programs are not the versions described in `image/licenses`. After you change a version, run `node tools/licences.mjs collect` on checkouts of the three tags, then `node tools/licences.mjs render`; `make test` fails when the rendered files are stale.

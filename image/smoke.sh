@@ -21,3 +21,13 @@ done
 work=$(mktemp -d)
 cp -R /opt/filament-examples/. "$work"
 make -C "$work" check staged
+
+# Licence notices: the licence directory, Node's licence and the Ubuntu copyright files.
+lic=/usr/share/licenses/filament-toolchain
+for f in README.md THIRD-PARTY.md THIRD-PARTY-LICENSES.txt BUILD-FACTS.txt DRIVER-TAG \
+         texts/filament-driver.LICENSE texts/quire-cli.LICENSE texts/quoin.LICENSE \
+         texts/filament-examples.LICENSE texts/nodejs.LICENSE; do
+  [ -s "$lic/$f" ] || { echo "missing $lic/$f"; exit 1; }
+done
+[ -s /usr/local/LICENSE ] || { echo "missing /usr/local/LICENSE"; exit 1; }
+[ -s /usr/share/doc/git/copyright ] || { echo "missing /usr/share/doc/git/copyright"; exit 1; }
