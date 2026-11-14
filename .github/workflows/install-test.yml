@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
     inputs:
       fsl_binary_url:
-        description: "URL of a prebuilt FSL driver binary. Leave empty to build the driver from source."
+        description: "URL of a prebuilt FSL driver release archive, with {target} for the platform. Leave empty to build the driver from source."
         required: false
         default: ""
 
