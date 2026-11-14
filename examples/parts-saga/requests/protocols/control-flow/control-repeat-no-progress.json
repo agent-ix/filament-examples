@@ -1,0 +1,26 @@
+{
+  "format": "native-compile/1",
+  "request": {
+    "models": [
+      {
+        "format": "semantic-ir/2.0.0",
+        "source": {
+          "file": "../../../model/parts-saga.semantic-ir.json",
+          "authority": "example",
+          "identity": "example:parts-saga/model",
+          "document": "model",
+          "formal_revision": 1
+        }
+      }
+    ],
+    "program": {
+      "source": {
+        "file": "../../../rules/protocols/control-flow/control-repeat-no-progress.fsl",
+        "authority": "example",
+        "identity": "example:parts-saga/control-repeat-no-progress",
+        "document": "controlrepeatnoprogress",
+        "formal_revision": 1
+      }
+    }
+  }
+}
