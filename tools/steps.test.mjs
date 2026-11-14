@@ -2,11 +2,14 @@
 //   node --test tools/
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
+import { createHash } from "node:crypto";
+import { mkdtempSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
 import { readFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { test } from "node:test";
 import { fileURLToPath } from "node:url";
-import { buildScript, extractSteps, parseArgs, readMarkers, selectSteps } from "./steps.mjs";
+import { buildScript, extractSteps, parseArgs, readMarkers, selectSteps, shellCommand } from "./steps.mjs";
 
 const REPO = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 
@@ -69,21 +72,65 @@ test("readMarkers turns marker lines into step durations", () => {
 
 test("parseArgs reads skip and image", () => {
   assert.deepEqual(parseArgs(["run", "f.md", "--image", "ubuntu:22.04", "--skip", "a,b"]), {
-    command: "run", file: "f.md", skip: ["a", "b"], image: "ubuntu:22.04",
+    command: "run", file: "f.md", skip: ["a", "b"], image: "ubuntu:22.04", shell: "bash", host: false,
   });
+  assert.deepEqual(parseArgs(["run", "f.md", "--host", "--shell", "zsh"]).shell, "zsh");
   assert.throws(() => parseArgs(["run", "f.md", "--bogus"]), /unknown argument/);
+  assert.throws(() => parseArgs(["run", "f.md", "--shell", "fish"]), /--shell must be bash or zsh/);
 });
 
 test("the real steps file has the documented steps, each with a bash body", () => {
   const steps = extractSteps(readFileSync(resolve(REPO, "install-test/steps.md"), "utf8"));
   assert.deepEqual(steps.map((s) => s.id), [
     "prerequisites", "node", "driver-target", "driver-download", "driver-verify", "driver-install",
-    "build-tools", "rust", "driver-source", "driver-name", "clone", "check",
+    "build-tools", "rust", "driver-source", "clone", "check",
   ]);
   for (const s of steps) assert.ok(s.body.trim().length > 0, s.id);
   // The release path and the source path differ only in their driver steps.
   const release = ["driver-target", "driver-download", "driver-verify", "driver-install"];
-  const source = ["build-tools", "rust", "driver-source", "driver-name"];
+  const source = ["build-tools", "rust", "driver-source"];
   buildScript(selectSteps(steps, source));
   buildScript(selectSteps(steps, release));
+});
+
+test("shellCommand starts zsh in a bare container after installing it, and on the host directly", () => {
+  const zsh = shellCommand({ host: false, image: "ubuntu:22.04", shell: "zsh" });
+  assert.equal(zsh.cmd, "docker");
+  assert.match(zsh.args.at(-1), /apt-get install -y -qq zsh .*exec zsh -f -s$/);
+  assert.match(shellCommand({ host: false, image: "i", shell: "bash" }).args.at(-1), /^exec bash -s$/);
+  assert.deepEqual(shellCommand({ host: true, shell: "zsh" }), { cmd: "zsh", args: ["-f", "-s"] });
+});
+
+// The checksum step ran only under bash for a while and failed every time under
+// zsh, the macOS default shell. Run the real step under every shell present.
+for (const shell of ["bash", "zsh"]) {
+  const present = spawnSync(shell, ["-c", "true"]).status === 0;
+  test(`the driver-verify step passes a good archive and fails a changed one under ${shell}`, { skip: !present }, () => {
+    const steps = extractSteps(readFileSync(resolve(REPO, "install-test/steps.md"), "utf8"));
+    const verify = steps.find((s) => s.id === "driver-verify");
+    const dir = mkdtempSync(resolve(tmpdir(), "verify-"));
+    const archive = "fsl-v1-x86_64-unknown-linux-gnu.tar.gz";
+    writeFileSync(resolve(dir, archive), "archive bytes");
+    const sum = createHash("sha256").update("archive bytes").digest("hex");
+    writeFileSync(resolve(dir, "SHA256SUMS.txt"), `${sum}  ${archive}\n`);
+    const run = () => spawnSync(shell, shell === "zsh" ? ["-f", "-s"] : ["-s"], {
+      input: `set -eu\ncd ${dir}\narchive=${archive}\n${verify.body}\n`, encoding: "utf8",
+    });
+    const good = run();
+    assert.equal(good.status, 0, good.stderr);
+    assert.match(good.stdout, /: OK/);
+    writeFileSync(resolve(dir, archive), "changed bytes");
+    assert.notEqual(run().status, 0);
+  });
+}
+
+test("the driver-target step stops with a message when the release lookup lands on no tag", () => {
+  const steps = extractSteps(readFileSync(resolve(REPO, "install-test/steps.md"), "utf8"));
+  const target = steps.find((s) => s.id === "driver-target");
+  assert.match(target.body, /No release of the FSL driver was found/);
+  // Same guard, run on its own with a tag that is not a version.
+  const guard = target.body.split("\n").slice(3, 7).join("\n");
+  const run = spawnSync("bash", ["-s"], { input: `repo=r\ntag=releases\n${guard}\n`, encoding: "utf8" });
+  assert.notEqual(run.status, 0);
+  assert.match(run.stderr, /No release of the FSL driver was found at r\/releases/);
 });

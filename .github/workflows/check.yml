@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
     inputs:
       driver:
-        description: "Where the FSL driver comes from: image (the published toolchain image), release (a driver release archive, checked against its checksum) or source (build quire-driver)."
+        description: "Where the FSL driver comes from: image (the published toolchain image), release (a driver release archive, checked against its checksum) or source (build filament-driver)."
         required: true
         type: choice
         options: [image, release, source]
@@ -55,24 +55,25 @@ jobs:
           FSL_VERSION: ${{ inputs.fsl_version }}
         run: |
           if [ "$DRIVER" = release ]; then
-            repo=https://github.com/agent-ix/quire-driver
+            repo=https://github.com/agent-ix/filament-driver
             if [ "$FSL_VERSION" = latest ]; then
               tag=$(curl -sSf --location --output /dev/null --write-out '%{url_effective}' "$repo/releases/latest")
               tag=${tag##*/}
+              case "$tag" in v*) ;; *) echo "No release of the FSL driver was found at $repo/releases" >&2; exit 1 ;; esac
             else tag=v${FSL_VERSION#v}; fi
-            archive="quire-$tag-x86_64-unknown-linux-gnu.tar.gz"
+            archive="fsl-$tag-x86_64-unknown-linux-gnu.tar.gz"
             mkdir "$RUNNER_TEMP/fsl-bin"
             cd "$RUNNER_TEMP/fsl-bin"
             curl -sSf --location --remote-name "$repo/releases/download/$tag/$archive"
             curl -sSf --location --remote-name "$repo/releases/download/$tag/SHA256SUMS.txt"
             grep " $archive\$" SHA256SUMS.txt | sha256sum --check -
-            tar -xzf "$archive" quire
-            echo "path=$RUNNER_TEMP/fsl-bin/quire" >> "$GITHUB_OUTPUT"
+            tar -xzf "$archive" fsl
+            echo "path=$RUNNER_TEMP/fsl-bin/fsl" >> "$GITHUB_OUTPUT"
           else
-            git clone --depth 1 https://github.com/agent-ix/quire-driver "$RUNNER_TEMP/quire-driver"
+            git clone --depth 1 https://github.com/agent-ix/filament-driver "$RUNNER_TEMP/filament-driver"
             rustup toolchain install stable --profile minimal
-            cargo build --locked -p quire-cli --manifest-path "$RUNNER_TEMP/quire-driver/Cargo.toml"
-            echo "path=$RUNNER_TEMP/quire-driver/target/debug/quire" >> "$GITHUB_OUTPUT"
+            cargo build --locked -p fsl-cli --manifest-path "$RUNNER_TEMP/filament-driver/Cargo.toml"
+            echo "path=$RUNNER_TEMP/filament-driver/target/debug/fsl" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Check running cases and staged cases

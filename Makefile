@@ -4,7 +4,7 @@ include config.mk
 NODE ?= node
 RUN = $(NODE) tools/run.mjs
 
-.PHONY: check staged record promote readme index models test install-test
+.PHONY: check staged record promote readme index models test install-test install-test-host
 check:
 	@$(RUN) check
 staged:
@@ -37,8 +37,15 @@ test:
 
 # Run the documented install steps on a bare ubuntu:22.04 container (needs Docker).
 # INSTALL_DRIVER=release (default) downloads the driver release; source builds it.
+# INSTALL_SHELL=zsh runs the steps in zsh, the macOS default shell.
 INSTALL_DRIVER ?= release
-INSTALL_SKIP_release = build-tools,rust,driver-source,driver-name
+INSTALL_SHELL ?= bash
+INSTALL_SKIP_release = build-tools,rust,driver-source
 INSTALL_SKIP_source = driver-target,driver-download,driver-verify,driver-install
 install-test:
-	$(NODE) tools/steps.mjs run install-test/steps.md --image ubuntu:22.04 --skip $(INSTALL_SKIP_$(INSTALL_DRIVER))
+	$(NODE) tools/steps.mjs run install-test/steps.md --image ubuntu:22.04 --shell $(INSTALL_SHELL) --skip $(INSTALL_SKIP_$(INSTALL_DRIVER))
+
+# Run the release steps on this machine, in zsh (for a macOS runner, which has
+# Node.js, git, make and jq already). It installs the driver under $HOME.
+install-test-host:
+	$(NODE) tools/steps.mjs run install-test/steps.md --host --shell zsh --skip prerequisites,node,$(INSTALL_SKIP_release)

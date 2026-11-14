@@ -26,11 +26,11 @@ The image puts three commands on the path.
 
 | Command | Program |
 | --- | --- |
-| `fsl` | The FSL driver, a link to the driver binary |
+| `fsl` | The FSL driver |
 | `quire` | The Markdown tool from the npm package `@agent-ix/quire-cli` |
 | `quoin` | The quoin command-line tool |
 
-The driver binary is still named `quire`, the same name as the Markdown tool. The image keeps the driver binary in `/opt/fsl-driver/bin`, off the path, and links it as `fsl`, so `quire` stays the Markdown tool and no file inside either package is renamed.
+The driver binary is `fsl`. The Markdown tool keeps its own name, `quire`, and no file inside either package is renamed.
 
 ## Building and testing
 
@@ -47,7 +47,7 @@ The build downloads the driver release archive for its platform and checks it ag
 docker build -f image/Dockerfile --build-arg FSL_VERSION=0.1.1 -t filament-toolchain .
 ```
 
-To compile the driver from the public [quire-driver](https://github.com/agent-ix/quire-driver) repository instead, set `FSL_SOURCE=source`. The compile uses link-time optimization off, and takes several minutes:
+To compile the driver from the public [filament-driver](https://github.com/agent-ix/filament-driver) repository instead, set `FSL_SOURCE=source`. The compile uses link-time optimization off, and takes several minutes:
 
 ```
 docker build -f image/Dockerfile --build-arg FSL_SOURCE=source -t filament-toolchain .

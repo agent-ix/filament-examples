@@ -1,15 +1,19 @@
 // Install-test runner. Node, no dependencies.
 //
 //   node tools/steps.mjs extract <steps.md> [--skip id,id]
-//   node tools/steps.mjs run <steps.md> --image ubuntu:22.04 [--skip id,id]
+//   node tools/steps.mjs run <steps.md> --image ubuntu:22.04 [--shell bash|zsh] [--skip id,id]
+//   node tools/steps.mjs run <steps.md> --host [--shell bash|zsh] [--skip id,id]
 //
 // A steps file is Markdown. Every fenced block whose info string is
 // `<language> step=<id>` is a step. `extract` prints the steps as one shell
 // script. `run` starts the image, streams that script into one bash session
-// (the way a reader types the commands into one terminal), and reports the
+// (the way a reader types the commands into one terminal) or, with --host, into
+// a shell on this machine, in bash or zsh, and reports the
 // duration of each step. The first failing step stops the run and is named.
 import { spawn } from "node:child_process";
-import { readFileSync } from "node:fs";
+import { mkdtempSync, readFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 import { pathToFileURL } from "node:url";
 
 const MARK = "@@STEP";
@@ -71,20 +75,35 @@ export function readMarkers(lines) {
 
 export function parseArgs(argv) {
   const [command, file, ...rest] = argv;
-  const opts = { command, file, skip: [], image: null };
+  const opts = { command, file, skip: [], image: null, shell: "bash", host: false };
   for (let i = 0; i < rest.length; i++) {
     if (rest[i] === "--skip") opts.skip = (rest[++i] ?? "").split(",").filter(Boolean);
     else if (rest[i] === "--image") opts.image = rest[++i];
+    else if (rest[i] === "--shell") opts.shell = rest[++i];
+    else if (rest[i] === "--host") opts.host = true;
     else throw new Error(`unknown argument ${rest[i]}`);
   }
+  if (!["bash", "zsh"].includes(opts.shell)) throw new Error(`--shell must be bash or zsh, not ${opts.shell}`);
   return opts;
 }
 
-function runInDocker(image, script, env) {
+// The command that reads the script from stdin. In a container, zsh is
+// installed first: the image is bare, and zsh is not part of the steps.
+export function shellCommand(opts) {
+  if (opts.host) return { cmd: opts.shell, args: opts.shell === "zsh" ? ["-f", "-s"] : ["-s"] };
+  const exec = opts.shell === "zsh" ? "exec zsh -f -s" : "exec bash -s";
+  const prepare = opts.shell === "zsh" ? "apt-get update -qq >/dev/null && apt-get install -y -qq zsh >/dev/null && " : "";
+  return { cmd: "docker", args: ["run", "--rm", "-i", opts.image, "sh", "-c", prepare + exec] };
+}
+
+function runScript(opts, script) {
   return new Promise((resolve) => {
-    const envArgs = env.flatMap((name) => (process.env[name] !== undefined ? ["-e", name] : []));
-    const child = spawn("docker", ["run", "--rm", "-i", ...envArgs, image, "bash", "-s"], {
+    const { cmd, args } = shellCommand(opts);
+    // On the host the steps start in a new empty folder, as a reader's would.
+    const cwd = opts.host ? mkdtempSync(join(tmpdir(), "install-test-")) : undefined;
+    const child = spawn(cmd, args, {
       stdio: ["pipe", "pipe", "inherit"],
+      cwd,
     });
     const lines = [];
     let pending = "";
@@ -113,8 +132,8 @@ async function main(argv) {
     process.stdout.write(script);
     return 0;
   }
-  if (opts.command !== "run" || !opts.image) throw new Error("usage: steps.mjs run <steps.md> --image <image> [--skip id,id]");
-  const { code, lines } = await runInDocker(opts.image, script, []);
+  if (opts.command !== "run" || (!opts.image && !opts.host)) throw new Error("usage: steps.mjs run <steps.md> (--image <image> | --host) [--shell bash|zsh] [--skip id,id]");
+  const { code, lines } = await runScript(opts, script);
   const { records, last } = readMarkers(lines);
   console.log("\nstep durations");
   for (const r of records) console.log(`  ${r.id.padEnd(16)} ${r.seconds}s`);

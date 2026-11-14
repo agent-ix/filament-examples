@@ -15,7 +15,7 @@ on:
         required: true
         default: "latest"
       fsl_source:
-        description: "release downloads the driver release archive and checks its checksum. source builds quire-driver from its repository."
+        description: "release downloads the driver release archive and checks its checksum. source builds the driver from its repository."
         required: true
         type: choice
         options: [release, source]
