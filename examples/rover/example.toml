@@ -407,9 +407,9 @@ serves = "Landing hero H3 SafeStopWithin200ms; Learn L4 (clocks); card U1"
 
 [[case]]
 id = "staged-mode-machine"
-rule = ""
-statement = "On every behavior of the mode machine, the rover stops within three control steps of losing its lidar."
-file = "rules/safe-stop-steps.fsl"
+rule = "StopsAfterLidarLoss"
+statement = "On every behavior of the mode machine where braking and halting are fair, a rover that loses its lidar is eventually stopped."
+file = "rules/model-checking/mode-machine.fsl"
 command = "analyze requests/staged-mode-machine.json"
 status = "staged"
 expect_exit = 21
@@ -435,8 +435,8 @@ serves = "Learn L7 (probability); landing tab Probability"
 
 [[case]]
 id = "staged-controller-refinement"
-rule = ""
-statement = "Entering failsafe is the abstract stop of a vehicle."
+rule = "ControllerRefinesStop"
+statement = "Halting is the abstract stop of a vehicle."
 file = "rules/staged-controller-refinement.fsl"
 command = "analyze requests/staged-controller-refinement.json"
 status = "staged"
@@ -460,3 +460,190 @@ waits_on = "QSL-1977"
 why = "running SafeStopWithin3Steps as a runtime monitor on a live feed needs `quire monitor`, which exits 21 and prints nothing"
 needs = "runtime monitoring"
 serves = "Landing lifecycle stages 3-4; card U1"
+
+[[case]]
+id = "model-subjects-mode-machine"
+rule = ""
+statement = "The rover's operations give it a chain of modes: driving, degraded, safe stop and failsafe."
+file = "rules/model-checking/mode-machine.fsl"
+command = "compile requests/model-checking/mode-machine.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "compiled"
+serves = "Model checking reference (model subjects)"
+
+[[case]]
+id = "model-subjects-lidar-loss-degrades"
+rule = "LidarLossDegrades"
+statement = "Losing the lidar while driving leaves the rover in degraded mode at 300 mm/s or less."
+file = "rules/model-checking/mode-machine.fsl"
+command = "run requests/model-checking/lidar-loss-degrades.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "Model checking reference (model subjects)"
+
+[[case]]
+id = "model-subjects-brake-while-driving"
+rule = "BrakeWhenDegraded"
+statement = "A rover brakes only in degraded mode."
+file = "rules/model-checking/mode-machine.fsl"
+command = "run requests/model-checking/brake-while-driving.json"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
+serves = "Model checking reference (model subjects)"
+
+[[case]]
+id = "model-subjects-brake-from-degraded"
+rule = "BrakeEntersSafeStop"
+statement = "Braking from degraded mode enters safe-stop mode at 100 mm/s or less."
+file = "rules/model-checking/mode-machine.fsl"
+command = "run requests/model-checking/brake-from-degraded.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "Model checking reference (model subjects)"
+
+[[case]]
+id = "model-subjects-parked"
+rule = "Parked"
+statement = "Failsafe mode is an intended end of the rover's behaviors."
+file = "rules/model-checking/mode-machine.fsl"
+command = "compile requests/model-checking/mode-machine.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "compiled"
+serves = "Model checking reference (model subjects)"
+
+[[case]]
+id = "model-subjects-terminal-any"
+rule = "Halted"
+statement = "Every terminal state of the rover is an intended end of its behaviors."
+file = "rules/model-checking/terminal-any.fsl"
+command = "compile requests/model-checking/terminal-any.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "compiled"
+serves = "Model checking reference (model subjects)"
+
+[[case]]
+id = "fairness-stops-after-lidar-loss"
+rule = "StopsAfterLidarLoss"
+statement = "A rover that loses its lidar is eventually stopped when braking and halting are never postponed for ever."
+file = "rules/model-checking/mode-machine.fsl"
+command = "compile requests/model-checking/mode-machine.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "compiled"
+serves = "Model checking reference (fairness)"
+
+[[case]]
+id = "state-graph-queries-possible"
+rule = "FailsafeReachable"
+statement = "From every initial state, some path of the rover's mode machine reaches failsafe mode."
+file = "rules/model-checking/mode-machine.fsl"
+command = "compile requests/model-checking/mode-machine.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "compiled"
+serves = "Model checking reference (state-graph queries)"
+
+[[case]]
+id = "state-graph-queries-always-possible"
+rule = "DegradedCanStop"
+statement = "From every degraded state, some path ends with the rover stopped."
+file = "rules/model-checking/mode-machine.fsl"
+command = "compile requests/model-checking/mode-machine.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "compiled"
+serves = "Model checking reference (state-graph queries)"
+
+[[case]]
+id = "state-graph-queries-unique-path"
+rule = "OneRouteToFailsafe"
+statement = "Exactly one path leads from driving to failsafe."
+file = "rules/model-checking/mode-machine.fsl"
+command = "compile requests/model-checking/mode-machine.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "compiled"
+serves = "Model checking reference (state-graph queries)"
+
+[[case]]
+id = "reductions-constraint"
+rule = "AtMostCruise"
+statement = "A state constraint cuts the search to the states where the rover drives at 800 mm/s or less."
+file = "rules/model-checking/mode-machine.fsl"
+command = "compile requests/model-checking/mode-machine.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "compiled"
+serves = "Model checking reference (reductions)"
+
+[[case]]
+id = "hyperproperties-vote-ignores-lidar"
+rule = "VoteIgnoresLidar"
+statement = "Two runs that sample the same sensor faults at every step record the same vote, whatever the lidar did."
+file = "rules/hyperproperties/vote-ignores-lidar.fsl"
+command = "compile requests/hyperproperties/vote-ignores-lidar.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "compiled"
+serves = "Advanced analyses reference (hyperproperties)"
+
+[[case]]
+id = "hyperproperties-sample-is-deterministic"
+rule = "SampleIsDeterministic"
+statement = "Two samples with the same sensor faults record the same vote."
+file = "rules/hyperproperties/vote-ignores-lidar.fsl"
+command = "compile requests/hyperproperties/vote-ignores-lidar.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "compiled"
+serves = "Advanced analyses reference (hyperproperties)"
+
+[[case]]
+id = "schedulability-control-loop-mixed"
+rule = ""
+statement = "A control loop with one high-criticality task, checked under mixed-criticality, EDF and fixed-priority claims."
+file = "rules/schedulability/control-loop-amc.fsl"
+command = "compile requests/schedulability/control-loop-amc.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "compiled"
+serves = "Advanced analyses reference (schedulability)"
+
+[[case]]
+id = "hybrid-systems-braking"
+rule = "Braking"
+statement = "A braking vehicle has a moving mode with a falling speed and a stopped mode."
+file = "rules/hybrid-systems/braking.fsl"
+command = "compile requests/hybrid-systems/braking.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "compiled"
+serves = "Advanced analyses reference (hybrid systems)"
+
+[[case]]
+id = "hybrid-systems-claim"
+rule = "SlowEnough"
+statement = "The braking vehicle's speed stays below 30 during the first 10 seconds."
+file = "rules/hybrid-systems/braking.fsl"
+command = "compile requests/hybrid-systems/braking.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "compiled"
+serves = "Advanced analyses reference (hybrid systems)"
+
+[[case]]
+id = "refinement-controller"
+rule = "ControllerRefinesStop"
+statement = "The rover controller implements a vehicle that can be stopped: halting is the abstract stop."
+file = "rules/staged-controller-refinement.fsl"
+command = "compile requests/staged-controller-refinement.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "compiled"
+serves = "Advanced analyses reference (refinement)"

@@ -1,0 +1,13 @@
+language "ix:native" edition "1-draft";
+profile v = "quire.model.complete/v1";
+profile inf = "quire.temporal.infinite-trace/v1";
+model Mutex = "example/lock";
+
+pre LockIsFree using v on Mutex::Lock::acquire { self.owner = 0 and p != 0 }
+post AcquireTakesLock using v on Mutex::Lock::acquire { self.owner = p }
+
+// The lock has no operation named steal.
+temporal ServedByStealing using inf over (m: Mutex::Lock) clock "model-steps" on origin {
+  fair weak Mutex::Lock::steal;
+  always eventually holds(m.owner = 1)
+}

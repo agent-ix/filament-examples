@@ -1,0 +1,35 @@
+language "ix:native" edition "1-draft";
+profile v = "quire.model.complete/v1";
+profile inf = "quire.temporal.infinite-trace/v1";
+model Mutex = "example/lock";
+
+// A free lock is acquired by process 1 or 2.
+pre LockIsFree using v on Mutex::Lock::acquire { self.owner = 0 and p != 0 }
+post AcquireTakesLock using v on Mutex::Lock::acquire { self.owner = p }
+
+// The holder releases the lock.
+pre LockIsHeld using v on Mutex::Lock::release { self.owner != 0 }
+post ReleaseFreesLock using v on Mutex::Lock::release { self.owner = 0 }
+
+// Process 1 holds the lock again and again.
+temporal ServedWithoutFairness using inf over (m: Mutex::Lock) clock "model-steps" on origin {
+  always eventually holds(m.owner = 1)
+}
+
+// The same rule, when some acquire that is enabled continuously is taken.
+temporal ServedIfAcquireIsWeaklyFair using inf over (m: Mutex::Lock) clock "model-steps" on origin {
+  fair weak Mutex::Lock::acquire;
+  always eventually holds(m.owner = 1)
+}
+
+// The same rule, when each acquire that is enabled continuously is taken.
+temporal ServedIfEachAcquireIsWeaklyFair using inf over (m: Mutex::Lock) clock "model-steps" on origin {
+  fair weak each Mutex::Lock::acquire;
+  always eventually holds(m.owner = 1)
+}
+
+// The same rule, when each acquire that is enabled again and again is taken.
+temporal ServedIfEachAcquireIsStronglyFair using inf over (m: Mutex::Lock) clock "model-steps" on origin {
+  fair strong each Mutex::Lock::acquire;
+  always eventually holds(m.owner = 1)
+}

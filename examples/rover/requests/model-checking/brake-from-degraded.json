@@ -1,0 +1,39 @@
+{
+  "format": "native-run/1",
+  "request": {
+    "models": [
+      {
+        "format": "semantic-ir/2.0.0",
+        "source": {
+          "file": "../../model/rover.semantic-ir.json",
+          "authority": "example",
+          "identity": "example:rover/model",
+          "document": "model",
+          "formal_revision": 1
+        }
+      }
+    ],
+    "program": {
+      "source": {
+        "file": "../../rules/model-checking/mode-machine.fsl",
+        "authority": "example",
+        "identity": "example:rover/mode-machine",
+        "document": "modemachine",
+        "formal_revision": 1
+      }
+    },
+    "clause": {
+      "selection": {
+        "clause": {
+          "name": "BrakeEntersSafeStop",
+          "observation": "invocation"
+        }
+      },
+      "observations": {
+        "invocation": "../../data/op-brake-from-degraded.json",
+        "pre": "../../data/op-pre-degraded.json",
+        "post": "../../data/op-post-safe-stop.json"
+      }
+    }
+  }
+}

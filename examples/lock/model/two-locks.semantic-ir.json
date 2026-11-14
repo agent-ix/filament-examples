@@ -1,0 +1,449 @@
+{
+  "contractVersion": "2.0.0",
+  "canonicalization": {
+    "algorithm": "rfc8785-v1"
+  },
+  "source": {
+    "identity": "ix://example/two-locks/spec",
+    "version": "1.0.0",
+    "dialect": "spec-bundle"
+  },
+  "package": {
+    "identity": "example/two-locks",
+    "version": "1.0.0",
+    "mappingVersions": [],
+    "profileVersions": []
+  },
+  "occurrences": [],
+  "extensions": [],
+  "constructs": [
+    {
+      "kind": {
+        "module": "example/two-locks",
+        "name": "object_type"
+      },
+      "moduleVersion": "1.0.0",
+      "construct": {
+        "identity": "none",
+        "shape": "record",
+        "members": {},
+        "meaning": "quire.meaning.model.object-type/v1"
+      }
+    },
+    {
+      "kind": {
+        "module": "example/two-locks",
+        "name": "population"
+      },
+      "moduleVersion": "1.0.0",
+      "construct": {
+        "identity": "none",
+        "shape": "record",
+        "members": {},
+        "meaning": "quire.meaning.model.population/v1"
+      }
+    },
+    {
+      "kind": {
+        "module": "example/two-locks",
+        "name": "value_type"
+      },
+      "moduleVersion": "1.0.0",
+      "construct": {
+        "identity": "none",
+        "shape": "record",
+        "members": {},
+        "meaning": "quire.meaning.model.value-type/v1"
+      }
+    }
+  ],
+  "types": [
+    {
+      "identity": "ix://example/two-locks/Holder",
+      "displayName": "Holder",
+      "kind": {
+        "module": "example/two-locks",
+        "name": "value_type"
+      },
+      "roles": [],
+      "origin": {
+        "generated": {
+          "generatorIdentity": "ix://example/two-locks/Holder",
+          "generatorVersion": "1.0.0",
+          "inputIdentities": [
+            "ix://example/two-locks/Holder"
+          ]
+        }
+      },
+      "extensions": [],
+      "unknownPolicy": "reject",
+      "scalar": "integer",
+      "constraints": [
+        {
+          "identity": "ix://example/two-locks/Holder/constraints/min",
+          "keyword": "min",
+          "operands": {
+            "value": "0"
+          },
+          "appliesTo": "ix://quire/native/Integer",
+          "diagnosticCode": "bound.min",
+          "origin": {
+            "generated": {
+              "generatorIdentity": "ix://example/two-locks/Holder",
+              "generatorVersion": "1.0.0",
+              "inputIdentities": [
+                "ix://example/two-locks/Holder"
+              ]
+            }
+          }
+        },
+        {
+          "identity": "ix://example/two-locks/Holder/constraints/max",
+          "keyword": "max",
+          "operands": {
+            "value": "2"
+          },
+          "appliesTo": "ix://quire/native/Integer",
+          "diagnosticCode": "bound.max",
+          "origin": {
+            "generated": {
+              "generatorIdentity": "ix://example/two-locks/Holder",
+              "generatorVersion": "1.0.0",
+              "inputIdentities": [
+                "ix://example/two-locks/Holder"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "identity": "ix://example/two-locks/Process",
+      "displayName": "Process",
+      "kind": {
+        "module": "example/two-locks",
+        "name": "value_type"
+      },
+      "roles": [],
+      "origin": {
+        "generated": {
+          "generatorIdentity": "ix://example/two-locks/Process",
+          "generatorVersion": "1.0.0",
+          "inputIdentities": [
+            "ix://example/two-locks/Process"
+          ]
+        }
+      },
+      "extensions": [],
+      "unknownPolicy": "reject",
+      "scalar": "integer",
+      "constraints": [
+        {
+          "identity": "ix://example/two-locks/Process/constraints/min",
+          "keyword": "min",
+          "operands": {
+            "value": "1"
+          },
+          "appliesTo": "ix://quire/native/Integer",
+          "diagnosticCode": "bound.min",
+          "origin": {
+            "generated": {
+              "generatorIdentity": "ix://example/two-locks/Process",
+              "generatorVersion": "1.0.0",
+              "inputIdentities": [
+                "ix://example/two-locks/Process"
+              ]
+            }
+          }
+        },
+        {
+          "identity": "ix://example/two-locks/Process/constraints/max",
+          "keyword": "max",
+          "operands": {
+            "value": "2"
+          },
+          "appliesTo": "ix://quire/native/Integer",
+          "diagnosticCode": "bound.max",
+          "origin": {
+            "generated": {
+              "generatorIdentity": "ix://example/two-locks/Process",
+              "generatorVersion": "1.0.0",
+              "inputIdentities": [
+                "ix://example/two-locks/Process"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "identity": "ix://example/two-locks/Locks",
+      "displayName": "Locks",
+      "kind": {
+        "module": "example/two-locks",
+        "name": "object_type"
+      },
+      "roles": [],
+      "origin": {
+        "generated": {
+          "generatorIdentity": "ix://example/two-locks/Locks",
+          "generatorVersion": "1.0.0",
+          "inputIdentities": [
+            "ix://example/two-locks/Locks"
+          ]
+        }
+      },
+      "constraints": [],
+      "extensions": [],
+      "unknownPolicy": "reject",
+      "supertypes": [],
+      "fields": [
+        {
+          "identity": "ix://example/two-locks/Locks/a",
+          "name": "a",
+          "typeRef": "ix://example/two-locks/Holder",
+          "presence": "required",
+          "nullable": false,
+          "defaultKind": "none",
+          "multiplicity": {
+            "lower": 1,
+            "upper": 1,
+            "ordered": false,
+            "unique": true
+          },
+          "origin": {
+            "generated": {
+              "generatorIdentity": "ix://example/two-locks/Locks/a",
+              "generatorVersion": "1.0.0",
+              "inputIdentities": [
+                "ix://example/two-locks/Locks/a"
+              ]
+            }
+          }
+        },
+        {
+          "identity": "ix://example/two-locks/Locks/b",
+          "name": "b",
+          "typeRef": "ix://example/two-locks/Holder",
+          "presence": "required",
+          "nullable": false,
+          "defaultKind": "none",
+          "multiplicity": {
+            "lower": 1,
+            "upper": 1,
+            "ordered": false,
+            "unique": true
+          },
+          "origin": {
+            "generated": {
+              "generatorIdentity": "ix://example/two-locks/Locks/b",
+              "generatorVersion": "1.0.0",
+              "inputIdentities": [
+                "ix://example/two-locks/Locks/b"
+              ]
+            }
+          }
+        }
+      ],
+      "operations": [
+        {
+          "identity": "ix://example/two-locks/Locks/lockFirst",
+          "name": "lockFirst",
+          "params": [
+            {
+              "identity": "ix://example/two-locks/Locks/lockFirst/p",
+              "name": "p",
+              "typeRef": "ix://example/two-locks/Process",
+              "presence": "required",
+              "nullable": false,
+              "defaultKind": "none",
+              "multiplicity": {
+                "lower": 1,
+                "upper": 1,
+                "ordered": false,
+                "unique": true
+              },
+              "origin": {
+                "generated": {
+                  "generatorIdentity": "ix://example/two-locks/Locks/lockFirst/p",
+                  "generatorVersion": "1.0.0",
+                  "inputIdentities": [
+                    "ix://example/two-locks/Locks/lockFirst/p"
+                  ]
+                }
+              }
+            }
+          ],
+          "returns": {
+            "typeRef": "ix://quire/native/Boolean",
+            "multiplicity": {
+              "lower": 1,
+              "upper": 1,
+              "ordered": false,
+              "unique": true
+            },
+            "nullable": false
+          },
+          "pre": [],
+          "post": [],
+          "origin": {
+            "generated": {
+              "generatorIdentity": "ix://example/two-locks/Locks/lockFirst",
+              "generatorVersion": "1.0.0",
+              "inputIdentities": [
+                "ix://example/two-locks/Locks/lockFirst"
+              ]
+            }
+          },
+          "frame": {
+            "modifies": [
+              "ix://example/two-locks/Locks/a",
+              "ix://example/two-locks/Locks/b"
+            ],
+            "creates": [],
+            "deletes": []
+          }
+        },
+        {
+          "identity": "ix://example/two-locks/Locks/lockSecond",
+          "name": "lockSecond",
+          "params": [
+            {
+              "identity": "ix://example/two-locks/Locks/lockSecond/p",
+              "name": "p",
+              "typeRef": "ix://example/two-locks/Process",
+              "presence": "required",
+              "nullable": false,
+              "defaultKind": "none",
+              "multiplicity": {
+                "lower": 1,
+                "upper": 1,
+                "ordered": false,
+                "unique": true
+              },
+              "origin": {
+                "generated": {
+                  "generatorIdentity": "ix://example/two-locks/Locks/lockSecond/p",
+                  "generatorVersion": "1.0.0",
+                  "inputIdentities": [
+                    "ix://example/two-locks/Locks/lockSecond/p"
+                  ]
+                }
+              }
+            }
+          ],
+          "returns": {
+            "typeRef": "ix://quire/native/Boolean",
+            "multiplicity": {
+              "lower": 1,
+              "upper": 1,
+              "ordered": false,
+              "unique": true
+            },
+            "nullable": false
+          },
+          "pre": [],
+          "post": [],
+          "origin": {
+            "generated": {
+              "generatorIdentity": "ix://example/two-locks/Locks/lockSecond",
+              "generatorVersion": "1.0.0",
+              "inputIdentities": [
+                "ix://example/two-locks/Locks/lockSecond"
+              ]
+            }
+          },
+          "frame": {
+            "modifies": [
+              "ix://example/two-locks/Locks/a",
+              "ix://example/two-locks/Locks/b"
+            ],
+            "creates": [],
+            "deletes": []
+          }
+        },
+        {
+          "identity": "ix://example/two-locks/Locks/unlock",
+          "name": "unlock",
+          "params": [
+            {
+              "identity": "ix://example/two-locks/Locks/unlock/p",
+              "name": "p",
+              "typeRef": "ix://example/two-locks/Process",
+              "presence": "required",
+              "nullable": false,
+              "defaultKind": "none",
+              "multiplicity": {
+                "lower": 1,
+                "upper": 1,
+                "ordered": false,
+                "unique": true
+              },
+              "origin": {
+                "generated": {
+                  "generatorIdentity": "ix://example/two-locks/Locks/unlock/p",
+                  "generatorVersion": "1.0.0",
+                  "inputIdentities": [
+                    "ix://example/two-locks/Locks/unlock/p"
+                  ]
+                }
+              }
+            }
+          ],
+          "returns": {
+            "typeRef": "ix://quire/native/Boolean",
+            "multiplicity": {
+              "lower": 1,
+              "upper": 1,
+              "ordered": false,
+              "unique": true
+            },
+            "nullable": false
+          },
+          "pre": [],
+          "post": [],
+          "origin": {
+            "generated": {
+              "generatorIdentity": "ix://example/two-locks/Locks/unlock",
+              "generatorVersion": "1.0.0",
+              "inputIdentities": [
+                "ix://example/two-locks/Locks/unlock"
+              ]
+            }
+          },
+          "frame": {
+            "modifies": [
+              "ix://example/two-locks/Locks/a",
+              "ix://example/two-locks/Locks/b"
+            ],
+            "creates": [],
+            "deletes": []
+          }
+        }
+      ]
+    }
+  ],
+  "populations": [
+    {
+      "identity": "ix://example/two-locks/locks",
+      "displayName": "locks",
+      "kind": {
+        "module": "example/two-locks",
+        "name": "population"
+      },
+      "members": [
+        "ix://example/two-locks/Locks"
+      ],
+      "extent": "closed",
+      "origin": {
+        "generated": {
+          "generatorIdentity": "ix://example/two-locks/locks",
+          "generatorVersion": "1.0.0",
+          "inputIdentities": [
+            "ix://example/two-locks/locks"
+          ]
+        }
+      }
+    }
+  ]
+}

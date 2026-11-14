@@ -360,3 +360,14 @@ status = "running"
 expect_exit = 20
 expect_verdict = "refused: missing_declaration"
 serves = "Learn: refining a specification (common misreading)"
+
+[[case]]
+id = "refinement-charge-once"
+rule = "ClientChargesOnce"
+statement = "A client that retries a charge with an idempotency key refines a payment that is charged at most once: the declaration compiles."
+file = "rules/staged-client-charges-once.fsl"
+command = "compile requests/staged-client-charges-once.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "compiled"
+serves = "Advanced analyses reference (refinement)"

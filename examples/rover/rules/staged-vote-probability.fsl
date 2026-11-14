@@ -6,7 +6,13 @@ model Rover = "example/rover";
 random Rover::sample(faultA) ~ { true: 1, false: 999 };
 random Rover::sample(faultB) ~ { true: 1, false: 999 };
 random Rover::sample(faultC) ~ { true: 1, false: 999 };
-workload Driving on Rover { weight Rover::sample = 1; weight Rover::enterFailsafe = 1; }
+workload Driving on Rover {
+  weight Rover::sample = 1;
+  weight Rover::loseLidar = 1;
+  weight Rover::brake = 1;
+  weight Rover::halt = 1;
+  weight Rover::enterFailsafe = 1;
+}
 
 // The voted reading is wrong only when two sensors fail on the same sample.
 post VoteTracksFaults using v on Rover::Rover::sample {

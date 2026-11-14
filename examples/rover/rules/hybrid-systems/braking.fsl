@@ -1,0 +1,17 @@
+language "ix:native" edition "1-draft";
+profile p = "quire.temporal.infinite-trace/v1";
+
+// A braking vehicle: in mode Moving the speed v falls at a deceleration a
+// between 1 and 2 while a timer t runs. At speed 0 it jumps to Stopped.
+hybrid Braking using p {
+  mode Moving invariant { v >= 0 and v <= 20 and a >= 1 and a <= 2 }
+    flow { v' = -a; a' = 0; t' = 1; }
+    transition to Stopped when { v = 0 } reset { v = 0 };
+  mode Stopped invariant { v = 0 }
+    flow { v' = 0; a' = 0; t' = 1; }
+}
+
+// The speed stays below 30 during the first 10 seconds.
+temporal SlowEnough using p over (h: Braking) clock "model-time" on origin {
+  always [0, 10] holds(h.v < 30)
+}

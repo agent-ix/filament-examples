@@ -7,10 +7,10 @@ You can check the mode rules as invariants over a snapshot, call the voting func
 ## The model
 
 - `Rover` has a mode (driving, degraded, safe stop or failsafe), a speed and a stopped flag. It also has a lidar flag, three range readings, a clock in ms and a flag for a wrong vote.
-- The operation `enterFailsafe` stops the rover. The operation `sample` reads the three sensors.
+- Its operations give the mode a shape. `loseLidar` takes a driving rover to degraded mode and slows it. `brake` takes a degraded rover to safe-stop mode. `halt` stops a rover in safe-stop mode. `enterFailsafe` takes a stopped rover to failsafe mode, where it stays. `sample` reads the three sensors in every mode but failsafe.
 - A second model, `rover-spec`, declares a `Vehicle` that can be stopped. It is used by the refinement example.
 
-The models are in [model](model).
+The models are in [model](model). The preconditions and postconditions of the operations are in [rules/model-checking/mode-machine.fsl](rules/model-checking/mode-machine.fsl).
 
 ## Rules
 
@@ -77,6 +77,21 @@ These cases back the time pages of the FSL docs.
 - `keeps-sampling` has a fairness constraint. A recorded trace does not say when `sample` was enabled, so the check is unsupported.
 - `timed-safe-stop-compiles` checks a timed rule over model time, in [rules/timed-safe-stop.fsl](rules/timed-safe-stop.fsl).
 
+## The mode machine
+
+[rules/model-checking/mode-machine.fsl](rules/model-checking/mode-machine.fsl) holds the rules that give the operations their meaning, and the rules the model-checking pages show.
+
+- `model-subjects-mode-machine` compiles the whole file.
+- `model-subjects-lidar-loss-degrades` and `model-subjects-brake-from-degraded` check a postcondition on one call of an operation. `model-subjects-brake-while-driving` checks a precondition and is violated, because a driving rover cannot brake.
+- `model-subjects-parked` and `model-subjects-terminal-any` compile a `terminal` declaration.
+- `fairness-stops-after-lidar-loss` compiles a rule with two fairness constraints.
+- `state-graph-queries-possible`, `state-graph-queries-always-possible` and `state-graph-queries-unique-path` compile the three state-graph queries.
+- `reductions-constraint` compiles a state constraint.
+- `hyperproperties-vote-ignores-lidar` and `hyperproperties-sample-is-deterministic` compile a hyperproperty and a step relation.
+- `schedulability-control-loop-mixed` compiles a task set with a high-criticality task and three claims.
+- `hybrid-systems-braking` and `hybrid-systems-claim` compile a hybrid model and a claim over it.
+- `refinement-controller` compiles the refinement of the rover controller. Halting is the abstract stop.
+
 ## Staged
 
 These cases are staged until the language supports them.
@@ -84,9 +99,9 @@ These cases are staged until the language supports them.
 - `staged-safe-stop-200ms`: Stopped within 200 ms. Needs clock selection.
 - `staged-stops-in-four-events`: Stopped within four recorded events. Needs clock selection.
 - `staged-stops-in-four-samples`: Stopped within four fixed-rate samples. Needs clock selection.
-- `staged-mode-machine`: The step rule on every behavior. Needs the `analyze` command.
+- `staged-mode-machine`: A rover that loses its lidar is eventually stopped, on every behavior where braking and halting are fair. Needs the `analyze` command.
 - `staged-control-loop-schedulable`: The task set fits and the monitor responds in 10 ms. Needs the `analyze` command.
-- `staged-controller-refinement`: Entering failsafe is the abstract stop. Needs the `analyze` command.
+- `staged-controller-refinement`: Halting is the abstract stop. Needs the `analyze` command.
 - `staged-vote-probability`: The vote is rarely wrong. Needs packaging of random parameters.
 - `staged-safe-stop-monitor`: The step rule on a live feed. Needs the `monitor` command.
 

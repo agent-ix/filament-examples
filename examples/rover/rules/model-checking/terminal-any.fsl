@@ -1,0 +1,6 @@
+language "ix:native" edition "1-draft";
+profile v = "quire.model.complete/v1";
+model Rover = "example/rover";
+
+// Every terminal state of the rover is intended, wherever the rover halts.
+terminal Halted using v on Rover any;
