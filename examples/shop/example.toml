@@ -313,14 +313,25 @@ serves = "State and models: populations"
 
 [[case]]
 id = "orders-over-bound"
-rule = "NoOverchargeBounded"
-statement = "The shop's order population has at most one member."
+rule = "OrderCapKept"
+statement = "A snapshot with more orders than the population's bound is refused."
 file = "rules/bounded-orders.fsl"
 command = "run requests/orders-over-bound.json"
 status = "running"
 expect_exit = 20
 expect_verdict = "refused: cardinality_out_of_bound"
 serves = "State and models: population bound"
+
+[[case]]
+id = "result-without-result"
+rule = "NoteReturnsNothing"
+statement = "A post rule cannot read the result of an operation that returns none."
+file = "rules/result-without-result.fsl"
+command = "compile requests/result-without-result.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: wrong_snapshot"
+serves = "State reference: operation rules"
 
 [[case]]
 id = "staged-charge-adds-amount"
@@ -349,3 +360,17 @@ waits_on = "QSL-1983"
 needs = "optional operation parameters"
 why = "present(secondApprover) is refused ill_typed/type-mismatch: an optional operation parameter is typed as a required value, and a call cannot omit it"
 serves = "State and models: optional operation parameters"
+
+[[case]]
+id = "staged-client-charges-once"
+rule = ""
+statement = "A client that retries a charge with an idempotency key implements a payment that is charged at most once."
+file = "rules/staged-client-charges-once.fsl"
+command = "analyze requests/staged-client-charges-once.json"
+status = "staged"
+expect_exit = 21
+ready_exit = 0
+waits_on = "QSL-1976"
+needs = "refinement checking from the command line"
+why = "the refinement compiles (both models admitted); checking it needs `quire analyze`, which exits 21"
+serves = "Learn: refinement"

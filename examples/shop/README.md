@@ -45,9 +45,11 @@ Three cases show common mistakes. `paid-in-full-open` runs `PaidInFull` on an op
 
 The rule in [rules/populations.fsl](rules/populations.fsl) names the population `Shop::orders` and checks every order in it, whichever order the run names as `self`. In `no-overcharge-ok` the shop has one order and the rule holds. In `no-overcharge-other-order` the run names the order `o1`, which is fine, and the rule is violated because `o2` is overcharged.
 
-The rule in [rules/bounded-orders.fsl](rules/bounded-orders.fsl) adds a `bound` that limits the population to one member. In `orders-over-bound` the snapshot holds two orders, so the run is refused with exit 20.
+The rule in [rules/bounded-orders.fsl](rules/bounded-orders.fsl) adds a `bound` that limits the population to one member, and its rule holds for any order. In `orders-over-bound` the snapshot holds two orders, so the run is refused with exit 20.
 
 ## Rules about operations
+
+The operation `note` returns nothing. The case `result-without-result` writes a rule that reads `result` of `note`, and the checker refuses it (exit 20).
 
 The rules in [rules/operations.fsl](rules/operations.fsl) check an operation call with the state before and after it.
 
@@ -95,6 +97,6 @@ The two request files differ only in the data file they name. Run all cases with
 
 ## Staged
 
-The case `staged-charge-adds-amount` states that a charge adds exactly its amount. The checker cannot prove the arithmetic yet, so the case stays staged. See `example.toml` for the reason.
+The case `staged-charge-adds-amount` states that a charge adds exactly its amount. The checker cannot prove the arithmetic yet, so the case stays staged. The case `staged-client-charges-once` states that a client which retries a charge with an idempotency key implements a payment that is charged at most once, over the models `payment-spec` and `payment-client`. Checking a refinement needs the `analyze` command. See `example.toml` for the reason.
 
 The case `staged-optional-parameter` tests an optional operation parameter with `present`. The checker types the parameter as a required value, so the case stays staged.

@@ -26,3 +26,8 @@ invariant NoDependencyCycle using v on Arch::Service at current {
 invariant PersonalDataBoundary using v on Arch::Service at current {
   forall(s in self.reads: deref(s).classification = Arch::Classification::Personal implies self.handlesPersonalData)
 }
+
+// Following calls at run time never leads back to where it started.
+invariant NoCallCycle using v on Arch::Service at current {
+  not reaches(self, self, calls)
+}

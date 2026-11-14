@@ -13,8 +13,8 @@ export default {
         refunds: { type: "Refund", many: [0, 8] },
       },
       ops: {
-        charge: { params: { amount: "Cents" }, modifies: ["charged", "status"] },
-        refund: { params: { amount: "Cents", approvers: { type: "Staff", many: [1, 2] } }, modifies: ["refunds"] },
+        charge: { returns: "Boolean", params: { amount: "Cents" }, modifies: ["charged", "status"] },
+        refund: { returns: "Boolean", params: { amount: "Cents", approvers: { type: "Staff", many: [1, 2] } }, modifies: ["refunds"] },
         note: { params: { secondApprover: { type: "Staff", optional: true } }, modifies: [] },
       },
     },

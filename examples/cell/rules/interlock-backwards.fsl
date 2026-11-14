@@ -1,0 +1,10 @@
+language "ix:native" edition "1-draft";
+profile v = "quire.model.complete/v1";
+model Cell = "example/cell";
+
+// Written backwards on purpose: "the ram moves only while the guard is closed"
+// read as "a closed guard means the ram moves". An open guard with a moving
+// ram passes this rule.
+invariant GuardClosedMeansMoving using v on Cell::Press at current {
+  self.guardClosed implies self.ramMoving
+}
