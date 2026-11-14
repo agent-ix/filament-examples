@@ -553,6 +553,109 @@
       ],
       "operations": [
         {
+          "identity": "ix://example/rover/Rover/loseLidar",
+          "name": "loseLidar",
+          "params": [],
+          "returns": {
+            "typeRef": "ix://quire/native/Boolean",
+            "multiplicity": {
+              "lower": 1,
+              "upper": 1,
+              "ordered": false,
+              "unique": true
+            },
+            "nullable": false
+          },
+          "pre": [],
+          "post": [],
+          "origin": {
+            "generated": {
+              "generatorIdentity": "ix://example/rover/Rover/loseLidar",
+              "generatorVersion": "1.0.0",
+              "inputIdentities": [
+                "ix://example/rover/Rover/loseLidar"
+              ]
+            }
+          },
+          "frame": {
+            "modifies": [
+              "ix://example/rover/Rover/mode",
+              "ix://example/rover/Rover/lidarOk",
+              "ix://example/rover/Rover/speed"
+            ],
+            "creates": [],
+            "deletes": []
+          }
+        },
+        {
+          "identity": "ix://example/rover/Rover/brake",
+          "name": "brake",
+          "params": [],
+          "returns": {
+            "typeRef": "ix://quire/native/Boolean",
+            "multiplicity": {
+              "lower": 1,
+              "upper": 1,
+              "ordered": false,
+              "unique": true
+            },
+            "nullable": false
+          },
+          "pre": [],
+          "post": [],
+          "origin": {
+            "generated": {
+              "generatorIdentity": "ix://example/rover/Rover/brake",
+              "generatorVersion": "1.0.0",
+              "inputIdentities": [
+                "ix://example/rover/Rover/brake"
+              ]
+            }
+          },
+          "frame": {
+            "modifies": [
+              "ix://example/rover/Rover/mode",
+              "ix://example/rover/Rover/speed"
+            ],
+            "creates": [],
+            "deletes": []
+          }
+        },
+        {
+          "identity": "ix://example/rover/Rover/halt",
+          "name": "halt",
+          "params": [],
+          "returns": {
+            "typeRef": "ix://quire/native/Boolean",
+            "multiplicity": {
+              "lower": 1,
+              "upper": 1,
+              "ordered": false,
+              "unique": true
+            },
+            "nullable": false
+          },
+          "pre": [],
+          "post": [],
+          "origin": {
+            "generated": {
+              "generatorIdentity": "ix://example/rover/Rover/halt",
+              "generatorVersion": "1.0.0",
+              "inputIdentities": [
+                "ix://example/rover/Rover/halt"
+              ]
+            }
+          },
+          "frame": {
+            "modifies": [
+              "ix://example/rover/Rover/speed",
+              "ix://example/rover/Rover/stopped"
+            ],
+            "creates": [],
+            "deletes": []
+          }
+        },
+        {
           "identity": "ix://example/rover/Rover/enterFailsafe",
           "name": "enterFailsafe",
           "params": [],
@@ -579,9 +682,7 @@
           },
           "frame": {
             "modifies": [
-              "ix://example/rover/Rover/mode",
-              "ix://example/rover/Rover/speed",
-              "ix://example/rover/Rover/stopped"
+              "ix://example/rover/Rover/mode"
             ],
             "creates": [],
             "deletes": []

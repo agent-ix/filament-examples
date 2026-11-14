@@ -1,0 +1,69 @@
+language "ix:native" edition "1-draft";
+profile v = "quire.model.complete/v1";
+profile inf = "quire.temporal.infinite-trace/v1";
+model Rover = "example/rover";
+
+// The lidar is lost while driving. The rover drops to degraded mode and slows.
+pre LidarLossWhileDriving using v on Rover::Rover::loseLidar {
+  self.mode = Rover::Mode::Driving and self.lidarOk
+}
+post LidarLossDegrades using v on Rover::Rover::loseLidar {
+  self.mode = Rover::Mode::Degraded and not self.lidarOk
+    and self.speed <= 300 and self.speed <= pre(self.speed)
+}
+
+// A degraded rover brakes into safe-stop mode.
+pre BrakeWhenDegraded using v on Rover::Rover::brake {
+  self.mode = Rover::Mode::Degraded
+}
+post BrakeEntersSafeStop using v on Rover::Rover::brake {
+  self.mode = Rover::Mode::SafeStop and self.speed <= 100 and self.speed <= pre(self.speed)
+}
+
+// In safe-stop mode the rover comes to a halt.
+pre HaltInSafeStop using v on Rover::Rover::halt {
+  self.mode = Rover::Mode::SafeStop and not self.stopped
+}
+post HaltStops using v on Rover::Rover::halt {
+  self.speed = 0 and self.stopped
+}
+
+// A rover that has halted enters failsafe mode and stays there.
+pre FailsafeAfterHalt using v on Rover::Rover::enterFailsafe {
+  self.mode = Rover::Mode::SafeStop and self.stopped
+}
+post FailsafeEntered using v on Rover::Rover::enterFailsafe {
+  self.mode = Rover::Mode::Failsafe
+}
+
+// The sensors are sampled in every mode but failsafe. The vote is wrong when
+// two of the three sensors are faulty.
+pre SampleUntilFailsafe using v on Rover::Rover::sample {
+  self.mode != Rover::Mode::Failsafe
+}
+post SampleRecordsVote using v on Rover::Rover::sample {
+  self.voteWrong = ((faultA and faultB) or (faultA and faultC) or (faultB and faultC))
+}
+
+// Failsafe is the rover's parking mode, so it is an intended terminal state.
+terminal Parked using v on Rover when { self.mode = Rover::Mode::Failsafe };
+
+// From a driving rover with a working lidar: a rover that loses its lidar is eventually stopped, if braking and halting
+// are never postponed for ever.
+temporal StopsAfterLidarLoss using inf over (r: Rover::Rover) clock "model-steps" on origin {
+  fair weak Rover::Rover::brake;
+  fair weak Rover::Rover::halt;
+  always (holds(not r.lidarOk) implies eventually holds(r.stopped))
+}
+
+// From a driving rover with a working lidar, some path reaches failsafe.
+possible FailsafeReachable using v over (r: Rover::Rover) { r.mode = Rover::Mode::Failsafe }
+
+// From every degraded state, some path ends with the rover stopped.
+always possible DegradedCanStop using v over (r: Rover::Rover) from (r.mode = Rover::Mode::Degraded) { r.stopped }
+
+// Asks whether exactly one path leads from driving to failsafe.
+unique path OneRouteToFailsafe using v over (r: Rover::Rover) from (r.mode = Rover::Mode::Driving) to (r.mode = Rover::Mode::Failsafe);
+
+// The search can be cut to the states where the rover is at most this fast.
+constraint AtMostCruise using v on Rover::Rover at current { self.speed <= 800 }

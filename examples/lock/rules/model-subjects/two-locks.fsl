@@ -1,0 +1,27 @@
+language "ix:native" edition "1-draft";
+profile v = "quire.model.complete/v1";
+model Pair = "example/two-locks";
+
+// Process 1 takes lock A first and lock B second. Process 2 takes lock B
+// first and lock A second. A lock is 0 when free and the process number when held.
+pre FirstLockIsFree using v on Pair::Locks::lockFirst {
+  (p = 1 and self.a = 0) or (p = 2 and self.b = 0)
+}
+post FirstLockTaken using v on Pair::Locks::lockFirst {
+  (p = 1 and self.a = 1 and self.b = pre(self.b))
+    or (p = 2 and self.b = 2 and self.a = pre(self.a))
+}
+
+pre SecondLockIsFree using v on Pair::Locks::lockSecond {
+  (p = 1 and self.a = 1 and self.b = 0) or (p = 2 and self.b = 2 and self.a = 0)
+}
+post SecondLockTaken using v on Pair::Locks::lockSecond {
+  (p = 1 and self.b = 1 and self.a = pre(self.a))
+    or (p = 2 and self.a = 2 and self.b = pre(self.b))
+}
+
+// A process holding both locks releases them.
+pre HoldsBoth using v on Pair::Locks::unlock {
+  (p = 1 and self.a = 1 and self.b = 1) or (p = 2 and self.a = 2 and self.b = 2)
+}
+post BothReleased using v on Pair::Locks::unlock { self.a = 0 and self.b = 0 }

@@ -38,7 +38,7 @@ Write one model with the description and the output path:
 node tools/model.mjs tools/models/shop.mjs examples/shop/model/shop.semantic-ir.json
 ```
 
-Regenerate all eight models with `make models`. The output is identical to the committed files, so `git diff` shows nothing when a description has not changed.
+Regenerate all models with `make models`. The output is identical to the committed files, so `git diff` shows nothing when a description has not changed.
 
 - shop: `models/shop.mjs` writes `examples/shop/model/shop.semantic-ir.json`.
 - architecture: `models/architecture.mjs` writes `examples/architecture/model/architecture.semantic-ir.json`.
@@ -46,6 +46,8 @@ Regenerate all eight models with `make models`. The output is identical to the c
 - cell: `models/cell.mjs` writes `examples/cell/model/cell.semantic-ir.json`.
 - rover: `models/rover.mjs` writes `examples/rover/model/rover.semantic-ir.json`.
 - rover-spec: `models/rover-spec.mjs` writes `examples/rover/model/rover-spec.semantic-ir.json`.
+- lock: `models/lock.mjs` writes `examples/lock/model/lock.semantic-ir.json`.
+- two-locks: `models/two-locks.mjs` writes `examples/lock/model/two-locks.semantic-ir.json`.
 - library: `models/library.mjs` writes `examples/library/model/library.semantic-ir.json`.
 - payment-spec: `models/payment-spec.mjs` writes `examples/shop/model/payment-spec.semantic-ir.json`.
 - payment-client: `models/payment-client.mjs` writes `examples/shop/model/payment-client.semantic-ir.json`.

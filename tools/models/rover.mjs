@@ -9,7 +9,10 @@ export default {
         rangeA: "Range", rangeB: "Range", rangeC: "Range", clock: "Millis", voteWrong: "Boolean",
       },
       ops: {
-        enterFailsafe: { returns: "Boolean", modifies: ["mode", "speed", "stopped"] },
+        loseLidar: { returns: "Boolean", modifies: ["mode", "lidarOk", "speed"] },
+        brake: { returns: "Boolean", modifies: ["mode", "speed"] },
+        halt: { returns: "Boolean", modifies: ["speed", "stopped"] },
+        enterFailsafe: { returns: "Boolean", modifies: ["mode"] },
         sample: { returns: "Boolean", params: { faultA: "Boolean", faultB: "Boolean", faultC: "Boolean" }, modifies: ["voteWrong"] },
       },
     },

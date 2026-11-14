@@ -1,0 +1,15 @@
+language "ix:native" edition "1-draft";
+profile t = "quire.temporal.complete/v1";
+model Rover = "example/rover";
+dimension Time;
+unit ms : Time = rational(1, 1);
+
+// The control loop with one task that has a high-criticality budget.
+taskset Mixed {
+  task fusion periodic 10 ms deadline 10 ms wcet 2 ms priority 3 lo;
+  task stopMonitor periodic 20 ms deadline 20 ms wcet 3 ms priority 2 hi wcet_hi 5 ms;
+  task planner periodic 50 ms deadline 50 ms wcet 15 ms priority 1 lo;
+}
+schedulable MixedAmc on Mixed under amc;
+schedulable MixedEdf on Mixed under edf;
+response StopMonitorBound on Mixed.stopMonitor <= 12 ms under fixed_priority;

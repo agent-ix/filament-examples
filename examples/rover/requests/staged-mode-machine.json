@@ -15,10 +15,10 @@
     ],
     "program": {
       "source": {
-        "file": "../rules/safe-stop-steps.fsl",
+        "file": "../rules/model-checking/mode-machine.fsl",
         "authority": "example",
-        "identity": "example:rover/safe-stop-steps",
-        "document": "safestopsteps",
+        "identity": "example:rover/mode-machine",
+        "document": "modemachine",
         "formal_revision": 1
       }
     }

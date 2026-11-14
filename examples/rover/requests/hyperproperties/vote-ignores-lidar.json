@@ -1,0 +1,26 @@
+{
+  "format": "native-compile/1",
+  "request": {
+    "models": [
+      {
+        "format": "semantic-ir/2.0.0",
+        "source": {
+          "file": "../../model/rover.semantic-ir.json",
+          "authority": "example",
+          "identity": "example:rover/model",
+          "document": "model",
+          "formal_revision": 1
+        }
+      }
+    ],
+    "program": {
+      "source": {
+        "file": "../../rules/hyperproperties/vote-ignores-lidar.fsl",
+        "authority": "example",
+        "identity": "example:rover/vote-ignores-lidar",
+        "document": "voteignoreslidar",
+        "formal_revision": 1
+      }
+    }
+  }
+}

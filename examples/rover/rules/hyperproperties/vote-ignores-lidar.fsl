@@ -1,0 +1,30 @@
+language "ix:native" edition "1-draft";
+profile v = "quire.model.complete/v1";
+profile inf = "quire.temporal.infinite-trace/v1";
+model Rover = "example/rover";
+
+// Sampling records whether two of the three sensors are faulty.
+post SampleRecordsVote using v on Rover::Rover::sample {
+  self.voteWrong = ((faultA and faultB) or (faultA and faultC) or (faultB and faultC))
+}
+
+// Two runs that take the same steps with the same sensor faults record the
+// same vote.
+hyper VoteIgnoresLidar using inf over behaviours (r: Rover::Rover)
+  forall trace a of Rover
+  forall trace b of Rover
+  match {
+    a.step.op = b.step.op
+      and a.step.Rover::sample.faultA = b.step.Rover::sample.faultA
+      and a.step.Rover::sample.faultB = b.step.Rover::sample.faultB
+      and a.step.Rover::sample.faultC = b.step.Rover::sample.faultC
+  }
+{
+  always holds(r.voteWrong @ a = r.voteWrong @ b)
+}
+
+// Two samples with the same sensor faults record the same vote.
+relation SampleIsDeterministic using inf over (x: Rover::Rover::sample, y: Rover::Rover::sample) {
+  x.faultA = y.faultA and x.faultB = y.faultB and x.faultC = y.faultC
+    implies x.self.voteWrong = y.self.voteWrong
+}

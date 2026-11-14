@@ -1,0 +1,68 @@
+language "ix:native" edition "1-draft";
+profile v = "quire.model.complete/v1";
+profile inf = "quire.temporal.infinite-trace/v1";
+model Spec = "example/rover-spec";
+model Rover = "example/rover";
+
+// The specification: a vehicle that is not stopped can be stopped.
+pre CanStop using v on Spec::Vehicle::stop { not self.stopped }
+post StopStops using v on Spec::Vehicle::stop { self.stopped }
+
+// The lidar is lost while driving. The rover drops to degraded mode and slows.
+pre LidarLossWhileDriving using v on Rover::Rover::loseLidar {
+  self.mode = Rover::Mode::Driving and self.lidarOk
+}
+post LidarLossDegrades using v on Rover::Rover::loseLidar {
+  self.mode = Rover::Mode::Degraded and not self.lidarOk
+    and self.speed <= 300 and self.speed <= pre(self.speed)
+}
+
+// A degraded rover brakes into safe-stop mode.
+pre BrakeWhenDegraded using v on Rover::Rover::brake {
+  self.mode = Rover::Mode::Degraded
+}
+post BrakeEntersSafeStop using v on Rover::Rover::brake {
+  self.mode = Rover::Mode::SafeStop and self.speed <= 100 and self.speed <= pre(self.speed)
+}
+
+// In safe-stop mode the rover comes to a halt.
+pre HaltInSafeStop using v on Rover::Rover::halt {
+  self.mode = Rover::Mode::SafeStop and not self.stopped
+}
+post HaltStops using v on Rover::Rover::halt {
+  self.speed = 0 and self.stopped
+}
+
+// A rover that has halted enters failsafe mode and stays there.
+pre FailsafeAfterHalt using v on Rover::Rover::enterFailsafe {
+  self.mode = Rover::Mode::SafeStop and self.stopped
+}
+post FailsafeEntered using v on Rover::Rover::enterFailsafe {
+  self.mode = Rover::Mode::Failsafe
+}
+
+// The sensors are sampled in every mode but failsafe. The vote is wrong when
+// two of the three sensors are faulty.
+pre SampleUntilFailsafe using v on Rover::Rover::sample {
+  self.mode != Rover::Mode::Failsafe
+}
+post SampleRecordsVote using v on Rover::Rover::sample {
+  self.voteWrong = ((faultA and faultB) or (faultA and faultC) or (faultB and faultC))
+}
+
+// The rover controller implements "a vehicle can be stopped": halting is the
+// abstract stop. Losing the lidar, braking, entering failsafe and sampling
+// change nothing the specification can see.
+refinement ControllerRefinesStop using inf abstract Spec concrete Rover {
+  population Spec::vehicles from Rover::rovers;
+  object Spec::Vehicle from Rover::Rover { stopped = self.stopped; }
+  step Rover::Rover::halt -> Spec::Vehicle::stop(self);
+  step Rover::Rover::loseLidar -> stutter;
+  step Rover::Rover::brake -> stutter;
+  step Rover::Rover::enterFailsafe -> stutter;
+  step Rover::Rover::sample -> stutter;
+  assume fair weak each Rover::Rover::loseLidar;
+  assume fair weak each Rover::Rover::brake;
+  assume fair weak each Rover::Rover::halt;
+  ensure fair weak each Spec::Vehicle::stop;
+}

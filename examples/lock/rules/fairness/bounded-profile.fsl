@@ -1,0 +1,13 @@
+language "ix:native" edition "1-draft";
+profile v = "quire.model.complete/v1";
+profile counted = "quire.temporal.event-position.false-extension/v1";
+model Mutex = "example/lock";
+
+pre LockIsFree using v on Mutex::Lock::acquire { self.owner = 0 and p != 0 }
+post AcquireTakesLock using v on Mutex::Lock::acquire { self.owner = p }
+
+// A counted window has no fairness: it reads a finite prefix.
+temporal ServedSoon using counted over (m: Mutex::Lock) clock "model-steps" on origin {
+  fair weak Mutex::Lock::acquire;
+  eventually[0,5] holds(m.owner = 1)
+}

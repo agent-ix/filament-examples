@@ -387,7 +387,7 @@ serves = "State and models: optional operation parameters"
 id = "staged-client-charges-once"
 rule = ""
 statement = "A client that retries a charge with an idempotency key implements a payment that is charged at most once."
-file = "rules/staged-client-charges-once.fsl"
+file = "rules/refinement-charge-once.fsl"
 command = "analyze requests/staged-client-charges-once.json"
 status = "staged"
 expect_exit = 21
@@ -418,6 +418,17 @@ status = "running"
 expect_exit = 20
 expect_verdict = "refused: missing_declaration"
 serves = "Learn: refining a specification (common misreading)"
+
+[[case]]
+id = "refinement-charge-once"
+rule = "ClientChargesOnce"
+statement = "A client that retries a charge with an idempotency key refines a payment that is charged at most once."
+file = "rules/refinement-charge-once.fsl"
+command = "compile requests/staged-client-charges-once.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "compiled"
+serves = "Advanced analyses reference (refinement)"
 
 [[case]]
 id = "limits-source-bytes"

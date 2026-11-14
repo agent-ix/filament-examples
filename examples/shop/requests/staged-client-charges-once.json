@@ -25,7 +25,7 @@
     ],
     "program": {
       "source": {
-        "file": "../rules/staged-client-charges-once.fsl",
+        "file": "../rules/refinement-charge-once.fsl",
         "authority": "example",
         "identity": "example:shop/staged-client-charges-once",
         "document": "stagedclientchargesonce",
