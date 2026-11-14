@@ -1,8 +1,8 @@
 name: Install test
 
 # Manual only. Runs the commands in install-test/steps.md on a bare
-# ubuntu:22.04 container, once per path (release download, source build) on
-# each of an x86_64 and an arm64 runner.
+# ubuntu:22.04 container on an x86_64 and an arm64 runner: the release path in
+# bash and zsh, the source path in bash. A macOS job runs the release path in zsh.
 on:
   workflow_dispatch:
 
@@ -14,9 +14,12 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        driver: [release, source]
         runner: [ubuntu-latest, ubuntu-24.04-arm]
-    name: install (${{ matrix.driver }}, ${{ matrix.runner }})
+        include:
+          - { driver: release, shell: bash }
+          - { driver: release, shell: zsh }
+          - { driver: source, shell: bash }
+    name: install (${{ matrix.driver }}, ${{ matrix.shell }}, ${{ matrix.runner }})
     runs-on: ${{ matrix.runner }}
     steps:
       - uses: actions/checkout@v4
@@ -26,4 +29,19 @@ jobs:
       - name: Runner tests
         run: make test
       - name: Run the install steps
-        run: make install-test INSTALL_DRIVER=${{ matrix.driver }}
+        run: make install-test INSTALL_DRIVER=${{ matrix.driver }} INSTALL_SHELL=${{ matrix.shell }}
+
+  # The release path in zsh on macOS, without a container: the steps run in the
+  # runner's own shell.
+  install-macos:
+    name: install (release, zsh, macos-15)
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Install jq if the runner lacks it
+        run: command -v jq >/dev/null || brew install jq
+      - name: Run the install steps
+        run: make install-test-host
