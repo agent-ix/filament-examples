@@ -1,0 +1,19 @@
+{
+  "format": "native-run/1",
+  "request": {
+    "models": [],
+    "program": {
+      "source": {
+        "file": "../../../rules/values/numbers/num-rational-reduced.fsl",
+        "authority": "example",
+        "identity": "example:shop/values/numbers/num-rational-reduced",
+        "document": "num-rational-reduced",
+        "formal_revision": 1
+      }
+    },
+    "call": {
+      "function": "sameAsTwoQuarters",
+      "arguments": []
+    }
+  }
+}

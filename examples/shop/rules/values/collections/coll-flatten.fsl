@@ -1,0 +1,10 @@
+language "ix:native" edition "1-draft";
+profile v = "quire.value.complete/v1";
+
+type Cents = Int[0, 1000000];
+
+function parcels using v(): Sequence<Sequence<Cents>[0, 3]>[0, 2] pure {
+  sequence[sequence[100, 200], sequence[300]]
+}
+
+function itemCount using v(): Int[0, 6] pure { size(flatten(parcels())) }

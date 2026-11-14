@@ -1,0 +1,32 @@
+{
+  "format": "native-run/1",
+  "request": {
+    "models": [],
+    "program": {
+      "source": {
+        "file": "../../../rules/values/numbers/num-eq-sum-convert.fsl",
+        "authority": "example",
+        "identity": "example:shop/values/numbers/num-eq-sum-convert",
+        "document": "num-eq-sum-convert",
+        "formal_revision": 1
+      }
+    },
+    "call": {
+      "function": "settled",
+      "arguments": [
+        {
+          "parameter": "charged",
+          "value": 500
+        },
+        {
+          "parameter": "refunded",
+          "value": 200
+        },
+        {
+          "parameter": "left",
+          "value": 300
+        }
+      ]
+    }
+  }
+}

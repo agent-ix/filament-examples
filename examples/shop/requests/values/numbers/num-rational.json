@@ -1,0 +1,28 @@
+{
+  "format": "native-run/1",
+  "request": {
+    "models": [],
+    "program": {
+      "source": {
+        "file": "../../../rules/values/numbers/num-rational.fsl",
+        "authority": "example",
+        "identity": "example:shop/values/numbers/num-rational",
+        "document": "num-rational",
+        "formal_revision": 1
+      }
+    },
+    "call": {
+      "function": "splitsInThirds",
+      "arguments": [
+        {
+          "parameter": "total",
+          "value": 1000
+        },
+        {
+          "parameter": "qty",
+          "value": 3
+        }
+      ]
+    }
+  }
+}

@@ -26,9 +26,11 @@ The functions in [rules/values.fsl](rules/values.fsl) compute a line total and a
 | `values-qty-zero` | Quantity 0 is outside its type | 20 |
 | `values-too-narrow` | A result type too small for price times quantity | 20 |
 
+The language reference for values and types uses further small cases, one folder per reference page under [rules/values](rules/values) and [requests/values](requests/values). The case ids start with the page: `decl-` (types and declarations), `expr-`, `num-`, `unit-`, `text-`, `record-`, `union-`, `coll-` and `fn-`.
+
 ## Rules about data
 
-The rules in [rules/orders.fsl](rules/orders.fsl) check one object of a snapshot. [rules/paid-in-full.fsl](rules/paid-in-full.fsl) holds `PaidInFull` alone, for the first Learn page. The table lists each rule with its requirement and a passing and a failing case.
+The rules in [rules/orders.fsl](rules/orders.fsl) check one object of a snapshot. The table lists each rule with its requirement and a passing and a failing case.
 
 | Rule | Requirement | Passing | Failing |
 | --- | --- | --- | --- |
@@ -41,17 +43,25 @@ Two more cases show data the driver cannot judge. `dangling-charge` refers to a 
 
 Three cases show common mistakes. `paid-in-full-open` runs `PaidInFull` on an open order that is only partly charged; the rule holds, because it says nothing about orders that are not paid. `misspelled-field` writes `self.paid` for `self.charged`, and the checker refuses the rule before it reads any data (exit 20). `charge-once-self-pair` writes `ChargeAtMostOnce` without `a = b or`, so each charge is compared with itself and an order with two distinct keys breaks the rule (exit 10).
 
+## Rules over a whole population
+
+The rule in [rules/populations.fsl](rules/populations.fsl) names the population `Shop::orders` and checks every order in it, whichever order the run names as `self`. In `no-overcharge-ok` the shop has one order and the rule holds. In `no-overcharge-other-order` the run names the order `o1`, which is fine, and the rule is violated because `o2` is overcharged.
+
+The rule in [rules/bounded-orders.fsl](rules/bounded-orders.fsl) adds a `bound` that limits the population to one member, and its rule holds for any order. In `orders-over-bound` the snapshot holds two orders, so the run is refused with exit 20.
+
 ## Rules about operations
+
+The operation `note` returns nothing. The case `result-without-result` writes a rule that reads `result` of `note`, and the checker refuses it (exit 20).
 
 The rules in [rules/operations.fsl](rules/operations.fsl) check an operation call with the state before and after it.
 
 | Rule | Requirement | Passing | Failing |
 | --- | --- | --- | --- |
-| `RefundApproval` | A refund over 20 dollars needs two approvers | `refund-large-two-approvers` | `refund-large-one-approver` |
+| `RefundApproval` | A refund over 500 dollars needs two approvers | `refund-large-two-approvers` | `refund-large-one-approver` |
 | `PaidWhenCovered` | A charge that covers the total leaves the order Paid | `charge-completes` | `charge-leaves-open` |
 | Frame of `charge` | A charge changes only the amount charged and the status | `charge-frame-ok` | `charge-changes-total` |
 
-The case `refund-small` is a refund under the limit with one approver, and it passes. The case `charge-changes-total-post` exits 20 because the charge breaks its frame, and the driver declines to judge the postcondition. The case `charge-partial` charges part of the rest and `PaidWhenCovered` holds; `charge-partial-without-pre` writes the rule without `pre(...)`, counts the amount twice and is violated (exit 10).
+The case `refund-small` is a refund under the limit with one approver, and it passes. The case `charge-changes-total-post` exits 20 because the charge breaks its frame, and the driver declines to judge the postcondition.
 
 ## Run a passing and a failing case
 
@@ -89,4 +99,6 @@ The two request files differ only in the data file they name. Run all cases with
 
 ## Staged
 
-The case `staged-charge-adds-amount` states that a charge adds exactly its amount. The checker cannot prove the arithmetic yet, so the case stays staged. The case `staged-client-charges-once` states that a client which retries a charge with an idempotency key implements a payment that is charged at most once, over the models `payment-spec` and `payment-client`. Checking a refinement needs the `analyze` command. Two running cases use the same models: `client-retry-charges` maps every retry to a second charge and still compiles, because compiling evaluates no rule, and `refinement-without-stutter` leaves out the stutter rows and is refused. See `example.toml` for the reason.
+The case `staged-charge-adds-amount` states that a charge adds exactly its amount. The checker cannot prove the arithmetic yet, so the case stays staged. The case `staged-client-charges-once` states that a client which retries a charge with an idempotency key implements a payment that is charged at most once, over the models `payment-spec` and `payment-client`. Checking a refinement needs the `analyze` command. See `example.toml` for the reason.
+
+The case `staged-optional-parameter` tests an optional operation parameter with `present`. The checker types the parameter as a required value, so the case stays staged.

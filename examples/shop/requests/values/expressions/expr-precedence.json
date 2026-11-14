@@ -1,0 +1,19 @@
+{
+  "format": "native-run/1",
+  "request": {
+    "models": [],
+    "program": {
+      "source": {
+        "file": "../../../rules/values/expressions/expr-precedence.fsl",
+        "authority": "example",
+        "identity": "example:shop/values/expressions/expr-precedence",
+        "document": "expr-precedence",
+        "formal_revision": 1
+      }
+    },
+    "call": {
+      "function": "grouping",
+      "arguments": []
+    }
+  }
+}

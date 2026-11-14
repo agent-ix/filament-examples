@@ -1,0 +1,6 @@
+language "ix:native" edition "1-draft";
+profile v = "quire.value.complete/v1";
+
+function mixed using v(a: Int[0, 9]): Boolean pure {
+  a = rational(1, 2)
+}

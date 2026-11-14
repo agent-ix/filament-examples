@@ -1,0 +1,11 @@
+language "ix:native" edition "1-draft";
+profile v = "quire.value.complete/v1";
+
+type Cents = Int[0, 1000000];
+type Qty = Int[1, 99];
+
+record LineItem { price: Cents; qty: Qty; }
+
+function sameItem using v(price: Cents, qty: Qty): Boolean pure {
+  LineItem { price: price, qty: qty } = LineItem { qty: qty, price: price }
+}

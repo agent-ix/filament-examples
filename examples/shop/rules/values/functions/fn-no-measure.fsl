@@ -1,0 +1,6 @@
+language "ix:native" edition "1-draft";
+profile v = "quire.value.complete/v1";
+
+function boxes using v(n: Int[0, 99]): Integer pure {
+  if n > 12 then 1 + boxes(n - 12) else 1
+}

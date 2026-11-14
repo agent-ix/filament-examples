@@ -1,0 +1,8 @@
+language "ix:native" edition "1-draft";
+profile v = "quire.value.complete/v1";
+
+type Qty = Int[1, 99];
+
+function takeQty using v(q: Qty): Qty pure { q }
+
+function broken using v(): Qty pure { takeQty(true) }
