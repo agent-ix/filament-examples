@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
     inputs:
       driver:
-        description: "Where the FSL driver comes from: image (the published toolchain image), binary (a prebuilt binary at fsl_binary_url) or source (build quire-driver)."
+        description: "Where the FSL driver comes from: image (the published toolchain image), binary (a prebuilt release archive at fsl_binary_url) or source (build quire-driver)."
         required: true
         type: choice
         options: [image, binary, source]
@@ -15,7 +15,7 @@ on:
         required: false
         default: ghcr.io/agent-ix/filament-toolchain:latest
       fsl_binary_url:
-        description: "URL of a prebuilt FSL driver binary. Used when driver is binary."
+        description: "URL of a prebuilt FSL driver release archive, with {target} for the platform. Used when driver is binary."
         required: false
         default: ""
 
@@ -49,9 +49,10 @@ jobs:
           FSL_BINARY_URL: ${{ inputs.fsl_binary_url }}
         run: |
           if [ "$DRIVER" = binary ]; then
-            curl --fail --location --output "$RUNNER_TEMP/fsl" "$FSL_BINARY_URL"
-            chmod +x "$RUNNER_TEMP/fsl"
-            echo "path=$RUNNER_TEMP/fsl" >> "$GITHUB_OUTPUT"
+            url=$(echo "$FSL_BINARY_URL" | sed "s/{target}/x86_64-unknown-linux-gnu/")
+            mkdir "$RUNNER_TEMP/fsl-bin"
+            curl --fail --location "$url" | tar -xz -C "$RUNNER_TEMP/fsl-bin" quire
+            echo "path=$RUNNER_TEMP/fsl-bin/quire" >> "$GITHUB_OUTPUT"
           else
             git clone --depth 1 https://github.com/agent-ix/quire-driver "$RUNNER_TEMP/quire-driver"
             rustup toolchain install stable --profile minimal

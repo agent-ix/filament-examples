@@ -3,8 +3,9 @@
 #   docker run --rm filament-toolchain smoke.sh
 #
 # The driver comes from one input. By default it is built from source. Pass
-# --build-arg FSL_BINARY_URL=<url> to download a prebuilt binary instead; the
-# URL may contain {arch}, replaced by x86_64 or aarch64. Nothing else changes.
+# --build-arg FSL_BINARY_URL=<url> to download a release archive (a .tar.gz
+# holding the single `quire` binary) instead; {target} in the URL becomes
+# x86_64-unknown-linux-gnu or aarch64-unknown-linux-gnu. Nothing else changes.
 
 ARG UBUNTU=22.04
 
@@ -23,9 +24,8 @@ RUN set -eu; \
     mkdir -p /opt/fsl-driver/bin; \
     if [ -n "$FSL_BINARY_URL" ]; then \
       apt-get install -y --no-install-recommends ca-certificates curl; \
-      url=$(printf '%s' "$FSL_BINARY_URL" | sed "s/{arch}/$(uname -m)/"); \
-      curl -sSf --location --output /opt/fsl-driver/bin/quire "$url"; \
-      chmod +x /opt/fsl-driver/bin/quire; \
+      url=$(printf '%s' "$FSL_BINARY_URL" | sed "s/{target}/$(uname -m)-unknown-linux-gnu/"); \
+      curl -sSf --location "$url" | tar -xz -C /opt/fsl-driver/bin quire; \
     else \
       apt-get install -y --no-install-recommends ca-certificates curl git build-essential pkg-config; \
       curl -sSf https://sh.rustup.rs | sh -s -- -y --profile minimal --default-toolchain "$RUST_VERSION"; \

@@ -37,12 +37,12 @@ CARGO_PROFILE_RELEASE_LTO=off CARGO_PROFILE_RELEASE_CODEGEN_UNITS=16 \
   cargo install --git https://github.com/agent-ix/quire-driver --locked quire-cli
 ```
 
-A prebuilt driver binary will replace the build when one is released (PLAT-1701). Set `FSL_BINARY_URL` to its address and run this block instead of the build.
+A prebuilt driver will replace the build when one is released. Set `FSL_BINARY_URL` to the address of the release archive for your platform and run this block instead of the build. The archive is a `.tar.gz` file that holds the `quire` binary.
 
 ```bash step=driver-release
 mkdir -p "$HOME/.cargo/bin"
-curl -sSf --location --output "$HOME/.cargo/bin/quire" "$FSL_BINARY_URL"
-chmod +x "$HOME/.cargo/bin/quire"
+url=$(echo "$FSL_BINARY_URL" | sed "s/{target}/$(uname -m)-unknown-linux-gnu/")
+curl -sSf --location "$url" | tar -xz -C "$HOME/.cargo/bin" quire
 ```
 
 The driver binary is still named `quire`, and the examples call it `fsl`. Give it the name the examples use.
