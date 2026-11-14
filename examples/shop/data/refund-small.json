@@ -16,18 +16,18 @@
   "pre": {
     "identity": {
       "authority": "example",
-      "identity": "ix://example/shop/data/open-order"
+      "identity": "ix://example/shop/data/paid-order"
     }
   },
   "post": {
     "identity": {
       "authority": "example",
-      "identity": "ix://example/shop/data/open-order"
+      "identity": "ix://example/shop/data/paid-order"
     }
   },
   "parameters": {
     "amount": {
-      "integer": "2000"
+      "integer": "1000"
     },
     "approvers": {
       "set": [

@@ -244,3 +244,14 @@ waits_on = "QSL-2000"
 why = "checks at S3, then S4 refuses: \"random-parameter `call(ok)` cannot be written to a checked-package/v2 graph yet\"; checking the claim would further need `quire analyze` (QSL-1976)"
 needs = "probability"
 serves = "Landing card O6 / availability; Learn L7"
+
+[[case]]
+id = "probability-as-percent"
+rule = "UpAsPercent"
+statement = "A probability threshold written as a percentage, 99, is refused: a threshold lies strictly between 0 and 1."
+file = "rules/probability-as-percent.fsl"
+command = "compile requests/probability-as-percent.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: qualitative-threshold"
+serves = "Learn: rules about chance (common misreading)"

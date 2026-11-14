@@ -24,18 +24,25 @@ node --version
 
 ## Install the FSL driver from a release
 
-Each release of the driver has one archive per platform and a `SHA256SUMS.txt` file with the checksum of every archive. The first block finds the newest release and the archive name for your platform.
+Each release of the driver has one archive per platform and a `SHA256SUMS.txt` file with the checksum of every archive. Run the four steps of this section in one terminal session. Each step uses names that the step before it sets, and the first step moves into a new temporary folder.
+
+The first block finds the newest release and the archive name for your platform. It stops with a message when the driver has no release.
 
 ```bash step=driver-target
-tag=$(curl -sSf --location --output /dev/null --write-out '%{url_effective}' https://github.com/agent-ix/quire-driver/releases/latest)
+repo=https://github.com/agent-ix/filament-driver
+tag=$(curl -sSf --location --output /dev/null --write-out '%{url_effective}' "$repo/releases/latest")
 tag=${tag##*/}
+case "$tag" in
+  v*) ;;
+  *) echo "No release of the FSL driver was found at $repo/releases" >&2; false ;;
+esac
 case "$(uname -s)-$(uname -m)" in
   Linux-x86_64) target=x86_64-unknown-linux-gnu ;;
   Linux-aarch64 | Linux-arm64) target=aarch64-unknown-linux-gnu ;;
   Darwin-arm64) target=aarch64-apple-darwin ;;
   Darwin-x86_64) target=x86_64-apple-darwin ;;
 esac
-archive="quire-$tag-$target.tar.gz"
+archive="fsl-$tag-$target.tar.gz"
 cd "$(mktemp -d)"
 echo "$archive"
 ```
@@ -43,30 +50,32 @@ echo "$archive"
 Download the archive and the checksum file.
 
 ```bash step=driver-download
-url=https://github.com/agent-ix/quire-driver/releases/download/$tag
+url=$repo/releases/download/$tag
 curl -sSf --location --remote-name "$url/$archive"
 curl -sSf --location --remote-name "$url/SHA256SUMS.txt"
 ```
 
-Check the archive against its checksum. The command fails if the file differs.
+Check the archive against its checksum. The command fails if the file differs. It uses `sha256sum` where that exists and `shasum` otherwise.
 
 ```bash step=driver-verify
-if command -v sha256sum >/dev/null; then check="sha256sum --check -"; else check="shasum -a 256 --check -"; fi
-grep " $archive\$" SHA256SUMS.txt | $check
+if command -v sha256sum >/dev/null; then
+  grep " $archive\$" SHA256SUMS.txt | sha256sum --check -
+else
+  grep " $archive\$" SHA256SUMS.txt | shasum -a 256 --check -
+fi
 ```
 
-The archive holds one program, still named `quire`. The examples call the driver `fsl`, so install it under that name in a folder on your path.
+The archive holds one program, `fsl`. Install it in a folder on your path.
 
 ```bash step=driver-install
 mkdir -p "$HOME/.local/bin"
-tar -xzf "$archive" -C "$HOME/.local/bin" quire
-mv "$HOME/.local/bin/quire" "$HOME/.local/bin/fsl"
+tar -xzf "$archive" -C "$HOME/.local/bin" fsl
 export PATH="$HOME/.local/bin:$PATH"
 cd "$HOME"
 fsl --version
 ```
 
-Add `export PATH="$HOME/.local/bin:$PATH"` to your shell profile to keep `fsl` on the path in new terminals.
+Add `export PATH="$HOME/.local/bin:$PATH"` to your shell profile to keep `fsl` on the path in new terminals. The commands work in bash and zsh.
 
 ## Build the FSL driver from source
 
@@ -82,17 +91,11 @@ curl -sSf https://sh.rustup.rs | sh -s -- -y --profile minimal
 cargo --version
 ```
 
-Build the driver. The two `CARGO_PROFILE_RELEASE` settings turn off link-time optimization and use 16 code-generation units. The driver's own release profile needs more than 8 GB of memory and does not finish on a small machine. This step takes several minutes.
+Build the driver. The two `CARGO_PROFILE_RELEASE` settings turn off link-time optimization and use 16 code-generation units. The driver's own release profile needs more than 8 GB of memory and does not finish on a small machine. This step takes several minutes and installs the program as `fsl`.
 
 ```bash step=driver-source
 CARGO_PROFILE_RELEASE_LTO=off CARGO_PROFILE_RELEASE_CODEGEN_UNITS=16 \
-  cargo install --git https://github.com/agent-ix/quire-driver --locked quire-cli
-```
-
-The built program is named `quire`. Give it the name the examples use.
-
-```bash step=driver-name
-ln -sf "$HOME/.cargo/bin/quire" "$HOME/.cargo/bin/fsl"
+  cargo install --git https://github.com/agent-ix/filament-driver --locked fsl-cli
 fsl --version
 ```
 

@@ -16,9 +16,9 @@ The table lists each system with the number of cases that run today and the numb
 
 | System | Family | Running | Staged |
 | --- | --- | --- | --- |
-| [shop](examples/shop) | Shop | 26 | 2 |
-| [architecture](examples/architecture) | Enterprise | 15 | 2 |
-| [parts-saga](examples/parts-saga) | Distributed | 6 | 2 |
+| [shop](examples/shop) | Shop | 30 | 2 |
+| [architecture](examples/architecture) | Enterprise | 16 | 2 |
+| [parts-saga](examples/parts-saga) | Distributed | 7 | 2 |
 | [cell](examples/cell) | Safety | 13 | 0 |
 | [rover](examples/rover) | Safety | 32 | 8 |
 
@@ -44,7 +44,7 @@ The [image folder](image/README.md) describes the image.
 
 ### With a release binary
 
-The [install steps](install-test/steps.md) list every command for a clean Ubuntu 22.04 machine, and a manual workflow runs them. You need Node.js 20 or later, `make` and `curl`. Each [quire-driver release](https://github.com/agent-ix/quire-driver/releases) has an archive for Linux and macOS on x86_64 and arm64, and a `SHA256SUMS.txt` file. The install steps download the archive for your platform, check its checksum and install the driver as `fsl`. The Makefile reads the driver path from one variable, `FSL`, set in [config.mk](config.mk). Its default is `fsl`.
+You need Node.js 20 or later, `make` and `curl`. Each [filament-driver release](https://github.com/agent-ix/filament-driver/releases) has an archive for Linux and macOS on x86_64 and arm64, and a `SHA256SUMS.txt` file. The [install steps](install-test/steps.md) list every command for a clean Ubuntu 22.04 machine: they download the archive for your platform, check its checksum and put `fsl` on your path. A manual workflow runs them in bash and zsh. The Makefile reads the driver path from one variable, `FSL`, set in [config.mk](config.mk). Its default is `fsl`.
 
 ```
 make check staged
@@ -52,15 +52,15 @@ make check staged
 
 ### From source
 
-You need a Rust toolchain besides Node.js and `make`. Build the driver from the public [quire-driver](https://github.com/agent-ix/quire-driver) repository. Its binary is still named `quire` until the rename to `fsl`. Pass its path:
+You need a Rust toolchain besides Node.js and `make`. Build the driver from the public [filament-driver](https://github.com/agent-ix/filament-driver) repository. Pass the path of the program it builds:
 
 ```
-git clone https://github.com/agent-ix/quire-driver
-cargo build --locked -p quire-cli --manifest-path quire-driver/Cargo.toml
-make check staged FSL=$PWD/quire-driver/target/debug/quire
+git clone https://github.com/agent-ix/filament-driver
+cargo build --locked -p fsl-cli --manifest-path filament-driver/Cargo.toml
+make check staged FSL=$PWD/filament-driver/target/debug/fsl
 ```
 
-The npm package `@agent-ix/quire-cli` also installs a command named `quire`. It is a Markdown tool and cannot run these examples. Keep it out of `FSL`.
+The npm package `@agent-ix/quire-cli` installs a Markdown tool named `quire`. It cannot run these examples.
 
 ## Usage
 

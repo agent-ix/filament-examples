@@ -1,0 +1,39 @@
+{
+  "format": "native-run/1",
+  "request": {
+    "models": [
+      {
+        "format": "semantic-ir/2.0.0",
+        "source": {
+          "file": "../model/shop.semantic-ir.json",
+          "authority": "example",
+          "identity": "example:shop/model",
+          "document": "model",
+          "formal_revision": 1
+        }
+      }
+    ],
+    "program": {
+      "source": {
+        "file": "../rules/paid-when-covered-without-pre.fsl",
+        "authority": "example",
+        "identity": "example:shop/paid-when-covered-without-pre",
+        "document": "paid-when-covered-without-pre",
+        "formal_revision": 1
+      }
+    },
+    "clause": {
+      "selection": {
+        "clause": {
+          "name": "PaidWhenCoveredWithoutPre",
+          "observation": "invocation"
+        }
+      },
+      "observations": {
+        "invocation": "../data/charge-partial.json",
+        "pre": "../data/open-order.json",
+        "post": "../data/after-charge-partial.json"
+      }
+    }
+  }
+}

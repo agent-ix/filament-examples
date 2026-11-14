@@ -62,7 +62,7 @@ serves = "Learn L2; Values reference"
 id = "paid-in-full"
 rule = "PaidInFull"
 statement = "A paid order has been charged its full total."
-file = "rules/orders.fsl"
+file = "rules/paid-in-full.fsl"
 command = "run requests/paid-in-full.json"
 status = "running"
 expect_exit = 0
@@ -73,7 +73,7 @@ serves = "Learn L1 first rule; landing tab Domain and state"
 id = "paid-short"
 rule = "PaidInFull"
 statement = "A paid order has been charged its full total."
-file = "rules/orders.fsl"
+file = "rules/paid-in-full.fsl"
 command = "run requests/paid-short.json"
 status = "running"
 expect_exit = 10
@@ -84,7 +84,7 @@ serves = "Learn L1 first rule"
 id = "paid-in-full-open"
 rule = "PaidInFull"
 statement = "A paid order has been charged its full total. An open order that is only partly charged does not break it."
-file = "rules/orders.fsl"
+file = "rules/paid-in-full.fsl"
 command = "run requests/paid-in-full-open.json"
 status = "running"
 expect_exit = 0
@@ -204,7 +204,7 @@ serves = "Landing card U3"
 [[case]]
 id = "refund-small"
 rule = "RefundApproval"
-statement = "Refunds over $500 need a second approver."
+statement = "Refunds over $20 need a second approver."
 file = "rules/operations.fsl"
 command = "run requests/refund-small.json"
 status = "running"
@@ -215,7 +215,7 @@ serves = "Learn L3; landing hero H1; FR-014 block"
 [[case]]
 id = "refund-large-one-approver"
 rule = "RefundApproval"
-statement = "Refunds over $500 need a second approver."
+statement = "Refunds over $20 need a second approver."
 file = "rules/operations.fsl"
 command = "run requests/refund-large-one-approver.json"
 status = "running"
@@ -226,7 +226,7 @@ serves = "Learn L3; landing hero H1"
 [[case]]
 id = "refund-large-two-approvers"
 rule = "RefundApproval"
-statement = "Refunds over $500 need a second approver."
+statement = "Refunds over $20 need a second approver."
 file = "rules/operations.fsl"
 command = "run requests/refund-large-two-approvers.json"
 status = "running"
@@ -255,6 +255,28 @@ status = "running"
 expect_exit = 10
 expect_verdict = "violated"
 serves = "Learn L3"
+
+[[case]]
+id = "charge-partial"
+rule = "PaidWhenCovered"
+statement = "A charge that covers the rest of the total leaves the order Paid. A charge that covers only part of it leaves the status free."
+file = "rules/operations.fsl"
+command = "run requests/charge-partial.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "Learn: rules about operations (partial charge)"
+
+[[case]]
+id = "charge-partial-without-pre"
+rule = "PaidWhenCoveredWithoutPre"
+statement = "A charge that covers the rest of the total leaves the order Paid, written without pre(): the amount is counted twice, so a partial charge is wrongly required to leave the order Paid."
+file = "rules/paid-when-covered-without-pre.fsl"
+command = "run requests/charge-partial-without-pre.json"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
+serves = "Learn: rules about operations (common misreading: pre)"
 
 [[case]]
 id = "charge-frame-ok"
@@ -374,3 +396,25 @@ waits_on = "QSL-1976"
 needs = "refinement checking from the command line"
 why = "the refinement compiles (both models admitted); checking it needs `quire analyze`, which exits 21"
 serves = "Learn: refinement"
+
+[[case]]
+id = "client-retry-charges"
+rule = "RetryCharges"
+statement = "A refinement that maps every retry to a second charge compiles: compiling evaluates no rule."
+file = "rules/client-retry-charges.fsl"
+command = "compile requests/client-retry-charges.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "success: compiled, nothing checked"
+serves = "Learn: evidence (common misreading)"
+
+[[case]]
+id = "refinement-without-stutter"
+rule = "NoStutterRows"
+statement = "A refinement without its stutter rows is refused: every operation of the design needs a step row."
+file = "rules/refinement-without-stutter.fsl"
+command = "compile requests/refinement-without-stutter.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: missing_declaration"
+serves = "Learn: refining a specification (common misreading)"
