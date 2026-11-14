@@ -25,6 +25,8 @@ The rules in [rules/jobs.fsl](rules/jobs.fsl) check one job of a snapshot.
 
 [rules/part-flow-untimed.fsl](rules/part-flow-untimed.fsl) declares four roles, three channels with at-least-once delivery, a choice by inspection, and a bounded rework loop. The case `protocol-compiles` checks it and exits 0.
 
+[rules/inspection.fsl](rules/inspection.fsl) holds the inspection part of the flow alone, from the handoff to the choice; the case `inspection-compiles` checks it.
+
 Two variants each contain one fault, and the checker refuses both with exit 20.
 
 | Case | Fault the checker finds |

@@ -65,6 +65,8 @@ exit 10
 ```
 <!-- /output -->
 
+The case `probability-as-percent` writes the threshold of a probabilistic claim as 99, meaning 99%. A threshold lies strictly between 0 and 1, so the checker refuses the claim.
+
 ## Staged
 
 These cases are staged until the language supports them.
