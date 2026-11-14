@@ -69,7 +69,7 @@ test("readMarkers turns marker lines into step durations", () => {
 
 test("parseArgs reads skip and image", () => {
   assert.deepEqual(parseArgs(["run", "f.md", "--image", "ubuntu:22.04", "--skip", "a,b"]), {
-    command: "run", file: "f.md", skip: ["a", "b"], image: "ubuntu:22.04",
+    command: "run", file: "f.md", skip: ["a", "b"], image: "ubuntu:22.04", os: null,
   });
   assert.throws(() => parseArgs(["run", "f.md", "--bogus"]), /unknown argument/);
 });
@@ -77,10 +77,19 @@ test("parseArgs reads skip and image", () => {
 test("the real steps file has the documented steps, each with a bash body", () => {
   const steps = extractSteps(readFileSync(resolve(REPO, "install-test/steps.md"), "utf8"));
   assert.deepEqual(steps.map((s) => s.id), [
-    "prerequisites", "node", "rust", "driver-source", "driver-release", "driver-name", "clone", "check",
+    "prerequisites", "node", "prerequisites-macos", "tools", "driver-release", "rust", "driver-source", "driver-name", "clone", "check",
   ]);
   for (const s of steps) assert.ok(s.body.trim().length > 0, s.id);
-  // A source install and a release install differ only in the two driver steps.
-  buildScript(selectSteps(steps, ["driver-release"]));
-  buildScript(selectSteps(steps, ["rust", "driver-source"]));
+  // The release route and the source route differ only in the driver steps.
+  buildScript(selectSteps(steps, ["rust", "driver-source", "driver-name"], "linux"));
+  buildScript(selectSteps(steps, ["driver-release"], "linux"));
+});
+
+test("a step with an os runs only on that system", () => {
+  const steps = extractSteps("```bash step=a os=linux\necho a\n```\n```bash step=b os=macos\necho b\n```\n```bash step=c\necho c\n```\n");
+  assert.deepEqual(selectSteps(steps, [], "linux").map((s) => s.id), ["a", "c"]);
+  assert.deepEqual(selectSteps(steps, [], "macos").map((s) => s.id), ["b", "c"]);
+  assert.deepEqual(selectSteps(steps).map((s) => s.id), ["a", "b", "c"]);
+  assert.deepEqual(parseArgs(["extract", "f.md", "--os", "macos"]).os, "macos");
+  assert.throws(() => parseArgs(["extract", "f.md", "--os", "windows"]), /linux or macos/);
 });

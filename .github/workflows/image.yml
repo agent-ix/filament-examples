@@ -11,9 +11,9 @@ on:
         required: true
         default: "latest"
       fsl_binary_url:
-        description: "URL of a prebuilt FSL driver release archive ({target} becomes x86_64-unknown-linux-gnu or aarch64-unknown-linux-gnu). Leave empty to build the driver from source."
+        description: "URL of the prebuilt FSL driver release archive ({target} becomes x86_64-unknown-linux-gnu or aarch64-unknown-linux-gnu). Leave empty to build the driver from source."
         required: false
-        default: ""
+        default: "https://github.com/agent-ix/quire-driver/releases/download/v0.1.1/quire-v0.1.1-{target}.tar.gz"
 
 env:
   IMAGE: ghcr.io/agent-ix/filament-toolchain

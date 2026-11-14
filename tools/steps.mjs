@@ -1,11 +1,13 @@
 // Install-test runner. Node, no dependencies.
 //
-//   node tools/steps.mjs extract <steps.md> [--skip id,id]
+//   node tools/steps.mjs extract <steps.md> [--skip id,id] [--os linux|macos]
 //   node tools/steps.mjs run <steps.md> --image ubuntu:22.04 [--skip id,id]
 //
 // A steps file is Markdown. Every fenced block whose info string is
-// `<language> step=<id>` is a step. `extract` prints the steps as one shell
-// script. `run` starts the image, streams that script into one bash session
+// `<language> step=<id>` or `<language> step=<id> os=linux|macos` is a step; a
+// step with an `os` runs only on that system. `run` is always Linux (the
+// container); `extract` takes `--os` and defaults to the system it runs on.
+// `extract` prints the steps as one shell script. `run` starts the image, streams that script into one bash session
 // (the way a reader types the commands into one terminal), and reports the
 // duration of each step. The first failing step stops the run and is named.
 import { spawn } from "node:child_process";
@@ -18,7 +20,7 @@ export function extractSteps(markdown) {
   const steps = [];
   const lines = markdown.split("\n");
   for (let i = 0; i < lines.length; i++) {
-    const open = /^```(\w+) step=([a-z0-9-]+)\s*$/.exec(lines[i]);
+    const open = /^```(\w+) step=([a-z0-9-]+)(?: os=(linux|macos))?\s*$/.exec(lines[i]);
     if (!open) continue;
     const body = [];
     let closed = false;
@@ -31,16 +33,16 @@ export function extractSteps(markdown) {
     }
     if (!closed) throw new Error(`step ${open[2]}: fenced block is not closed`);
     if (steps.some((s) => s.id === open[2])) throw new Error(`duplicate step id ${open[2]}`);
-    steps.push({ id: open[2], language: open[1], body: body.join("\n") });
+    steps.push({ id: open[2], language: open[1], os: open[3] ?? null, body: body.join("\n") });
   }
   return steps;
 }
 
-export function selectSteps(steps, skip = []) {
+export function selectSteps(steps, skip = [], os = null) {
   for (const id of skip) {
     if (!steps.some((s) => s.id === id)) throw new Error(`--skip names unknown step ${id}`);
   }
-  return steps.filter((s) => !skip.includes(s.id));
+  return steps.filter((s) => !skip.includes(s.id) && (!os || !s.os || s.os === os));
 }
 
 // One script, with a marker line before each step. The shell stops at the first
@@ -71,10 +73,14 @@ export function readMarkers(lines) {
 
 export function parseArgs(argv) {
   const [command, file, ...rest] = argv;
-  const opts = { command, file, skip: [], image: null };
+  const opts = { command, file, skip: [], image: null, os: null };
   for (let i = 0; i < rest.length; i++) {
     if (rest[i] === "--skip") opts.skip = (rest[++i] ?? "").split(",").filter(Boolean);
     else if (rest[i] === "--image") opts.image = rest[++i];
+    else if (rest[i] === "--os") {
+      opts.os = rest[++i];
+      if (!["linux", "macos"].includes(opts.os)) throw new Error(`--os takes linux or macos, got ${opts.os}`);
+    }
     else throw new Error(`unknown argument ${rest[i]}`);
   }
   return opts;
@@ -107,14 +113,15 @@ function runInDocker(image, script, env) {
 
 async function main(argv) {
   const opts = parseArgs(argv);
-  const steps = selectSteps(extractSteps(readFileSync(opts.file, "utf8")), opts.skip);
+  const os = opts.command === "run" ? "linux" : (opts.os ?? (process.platform === "darwin" ? "macos" : "linux"));
+  const steps = selectSteps(extractSteps(readFileSync(opts.file, "utf8")), opts.skip, os);
   const script = buildScript(steps);
   if (opts.command === "extract") {
     process.stdout.write(script);
     return 0;
   }
   if (opts.command !== "run" || !opts.image) throw new Error("usage: steps.mjs run <steps.md> --image <image> [--skip id,id]");
-  const { code, lines } = await runInDocker(opts.image, script, ["FSL_BINARY_URL"]);
+  const { code, lines } = await runInDocker(opts.image, script, []);
   const { records, last } = readMarkers(lines);
   console.log("\nstep durations");
   for (const r of records) console.log(`  ${r.id.padEnd(16)} ${r.seconds}s`);

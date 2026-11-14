@@ -2,17 +2,17 @@
 #   docker build -f image/Dockerfile -t filament-toolchain .
 #   docker run --rm filament-toolchain smoke.sh
 #
-# The driver comes from one input. By default it is built from source. Pass
-# --build-arg FSL_BINARY_URL=<url> to download a release archive (a .tar.gz
-# holding the single `quire` binary) instead; {target} in the URL becomes
-# x86_64-unknown-linux-gnu or aarch64-unknown-linux-gnu. Nothing else changes.
+# The driver comes from one input: FSL_BINARY_URL, the release archive (a
+# .tar.gz holding the single `quire` binary); {target} in the URL becomes
+# x86_64-unknown-linux-gnu or aarch64-unknown-linux-gnu. Pass
+# --build-arg FSL_BINARY_URL= (empty) to build the driver from source instead.
 
 ARG UBUNTU=22.04
 
 # ------------------------------------------------------------ driver stage
 FROM ubuntu:${UBUNTU} AS driver
 ARG RUST_VERSION=1.98.1
-ARG FSL_BINARY_URL=""
+ARG FSL_BINARY_URL="https://github.com/agent-ix/quire-driver/releases/download/v0.1.1/quire-v0.1.1-{target}.tar.gz"
 ENV DEBIAN_FRONTEND=noninteractive
 # The driver's own release profile (thin LTO, one codegen unit) exhausts the
 # memory of a 8 GB machine. These two overrides use cargo's environment

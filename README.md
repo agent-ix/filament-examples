@@ -24,7 +24,7 @@ The table lists each system with the number of cases that run today and the numb
 
 ## Getting started
 
-You can run the examples in the toolchain image or with a driver you build yourself.
+You can run the examples in the toolchain image, with the prebuilt driver, or with a driver you build yourself.
 
 ### In the image
 
@@ -40,11 +40,15 @@ To run a clone of this repository, or your own changes, mount the folder:
 docker run --rm --volume "$PWD:/work" --workdir /work ghcr.io/agent-ix/filament-toolchain make check staged
 ```
 
-The [image folder](image/README.md) describes the image. The [install steps](install-test/steps.md) install the same toolchain on a clean Ubuntu 22.04 machine, and a manual workflow runs them.
+The [image folder](image/README.md) describes the image.
+
+### With the prebuilt driver
+
+The [install steps](install-test/steps.md) install Node.js, download the prebuilt driver for macOS or Linux from the [driver releases](https://github.com/agent-ix/quire-driver/releases), and run every case. The install test runs them on a clean Ubuntu 22.04 machine, and a manual workflow runs the test.
 
 ### From source
 
-You need Node.js 20 or later, `make`, a Rust toolchain and the FSL command-line driver. The Makefile reads the driver path from one variable, `FSL`, set in [config.mk](config.mk). Its default is `fsl`.
+The install steps also build the driver. You need Node.js 20 or later, `make`, a Rust toolchain and the FSL command-line driver. The Makefile reads the driver path from one variable, `FSL`, set in [config.mk](config.mk). Its default is `fsl`.
 
 The driver is built from the public [quire-driver](https://github.com/agent-ix/quire-driver) repository. Its binary is still named `quire` until the rename to `fsl`. Pass its path:
 

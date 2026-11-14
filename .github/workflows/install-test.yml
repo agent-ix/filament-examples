@@ -5,10 +5,12 @@ name: Install test
 on:
   workflow_dispatch:
     inputs:
-      fsl_binary_url:
-        description: "URL of a prebuilt FSL driver release archive, with {target} for the platform. Leave empty to build the driver from source."
+      driver:
+        description: "How the install steps get the driver: release (download the archive) or source (build with Rust)."
         required: false
-        default: ""
+        type: choice
+        options: [release, source]
+        default: release
 
 permissions:
   contents: read
@@ -24,6 +26,4 @@ jobs:
       - name: Runner tests
         run: make test
       - name: Run the install steps
-        env:
-          FSL_BINARY_URL: ${{ inputs.fsl_binary_url }}
-        run: make install-test INSTALL_DRIVER=${{ inputs.fsl_binary_url != '' && 'release' || 'source' }}
+        run: make install-test INSTALL_DRIVER=${{ inputs.driver || 'release' }}
