@@ -1,0 +1,7 @@
+language "ix:native" edition "1-draft";
+profile v = "quire.value.complete/v1";
+
+type Qty = Int[0, 99];
+type Pack = Int[1, 12];
+
+function fullPacks using v(qty: Qty, pack: Pack): Int[0, 99] pure { qty div pack }

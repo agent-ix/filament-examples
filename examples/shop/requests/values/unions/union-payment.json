@@ -1,0 +1,28 @@
+{
+  "format": "native-run/1",
+  "request": {
+    "models": [],
+    "program": {
+      "source": {
+        "file": "../../../rules/values/unions/union-payment.fsl",
+        "authority": "example",
+        "identity": "example:shop/values/unions/union-payment",
+        "document": "union-payment",
+        "formal_revision": 1
+      }
+    },
+    "call": {
+      "function": "fee",
+      "arguments": [
+        {
+          "parameter": "kind",
+          "value": 2
+        },
+        {
+          "parameter": "voucher",
+          "value": 300
+        }
+      ]
+    }
+  }
+}

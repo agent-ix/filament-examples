@@ -1,0 +1,9 @@
+language "ix:native" edition "1-draft";
+profile v = "quire.value.complete/v1";
+
+dimension Mass;
+unit kg: Mass = rational(1, 1);
+
+function ratio using v(m: Quantity<kg>): Boolean pure {
+  6 kg / m = 6 kg / m
+}

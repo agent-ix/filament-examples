@@ -1,0 +1,19 @@
+{
+  "format": "native-run/1",
+  "request": {
+    "models": [],
+    "program": {
+      "source": {
+        "file": "../../../rules/values/collections/coll-count-out-of-domain.fsl",
+        "authority": "example",
+        "identity": "example:shop/values/collections/coll-count-out-of-domain",
+        "document": "coll-count-out-of-domain",
+        "formal_revision": 1
+      }
+    },
+    "call": {
+      "function": "dearLines",
+      "arguments": []
+    }
+  }
+}

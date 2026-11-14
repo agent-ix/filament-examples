@@ -1,0 +1,19 @@
+{
+  "format": "native-run/1",
+  "request": {
+    "models": [],
+    "program": {
+      "source": {
+        "file": "../../../rules/values/units/unit-decimal-magnitude.fsl",
+        "authority": "example",
+        "identity": "example:shop/values/units/unit-decimal-magnitude",
+        "document": "unit-decimal-magnitude",
+        "formal_revision": 1
+      }
+    },
+    "call": {
+      "function": "weighsThreeAndAHalf",
+      "arguments": []
+    }
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "format": "native-run/1",
+  "request": {
+    "models": [],
+    "program": {
+      "source": {
+        "file": "../../../rules/values/expressions/expr-short-circuit.fsl",
+        "authority": "example",
+        "identity": "example:shop/values/expressions/expr-short-circuit",
+        "document": "expr-short-circuit",
+        "formal_revision": 1
+      }
+    },
+    "call": {
+      "function": "ratioIsOne",
+      "arguments": [
+        {
+          "parameter": "x",
+          "value": 7
+        },
+        {
+          "parameter": "y",
+          "value": 0
+        }
+      ]
+    }
+  }
+}

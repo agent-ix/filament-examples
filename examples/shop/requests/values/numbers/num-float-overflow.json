@@ -1,0 +1,19 @@
+{
+  "format": "native-run/1",
+  "request": {
+    "models": [],
+    "program": {
+      "source": {
+        "file": "../../../rules/values/numbers/num-float-overflow.fsl",
+        "authority": "example",
+        "identity": "example:shop/values/numbers/num-float-overflow",
+        "document": "num-float-overflow",
+        "formal_revision": 1
+      }
+    },
+    "call": {
+      "function": "spills",
+      "arguments": []
+    }
+  }
+}

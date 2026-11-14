@@ -1,0 +1,6 @@
+language "ix:native" edition "1-draft";
+profile v = "quire.value.complete/v1";
+
+type Qty = Int[1, 99];
+
+function bulkQty using v(): Qty pure { 100 }

@@ -1,0 +1,11 @@
+language "ix:native" edition "1-draft";
+profile v = "quire.value.complete/v1";
+
+type Whole = Decimal[0, 1000; 0, 0; nearest-even];
+type Cents = Decimal[0, 100000; 2, 2; exact];
+
+function toWhole using v(x: Cents): Whole pure { convert<Whole>(x) }
+
+function roundsHalfToEven using v(): Boolean pure {
+  toWhole(decimal(1250, 2)) = decimal(12, 0)
+}

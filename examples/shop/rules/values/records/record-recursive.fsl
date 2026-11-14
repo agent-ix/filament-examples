@@ -1,0 +1,6 @@
+language "ix:native" edition "1-draft";
+profile v = "quire.value.complete/v1";
+
+record Category { label: Int[0, 9]; parent: Category; }
+
+function zero using v(): Int[0, 0] pure { 0 }

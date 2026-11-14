@@ -360,3 +360,1098 @@ status = "running"
 expect_exit = 20
 expect_verdict = "refused: missing_declaration"
 serves = "Learn: refining a specification (common misreading)"
+
+[[case]]
+id = "decl-alias-narrower"
+rule = "packOf"
+statement = "A quantity of 6 in a pack of up to 12 passes where a quantity of 1 to 99 is expected."
+file = "rules/values/declarations/decl-alias-narrower.fsl"
+command = "run requests/values/declarations/decl-alias-narrower.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "6"
+serves = "Types reference (types and declarations)"
+
+[[case]]
+id = "decl-alias-wider"
+rule = ""
+statement = "A bulk quantity up to 200 does not pass where a quantity of 1 to 99 is expected."
+file = "rules/values/declarations/decl-alias-wider.fsl"
+command = "check rules/values/declarations/decl-alias-wider.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: undefined_expression unproved-range"
+serves = "Types reference (types and declarations)"
+
+[[case]]
+id = "decl-alias-cycle"
+rule = ""
+statement = "Two aliases that name each other are refused."
+file = "rules/values/declarations/decl-alias-cycle.fsl"
+command = "check rules/values/declarations/decl-alias-cycle.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: invalid_package"
+serves = "Types reference (types and declarations)"
+
+[[case]]
+id = "decl-unused-function"
+rule = ""
+statement = "A function that nothing calls is still checked, and its result must fit."
+file = "rules/values/declarations/decl-unused-function.fsl"
+command = "check rules/values/declarations/decl-unused-function.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: undefined_expression unproved-range"
+serves = "Types reference (types and declarations)"
+
+[[case]]
+id = "decl-forward-reference"
+rule = "itemTotal"
+statement = "A function may use records declared below it."
+file = "rules/values/declarations/decl-forward-reference.fsl"
+command = "run requests/values/declarations/decl-forward-reference.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "700"
+serves = "Types reference (types and declarations)"
+
+[[case]]
+id = "expr-precedence"
+rule = "grouping"
+statement = "Multiplication binds tighter than addition, and subtraction groups to the left."
+file = "rules/values/expressions/expr-precedence.fsl"
+command = "run requests/values/expressions/expr-precedence.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "true"
+serves = "Types reference (expressions and definedness)"
+
+[[case]]
+id = "expr-let"
+rule = "payable"
+statement = "A let names the line total once and the shipping rule uses it twice."
+file = "rules/values/expressions/expr-let.fsl"
+command = "run requests/values/expressions/expr-let.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "4249"
+serves = "Types reference (expressions and definedness)"
+
+[[case]]
+id = "expr-let-arithmetic"
+rule = ""
+statement = "A let name for price times quantity has no range, so it does not fit LineCents."
+file = "rules/values/expressions/expr-let-arithmetic.fsl"
+command = "check rules/values/expressions/expr-let-arithmetic.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: undefined_expression unproved-range"
+serves = "Types reference (expressions and definedness)"
+
+[[case]]
+id = "expr-if-guard"
+rule = "afterOneSale"
+statement = "A comparison with a literal proves the range of the subtraction in its branch."
+file = "rules/values/expressions/expr-if-guard.fsl"
+command = "run requests/values/expressions/expr-if-guard.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "0"
+serves = "Types reference (expressions and definedness)"
+
+[[case]]
+id = "expr-unguarded"
+rule = ""
+statement = "Subtracting 1 from a stock level that may be 0 can leave the type."
+file = "rules/values/expressions/expr-unguarded.fsl"
+command = "check rules/values/expressions/expr-unguarded.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: undefined_expression unproved-range"
+serves = "Types reference (expressions and definedness)"
+
+[[case]]
+id = "expr-guard-two-names"
+rule = ""
+statement = "A comparison between two names is no proof about their difference."
+file = "rules/values/expressions/expr-guard-two-names.fsl"
+command = "check rules/values/expressions/expr-guard-two-names.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: undefined_expression unproved-range"
+serves = "Types reference (expressions and definedness)"
+
+[[case]]
+id = "expr-connectives"
+rule = "freeDelivery"
+statement = "A member gets free delivery whatever the subtotal."
+file = "rules/values/expressions/expr-connectives.fsl"
+command = "run requests/values/expressions/expr-connectives.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "true"
+serves = "Types reference (expressions and definedness)"
+
+[[case]]
+id = "expr-kinds-differ"
+rule = ""
+statement = "An integer does not compare with a rational without a conversion."
+file = "rules/values/expressions/expr-kinds-differ.fsl"
+command = "check rules/values/expressions/expr-kinds-differ.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed"
+serves = "Types reference (expressions and definedness)"
+
+[[case]]
+id = "num-int-negative"
+rule = "remaining"
+statement = "The difference of two amounts can be negative, and its type says so."
+file = "rules/values/numbers/num-int-negative.fsl"
+command = "run requests/values/numbers/num-int-negative.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "-300"
+serves = "Types reference (numbers)"
+
+[[case]]
+id = "num-int-difference-narrow"
+rule = ""
+statement = "A difference of two amounts does not fit an amount."
+file = "rules/values/numbers/num-int-difference-narrow.fsl"
+command = "check rules/values/numbers/num-int-difference-narrow.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: undefined_expression unproved-range"
+serves = "Types reference (numbers)"
+
+[[case]]
+id = "num-literal-range"
+rule = ""
+statement = "A literal outside its type is refused."
+file = "rules/values/numbers/num-literal-range.fsl"
+command = "check rules/values/numbers/num-literal-range.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: undefined_expression unproved-range"
+serves = "Types reference (numbers)"
+
+[[case]]
+id = "num-eq-sum-refused"
+rule = ""
+statement = "Balance equals charged minus refunded is refused when the balance cannot be negative."
+file = "rules/values/numbers/num-eq-sum-refused.fsl"
+command = "check rules/values/numbers/num-eq-sum-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: undefined_expression unproved-range"
+serves = "Types reference (numbers)"
+
+[[case]]
+id = "num-eq-sum-ordered"
+rule = "settled"
+statement = "The same equality written as two comparisons is accepted."
+file = "rules/values/numbers/num-eq-sum-ordered.fsl"
+command = "run requests/values/numbers/num-eq-sum-ordered.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "true"
+serves = "Types reference (numbers)"
+
+[[case]]
+id = "num-eq-sum-convert"
+rule = "settled"
+statement = "Converting the balance to Integer makes the same equality acceptable."
+file = "rules/values/numbers/num-eq-sum-convert.fsl"
+command = "run requests/values/numbers/num-eq-sum-convert.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "true"
+serves = "Types reference (numbers)"
+
+[[case]]
+id = "num-mod"
+rule = "leftover"
+statement = "14 items in packs of 4 leave 2."
+file = "rules/values/numbers/num-mod.fsl"
+command = "run requests/values/numbers/num-mod.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "2"
+serves = "Types reference (numbers)"
+
+[[case]]
+id = "num-rational"
+rule = "splitsInThirds"
+statement = "1000 cents over 3 items is exactly 1000/3 cents each."
+file = "rules/values/numbers/num-rational.fsl"
+command = "run requests/values/numbers/num-rational.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "true"
+serves = "Types reference (numbers)"
+
+[[case]]
+id = "num-rational-reduced"
+rule = "sameAsTwoQuarters"
+statement = "2/4 and 1/2 are the same value."
+file = "rules/values/numbers/num-rational-reduced.fsl"
+command = "run requests/values/numbers/num-rational-reduced.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "true"
+serves = "Types reference (numbers)"
+
+[[case]]
+id = "num-rational-sum"
+rule = "twoHalves"
+statement = "Two halves make one."
+file = "rules/values/numbers/num-rational-sum.fsl"
+command = "run requests/values/numbers/num-rational-sum.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "true"
+serves = "Types reference (numbers)"
+
+[[case]]
+id = "num-decimal"
+rule = "twoItems"
+statement = "Two items of 19.99 cost 39.98."
+file = "rules/values/numbers/num-decimal.fsl"
+command = "run requests/values/numbers/num-decimal.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "true"
+serves = "Types reference (numbers)"
+
+[[case]]
+id = "num-decimal-rounded"
+rule = "thirdOfTen"
+statement = "A third of 10.00 rounded toward zero is 3.33."
+file = "rules/values/numbers/num-decimal-rounded.fsl"
+command = "run requests/values/numbers/num-decimal-rounded.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "true"
+serves = "Types reference (numbers)"
+
+[[case]]
+id = "num-decimal-exact"
+rule = "thirdOfTen"
+statement = "An exact decimal type refuses a quotient that needs more digits."
+file = "rules/values/numbers/num-decimal-exact.fsl"
+command = "run requests/values/numbers/num-decimal-exact.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: inexact_decimal"
+serves = "Types reference (numbers)"
+
+[[case]]
+id = "num-decimal-numeral"
+rule = ""
+statement = "A decimal value is written decimal(coefficient, scale), not 0.9."
+file = "rules/values/numbers/num-decimal-numeral.fsl"
+command = "check rules/values/numbers/num-decimal-numeral.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: invalid_syntax"
+serves = "Types reference (numbers)"
+
+[[case]]
+id = "num-float"
+rule = "twoParcels"
+statement = "1.0 plus 1.0 is 2.0 in 64-bit floating point."
+file = "rules/values/numbers/num-float.fsl"
+command = "run requests/values/numbers/num-float.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "true"
+serves = "Types reference (numbers)"
+
+[[case]]
+id = "num-float-exact"
+rule = "thirdIsThird"
+statement = "An exact float type refuses a result that needs rounding."
+file = "rules/values/numbers/num-float-exact.fsl"
+command = "run requests/values/numbers/num-float-exact.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ieee_not_exact"
+serves = "Types reference (numbers)"
+
+[[case]]
+id = "num-convert"
+rule = "asRational"
+statement = "An integer converts to a wider rational exactly."
+file = "rules/values/numbers/num-convert.fsl"
+command = "run requests/values/numbers/num-convert.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "true"
+serves = "Types reference (numbers)"
+
+[[case]]
+id = "staged-integer-division"
+rule = "fullPacks"
+statement = "30 items fill 2 packs of 12."
+file = "rules/values/numbers/staged-integer-division.fsl"
+command = "run requests/values/numbers/staged-integer-division.json"
+status = "staged"
+expect_exit = 20
+ready_exit = 0
+waits_on = "QSL-1989"
+needs = "integer division from source"
+why = "div needs an integer-division law and no source construct selects one"
+serves = "Types reference (numbers)"
+
+[[case]]
+id = "unit-convert"
+rule = "isHeavy"
+statement = "3500 g is more than 3 kg."
+file = "rules/values/units/unit-convert.fsl"
+command = "run requests/values/units/unit-convert.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "true"
+serves = "Types reference (units and quantities)"
+
+[[case]]
+id = "unit-decimal-magnitude"
+rule = "weighsThreeAndAHalf"
+statement = "3500 g is exactly 3.5 kg."
+file = "rules/values/units/unit-decimal-magnitude.fsl"
+command = "run requests/values/units/unit-decimal-magnitude.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "true"
+serves = "Types reference (units and quantities)"
+
+[[case]]
+id = "unit-mixed-units"
+rule = ""
+statement = "Kilograms and grams do not add without a conversion."
+file = "rules/values/units/unit-mixed-units.fsl"
+command = "check rules/values/units/unit-mixed-units.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed type-mismatch"
+serves = "Types reference (units and quantities)"
+
+[[case]]
+id = "unit-affine"
+rule = "freezing"
+statement = "0 degrees Celsius is 273.15 kelvin."
+file = "rules/values/units/unit-affine.fsl"
+command = "run requests/values/units/unit-affine.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "true"
+serves = "Types reference (units and quantities)"
+
+[[case]]
+id = "unit-affine-sum"
+rule = ""
+statement = "Two temperatures in an offset unit do not add."
+file = "rules/values/units/unit-affine-sum.fsl"
+command = "check rules/values/units/unit-affine-sum.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed type-mismatch"
+serves = "Types reference (units and quantities)"
+
+[[case]]
+id = "unit-quotient"
+rule = "sameRate"
+statement = "6 kg in 2 s is the same rate as 3 kg in 1 s."
+file = "rules/values/units/unit-quotient.fsl"
+command = "run requests/values/units/unit-quotient.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "true"
+serves = "Types reference (units and quantities)"
+
+[[case]]
+id = "unit-quotient-variable"
+rule = ""
+statement = "A quantity divisor that is not a nonzero literal is refused."
+file = "rules/values/units/unit-quotient-variable.fsl"
+command = "check rules/values/units/unit-quotient-variable.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: undefined_expression unproved-nonzero"
+serves = "Types reference (units and quantities)"
+
+[[case]]
+id = "unit-derived"
+rule = "fast"
+statement = "A speed dimension is length over time."
+file = "rules/values/units/unit-derived.fsl"
+command = "run requests/values/units/unit-derived.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "true"
+serves = "Types reference (units and quantities)"
+
+[[case]]
+id = "text-string"
+rule = "sameCurrency"
+statement = "EUR is not USD."
+file = "rules/values/text/text-string.fsl"
+command = "run requests/values/text/text-string.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "true"
+serves = "Types reference (text)"
+
+[[case]]
+id = "text-escape"
+rule = "precomposed"
+statement = "A precomposed e-acute and an e followed by an accent are different strings."
+file = "rules/values/text/text-escape.fsl"
+command = "run requests/values/text/text-escape.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "false"
+serves = "Types reference (text)"
+
+[[case]]
+id = "text-bounded"
+rule = ""
+statement = "Two product codes of 1 to 12 characters compare for equality and order."
+file = "rules/values/text/text-bounded.fsl"
+command = "check rules/values/text/text-bounded.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "Types reference (text)"
+
+[[case]]
+id = "text-sku-from-literal"
+rule = ""
+statement = "A string literal is a String and does not stand where a bounded text is expected."
+file = "rules/values/text/text-sku-from-literal.fsl"
+command = "check rules/values/text/text-sku-from-literal.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed type-mismatch"
+serves = "Types reference (text)"
+
+[[case]]
+id = "record-line-item"
+rule = "itemTotal"
+statement = "A line item holds a price and a quantity."
+file = "rules/values/records/record-line-item.fsl"
+command = "run requests/values/records/record-line-item.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "3750"
+serves = "Types reference (records, tuples and enums)"
+
+[[case]]
+id = "record-missing-field"
+rule = ""
+statement = "A record value gives every required field."
+file = "rules/values/records/record-missing-field.fsl"
+command = "check rules/values/records/record-missing-field.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed type-mismatch"
+serves = "Types reference (records, tuples and enums)"
+
+[[case]]
+id = "record-equality"
+rule = "sameItem"
+statement = "Two records are equal when every field is equal, in any written order."
+file = "rules/values/records/record-equality.fsl"
+command = "run requests/values/records/record-equality.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "true"
+serves = "Types reference (records, tuples and enums)"
+
+[[case]]
+id = "record-recursive"
+rule = ""
+statement = "A record that contains itself needs an optional field or a bounded collection."
+file = "rules/values/records/record-recursive.fsl"
+command = "check rules/values/records/record-recursive.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed"
+serves = "Types reference (records, tuples and enums)"
+
+[[case]]
+id = "record-recursive-optional"
+rule = ""
+statement = "A category may have an optional parent category."
+file = "rules/values/records/record-recursive-optional.fsl"
+command = "check rules/values/records/record-recursive-optional.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "Types reference (records, tuples and enums)"
+
+[[case]]
+id = "record-tuple"
+rule = "samePair"
+statement = "Two tuples are equal position by position."
+file = "rules/values/records/record-tuple.fsl"
+command = "run requests/values/records/record-tuple.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "true"
+serves = "Types reference (records, tuples and enums)"
+
+[[case]]
+id = "record-tuple-position"
+rule = ""
+statement = "A tuple position cannot be read by number."
+file = "rules/values/records/record-tuple-position.fsl"
+command = "check rules/values/records/record-tuple-position.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: invalid_syntax"
+serves = "Types reference (records, tuples and enums)"
+
+[[case]]
+id = "record-enum"
+rule = "differ"
+statement = "Two cases of an enum are different values."
+file = "rules/values/records/record-enum.fsl"
+command = "run requests/values/records/record-enum.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "true"
+serves = "Types reference (records, tuples and enums)"
+
+[[case]]
+id = "record-ordered-enum"
+rule = "atLeastStandard"
+statement = "Express shipping ranks at or above standard."
+file = "rules/values/records/record-ordered-enum.fsl"
+command = "run requests/values/records/record-ordered-enum.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "true"
+serves = "Types reference (records, tuples and enums)"
+
+[[case]]
+id = "record-enum-order"
+rule = ""
+statement = "An enum without ordered has no order."
+file = "rules/values/records/record-enum-order.fsl"
+command = "check rules/values/records/record-enum-order.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed operator-ineligible"
+serves = "Types reference (records, tuples and enums)"
+
+[[case]]
+id = "record-enum-two-types"
+rule = ""
+statement = "Cases of two enums do not compare, even with one name."
+file = "rules/values/records/record-enum-two-types.fsl"
+command = "check rules/values/records/record-enum-two-types.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed type-mismatch"
+serves = "Types reference (records, tuples and enums)"
+
+[[case]]
+id = "union-payment"
+rule = "fee"
+statement = "A payment is a card, cash or a voucher, and each has its own fee."
+file = "rules/values/unions/union-payment.fsl"
+command = "run requests/values/unions/union-payment.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "300"
+serves = "Types reference (unions, optionals and case)"
+
+[[case]]
+id = "union-missing-arm"
+rule = ""
+statement = "A case needs one arm for every member."
+file = "rules/values/unions/union-missing-arm.fsl"
+command = "check rules/values/unions/union-missing-arm.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: undefined_expression unproved-exhaustiveness"
+serves = "Types reference (unions, optionals and case)"
+
+[[case]]
+id = "union-equality"
+rule = "sameMember"
+statement = "Two union values are equal when member and payload are equal."
+file = "rules/values/unions/union-equality.fsl"
+command = "run requests/values/unions/union-equality.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "true"
+serves = "Types reference (unions, optionals and case)"
+
+[[case]]
+id = "union-recursive-optional"
+rule = ""
+statement = "A chain of links ends through an optional payload."
+file = "rules/values/unions/union-recursive-optional.fsl"
+command = "check rules/values/unions/union-recursive-optional.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "Types reference (unions, optionals and case)"
+
+[[case]]
+id = "union-scrutinee"
+rule = "fee"
+statement = "A record written inside a case needs parentheses."
+file = "rules/values/unions/union-scrutinee.fsl"
+command = "run requests/values/unions/union-scrutinee.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "0"
+serves = "Types reference (unions, optionals and case)"
+
+[[case]]
+id = "union-opt-coupon"
+rule = "couponValue"
+statement = "An order has an optional coupon; the value is read only where it is present."
+file = "rules/values/unions/union-opt-coupon.fsl"
+command = "run requests/values/unions/union-opt-coupon.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "500"
+serves = "Types reference (unions, optionals and case)"
+
+[[case]]
+id = "union-opt-unguarded"
+rule = ""
+statement = "Reading an optional value needs a proof that it is present."
+file = "rules/values/unions/union-opt-unguarded.fsl"
+command = "check rules/values/unions/union-opt-unguarded.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: undefined_expression unproved-presence"
+serves = "Types reference (unions, optionals and case)"
+
+[[case]]
+id = "union-opt-compare-payload"
+rule = ""
+statement = "An optional value does not compare with a plain value."
+file = "rules/values/unions/union-opt-compare-payload.fsl"
+command = "check rules/values/unions/union-opt-compare-payload.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed type-mismatch"
+serves = "Types reference (unions, optionals and case)"
+
+[[case]]
+id = "union-opt-none"
+rule = ""
+statement = "A coupon that may be missing is left out or set to null; none is not accepted there."
+file = "rules/values/unions/union-opt-none.fsl"
+command = "check rules/values/unions/union-opt-none.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed type-mismatch"
+serves = "Types reference (unions, optionals and case)"
+
+[[case]]
+id = "coll-cart"
+rule = "lineCount"
+statement = "A cart holds up to five prices."
+file = "rules/values/collections/coll-cart.fsl"
+command = "run requests/values/collections/coll-cart.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "3"
+serves = "Types reference (collections)"
+
+[[case]]
+id = "coll-contains"
+rule = "hasSmall"
+statement = "The cart holds a price of 300."
+file = "rules/values/collections/coll-cart.fsl"
+command = "run requests/values/collections/coll-contains.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "true"
+serves = "Types reference (collections)"
+
+[[case]]
+id = "coll-forall"
+rule = "allWithinLimit"
+statement = "Every price is at most 1250."
+file = "rules/values/collections/coll-cart.fsl"
+command = "run requests/values/collections/coll-forall.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "true"
+serves = "Types reference (collections)"
+
+[[case]]
+id = "coll-exists"
+rule = "anyFree"
+statement = "No price in the cart is 0."
+file = "rules/values/collections/coll-cart.fsl"
+command = "run requests/values/collections/coll-exists.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "false"
+serves = "Types reference (collections)"
+
+[[case]]
+id = "coll-filter"
+rule = "bigLines"
+statement = "Two prices are above 1000."
+file = "rules/values/collections/coll-cart.fsl"
+command = "run requests/values/collections/coll-filter.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "2"
+serves = "Types reference (collections)"
+
+[[case]]
+id = "coll-count"
+rule = "bigCount"
+statement = "Two prices in the cart are above 1000."
+file = "rules/values/collections/coll-cart.fsl"
+command = "run requests/values/collections/coll-count.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "2"
+serves = "Types reference (collections)"
+
+[[case]]
+id = "coll-sum"
+rule = "cartTotal"
+statement = "The cart total is the sum of its prices."
+file = "rules/values/collections/coll-cart.fsl"
+command = "run requests/values/collections/coll-sum.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "2800"
+serves = "Types reference (collections)"
+
+[[case]]
+id = "coll-fold"
+rule = "cartTotalFolded"
+statement = "A left fold adds the prices."
+file = "rules/values/collections/coll-cart.fsl"
+command = "run requests/values/collections/coll-fold.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "2800"
+serves = "Types reference (collections)"
+
+[[case]]
+id = "coll-map"
+rule = "totalWithTax"
+statement = "Mapping adds 100 to each price before the sum."
+file = "rules/values/collections/coll-cart.fsl"
+command = "run requests/values/collections/coll-map.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "3100"
+serves = "Types reference (collections)"
+
+[[case]]
+id = "coll-reduce"
+rule = "dearest"
+statement = "The dearest price of a cart that has at least one line."
+file = "rules/values/collections/coll-reduce.fsl"
+command = "run requests/values/collections/coll-reduce.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "1250"
+serves = "Types reference (collections)"
+
+[[case]]
+id = "coll-reduce-maybe-empty"
+rule = ""
+statement = "A reduce over a collection that may be empty is refused."
+file = "rules/values/collections/coll-reduce-maybe-empty.fsl"
+command = "check rules/values/collections/coll-reduce-maybe-empty.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: undefined_expression unproved-range"
+serves = "Types reference (collections)"
+
+[[case]]
+id = "coll-set"
+rule = "distinctCount"
+statement = "A set keeps one of two equal prices."
+file = "rules/values/collections/coll-set.fsl"
+command = "run requests/values/collections/coll-set.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "2"
+serves = "Types reference (collections)"
+
+[[case]]
+id = "coll-flatten"
+rule = "itemCount"
+statement = "Flattening joins the lines of two parcels."
+file = "rules/values/collections/coll-flatten.fsl"
+command = "run requests/values/collections/coll-flatten.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "3"
+serves = "Types reference (collections)"
+
+[[case]]
+id = "coll-too-many"
+rule = "lineCount"
+statement = "Three prices do not fit a collection of at most two."
+file = "rules/values/collections/coll-too-many.fsl"
+command = "run requests/values/collections/coll-too-many.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: cardinality_out_of_bound"
+serves = "Types reference (collections)"
+
+[[case]]
+id = "coll-sum-too-narrow"
+rule = ""
+statement = "Five prices can sum beyond 3000."
+file = "rules/values/collections/coll-sum-too-narrow.fsl"
+command = "check rules/values/collections/coll-sum-too-narrow.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: undefined_expression unproved-range"
+serves = "Types reference (collections)"
+
+[[case]]
+id = "coll-sum-inline-type"
+rule = ""
+statement = "The type of a sum is a declared name."
+file = "rules/values/collections/coll-sum-inline-type.fsl"
+command = "check rules/values/collections/coll-sum-inline-type.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: invalid_syntax"
+serves = "Types reference (collections)"
+
+[[case]]
+id = "fn-predicate"
+rule = "bulkLine"
+statement = "A line of 10 or more is a bulk line."
+file = "rules/values/functions/fn-predicate.fsl"
+command = "run requests/values/functions/fn-predicate.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "true"
+serves = "Types reference (functions and predicates)"
+
+[[case]]
+id = "fn-recursion"
+rule = "boxes"
+statement = "30 items need 3 boxes of 12."
+file = "rules/values/functions/fn-recursion.fsl"
+command = "run requests/values/functions/fn-recursion.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "3"
+serves = "Types reference (functions and predicates)"
+
+[[case]]
+id = "fn-no-measure"
+rule = ""
+statement = "A recursive function needs a decreases clause."
+file = "rules/values/functions/fn-no-measure.fsl"
+command = "check rules/values/functions/fn-no-measure.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: undefined_expression unproved-decrease"
+serves = "Types reference (functions and predicates)"
+
+[[case]]
+id = "fn-no-decrease"
+rule = ""
+statement = "A recursive call must pass a smaller value."
+file = "rules/values/functions/fn-no-decrease.fsl"
+command = "check rules/values/functions/fn-no-decrease.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: undefined_expression unproved-decrease"
+serves = "Types reference (functions and predicates)"
+
+[[case]]
+id = "fn-wrong-argument"
+rule = ""
+statement = "A Boolean does not pass where a quantity is expected."
+file = "rules/values/functions/fn-wrong-argument.fsl"
+command = "check rules/values/functions/fn-wrong-argument.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed type-mismatch"
+serves = "Types reference (functions and predicates)"
+
+[[case]]
+id = "fn-work-budget"
+rule = "boxes"
+statement = "A call with a work budget of 5 stops before it finishes."
+file = "rules/values/functions/fn-recursion.fsl"
+command = "run requests/values/functions/fn-work-budget.json"
+status = "running"
+expect_exit = 22
+expect_verdict = "incomplete"
+serves = "Types reference (functions and predicates)"
+
+[[case]]
+id = "num-integer-unbounded"
+rule = "square"
+statement = "An Integer result keeps every digit, past the 64-bit range."
+file = "rules/values/numbers/num-integer-unbounded.fsl"
+command = "run requests/values/numbers/num-integer-unbounded.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "9223372037000250000"
+serves = "Types reference (numbers)"
+
+[[case]]
+id = "num-decimal-overflow"
+rule = "bump"
+statement = "A percentage of 0.99 plus 0.01 leaves the range of 99 hundredths and is refused when the call runs."
+file = "rules/values/numbers/num-decimal-overflow.fsl"
+command = "run requests/values/numbers/num-decimal-overflow.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: decimal_out_of_domain"
+serves = "Types reference (numbers)"
+
+[[case]]
+id = "num-float-overflow"
+rule = "spills"
+statement = "The largest 32-bit float added to itself rounds to infinity."
+file = "rules/values/numbers/num-float-overflow.fsl"
+command = "run requests/values/numbers/num-float-overflow.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "true"
+serves = "Types reference (numbers)"
+
+[[case]]
+id = "num-round-toward-zero"
+rule = "eighthTowardZero"
+statement = "An eighth of 1.00 toward zero is 0.12."
+file = "rules/values/numbers/num-rounding.fsl"
+command = "run requests/values/numbers/num-round-toward-zero.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "true"
+serves = "Types reference (numbers)"
+
+[[case]]
+id = "num-round-toward-positive"
+rule = "eighthTowardPositive"
+statement = "An eighth of 1.00 toward positive infinity is 0.13."
+file = "rules/values/numbers/num-rounding.fsl"
+command = "run requests/values/numbers/num-round-toward-positive.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "true"
+serves = "Types reference (numbers)"
+
+[[case]]
+id = "num-round-nearest-even"
+rule = "eighthNearestEven"
+statement = "An eighth of 1.00 to the nearest, ties to even, is 0.12."
+file = "rules/values/numbers/num-rounding.fsl"
+command = "run requests/values/numbers/num-round-nearest-even.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "true"
+serves = "Types reference (numbers)"
+
+[[case]]
+id = "num-round-nearest-away"
+rule = "eighthNearestAway"
+statement = "An eighth of 1.00 to the nearest, ties away from zero, is 0.13."
+file = "rules/values/numbers/num-rounding.fsl"
+command = "run requests/values/numbers/num-round-nearest-away.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "true"
+serves = "Types reference (numbers)"
+
+[[case]]
+id = "num-convert-rounding"
+rule = "roundsHalfToEven"
+statement = "12.50 converted to a whole number rounds to 12."
+file = "rules/values/numbers/num-convert-rounding.fsl"
+command = "run requests/values/numbers/num-convert-rounding.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "true"
+serves = "Types reference (numbers)"
+
+[[case]]
+id = "num-convert-fraction"
+rule = "isSixtySix"
+statement = "Two thirds converted to hundredths toward zero is 0.66."
+file = "rules/values/numbers/num-convert-fraction.fsl"
+command = "run requests/values/numbers/num-convert-fraction.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "true"
+serves = "Types reference (numbers)"
+
+[[case]]
+id = "staged-mod-zero-divisor"
+rule = "leftover"
+statement = "A pack size that may be 0 is refused when the unit is checked."
+file = "rules/values/numbers/staged-mod-zero-divisor.fsl"
+command = "check rules/values/numbers/staged-mod-zero-divisor.fsl"
+status = "staged"
+expect_exit = 0
+ready_exit = 20
+waits_on = "QSL-1962"
+needs = "a divisor that may be zero is refused"
+why = "a remainder by a divisor whose range includes 0 is accepted; the specification requires a guard"
+serves = "Types reference (numbers)"
+
+[[case]]
+id = "expr-short-circuit"
+rule = "ratioIsOne"
+statement = "A zero divisor is never reached when the left side of and is false."
+file = "rules/values/expressions/expr-short-circuit.fsl"
+command = "run requests/values/expressions/expr-short-circuit.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "false"
+serves = "Types reference (expressions and definedness)"
+
+[[case]]
+id = "coll-count-out-of-domain"
+rule = "dearLines"
+statement = "Four prices above 4 do not fit a count of at most 2."
+file = "rules/values/collections/coll-count-out-of-domain.fsl"
+command = "run requests/values/collections/coll-count-out-of-domain.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: integer_out_of_domain"
+serves = "Types reference (collections)"
+
+[[case]]
+id = "union-opt-absent"
+rule = "hasCoupon"
+statement = "An Option that holds none is not present."
+file = "rules/values/unions/union-opt-absent.fsl"
+command = "run requests/values/unions/union-opt-absent.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "false"
+serves = "Types reference (unions, optionals and case)"
+
+[[case]]
+id = "union-opt-null-vs-absent"
+rule = "same"
+statement = "An order with coupon null and an order with the coupon left out are different values."
+file = "rules/values/unions/union-opt-null-vs-absent.fsl"
+command = "run requests/values/unions/union-opt-null-vs-absent.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "false"
+serves = "Types reference (unions, optionals and case)"

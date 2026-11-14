@@ -1,0 +1,28 @@
+{
+  "format": "native-run/1",
+  "request": {
+    "models": [],
+    "program": {
+      "source": {
+        "file": "../../../rules/values/expressions/expr-connectives.fsl",
+        "authority": "example",
+        "identity": "example:shop/values/expressions/expr-connectives",
+        "document": "expr-connectives",
+        "formal_revision": 1
+      }
+    },
+    "call": {
+      "function": "freeDelivery",
+      "arguments": [
+        {
+          "parameter": "subtotal",
+          "value": 3750
+        },
+        {
+          "parameter": "member",
+          "value": 1
+        }
+      ]
+    }
+  }
+}

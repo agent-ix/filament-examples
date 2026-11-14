@@ -1,0 +1,6 @@
+language "ix:native" edition "1-draft";
+profile v = "quire.value.complete/v1";
+
+function sameCurrency using v(): Boolean pure {
+  let currency = "EUR" in currency != "USD"
+}

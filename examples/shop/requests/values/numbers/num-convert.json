@@ -1,0 +1,24 @@
+{
+  "format": "native-run/1",
+  "request": {
+    "models": [],
+    "program": {
+      "source": {
+        "file": "../../../rules/values/numbers/num-convert.fsl",
+        "authority": "example",
+        "identity": "example:shop/values/numbers/num-convert",
+        "document": "num-convert",
+        "formal_revision": 1
+      }
+    },
+    "call": {
+      "function": "asRational",
+      "arguments": [
+        {
+          "parameter": "price",
+          "value": 1250
+        }
+      ]
+    }
+  }
+}

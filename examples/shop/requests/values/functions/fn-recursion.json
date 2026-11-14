@@ -1,0 +1,24 @@
+{
+  "format": "native-run/1",
+  "request": {
+    "models": [],
+    "program": {
+      "source": {
+        "file": "../../../rules/values/functions/fn-recursion.fsl",
+        "authority": "example",
+        "identity": "example:shop/values/functions/fn-recursion",
+        "document": "fn-recursion",
+        "formal_revision": 1
+      }
+    },
+    "call": {
+      "function": "boxes",
+      "arguments": [
+        {
+          "parameter": "n",
+          "value": 30
+        }
+      ]
+    }
+  }
+}

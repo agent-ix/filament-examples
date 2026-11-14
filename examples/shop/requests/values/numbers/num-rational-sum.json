@@ -1,0 +1,19 @@
+{
+  "format": "native-run/1",
+  "request": {
+    "models": [],
+    "program": {
+      "source": {
+        "file": "../../../rules/values/numbers/num-rational-sum.fsl",
+        "authority": "example",
+        "identity": "example:shop/values/numbers/num-rational-sum",
+        "document": "num-rational-sum",
+        "formal_revision": 1
+      }
+    },
+    "call": {
+      "function": "twoHalves",
+      "arguments": []
+    }
+  }
+}

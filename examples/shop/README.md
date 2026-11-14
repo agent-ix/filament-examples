@@ -26,6 +26,8 @@ The functions in [rules/values.fsl](rules/values.fsl) compute a line total and a
 | `values-qty-zero` | Quantity 0 is outside its type | 20 |
 | `values-too-narrow` | A result type too small for price times quantity | 20 |
 
+The language reference for values and types uses further small cases, one folder per reference page under [rules/values](rules/values) and [requests/values](requests/values). The case ids start with the page: `decl-` (types and declarations), `expr-`, `num-`, `unit-`, `text-`, `record-`, `union-`, `coll-` and `fn-`.
+
 ## Rules about data
 
 The rules in [rules/orders.fsl](rules/orders.fsl) check one object of a snapshot. [rules/paid-in-full.fsl](rules/paid-in-full.fsl) holds `PaidInFull` alone, for the first Learn page. The table lists each rule with its requirement and a passing and a failing case.

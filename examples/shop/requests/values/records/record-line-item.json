@@ -1,0 +1,28 @@
+{
+  "format": "native-run/1",
+  "request": {
+    "models": [],
+    "program": {
+      "source": {
+        "file": "../../../rules/values/records/record-line-item.fsl",
+        "authority": "example",
+        "identity": "example:shop/values/records/record-line-item",
+        "document": "record-line-item",
+        "formal_revision": 1
+      }
+    },
+    "call": {
+      "function": "itemTotal",
+      "arguments": [
+        {
+          "parameter": "price",
+          "value": 1250
+        },
+        {
+          "parameter": "qty",
+          "value": 3
+        }
+      ]
+    }
+  }
+}

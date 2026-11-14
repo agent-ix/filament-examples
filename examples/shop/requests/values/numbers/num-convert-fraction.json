@@ -1,0 +1,19 @@
+{
+  "format": "native-run/1",
+  "request": {
+    "models": [],
+    "program": {
+      "source": {
+        "file": "../../../rules/values/numbers/num-convert-fraction.fsl",
+        "authority": "example",
+        "identity": "example:shop/values/numbers/num-convert-fraction",
+        "document": "num-convert-fraction",
+        "formal_revision": 1
+      }
+    },
+    "call": {
+      "function": "isSixtySix",
+      "arguments": []
+    }
+  }
+}
