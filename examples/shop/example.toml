@@ -267,4 +267,5 @@ expect_exit = 20
 ready_exit = 0
 waits_on = "QSL-1901"
 why = "post `self.charged = pre(self.charged) + amount` is refused undefined_expression/unproved-range: FR-577 (preconditions discharge a postcondition's range obligations) is specified but not implemented"
+needs = "exact post-conditions"
 serves = "Learn L3 (preferred form of the post rule)"

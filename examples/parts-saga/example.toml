@@ -77,6 +77,7 @@ expect_exit = 20
 ready_exit = 0
 waits_on = "QSL-1964"
 why = "full saga (compensation template FreeMachine and the 120 s await) passes the checker (S3) but is refused at S4: the compensate template 'has no selected clock configuration'"
+needs = "clock selection for timeouts"
 serves = "Learn L6; landing tab Choreographies; cards U4, U7"
 
 [[case]]
@@ -90,4 +91,5 @@ expect_exit = 21
 ready_exit = 0
 waits_on = "QSL-1976"
 why = "exhaustive check of the protocol (deadlock freedom, every part ends assembled, scrapped or given up) needs `quire analyze`, which exits 21 and prints nothing"
+needs = "model checking from the command line"
 serves = "Learn L5/L6; Guide: check a model exhaustively"
