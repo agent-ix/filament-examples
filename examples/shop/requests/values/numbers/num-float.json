@@ -1,0 +1,19 @@
+{
+  "format": "native-run/1",
+  "request": {
+    "models": [],
+    "program": {
+      "source": {
+        "file": "../../../rules/values/numbers/num-float.fsl",
+        "authority": "example",
+        "identity": "example:shop/values/numbers/num-float",
+        "document": "num-float",
+        "formal_revision": 1
+      }
+    },
+    "call": {
+      "function": "twoParcels",
+      "arguments": []
+    }
+  }
+}

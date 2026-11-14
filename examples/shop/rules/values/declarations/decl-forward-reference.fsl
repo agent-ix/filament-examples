@@ -1,0 +1,10 @@
+language "ix:native" edition "1-draft";
+profile v = "quire.value.complete/v1";
+
+function itemTotal using v(qty: Int[1, 99]): Int[0, 99000] pure {
+  Line { item: Item { cents: 100 }, qty: qty }.item.cents * qty
+}
+
+record Line { item: Item; qty: Int[1, 99]; }
+
+record Item { cents: Int[0, 1000]; }

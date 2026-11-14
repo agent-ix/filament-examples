@@ -1,0 +1,19 @@
+{
+  "format": "native-run/1",
+  "request": {
+    "models": [],
+    "program": {
+      "source": {
+        "file": "../../../rules/values/unions/union-opt-absent.fsl",
+        "authority": "example",
+        "identity": "example:shop/values/unions/union-opt-absent",
+        "document": "union-opt-absent",
+        "formal_revision": 1
+      }
+    },
+    "call": {
+      "function": "hasCoupon",
+      "arguments": []
+    }
+  }
+}

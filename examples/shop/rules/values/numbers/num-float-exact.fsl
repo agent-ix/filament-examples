@@ -1,0 +1,10 @@
+language "ix:native" edition "1-draft";
+profile v = "quire.value.complete/v1";
+
+type Weight = Float64[exact];
+
+function one using v(): Weight pure { float64(bits: 0x3ff0000000000000) }
+
+function third using v(): Weight pure { one() / float64(bits: 0x4008000000000000) }
+
+function thirdIsThird using v(): Boolean pure { third() = third() }

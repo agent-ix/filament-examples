@@ -1,0 +1,10 @@
+language "ix:native" edition "1-draft";
+profile v = "quire.value.complete/v1";
+
+type Cents = Int[0, 100];
+
+record Order { total: Cents; coupon: Cents?; }
+
+function same using v(): Boolean pure {
+  Order { total: 1, coupon: null } = Order { total: 1 }
+}

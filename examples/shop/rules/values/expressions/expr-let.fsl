@@ -1,0 +1,13 @@
+language "ix:native" edition "1-draft";
+profile v = "quire.value.complete/v1";
+
+type Cents = Int[0, 1000000];
+type Qty = Int[1, 99];
+type LineCents = Int[0, 99000000];
+
+function lineTotal using v(price: Cents, qty: Qty): LineCents pure { price * qty }
+
+function payable using v(price: Cents, qty: Qty): Int[0, 99000499] pure {
+  let line = lineTotal(price, qty) in
+    if line >= 5000 then line else line + 499
+}

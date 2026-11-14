@@ -1,0 +1,10 @@
+language "ix:native" edition "1-draft";
+profile v = "quire.value.complete/v1";
+
+type Sku = Text[1, 12; nfc];
+
+record Item { sku: Sku; }
+
+function sameSku using v(a: Sku, b: Sku): Boolean pure { a = b }
+
+function inOrder using v(a: Sku, b: Sku): Boolean pure { a < b }

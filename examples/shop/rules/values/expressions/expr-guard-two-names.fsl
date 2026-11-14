@@ -1,0 +1,8 @@
+language "ix:native" edition "1-draft";
+profile v = "quire.value.complete/v1";
+
+type Stock = Int[0, 100];
+
+function afterSale using v(stock: Stock, sold: Stock): Stock pure {
+  if sold <= stock then stock - sold else 0
+}

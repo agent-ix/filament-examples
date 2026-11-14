@@ -1,0 +1,13 @@
+language "ix:native" edition "1-draft";
+profile v = "quire.value.complete/v1";
+
+type Cents = Int[0, 1000000];
+
+union Payment { Card(Int[0, 9999]), Cash, Voucher(Cents) }
+
+function fee using v(p: Payment): Cents pure {
+  case p {
+    Cash: 0;
+    Card(last4): 30;
+  }
+}

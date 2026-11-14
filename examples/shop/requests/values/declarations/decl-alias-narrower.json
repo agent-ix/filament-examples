@@ -1,0 +1,24 @@
+{
+  "format": "native-run/1",
+  "request": {
+    "models": [],
+    "program": {
+      "source": {
+        "file": "../../../rules/values/declarations/decl-alias-narrower.fsl",
+        "authority": "example",
+        "identity": "example:shop/values/declarations/decl-alias-narrower",
+        "document": "decl-alias-narrower",
+        "formal_revision": 1
+      }
+    },
+    "call": {
+      "function": "packOf",
+      "arguments": [
+        {
+          "parameter": "p",
+          "value": 6
+        }
+      ]
+    }
+  }
+}

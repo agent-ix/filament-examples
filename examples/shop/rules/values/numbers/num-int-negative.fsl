@@ -1,0 +1,8 @@
+language "ix:native" edition "1-draft";
+profile v = "quire.value.complete/v1";
+
+type Cents = Int[0, 1000000];
+
+function remaining using v(charged: Cents, refunded: Cents): Int[-1000000, 1000000] pure {
+  charged - refunded
+}

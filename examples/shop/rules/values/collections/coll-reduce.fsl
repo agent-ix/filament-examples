@@ -1,0 +1,10 @@
+language "ix:native" edition "1-draft";
+profile v = "quire.value.complete/v1";
+
+type Cents = Int[0, 1000000];
+
+function prices using v(): Sequence<Cents>[1, 5] pure { sequence[1250, 1250, 300] }
+
+function dearest using v(): Cents pure {
+  reduce<Cents>(acc, p in prices(): if p > acc then p else acc)
+}

@@ -1,0 +1,28 @@
+{
+  "format": "native-run/1",
+  "request": {
+    "models": [],
+    "program": {
+      "source": {
+        "file": "../../../rules/values/records/record-equality.fsl",
+        "authority": "example",
+        "identity": "example:shop/values/records/record-equality",
+        "document": "record-equality",
+        "formal_revision": 1
+      }
+    },
+    "call": {
+      "function": "sameItem",
+      "arguments": [
+        {
+          "parameter": "price",
+          "value": 1250
+        },
+        {
+          "parameter": "qty",
+          "value": 3
+        }
+      ]
+    }
+  }
+}

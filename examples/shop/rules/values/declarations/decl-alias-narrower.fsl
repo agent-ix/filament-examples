@@ -1,0 +1,9 @@
+language "ix:native" edition "1-draft";
+profile v = "quire.value.complete/v1";
+
+type Qty = Int[1, 99];
+type PackQty = Int[1, 12];
+
+function takeQty using v(q: Qty): Qty pure { q }
+
+function packOf using v(p: PackQty): Qty pure { takeQty(p) }

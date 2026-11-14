@@ -1,0 +1,10 @@
+language "ix:native" edition "1-draft";
+profile v = "quire.value.complete/v1";
+
+type Money = Decimal[0, 1000000; 0, 2; exact];
+
+function price using v(): Money pure { decimal(1999, 2) }
+
+function twoItems using v(): Boolean pure {
+  price() + price() = decimal(3998, 2)
+}

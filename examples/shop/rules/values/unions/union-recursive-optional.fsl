@@ -1,0 +1,6 @@
+language "ix:native" edition "1-draft";
+profile v = "quire.value.complete/v1";
+
+union Chain { End, Link(Int[0, 9], Option<Chain>) }
+
+function zero using v(): Int[0, 0] pure { 0 }
