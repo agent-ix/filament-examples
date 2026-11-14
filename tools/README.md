@@ -4,7 +4,7 @@ This folder holds the example runner and the interim model generator.
 
 ## Runner
 
-[run.mjs](run.mjs) reads each `example.toml`, runs the cases through the FSL driver named by the `FSL` variable and compares the exit code and output with the manifest and `expected/`. The Makefile calls it as `make check`, `make staged`, `make record` and `make promote`. [run.test.mjs](run.test.mjs) holds its unit tests, which run with `make test`.
+[run.mjs](run.mjs) reads each `example.toml`, runs the cases through the FSL driver named by the `FSL` variable and compares the exit code and output with the manifest and `expected/`. The Makefile calls it as `make check`, `make staged`, `make record`, `make promote`, `make readme` and `make index`. [run.test.mjs](run.test.mjs) holds its unit tests, which run with `make test`.
 
 ## Model generator
 

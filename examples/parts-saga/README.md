@@ -40,7 +40,23 @@ From this folder, with `FSL` set to the driver:
 $FSL compile requests/protocol-compiles.json --format json
 ```
 
-The driver exits 0 with category `success`. The same command on `requests/protocol-overlapping-verdict.json` exits 20 with category `refusal`. The diagnostic says the guards of `choice Verdict` are not exhaustive and exclusive.
+The recorded result is:
+
+<!-- output: protocol-compiles -->
+```
+exit 0
+success
+```
+<!-- /output -->
+
+The same command on `requests/protocol-overlapping-verdict.json` is refused:
+
+<!-- output: protocol-overlapping-verdict -->
+```
+exit 20
+refusal: undefined_expression: the checker refused the package: undefined_expression (unproved-exhaustiveness): the guards of `choice Verdict` are not exhaustive and exclusive (duplicate-arm)
+```
+<!-- /output -->
 
 ## Staged
 

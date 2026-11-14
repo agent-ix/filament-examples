@@ -20,7 +20,7 @@ The table lists each system with the number of cases that run today and the numb
 | [architecture](examples/architecture) | Enterprise | 14 | 2 |
 | [parts-saga](examples/parts-saga) | Distributed | 6 | 2 |
 | [cell](examples/cell) | Safety | 12 | 0 |
-| [rover](examples/rover) | Safety | 11 | 6 |
+| [rover](examples/rover) | Safety | 12 | 6 |
 
 ## Getting started
 
@@ -64,6 +64,7 @@ Every case has an entry in its system's `example.toml`. A staged entry records t
 - A staged case that now gives its ready exit code makes the target fail with `promote <case>`.
 - `make promote CASE=<system>/<case>` flips the manifest entry to running and records the output.
 - `make record` re-records every `expected/` file from the driver. Never edit those files by hand.
+- `make readme` rewrites the recorded output shown in each system README from `expected/`. `make index` rewrites [index.json](index.json). `make check` fails when either is stale.
 
 Review the recorded output of a promoted case before you commit it. A failing case must fail for the reason it is meant to show.
 
@@ -79,6 +80,10 @@ Each system folder holds the following.
 | `data/`, `requests/` | Snapshots and one request file per case |
 | `expected/` | Recorded driver output for each case |
 
+## Index
+
+[index.json](index.json) has one entry per case. An entry gives the system, case id, status, rule file, data files, request file and recorded output file. It also gives the verdict, the exit code, the ticket a staged case waits on and a one-line statement of the rule. The docs site and landing page read it. All paths are relative to the repository root.
+
 ## Models
 
 The models are Semantic IR JSON documents, and no tool in the language can author them yet. The generator in [tools](tools/README.md) writes them from short descriptions. The generated models are committed, so you do not need the generator to run an example.
@@ -93,7 +98,7 @@ make test
 
 ## Contributing
 
-Read [CONTRIBUTING.md](CONTRIBUTING.md) first. Every contribution needs a signed [CLA](CLA.md).
+Open a pull request. [CONTENT_RIGHTS.md](CONTENT_RIGHTS.md) lists what may be committed.
 
 ## License
 

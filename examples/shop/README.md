@@ -53,17 +53,20 @@ The case `refund-small` is a refund under the limit with one approver, and it pa
 
 ## Run a passing and a failing case
 
-From this folder, with `FSL` set to the driver:
+From this folder, with `FSL` set to the driver, run a rule against an order that is paid in full:
 
 ```
 $FSL run requests/paid-in-full.json --format json
 ```
 
-The driver exits 0 and reports the rule as tested:
+The recorded result is:
 
+<!-- output: paid-in-full -->
 ```
-{"category":"success","clause":"PaidInFull","request_index":0,"result":"tested"}
+exit 0
+{"category":"success","clause":"PaidInFull","result":"tested"}
 ```
+<!-- /output -->
 
 Run the same rule against an order that is paid but short of its total:
 
@@ -71,11 +74,14 @@ Run the same rule against an order that is paid but short of its total:
 $FSL run requests/paid-short.json --format json
 ```
 
-The driver exits 10 and reports the rule as refuted:
+The recorded result is:
 
+<!-- output: paid-short -->
 ```
-{"category":"violation","clause":"PaidInFull","request_index":0,"result":"refuted"}
+exit 10
+{"category":"violation","clause":"PaidInFull","result":"refuted"}
 ```
+<!-- /output -->
 
 The two request files differ only in the data file they name. Run all cases with `make check FSL=$FSL`.
 

@@ -39,11 +39,14 @@ From this folder, with `FSL` set to the driver:
 $FSL run requests/no-cycle-ok.json --format json
 ```
 
-The driver exits 0 and reports the rule as tested:
+The recorded result is:
 
+<!-- output: no-cycle-ok -->
 ```
-{"category":"success","clause":"NoDependencyCycle","request_index":0,"result":"tested"}
+exit 0
+{"category":"success","clause":"NoDependencyCycle","result":"tested"}
 ```
+<!-- /output -->
 
 In `no-cycle-loop`, payments depends on ledger and ledger depends on payments:
 
@@ -51,11 +54,14 @@ In `no-cycle-loop`, payments depends on ledger and ledger depends on payments:
 $FSL run requests/no-cycle-loop.json --format json
 ```
 
-The driver exits 10 and reports the rule as refuted:
+The recorded result is:
 
+<!-- output: no-cycle-loop -->
 ```
-{"category":"violation","clause":"NoDependencyCycle","request_index":0,"result":"refuted"}
+exit 10
+{"category":"violation","clause":"NoDependencyCycle","result":"refuted"}
 ```
+<!-- /output -->
 
 ## Staged
 

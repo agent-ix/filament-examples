@@ -36,11 +36,14 @@ From this folder, with `FSL` set to the driver:
 $FSL run requests/guard-closed-running.json --format json
 ```
 
-The driver exits 0 and reports the rule as tested:
+The recorded result is:
 
+<!-- output: guard-closed-running -->
 ```
-{"category":"success","clause":"GuardClosedWhileMoving","request_index":0,"result":"tested"}
+exit 0
+{"category":"success","clause":"GuardClosedWhileMoving","result":"tested"}
 ```
+<!-- /output -->
 
 In `guard-open-running` the ram moves with the guard open:
 
@@ -48,10 +51,13 @@ In `guard-open-running` the ram moves with the guard open:
 $FSL run requests/guard-open-running.json --format json
 ```
 
-The driver exits 10 and reports the rule as refuted:
+The recorded result is:
 
+<!-- output: guard-open-running -->
 ```
-{"category":"violation","clause":"GuardClosedWhileMoving","request_index":0,"result":"refuted"}
+exit 10
+{"category":"violation","clause":"GuardClosedWhileMoving","result":"refuted"}
 ```
+<!-- /output -->
 
 All twelve cases run today, and none is staged.

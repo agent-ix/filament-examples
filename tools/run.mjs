@@ -4,13 +4,17 @@
 //   node tools/run.mjs staged  [dir ...]          staged cases must still fail as recorded
 //   node tools/run.mjs record  [dir ...]          re-record expected/ from the driver
 //   node tools/run.mjs promote <case> [--verdict V]   flip a staged case to running
+//   node tools/run.mjs readme                     rewrite the output regions of the READMEs
+//   node tools/run.mjs index                      rewrite index.json
+//
+// `check` also fails when a README output region or index.json is stale.
 //
 // The driver binary comes from the FSL environment variable (the Makefile sets
 // it). A <dir> is an example folder holding example.toml; the default is every
 // folder under examples/. A <case> is `<system>/<id>` or a bare `<id>`.
 import { spawnSync } from "node:child_process";
 import { existsSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
-import { basename, dirname, join, resolve } from "node:path";
+import { basename, dirname, join, relative, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
 const STATUSES = ["running", "staged"];
@@ -55,14 +59,17 @@ export function parseManifest(text, where = "example.toml") {
     };
     need("id", "string");
     need("command", "string");
+    need("statement", "string");
     need("expect_exit", "number");
     if (!STATUSES.includes(c.status)) throw new Error(`${where}: case ${c.id}: status must be running or staged`);
+    need("file", "string");
     if (seen.has(c.id)) throw new Error(`${where}: duplicate case id ${c.id}`);
     seen.add(c.id);
     if (c.status === "running") need("expect_verdict", "string");
     else {
       need("ready_exit", "number");
       need("waits_on", "string");
+      if (!/^[A-Z]+-\d+$/.test(c.waits_on)) throw new Error(`${where}: case ${c.id}: waits_on must be a ticket id such as QSL-123`);
       need("why", "string");
       if (c.ready_exit === c.expect_exit) throw new Error(`${where}: case ${c.id}: ready_exit equals expect_exit`);
     }
@@ -232,6 +239,104 @@ export function promoteCase(systems, ref, fsl, verdictArg, log = console) {
   log.log("Check the recorded output against what the case is meant to show, then commit.");
 }
 
+// --- README regions and index.json -------------------------------------------
+// A README shows recorded output between markers:
+//   <!-- output: <case-id> -->
+//   (fenced block, rewritten from expected/<case-id>.json)
+//   <!-- /output -->
+
+export function renderOutput(c, stdout) {
+  const head = `exit ${c.expect_exit}`;
+  let doc;
+  try {
+    doc = JSON.parse(stdout);
+  } catch {
+    return head;
+  }
+  if (doc.items?.length) {
+    const lines = doc.items.map((item) => {
+      const { request_index, cause, counterexample, decisive, ...rest } = item;
+      if (counterexample) rest.counterexample = `recorded in expected/${c.id}.json`;
+      return JSON.stringify(rest);
+    });
+    return [head, ...lines].join("\n");
+  }
+  if (doc.result) return `${head}\nresult: ${JSON.stringify(doc.result.value ?? doc.result)}`;
+  const d = doc.diagnostics?.[0];
+  if (d) return `${head}\n${doc.category}: ${d.code}: ${d.message.slice(0, 160)}`;
+  return `${head}\n${doc.category}`;
+}
+
+const REGION = /<!-- output: ([\w-]+) -->\n```\n[\s\S]*?\n```\n<!-- \/output -->/g;
+
+// Returns the READMEs whose regions differ from expected/; writes them if asked.
+export function syncReadmes(systems, write) {
+  const stale = [];
+  for (const sys of systems) {
+    const file = join(sys.dir, "README.md");
+    if (!existsSync(file)) continue;
+    const old = readFileSync(file, "utf8");
+    const next = old.replace(REGION, (m, id) => {
+      const c = sys.cases.find((x) => x.id === id);
+      if (!c) throw new Error(`${file}: output region for unknown case ${id}`);
+      const expected = readExpected(sys.dir, id);
+      if (expected === null) throw new Error(`${file}: expected/${id}.json is missing`);
+      return `<!-- output: ${id} -->\n\`\`\`\n${renderOutput(c, expected)}\n\`\`\`\n<!-- /output -->`;
+    });
+    if (next !== old) {
+      stale.push(file);
+      if (write) writeFileSync(file, next);
+    }
+  }
+  return stale;
+}
+
+export function buildIndex(systems, root) {
+  const rel = (p) => relative(root, p).split("\\").join("/");
+  const cases = [];
+  for (const sys of systems) {
+    for (const c of sys.cases) {
+      const operand = c.command.split(" ")[1] ?? "";
+      const requestFile = operand.endsWith(".json") ? join(sys.dir, operand) : null;
+      let data = [];
+      if (requestFile) {
+        const req = JSON.parse(readFileSync(requestFile, "utf8"));
+        const obs = req.request?.clause?.observations ?? {};
+        data = Object.values(obs).map((p) => rel(resolve(dirname(requestFile), p)));
+      }
+      cases.push({
+        system: sys.name,
+        case: c.id,
+        status: c.status,
+        rule: c.rule || null,
+        statement: c.statement,
+        rule_file: rel(join(sys.dir, c.file)),
+        data_files: data,
+        request_file: requestFile ? rel(requestFile) : null,
+        expected_file: rel(join(sys.dir, "expected", `${c.id}.json`)),
+        verdict: c.expect_verdict ?? null,
+        exit: c.expect_exit,
+        waits_on: c.waits_on ?? null,
+      });
+    }
+  }
+  return `${JSON.stringify({ format: "filament-examples-index/1", cases }, null, 2)}\n`;
+}
+
+// Stale generated files, as messages. Writes them when `write` is set.
+export function syncGenerated(systems, root, write, log = console) {
+  const problems = [];
+  for (const f of syncReadmes(systems, write)) problems.push(`${relative(root, f)}: recorded output is stale; run make readme`);
+  const indexFile = join(root, "index.json");
+  const next = buildIndex(systems, root);
+  if (!existsSync(indexFile) || readFileSync(indexFile, "utf8") !== next) {
+    problems.push("index.json is stale; run make index");
+    if (write) writeFileSync(indexFile, next);
+  }
+  if (write) log.log(`wrote ${problems.length} generated file(s)`);
+  return problems;
+}
+
 export function discoverSystems(root) {
   const base = join(root, "examples");
   return readdirSync(base, { withFileTypes: true })
@@ -243,7 +348,11 @@ export function discoverSystems(root) {
 export function main(argv, env, root) {
   const [cmd, ...rest] = argv;
   const fsl = env.FSL;
-  if (!["check", "staged", "record", "promote"].includes(cmd)) throw new Error("usage: run.mjs check|staged|record|promote ...");
+  if (cmd === "readme" || cmd === "index") {
+    syncGenerated(discoverSystems(root).map(loadSystem), root, true);
+    return 0;
+  }
+  if (!["check", "staged", "record", "promote", "readme", "index"].includes(cmd)) throw new Error("usage: run.mjs check|staged|record|promote|readme|index ...");
   if (!fsl) throw new Error("FSL is not set; run through make or set FSL to the FSL driver binary");
   if (cmd === "promote") {
     const args = [...rest];
@@ -252,12 +361,24 @@ export function main(argv, env, root) {
     const ref = args[0];
     if (!ref) throw new Error("usage: run.mjs promote <system>/<case> [--verdict V]");
     promoteCase(discoverSystems(root).map(loadSystem), ref, fsl, verdict);
+    syncGenerated(discoverSystems(root).map(loadSystem), root, true);
     return 0;
   }
   const dirs = rest.length ? rest : discoverSystems(root);
   const systems = dirs.map(loadSystem);
-  if (cmd === "record") return recordSystems(systems, fsl) === 0 ? 0 : 1;
-  return checkSystems(systems, cmd === "check" ? "running" : "staged", fsl) === 0 ? 0 : 1;
+  if (cmd === "record") {
+    const failed = recordSystems(systems, fsl);
+    if (rest.length === 0) syncGenerated(systems, root, true);
+    return failed === 0 ? 0 : 1;
+  }
+  let failed = checkSystems(systems, cmd === "check" ? "running" : "staged", fsl);
+  if (cmd === "check" && rest.length === 0) {
+    for (const p of syncGenerated(systems, root, false)) {
+      console.error(p);
+      failed += 1;
+    }
+  }
+  return failed === 0 ? 0 : 1;
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {

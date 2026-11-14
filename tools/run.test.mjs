@@ -7,8 +7,9 @@ import { tmpdir } from "node:os";
 import { dirname, join, resolve } from "node:path";
 import { test } from "node:test";
 import { fileURLToPath } from "node:url";
-import { evaluateCase, findCase, main, parseManifest, promoteText, verdictOf } from "./run.mjs";
+import { buildIndex, discoverSystems, evaluateCase, findCase, main, parseManifest, promoteText, renderOutput, syncReadmes, verdictOf } from "./run.mjs";
 
+const REPO = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const RUNNER = resolve(dirname(fileURLToPath(import.meta.url)), "run.mjs");
 const OK_DOC = '{"format":"quire-outcome/1","category":"success","result":{"value":{"kind":"integer","decimal":"7"}}}\n';
 
@@ -20,6 +21,8 @@ summary = "A demo."
 [[case]]
 id = "good"
 rule = "R"
+statement = "A rule."
+file = "rules/r.fsl"
 command = "run requests/good.json"
 status = "running"
 expect_exit = 0
@@ -28,6 +31,8 @@ expect_verdict = "holds"
 [[case]]
 id = "later"
 rule = "R2"
+statement = "A later rule."
+file = "rules/r.fsl"
 command = "run requests/later.json"
 status = "staged"
 expect_exit = 21
@@ -52,11 +57,11 @@ test("parseManifest rejects bad input with a line number", () => {
 });
 
 test("parseManifest validates cases", () => {
-  const bad = (body, re) => assert.throws(() => parseManifest(`[[case]]\n${body}`), re);
+  const bad = (body, re) => assert.throws(() => parseManifest(`[[case]]\nstatement = "s"\nfile = "f"\n${body}`), re);
   bad('id = "a"\ncommand = "run x"\nstatus = "runs"\nexpect_exit = 0\n', /status must be running or staged/);
   bad('id = "a"\ncommand = "run x"\nstatus = "running"\nexpect_exit = 0\n', /expect_verdict must be a string/);
-  bad('id = "a"\ncommand = "run x"\nstatus = "staged"\nexpect_exit = 21\nready_exit = 21\nwaits_on = "T"\nwhy = "w"\n', /ready_exit equals expect_exit/);
-  assert.throws(() => parseManifest(`${MANIFEST}\n[[case]]\nid = "good"\ncommand = "c"\nstatus = "running"\nexpect_exit = 0\nexpect_verdict = "v"\n`), /duplicate case id good/);
+  bad('id = "a"\ncommand = "run x"\nstatus = "staged"\nexpect_exit = 21\nready_exit = 21\nwaits_on = "QSL-9"\nwhy = "w"\n', /ready_exit equals expect_exit/);
+  assert.throws(() => parseManifest(`${MANIFEST}\n[[case]]\nstatement = "s"\nfile = "f"\nid = "good"\ncommand = "c"\nstatus = "running"\nexpect_exit = 0\nexpect_verdict = "v"\n`), /duplicate case id good/);
 });
 
 const running = { id: "good", status: "running", expect_exit: 0 };
@@ -123,6 +128,9 @@ function fixture() {
   const dir = join(root, "examples", "demo");
   mkdirSync(join(dir, "expected"), { recursive: true });
   writeFileSync(join(dir, "example.toml"), MANIFEST);
+  mkdirSync(join(dir, "requests"));
+  writeFileSync(join(dir, "requests", "good.json"), "{}");
+  writeFileSync(join(dir, "requests", "later.json"), "{}");
   // The fake driver answers by operand from behaviour.json in the example folder.
   const fake = join(root, "fake-fsl");
   writeFileSync(
@@ -200,4 +208,66 @@ test("a missing FSL is reported, not ignored", () => {
   const r = spawnSync("node", [RUNNER, "check"], { encoding: "utf8", env: { ...process.env, FSL: "" } });
   assert.equal(r.status, 2);
   assert.match(r.stderr, /FSL is not set/);
+});
+
+test("a staged case without a ticket id is rejected", () => {
+  const staged = (waits) => `[[case]]\nid = "a"\nstatement = "s"\nfile = "f"\ncommand = "run x"\nstatus = "staged"\nexpect_exit = 21\nready_exit = 0\n${waits}why = "w"\n`;
+  assert.throws(() => parseManifest(staged("")), /waits_on must be a string/);
+  assert.throws(() => parseManifest(staged('waits_on = "no ticket - planning gap"\n')), /waits_on must be a ticket id/);
+  assert.equal(parseManifest(staged('waits_on = "QSL-2000"\n')).cases.length, 1);
+});
+
+test("every case in this repository is complete and every staged case names a ticket", () => {
+  for (const dir of discoverSystems(REPO)) {
+    const { cases } = parseManifest(readFileSync(join(dir, "example.toml"), "utf8"), dir);
+    for (const c of cases) {
+      assert.ok(c.statement.length > 0, c.id);
+      if (c.status === "staged") assert.match(c.waits_on, /^[A-Z]+-\d+$/, c.id);
+    }
+  }
+});
+
+test("renderOutput summarizes recorded documents", () => {
+  const c = { id: "x", expect_exit: 10 };
+  const item = '{"items":[{"category":"violation","cause":null,"clause":"R","request_index":0,"result":"refuted","counterexample":{"a":1}}]}';
+  assert.equal(renderOutput(c, item), 'exit 10\n{"category":"violation","clause":"R","result":"refuted","counterexample":"recorded in expected/x.json"}');
+  assert.equal(renderOutput({ id: "y", expect_exit: 0 }, OK_DOC), 'exit 0\nresult: {"kind":"integer","decimal":"7"}');
+  assert.match(renderOutput(c, '{"category":"refusal","items":[],"diagnostics":[{"code":"ill_typed","message":"bad"}]}'), /refusal: ill_typed: bad/);
+});
+
+function demoSystem() {
+  const root = mkdtempSync(join(tmpdir(), "gen-"));
+  const dir = join(root, "examples", "demo");
+  mkdirSync(join(dir, "expected"), { recursive: true });
+  mkdirSync(join(dir, "requests"), { recursive: true });
+    const text = MANIFEST;
+  writeFileSync(join(dir, "example.toml"), text);
+  writeFileSync(join(dir, "expected", "good.json"), OK_DOC);
+  writeFileSync(join(dir, "expected", "later.json"), "");
+  writeFileSync(join(dir, "requests", "good.json"), JSON.stringify({ request: { clause: { observations: { current: "../data/d.json" } } } }));
+  writeFileSync(join(dir, "requests", "later.json"), "{}");
+  writeFileSync(join(dir, "README.md"), "Text.\n\n<!-- output: good -->\n```\nold\n```\n<!-- /output -->\n");
+  return { root, dir, systems: [{ dir, name: "demo", ...parseManifest(text) }] };
+}
+
+test("syncReadmes finds and rewrites a stale output region", () => {
+  const { dir, systems } = demoSystem();
+  assert.equal(syncReadmes(systems, false).length, 1);
+  assert.equal(syncReadmes(systems, true).length, 1);
+  assert.match(readFileSync(join(dir, "README.md"), "utf8"), /exit 0\nresult: /);
+  assert.equal(syncReadmes(systems, false).length, 0);
+});
+
+test("buildIndex lists repo-relative paths, verdict, exit and waits_on", () => {
+  const { root, systems } = demoSystem();
+  const idx = JSON.parse(buildIndex(systems, root));
+  const [good, later] = idx.cases;
+  assert.equal(good.request_file, "examples/demo/requests/good.json");
+  assert.deepEqual(good.data_files, ["examples/demo/data/d.json"]);
+  assert.equal(good.expected_file, "examples/demo/expected/good.json");
+  assert.equal(good.verdict, "holds");
+  assert.equal(good.waits_on, null);
+  assert.equal(later.waits_on, "QSL-1");
+  assert.equal(later.verdict, null);
+  assert.equal(later.statement, "A later rule.");
 });

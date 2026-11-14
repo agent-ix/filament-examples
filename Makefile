@@ -4,7 +4,7 @@ include config.mk
 NODE ?= node
 RUN = $(NODE) tools/run.mjs
 
-.PHONY: check staged record promote models test
+.PHONY: check staged record promote readme index models test
 check:
 	@$(RUN) check
 staged:
@@ -14,6 +14,11 @@ record:
 promote:
 	@$(if $(CASE),,$(error CASE is required, for example: make promote CASE=rover/vote-two-of-three))
 	@$(RUN) promote "$(CASE)" $(if $(VERDICT),--verdict "$(VERDICT)")
+
+# Rewrite the recorded-output regions of the READMEs and index.json from the manifests
+# and expected/. make check fails when either is stale.
+readme index:
+	@$(RUN) $@
 
 # Regenerate the Semantic IR models from tools/models (interim, see tools/README.md).
 models:

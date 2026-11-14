@@ -27,7 +27,7 @@ The case `obstacle-outvoted` has one sensor reading near and two reading far. Th
 
 ## The voting function
 
-The function `twoOfThree` returns true when at least two of its three arguments are true. The case `vote-two-of-three` calls it with the values 1, 1 and 0 and gets true. A call passes a Boolean as 1 for true or 0 for false.
+The function `twoOfThree` returns true when at least two of its three arguments are true. The case `vote-two-of-three` calls it with the values 1, 1 and 0 and gets true. The case `vote-one-of-three` calls it with 1, 0 and 0 and gets false. A call passes a Boolean as 1 for true or 0 for false.
 
 ## The control loop
 
@@ -35,19 +35,35 @@ The function `twoOfThree` returns true when at least two of its three arguments 
 
 ## Run a passing and a failing case
 
-From this folder, with `FSL` set to the driver:
+From this folder, with `FSL` set to the driver, check the rule over a trace that stops in time:
 
 ```
 $FSL run requests/safe-stop-in-time.json --format json
 ```
 
-The driver exits 0 and reports the rule as tested over the trace in the request. In `safe-stop-late` the lidar is lost at the second step and the rover stops four steps later:
+The recorded result is:
+
+<!-- output: safe-stop-in-time -->
+```
+exit 0
+{"category":"success","clause":"SafeStopWithin3Steps","result":"tested"}
+```
+<!-- /output -->
+
+In `safe-stop-late` the lidar is lost at the second step and the rover stops four steps later:
 
 ```
 $FSL run requests/safe-stop-late.json --format json
 ```
 
-The driver exits 10. The recorded output contains a counterexample with the trace prefix, the loop and the decisive position.
+The recorded result is below. The full counterexample, with the trace prefix, the loop and the decisive position, is in the recorded file.
+
+<!-- output: safe-stop-late -->
+```
+exit 10
+{"category":"violation","clause":"SafeStopWithin3Steps","position":0,"result":"refuted","counterexample":"recorded in expected/safe-stop-late.json"}
+```
+<!-- /output -->
 
 ## Staged
 

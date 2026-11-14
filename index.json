@@ -1,0 +1,1242 @@
+{
+  "format": "filament-examples-index/1",
+  "cases": [
+    {
+      "system": "architecture",
+      "case": "owned-ok",
+      "status": "running",
+      "rule": "EveryServiceOwned",
+      "statement": "Every service has an owning team.",
+      "rule_file": "examples/architecture/rules/architecture.fsl",
+      "data_files": [
+        "examples/architecture/data/good-architecture.json"
+      ],
+      "request_file": "examples/architecture/requests/owned-ok.json",
+      "expected_file": "examples/architecture/expected/owned-ok.json",
+      "verdict": "holds",
+      "exit": 0,
+      "waits_on": null
+    },
+    {
+      "system": "architecture",
+      "case": "owned-orphan",
+      "status": "running",
+      "rule": "EveryServiceOwned",
+      "statement": "Every service has an owning team.",
+      "rule_file": "examples/architecture/rules/architecture.fsl",
+      "data_files": [
+        "examples/architecture/data/orphan-service.json"
+      ],
+      "request_file": "examples/architecture/requests/owned-orphan.json",
+      "expected_file": "examples/architecture/expected/owned-orphan.json",
+      "verdict": "violated",
+      "exit": 10,
+      "waits_on": null
+    },
+    {
+      "system": "architecture",
+      "case": "edge-ok",
+      "status": "running",
+      "rule": "NothingCallsTheEdge",
+      "statement": "Nothing depends on an edge service: edge services sit at the front door.",
+      "rule_file": "examples/architecture/rules/architecture.fsl",
+      "data_files": [
+        "examples/architecture/data/good-architecture.json"
+      ],
+      "request_file": "examples/architecture/requests/edge-ok.json",
+      "expected_file": "examples/architecture/expected/edge-ok.json",
+      "verdict": "holds",
+      "exit": 0,
+      "waits_on": null
+    },
+    {
+      "system": "architecture",
+      "case": "edge-called",
+      "status": "running",
+      "rule": "NothingCallsTheEdge",
+      "statement": "Nothing depends on an edge service: edge services sit at the front door.",
+      "rule_file": "examples/architecture/rules/architecture.fsl",
+      "data_files": [
+        "examples/architecture/data/edge-called.json"
+      ],
+      "request_file": "examples/architecture/requests/edge-called.json",
+      "expected_file": "examples/architecture/expected/edge-called.json",
+      "verdict": "violated",
+      "exit": 10,
+      "waits_on": null
+    },
+    {
+      "system": "architecture",
+      "case": "data-tier-ok",
+      "status": "running",
+      "rule": "DataTierStaysDown",
+      "statement": "A data-tier service depends only on other data-tier services.",
+      "rule_file": "examples/architecture/rules/architecture.fsl",
+      "data_files": [
+        "examples/architecture/data/good-architecture.json"
+      ],
+      "request_file": "examples/architecture/requests/data-tier-ok.json",
+      "expected_file": "examples/architecture/expected/data-tier-ok.json",
+      "verdict": "holds",
+      "exit": 0,
+      "waits_on": null
+    },
+    {
+      "system": "architecture",
+      "case": "data-tier-calls-core",
+      "status": "running",
+      "rule": "DataTierStaysDown",
+      "statement": "A data-tier service depends only on other data-tier services.",
+      "rule_file": "examples/architecture/rules/architecture.fsl",
+      "data_files": [
+        "examples/architecture/data/data-calls-core.json"
+      ],
+      "request_file": "examples/architecture/requests/data-tier-calls-core.json",
+      "expected_file": "examples/architecture/expected/data-tier-calls-core.json",
+      "verdict": "violated",
+      "exit": 10,
+      "waits_on": null
+    },
+    {
+      "system": "architecture",
+      "case": "no-cycle-ok",
+      "status": "running",
+      "rule": "NoDependencyCycle",
+      "statement": "Following dependencies never leads back to where it started.",
+      "rule_file": "examples/architecture/rules/architecture.fsl",
+      "data_files": [
+        "examples/architecture/data/good-architecture.json"
+      ],
+      "request_file": "examples/architecture/requests/no-cycle-ok.json",
+      "expected_file": "examples/architecture/expected/no-cycle-ok.json",
+      "verdict": "holds",
+      "exit": 0,
+      "waits_on": null
+    },
+    {
+      "system": "architecture",
+      "case": "no-cycle-loop",
+      "status": "running",
+      "rule": "NoDependencyCycle",
+      "statement": "Following dependencies never leads back to where it started.",
+      "rule_file": "examples/architecture/rules/architecture.fsl",
+      "data_files": [
+        "examples/architecture/data/data-calls-core.json"
+      ],
+      "request_file": "examples/architecture/requests/no-cycle-loop.json",
+      "expected_file": "examples/architecture/expected/no-cycle-loop.json",
+      "verdict": "violated: payments -> ledger -> payments",
+      "exit": 10,
+      "waits_on": null
+    },
+    {
+      "system": "architecture",
+      "case": "personal-data-ok",
+      "status": "running",
+      "rule": "PersonalDataBoundary",
+      "statement": "A service that reads personal data must be marked as handling it.",
+      "rule_file": "examples/architecture/rules/architecture.fsl",
+      "data_files": [
+        "examples/architecture/data/good-architecture.json"
+      ],
+      "request_file": "examples/architecture/requests/personal-data-ok.json",
+      "expected_file": "examples/architecture/expected/personal-data-ok.json",
+      "verdict": "holds",
+      "exit": 0,
+      "waits_on": null
+    },
+    {
+      "system": "architecture",
+      "case": "personal-data-leak",
+      "status": "running",
+      "rule": "PersonalDataBoundary",
+      "statement": "A service that reads personal data must be marked as handling it.",
+      "rule_file": "examples/architecture/rules/architecture.fsl",
+      "data_files": [
+        "examples/architecture/data/personal-data-leak.json"
+      ],
+      "request_file": "examples/architecture/requests/personal-data-leak.json",
+      "expected_file": "examples/architecture/expected/personal-data-leak.json",
+      "verdict": "violated",
+      "exit": 10,
+      "waits_on": null
+    },
+    {
+      "system": "architecture",
+      "case": "deploy-step-ok",
+      "status": "running",
+      "rule": "KeepServing",
+      "statement": "During a rolling deploy, a service keeps at least its minimum number of instances serving. Checked on every step of the plan.",
+      "rule_file": "examples/architecture/rules/deploy.fsl",
+      "data_files": [
+        "examples/architecture/data/one-at-a-time-1.json"
+      ],
+      "request_file": "examples/architecture/requests/deploy-step-ok.json",
+      "expected_file": "examples/architecture/expected/deploy-step-ok.json",
+      "verdict": "holds",
+      "exit": 0,
+      "waits_on": null
+    },
+    {
+      "system": "architecture",
+      "case": "deploy-step-too-many",
+      "status": "running",
+      "rule": "KeepServing",
+      "statement": "During a rolling deploy, a service keeps at least its minimum number of instances serving. Checked on every step of the plan.",
+      "rule_file": "examples/architecture/rules/deploy.fsl",
+      "data_files": [
+        "examples/architecture/data/two-at-a-time-1.json"
+      ],
+      "request_file": "examples/architecture/requests/deploy-step-too-many.json",
+      "expected_file": "examples/architecture/expected/deploy-step-too-many.json",
+      "verdict": "violated",
+      "exit": 10,
+      "waits_on": null
+    },
+    {
+      "system": "architecture",
+      "case": "deploy-plan-one-at-a-time",
+      "status": "running",
+      "rule": "ServingThroughout",
+      "statement": "Through every step of the plan, and in the state it ends in, the service keeps its minimum number of instances serving.",
+      "rule_file": "examples/architecture/rules/deploy-plan.fsl",
+      "data_files": [
+        "examples/architecture/data/all-serving.json",
+        "examples/architecture/data/one-at-a-time-1.json",
+        "examples/architecture/data/one-at-a-time-2.json",
+        "examples/architecture/data/one-at-a-time-3.json",
+        "examples/architecture/data/one-at-a-time-4.json"
+      ],
+      "request_file": "examples/architecture/requests/deploy-plan-one-at-a-time.json",
+      "expected_file": "examples/architecture/expected/deploy-plan-one-at-a-time.json",
+      "verdict": "holds",
+      "exit": 0,
+      "waits_on": null
+    },
+    {
+      "system": "architecture",
+      "case": "deploy-plan-two-at-a-time",
+      "status": "running",
+      "rule": "ServingThroughout",
+      "statement": "Through every step of the plan, and in the state it ends in, the service keeps its minimum number of instances serving.",
+      "rule_file": "examples/architecture/rules/deploy-plan.fsl",
+      "data_files": [
+        "examples/architecture/data/all-serving.json",
+        "examples/architecture/data/two-at-a-time-1.json",
+        "examples/architecture/data/two-at-a-time-2.json"
+      ],
+      "request_file": "examples/architecture/requests/deploy-plan-two-at-a-time.json",
+      "expected_file": "examples/architecture/expected/deploy-plan-two-at-a-time.json",
+      "verdict": "violated at step 1",
+      "exit": 10,
+      "waits_on": null
+    },
+    {
+      "system": "architecture",
+      "case": "staged-deploy-bounded",
+      "status": "staged",
+      "rule": null,
+      "statement": "Across the whole plan (five steps), the service never drops below its minimum.",
+      "rule_file": "examples/architecture/rules/staged-deploy-temporal.fsl",
+      "data_files": [],
+      "request_file": "examples/architecture/requests/staged-deploy-bounded.json",
+      "expected_file": "examples/architecture/expected/staged-deploy-bounded.json",
+      "verdict": null,
+      "exit": 20,
+      "waits_on": "QSL-1964"
+    },
+    {
+      "system": "architecture",
+      "case": "staged-availability",
+      "status": "staged",
+      "rule": null,
+      "statement": "Checkout stays up through 10 calls in a row with probability at least 0.99.",
+      "rule_file": "examples/architecture/rules/staged-availability.fsl",
+      "data_files": [],
+      "request_file": "examples/architecture/requests/staged-availability.json",
+      "expected_file": "examples/architecture/expected/staged-availability.json",
+      "verdict": null,
+      "exit": 21,
+      "waits_on": "QSL-2000"
+    },
+    {
+      "system": "cell",
+      "case": "guard-closed-running",
+      "status": "running",
+      "rule": "GuardClosedWhileMoving",
+      "statement": "The ram moves only while the guard is closed.",
+      "rule_file": "examples/cell/rules/press.fsl",
+      "data_files": [
+        "examples/cell/data/running-guarded.json"
+      ],
+      "request_file": "examples/cell/requests/guard-closed-running.json",
+      "expected_file": "examples/cell/expected/guard-closed-running.json",
+      "verdict": "holds",
+      "exit": 0,
+      "waits_on": null
+    },
+    {
+      "system": "cell",
+      "case": "guard-open-running",
+      "status": "running",
+      "rule": "GuardClosedWhileMoving",
+      "statement": "The ram moves only while the guard is closed.",
+      "rule_file": "examples/cell/rules/press.fsl",
+      "data_files": [
+        "examples/cell/data/running-guard-open.json"
+      ],
+      "request_file": "examples/cell/requests/guard-open-running.json",
+      "expected_file": "examples/cell/expected/guard-open-running.json",
+      "verdict": "violated",
+      "exit": 10,
+      "waits_on": null
+    },
+    {
+      "system": "cell",
+      "case": "estop-holds",
+      "status": "running",
+      "rule": "EstopHolds",
+      "statement": "While the emergency stop is pressed, the ram does not move.",
+      "rule_file": "examples/cell/rules/press.fsl",
+      "data_files": [
+        "examples/cell/data/running-guarded.json"
+      ],
+      "request_file": "examples/cell/requests/estop-holds.json",
+      "expected_file": "examples/cell/expected/estop-holds.json",
+      "verdict": "holds",
+      "exit": 0,
+      "waits_on": null
+    },
+    {
+      "system": "cell",
+      "case": "estop-moving",
+      "status": "running",
+      "rule": "EstopHolds",
+      "statement": "While the emergency stop is pressed, the ram does not move.",
+      "rule_file": "examples/cell/rules/press.fsl",
+      "data_files": [
+        "examples/cell/data/estop-moving.json"
+      ],
+      "request_file": "examples/cell/requests/estop-moving.json",
+      "expected_file": "examples/cell/expected/estop-moving.json",
+      "verdict": "violated",
+      "exit": 10,
+      "waits_on": null
+    },
+    {
+      "system": "cell",
+      "case": "setup-slow",
+      "status": "running",
+      "rule": "SetupIsSlow",
+      "statement": "In setup mode the ram moves at 10 mm/s or less.",
+      "rule_file": "examples/cell/rules/press.fsl",
+      "data_files": [
+        "examples/cell/data/setup-slow.json"
+      ],
+      "request_file": "examples/cell/requests/setup-slow.json",
+      "expected_file": "examples/cell/expected/setup-slow.json",
+      "verdict": "holds",
+      "exit": 0,
+      "waits_on": null
+    },
+    {
+      "system": "cell",
+      "case": "setup-fast",
+      "status": "running",
+      "rule": "SetupIsSlow",
+      "statement": "In setup mode the ram moves at 10 mm/s or less.",
+      "rule_file": "examples/cell/rules/press.fsl",
+      "data_files": [
+        "examples/cell/data/setup-fast.json"
+      ],
+      "request_file": "examples/cell/requests/setup-fast.json",
+      "expected_file": "examples/cell/expected/setup-fast.json",
+      "verdict": "violated",
+      "exit": 10,
+      "waits_on": null
+    },
+    {
+      "system": "cell",
+      "case": "start-guard-closed",
+      "status": "running",
+      "rule": "StartNeedsGuard",
+      "statement": "The press starts only with the guard closed and the emergency stop released.",
+      "rule_file": "examples/cell/rules/press.fsl",
+      "data_files": [
+        "examples/cell/data/start-guard-closed.json",
+        "examples/cell/data/stopped-guard-closed.json"
+      ],
+      "request_file": "examples/cell/requests/start-guard-closed.json",
+      "expected_file": "examples/cell/expected/start-guard-closed.json",
+      "verdict": "holds",
+      "exit": 0,
+      "waits_on": null
+    },
+    {
+      "system": "cell",
+      "case": "start-guard-open",
+      "status": "running",
+      "rule": "StartNeedsGuard",
+      "statement": "The press starts only with the guard closed and the emergency stop released.",
+      "rule_file": "examples/cell/rules/press.fsl",
+      "data_files": [
+        "examples/cell/data/start-guard-open.json",
+        "examples/cell/data/stopped-guard-open.json"
+      ],
+      "request_file": "examples/cell/requests/start-guard-open.json",
+      "expected_file": "examples/cell/expected/start-guard-open.json",
+      "verdict": "violated",
+      "exit": 10,
+      "waits_on": null
+    },
+    {
+      "system": "cell",
+      "case": "open-guard-stops",
+      "status": "running",
+      "rule": "OpeningGuardStops",
+      "statement": "Opening the guard leaves the ram stopped.",
+      "rule_file": "examples/cell/rules/press.fsl",
+      "data_files": [
+        "examples/cell/data/open-guard-stops.json",
+        "examples/cell/data/pre-running.json",
+        "examples/cell/data/post-guard-open-stopped.json"
+      ],
+      "request_file": "examples/cell/requests/open-guard-stops.json",
+      "expected_file": "examples/cell/expected/open-guard-stops.json",
+      "verdict": "holds",
+      "exit": 0,
+      "waits_on": null
+    },
+    {
+      "system": "cell",
+      "case": "open-guard-keeps-moving",
+      "status": "running",
+      "rule": "OpeningGuardStops",
+      "statement": "Opening the guard leaves the ram stopped.",
+      "rule_file": "examples/cell/rules/press.fsl",
+      "data_files": [
+        "examples/cell/data/open-guard-keeps-moving.json",
+        "examples/cell/data/pre-running.json",
+        "examples/cell/data/post-guard-open-moving.json"
+      ],
+      "request_file": "examples/cell/requests/open-guard-keeps-moving.json",
+      "expected_file": "examples/cell/expected/open-guard-keeps-moving.json",
+      "verdict": "violated",
+      "exit": 10,
+      "waits_on": null
+    },
+    {
+      "system": "cell",
+      "case": "separation-ok",
+      "status": "running",
+      "rule": "SpeedAndSeparation",
+      "statement": "While a person is in the cell, the arm keeps at least the protective separation from them (speed-and-separation monitoring).",
+      "rule_file": "examples/cell/rules/robot.fsl",
+      "data_files": [
+        "examples/cell/data/person-far.json"
+      ],
+      "request_file": "examples/cell/requests/separation-ok.json",
+      "expected_file": "examples/cell/expected/separation-ok.json",
+      "verdict": "holds",
+      "exit": 0,
+      "waits_on": null
+    },
+    {
+      "system": "cell",
+      "case": "separation-too-close",
+      "status": "running",
+      "rule": "SpeedAndSeparation",
+      "statement": "While a person is in the cell, the arm keeps at least the protective separation from them (speed-and-separation monitoring).",
+      "rule_file": "examples/cell/rules/robot.fsl",
+      "data_files": [
+        "examples/cell/data/person-close.json"
+      ],
+      "request_file": "examples/cell/requests/separation-too-close.json",
+      "expected_file": "examples/cell/expected/separation-too-close.json",
+      "verdict": "violated",
+      "exit": 10,
+      "waits_on": null
+    },
+    {
+      "system": "parts-saga",
+      "case": "jobs-rework-tracked",
+      "status": "running",
+      "rule": "ReworkedPartsAreTracked",
+      "statement": "A scrapped part never reaches assembly; an assembled part was never scrapped.",
+      "rule_file": "examples/parts-saga/rules/jobs.fsl",
+      "data_files": [
+        "examples/parts-saga/data/job-in-rework.json"
+      ],
+      "request_file": "examples/parts-saga/requests/jobs-rework-tracked.json",
+      "expected_file": "examples/parts-saga/expected/jobs-rework-tracked.json",
+      "verdict": "holds",
+      "exit": 0,
+      "waits_on": null
+    },
+    {
+      "system": "parts-saga",
+      "case": "jobs-rework-untracked",
+      "status": "running",
+      "rule": "ReworkedPartsAreTracked",
+      "statement": "A scrapped part never reaches assembly; an assembled part was never scrapped.",
+      "rule_file": "examples/parts-saga/rules/jobs.fsl",
+      "data_files": [
+        "examples/parts-saga/data/job-rework-untracked.json"
+      ],
+      "request_file": "examples/parts-saga/requests/jobs-rework-untracked.json",
+      "expected_file": "examples/parts-saga/expected/jobs-rework-untracked.json",
+      "verdict": "violated",
+      "exit": 10,
+      "waits_on": null
+    },
+    {
+      "system": "parts-saga",
+      "case": "jobs-third-rework",
+      "status": "running",
+      "rule": "ReworkAtMostTwice",
+      "statement": "A part goes back for rework at most twice; after that it is scrapped.",
+      "rule_file": "examples/parts-saga/rules/jobs.fsl",
+      "data_files": [
+        "examples/parts-saga/data/job-third-rework.json"
+      ],
+      "request_file": "examples/parts-saga/requests/jobs-third-rework.json",
+      "expected_file": "examples/parts-saga/expected/jobs-third-rework.json",
+      "verdict": "violated",
+      "exit": 10,
+      "waits_on": null
+    },
+    {
+      "system": "parts-saga",
+      "case": "protocol-compiles",
+      "status": "running",
+      "rule": null,
+      "statement": "A part is released, machined and inspected, then passed to assembly, reworked at most twice, or scrapped with its machine freed.",
+      "rule_file": "examples/parts-saga/rules/part-flow-untimed.fsl",
+      "data_files": [],
+      "request_file": "examples/parts-saga/requests/protocol-compiles.json",
+      "expected_file": "examples/parts-saga/expected/protocol-compiles.json",
+      "verdict": "checked: roles, channels, choice, repeat",
+      "exit": 0,
+      "waits_on": null
+    },
+    {
+      "system": "parts-saga",
+      "case": "protocol-overlapping-verdict",
+      "status": "running",
+      "rule": null,
+      "statement": "The pass, rework and scrap guards of the inspection choice are exclusive.",
+      "rule_file": "examples/parts-saga/rules/part-flow-overlapping-verdict.fsl",
+      "data_files": [],
+      "request_file": "examples/parts-saga/requests/protocol-overlapping-verdict.json",
+      "expected_file": "examples/parts-saga/expected/protocol-overlapping-verdict.json",
+      "verdict": "refused: guards of choice Verdict not exclusive (duplicate-arm)",
+      "exit": 20,
+      "waits_on": null
+    },
+    {
+      "system": "parts-saga",
+      "case": "protocol-wrong-role",
+      "status": "running",
+      "rule": null,
+      "statement": "Only the role that saw the inspection result decides the rework loop.",
+      "rule_file": "examples/parts-saga/rules/part-flow-wrong-role.fsl",
+      "data_files": [],
+      "request_file": "examples/parts-saga/requests/protocol-wrong-role.json",
+      "expected_file": "examples/parts-saga/expected/protocol-wrong-role.json",
+      "verdict": "refused: Again reads inspected, no fact of Machining",
+      "exit": 20,
+      "waits_on": null
+    },
+    {
+      "system": "parts-saga",
+      "case": "staged-saga-compensation",
+      "status": "staged",
+      "rule": null,
+      "statement": "A job finishes within 120 seconds, and scrapping a part releases its machine.",
+      "rule_file": "examples/parts-saga/rules/part-flow.fsl",
+      "data_files": [],
+      "request_file": "examples/parts-saga/requests/staged-saga-compensation.json",
+      "expected_file": "examples/parts-saga/expected/staged-saga-compensation.json",
+      "verdict": null,
+      "exit": 20,
+      "waits_on": "QSL-1964"
+    },
+    {
+      "system": "parts-saga",
+      "case": "staged-saga-deadlock-free",
+      "status": "staged",
+      "rule": null,
+      "statement": "Every job ends assembled, scrapped or given up.",
+      "rule_file": "examples/parts-saga/rules/part-flow-untimed.fsl",
+      "data_files": [],
+      "request_file": "examples/parts-saga/requests/staged-saga-deadlock-free.json",
+      "expected_file": "examples/parts-saga/expected/staged-saga-deadlock-free.json",
+      "verdict": null,
+      "exit": 21,
+      "waits_on": "QSL-1976"
+    },
+    {
+      "system": "rover",
+      "case": "vote-two-of-three",
+      "status": "running",
+      "rule": "twoOfThree",
+      "statement": "The vote is true when at least two of its three inputs are true.",
+      "rule_file": "examples/rover/rules/modes.fsl",
+      "data_files": [],
+      "request_file": "examples/rover/requests/vote-two-of-three.json",
+      "expected_file": "examples/rover/expected/vote-two-of-three.json",
+      "verdict": "true",
+      "exit": 0,
+      "waits_on": null
+    },
+    {
+      "system": "rover",
+      "case": "vote-one-of-three",
+      "status": "running",
+      "rule": "twoOfThree",
+      "statement": "The vote is true when at least two of its three inputs are true.",
+      "rule_file": "examples/rover/rules/modes.fsl",
+      "data_files": [],
+      "request_file": "examples/rover/requests/vote-one-of-three.json",
+      "expected_file": "examples/rover/expected/vote-one-of-three.json",
+      "verdict": "false",
+      "exit": 0,
+      "waits_on": null
+    },
+    {
+      "system": "rover",
+      "case": "failsafe-still",
+      "status": "running",
+      "rule": "FailsafeIsStill",
+      "statement": "In failsafe mode the rover is stopped.",
+      "rule_file": "examples/rover/rules/modes.fsl",
+      "data_files": [
+        "examples/rover/data/failsafe-stopped.json"
+      ],
+      "request_file": "examples/rover/requests/failsafe-still.json",
+      "expected_file": "examples/rover/expected/failsafe-still.json",
+      "verdict": "holds",
+      "exit": 0,
+      "waits_on": null
+    },
+    {
+      "system": "rover",
+      "case": "failsafe-rolling",
+      "status": "running",
+      "rule": "FailsafeIsStill",
+      "statement": "In failsafe mode the rover is stopped.",
+      "rule_file": "examples/rover/rules/modes.fsl",
+      "data_files": [
+        "examples/rover/data/failsafe-rolling.json"
+      ],
+      "request_file": "examples/rover/requests/failsafe-rolling.json",
+      "expected_file": "examples/rover/expected/failsafe-rolling.json",
+      "verdict": "violated",
+      "exit": 10,
+      "waits_on": null
+    },
+    {
+      "system": "rover",
+      "case": "degraded-slow",
+      "status": "running",
+      "rule": "DegradedIsSlow",
+      "statement": "Without its lidar the rover drives at 300 mm/s or less.",
+      "rule_file": "examples/rover/rules/modes.fsl",
+      "data_files": [
+        "examples/rover/data/degraded-slow.json"
+      ],
+      "request_file": "examples/rover/requests/degraded-slow.json",
+      "expected_file": "examples/rover/expected/degraded-slow.json",
+      "verdict": "holds",
+      "exit": 0,
+      "waits_on": null
+    },
+    {
+      "system": "rover",
+      "case": "degraded-fast",
+      "status": "running",
+      "rule": "DegradedIsSlow",
+      "statement": "Without its lidar the rover drives at 300 mm/s or less.",
+      "rule_file": "examples/rover/rules/modes.fsl",
+      "data_files": [
+        "examples/rover/data/degraded-fast.json"
+      ],
+      "request_file": "examples/rover/requests/degraded-fast.json",
+      "expected_file": "examples/rover/expected/degraded-fast.json",
+      "verdict": "violated",
+      "exit": 10,
+      "waits_on": null
+    },
+    {
+      "system": "rover",
+      "case": "obstacle-crawl",
+      "status": "running",
+      "rule": "ObstacleSlows",
+      "statement": "When two of the three range sensors see an obstacle within 500 mm, the rover crawls at 100 mm/s or less.",
+      "rule_file": "examples/rover/rules/modes.fsl",
+      "data_files": [
+        "examples/rover/data/obstacle-two-sensors-crawl.json"
+      ],
+      "request_file": "examples/rover/requests/obstacle-crawl.json",
+      "expected_file": "examples/rover/expected/obstacle-crawl.json",
+      "verdict": "holds",
+      "exit": 0,
+      "waits_on": null
+    },
+    {
+      "system": "rover",
+      "case": "obstacle-fast",
+      "status": "running",
+      "rule": "ObstacleSlows",
+      "statement": "When two of the three range sensors see an obstacle within 500 mm, the rover crawls at 100 mm/s or less.",
+      "rule_file": "examples/rover/rules/modes.fsl",
+      "data_files": [
+        "examples/rover/data/obstacle-two-sensors-fast.json"
+      ],
+      "request_file": "examples/rover/requests/obstacle-fast.json",
+      "expected_file": "examples/rover/expected/obstacle-fast.json",
+      "verdict": "violated",
+      "exit": 10,
+      "waits_on": null
+    },
+    {
+      "system": "rover",
+      "case": "obstacle-outvoted",
+      "status": "running",
+      "rule": "ObstacleSlows",
+      "statement": "When two of the three range sensors see an obstacle within 500 mm, the rover crawls at 100 mm/s or less.",
+      "rule_file": "examples/rover/rules/modes.fsl",
+      "data_files": [
+        "examples/rover/data/obstacle-one-sensor-fast.json"
+      ],
+      "request_file": "examples/rover/requests/obstacle-outvoted.json",
+      "expected_file": "examples/rover/expected/obstacle-outvoted.json",
+      "verdict": "holds: one sensor is outvoted",
+      "exit": 0,
+      "waits_on": null
+    },
+    {
+      "system": "rover",
+      "case": "safe-stop-in-time",
+      "status": "running",
+      "rule": "SafeStopWithin3Steps",
+      "statement": "Whenever the lidar is lost, the rover is stopped within three control steps.",
+      "rule_file": "examples/rover/rules/safe-stop-steps.fsl",
+      "data_files": [
+        "examples/rover/data/t0-driving.json",
+        "examples/rover/data/t1-lidar-lost.json",
+        "examples/rover/data/t2-braking.json",
+        "examples/rover/data/t3-stopped.json"
+      ],
+      "request_file": "examples/rover/requests/safe-stop-in-time.json",
+      "expected_file": "examples/rover/expected/safe-stop-in-time.json",
+      "verdict": "holds",
+      "exit": 0,
+      "waits_on": null
+    },
+    {
+      "system": "rover",
+      "case": "safe-stop-late",
+      "status": "running",
+      "rule": "SafeStopWithin3Steps",
+      "statement": "Whenever the lidar is lost, the rover is stopped within three control steps.",
+      "rule_file": "examples/rover/rules/safe-stop-steps.fsl",
+      "data_files": [
+        "examples/rover/data/t0-driving.json",
+        "examples/rover/data/t1-lidar-lost.json",
+        "examples/rover/data/u2-still-driving.json",
+        "examples/rover/data/u3-still-driving.json",
+        "examples/rover/data/u4-still-driving.json",
+        "examples/rover/data/u5-stopped.json"
+      ],
+      "request_file": "examples/rover/requests/safe-stop-late.json",
+      "expected_file": "examples/rover/expected/safe-stop-late.json",
+      "verdict": "violated: stopped 4 steps after the lidar was lost",
+      "exit": 10,
+      "waits_on": null
+    },
+    {
+      "system": "rover",
+      "case": "control-loop-compiles",
+      "status": "running",
+      "rule": null,
+      "statement": "The rover's control loop: sensor fusion every 10 ms, the stop monitor every 20 ms, path planning every 50 ms.",
+      "rule_file": "examples/rover/rules/control-loop.fsl",
+      "data_files": [],
+      "request_file": "examples/rover/requests/control-loop-compiles.json",
+      "expected_file": "examples/rover/expected/control-loop-compiles.json",
+      "verdict": "checked task set",
+      "exit": 0,
+      "waits_on": null
+    },
+    {
+      "system": "rover",
+      "case": "staged-control-loop-schedulable",
+      "status": "staged",
+      "rule": null,
+      "statement": "The control task set meets its deadlines, and the stop monitor responds within 10 ms.",
+      "rule_file": "examples/rover/rules/control-loop.fsl",
+      "data_files": [],
+      "request_file": "examples/rover/requests/staged-control-loop-schedulable.json",
+      "expected_file": "examples/rover/expected/staged-control-loop-schedulable.json",
+      "verdict": null,
+      "exit": 21,
+      "waits_on": "QSL-1976"
+    },
+    {
+      "system": "rover",
+      "case": "staged-safe-stop-200ms",
+      "status": "staged",
+      "rule": null,
+      "statement": "When the lidar is lost, the rover is stopped within 200 ms.",
+      "rule_file": "examples/rover/rules/staged-safe-stop-200ms.fsl",
+      "data_files": [],
+      "request_file": "examples/rover/requests/staged-safe-stop-200ms.json",
+      "expected_file": "examples/rover/expected/staged-safe-stop-200ms.json",
+      "verdict": null,
+      "exit": 20,
+      "waits_on": "QSL-1964"
+    },
+    {
+      "system": "rover",
+      "case": "staged-mode-machine",
+      "status": "staged",
+      "rule": null,
+      "statement": "On every behavior of the mode machine, the rover stops within three control steps of losing its lidar.",
+      "rule_file": "examples/rover/rules/safe-stop-steps.fsl",
+      "data_files": [],
+      "request_file": "examples/rover/requests/staged-mode-machine.json",
+      "expected_file": "examples/rover/expected/staged-mode-machine.json",
+      "verdict": null,
+      "exit": 21,
+      "waits_on": "QSL-1976"
+    },
+    {
+      "system": "rover",
+      "case": "staged-vote-probability",
+      "status": "staged",
+      "rule": null,
+      "statement": "Over 100 samples, the vote is wrong with probability at most 1 in 10,000.",
+      "rule_file": "examples/rover/rules/staged-vote-probability.fsl",
+      "data_files": [],
+      "request_file": "examples/rover/requests/staged-vote-probability.json",
+      "expected_file": "examples/rover/expected/staged-vote-probability.json",
+      "verdict": null,
+      "exit": 21,
+      "waits_on": "QSL-2000"
+    },
+    {
+      "system": "rover",
+      "case": "staged-controller-refinement",
+      "status": "staged",
+      "rule": null,
+      "statement": "Entering failsafe is the abstract stop of a vehicle.",
+      "rule_file": "examples/rover/rules/staged-controller-refinement.fsl",
+      "data_files": [],
+      "request_file": "examples/rover/requests/staged-controller-refinement.json",
+      "expected_file": "examples/rover/expected/staged-controller-refinement.json",
+      "verdict": null,
+      "exit": 21,
+      "waits_on": "QSL-1976"
+    },
+    {
+      "system": "rover",
+      "case": "staged-safe-stop-monitor",
+      "status": "staged",
+      "rule": null,
+      "statement": "A live feed of rover states is watched for the three-step safe stop.",
+      "rule_file": "examples/rover/rules/safe-stop-steps.fsl",
+      "data_files": [],
+      "request_file": "examples/rover/requests/staged-safe-stop-monitor.json",
+      "expected_file": "examples/rover/expected/staged-safe-stop-monitor.json",
+      "verdict": null,
+      "exit": 21,
+      "waits_on": "QSL-1977"
+    },
+    {
+      "system": "shop",
+      "case": "values-line-total",
+      "status": "running",
+      "rule": "lineTotal",
+      "statement": "A line costs price times quantity.",
+      "rule_file": "examples/shop/rules/values.fsl",
+      "data_files": [],
+      "request_file": "examples/shop/requests/values-line-total.json",
+      "expected_file": "examples/shop/expected/values-line-total.json",
+      "verdict": "3750",
+      "exit": 0,
+      "waits_on": null
+    },
+    {
+      "system": "shop",
+      "case": "values-with-shipping",
+      "status": "running",
+      "rule": "withShipping",
+      "statement": "An order under 50 dollars adds 4.99 shipping.",
+      "rule_file": "examples/shop/rules/values.fsl",
+      "data_files": [],
+      "request_file": "examples/shop/requests/values-with-shipping.json",
+      "expected_file": "examples/shop/expected/values-with-shipping.json",
+      "verdict": "4249",
+      "exit": 0,
+      "waits_on": null
+    },
+    {
+      "system": "shop",
+      "case": "values-free-shipping",
+      "status": "running",
+      "rule": "freeShipping",
+      "statement": "An order of 50 dollars or more ships free.",
+      "rule_file": "examples/shop/rules/values.fsl",
+      "data_files": [],
+      "request_file": "examples/shop/requests/values-free-shipping.json",
+      "expected_file": "examples/shop/expected/values-free-shipping.json",
+      "verdict": "false",
+      "exit": 0,
+      "waits_on": null
+    },
+    {
+      "system": "shop",
+      "case": "values-qty-zero",
+      "status": "running",
+      "rule": "lineTotal",
+      "statement": "A quantity is between 1 and 99.",
+      "rule_file": "examples/shop/rules/values.fsl",
+      "data_files": [],
+      "request_file": "examples/shop/requests/values-qty-zero.json",
+      "expected_file": "examples/shop/expected/values-qty-zero.json",
+      "verdict": "refused: argument outside Qty",
+      "exit": 20,
+      "waits_on": null
+    },
+    {
+      "system": "shop",
+      "case": "values-too-narrow",
+      "status": "running",
+      "rule": null,
+      "statement": "A line total must fit its declared result type.",
+      "rule_file": "examples/shop/rules/values-too-narrow.fsl",
+      "data_files": [],
+      "request_file": null,
+      "expected_file": "examples/shop/expected/values-too-narrow.json",
+      "verdict": "refused: undefined_expression unproved-range",
+      "exit": 20,
+      "waits_on": null
+    },
+    {
+      "system": "shop",
+      "case": "paid-in-full",
+      "status": "running",
+      "rule": "PaidInFull",
+      "statement": "A paid order has been charged its full total.",
+      "rule_file": "examples/shop/rules/orders.fsl",
+      "data_files": [
+        "examples/shop/data/paid-in-full.json"
+      ],
+      "request_file": "examples/shop/requests/paid-in-full.json",
+      "expected_file": "examples/shop/expected/paid-in-full.json",
+      "verdict": "holds",
+      "exit": 0,
+      "waits_on": null
+    },
+    {
+      "system": "shop",
+      "case": "paid-short",
+      "status": "running",
+      "rule": "PaidInFull",
+      "statement": "A paid order has been charged its full total.",
+      "rule_file": "examples/shop/rules/orders.fsl",
+      "data_files": [
+        "examples/shop/data/paid-short.json"
+      ],
+      "request_file": "examples/shop/requests/paid-short.json",
+      "expected_file": "examples/shop/expected/paid-short.json",
+      "verdict": "violated",
+      "exit": 10,
+      "waits_on": null
+    },
+    {
+      "system": "shop",
+      "case": "dangling-charge",
+      "status": "running",
+      "rule": "PaidInFull",
+      "statement": "A paid order has been charged its full total.",
+      "rule_file": "examples/shop/rules/orders.fsl",
+      "data_files": [
+        "examples/shop/data/dangling-charge.json"
+      ],
+      "request_file": "examples/shop/requests/dangling-charge.json",
+      "expected_file": "examples/shop/expected/dangling-charge.json",
+      "verdict": "refused: charge c1 not in the data",
+      "exit": 20,
+      "waits_on": null
+    },
+    {
+      "system": "shop",
+      "case": "partial-data",
+      "status": "running",
+      "rule": "RefundsWithinCharge",
+      "statement": "Refunds never add up to more than was charged.",
+      "rule_file": "examples/shop/rules/orders.fsl",
+      "data_files": [
+        "examples/shop/data/partial-data.json"
+      ],
+      "request_file": "examples/shop/requests/partial-data.json",
+      "expected_file": "examples/shop/expected/partial-data.json",
+      "verdict": "incomplete",
+      "exit": 22,
+      "waits_on": null
+    },
+    {
+      "system": "shop",
+      "case": "refunds-within-charge",
+      "status": "running",
+      "rule": "RefundsWithinCharge",
+      "statement": "Refunds never add up to more than was charged.",
+      "rule_file": "examples/shop/rules/orders.fsl",
+      "data_files": [
+        "examples/shop/data/refund-ok.json"
+      ],
+      "request_file": "examples/shop/requests/refunds-within-charge.json",
+      "expected_file": "examples/shop/expected/refunds-within-charge.json",
+      "verdict": "holds",
+      "exit": 0,
+      "waits_on": null
+    },
+    {
+      "system": "shop",
+      "case": "over-refunded",
+      "status": "running",
+      "rule": "RefundsWithinCharge",
+      "statement": "Refunds never add up to more than was charged.",
+      "rule_file": "examples/shop/rules/orders.fsl",
+      "data_files": [
+        "examples/shop/data/over-refunded.json"
+      ],
+      "request_file": "examples/shop/requests/over-refunded.json",
+      "expected_file": "examples/shop/expected/over-refunded.json",
+      "verdict": "violated",
+      "exit": 10,
+      "waits_on": null
+    },
+    {
+      "system": "shop",
+      "case": "charge-once-retry-new-key",
+      "status": "running",
+      "rule": "ChargeAtMostOnce",
+      "statement": "A retried payment request is charged at most once: no two charges of an order carry the same idempotency key.",
+      "rule_file": "examples/shop/rules/orders.fsl",
+      "data_files": [
+        "examples/shop/data/retry-new-key.json"
+      ],
+      "request_file": "examples/shop/requests/charge-once-retry-new-key.json",
+      "expected_file": "examples/shop/expected/charge-once-retry-new-key.json",
+      "verdict": "holds",
+      "exit": 0,
+      "waits_on": null
+    },
+    {
+      "system": "shop",
+      "case": "charge-once-charged-twice",
+      "status": "running",
+      "rule": "ChargeAtMostOnce",
+      "statement": "A retried payment request is charged at most once: no two charges of an order carry the same idempotency key.",
+      "rule_file": "examples/shop/rules/orders.fsl",
+      "data_files": [
+        "examples/shop/data/charged-twice.json"
+      ],
+      "request_file": "examples/shop/requests/charge-once-charged-twice.json",
+      "expected_file": "examples/shop/expected/charge-once-charged-twice.json",
+      "verdict": "violated",
+      "exit": 10,
+      "waits_on": null
+    },
+    {
+      "system": "shop",
+      "case": "two-people-ok",
+      "status": "running",
+      "rule": "TwoPeople",
+      "statement": "The second approver of a refund is a different person.",
+      "rule_file": "examples/shop/rules/orders.fsl",
+      "data_files": [
+        "examples/shop/data/two-approvers.json"
+      ],
+      "request_file": "examples/shop/requests/two-people-ok.json",
+      "expected_file": "examples/shop/expected/two-people-ok.json",
+      "verdict": "holds",
+      "exit": 0,
+      "waits_on": null
+    },
+    {
+      "system": "shop",
+      "case": "two-people-same",
+      "status": "running",
+      "rule": "TwoPeople",
+      "statement": "The second approver of a refund is a different person.",
+      "rule_file": "examples/shop/rules/orders.fsl",
+      "data_files": [
+        "examples/shop/data/same-approver.json"
+      ],
+      "request_file": "examples/shop/requests/two-people-same.json",
+      "expected_file": "examples/shop/expected/two-people-same.json",
+      "verdict": "violated",
+      "exit": 10,
+      "waits_on": null
+    },
+    {
+      "system": "shop",
+      "case": "refund-small",
+      "status": "running",
+      "rule": "RefundApproval",
+      "statement": "Refunds over $500 need a second approver.",
+      "rule_file": "examples/shop/rules/operations.fsl",
+      "data_files": [
+        "examples/shop/data/refund-small.json",
+        "examples/shop/data/open-order.json"
+      ],
+      "request_file": "examples/shop/requests/refund-small.json",
+      "expected_file": "examples/shop/expected/refund-small.json",
+      "verdict": "holds",
+      "exit": 0,
+      "waits_on": null
+    },
+    {
+      "system": "shop",
+      "case": "refund-large-one-approver",
+      "status": "running",
+      "rule": "RefundApproval",
+      "statement": "Refunds over $500 need a second approver.",
+      "rule_file": "examples/shop/rules/operations.fsl",
+      "data_files": [
+        "examples/shop/data/refund-large-one.json",
+        "examples/shop/data/open-order.json"
+      ],
+      "request_file": "examples/shop/requests/refund-large-one-approver.json",
+      "expected_file": "examples/shop/expected/refund-large-one-approver.json",
+      "verdict": "violated",
+      "exit": 10,
+      "waits_on": null
+    },
+    {
+      "system": "shop",
+      "case": "refund-large-two-approvers",
+      "status": "running",
+      "rule": "RefundApproval",
+      "statement": "Refunds over $500 need a second approver.",
+      "rule_file": "examples/shop/rules/operations.fsl",
+      "data_files": [
+        "examples/shop/data/refund-large-two.json",
+        "examples/shop/data/open-order.json"
+      ],
+      "request_file": "examples/shop/requests/refund-large-two-approvers.json",
+      "expected_file": "examples/shop/expected/refund-large-two-approvers.json",
+      "verdict": "holds",
+      "exit": 0,
+      "waits_on": null
+    },
+    {
+      "system": "shop",
+      "case": "charge-completes",
+      "status": "running",
+      "rule": "PaidWhenCovered",
+      "statement": "A charge that covers the rest of the total leaves the order Paid.",
+      "rule_file": "examples/shop/rules/operations.fsl",
+      "data_files": [
+        "examples/shop/data/charge-completes.json",
+        "examples/shop/data/open-order.json",
+        "examples/shop/data/after-charge-paid.json"
+      ],
+      "request_file": "examples/shop/requests/charge-completes.json",
+      "expected_file": "examples/shop/expected/charge-completes.json",
+      "verdict": "holds",
+      "exit": 0,
+      "waits_on": null
+    },
+    {
+      "system": "shop",
+      "case": "charge-leaves-open",
+      "status": "running",
+      "rule": "PaidWhenCovered",
+      "statement": "A charge that covers the rest of the total leaves the order Paid.",
+      "rule_file": "examples/shop/rules/operations.fsl",
+      "data_files": [
+        "examples/shop/data/charge-leaves-open.json",
+        "examples/shop/data/open-order.json",
+        "examples/shop/data/after-charge-open.json"
+      ],
+      "request_file": "examples/shop/requests/charge-leaves-open.json",
+      "expected_file": "examples/shop/expected/charge-leaves-open.json",
+      "verdict": "violated",
+      "exit": 10,
+      "waits_on": null
+    },
+    {
+      "system": "shop",
+      "case": "charge-frame-ok",
+      "status": "running",
+      "rule": "Shop::Order::charge",
+      "statement": "A charge changes only the amount charged and the status.",
+      "rule_file": "examples/shop/rules/operations.fsl",
+      "data_files": [
+        "examples/shop/data/charge-completes.json",
+        "examples/shop/data/open-order.json",
+        "examples/shop/data/after-charge-paid.json"
+      ],
+      "request_file": "examples/shop/requests/charge-frame-ok.json",
+      "expected_file": "examples/shop/expected/charge-frame-ok.json",
+      "verdict": "holds",
+      "exit": 0,
+      "waits_on": null
+    },
+    {
+      "system": "shop",
+      "case": "charge-changes-total",
+      "status": "running",
+      "rule": "Shop::Order::charge",
+      "statement": "A charge changes only the amount charged and the status.",
+      "rule_file": "examples/shop/rules/operations.fsl",
+      "data_files": [
+        "examples/shop/data/charge-changes-total.json",
+        "examples/shop/data/open-order.json",
+        "examples/shop/data/after-charge-retotal.json"
+      ],
+      "request_file": "examples/shop/requests/charge-changes-total.json",
+      "expected_file": "examples/shop/expected/charge-changes-total.json",
+      "verdict": "violated: frame (total changed)",
+      "exit": 10,
+      "waits_on": null
+    },
+    {
+      "system": "shop",
+      "case": "charge-changes-total-post",
+      "status": "running",
+      "rule": "PaidWhenCovered",
+      "statement": "A charge that covers the total leaves the order Paid.",
+      "rule_file": "examples/shop/rules/operations.fsl",
+      "data_files": [
+        "examples/shop/data/charge-changes-total.json",
+        "examples/shop/data/open-order.json",
+        "examples/shop/data/after-charge-retotal.json"
+      ],
+      "request_file": "examples/shop/requests/charge-changes-total-post.json",
+      "expected_file": "examples/shop/expected/charge-changes-total-post.json",
+      "verdict": "refused: frame_violation",
+      "exit": 20,
+      "waits_on": null
+    },
+    {
+      "system": "shop",
+      "case": "staged-charge-adds-amount",
+      "status": "staged",
+      "rule": null,
+      "statement": "A charge adds exactly its amount to what the order has been charged.",
+      "rule_file": "examples/shop/rules/staged-charge-adds-amount.fsl",
+      "data_files": [],
+      "request_file": "examples/shop/requests/staged-charge-adds-amount.json",
+      "expected_file": "examples/shop/expected/staged-charge-adds-amount.json",
+      "verdict": null,
+      "exit": 20,
+      "waits_on": "QSL-1901"
+    }
+  ]
+}
