@@ -1439,7 +1439,8 @@
       "expected_file": "examples/shop/expected/paid-in-full-open.json",
       "verdict": "holds",
       "exit": 0,
-      "waits_on": null
+      "waits_on": null,
+      "needs": null
     },
     {
       "system": "shop",
@@ -1455,7 +1456,8 @@
       "expected_file": "examples/shop/expected/misspelled-field.json",
       "verdict": "refused: ill_typed, the field paid is not on Order",
       "exit": 20,
-      "waits_on": null
+      "waits_on": null,
+      "needs": null
     },
     {
       "system": "shop",
@@ -1573,7 +1575,8 @@
       "expected_file": "examples/shop/expected/charge-once-self-pair.json",
       "verdict": "violated",
       "exit": 10,
-      "waits_on": null
+      "waits_on": null,
+      "needs": null
     },
     {
       "system": "shop",
