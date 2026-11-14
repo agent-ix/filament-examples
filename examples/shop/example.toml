@@ -431,6 +431,83 @@ expect_verdict = "compiled"
 serves = "Advanced analyses reference (refinement)"
 
 [[case]]
+id = "limits-source-bytes"
+rule = "PaidInFull"
+statement = "A source larger than the source byte limit stops the run before the rule is read."
+file = "rules/paid-in-full.fsl"
+command = "run requests/limits/source-bytes.json --limit s1.input_bytes=200"
+status = "running"
+expect_exit = 22
+expect_verdict = "incomplete"
+serves = "Checks: limits"
+
+[[case]]
+id = "limits-source-bytes-raised"
+rule = "PaidInFull"
+statement = "The same run with the source byte limit raised finishes and the rule holds."
+file = "rules/paid-in-full.fsl"
+command = "run requests/limits/source-bytes.json --limit s1.input_bytes=2000"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "Checks: limits"
+
+[[case]]
+id = "limits-work-units"
+rule = "PaidInFull"
+statement = "A work budget of three units runs out before the rule is evaluated."
+file = "rules/paid-in-full.fsl"
+command = "run requests/limits/work-units.json"
+status = "running"
+expect_exit = 22
+expect_verdict = "incomplete"
+serves = "Checks: limits"
+
+[[case]]
+id = "profiles-sum-under-core"
+rule = "RefundsWithinCharge"
+statement = "A rule that sums a collection is outside the smallest state layer and is not supported under it."
+file = "rules/profiles/sum-under-core.fsl"
+command = "run requests/profiles/sum-under-core.json"
+status = "running"
+expect_exit = 21
+expect_verdict = "unsupported"
+serves = "Checks: profiles"
+
+[[case]]
+id = "profiles-unknown-id"
+rule = "PaidInFull"
+statement = "A profile identity that the language does not define is refused."
+file = "rules/profiles/unknown-id.fsl"
+command = "run requests/profiles/unknown-id.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: unknown profile"
+serves = "Checks: profiles"
+
+[[case]]
+id = "engines-interpreter"
+rule = "PaidInFull"
+statement = "The interpreter is the default engine and can be named explicitly."
+file = "rules/paid-in-full.fsl"
+command = "run requests/paid-in-full.json --engine interpreter"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "Checks: engines"
+
+[[case]]
+id = "engines-aot-unavailable"
+rule = "PaidInFull"
+statement = "A compiled engine that is not available ends the run unsupported, and the interpreter does not take over."
+file = "rules/paid-in-full.fsl"
+command = "run requests/paid-in-full.json --engine aot"
+status = "running"
+expect_exit = 21
+expect_verdict = "unsupported"
+serves = "Checks: engines"
+
+[[case]]
 id = "decl-alias-narrower"
 rule = "packOf"
 statement = "A quantity of 6 in a pack of up to 12 passes where a quantity of 1 to 99 is expected."
