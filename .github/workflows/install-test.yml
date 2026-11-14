@@ -1,0 +1,29 @@
+name: Install test
+
+# Manual only. Runs the commands in install-test/steps.md on a bare
+# ubuntu:22.04 container on an x86_64 runner.
+on:
+  workflow_dispatch:
+    inputs:
+      fsl_binary_url:
+        description: "URL of a prebuilt FSL driver binary. Leave empty to build the driver from source."
+        required: false
+        default: ""
+
+permissions:
+  contents: read
+
+jobs:
+  install:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Runner tests
+        run: make test
+      - name: Run the install steps
+        env:
+          FSL_BINARY_URL: ${{ inputs.fsl_binary_url }}
+        run: make install-test INSTALL_DRIVER=${{ inputs.fsl_binary_url != '' && 'release' || 'source' }}

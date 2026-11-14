@@ -4,7 +4,7 @@ include config.mk
 NODE ?= node
 RUN = $(NODE) tools/run.mjs
 
-.PHONY: check staged record promote readme index models test
+.PHONY: check staged record promote readme index models test install-test
 check:
 	@$(RUN) check
 staged:
@@ -32,3 +32,12 @@ models:
 # Unit tests for the runner. They use a fake driver and need no FSL binary.
 test:
 	$(NODE) --test tools/*.test.mjs
+
+# Run the documented install steps on a bare ubuntu:22.04 container (needs Docker).
+# INSTALL_DRIVER=release skips the Rust build and downloads the binary at
+# FSL_BINARY_URL instead.
+INSTALL_DRIVER ?= source
+INSTALL_SKIP_source = driver-release
+INSTALL_SKIP_release = rust,driver-source
+install-test:
+	$(NODE) tools/steps.mjs run install-test/steps.md --image ubuntu:22.04 --skip $(INSTALL_SKIP_$(INSTALL_DRIVER))
