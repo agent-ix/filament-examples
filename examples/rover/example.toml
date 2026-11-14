@@ -349,6 +349,7 @@ expect_exit = 20
 ready_exit = 0
 waits_on = "QSL-1964"
 why = "event-position temporal rule is refused at S4: no selected clock configuration"
+needs = "clock selection for counted windows"
 serves = "Time reference (clocks and the end of a trace)"
 
 [[case]]
@@ -362,6 +363,7 @@ expect_exit = 20
 ready_exit = 0
 waits_on = "QSL-1964"
 why = "fixed-sample temporal rule is refused at S4: no selected clock configuration"
+needs = "clock selection for counted windows"
 serves = "Time reference (clocks and the end of a trace)"
 
 [[case]]
@@ -386,6 +388,7 @@ expect_exit = 21
 ready_exit = 0
 waits_on = "QSL-1976"
 why = "fixed-priority schedulability and the 10 ms response bound need `quire analyze`, which exits 21"
+needs = "schedulability analysis from the command line"
 serves = "Real-time reference; landing card U1"
 
 [[case]]
@@ -399,6 +402,7 @@ expect_exit = 20
 ready_exit = 0
 waits_on = "QSL-1964"
 why = "timestamped temporal rule is refused at S4: no selected clock configuration"
+needs = "clock selection for timed rules"
 serves = "Landing hero H3 SafeStopWithin200ms; Learn L4 (clocks); card U1"
 
 [[case]]
@@ -412,6 +416,7 @@ expect_exit = 21
 ready_exit = 0
 waits_on = "QSL-1976"
 why = "the same rule over every behaviour of the rover's mode machine needs `quire analyze`, which exits 21 and prints nothing"
+needs = "model checking from the command line"
 serves = "Learn L5 (model checking)"
 
 [[case]]
@@ -425,6 +430,7 @@ expect_exit = 21
 ready_exit = 0
 waits_on = "QSL-2000"
 why = "checks at S3, then S4 refuses: \"random-parameter `sample(faultA)` cannot be written to a checked-package/v2 graph yet\"; checking the claim would further need `quire analyze` (QSL-1976)"
+needs = "probability"
 serves = "Learn L7 (probability); landing tab Probability"
 
 [[case]]
@@ -438,6 +444,7 @@ expect_exit = 21
 ready_exit = 0
 waits_on = "QSL-1976"
 why = "the refinement compiles (both models admitted); checking it needs `quire analyze`, which exits 21"
+needs = "refinement checking from the command line"
 serves = "Learn L8 (refinement); landing tab Refinement"
 
 [[case]]
@@ -451,4 +458,5 @@ expect_exit = 21
 ready_exit = 0
 waits_on = "QSL-1977"
 why = "running SafeStopWithin3Steps as a runtime monitor on a live feed needs `quire monitor`, which exits 21 and prints nothing"
+needs = "runtime monitoring"
 serves = "Landing lifecycle stages 3-4; card U1"

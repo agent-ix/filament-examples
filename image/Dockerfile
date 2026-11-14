@@ -2,30 +2,42 @@
 #   docker build -f image/Dockerfile -t filament-toolchain .
 #   docker run --rm filament-toolchain smoke.sh
 #
-# The driver comes from one input. By default it is built from source. Pass
-# --build-arg FSL_BINARY_URL=<url> to download a release archive (a .tar.gz
-# holding the single `quire` binary) instead; {target} in the URL becomes
-# x86_64-unknown-linux-gnu or aarch64-unknown-linux-gnu. Nothing else changes.
+# The driver comes from a release by default: the build downloads the release
+# archive for its platform and checks it against SHA256SUMS.txt from the same
+# release. Build arguments:
+#   FSL_VERSION  release to download, such as 0.1.1; "latest" is the newest release
+#   FSL_SOURCE   "release" (default) or "source" to build quire-driver instead
 
 ARG UBUNTU=22.04
 
 # ------------------------------------------------------------ driver stage
 FROM ubuntu:${UBUNTU} AS driver
+ARG FSL_SOURCE=release
+ARG FSL_VERSION=latest
 ARG RUST_VERSION=1.98.1
-ARG FSL_BINARY_URL=""
 ENV DEBIAN_FRONTEND=noninteractive
-# The driver's own release profile (thin LTO, one codegen unit) exhausts the
-# memory of a 8 GB machine. These two overrides use cargo's environment
-# variables, change no file, and build the same package in a few minutes.
+# The source build: the driver's own release profile (thin LTO, one codegen
+# unit) exhausts the memory of an 8 GB machine. These two overrides use cargo's
+# environment variables, change no file, and build the same package in a few
+# minutes.
 ENV CARGO_PROFILE_RELEASE_LTO=off \
     CARGO_PROFILE_RELEASE_CODEGEN_UNITS=16
 RUN set -eu; \
     apt-get update; \
     mkdir -p /opt/fsl-driver/bin; \
-    if [ -n "$FSL_BINARY_URL" ]; then \
+    if [ "$FSL_SOURCE" = release ]; then \
       apt-get install -y --no-install-recommends ca-certificates curl; \
-      url=$(printf '%s' "$FSL_BINARY_URL" | sed "s/{target}/$(uname -m)-unknown-linux-gnu/"); \
-      curl -sSf --location "$url" | tar -xz -C /opt/fsl-driver/bin quire; \
+      repo=https://github.com/agent-ix/quire-driver; \
+      if [ "$FSL_VERSION" = latest ]; then \
+        tag=$(curl -sSf --location --output /dev/null --write-out '%{url_effective}' "$repo/releases/latest"); \
+        tag=${tag##*/}; \
+      else tag=v${FSL_VERSION#v}; fi; \
+      archive="quire-$tag-$(uname -m)-unknown-linux-gnu.tar.gz"; \
+      cd /tmp; \
+      curl -sSf --location --remote-name "$repo/releases/download/$tag/$archive"; \
+      curl -sSf --location --remote-name "$repo/releases/download/$tag/SHA256SUMS.txt"; \
+      grep " $archive\$" SHA256SUMS.txt | sha256sum --check -; \
+      tar -xzf "$archive" -C /opt/fsl-driver/bin quire; \
     else \
       apt-get install -y --no-install-recommends ca-certificates curl git build-essential pkg-config; \
       curl -sSf https://sh.rustup.rs | sh -s -- -y --profile minimal --default-toolchain "$RUST_VERSION"; \
@@ -33,7 +45,7 @@ RUN set -eu; \
         --locked --root /opt/fsl-driver quire-cli; \
       strip /opt/fsl-driver/bin/quire; \
     fi; \
-    rm -rf /var/lib/apt/lists/*
+    rm -rf /var/lib/apt/lists/* /tmp/*
 
 # ----------------------------------------------------------- runtime stage
 FROM ubuntu:${UBUNTU}
