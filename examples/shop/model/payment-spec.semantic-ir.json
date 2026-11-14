@@ -1,0 +1,154 @@
+{
+  "contractVersion": "2.0.0",
+  "canonicalization": {
+    "algorithm": "rfc8785-v1"
+  },
+  "source": {
+    "identity": "ix://example/payment-spec/spec",
+    "version": "1.0.0",
+    "dialect": "spec-bundle"
+  },
+  "package": {
+    "identity": "example/payment-spec",
+    "version": "1.0.0",
+    "mappingVersions": [],
+    "profileVersions": []
+  },
+  "occurrences": [],
+  "extensions": [],
+  "constructs": [
+    {
+      "kind": {
+        "module": "example/payment-spec",
+        "name": "object_type"
+      },
+      "moduleVersion": "1.0.0",
+      "construct": {
+        "identity": "none",
+        "shape": "record",
+        "members": {},
+        "meaning": "quire.meaning.model.object-type/v1"
+      }
+    },
+    {
+      "kind": {
+        "module": "example/payment-spec",
+        "name": "population"
+      },
+      "moduleVersion": "1.0.0",
+      "construct": {
+        "identity": "none",
+        "shape": "record",
+        "members": {},
+        "meaning": "quire.meaning.model.population/v1"
+      }
+    }
+  ],
+  "types": [
+    {
+      "identity": "ix://example/payment-spec/Payment",
+      "displayName": "Payment",
+      "kind": {
+        "module": "example/payment-spec",
+        "name": "object_type"
+      },
+      "roles": [],
+      "origin": {
+        "generated": {
+          "generatorIdentity": "ix://example/payment-spec/Payment",
+          "generatorVersion": "1.0.0",
+          "inputIdentities": [
+            "ix://example/payment-spec/Payment"
+          ]
+        }
+      },
+      "constraints": [],
+      "extensions": [],
+      "unknownPolicy": "reject",
+      "supertypes": [],
+      "fields": [
+        {
+          "identity": "ix://example/payment-spec/Payment/charged",
+          "name": "charged",
+          "typeRef": "ix://quire/native/Boolean",
+          "presence": "required",
+          "nullable": false,
+          "defaultKind": "none",
+          "multiplicity": {
+            "lower": 1,
+            "upper": 1,
+            "ordered": false,
+            "unique": true
+          },
+          "origin": {
+            "generated": {
+              "generatorIdentity": "ix://example/payment-spec/Payment/charged",
+              "generatorVersion": "1.0.0",
+              "inputIdentities": [
+                "ix://example/payment-spec/Payment/charged"
+              ]
+            }
+          }
+        }
+      ],
+      "operations": [
+        {
+          "identity": "ix://example/payment-spec/Payment/charge",
+          "name": "charge",
+          "params": [],
+          "returns": {
+            "typeRef": "ix://quire/native/Boolean",
+            "multiplicity": {
+              "lower": 1,
+              "upper": 1,
+              "ordered": false,
+              "unique": true
+            },
+            "nullable": false
+          },
+          "pre": [],
+          "post": [],
+          "origin": {
+            "generated": {
+              "generatorIdentity": "ix://example/payment-spec/Payment/charge",
+              "generatorVersion": "1.0.0",
+              "inputIdentities": [
+                "ix://example/payment-spec/Payment/charge"
+              ]
+            }
+          },
+          "frame": {
+            "modifies": [
+              "ix://example/payment-spec/Payment/charged"
+            ],
+            "creates": [],
+            "deletes": []
+          }
+        }
+      ]
+    }
+  ],
+  "populations": [
+    {
+      "identity": "ix://example/payment-spec/payments",
+      "displayName": "payments",
+      "kind": {
+        "module": "example/payment-spec",
+        "name": "population"
+      },
+      "members": [
+        "ix://example/payment-spec/Payment"
+      ],
+      "extent": "closed",
+      "origin": {
+        "generated": {
+          "generatorIdentity": "ix://example/payment-spec/payments",
+          "generatorVersion": "1.0.0",
+          "inputIdentities": [
+            "ix://example/payment-spec/payments"
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -302,3 +302,17 @@ waits_on = "QSL-1901"
 why = "post `self.charged = pre(self.charged) + amount` is refused undefined_expression/unproved-range: FR-577 (preconditions discharge a postcondition's range obligations) is specified but not implemented"
 needs = "exact post-conditions"
 serves = "Learn L3 (preferred form of the post rule)"
+
+[[case]]
+id = "staged-client-charges-once"
+rule = ""
+statement = "A client that retries a charge with an idempotency key implements a payment that is charged at most once."
+file = "rules/staged-client-charges-once.fsl"
+command = "analyze requests/staged-client-charges-once.json"
+status = "staged"
+expect_exit = 21
+ready_exit = 0
+waits_on = "QSL-1976"
+needs = "refinement checking from the command line"
+why = "the refinement compiles (both models admitted); checking it needs `quire analyze`, which exits 21"
+serves = "Learn: refinement"

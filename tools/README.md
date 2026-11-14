@@ -38,7 +38,7 @@ Write one model with the description and the output path:
 node tools/model.mjs tools/models/shop.mjs examples/shop/model/shop.semantic-ir.json
 ```
 
-Regenerate all six models with `make models`. The output is identical to the committed files, so `git diff` shows nothing when a description has not changed.
+Regenerate all eight models with `make models`. The output is identical to the committed files, so `git diff` shows nothing when a description has not changed.
 
 - shop: `models/shop.mjs` writes `examples/shop/model/shop.semantic-ir.json`.
 - architecture: `models/architecture.mjs` writes `examples/architecture/model/architecture.semantic-ir.json`.
@@ -46,3 +46,5 @@ Regenerate all six models with `make models`. The output is identical to the com
 - cell: `models/cell.mjs` writes `examples/cell/model/cell.semantic-ir.json`.
 - rover: `models/rover.mjs` writes `examples/rover/model/rover.semantic-ir.json`.
 - rover-spec: `models/rover-spec.mjs` writes `examples/rover/model/rover-spec.semantic-ir.json`.
+- payment-spec: `models/payment-spec.mjs` writes `examples/shop/model/payment-spec.semantic-ir.json`.
+- payment-client: `models/payment-client.mjs` writes `examples/shop/model/payment-client.semantic-ir.json`.

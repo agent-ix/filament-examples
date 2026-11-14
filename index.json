@@ -139,6 +139,23 @@
     },
     {
       "system": "architecture",
+      "case": "no-cycle-checked-for-web",
+      "status": "running",
+      "rule": "NoDependencyCycle",
+      "statement": "Checked for the web service alone, the cycle rule holds although payments and ledger depend on each other.",
+      "rule_file": "examples/architecture/rules/architecture.fsl",
+      "data_files": [
+        "examples/architecture/data/data-calls-core.json"
+      ],
+      "request_file": "examples/architecture/requests/no-cycle-checked-for-web.json",
+      "expected_file": "examples/architecture/expected/no-cycle-checked-for-web.json",
+      "verdict": "holds: web is on no cycle",
+      "exit": 0,
+      "waits_on": null,
+      "needs": null
+    },
+    {
+      "system": "architecture",
       "case": "personal-data-ok",
       "status": "running",
       "rule": "PersonalDataBoundary",
@@ -482,6 +499,23 @@
       "expected_file": "examples/cell/expected/separation-too-close.json",
       "verdict": "violated",
       "exit": 10,
+      "waits_on": null,
+      "needs": null
+    },
+    {
+      "system": "cell",
+      "case": "interlock-backwards",
+      "status": "running",
+      "rule": "GuardClosedMeansMoving",
+      "statement": "Written backwards, the interlock reads \"a closed guard means the ram moves\" and passes a press that moves with its guard open.",
+      "rule_file": "examples/cell/rules/interlock-backwards.fsl",
+      "data_files": [
+        "examples/cell/data/running-guard-open.json"
+      ],
+      "request_file": "examples/cell/requests/interlock-backwards.json",
+      "expected_file": "examples/cell/expected/interlock-backwards.json",
+      "verdict": "holds on a dangerous state",
+      "exit": 0,
       "waits_on": null,
       "needs": null
     },
@@ -881,6 +915,25 @@
       "expected_file": "examples/rover/expected/safe-stop-late-without-always.json",
       "verdict": "holds",
       "exit": 0,
+      "waits_on": null,
+      "needs": null
+    },
+    {
+      "system": "rover",
+      "case": "never-stops",
+      "status": "running",
+      "rule": "EventuallyStopped",
+      "statement": "The rover is eventually stopped. In this run it loses its lidar and drives on forever.",
+      "rule_file": "examples/rover/rules/time-operators.fsl",
+      "data_files": [
+        "examples/rover/data/t0-driving.json",
+        "examples/rover/data/t1-lidar-lost.json",
+        "examples/rover/data/u2-still-driving.json"
+      ],
+      "request_file": "examples/rover/requests/never-stops.json",
+      "expected_file": "examples/rover/expected/never-stops.json",
+      "verdict": "violated: a loop that never stops",
+      "exit": 10,
       "waits_on": null,
       "needs": null
     },
@@ -1775,6 +1828,21 @@
       "exit": 20,
       "waits_on": "QSL-1901",
       "needs": "exact post-conditions"
+    },
+    {
+      "system": "shop",
+      "case": "staged-client-charges-once",
+      "status": "staged",
+      "rule": null,
+      "statement": "A client that retries a charge with an idempotency key implements a payment that is charged at most once.",
+      "rule_file": "examples/shop/rules/staged-client-charges-once.fsl",
+      "data_files": [],
+      "request_file": "examples/shop/requests/staged-client-charges-once.json",
+      "expected_file": "examples/shop/expected/staged-client-charges-once.json",
+      "verdict": null,
+      "exit": 21,
+      "waits_on": "QSL-1976",
+      "needs": "refinement checking from the command line"
     }
   ]
 }

@@ -25,6 +25,8 @@ The rules in [rules/architecture.fsl](rules/architecture.fsl) check one service 
 | `NoDependencyCycle` | Following dependencies never leads back to the start | `no-cycle-ok` | `no-cycle-loop` |
 | `PersonalDataBoundary` | A reader of personal data is marked as handling it | `personal-data-ok` | `personal-data-leak` |
 
+Each rule is checked for one service, the one the request names. The case `no-cycle-checked-for-web` checks `NoDependencyCycle` for the web service on the architecture where payments and ledger depend on each other. Web is on no cycle, so the rule holds.
+
 ## Rolling deploy
 
 The rule `KeepServing` in [rules/deploy.fsl](rules/deploy.fsl) requires each service to keep its minimum number of instances serving. It checks one step. The case `deploy-step-ok` passes, and `deploy-step-too-many` takes too many instances out at once.
