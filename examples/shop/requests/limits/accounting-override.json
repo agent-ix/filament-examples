@@ -15,17 +15,17 @@
     ],
     "program": {
       "source": {
-        "file": "../../rules/profiles/sum-under-core.fsl",
+        "file": "../../rules/paid-in-full.fsl",
         "authority": "example",
-        "identity": "example:shop/profiles/sum-under-core",
-        "document": "orders",
+        "identity": "example:shop/paid-in-full",
+        "document": "paid-in-full",
         "formal_revision": 1
       }
     },
     "clause": {
       "selection": {
         "clause": {
-          "name": "RefundsWithinCharge",
+          "name": "PaidInFull",
           "observation": "current",
           "self": {
             "population": "ix://example/shop/orders",
@@ -38,7 +38,10 @@
         }
       },
       "observations": {
-        "current": "../../data/refund-ok.json"
+        "current": "../../data/paid-in-full.json"
+      },
+      "accounting": {
+        "work_units": 1000000
       }
     }
   }

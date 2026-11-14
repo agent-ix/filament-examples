@@ -1,0 +1,6 @@
+language "ix:native" edition "1-draft";
+profile v = "quire.value.complete/v1";
+
+function remainder using v(a: Integer, b: Integer): Integer pure {
+  a mod b
+}

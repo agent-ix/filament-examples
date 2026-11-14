@@ -44,3 +44,25 @@ status = "running"
 expect_exit = 20
 expect_verdict = "refused: missing import"
 serves = "Checks: packages"
+
+[[case]]
+id = "packages-multi-unit"
+rule = "OnLoanHasCopies"
+statement = "Two units compile into one package, and the second uses a function the first declares."
+file = "rules/packages/multi-rules.fsl"
+command = "compile requests/packages/multi-unit.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "compiles"
+serves = "Checks: packages"
+
+[[case]]
+id = "packages-multi-unit-repeated"
+rule = "OnLoanHasCopies"
+statement = "The same source listed twice in one package is refused."
+file = "rules/packages/multi-types.fsl"
+command = "compile requests/packages/multi-unit-repeated.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: conflicting definition"
+serves = "Checks: packages"

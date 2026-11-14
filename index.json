@@ -905,6 +905,36 @@
       "needs": null
     },
     {
+      "system": "library",
+      "case": "packages-multi-unit",
+      "status": "running",
+      "rule": "OnLoanHasCopies",
+      "statement": "Two units compile into one package, and the second uses a function the first declares.",
+      "rule_file": "examples/library/rules/packages/multi-rules.fsl",
+      "data_files": [],
+      "request_file": "examples/library/requests/packages/multi-unit.json",
+      "expected_file": "examples/library/expected/packages-multi-unit.json",
+      "verdict": "compiles",
+      "exit": 0,
+      "waits_on": null,
+      "needs": null
+    },
+    {
+      "system": "library",
+      "case": "packages-multi-unit-repeated",
+      "status": "running",
+      "rule": "OnLoanHasCopies",
+      "statement": "The same source listed twice in one package is refused.",
+      "rule_file": "examples/library/rules/packages/multi-types.fsl",
+      "data_files": [],
+      "request_file": "examples/library/requests/packages/multi-unit-repeated.json",
+      "expected_file": "examples/library/expected/packages-multi-unit-repeated.json",
+      "verdict": "refused: conflicting definition",
+      "exit": 20,
+      "waits_on": null,
+      "needs": null
+    },
+    {
       "system": "lock",
       "case": "fairness-without-fairness",
       "status": "running",
@@ -3193,18 +3223,35 @@
     },
     {
       "system": "shop",
-      "case": "profiles-sum-under-core",
+      "case": "profiles-count-under-core",
       "status": "running",
-      "rule": "RefundsWithinCharge",
-      "statement": "A rule that sums a collection is outside the smallest state layer and is not supported under it.",
-      "rule_file": "examples/shop/rules/profiles/sum-under-core.fsl",
+      "rule": "AtMostTwoRefunds",
+      "statement": "A rule that counts a collection is outside the smallest state layer and is not supported under it.",
+      "rule_file": "examples/shop/rules/profiles/count-under-core.fsl",
       "data_files": [
         "examples/shop/data/refund-ok.json"
       ],
-      "request_file": "examples/shop/requests/profiles/sum-under-core.json",
-      "expected_file": "examples/shop/expected/profiles-sum-under-core.json",
+      "request_file": "examples/shop/requests/profiles/count-under-core.json",
+      "expected_file": "examples/shop/expected/profiles-count-under-core.json",
       "verdict": "unsupported",
       "exit": 21,
+      "waits_on": null,
+      "needs": null
+    },
+    {
+      "system": "shop",
+      "case": "profiles-count-under-queries",
+      "status": "running",
+      "rule": "AtMostTwoRefunds",
+      "statement": "The same rule under the query layer runs and holds.",
+      "rule_file": "examples/shop/rules/profiles/count-under-queries.fsl",
+      "data_files": [
+        "examples/shop/data/refund-ok.json"
+      ],
+      "request_file": "examples/shop/requests/profiles/count-under-queries.json",
+      "expected_file": "examples/shop/expected/profiles-count-under-queries.json",
+      "verdict": "holds",
+      "exit": 0,
       "waits_on": null,
       "needs": null
     },
@@ -4741,6 +4788,70 @@
       "expected_file": "examples/shop/expected/union-opt-null-vs-absent.json",
       "verdict": "false",
       "exit": 0,
+      "waits_on": null,
+      "needs": null
+    },
+    {
+      "system": "shop",
+      "case": "limits-observation-document-bytes",
+      "status": "running",
+      "rule": "PaidInFull",
+      "statement": "A data file larger than the request's document limit ends the run before the rule is evaluated.",
+      "rule_file": "examples/shop/rules/paid-in-full.fsl",
+      "data_files": [
+        "examples/shop/data/paid-in-full.json"
+      ],
+      "request_file": "examples/shop/requests/limits/observation-document-bytes.json",
+      "expected_file": "examples/shop/expected/limits-observation-document-bytes.json",
+      "verdict": "incomplete: resource_exhausted",
+      "exit": 22,
+      "waits_on": null,
+      "needs": null
+    },
+    {
+      "system": "shop",
+      "case": "limits-accounting-flag-overrides",
+      "status": "running",
+      "rule": "PaidInFull",
+      "statement": "A work limit on the command line replaces the one in the request, even when it is lower.",
+      "rule_file": "examples/shop/rules/paid-in-full.fsl",
+      "data_files": [
+        "examples/shop/data/paid-in-full.json"
+      ],
+      "request_file": "examples/shop/requests/limits/accounting-override.json",
+      "expected_file": "examples/shop/expected/limits-accounting-flag-overrides.json",
+      "verdict": "incomplete",
+      "exit": 22,
+      "waits_on": null,
+      "needs": null
+    },
+    {
+      "system": "shop",
+      "case": "limits-call-work-units",
+      "status": "running",
+      "rule": "lineTotal",
+      "statement": "A call that runs out of work units names the counter, its bound and the setting.",
+      "rule_file": "examples/shop/rules/values.fsl",
+      "data_files": [],
+      "request_file": "examples/shop/requests/limits/call-work-units.json",
+      "expected_file": "examples/shop/expected/limits-call-work-units.json",
+      "verdict": "incomplete",
+      "exit": 22,
+      "waits_on": null,
+      "needs": null
+    },
+    {
+      "system": "shop",
+      "case": "outcomes-undefined-call",
+      "status": "running",
+      "rule": "remainder",
+      "statement": "A call that divides by zero has no value, which is the category undefined and exit status 10.",
+      "rule_file": "examples/shop/rules/outcomes/remainder.fsl",
+      "data_files": [],
+      "request_file": "examples/shop/requests/outcomes/remainder-zero.json",
+      "expected_file": "examples/shop/expected/outcomes-undefined-call.json",
+      "verdict": "undefined",
+      "exit": 10,
       "waits_on": null,
       "needs": null
     }
