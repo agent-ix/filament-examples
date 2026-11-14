@@ -1,10 +1,14 @@
 # Tools
 
-This folder holds the example runner and the interim model generator.
+This folder holds the example runner, the interim model generator and the install-test runner.
 
 ## Runner
 
 [run.mjs](run.mjs) reads each `example.toml`, runs the cases through the FSL driver named by the `FSL` variable and compares the exit code and output with the manifest and `expected/`. The Makefile calls it as `make check`, `make staged`, `make record`, `make promote`, `make readme` and `make index`. [run.test.mjs](run.test.mjs) holds its unit tests, which run with `make test`.
+
+## Install-test runner
+
+[steps.mjs](steps.mjs) reads [install-test/steps.md](../install-test/steps.md), takes every fenced block marked `step=<id>`, and runs the blocks in order in one shell inside a bare container. It reports the duration of each step and names the step that failed. `make install-test` calls it, and [steps.test.mjs](steps.test.mjs) holds its unit tests.
 
 ## Model generator
 

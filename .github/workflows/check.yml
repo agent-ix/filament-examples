@@ -4,8 +4,18 @@ name: Check examples
 on:
   workflow_dispatch:
     inputs:
+      driver:
+        description: "Where the FSL driver comes from: image (the published toolchain image), binary (a prebuilt binary at fsl_binary_url) or source (build quire-driver)."
+        required: true
+        type: choice
+        options: [image, binary, source]
+        default: image
+      image:
+        description: "Toolchain image to run in when driver is image."
+        required: false
+        default: ghcr.io/agent-ix/filament-toolchain:latest
       fsl_binary_url:
-        description: "URL of a prebuilt FSL driver binary. Leave empty to build the driver from source."
+        description: "URL of a prebuilt FSL driver binary. Used when driver is binary."
         required: false
         default: ""
 
@@ -18,18 +28,27 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # The default path: run the checks in the toolchain image.
+      - name: Check running cases and staged cases in the image
+        if: inputs.driver == 'image'
+        env:
+          IMAGE: ${{ inputs.image }}
+        run: docker run --rm --volume "$PWD:/work" --workdir /work "$IMAGE" make test check staged
+
       - uses: actions/setup-node@v4
+        if: inputs.driver != 'image'
         with:
           node-version: "22"
 
-      # The only step that knows where the driver comes from. Replace it with a
-      # prebuilt binary or a container image and the rest of the job is unchanged.
+      # The only step that knows where the driver comes from when the image is not used.
       - name: Provide the FSL driver
+        if: inputs.driver != 'image'
         id: driver
         env:
+          DRIVER: ${{ inputs.driver }}
           FSL_BINARY_URL: ${{ inputs.fsl_binary_url }}
         run: |
-          if [ -n "$FSL_BINARY_URL" ]; then
+          if [ "$DRIVER" = binary ]; then
             curl --fail --location --output "$RUNNER_TEMP/fsl" "$FSL_BINARY_URL"
             chmod +x "$RUNNER_TEMP/fsl"
             echo "path=$RUNNER_TEMP/fsl" >> "$GITHUB_OUTPUT"
@@ -40,8 +59,8 @@ jobs:
             echo "path=$RUNNER_TEMP/quire-driver/target/debug/quire" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Runner tests
-        run: make test
-
       - name: Check running cases and staged cases
-        run: make check staged FSL="${{ steps.driver.outputs.path }}"
+        if: inputs.driver != 'image'
+        env:
+          FSL_PATH: ${{ steps.driver.outputs.path }}
+        run: make test check staged FSL="$FSL_PATH"

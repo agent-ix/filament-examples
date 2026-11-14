@@ -24,7 +24,27 @@ The table lists each system with the number of cases that run today and the numb
 
 ## Getting started
 
-You need Node.js 20 or later, `make`, and the FSL command-line driver. The Makefile reads the driver path from one variable, `FSL`, set in [config.mk](config.mk). Its default is `fsl`.
+You can run the examples in the toolchain image or with a driver you build yourself.
+
+### In the image
+
+You need Docker. The image has the driver, Node.js, `make` and a copy of the examples. Run every running and staged case with one command:
+
+```
+docker run --rm ghcr.io/agent-ix/filament-toolchain make check staged
+```
+
+To run a clone of this repository, or your own changes, mount the folder:
+
+```
+docker run --rm --volume "$PWD:/work" --workdir /work ghcr.io/agent-ix/filament-toolchain make check staged
+```
+
+The [image folder](image/README.md) describes the image. The [install steps](install-test/steps.md) install the same toolchain on a clean Ubuntu 22.04 machine, and a manual workflow runs them.
+
+### From source
+
+You need Node.js 20 or later, `make`, a Rust toolchain and the FSL command-line driver. The Makefile reads the driver path from one variable, `FSL`, set in [config.mk](config.mk). Its default is `fsl`.
 
 The driver is built from the public [quire-driver](https://github.com/agent-ix/quire-driver) repository. Its binary is still named `quire` until the rename to `fsl`. Pass its path:
 
@@ -94,6 +114,12 @@ The runner tests use a fake driver and need no FSL binary:
 
 ```
 make test
+```
+
+The install test runs the commands of [install-test/steps.md](install-test/steps.md) on a bare `ubuntu:22.04` container. It needs Docker and a few minutes:
+
+```
+make install-test
 ```
 
 ## Contributing
