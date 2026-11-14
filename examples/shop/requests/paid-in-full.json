@@ -15,10 +15,10 @@
     ],
     "program": {
       "source": {
-        "file": "../rules/orders.fsl",
+        "file": "../rules/paid-in-full.fsl",
         "authority": "example",
-        "identity": "example:shop/orders",
-        "document": "orders",
+        "identity": "example:shop/paid-in-full",
+        "document": "paid-in-full",
         "formal_revision": 1
       }
     },
