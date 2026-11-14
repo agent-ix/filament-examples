@@ -1,0 +1,24 @@
+# Library: a model written from scratch
+name = "library"
+summary = "A small library with books that can be on loan. The model comes from a short description, and one rule is compiled against it."
+model = "model/library.semantic-ir.json"
+
+[[case]]
+id = "compile-ok"
+rule = "OnLoanHasCopies"
+statement = "A book on loan has at least one copy."
+file = "rules/library.fsl"
+command = "compile requests/compile-ok.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "compiles"
+
+[[case]]
+id = "compile-misspelled"
+rule = "OnLoanHasCopies"
+statement = "A rule that names a field the model does not have is refused."
+file = "rules/misspelled.fsl"
+command = "compile requests/compile-misspelled.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: no field copy"

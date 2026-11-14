@@ -1,0 +1,1 @@
+{"artifacts":[],"category":"refusal","diagnostics":[{"cause":"type-mismatch","code":"ill_typed","locus":{"end":307,"kind":"region","source":{"authority":"example","identity":"example:library/misspelled"},"start":298},"message":"the checker refused the package: ill_typed (type-mismatch)"}],"format":"quire-outcome/1","items":[],"last_stage":"S3","operation":"package","result":null}

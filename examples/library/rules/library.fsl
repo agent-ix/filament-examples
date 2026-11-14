@@ -1,0 +1,8 @@
+language "ix:native" edition "1-draft";
+profile v = "quire.model.complete/v1";
+model Library = "my/library";
+
+// A book on loan has at least one copy.
+invariant OnLoanHasCopies using v on Library::Book at current {
+  self.status = Library::Status::OnLoan implies self.copies >= 1
+}
