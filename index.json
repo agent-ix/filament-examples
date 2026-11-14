@@ -1345,6 +1345,38 @@
     },
     {
       "system": "shop",
+      "case": "paid-in-full-open",
+      "status": "running",
+      "rule": "PaidInFull",
+      "statement": "A paid order has been charged its full total. An open order that is only partly charged does not break it.",
+      "rule_file": "examples/shop/rules/orders.fsl",
+      "data_files": [
+        "examples/shop/data/open-unpaid.json"
+      ],
+      "request_file": "examples/shop/requests/paid-in-full-open.json",
+      "expected_file": "examples/shop/expected/paid-in-full-open.json",
+      "verdict": "holds",
+      "exit": 0,
+      "waits_on": null
+    },
+    {
+      "system": "shop",
+      "case": "misspelled-field",
+      "status": "running",
+      "rule": "PaidInFull",
+      "statement": "A rule names only fields the model declares: `self.paid` is not a field of Order.",
+      "rule_file": "examples/shop/rules/misspelled-field.fsl",
+      "data_files": [
+        "examples/shop/data/paid-in-full.json"
+      ],
+      "request_file": "examples/shop/requests/misspelled-field.json",
+      "expected_file": "examples/shop/expected/misspelled-field.json",
+      "verdict": "refused: ill_typed, the field paid is not on Order",
+      "exit": 20,
+      "waits_on": null
+    },
+    {
+      "system": "shop",
       "case": "dangling-charge",
       "status": "running",
       "rule": "PaidInFull",
@@ -1435,6 +1467,22 @@
       ],
       "request_file": "examples/shop/requests/charge-once-charged-twice.json",
       "expected_file": "examples/shop/expected/charge-once-charged-twice.json",
+      "verdict": "violated",
+      "exit": 10,
+      "waits_on": null
+    },
+    {
+      "system": "shop",
+      "case": "charge-once-self-pair",
+      "status": "running",
+      "rule": "ChargeAtMostOnceSelfPair",
+      "statement": "No two charges share an idempotency key, written without `a = b or`: each charge is paired with itself, so an order with distinct keys breaks it.",
+      "rule_file": "examples/shop/rules/charge-once-self-pair.fsl",
+      "data_files": [
+        "examples/shop/data/retry-new-key.json"
+      ],
+      "request_file": "examples/shop/requests/charge-once-self-pair.json",
+      "expected_file": "examples/shop/expected/charge-once-self-pair.json",
       "verdict": "violated",
       "exit": 10,
       "waits_on": null
