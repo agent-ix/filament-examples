@@ -1,0 +1,8 @@
+language "ix:native" edition "1-draft";
+profile T = "quire.temporal.timestamped-event.finite-window/v1";
+model Rover = "example/rover";
+
+// When the lidar is lost, the rover is stopped within 200 ms.
+temporal SafeStopWithin200ms using T over (r: Rover::Rover) clock "ms" on each (e: Rover::Rover) when (not e.lidarOk) {
+  eventually[0,200] holds(r.stopped)
+}

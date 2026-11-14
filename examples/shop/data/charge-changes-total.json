@@ -1,0 +1,38 @@
+{
+  "format": "quire.state.invocation/v1",
+  "identity": {
+    "authority": "example",
+    "identity": "ix://example/shop/data/charge-changes-total"
+  },
+  "model": {
+    "identity": "example/shop"
+  },
+  "context": "ix://example/shop/Order",
+  "operation": "charge",
+  "self": {
+    "population": "ix://example/shop/orders",
+    "key": "o1"
+  },
+  "pre": {
+    "identity": {
+      "authority": "example",
+      "identity": "ix://example/shop/data/open-order"
+    }
+  },
+  "post": {
+    "identity": {
+      "authority": "example",
+      "identity": "ix://example/shop/data/after-charge-retotal"
+    }
+  },
+  "parameters": {
+    "amount": {
+      "integer": "3200"
+    }
+  },
+  "result": {
+    "boolean": true
+  },
+  "created": [],
+  "deleted": []
+}

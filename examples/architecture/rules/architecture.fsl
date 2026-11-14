@@ -1,0 +1,28 @@
+language "ix:native" edition "1-draft";
+profile v = "quire.model.complete/v1";
+model Arch = "example/architecture";
+
+// Every service has an owning team.
+invariant EveryServiceOwned using v on Arch::Service at current {
+  present(self.owner)
+}
+
+// Nothing depends on an edge service: edge services sit at the front door.
+invariant NothingCallsTheEdge using v on Arch::Service at current {
+  forall(d in self.dependsOn: deref(d).tier != Arch::Tier::Edge)
+}
+
+// A data-tier service depends only on other data-tier services.
+invariant DataTierStaysDown using v on Arch::Service at current {
+  self.tier = Arch::Tier::Data implies forall(d in self.dependsOn: deref(d).tier = Arch::Tier::Data)
+}
+
+// Following dependencies never leads back to where it started.
+invariant NoDependencyCycle using v on Arch::Service at current {
+  not reaches(self, self, dependsOn)
+}
+
+// A service that reads personal data must be marked as handling it.
+invariant PersonalDataBoundary using v on Arch::Service at current {
+  forall(s in self.reads: deref(s).classification = Arch::Classification::Personal implies self.handlesPersonalData)
+}

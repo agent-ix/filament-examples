@@ -1,0 +1,85 @@
+# Parts-processing saga across services
+name = "parts-saga"
+summary = "A work order releases a part; machining, inspection and assembly stations reserve, process and hand it on. Inspection passes it, sends it to rework or scraps it; scrapping releases the machine upstream."
+model = "model/parts-saga.semantic-ir.json"
+
+[[case]]
+id = "jobs-rework-tracked"
+rule = "ReworkedPartsAreTracked"
+file = "rules/jobs.fsl"
+command = "run requests/jobs-rework-tracked.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "jobs-rework-untracked"
+rule = "ReworkedPartsAreTracked"
+file = "rules/jobs.fsl"
+command = "run requests/jobs-rework-untracked.json"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
+
+[[case]]
+id = "jobs-third-rework"
+rule = "ReworkAtMostTwice"
+file = "rules/jobs.fsl"
+command = "run requests/jobs-third-rework.json"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
+
+[[case]]
+id = "protocol-compiles"
+rule = ""
+file = "rules/part-flow-untimed.fsl"
+command = "compile requests/protocol-compiles.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "checked: roles, channels, choice, repeat"
+serves = "Learn L6 (protocol structure); Protocols reference"
+
+[[case]]
+id = "protocol-overlapping-verdict"
+rule = ""
+file = "rules/part-flow-overlapping-verdict.fsl"
+command = "compile requests/protocol-overlapping-verdict.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: guards of choice Verdict not exclusive (duplicate-arm)"
+serves = "Learn L6 (what checking finds)"
+
+[[case]]
+id = "protocol-wrong-role"
+rule = ""
+file = "rules/part-flow-wrong-role.fsl"
+command = "compile requests/protocol-wrong-role.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: Again reads inspected, no fact of Machining"
+serves = "Learn L6 (knowledge of roles)"
+
+[[case]]
+id = "staged-saga-compensation"
+rule = ""
+file = "rules/part-flow.fsl"
+command = "compile requests/staged-saga-compensation.json"
+status = "staged"
+expect_exit = 20
+ready_exit = 0
+waits_on = "QSL-1964"
+why = "full saga (compensation template FreeMachine and the 120 s await) passes the checker (S3) but is refused at S4: the compensate template 'has no selected clock configuration'"
+serves = "Learn L6; landing tab Choreographies; cards U4, U7"
+
+[[case]]
+id = "staged-saga-deadlock-free"
+rule = ""
+file = "rules/part-flow-untimed.fsl"
+command = "analyze requests/staged-saga-deadlock-free.json"
+status = "staged"
+expect_exit = 21
+ready_exit = 0
+waits_on = "QSL-1976"
+why = "exhaustive check of the protocol (deadlock freedom, every part ends assembled, scrapped or given up) needs `quire analyze`, which exits 21 and prints nothing"
+serves = "Learn L5/L6; Guide: check a model exhaustively"

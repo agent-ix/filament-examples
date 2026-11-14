@@ -1,0 +1,45 @@
+{
+  "format": "native-run/1",
+  "request": {
+    "models": [
+      {
+        "format": "semantic-ir/2.0.0",
+        "source": {
+          "file": "../model/shop.semantic-ir.json",
+          "authority": "example",
+          "identity": "example:shop/model",
+          "document": "model",
+          "formal_revision": 1
+        }
+      }
+    ],
+    "program": {
+      "source": {
+        "file": "../rules/orders.fsl",
+        "authority": "example",
+        "identity": "example:shop/orders",
+        "document": "orders",
+        "formal_revision": 1
+      }
+    },
+    "clause": {
+      "selection": {
+        "clause": {
+          "name": "PaidInFull",
+          "observation": "current",
+          "self": {
+            "population": "ix://example/shop/orders",
+            "key": "o1"
+          },
+          "anchor": {
+            "kind": "handler",
+            "name": "validate"
+          }
+        }
+      },
+      "observations": {
+        "current": "../data/paid-in-full.json"
+      }
+    }
+  }
+}

@@ -1,0 +1,180 @@
+# Delivery rover: failsafe modes, sensor voting and safe stop
+name = "rover"
+summary = "A delivery rover drives on a lidar and three range sensors voted two-out-of-three. Without its lidar it slows down and must stop; in failsafe mode it stays still."
+model = "model/rover.semantic-ir.json"
+
+[[case]]
+id = "vote-two-of-three"
+rule = "twoOfThree"
+file = "rules/modes.fsl"
+command = "run requests/vote-two-of-three.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "true"
+
+[[case]]
+id = "failsafe-still"
+rule = "FailsafeIsStill"
+file = "rules/modes.fsl"
+command = "run requests/failsafe-still.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "Learn L3 (safety); landing card U1"
+
+[[case]]
+id = "failsafe-rolling"
+rule = "FailsafeIsStill"
+file = "rules/modes.fsl"
+command = "run requests/failsafe-rolling.json"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
+
+[[case]]
+id = "degraded-slow"
+rule = "DegradedIsSlow"
+file = "rules/modes.fsl"
+command = "run requests/degraded-slow.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "degraded-fast"
+rule = "DegradedIsSlow"
+file = "rules/modes.fsl"
+command = "run requests/degraded-fast.json"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
+
+[[case]]
+id = "obstacle-crawl"
+rule = "ObstacleSlows"
+file = "rules/modes.fsl"
+command = "run requests/obstacle-crawl.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "Values reference (functions); sensor voting"
+
+[[case]]
+id = "obstacle-fast"
+rule = "ObstacleSlows"
+file = "rules/modes.fsl"
+command = "run requests/obstacle-fast.json"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
+
+[[case]]
+id = "obstacle-outvoted"
+rule = "ObstacleSlows"
+file = "rules/modes.fsl"
+command = "run requests/obstacle-outvoted.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds: one sensor is outvoted"
+
+[[case]]
+id = "safe-stop-in-time"
+rule = "SafeStopWithin3Steps"
+file = "rules/safe-stop-steps.fsl"
+command = "run requests/safe-stop-in-time.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "Learn L4 (traces); Guide: check a trace; landing hero H3 (step form)"
+
+[[case]]
+id = "safe-stop-late"
+rule = "SafeStopWithin3Steps"
+file = "rules/safe-stop-steps.fsl"
+command = "run requests/safe-stop-late.json"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated: stopped 4 steps after the lidar was lost"
+serves = "Learn L4; Guide: read a counterexample"
+
+[[case]]
+id = "control-loop-compiles"
+rule = ""
+file = "rules/control-loop.fsl"
+command = "compile requests/control-loop-compiles.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "checked task set"
+serves = "Real-time reference (schedulability)"
+
+[[case]]
+id = "staged-control-loop-schedulable"
+rule = ""
+file = "rules/control-loop.fsl"
+command = "analyze requests/staged-control-loop-schedulable.json"
+status = "staged"
+expect_exit = 21
+ready_exit = 0
+waits_on = "QSL-1976"
+why = "fixed-priority schedulability and the 10 ms response bound need `quire analyze`, which exits 21"
+serves = "Real-time reference; landing card U1"
+
+[[case]]
+id = "staged-safe-stop-200ms"
+rule = ""
+file = "rules/staged-safe-stop-200ms.fsl"
+command = "compile requests/staged-safe-stop-200ms.json"
+status = "staged"
+expect_exit = 20
+ready_exit = 0
+waits_on = "QSL-1964"
+why = "timestamped temporal rule is refused at S4: no selected clock configuration"
+serves = "Landing hero H3 SafeStopWithin200ms; Learn L4 (clocks); card U1"
+
+[[case]]
+id = "staged-mode-machine"
+rule = ""
+file = "rules/safe-stop-steps.fsl"
+command = "analyze requests/staged-mode-machine.json"
+status = "staged"
+expect_exit = 21
+ready_exit = 0
+waits_on = "QSL-1976"
+why = "the same rule over every behaviour of the rover's mode machine needs `quire analyze`, which exits 21 and prints nothing"
+serves = "Learn L5 (model checking)"
+
+[[case]]
+id = "staged-vote-probability"
+rule = ""
+file = "rules/staged-vote-probability.fsl"
+command = "compile requests/staged-vote-probability.json"
+status = "staged"
+expect_exit = 21
+ready_exit = 0
+waits_on = "no ticket - planning gap"
+why = "checks at S3, then S4 refuses: \"random-parameter `sample(faultA)` cannot be written to a checked-package/v2 graph yet\"; checking the claim would further need `quire analyze` (QSL-1976)"
+serves = "Learn L7 (probability); landing tab Probability"
+
+[[case]]
+id = "staged-controller-refinement"
+rule = ""
+file = "rules/staged-controller-refinement.fsl"
+command = "analyze requests/staged-controller-refinement.json"
+status = "staged"
+expect_exit = 21
+ready_exit = 0
+waits_on = "QSL-1976"
+why = "the refinement compiles (both models admitted); checking it needs `quire analyze`, which exits 21"
+serves = "Learn L8 (refinement); landing tab Refinement"
+
+[[case]]
+id = "staged-safe-stop-monitor"
+rule = ""
+file = "rules/safe-stop-steps.fsl"
+command = "monitor requests/staged-safe-stop-monitor.json"
+status = "staged"
+expect_exit = 21
+ready_exit = 0
+waits_on = "QSL-1977"
+why = "running SafeStopWithin3Steps as a runtime monitor on a live feed needs `quire monitor`, which exits 21 and prints nothing"
+serves = "Landing lifecycle stages 3-4; card U1"

@@ -1,0 +1,56 @@
+{
+  "format": "native-run/1",
+  "request": {
+    "models": [
+      {
+        "format": "semantic-ir/2.0.0",
+        "source": {
+          "file": "../model/architecture.semantic-ir.json",
+          "authority": "example",
+          "identity": "example:architecture/model",
+          "document": "model",
+          "formal_revision": 1
+        }
+      }
+    ],
+    "program": {
+      "source": {
+        "file": "../rules/deploy-plan.fsl",
+        "authority": "example",
+        "identity": "example:architecture/deploy-plan",
+        "document": "deployplan",
+        "formal_revision": 1
+      }
+    },
+    "clause": {
+      "selection": {
+        "temporal": {
+          "name": "ServingThroughout",
+          "trace": {
+            "lasso": {
+              "prefix": [
+                "all-serving",
+                "two-at-a-time-1",
+                "two-at-a-time-2"
+              ],
+              "loop": [
+                "all-serving"
+              ]
+            }
+          },
+          "over": {
+            "reference": {
+              "population": "ix://example/architecture/services",
+              "key": "web"
+            }
+          }
+        }
+      },
+      "observations": {
+        "all-serving": "../data/all-serving.json",
+        "two-at-a-time-1": "../data/two-at-a-time-1.json",
+        "two-at-a-time-2": "../data/two-at-a-time-2.json"
+      }
+    }
+  }
+}

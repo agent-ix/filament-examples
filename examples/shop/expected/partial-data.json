@@ -1,0 +1,1 @@
+{"artifacts":[],"category":"incomplete","diagnostics":[],"format":"quire-outcome/1","items":[{"category":"incomplete","cause":{"code":"incomplete_population","kind":"incomplete-scope"},"clause":"RefundsWithinCharge","request_index":0,"result":"incomplete"}],"last_stage":"S4","operation":"monitor","result":null}

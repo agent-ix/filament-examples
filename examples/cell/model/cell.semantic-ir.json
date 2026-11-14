@@ -1,0 +1,604 @@
+{
+  "contractVersion": "2.0.0",
+  "canonicalization": {
+    "algorithm": "rfc8785-v1"
+  },
+  "source": {
+    "identity": "ix://example/cell/spec",
+    "version": "1.0.0",
+    "dialect": "spec-bundle"
+  },
+  "package": {
+    "identity": "example/cell",
+    "version": "1.0.0",
+    "mappingVersions": [],
+    "profileVersions": []
+  },
+  "occurrences": [],
+  "extensions": [],
+  "constructs": [
+    {
+      "kind": {
+        "module": "example/cell",
+        "name": "object_type"
+      },
+      "moduleVersion": "1.0.0",
+      "construct": {
+        "identity": "none",
+        "shape": "record",
+        "members": {},
+        "meaning": "quire.meaning.model.object-type/v1"
+      }
+    },
+    {
+      "kind": {
+        "module": "example/cell",
+        "name": "population"
+      },
+      "moduleVersion": "1.0.0",
+      "construct": {
+        "identity": "none",
+        "shape": "record",
+        "members": {},
+        "meaning": "quire.meaning.model.population/v1"
+      }
+    },
+    {
+      "kind": {
+        "module": "example/cell",
+        "name": "value_type"
+      },
+      "moduleVersion": "1.0.0",
+      "construct": {
+        "identity": "none",
+        "shape": "record",
+        "members": {},
+        "meaning": "quire.meaning.model.value-type/v1"
+      }
+    },
+    {
+      "kind": {
+        "module": "example/cell",
+        "name": "variant_type"
+      },
+      "moduleVersion": "1.0.0",
+      "construct": {
+        "identity": "none",
+        "shape": "enumeration",
+        "members": {
+          "variants": "required"
+        },
+        "meaning": "quire.meaning.model.variant-type/v1"
+      }
+    }
+  ],
+  "types": [
+    {
+      "identity": "ix://example/cell/Speed",
+      "displayName": "Speed",
+      "kind": {
+        "module": "example/cell",
+        "name": "value_type"
+      },
+      "roles": [],
+      "origin": {
+        "generated": {
+          "generatorIdentity": "ix://example/cell/Speed",
+          "generatorVersion": "1.0.0",
+          "inputIdentities": [
+            "ix://example/cell/Speed"
+          ]
+        }
+      },
+      "extensions": [],
+      "unknownPolicy": "reject",
+      "scalar": "integer",
+      "constraints": [
+        {
+          "identity": "ix://example/cell/Speed/constraints/min",
+          "keyword": "min",
+          "operands": {
+            "value": "0"
+          },
+          "appliesTo": "ix://quire/native/Integer",
+          "diagnosticCode": "bound.min",
+          "origin": {
+            "generated": {
+              "generatorIdentity": "ix://example/cell/Speed",
+              "generatorVersion": "1.0.0",
+              "inputIdentities": [
+                "ix://example/cell/Speed"
+              ]
+            }
+          }
+        },
+        {
+          "identity": "ix://example/cell/Speed/constraints/max",
+          "keyword": "max",
+          "operands": {
+            "value": "3000"
+          },
+          "appliesTo": "ix://quire/native/Integer",
+          "diagnosticCode": "bound.max",
+          "origin": {
+            "generated": {
+              "generatorIdentity": "ix://example/cell/Speed",
+              "generatorVersion": "1.0.0",
+              "inputIdentities": [
+                "ix://example/cell/Speed"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "identity": "ix://example/cell/Distance",
+      "displayName": "Distance",
+      "kind": {
+        "module": "example/cell",
+        "name": "value_type"
+      },
+      "roles": [],
+      "origin": {
+        "generated": {
+          "generatorIdentity": "ix://example/cell/Distance",
+          "generatorVersion": "1.0.0",
+          "inputIdentities": [
+            "ix://example/cell/Distance"
+          ]
+        }
+      },
+      "extensions": [],
+      "unknownPolicy": "reject",
+      "scalar": "integer",
+      "constraints": [
+        {
+          "identity": "ix://example/cell/Distance/constraints/min",
+          "keyword": "min",
+          "operands": {
+            "value": "0"
+          },
+          "appliesTo": "ix://quire/native/Integer",
+          "diagnosticCode": "bound.min",
+          "origin": {
+            "generated": {
+              "generatorIdentity": "ix://example/cell/Distance",
+              "generatorVersion": "1.0.0",
+              "inputIdentities": [
+                "ix://example/cell/Distance"
+              ]
+            }
+          }
+        },
+        {
+          "identity": "ix://example/cell/Distance/constraints/max",
+          "keyword": "max",
+          "operands": {
+            "value": "10000"
+          },
+          "appliesTo": "ix://quire/native/Integer",
+          "diagnosticCode": "bound.max",
+          "origin": {
+            "generated": {
+              "generatorIdentity": "ix://example/cell/Distance",
+              "generatorVersion": "1.0.0",
+              "inputIdentities": [
+                "ix://example/cell/Distance"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "identity": "ix://example/cell/PressMode",
+      "displayName": "PressMode",
+      "kind": {
+        "module": "example/cell",
+        "name": "variant_type"
+      },
+      "roles": [],
+      "origin": {
+        "generated": {
+          "generatorIdentity": "ix://example/cell/PressMode",
+          "generatorVersion": "1.0.0",
+          "inputIdentities": [
+            "ix://example/cell/PressMode"
+          ]
+        }
+      },
+      "constraints": [],
+      "extensions": [],
+      "unknownPolicy": "reject",
+      "variants": [
+        {
+          "identity": "ix://example/cell/variant/PressMode-Stopped",
+          "name": "Stopped",
+          "origin": {
+            "source": {
+              "sourceIdentity": "ix://example/cell/spec",
+              "path": "spec.qspec",
+              "startLine": 1,
+              "startColumn": 1
+            }
+          }
+        },
+        {
+          "identity": "ix://example/cell/variant/PressMode-Setup",
+          "name": "Setup",
+          "origin": {
+            "source": {
+              "sourceIdentity": "ix://example/cell/spec",
+              "path": "spec.qspec",
+              "startLine": 1,
+              "startColumn": 1
+            }
+          }
+        },
+        {
+          "identity": "ix://example/cell/variant/PressMode-Run",
+          "name": "Run",
+          "origin": {
+            "source": {
+              "sourceIdentity": "ix://example/cell/spec",
+              "path": "spec.qspec",
+              "startLine": 1,
+              "startColumn": 1
+            }
+          }
+        }
+      ]
+    },
+    {
+      "identity": "ix://example/cell/Press",
+      "displayName": "Press",
+      "kind": {
+        "module": "example/cell",
+        "name": "object_type"
+      },
+      "roles": [],
+      "origin": {
+        "generated": {
+          "generatorIdentity": "ix://example/cell/Press",
+          "generatorVersion": "1.0.0",
+          "inputIdentities": [
+            "ix://example/cell/Press"
+          ]
+        }
+      },
+      "constraints": [],
+      "extensions": [],
+      "unknownPolicy": "reject",
+      "supertypes": [],
+      "fields": [
+        {
+          "identity": "ix://example/cell/Press/guardClosed",
+          "name": "guardClosed",
+          "typeRef": "ix://quire/native/Boolean",
+          "presence": "required",
+          "nullable": false,
+          "defaultKind": "none",
+          "multiplicity": {
+            "lower": 1,
+            "upper": 1,
+            "ordered": false,
+            "unique": true
+          },
+          "origin": {
+            "generated": {
+              "generatorIdentity": "ix://example/cell/Press/guardClosed",
+              "generatorVersion": "1.0.0",
+              "inputIdentities": [
+                "ix://example/cell/Press/guardClosed"
+              ]
+            }
+          }
+        },
+        {
+          "identity": "ix://example/cell/Press/ramMoving",
+          "name": "ramMoving",
+          "typeRef": "ix://quire/native/Boolean",
+          "presence": "required",
+          "nullable": false,
+          "defaultKind": "none",
+          "multiplicity": {
+            "lower": 1,
+            "upper": 1,
+            "ordered": false,
+            "unique": true
+          },
+          "origin": {
+            "generated": {
+              "generatorIdentity": "ix://example/cell/Press/ramMoving",
+              "generatorVersion": "1.0.0",
+              "inputIdentities": [
+                "ix://example/cell/Press/ramMoving"
+              ]
+            }
+          }
+        },
+        {
+          "identity": "ix://example/cell/Press/mode",
+          "name": "mode",
+          "typeRef": "ix://example/cell/PressMode",
+          "presence": "required",
+          "nullable": false,
+          "defaultKind": "none",
+          "multiplicity": {
+            "lower": 1,
+            "upper": 1,
+            "ordered": false,
+            "unique": true
+          },
+          "origin": {
+            "generated": {
+              "generatorIdentity": "ix://example/cell/Press/mode",
+              "generatorVersion": "1.0.0",
+              "inputIdentities": [
+                "ix://example/cell/Press/mode"
+              ]
+            }
+          }
+        },
+        {
+          "identity": "ix://example/cell/Press/ramSpeed",
+          "name": "ramSpeed",
+          "typeRef": "ix://example/cell/Speed",
+          "presence": "required",
+          "nullable": false,
+          "defaultKind": "none",
+          "multiplicity": {
+            "lower": 1,
+            "upper": 1,
+            "ordered": false,
+            "unique": true
+          },
+          "origin": {
+            "generated": {
+              "generatorIdentity": "ix://example/cell/Press/ramSpeed",
+              "generatorVersion": "1.0.0",
+              "inputIdentities": [
+                "ix://example/cell/Press/ramSpeed"
+              ]
+            }
+          }
+        },
+        {
+          "identity": "ix://example/cell/Press/estop",
+          "name": "estop",
+          "typeRef": "ix://quire/native/Boolean",
+          "presence": "required",
+          "nullable": false,
+          "defaultKind": "none",
+          "multiplicity": {
+            "lower": 1,
+            "upper": 1,
+            "ordered": false,
+            "unique": true
+          },
+          "origin": {
+            "generated": {
+              "generatorIdentity": "ix://example/cell/Press/estop",
+              "generatorVersion": "1.0.0",
+              "inputIdentities": [
+                "ix://example/cell/Press/estop"
+              ]
+            }
+          }
+        }
+      ],
+      "operations": [
+        {
+          "identity": "ix://example/cell/Press/start",
+          "name": "start",
+          "params": [],
+          "returns": {
+            "typeRef": "ix://quire/native/Boolean",
+            "multiplicity": {
+              "lower": 1,
+              "upper": 1,
+              "ordered": false,
+              "unique": true
+            },
+            "nullable": false
+          },
+          "pre": [],
+          "post": [],
+          "origin": {
+            "generated": {
+              "generatorIdentity": "ix://example/cell/Press/start",
+              "generatorVersion": "1.0.0",
+              "inputIdentities": [
+                "ix://example/cell/Press/start"
+              ]
+            }
+          },
+          "frame": {
+            "modifies": [
+              "ix://example/cell/Press/ramMoving",
+              "ix://example/cell/Press/mode",
+              "ix://example/cell/Press/ramSpeed"
+            ],
+            "creates": [],
+            "deletes": []
+          }
+        },
+        {
+          "identity": "ix://example/cell/Press/openGuard",
+          "name": "openGuard",
+          "params": [],
+          "returns": {
+            "typeRef": "ix://quire/native/Boolean",
+            "multiplicity": {
+              "lower": 1,
+              "upper": 1,
+              "ordered": false,
+              "unique": true
+            },
+            "nullable": false
+          },
+          "pre": [],
+          "post": [],
+          "origin": {
+            "generated": {
+              "generatorIdentity": "ix://example/cell/Press/openGuard",
+              "generatorVersion": "1.0.0",
+              "inputIdentities": [
+                "ix://example/cell/Press/openGuard"
+              ]
+            }
+          },
+          "frame": {
+            "modifies": [
+              "ix://example/cell/Press/guardClosed",
+              "ix://example/cell/Press/ramMoving",
+              "ix://example/cell/Press/mode",
+              "ix://example/cell/Press/ramSpeed"
+            ],
+            "creates": [],
+            "deletes": []
+          }
+        }
+      ]
+    },
+    {
+      "identity": "ix://example/cell/Robot",
+      "displayName": "Robot",
+      "kind": {
+        "module": "example/cell",
+        "name": "object_type"
+      },
+      "roles": [],
+      "origin": {
+        "generated": {
+          "generatorIdentity": "ix://example/cell/Robot",
+          "generatorVersion": "1.0.0",
+          "inputIdentities": [
+            "ix://example/cell/Robot"
+          ]
+        }
+      },
+      "constraints": [],
+      "extensions": [],
+      "unknownPolicy": "reject",
+      "supertypes": [],
+      "fields": [
+        {
+          "identity": "ix://example/cell/Robot/speed",
+          "name": "speed",
+          "typeRef": "ix://example/cell/Speed",
+          "presence": "required",
+          "nullable": false,
+          "defaultKind": "none",
+          "multiplicity": {
+            "lower": 1,
+            "upper": 1,
+            "ordered": false,
+            "unique": true
+          },
+          "origin": {
+            "generated": {
+              "generatorIdentity": "ix://example/cell/Robot/speed",
+              "generatorVersion": "1.0.0",
+              "inputIdentities": [
+                "ix://example/cell/Robot/speed"
+              ]
+            }
+          }
+        },
+        {
+          "identity": "ix://example/cell/Robot/separation",
+          "name": "separation",
+          "typeRef": "ix://example/cell/Distance",
+          "presence": "required",
+          "nullable": false,
+          "defaultKind": "none",
+          "multiplicity": {
+            "lower": 1,
+            "upper": 1,
+            "ordered": false,
+            "unique": true
+          },
+          "origin": {
+            "generated": {
+              "generatorIdentity": "ix://example/cell/Robot/separation",
+              "generatorVersion": "1.0.0",
+              "inputIdentities": [
+                "ix://example/cell/Robot/separation"
+              ]
+            }
+          }
+        },
+        {
+          "identity": "ix://example/cell/Robot/personInCell",
+          "name": "personInCell",
+          "typeRef": "ix://quire/native/Boolean",
+          "presence": "required",
+          "nullable": false,
+          "defaultKind": "none",
+          "multiplicity": {
+            "lower": 1,
+            "upper": 1,
+            "ordered": false,
+            "unique": true
+          },
+          "origin": {
+            "generated": {
+              "generatorIdentity": "ix://example/cell/Robot/personInCell",
+              "generatorVersion": "1.0.0",
+              "inputIdentities": [
+                "ix://example/cell/Robot/personInCell"
+              ]
+            }
+          }
+        }
+      ],
+      "operations": []
+    }
+  ],
+  "populations": [
+    {
+      "identity": "ix://example/cell/presses",
+      "displayName": "presses",
+      "kind": {
+        "module": "example/cell",
+        "name": "population"
+      },
+      "members": [
+        "ix://example/cell/Press"
+      ],
+      "extent": "closed",
+      "origin": {
+        "generated": {
+          "generatorIdentity": "ix://example/cell/presses",
+          "generatorVersion": "1.0.0",
+          "inputIdentities": [
+            "ix://example/cell/presses"
+          ]
+        }
+      }
+    },
+    {
+      "identity": "ix://example/cell/robots",
+      "displayName": "robots",
+      "kind": {
+        "module": "example/cell",
+        "name": "population"
+      },
+      "members": [
+        "ix://example/cell/Robot"
+      ],
+      "extent": "closed",
+      "origin": {
+        "generated": {
+          "generatorIdentity": "ix://example/cell/robots",
+          "generatorVersion": "1.0.0",
+          "inputIdentities": [
+            "ix://example/cell/robots"
+          ]
+        }
+      }
+    }
+  ]
+}

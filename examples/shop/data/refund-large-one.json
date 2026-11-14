@@ -1,0 +1,48 @@
+{
+  "format": "quire.state.invocation/v1",
+  "identity": {
+    "authority": "example",
+    "identity": "ix://example/shop/data/refund-large-one"
+  },
+  "model": {
+    "identity": "example/shop"
+  },
+  "context": "ix://example/shop/Order",
+  "operation": "refund",
+  "self": {
+    "population": "ix://example/shop/orders",
+    "key": "o1"
+  },
+  "pre": {
+    "identity": {
+      "authority": "example",
+      "identity": "ix://example/shop/data/open-order"
+    }
+  },
+  "post": {
+    "identity": {
+      "authority": "example",
+      "identity": "ix://example/shop/data/open-order"
+    }
+  },
+  "parameters": {
+    "amount": {
+      "integer": "60000"
+    },
+    "approvers": {
+      "set": [
+        {
+          "reference": {
+            "population": "ix://example/shop/staff",
+            "key": "ann"
+          }
+        }
+      ]
+    }
+  },
+  "result": {
+    "boolean": true
+  },
+  "created": [],
+  "deleted": []
+}

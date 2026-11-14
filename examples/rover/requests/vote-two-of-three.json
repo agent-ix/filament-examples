@@ -1,0 +1,43 @@
+{
+  "format": "native-run/1",
+  "request": {
+    "models": [
+      {
+        "format": "semantic-ir/2.0.0",
+        "source": {
+          "file": "../model/rover.semantic-ir.json",
+          "authority": "example",
+          "identity": "example:rover/model",
+          "document": "model",
+          "formal_revision": 1
+        }
+      }
+    ],
+    "program": {
+      "source": {
+        "file": "../rules/modes.fsl",
+        "authority": "example",
+        "identity": "example:rover/modes",
+        "document": "modes",
+        "formal_revision": 1
+      }
+    },
+    "call": {
+      "function": "twoOfThree",
+      "arguments": [
+        {
+          "parameter": "a",
+          "value": 1
+        },
+        {
+          "parameter": "b",
+          "value": 1
+        },
+        {
+          "parameter": "c",
+          "value": 0
+        }
+      ]
+    }
+  }
+}

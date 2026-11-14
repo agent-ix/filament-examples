@@ -1,0 +1,38 @@
+{
+  "format": "native-run/1",
+  "request": {
+    "models": [
+      {
+        "format": "semantic-ir/2.0.0",
+        "source": {
+          "file": "../model/cell.semantic-ir.json",
+          "authority": "example",
+          "identity": "example:cell/model",
+          "document": "model",
+          "formal_revision": 1
+        }
+      }
+    ],
+    "program": {
+      "source": {
+        "file": "../rules/press.fsl",
+        "authority": "example",
+        "identity": "example:cell/press",
+        "document": "press",
+        "formal_revision": 1
+      }
+    },
+    "clause": {
+      "selection": {
+        "clause": {
+          "name": "StartNeedsGuard",
+          "observation": "invocation"
+        }
+      },
+      "observations": {
+        "invocation": "../data/start-guard-open.json",
+        "pre": "../data/stopped-guard-open.json"
+      }
+    }
+  }
+}

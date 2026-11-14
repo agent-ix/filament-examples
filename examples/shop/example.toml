@@ -1,0 +1,246 @@
+# Shop: first steps
+name = "shop"
+summary = "An online shop takes orders, charges payments and issues refunds. Values, rules about data, rules about operations."
+model = "model/shop.semantic-ir.json"
+
+[[case]]
+id = "values-line-total"
+rule = "lineTotal"
+file = "rules/values.fsl"
+command = "run requests/values-line-total.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "3750"
+serves = "Learn L1; Values and types"
+
+[[case]]
+id = "values-with-shipping"
+rule = "withShipping"
+file = "rules/values.fsl"
+command = "run requests/values-with-shipping.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "4249"
+serves = "Learn L1"
+
+[[case]]
+id = "values-free-shipping"
+rule = "freeShipping"
+file = "rules/values.fsl"
+command = "run requests/values-free-shipping.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "false"
+serves = "Learn L1"
+
+[[case]]
+id = "values-qty-zero"
+rule = "lineTotal"
+file = "rules/values.fsl"
+command = "run requests/values-qty-zero.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: argument outside Qty"
+serves = "Learn L2"
+
+[[case]]
+id = "values-too-narrow"
+rule = ""
+file = "rules/values-too-narrow.fsl"
+command = "check rules/values-too-narrow.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: undefined_expression unproved-range"
+serves = "Learn L2; Values reference"
+
+[[case]]
+id = "paid-in-full"
+rule = "PaidInFull"
+file = "rules/orders.fsl"
+command = "run requests/paid-in-full.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "Learn L1 first rule; landing tab Domain and state"
+
+[[case]]
+id = "paid-short"
+rule = "PaidInFull"
+file = "rules/orders.fsl"
+command = "run requests/paid-short.json"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
+serves = "Learn L1 first rule"
+
+[[case]]
+id = "dangling-charge"
+rule = "PaidInFull"
+file = "rules/orders.fsl"
+command = "run requests/dangling-charge.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: charge c1 not in the data"
+serves = "Learn L2"
+
+[[case]]
+id = "partial-data"
+rule = "RefundsWithinCharge"
+file = "rules/orders.fsl"
+command = "run requests/partial-data.json"
+status = "running"
+expect_exit = 22
+expect_verdict = "incomplete"
+serves = "Learn L2"
+
+[[case]]
+id = "refunds-within-charge"
+rule = "RefundsWithinCharge"
+file = "rules/orders.fsl"
+command = "run requests/refunds-within-charge.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "Learn L3; landing hero H2; Collections reference"
+
+[[case]]
+id = "over-refunded"
+rule = "RefundsWithinCharge"
+file = "rules/orders.fsl"
+command = "run requests/over-refunded.json"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
+serves = "Learn L3; landing hero H2"
+
+[[case]]
+id = "charge-once-retry-new-key"
+rule = "ChargeAtMostOnce"
+file = "rules/orders.fsl"
+command = "run requests/charge-once-retry-new-key.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "Landing hero H4; card U8"
+
+[[case]]
+id = "charge-once-charged-twice"
+rule = "ChargeAtMostOnce"
+file = "rules/orders.fsl"
+command = "run requests/charge-once-charged-twice.json"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
+serves = "Landing hero H4; card U8"
+
+[[case]]
+id = "two-people-ok"
+rule = "TwoPeople"
+file = "rules/orders.fsl"
+command = "run requests/two-people-ok.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "Landing card U3"
+
+[[case]]
+id = "two-people-same"
+rule = "TwoPeople"
+file = "rules/orders.fsl"
+command = "run requests/two-people-same.json"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
+serves = "Landing card U3"
+
+[[case]]
+id = "refund-small"
+rule = "RefundApproval"
+file = "rules/operations.fsl"
+command = "run requests/refund-small.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "Learn L3; landing hero H1; FR-014 block"
+
+[[case]]
+id = "refund-large-one-approver"
+rule = "RefundApproval"
+file = "rules/operations.fsl"
+command = "run requests/refund-large-one-approver.json"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
+serves = "Learn L3; landing hero H1"
+
+[[case]]
+id = "refund-large-two-approvers"
+rule = "RefundApproval"
+file = "rules/operations.fsl"
+command = "run requests/refund-large-two-approvers.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "Landing hero H1"
+
+[[case]]
+id = "charge-completes"
+rule = "PaidWhenCovered"
+file = "rules/operations.fsl"
+command = "run requests/charge-completes.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "Learn L3"
+
+[[case]]
+id = "charge-leaves-open"
+rule = "PaidWhenCovered"
+file = "rules/operations.fsl"
+command = "run requests/charge-leaves-open.json"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
+serves = "Learn L3"
+
+[[case]]
+id = "charge-frame-ok"
+rule = "Shop::Order::charge"
+file = "rules/operations.fsl"
+command = "run requests/charge-frame-ok.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "Learn L3 frames"
+
+[[case]]
+id = "charge-changes-total"
+rule = "Shop::Order::charge"
+file = "rules/operations.fsl"
+command = "run requests/charge-changes-total.json"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated: frame (total changed)"
+serves = "Learn L3 frames"
+
+[[case]]
+id = "charge-changes-total-post"
+rule = "PaidWhenCovered"
+file = "rules/operations.fsl"
+command = "run requests/charge-changes-total-post.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: frame_violation"
+serves = "Learn L3 frames"
+
+[[case]]
+id = "staged-charge-adds-amount"
+rule = ""
+file = "rules/staged-charge-adds-amount.fsl"
+command = "compile requests/staged-charge-adds-amount.json"
+status = "staged"
+expect_exit = 20
+ready_exit = 0
+waits_on = "QSL-1901"
+why = "post `self.charged = pre(self.charged) + amount` is refused undefined_expression/unproved-range: FR-577 (preconditions discharge a postcondition's range obligations) is specified but not implemented"
+serves = "Learn L3 (preferred form of the post rule)"

@@ -1,0 +1,24 @@
+language "ix:native" edition "1-draft";
+profile v = "quire.model.complete/v1";
+model Rover = "example/rover";
+
+// Two-out-of-three voting: the rover believes what at least two sensors say.
+function twoOfThree using v(a: Boolean, b: Boolean, c: Boolean): Boolean pure {
+  (a and b) or (a and c) or (b and c)
+}
+
+// In failsafe mode the rover is stopped.
+invariant FailsafeIsStill using v on Rover::Rover at current {
+  self.mode = Rover::Mode::Failsafe implies self.speed = 0 and self.stopped
+}
+
+// Without its lidar the rover drives at 300 mm/s or less.
+invariant DegradedIsSlow using v on Rover::Rover at current {
+  not self.lidarOk implies self.speed <= 300
+}
+
+// When two of the three range sensors see an obstacle within 500 mm,
+// the rover crawls at 100 mm/s or less.
+invariant ObstacleSlows using v on Rover::Rover at current {
+  twoOfThree(self.rangeA < 500, self.rangeB < 500, self.rangeC < 500) implies self.speed <= 100
+}

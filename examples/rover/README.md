@@ -1,0 +1,63 @@
+# Rover
+
+The rover is an example of a delivery vehicle that drives on a lidar and three range sensors whose readings are voted two out of three. Without its lidar it slows down and must stop. In failsafe mode it stays still. Its control loop is a periodic task set.
+
+You can check the mode rules as invariants over a snapshot, call the voting function directly, and check the safe-stop rule over a trace of control steps. A violation of the trace rule comes back with a counterexample.
+
+## The model
+
+- `Rover` has a mode (driving, degraded, safe stop or failsafe), a speed and a stopped flag. It also has a lidar flag, three range readings, a clock in ms and a flag for a wrong vote.
+- The operation `enterFailsafe` stops the rover. The operation `sample` reads the three sensors.
+- A second model, `rover-spec`, declares a `Vehicle` that can be stopped. It is used by the refinement example.
+
+The models are in [model](model).
+
+## Rules
+
+The rules in [rules/modes.fsl](rules/modes.fsl) check one snapshot of the rover. The rule `SafeStopWithin3Steps` is in [rules/safe-stop-steps.fsl](rules/safe-stop-steps.fsl) and checks a trace. The table lists each rule with its requirement and a passing and a failing case.
+
+| Rule | Requirement | Passing | Failing |
+| --- | --- | --- | --- |
+| `FailsafeIsStill` | In failsafe mode the rover is stopped | `failsafe-still` | `failsafe-rolling` |
+| `DegradedIsSlow` | Without lidar the speed is 300 mm/s or less | `degraded-slow` | `degraded-fast` |
+| `ObstacleSlows` | With two of three sensors near an obstacle, crawl | `obstacle-crawl` | `obstacle-fast` |
+| `SafeStopWithin3Steps` | After losing lidar, stopped within three steps | `safe-stop-in-time` | `safe-stop-late` |
+
+The case `obstacle-outvoted` has one sensor reading near and two reading far. The vote outvotes the one sensor, and the rover may drive at normal speed.
+
+## The voting function
+
+The function `twoOfThree` returns true when at least two of its three arguments are true. The case `vote-two-of-three` calls it with the values 1, 1 and 0 and gets true. A call passes a Boolean as 1 for true or 0 for false.
+
+## The control loop
+
+[rules/control-loop.fsl](rules/control-loop.fsl) declares sensor fusion every 10 ms, the stop monitor every 20 ms and path planning every 50 ms. The case `control-loop-compiles` checks the declaration and exits 0.
+
+## Run a passing and a failing case
+
+From this folder, with `FSL` set to the driver:
+
+```
+$FSL run requests/safe-stop-in-time.json --format json
+```
+
+The driver exits 0 and reports the rule as tested over the trace in the request. In `safe-stop-late` the lidar is lost at the second step and the rover stops four steps later:
+
+```
+$FSL run requests/safe-stop-late.json --format json
+```
+
+The driver exits 10. The recorded output contains a counterexample with the trace prefix, the loop and the decisive position.
+
+## Staged
+
+These cases are staged until the language supports them.
+
+- `staged-safe-stop-200ms`: Stopped within 200 ms. Needs clock selection.
+- `staged-mode-machine`: The step rule on every behavior. Needs the `analyze` command.
+- `staged-control-loop-schedulable`: The task set fits and the monitor responds in 10 ms. Needs the `analyze` command.
+- `staged-controller-refinement`: Entering failsafe is the abstract stop. Needs the `analyze` command.
+- `staged-vote-probability`: The vote is rarely wrong. Needs packaging of random parameters.
+- `staged-safe-stop-monitor`: The step rule on a live feed. Needs the `monitor` command.
+
+`example.toml` records the exact reason and ticket for each.

@@ -1,0 +1,59 @@
+{
+  "format": "quire.state.snapshot/v1",
+  "identity": {
+    "authority": "example",
+    "identity": "ix://example/rover/data/degraded-fast"
+  },
+  "model": {
+    "identity": "example/rover"
+  },
+  "observation": "current",
+  "anchor": {
+    "kind": "handler",
+    "name": "validate"
+  },
+  "populations": [
+    {
+      "population": "ix://example/rover/rovers",
+      "complete": true,
+      "objects": [
+        {
+          "key": "r1",
+          "type": "ix://example/rover/Rover",
+          "fields": {
+            "mode": {
+              "variant": {
+                "type": "ix://example/rover/Mode",
+                "case": "Degraded"
+              }
+            },
+            "speed": {
+              "integer": "800"
+            },
+            "stopped": {
+              "boolean": false
+            },
+            "lidarOk": {
+              "boolean": false
+            },
+            "rangeA": {
+              "integer": "5000"
+            },
+            "rangeB": {
+              "integer": "5000"
+            },
+            "rangeC": {
+              "integer": "5000"
+            },
+            "clock": {
+              "integer": "0"
+            },
+            "voteWrong": {
+              "boolean": false
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

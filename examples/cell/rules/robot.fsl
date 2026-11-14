@@ -1,0 +1,17 @@
+language "ix:native" edition "1-draft";
+profile v = "quire.model.complete/v1";
+model Cell = "example/cell";
+
+type Micro = Int[0, 100000000];
+
+// Protective separation in thousandths of a millimetre: the distance the arm
+// travels during a 500 ms stop at its current speed, plus 200 mm.
+function protectiveSeparation using v(speed: Cell::Speed): Micro pure {
+  500 * speed + 200000
+}
+
+// While a person is in the cell, the arm keeps at least the protective
+// separation from them (speed-and-separation monitoring).
+invariant SpeedAndSeparation using v on Cell::Robot at current {
+  self.personInCell implies 1000 * self.separation >= protectiveSeparation(self.speed)
+}

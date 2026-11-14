@@ -1,0 +1,11 @@
+language "ix:native" edition "1-draft";
+profile inf = "quire.temporal.infinite-trace/v1";
+model Arch = "example/architecture";
+
+type Serving = Int[0, 10];
+
+// Through every step of the plan, and in the state it ends in, the service
+// keeps its minimum number of instances serving.
+temporal ServingThroughout using inf over (s: Arch::Service) clock "model-steps" on origin {
+  always holds(count<Serving>(i in s.instances: deref(i).serving) >= s.minServing)
+}

@@ -1,0 +1,154 @@
+{
+  "contractVersion": "2.0.0",
+  "canonicalization": {
+    "algorithm": "rfc8785-v1"
+  },
+  "source": {
+    "identity": "ix://example/rover-spec/spec",
+    "version": "1.0.0",
+    "dialect": "spec-bundle"
+  },
+  "package": {
+    "identity": "example/rover-spec",
+    "version": "1.0.0",
+    "mappingVersions": [],
+    "profileVersions": []
+  },
+  "occurrences": [],
+  "extensions": [],
+  "constructs": [
+    {
+      "kind": {
+        "module": "example/rover-spec",
+        "name": "object_type"
+      },
+      "moduleVersion": "1.0.0",
+      "construct": {
+        "identity": "none",
+        "shape": "record",
+        "members": {},
+        "meaning": "quire.meaning.model.object-type/v1"
+      }
+    },
+    {
+      "kind": {
+        "module": "example/rover-spec",
+        "name": "population"
+      },
+      "moduleVersion": "1.0.0",
+      "construct": {
+        "identity": "none",
+        "shape": "record",
+        "members": {},
+        "meaning": "quire.meaning.model.population/v1"
+      }
+    }
+  ],
+  "types": [
+    {
+      "identity": "ix://example/rover-spec/Vehicle",
+      "displayName": "Vehicle",
+      "kind": {
+        "module": "example/rover-spec",
+        "name": "object_type"
+      },
+      "roles": [],
+      "origin": {
+        "generated": {
+          "generatorIdentity": "ix://example/rover-spec/Vehicle",
+          "generatorVersion": "1.0.0",
+          "inputIdentities": [
+            "ix://example/rover-spec/Vehicle"
+          ]
+        }
+      },
+      "constraints": [],
+      "extensions": [],
+      "unknownPolicy": "reject",
+      "supertypes": [],
+      "fields": [
+        {
+          "identity": "ix://example/rover-spec/Vehicle/stopped",
+          "name": "stopped",
+          "typeRef": "ix://quire/native/Boolean",
+          "presence": "required",
+          "nullable": false,
+          "defaultKind": "none",
+          "multiplicity": {
+            "lower": 1,
+            "upper": 1,
+            "ordered": false,
+            "unique": true
+          },
+          "origin": {
+            "generated": {
+              "generatorIdentity": "ix://example/rover-spec/Vehicle/stopped",
+              "generatorVersion": "1.0.0",
+              "inputIdentities": [
+                "ix://example/rover-spec/Vehicle/stopped"
+              ]
+            }
+          }
+        }
+      ],
+      "operations": [
+        {
+          "identity": "ix://example/rover-spec/Vehicle/stop",
+          "name": "stop",
+          "params": [],
+          "returns": {
+            "typeRef": "ix://quire/native/Boolean",
+            "multiplicity": {
+              "lower": 1,
+              "upper": 1,
+              "ordered": false,
+              "unique": true
+            },
+            "nullable": false
+          },
+          "pre": [],
+          "post": [],
+          "origin": {
+            "generated": {
+              "generatorIdentity": "ix://example/rover-spec/Vehicle/stop",
+              "generatorVersion": "1.0.0",
+              "inputIdentities": [
+                "ix://example/rover-spec/Vehicle/stop"
+              ]
+            }
+          },
+          "frame": {
+            "modifies": [
+              "ix://example/rover-spec/Vehicle/stopped"
+            ],
+            "creates": [],
+            "deletes": []
+          }
+        }
+      ]
+    }
+  ],
+  "populations": [
+    {
+      "identity": "ix://example/rover-spec/vehicles",
+      "displayName": "vehicles",
+      "kind": {
+        "module": "example/rover-spec",
+        "name": "population"
+      },
+      "members": [
+        "ix://example/rover-spec/Vehicle"
+      ],
+      "extent": "closed",
+      "origin": {
+        "generated": {
+          "generatorIdentity": "ix://example/rover-spec/vehicles",
+          "generatorVersion": "1.0.0",
+          "inputIdentities": [
+            "ix://example/rover-spec/vehicles"
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,68 @@
+{
+  "format": "quire.state.snapshot/v1",
+  "identity": {
+    "authority": "example",
+    "identity": "ix://example/cell/data/person-far"
+  },
+  "model": {
+    "identity": "example/cell"
+  },
+  "observation": "current",
+  "anchor": {
+    "kind": "handler",
+    "name": "validate"
+  },
+  "populations": [
+    {
+      "population": "ix://example/cell/presses",
+      "complete": true,
+      "objects": [
+        {
+          "key": "p1",
+          "type": "ix://example/cell/Press",
+          "fields": {
+            "guardClosed": {
+              "boolean": true
+            },
+            "ramMoving": {
+              "boolean": false
+            },
+            "mode": {
+              "variant": {
+                "type": "ix://example/cell/PressMode",
+                "case": "Stopped"
+              }
+            },
+            "ramSpeed": {
+              "integer": "0"
+            },
+            "estop": {
+              "boolean": false
+            }
+          }
+        }
+      ]
+    },
+    {
+      "population": "ix://example/cell/robots",
+      "complete": true,
+      "objects": [
+        {
+          "key": "arm1",
+          "type": "ix://example/cell/Robot",
+          "fields": {
+            "speed": {
+              "integer": "1000"
+            },
+            "separation": {
+              "integer": "800"
+            },
+            "personInCell": {
+              "boolean": true
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

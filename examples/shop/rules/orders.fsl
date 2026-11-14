@@ -1,0 +1,26 @@
+language "ix:native" edition "1-draft";
+profile v = "quire.model.complete/v1";
+model Shop = "example/shop";
+
+type Total = Int[0, 8000000];
+
+// A paid order has been charged its full total.
+invariant PaidInFull using v on Shop::Order at current {
+  self.status = Shop::OrderStatus::Paid implies self.charged = self.total
+}
+
+// Refunds never add up to more than was charged.
+invariant RefundsWithinCharge using v on Shop::Order at current {
+  sum<Total>(r in self.refunds: deref(r).amount) <= self.charged
+}
+
+// A retried payment request is charged at most once: no two charges
+// of an order carry the same idempotency key.
+invariant ChargeAtMostOnce using v on Shop::Order at current {
+  forall(a in self.charges: forall(b in self.charges: a = b or deref(a).key != deref(b).key))
+}
+
+// The second approver of a refund is a different person.
+invariant TwoPeople using v on Shop::Refund at current {
+  present(self.secondApprover) implies value(self.secondApprover) != self.approvedBy
+}

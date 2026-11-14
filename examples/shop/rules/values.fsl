@@ -1,0 +1,18 @@
+language "ix:native" edition "1-draft";
+profile v = "quire.value.complete/v1";
+
+type Cents = Int[0, 1000000];
+type Qty = Int[1, 99];
+type LineCents = Int[0, 99000000];
+
+function lineTotal using v(price: Cents, qty: Qty): LineCents pure {
+  price * qty
+}
+
+function freeShipping using v(subtotal: LineCents): Boolean pure {
+  subtotal >= 5000
+}
+
+function withShipping using v(subtotal: LineCents): Int[0, 99000499] pure {
+  if freeShipping(subtotal) then subtotal else subtotal + 499
+}

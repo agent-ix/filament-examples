@@ -1,0 +1,45 @@
+{
+  "format": "native-run/1",
+  "request": {
+    "models": [
+      {
+        "format": "semantic-ir/2.0.0",
+        "source": {
+          "file": "../model/architecture.semantic-ir.json",
+          "authority": "example",
+          "identity": "example:architecture/model",
+          "document": "model",
+          "formal_revision": 1
+        }
+      }
+    ],
+    "program": {
+      "source": {
+        "file": "../rules/deploy.fsl",
+        "authority": "example",
+        "identity": "example:architecture/deploy",
+        "document": "deploy",
+        "formal_revision": 1
+      }
+    },
+    "clause": {
+      "selection": {
+        "clause": {
+          "name": "KeepServing",
+          "observation": "current",
+          "self": {
+            "population": "ix://example/architecture/services",
+            "key": "web"
+          },
+          "anchor": {
+            "kind": "handler",
+            "name": "validate"
+          }
+        }
+      },
+      "observations": {
+        "current": "../data/one-at-a-time-1.json"
+      }
+    }
+  }
+}

@@ -1,0 +1,8 @@
+language "ix:native" edition "1-draft";
+profile inf = "quire.temporal.infinite-trace/v1";
+model Rover = "example/rover";
+
+// Whenever the lidar is lost, the rover is stopped within three control steps.
+temporal SafeStopWithin3Steps using inf over (r: Rover::Rover) clock "model-steps" on origin {
+  always (holds(not r.lidarOk) implies eventually[0,3] holds(r.stopped))
+}

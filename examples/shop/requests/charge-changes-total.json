@@ -1,0 +1,39 @@
+{
+  "format": "native-run/1",
+  "request": {
+    "models": [
+      {
+        "format": "semantic-ir/2.0.0",
+        "source": {
+          "file": "../model/shop.semantic-ir.json",
+          "authority": "example",
+          "identity": "example:shop/model",
+          "document": "model",
+          "formal_revision": 1
+        }
+      }
+    ],
+    "program": {
+      "source": {
+        "file": "../rules/operations.fsl",
+        "authority": "example",
+        "identity": "example:shop/operations",
+        "document": "operations",
+        "formal_revision": 1
+      }
+    },
+    "clause": {
+      "selection": {
+        "frame": {
+          "operation": "Shop::Order::charge",
+          "invocation": "invocation"
+        }
+      },
+      "observations": {
+        "invocation": "../data/charge-changes-total.json",
+        "pre": "../data/open-order.json",
+        "post": "../data/after-charge-retotal.json"
+      }
+    }
+  }
+}

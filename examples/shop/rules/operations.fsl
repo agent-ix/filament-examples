@@ -1,0 +1,18 @@
+language "ix:native" edition "1-draft";
+profile v = "quire.model.complete/v1";
+model Shop = "example/shop";
+
+// Refunds over $500 need a second approver.
+pre RefundApproval using v on Shop::Order::refund {
+  amount <= 50000 or size(approvers) = 2
+}
+
+// A charge that covers the rest of the total leaves the order Paid.
+post PaidWhenCovered using v on Shop::Order::charge {
+  pre(self.charged) + amount >= self.total implies self.status = Shop::OrderStatus::Paid
+}
+
+// A charge never lowers the amount charged.
+post ChargeNeverLowers using v on Shop::Order::charge {
+  self.charged >= pre(self.charged)
+}

@@ -1,0 +1,28 @@
+language "ix:native" edition "1-draft";
+profile v = "quire.model.complete/v1";
+model Cell = "example/cell";
+
+// The ram moves only while the guard is closed.
+invariant GuardClosedWhileMoving using v on Cell::Press at current {
+  self.ramMoving implies self.guardClosed
+}
+
+// While the emergency stop is pressed, the ram does not move.
+invariant EstopHolds using v on Cell::Press at current {
+  self.estop implies not self.ramMoving
+}
+
+// In setup mode the ram moves at 10 mm/s or less.
+invariant SetupIsSlow using v on Cell::Press at current {
+  self.mode = Cell::PressMode::Setup implies self.ramSpeed <= 10
+}
+
+// The press starts only with the guard closed and the emergency stop released.
+pre StartNeedsGuard using v on Cell::Press::start {
+  self.guardClosed and not self.estop
+}
+
+// Opening the guard leaves the ram stopped.
+post OpeningGuardStops using v on Cell::Press::openGuard {
+  not self.ramMoving and self.mode = Cell::PressMode::Stopped
+}

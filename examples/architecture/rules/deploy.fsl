@@ -1,0 +1,11 @@
+language "ix:native" edition "1-draft";
+profile v = "quire.model.complete/v1";
+model Arch = "example/architecture";
+
+type Serving = Int[0, 10];
+
+// During a rolling deploy, a service keeps at least its minimum number of
+// instances serving. Checked on every step of the plan.
+invariant KeepServing using v on Arch::Service at current {
+  count<Serving>(i in self.instances: deref(i).serving) >= self.minServing
+}

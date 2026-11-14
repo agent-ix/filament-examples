@@ -1,0 +1,19 @@
+language "ix:native" edition "1-draft";
+profile v = "quire.model.complete/v1";
+profile inf = "quire.temporal.infinite-trace/v1";
+model Spec = "example/rover-spec";
+model Rover = "example/rover";
+
+// Entering failsafe stops the vehicle.
+post FailsafeStops using v on Rover::Rover::enterFailsafe { self.stopped }
+post StopStops using v on Spec::Vehicle::stop { self.stopped }
+
+// The rover controller implements the abstract "a vehicle can be stopped"
+// specification: entering failsafe is the abstract stop; sampling sensors
+// changes nothing the specification can see.
+refinement ControllerRefinesStop using inf abstract Spec concrete Rover {
+  population Spec::vehicles from Rover::rovers;
+  object Spec::Vehicle from Rover::Rover { stopped = self.stopped; }
+  step Rover::Rover::enterFailsafe -> Spec::Vehicle::stop(self);
+  step Rover::Rover::sample -> stutter;
+}

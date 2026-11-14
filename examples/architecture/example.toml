@@ -1,0 +1,162 @@
+# Service architecture: rules over a microservice model
+name = "architecture"
+summary = "Services owned by teams, in tiers, with dependencies and data stores. Rules keep ownership, allowed dependencies and personal-data boundaries; a rolling deploy plan keeps enough instances serving."
+model = "model/architecture.semantic-ir.json"
+
+[[case]]
+id = "owned-ok"
+rule = "EveryServiceOwned"
+file = "rules/architecture.fsl"
+command = "run requests/owned-ok.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "Tutorial: architecture rules; landing card Designs checked"
+
+[[case]]
+id = "owned-orphan"
+rule = "EveryServiceOwned"
+file = "rules/architecture.fsl"
+command = "run requests/owned-orphan.json"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
+serves = "Tutorial: architecture rules"
+
+[[case]]
+id = "edge-ok"
+rule = "NothingCallsTheEdge"
+file = "rules/architecture.fsl"
+command = "run requests/edge-ok.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "edge-called"
+rule = "NothingCallsTheEdge"
+file = "rules/architecture.fsl"
+command = "run requests/edge-called.json"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
+
+[[case]]
+id = "data-tier-ok"
+rule = "DataTierStaysDown"
+file = "rules/architecture.fsl"
+command = "run requests/data-tier-ok.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "data-tier-calls-core"
+rule = "DataTierStaysDown"
+file = "rules/architecture.fsl"
+command = "run requests/data-tier-calls-core.json"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
+
+[[case]]
+id = "no-cycle-ok"
+rule = "NoDependencyCycle"
+file = "rules/architecture.fsl"
+command = "run requests/no-cycle-ok.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "Learn L3 (reachability); State reference: Reachability"
+
+[[case]]
+id = "no-cycle-loop"
+rule = "NoDependencyCycle"
+file = "rules/architecture.fsl"
+command = "run requests/no-cycle-loop.json"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated: payments -> ledger -> payments"
+serves = "Reachability reference"
+
+[[case]]
+id = "personal-data-ok"
+rule = "PersonalDataBoundary"
+file = "rules/architecture.fsl"
+command = "run requests/personal-data-ok.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "personal-data-leak"
+rule = "PersonalDataBoundary"
+file = "rules/architecture.fsl"
+command = "run requests/personal-data-leak.json"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
+
+[[case]]
+id = "deploy-step-ok"
+rule = "KeepServing"
+file = "rules/deploy.fsl"
+command = "run requests/deploy-step-ok.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "Landing card O1 (Agents that plan within policy)"
+
+[[case]]
+id = "deploy-step-too-many"
+rule = "KeepServing"
+file = "rules/deploy.fsl"
+command = "run requests/deploy-step-too-many.json"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
+serves = "Landing card O1"
+
+[[case]]
+id = "deploy-plan-one-at-a-time"
+rule = "ServingThroughout"
+file = "rules/deploy-plan.fsl"
+command = "run requests/deploy-plan-one-at-a-time.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "Learn L4 (a trace); Guide: check a trace"
+
+[[case]]
+id = "deploy-plan-two-at-a-time"
+rule = "ServingThroughout"
+file = "rules/deploy-plan.fsl"
+command = "run requests/deploy-plan-two-at-a-time.json"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated at step 1"
+serves = "Learn L4"
+
+[[case]]
+id = "staged-deploy-bounded"
+rule = ""
+file = "rules/staged-deploy-temporal.fsl"
+command = "compile requests/staged-deploy-bounded.json"
+status = "staged"
+expect_exit = 20
+ready_exit = 0
+waits_on = "QSL-1964"
+why = "bounded temporal rule (event-position profile) is refused at S4: 'temporal declaration ... has no selected clock configuration'; no request member selects a clock"
+serves = "Learn L4 (bounded windows)"
+
+[[case]]
+id = "staged-availability"
+rule = ""
+file = "rules/staged-availability.fsl"
+command = "compile requests/staged-availability.json"
+status = "staged"
+expect_exit = 21
+ready_exit = 0
+waits_on = "no ticket - planning gap"
+why = "checks at S3, then S4 refuses: \"random-parameter `call(ok)` cannot be written to a checked-package/v2 graph yet\"; checking the claim would further need `quire analyze` (QSL-1976)"
+serves = "Landing card O6 / availability; Learn L7"

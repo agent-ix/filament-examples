@@ -1,0 +1,115 @@
+# Work cell: press guard interlock and robot speed and separation
+name = "cell"
+summary = "A manufacturing cell with a hydraulic press behind a guard and a robot arm that shares space with people. Interlock invariants, pre/post rules on press operations, and a speed-and-separation rule."
+model = "model/cell.semantic-ir.json"
+
+[[case]]
+id = "guard-closed-running"
+rule = "GuardClosedWhileMoving"
+file = "rules/press.fsl"
+command = "run requests/guard-closed-running.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "Learn L3 (safety variant); landing card U5 PressInterlock"
+
+[[case]]
+id = "guard-open-running"
+rule = "GuardClosedWhileMoving"
+file = "rules/press.fsl"
+command = "run requests/guard-open-running.json"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
+serves = "Landing card U5"
+
+[[case]]
+id = "estop-holds"
+rule = "EstopHolds"
+file = "rules/press.fsl"
+command = "run requests/estop-holds.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "estop-moving"
+rule = "EstopHolds"
+file = "rules/press.fsl"
+command = "run requests/estop-moving.json"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
+
+[[case]]
+id = "setup-slow"
+rule = "SetupIsSlow"
+file = "rules/press.fsl"
+command = "run requests/setup-slow.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "setup-fast"
+rule = "SetupIsSlow"
+file = "rules/press.fsl"
+command = "run requests/setup-fast.json"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
+
+[[case]]
+id = "start-guard-closed"
+rule = "StartNeedsGuard"
+file = "rules/press.fsl"
+command = "run requests/start-guard-closed.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "start-guard-open"
+rule = "StartNeedsGuard"
+file = "rules/press.fsl"
+command = "run requests/start-guard-open.json"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
+
+[[case]]
+id = "open-guard-stops"
+rule = "OpeningGuardStops"
+file = "rules/press.fsl"
+command = "run requests/open-guard-stops.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "open-guard-keeps-moving"
+rule = "OpeningGuardStops"
+file = "rules/press.fsl"
+command = "run requests/open-guard-keeps-moving.json"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
+
+[[case]]
+id = "separation-ok"
+rule = "SpeedAndSeparation"
+file = "rules/robot.fsl"
+command = "run requests/separation-ok.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "Landing card U5 (robot); Values reference (functions in rules)"
+
+[[case]]
+id = "separation-too-close"
+rule = "SpeedAndSeparation"
+file = "rules/robot.fsl"
+command = "run requests/separation-too-close.json"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"

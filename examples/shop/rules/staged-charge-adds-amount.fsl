@@ -1,0 +1,12 @@
+language "ix:native" edition "1-draft";
+profile v = "quire.model.complete/v1";
+model Shop = "example/shop";
+
+pre ChargeWithinTotal using v on Shop::Order::charge {
+  self.charged + amount <= self.total
+}
+
+// A charge adds exactly its amount to what the order has been charged.
+post ChargeAddsAmount using v on Shop::Order::charge {
+  self.charged = pre(self.charged) + amount
+}

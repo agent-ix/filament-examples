@@ -1,0 +1,92 @@
+{
+  "format": "quire.state.snapshot/v1",
+  "identity": {
+    "authority": "example",
+    "identity": "ix://example/shop/data/after-charge-retotal"
+  },
+  "model": {
+    "identity": "example/shop"
+  },
+  "observation": "post",
+  "populations": [
+    {
+      "population": "ix://example/shop/staff",
+      "complete": true,
+      "objects": [
+        {
+          "key": "ann",
+          "type": "ix://example/shop/Staff",
+          "fields": {
+            "badge": {
+              "integer": "1"
+            }
+          }
+        },
+        {
+          "key": "bob",
+          "type": "ix://example/shop/Staff",
+          "fields": {
+            "badge": {
+              "integer": "2"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "population": "ix://example/shop/orders",
+      "complete": true,
+      "objects": [
+        {
+          "key": "o1",
+          "type": "ix://example/shop/Order",
+          "fields": {
+            "total": {
+              "integer": "9000"
+            },
+            "charged": {
+              "integer": "4200"
+            },
+            "status": {
+              "variant": {
+                "type": "ix://example/shop/OrderStatus",
+                "case": "Open"
+              }
+            },
+            "charges": {
+              "set": [
+                {
+                  "reference": {
+                    "population": "ix://example/shop/charges",
+                    "key": "c1"
+                  }
+                }
+              ]
+            },
+            "refunds": {
+              "set": []
+            }
+          }
+        }
+      ]
+    },
+    {
+      "population": "ix://example/shop/charges",
+      "complete": true,
+      "objects": [
+        {
+          "key": "c1",
+          "type": "ix://example/shop/Charge",
+          "fields": {
+            "key": {
+              "integer": "16"
+            },
+            "amount": {
+              "integer": "1000"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
