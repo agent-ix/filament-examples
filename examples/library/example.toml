@@ -22,3 +22,25 @@ command = "compile requests/compile-misspelled.json"
 status = "running"
 expect_exit = 20
 expect_verdict = "refused: no field copy"
+
+[[case]]
+id = "packages-link-ok"
+rule = "OnLoanHasCopies"
+statement = "A rule can call a function from a library it imports, and the two compile together."
+file = "rules/packages/linked.fsl"
+command = "compile requests/packages/link-ok.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "compiles"
+serves = "Checks: packages"
+
+[[case]]
+id = "packages-link-missing"
+rule = "OnLoanHasCopies"
+statement = "An import with no library supplied under that name is refused."
+file = "rules/packages/linked.fsl"
+command = "compile requests/packages/link-missing.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: missing import"
+serves = "Checks: packages"

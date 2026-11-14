@@ -1,0 +1,1 @@
+{"artifacts":[],"category":"incomplete","diagnostics":[],"format":"quire-outcome/1","items":[{"category":"incomplete","cause":{"code":"resource_exhausted","kind":"resource_exhausted"},"clause":"PaidInFull","request_index":0,"result":"incomplete"}],"last_stage":"S6a","operation":"monitor","result":null}

@@ -360,3 +360,36 @@ status = "running"
 expect_exit = 20
 expect_verdict = "refused: missing_declaration"
 serves = "Learn: refining a specification (common misreading)"
+
+[[case]]
+id = "limits-source-bytes"
+rule = "PaidInFull"
+statement = "A source larger than the source byte limit stops the run before the rule is read."
+file = "rules/paid-in-full.fsl"
+command = "run requests/limits/source-bytes.json --limit s1.input_bytes=200"
+status = "running"
+expect_exit = 22
+expect_verdict = "incomplete"
+serves = "Checks: limits"
+
+[[case]]
+id = "limits-source-bytes-raised"
+rule = "PaidInFull"
+statement = "The same run with the source byte limit raised finishes and the rule holds."
+file = "rules/paid-in-full.fsl"
+command = "run requests/limits/source-bytes.json --limit s1.input_bytes=2000"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "Checks: limits"
+
+[[case]]
+id = "limits-work-units"
+rule = "PaidInFull"
+statement = "A work budget of three units runs out before the rule is evaluated."
+file = "rules/paid-in-full.fsl"
+command = "run requests/limits/work-units.json"
+status = "running"
+expect_exit = 22
+expect_verdict = "incomplete"
+serves = "Checks: limits"
