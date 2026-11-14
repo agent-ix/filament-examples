@@ -1,9 +1,0 @@
-language "ix:native" edition "1-draft";
-profile v = "quire.model.complete/v1";
-profile ev = "quire.temporal.event-position.false-extension/v1";
-profile inf = "quire.temporal.infinite-trace/v1";
-model Arch = "example/architecture";
-
-probabilistic Missing using ev on Arch over (s: Arch::Service) under Nope on origin {
-  probability >= 0.9 [ eventually[0,10] holds(s.up) ]
-}

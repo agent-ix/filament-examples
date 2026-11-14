@@ -71,4 +71,4 @@ These cases are staged until the language supports them.
 
 ## Protocol reference cases
 
-The folder `rules/protocols` holds one subfolder for each page of the protocol reference: `declaration`, `roles-and-channels`, `steps`, `control-flow`, `retries-and-timeouts` and `compensation`. Each case is a small variation of the protocol above, and most of them show one form that compiles or one refusal.
+The folder `rules/protocols` holds one subfolder for each page of the protocol reference: `declaration`, `roles-and-channels`, `steps`, `control-flow`, `retries-and-timeouts` and `compensation`. Each case is a small variation of the protocol above, and most of them show one form that compiles or one refusal. Case ids start with the topic of their page: the page `retries-and-timeouts` uses `timeouts-*`, and `roles-and-channels` uses `roles-*` and `channels-*`.

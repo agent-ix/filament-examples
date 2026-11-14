@@ -10,6 +10,8 @@ protocol PartFlow using p over (job: Parts::Job) on origin {
   run parallel Both {
     branch Machine attempt Reserved by Machining on Parts::MachiningStation::reserve contracts [MachineFree]
       as (reserved: Parts::AttemptView) { reserved.ok };
-  } join all [Machine];
+    branch Assemble attempt Assembled by Assembly on Parts::AssemblyStation::assemble contracts []
+      as (assembled: Parts::AttemptView) { assembled.ok };
+  } join any [Machine, Assemble];
   finish Over as (closing: Parts::ClosureView) { closing.complete };
 }

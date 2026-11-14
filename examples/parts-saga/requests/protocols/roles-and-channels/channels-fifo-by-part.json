@@ -15,10 +15,10 @@
     ],
     "program": {
       "source": {
-        "file": "../../../rules/protocols/roles-and-channels/roles-replicated-max-zero.fsl",
+        "file": "../../../rules/protocols/roles-and-channels/channels-fifo-by-part.fsl",
         "authority": "example",
-        "identity": "example:parts-saga/roles-replicated-max-zero",
-        "document": "rolesreplicatedmaxzero",
+        "identity": "example:parts-saga/channels-fifo-by-part",
+        "document": "channelsfifobypart",
         "formal_revision": 1
       }
     }

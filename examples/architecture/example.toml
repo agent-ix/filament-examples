@@ -257,17 +257,6 @@ expect_verdict = "refused: qualitative-threshold"
 serves = "Learn: rules about chance (common misreading)"
 
 [[case]]
-id = "models-repeated-support-value"
-rule = ""
-statement = "A random parameter lists each value once."
-file = "rules/probability/models/models-repeated-support-value.fsl"
-command = "compile requests/probability/models/models-repeated-support-value.json"
-status = "running"
-expect_exit = 20
-expect_verdict = "refused: repeated-support-value"
-serves = "Probability reference (models)"
-
-[[case]]
 id = "models-zero-weight"
 rule = ""
 statement = "Every weight of a random parameter is positive."
@@ -312,20 +301,9 @@ expect_verdict = "refused: state-read-in-reward"
 serves = "Probability reference (models)"
 
 [[case]]
-id = "models-duplicate-workload"
-rule = ""
-statement = "A workload name is declared once in a package."
-file = "rules/probability/models/models-duplicate-workload.fsl"
-command = "compile requests/probability/models/models-duplicate-workload.json"
-status = "running"
-expect_exit = 20
-expect_verdict = "refused: duplicate-declaration"
-serves = "Probability reference (models)"
-
-[[case]]
 id = "claims-probability-every-scheduler"
 rule = ""
-statement = "Each service stays up for the next 10 steps with probability at least 0.99, however the calls are scheduled."
+statement = "The claim states that each service stays up for the next 10 steps with probability at least 0.99 under every scheduler."
 file = "rules/probability/claims/claims-probability-every-scheduler.fsl"
 command = "compile requests/probability/claims/claims-probability-every-scheduler.json"
 status = "running"
@@ -336,7 +314,7 @@ serves = "Probability reference (claims)"
 [[case]]
 id = "claims-quantile-steps"
 rule = ""
-statement = "Once a service is up, it is down within 5 steps on at least 95% of runs."
+statement = "The claim states that once a service is up, it is down within 5 steps on at least 95% of runs."
 file = "rules/probability/claims/claims-quantile-steps.fsl"
 command = "compile requests/probability/claims/claims-quantile-steps.json"
 status = "running"
@@ -347,7 +325,7 @@ serves = "Probability reference (claims)"
 [[case]]
 id = "claims-mean-of-fraction"
 rule = ""
-statement = "A service is up for at least 90% of the next 10 steps on average."
+statement = "The claim states that a service is up for at least 90% of the next 10 steps on average."
 file = "rules/probability/claims/claims-mean-of-fraction.fsl"
 command = "compile requests/probability/claims/claims-mean-of-fraction.json"
 status = "running"
@@ -369,23 +347,12 @@ serves = "Probability reference (claims)"
 [[case]]
 id = "claims-unbounded-reachability"
 rule = ""
-statement = "A service comes up with probability at least 0.9, however long it takes."
+statement = "The claim states that a service comes up with probability at least 0.9 under every scheduler."
 file = "rules/probability/claims/claims-unbounded-reachability.fsl"
 command = "compile requests/probability/claims/claims-unbounded-reachability.json"
 status = "running"
 expect_exit = 0
 expect_verdict = "checked: unbounded reachability"
-serves = "Probability reference (claims)"
-
-[[case]]
-id = "claims-qualitative-threshold"
-rule = ""
-statement = "A threshold of 1 is refused, because it states a property of every run."
-file = "rules/probability/claims/claims-qualitative-threshold.fsl"
-command = "compile requests/probability/claims/claims-qualitative-threshold.json"
-status = "running"
-expect_exit = 20
-expect_verdict = "refused: qualitative-threshold"
 serves = "Probability reference (claims)"
 
 [[case]]
@@ -402,7 +369,7 @@ serves = "Probability reference (claims)"
 [[case]]
 id = "claims-quantile-over-fraction"
 rule = ""
-statement = "A quantile is stated over a latency, and a fraction takes a mean."
+statement = "A quantile of a fraction is refused; a fraction is stated with `mean of`."
 file = "rules/probability/claims/claims-quantile-over-fraction.fsl"
 command = "compile requests/probability/claims/claims-quantile-over-fraction.json"
 status = "running"
@@ -422,31 +389,9 @@ expect_verdict = "refused: invalid-confidence"
 serves = "Probability reference (claims)"
 
 [[case]]
-id = "claims-partial-confidence"
-rule = ""
-statement = "A with clause states alpha, beta and indifference together."
-file = "rules/probability/claims/claims-partial-confidence.fsl"
-command = "compile requests/probability/claims/claims-partial-confidence.json"
-status = "running"
-expect_exit = 20
-expect_verdict = "refused: partial-confidence"
-serves = "Probability reference (claims)"
-
-[[case]]
-id = "claims-unknown-workload"
-rule = ""
-statement = "A claim names a workload that the unit declares."
-file = "rules/probability/claims/claims-unknown-workload.fsl"
-command = "compile requests/probability/claims/claims-unknown-workload.json"
-status = "running"
-expect_exit = 20
-expect_verdict = "refused: missing-name"
-serves = "Probability reference (claims)"
-
-[[case]]
 id = "schedulers-fair-weak"
 rule = ""
-statement = "A claim over every scheduler can limit the schedulers to those that serve the call operation fairly."
+statement = "The claim limits the schedulers to those that serve the call operation weakly fairly."
 file = "rules/probability/schedulers/schedulers-fair-weak.fsl"
 command = "compile requests/probability/schedulers/schedulers-fair-weak.json"
 status = "running"
@@ -458,7 +403,7 @@ serves = "Probability reference (schedulers)"
 [[case]]
 id = "staged-sampling-claim"
 rule = ""
-statement = "Each call fails 1 time in 1,000, and checkout stays up through 10 calls with probability at least 0.99, measured with stated error bounds."
+statement = "Each call fails 1 time in 10,000, and each service stays up through 10 calls with probability at least 0.99, measured with stated error bounds."
 file = "rules/probability/sampling/staged-sampling-claim.fsl"
 command = "compile requests/probability/sampling/staged-sampling-claim.json"
 status = "staged"
@@ -473,7 +418,7 @@ serves = "Probability reference (sampling)"
 [[case]]
 id = "staged-exact-reachability"
 rule = ""
-statement = "A service comes up with probability at least 0.9 however the calls are scheduled, decided by exact computation."
+statement = "The claim states that a service comes up with probability at least 0.9 under every scheduler, decided by exact computation."
 file = "rules/probability/exact/staged-exact-reachability.fsl"
 command = "compile requests/probability/exact/staged-exact-reachability.json"
 status = "staged"

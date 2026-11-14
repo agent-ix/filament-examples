@@ -7,7 +7,10 @@ protocol PartFlow using p over (job: Parts::Job) on origin {
   role Planning on Parts::PlanningService;
   role Machining on Parts::MachiningStation;
   channel Release from Planning to Machining carries Parts::WorkOrder
-    ordering unordered delivery at-most-once capacity 2 overflow loss;
-  run sequence Main {}
+    ordering fifo by (m: Parts::WorkOrder) { m.part } delivery at-least-once capacity 4 overflow block;
+  run sequence Main {
+    send Released via Release as (order: Parts::WorkOrder) { order.part = job.part };
+    receive Received via Release of Released as (got: Parts::WorkOrder) { got.ok };
+  }
   finish Over as (closing: Parts::ClosureView) { closing.complete };
 }

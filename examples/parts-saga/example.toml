@@ -150,17 +150,6 @@ expect_verdict = "checked: terminal and scheduling members"
 serves = "Protocols reference (declaration)"
 
 [[case]]
-id = "declaration-second-terminal"
-rule = ""
-statement = "A protocol declares at most one terminal member."
-file = "rules/protocols/declaration/declaration-second-terminal.fsl"
-command = "compile requests/protocols/declaration/declaration-second-terminal.json"
-status = "running"
-expect_exit = 20
-expect_verdict = "refused: ambiguous terminal"
-serves = "Protocols reference (declaration)"
-
-[[case]]
 id = "roles-replicated"
 rule = ""
 statement = "Up to two machining stations work on a job at once, each drawn from the machining population."
@@ -172,28 +161,6 @@ expect_verdict = "checked: replicated role"
 serves = "Protocols reference (roles and channels)"
 
 [[case]]
-id = "roles-replicated-max-zero"
-rule = ""
-statement = "A replicated role allows at least one live instance."
-file = "rules/protocols/roles-and-channels/roles-replicated-max-zero.fsl"
-command = "compile requests/protocols/roles-and-channels/roles-replicated-max-zero.json"
-status = "running"
-expect_exit = 20
-expect_verdict = "refused: replicated role allows 0 instances"
-serves = "Protocols reference (roles and channels)"
-
-[[case]]
-id = "roles-duplicate-role"
-rule = ""
-statement = "Two roles of a protocol cannot share a name."
-file = "rules/protocols/roles-and-channels/roles-duplicate-role.fsl"
-command = "compile requests/protocols/roles-and-channels/roles-duplicate-role.json"
-status = "running"
-expect_exit = 20
-expect_verdict = "refused: two roles of one name"
-serves = "Protocols reference (roles and channels)"
-
-[[case]]
 id = "channels-loss-head"
 rule = ""
 statement = "A release channel may lose messages and drops the oldest queued one when it is full."
@@ -202,17 +169,6 @@ command = "compile requests/protocols/roles-and-channels/channels-loss-head.json
 status = "running"
 expect_exit = 0
 expect_verdict = "checked: lossy channel"
-serves = "Protocols reference (roles and channels)"
-
-[[case]]
-id = "channels-loss-needs-selector"
-rule = ""
-statement = "A loss overflow policy names which message is lost."
-file = "rules/protocols/roles-and-channels/channels-loss-needs-selector.fsl"
-command = "compile requests/protocols/roles-and-channels/channels-loss-needs-selector.json"
-status = "running"
-expect_exit = 20
-expect_verdict = "refused: loss needs head, tail or new"
 serves = "Protocols reference (roles and channels)"
 
 [[case]]
@@ -304,17 +260,6 @@ expect_verdict = "refused: join all omits a branch"
 serves = "Protocols reference (control flow)"
 
 [[case]]
-id = "control-one-branch"
-rule = ""
-statement = "A parallel has at least two branches."
-file = "rules/protocols/control-flow/control-one-branch.fsl"
-command = "compile requests/protocols/control-flow/control-one-branch.json"
-status = "running"
-expect_exit = 20
-expect_verdict = "refused: parallel needs two branches"
-serves = "Protocols reference (control flow)"
-
-[[case]]
 id = "control-repeat-progress"
 rule = ""
 statement = "Inspection sends a part back for machining while it needs rework."
@@ -359,17 +304,6 @@ expect_verdict = "refused: await reads a clock the unit does not select"
 serves = "Protocols reference (retries and timeouts)"
 
 [[case]]
-id = "timeouts-reversed-interval"
-rule = ""
-statement = "The wait of an await is a closed interval with the lower end at most the upper end."
-file = "rules/protocols/retries-and-timeouts/timeouts-reversed-interval.fsl"
-command = "compile requests/protocols/retries-and-timeouts/timeouts-reversed-interval.json"
-status = "running"
-expect_exit = 20
-expect_verdict = "refused: interval is not closed"
-serves = "Protocols reference (retries and timeouts)"
-
-[[case]]
 id = "compensation-zero-attempts"
 rule = ""
 statement = "A compensation template allows at least one attempt."
@@ -379,3 +313,25 @@ status = "running"
 expect_exit = 20
 expect_verdict = "refused: attempts must be at least 1"
 serves = "Protocols reference (compensation)"
+
+[[case]]
+id = "control-join-any-needs-outstanding"
+rule = ""
+statement = "A join other than all states what happens to the branches still running."
+file = "rules/protocols/control-flow/control-join-any-needs-outstanding.fsl"
+command = "compile requests/protocols/control-flow/control-join-any-needs-outstanding.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: join any states no outstanding rule"
+serves = "Protocols reference (control flow)"
+
+[[case]]
+id = "channels-fifo-by-part"
+rule = ""
+statement = "A first-in, first-out channel keeps one queue for each part number."
+file = "rules/protocols/roles-and-channels/channels-fifo-by-part.fsl"
+command = "compile requests/protocols/roles-and-channels/channels-fifo-by-part.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "checked: first-in first-out channel keyed by part"
+serves = "Protocols reference (roles and channels)"

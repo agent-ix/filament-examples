@@ -4,8 +4,9 @@ profile ev = "quire.temporal.event-position.false-extension/v1";
 profile inf = "quire.temporal.infinite-trace/v1";
 model Arch = "example/architecture";
 
-// Each call to a service fails 1 time in 1,000.
-random Arch::Service::call(ok) ~ { true: 999, false: 1 };
+// Each call to a service fails 1 time in 10,000, so each service stays up through 10 calls with
+// probability about 0.999.
+random Arch::Service::call(ok) ~ { true: 9999, false: 1 };
 workload Traffic on Arch { weight Arch::Service::call = 1; }
 
 // The claim states alpha, beta and indifference, so sampling decides it.

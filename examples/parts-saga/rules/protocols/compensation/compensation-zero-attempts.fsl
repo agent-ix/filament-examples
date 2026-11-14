@@ -1,4 +1,5 @@
 language "ix:native" edition "1-draft";
+// `attempts 0` is refused: a compensation template allows at least one attempt.
 profile v = "quire.model.complete/v1";
 profile p = "quire.protocol.finite-global/v1";
 profile t = "quire.temporal.timestamped-event.finite-window/v1";
