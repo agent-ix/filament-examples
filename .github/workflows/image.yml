@@ -3,6 +3,8 @@ name: Toolchain image
 # Manual only. Builds ghcr.io/agent-ix/filament-toolchain for linux/amd64 and
 # linux/arm64, each on a native runner (no emulation), runs image/smoke.sh on
 # each build before anything is pushed, then publishes one multi-platform tag.
+# The OCI labels (source, description, licenses) are in image/Dockerfile; this
+# workflow passes the version and revision labels as build arguments.
 on:
   workflow_dispatch:
     inputs:
@@ -50,6 +52,15 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      # The image version label is the first tag the run publishes.
+      - name: Label values
+        id: meta
+        env:
+          TAGS: ${{ inputs.tags }}
+        run: |
+          read -r first _ <<< "$TAGS"
+          echo "version=$first" >> "$GITHUB_OUTPUT"
+
       - name: Build for this runner
         uses: docker/build-push-action@v6
         with:
@@ -61,6 +72,8 @@ jobs:
           build-args: |
             FSL_VERSION=${{ inputs.fsl_version }}
             FSL_SOURCE=${{ inputs.fsl_source }}
+            IMAGE_VERSION=${{ steps.meta.outputs.version }}
+            IMAGE_REVISION=${{ github.sha }}
 
       - name: Smoke test
         run: docker run --rm smoke:local smoke.sh
@@ -80,10 +93,8 @@ jobs:
           build-args: |
             FSL_VERSION=${{ inputs.fsl_version }}
             FSL_SOURCE=${{ inputs.fsl_source }}
-          labels: |
-            org.opencontainers.image.source=https://github.com/${{ github.repository }}
-            org.opencontainers.image.description=FSL driver, Markdown tool, quoin, jq, make, git and Node for the Filament examples and tutorials
-            org.opencontainers.image.licenses=MIT
+            IMAGE_VERSION=${{ steps.meta.outputs.version }}
+            IMAGE_REVISION=${{ github.sha }}
           outputs: type=image,name=${{ env.IMAGE }},push-by-digest=true,name-canonical=true,push=true
 
       - name: Keep the digest for the merge job
