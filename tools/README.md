@@ -46,5 +46,6 @@ Regenerate all eight models with `make models`. The output is identical to the c
 - cell: `models/cell.mjs` writes `examples/cell/model/cell.semantic-ir.json`.
 - rover: `models/rover.mjs` writes `examples/rover/model/rover.semantic-ir.json`.
 - rover-spec: `models/rover-spec.mjs` writes `examples/rover/model/rover-spec.semantic-ir.json`.
+- library: `models/library.mjs` writes `examples/library/model/library.semantic-ir.json`.
 - payment-spec: `models/payment-spec.mjs` writes `examples/shop/model/payment-spec.semantic-ir.json`.
 - payment-client: `models/payment-client.mjs` writes `examples/shop/model/payment-client.semantic-ir.json`.

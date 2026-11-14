@@ -21,6 +21,7 @@ The table lists each system with the number of cases that run today and the numb
 | [parts-saga](examples/parts-saga) | Distributed | 7 | 2 |
 | [cell](examples/cell) | Safety | 13 | 0 |
 | [rover](examples/rover) | Safety | 32 | 8 |
+| [library](examples/library) | Shop | 2 | 0 |
 
 ## Getting started
 
