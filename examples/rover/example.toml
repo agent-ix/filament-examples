@@ -163,6 +163,17 @@ expect_verdict = "holds"
 serves = "Learn: how time works (common misreading)"
 
 [[case]]
+id = "never-stops"
+rule = "EventuallyStopped"
+statement = "The rover is eventually stopped. In this run it loses its lidar and drives on forever."
+file = "rules/time-operators.fsl"
+command = "run requests/never-stops.json"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated: a loop that never stops"
+serves = "Learn: checking every behavior (a lasso counterexample)"
+
+[[case]]
 id = "in-time-small-budget"
 rule = "SafeStopWithin3Steps"
 statement = "Whenever the lidar is lost, the rover is stopped within three control steps."

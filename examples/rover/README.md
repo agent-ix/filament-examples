@@ -72,6 +72,7 @@ These cases back the time pages of the FSL docs.
 - `recording-cut-short`, `recording-in-time` and `recording-late` check `SafeStopWithin3Steps` over recordings with no loop. The first two are pending: the recording ends before the rule is decided. The third is violated, because positions 1 to 4 are recorded and none is stopped.
 - `safe-stop-late-without-always` checks the rule written without `always`, in [rules/safe-stop-without-always.fsl](rules/safe-stop-without-always.fsl). It is read only at the first state, where the lidar works, so it holds even on the late run.
 - [rules/time-operators.fsl](rules/time-operators.fsl) holds one rule per temporal operator and interval form, each checked over the in-time trace (`op-*`), and `StopAfterLoss`, read at every position where the lidar is lost (`stop-after-loss-in-time`, `stop-after-loss-late`).
+- `never-stops` checks `EventuallyStopped` over a lasso whose loop is a driving state. The rover never stops, so the rule is violated, and the counterexample is the lasso.
 - `in-time-small-budget` gives the check a work budget of 5 units and stops incomplete.
 - `keeps-sampling` has a fairness constraint. A recorded trace does not say when `sample` was enabled, so the check is unsupported.
 - `timed-safe-stop-compiles` checks a timed rule over model time, in [rules/timed-safe-stop.fsl](rules/timed-safe-stop.fsl).

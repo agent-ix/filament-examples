@@ -26,6 +26,8 @@ The table lists each rule with its requirement and a passing and a failing case.
 
 The first three rules are in [rules/press.fsl](rules/press.fsl) as invariants. `StartNeedsGuard` and `OpeningGuardStops` in the same file are a precondition and a postcondition of two operations. `SpeedAndSeparation` is in [rules/robot.fsl](rules/robot.fsl).
 
+The case `interlock-backwards` checks the interlock written the wrong way round, in [rules/interlock-backwards.fsl](rules/interlock-backwards.fsl): "a closed guard means the ram moves". It holds on the state where the ram moves with the guard open.
+
 The separation rule requires the distance to be at least 500 ms of travel plus 200 mm. The source works in thousandths of a millimeter because integer division is not available in FSL source yet.
 
 ## Run a passing and a failing case

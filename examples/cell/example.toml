@@ -125,3 +125,14 @@ command = "run requests/separation-too-close.json"
 status = "running"
 expect_exit = 10
 expect_verdict = "violated"
+
+[[case]]
+id = "interlock-backwards"
+rule = "GuardClosedMeansMoving"
+statement = "Written backwards, the interlock reads \"a closed guard means the ram moves\" and passes a press that moves with its guard open."
+file = "rules/interlock-backwards.fsl"
+command = "run requests/interlock-backwards.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds on a dangerous state"
+serves = "Learn: safety rules (common misreading)"
