@@ -1,5 +1,5 @@
 language "ix:native" edition "1-draft";
-profile v = "quire.value.complete/v1";
+profile v = "filament.value.complete/v1";
 
 type Two = Int[0, 2];
 

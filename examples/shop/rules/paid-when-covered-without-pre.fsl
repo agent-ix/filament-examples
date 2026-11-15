@@ -1,5 +1,5 @@
 language "ix:native" edition "1-draft";
-profile v = "quire.model.complete/v1";
+profile v = "filament.model.complete/v1";
 model Shop = "example/shop";
 
 // A charge that covers the rest of the total leaves the order Paid,

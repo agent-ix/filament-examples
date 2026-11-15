@@ -11,7 +11,7 @@ import { buildIndex, discoverSystems, syncGenerated, evaluateCase, findCase, mai
 
 const REPO = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const RUNNER = resolve(dirname(fileURLToPath(import.meta.url)), "run.mjs");
-const OK_DOC = '{"format":"quire-outcome/1","category":"success","result":{"value":{"kind":"integer","decimal":"7"}}}\n';
+const OK_DOC = '{"format":"filament-outcome/1","category":"success","result":{"value":{"kind":"integer","decimal":"7"}}}\n';
 
 const MANIFEST = `# Demo
 name = "demo"

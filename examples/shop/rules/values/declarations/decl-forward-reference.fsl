@@ -1,5 +1,5 @@
 language "ix:native" edition "1-draft";
-profile v = "quire.value.complete/v1";
+profile v = "filament.value.complete/v1";
 
 function itemTotal using v(qty: Int[1, 99]): Int[0, 99000] pure {
   Line { item: Item { cents: 100 }, qty: qty }.item.cents * qty

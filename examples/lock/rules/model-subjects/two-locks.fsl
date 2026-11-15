@@ -1,5 +1,5 @@
 language "ix:native" edition "1-draft";
-profile v = "quire.model.complete/v1";
+profile v = "filament.model.complete/v1";
 model Pair = "example/two-locks";
 
 // Process 1 takes lock A first and lock B second. Process 2 takes lock B

@@ -1,5 +1,5 @@
 language "ix:native" edition "1-draft";
-profile v = "quire.value.complete/v1";
+profile v = "filament.value.complete/v1";
 
 function boxes using v(n: Int[0, 99]): Integer pure decreases (n) {
   if n > 12 then 1 + boxes(n) else 1

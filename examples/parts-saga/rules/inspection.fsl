@@ -1,6 +1,6 @@
 language "ix:native" edition "1-draft";
-profile v = "quire.model.complete/v1";
-profile p = "quire.protocol.finite-global/v1";
+profile v = "filament.model.complete/v1";
+profile p = "filament.protocol.finite-global/v1";
 model Parts = "example/parts";
 
 // Releasing a machine leaves it free and idle.

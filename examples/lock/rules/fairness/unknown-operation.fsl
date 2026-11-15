@@ -1,6 +1,6 @@
 language "ix:native" edition "1-draft";
-profile v = "quire.model.complete/v1";
-profile inf = "quire.temporal.infinite-trace/v1";
+profile v = "filament.model.complete/v1";
+profile inf = "filament.temporal.infinite-trace/v1";
 model Mutex = "example/lock";
 
 pre LockIsFree using v on Mutex::Lock::acquire { self.owner = 0 and p != 0 }

@@ -1,5 +1,5 @@
 language "ix:native" edition "1-draft";
-profile v = "quire.value.complete/v1";
+profile v = "filament.value.complete/v1";
 
 type Down = Decimal[0, 1000; 0, 2; toward-zero];
 type Up = Decimal[0, 1000; 0, 2; toward-positive];

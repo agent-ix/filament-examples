@@ -1,4 +1,4 @@
 language "ix:native" edition "1-draft";
-profile v = "quire.value.complete/v1";
+profile v = "filament.value.complete/v1";
 
 function square using v(n: Int[0, 4000000000]): Integer pure { n * n }

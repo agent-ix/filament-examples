@@ -1,5 +1,5 @@
 language "ix:native" edition "1-draft";
-profile t = "quire.temporal.event-position.false-extension/v1";
+profile t = "filament.temporal.event-position.false-extension/v1";
 model Rover = "example/rover";
 
 // Counted by recorded event: the rover is stopped within four events.

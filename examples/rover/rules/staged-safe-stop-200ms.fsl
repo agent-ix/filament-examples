@@ -1,5 +1,5 @@
 language "ix:native" edition "1-draft";
-profile T = "quire.temporal.timestamped-event.finite-window/v1";
+profile T = "filament.temporal.timestamped-event.finite-window/v1";
 model Rover = "example/rover";
 
 // When the lidar is lost, the rover is stopped within 200 ms.

@@ -1,5 +1,5 @@
 language "ix:native" edition "1-draft";
-profile p = "quire.temporal.infinite-trace/v1";
+profile p = "filament.temporal.infinite-trace/v1";
 
 // A braking vehicle: in mode Moving the speed v falls at a deceleration a
 // between 1 and 2 while a timer t runs. At speed 0 it jumps to Stopped.

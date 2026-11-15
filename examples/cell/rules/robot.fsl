@@ -1,5 +1,5 @@
 language "ix:native" edition "1-draft";
-profile v = "quire.model.complete/v1";
+profile v = "filament.model.complete/v1";
 model Cell = "example/cell";
 
 type Micro = Int[0, 100000000];

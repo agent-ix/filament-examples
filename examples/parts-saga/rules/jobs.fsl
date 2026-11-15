@@ -1,5 +1,5 @@
 language "ix:native" edition "1-draft";
-profile v = "quire.model.complete/v1";
+profile v = "filament.model.complete/v1";
 model Parts = "example/parts";
 
 // A part goes back for rework at most twice; after that it is scrapped.

@@ -1,5 +1,5 @@
 language "ix:native" edition "1-draft";
-profile inf = "quire.temporal.infinite-trace/v1";
+profile inf = "filament.temporal.infinite-trace/v1";
 model Rover = "example/rover";
 
 // If the rover keeps sampling, it is stopped again and again. The fairness
