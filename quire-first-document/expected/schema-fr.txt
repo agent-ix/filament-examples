@@ -1,0 +1,346 @@
+{
+  "archetype": "FR",
+  "diagnostics": [],
+  "frontmatter_schema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "additionalProperties": true,
+    "properties": {
+      "id": {
+        "pattern": "^[A-Z]{2,4}-[0-9]+$",
+        "type": "string"
+      },
+      "object": {
+        "type": "string"
+      },
+      "relationships": {
+        "items": {
+          "additionalProperties": false,
+          "properties": {
+            "cardinality": {
+              "type": "string"
+            },
+            "target": {
+              "pattern": "^ix://",
+              "type": "string"
+            },
+            "type": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "target",
+            "type"
+          ],
+          "type": "object"
+        },
+        "type": "array"
+      },
+      "title": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "type": {
+        "const": "FR"
+      }
+    },
+    "required": [
+      "id",
+      "title",
+      "type"
+    ],
+    "type": "object"
+  },
+  "relationships": [
+    {
+      "category": "behavioral",
+      "description": "Synchronous invocation.",
+      "targets": [
+        "*"
+      ],
+      "verb": "calls"
+    },
+    {
+      "category": "traceability",
+      "description": "Imposes a constraint on the target.",
+      "targets": [
+        "*"
+      ],
+      "verb": "constrains"
+    },
+    {
+      "category": "dataflow",
+      "description": "Asynchronous reception from a channel.",
+      "targets": [
+        "*"
+      ],
+      "verb": "consumes"
+    },
+    {
+      "category": "structural",
+      "description": "Composition; the source owns the target's lifecycle.",
+      "targets": [
+        "*"
+      ],
+      "verb": "contains"
+    },
+    {
+      "category": "behavioral",
+      "description": "Source delegates behaviour/handling to the target.",
+      "targets": [
+        "*"
+      ],
+      "verb": "delegates_to"
+    },
+    {
+      "category": "dependency",
+      "description": "Requires the target to exist/function.",
+      "targets": [
+        "*"
+      ],
+      "verb": "depends_on"
+    },
+    {
+      "category": "traceability",
+      "description": "Source is derived/refined from the target (decomposition lineage).",
+      "targets": [
+        "*"
+      ],
+      "verb": "derives_from"
+    },
+    {
+      "category": "dependency",
+      "description": "Extends an interface/extension point.",
+      "targets": [
+        "*"
+      ],
+      "verb": "extends"
+    },
+    {
+      "category": "governance",
+      "description": "Principle/policy governs a target.",
+      "targets": [
+        "*"
+      ],
+      "verb": "governs"
+    },
+    {
+      "category": "dependency",
+      "description": "Fulfils an interface/contract. NOT requirement lineage: an artifact answering a stakeholder requirement uses `satisfies` (inverse `satisfied_by`).",
+      "targets": [
+        "*"
+      ],
+      "verb": "implements"
+    },
+    {
+      "category": "governance",
+      "description": "Source manages the lifecycle of the target.",
+      "targets": [
+        "*"
+      ],
+      "verb": "manages"
+    },
+    {
+      "category": "traceability",
+      "description": "Source was carried over from the target during a migration.",
+      "targets": [
+        "*"
+      ],
+      "verb": "migrated_from"
+    },
+    {
+      "category": "realization",
+      "description": "Source is a projection/view of the target.",
+      "targets": [
+        "*"
+      ],
+      "verb": "projection_of"
+    },
+    {
+      "category": "dataflow",
+      "description": "Asynchronous emission to a channel.",
+      "targets": [
+        "*"
+      ],
+      "verb": "publishes"
+    },
+    {
+      "category": "dataflow",
+      "description": "Non-mutating data access.",
+      "targets": [
+        "*"
+      ],
+      "verb": "reads"
+    },
+    {
+      "category": "traceability",
+      "description": "Loose, untyped linkage.",
+      "targets": [
+        "*"
+      ],
+      "verb": "references"
+    },
+    {
+      "category": "realization",
+      "description": "A concrete artifact represents/mirrors another (DTO↔domain object, or a parallel spec).",
+      "targets": [
+        "*"
+      ],
+      "verb": "represents"
+    },
+    {
+      "category": "dependency",
+      "description": "Security/configuration precondition.",
+      "targets": [
+        "*"
+      ],
+      "verb": "requires"
+    },
+    {
+      "targets": [
+        "*"
+      ],
+      "verb": "satisfies"
+    },
+    {
+      "category": "traceability",
+      "description": "Object FR specifies a behavioral FR.",
+      "targets": [
+        "*"
+      ],
+      "verb": "specifies"
+    },
+    {
+      "category": "traceability",
+      "description": "Replaces a prior artifact.",
+      "targets": [
+        "*"
+      ],
+      "verb": "supersedes"
+    },
+    {
+      "category": "realization",
+      "description": "Supports a value stream / higher objective.",
+      "targets": [
+        "*"
+      ],
+      "verb": "supports"
+    },
+    {
+      "category": "traceability",
+      "description": "Traceability link (matrix/coverage).",
+      "targets": [
+        "*"
+      ],
+      "verb": "traces_to"
+    },
+    {
+      "category": "behavioral",
+      "description": "State-machine flow to another state.",
+      "targets": [
+        "*"
+      ],
+      "verb": "transitions_to"
+    },
+    {
+      "category": "behavioral",
+      "description": "Initiates a process or action.",
+      "targets": [
+        "*"
+      ],
+      "verb": "triggers"
+    },
+    {
+      "category": "dependency",
+      "description": "Source uses the target capability/module.",
+      "targets": [
+        "*"
+      ],
+      "verb": "uses"
+    },
+    {
+      "category": "dataflow",
+      "description": "Mutating data access.",
+      "targets": [
+        "*"
+      ],
+      "verb": "writes"
+    }
+  ],
+  "sections": [
+    {
+      "heading": "Description",
+      "key": "description",
+      "kind": "section_body",
+      "level": 2,
+      "required": true
+    },
+    {
+      "heading": "Inputs",
+      "key": "inputs",
+      "kind": "section_body",
+      "level": 2,
+      "required": false
+    },
+    {
+      "heading": "Outputs",
+      "key": "outputs",
+      "kind": "section_body",
+      "level": 2,
+      "required": false
+    },
+    {
+      "heading": "Behavior",
+      "key": "behavior",
+      "kind": "section_body",
+      "level": 2,
+      "required": false
+    },
+    {
+      "columns": [
+        "ID",
+        "Constraint",
+        "Type",
+        "Validation"
+      ],
+      "heading": "Constraints",
+      "id_pattern": "^{id}-CON-\\d+$",
+      "key": "constraints_table",
+      "kind": "table_row",
+      "min_rows": 1,
+      "required": false
+    },
+    {
+      "heading": "Acceptance Criteria",
+      "key": "acceptance_criteria",
+      "kind": "section_body",
+      "level": 2,
+      "required": true
+    },
+    {
+      "columns": [
+        "ID",
+        "Criteria",
+        "Verification"
+      ],
+      "heading": "Acceptance Criteria",
+      "id_pattern": "^{id}-AC-\\d+$",
+      "key": "acceptance_criteria_table",
+      "kind": "table_row",
+      "min_rows": 1,
+      "required": true
+    },
+    {
+      "heading": "Dependencies",
+      "key": "dependencies",
+      "kind": "section_body",
+      "level": 2,
+      "required": true
+    },
+    {
+      "heading": "Invariants",
+      "key": "invariants",
+      "kind": "code_block",
+      "required": false
+    }
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "preamble": null,
+  "sections": [
+    {
+      "id": "us-001-invite-a-teammate-with-a-link-L1",
+      "heading": "US-001: Invite a teammate with a link",
+      "level": 1,
+      "content": "\n",
+      "children": [
+        {
+          "id": "story-L3",
+          "heading": "Story",
+          "level": 2,
+          "content": "\n**As a** team owner\n**I want** to send a teammate an invitation link\n**So that** they can join my team without me creating an account for them.\n\n",
+          "children": [],
+          "start_line": 3,
+          "end_line": 8
+        },
+        {
+          "id": "context-L9",
+          "heading": "Context",
+          "level": 2,
+          "content": "\nOwners invite people by email. An old invitation that still works is a risk, so an invitation should stop working after a short time.\n",
+          "children": [],
+          "start_line": 9,
+          "end_line": 12
+        }
+      ],
+      "start_line": 1,
+      "end_line": 2
+    }
+  ],
+  "raw": "---\nid: US-001\ntitle: \"Invite a teammate with a link\"\ntype: US\nrelationships:\n  - target: \"ix://example/invites/FR-001\"\n    type: \"satisfied_by\"\n---\n\n# US-001: Invite a teammate with a link\n\n## Story\n\n**As a** team owner\n**I want** to send a teammate an invitation link\n**So that** they can join my team without me creating an account for them.\n\n## Context\n\nOwners invite people by email. An old invitation that still works is a risk, so an invitation should stop working after a short time.\n",
+  "frontmatter": {
+    "id": "US-001",
+    "relationships": [
+      {
+        "target": "ix://example/invites/FR-001",
+        "type": "satisfied_by"
+      }
+    ],
+    "title": "Invite a teammate with a link",
+    "type": "US"
+  }
+}

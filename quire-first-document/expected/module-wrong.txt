@@ -1,0 +1,4 @@
+spec/functional/FR-001-invitation-expiry.md: unknown type 'FR' (no archetype registered for it) [frontmatter]
+spec/functional/FR-002-withdraw-invitation.md: unknown type 'FR' (no archetype registered for it) [frontmatter]
+spec/functional/FR-003-invitation-reminder.md: unknown type 'FR' (no archetype registered for it) [frontmatter]
+3 document(s) failed structural validation

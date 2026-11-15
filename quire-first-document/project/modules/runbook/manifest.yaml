@@ -1,0 +1,24 @@
+manifest_version: 1.0.0
+name: runbook
+version: 0.1.0
+description: A module with one document type, the runbook.
+artifact_types:
+- name: Runbook
+  frontmatter_schema_ref: schemas/runbook.schema.json
+  allowed_links: [runs_after]
+  body_extraction:
+    yield_pattern:
+      match:
+        purpose:
+          from: section_body
+          after_heading: Purpose
+          required: true
+        steps:
+          from: list_item
+          under_section: Steps
+          required: true
+          multiple: true
+          assert:
+            min_items: 1
+edge_types:
+  runs_after: { description: "Runs after the target.", category: dependency }

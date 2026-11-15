@@ -1,0 +1,41 @@
+{
+  "extraction": {
+    "records": [
+      {
+        "acceptance_criteria": "| ID | Criteria | Verification |\n|----|----------|--------------|\n| FR-001-AC-1 | An invitation opened one day after it was sent is accepted. | Test |\n| FR-001-AC-2 | An invitation opened seven days or more after it was sent is refused. | Test |\n| FR-001-AC-3 | An invitation that was already accepted is refused when opened again. | Test |",
+        "acceptance_criteria_table": "FR-001-AC-1\tAn invitation opened one day after it was sent is accepted.\tTest",
+        "dependencies": "- **Upstream**: [US-001](../usecase/US-001-invite-a-teammate.md)",
+        "description": "The service shall accept an invitation only within seven days of the time it was sent, and only once."
+      }
+    ]
+  },
+  "edges": [
+    {
+      "target": "US-001",
+      "type": "references"
+    },
+    {
+      "target": "US-001",
+      "type": "satisfies"
+    }
+  ],
+  "engine": {
+    "cli": "0.45.0",
+    "engine": "0.60.0",
+    "capabilities": [
+      "action_guidance.structured",
+      "assurance_export.v1",
+      "binding_census",
+      "binding_census.tagged",
+      "clause_sets",
+      "declaration_origins",
+      "metrics_envelope",
+      "minted_targets",
+      "property_spans.safe_refusal",
+      "reference_only_targets",
+      "specific_shaped",
+      "suspicions",
+      "unmatched_tags"
+    ]
+  }
+}

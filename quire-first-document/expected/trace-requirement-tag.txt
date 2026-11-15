@@ -1,0 +1,6 @@
+resolved: true
+Claims (1)
+  verifies    FR-001 tests/requirement-tag.test.ts:6 an invitation that was already accepted is refused [ts-trace-helper] (line_heuristic)
+
+Citations (0) — NOT verification evidence
+  (none)

@@ -4,7 +4,7 @@ include config.mk
 NODE ?= node
 RUN = $(NODE) tools/run.mjs
 
-.PHONY: check staged record promote readme index models test install-test install-test-host assurance-test assurance-record tl-examples-test tl-examples-record foundations-examples-test foundations-examples-record contracts-examples-test contracts-examples-record
+.PHONY: check staged record promote readme index models test install-test install-test-host assurance-test assurance-record quire-test quire-record tl-examples-test tl-examples-record foundations-examples-test foundations-examples-record contracts-examples-test contracts-examples-record
 check:
 	@$(RUN) check
 staged:
@@ -37,7 +37,7 @@ models:
 # Unit tests for the runner (they use a fake driver and need no FSL binary) and the Quoin first-spec check
 # (skipped when quoin and quire are not installed).
 test:
-	$(NODE) --test tools/*.test.mjs quoin-first-spec/*.test.mjs verification/tl-examples/*.test.mjs verification/foundations-examples/*.test.mjs verification/contracts-examples/*.test.mjs
+	$(NODE) --test tools/*.test.mjs quoin-first-spec/*.test.mjs quire-first-document/*.test.mjs verification/tl-examples/*.test.mjs verification/foundations-examples/*.test.mjs verification/contracts-examples/*.test.mjs
 
 # Run the documented install steps on a bare ubuntu:22.04 container (needs Docker).
 # INSTALL_DRIVER=release (default) downloads the driver release; source builds it.
@@ -68,6 +68,19 @@ assurance-test:
 # Record the outputs of the Assurance steps again.
 assurance-record:
 	$(ASSURANCE_ENV) $(ASSURANCE_RUN) --record
+
+# Run the Quire steps (quire-first-document/steps.md) on this machine against a fresh copy of
+# quire-first-document/project and compare each step's output with quire-first-document/expected.
+# Needs Node.js 22.18 or later, npm and git, and network access to npmjs.org and github.com. HOME is a
+# new temporary folder and npm installs into it, so the tools and spec modules never touch your own.
+QUIRE_ENV = quire_home="$$(mktemp -d)" && trap 'rm -rf "$$quire_home"' EXIT && export HOME="$$quire_home" && export npm_config_prefix="$$HOME/npm" && export PATH="$$HOME/npm/bin:$$PATH" &&
+QUIRE_RUN = $(NODE) tools/steps.mjs run quire-first-document/steps.md --host --skip get-project --copy quire-first-document/project --expected quire-first-document/expected
+quire-test:
+	$(QUIRE_ENV) $(QUIRE_RUN)
+
+# Record the outputs of the Quire steps again.
+quire-record:
+	$(QUIRE_ENV) $(QUIRE_RUN) --record
 
 # Run the Rust programs of the temporal logic pages (verification/tl-examples/steps.md) in a
 # fresh copy of verification/tl-examples/project and compare each step's output with

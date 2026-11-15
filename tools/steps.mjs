@@ -11,6 +11,7 @@
 //                        on the host)
 //   --expected <dir>     compare the output of each step with <dir>/<id>.txt
 //                        when that file exists
+//   --keep               leave the folder of a --host run in place (it is removed by default)
 //   --record             write <dir>/<id>.txt for every step that prints
 //                        something, instead of comparing (needs --expected)
 //
@@ -18,20 +19,24 @@
 // `<language> step=<id>` is a step. Extra words after the id are attributes:
 // `expect-exit=N` marks a step that must exit with N (default 0), and
 // `stderr=hide` drops what the step writes to standard error, for a tool that
-// prints warnings with machine-specific paths there, and `output=ignore` keeps
+// prints warnings with machine-specific paths there, `stderr=findings` keeps
+// only the lines of standard error that name a document, count the documents
+// that failed (the findings of `quire validate`) or warn about a requirement id used as a trace tag and drops the rest, and `output=ignore` keeps
 // a step out of the --expected comparison and recording. `extract`
 // prints the steps as one shell script. `run` streams that script into one shell
 // session in a container or, with --host, on this machine, the way a reader types
 // the commands into one terminal. It reports the duration of each step. The first
 // failing step stops the run and is named.
 import { spawn } from "node:child_process";
-import { cpSync, existsSync, mkdirSync, mkdtempSync, readFileSync, writeFileSync } from "node:fs";
+import { cpSync, existsSync, mkdirSync, mkdtempSync, readFileSync, realpathSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 
 const MARK = "@@STEP";
 const EXIT = "@@EXIT";
+// What stderr=findings keeps: a line that names a Markdown document, counts the failed ones, or warns that a requirement id is used as a trace tag.
+const FINDINGS = String.raw`\.md: |document\(s\) failed|untracked-id-has-minted-children`;
 
 export function extractSteps(markdown) {
   const steps = [];
@@ -42,8 +47,9 @@ export function extractSteps(markdown) {
     const attrs = Object.fromEntries(open[3].trim().split(" ").filter(Boolean).map((a) => a.split("=")));
     const expectExit = "expect-exit" in attrs ? Number(attrs["expect-exit"]) : 0;
     if (!Number.isInteger(expectExit)) throw new Error(`step ${open[2]}: expect-exit must be an integer`);
-    if ("stderr" in attrs && attrs.stderr !== "hide") throw new Error(`step ${open[2]}: stderr takes only the value hide`);
+    if ("stderr" in attrs && !["hide", "findings"].includes(attrs.stderr)) throw new Error(`step ${open[2]}: stderr takes only the value hide or findings`);
     const hideStderr = attrs.stderr === "hide";
+    const findingsStderr = attrs.stderr === "findings";
     if ("output" in attrs && attrs.output !== "ignore") throw new Error(`step ${open[2]}: output takes only the value ignore`);
     const ignoreOutput = attrs.output === "ignore";
     const body = [];
@@ -57,7 +63,7 @@ export function extractSteps(markdown) {
     }
     if (!closed) throw new Error(`step ${open[2]}: fenced block is not closed`);
     if (steps.some((s) => s.id === open[2])) throw new Error(`duplicate step id ${open[2]}`);
-    steps.push({ id: open[2], language: open[1], body: body.join("\n"), expectExit, hideStderr, ignoreOutput });
+    steps.push({ id: open[2], language: open[1], body: body.join("\n"), expectExit, hideStderr, findingsStderr, ignoreOutput });
   }
   return steps;
 }
@@ -78,6 +84,13 @@ export function buildScript(steps) {
   for (const s of steps) {
     if (s.language !== "bash") throw new Error(`step ${s.id}: only bash steps are supported`);
     parts.push(`echo "${MARK} ${s.id} $(date +%s)"`);
+    if (s.findingsStderr) {
+      // The step's standard error goes to a file; only its findings are printed, after the standard output.
+      parts.push("set +e", `__err=$(mktemp)`, `{\n${s.body}\n} 2>"$__err"`, "__status=$?", `grep -E '${FINDINGS}' "$__err"`, `rm -f "$__err"`, "set -e");
+      if (s.expectExit === 0) parts.push('[ "$__status" -eq 0 ] || exit "$__status"');
+      else parts.push(`echo "${EXIT} ${s.id} $__status"`);
+      continue;
+    }
     const body = s.hideStderr ? `{\n${s.body}\n} 2>/dev/null` : s.body;
     if (s.expectExit === 0) parts.push(body);
     else parts.push("set +e", body, `echo "${EXIT} ${s.id} $?"`, "set -e");
@@ -114,9 +127,20 @@ export function readMarkers(lines) {
   return { records, last: marks.length ? marks[marks.length - 1].id : null };
 }
 
+// A path under the folder the steps ran in is shown relative to it, so a recorded output is the same on every machine.
+export function withoutFolder(line, dir) {
+  const real = existsSync(dir) ? realpathSync(dir) : dir;
+  return [real, dir].reduce((l, d) => l.split(`${d}/`).join(""), line);
+}
+
+// The folder a --host run copied the project to is removed when the run ends.
+export function removeRunFolder(dir) {
+  rmSync(dir, { recursive: true, force: true });
+}
+
 export function parseArgs(argv) {
   const [command, file, ...rest] = argv;
-  const opts = { command, file, skip: [], image: null, shell: "bash", host: false, copy: null, expected: null, record: false };
+  const opts = { command, file, skip: [], image: null, shell: "bash", host: false, copy: null, expected: null, record: false, keep: false };
   for (let i = 0; i < rest.length; i++) {
     if (rest[i] === "--skip") opts.skip = (rest[++i] ?? "").split(",").filter(Boolean);
     else if (rest[i] === "--image") opts.image = rest[++i];
@@ -125,6 +149,7 @@ export function parseArgs(argv) {
     else if (rest[i] === "--copy") opts.copy = rest[++i];
     else if (rest[i] === "--expected") opts.expected = rest[++i];
     else if (rest[i] === "--record") opts.record = true;
+    else if (rest[i] === "--keep") opts.keep = true;
     else throw new Error(`unknown argument ${rest[i]}`);
   }
   if (!["bash", "zsh"].includes(opts.shell)) throw new Error(`--shell must be bash or zsh, not ${opts.shell}`);
@@ -168,7 +193,9 @@ function runScript(opts, script) {
     });
     child.on("close", (code) => {
       if (pending) lines.push(pending);
-      resolveRun({ code, lines });
+      const shown = hostDir ? lines.map((l) => withoutFolder(l, hostDir)) : lines;
+      if (hostDir && !opts.keep) removeRunFolder(hostDir);
+      resolveRun({ code, lines: shown });
     });
     child.stdin.end(script);
   });
