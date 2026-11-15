@@ -1,0 +1,2 @@
+Y !p0 at position 0: Refuted
+H[0,2] p0 at position 1: Proved

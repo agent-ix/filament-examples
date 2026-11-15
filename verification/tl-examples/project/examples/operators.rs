@@ -43,37 +43,70 @@ fn future(source: &str, derived: bool, profile: SemanticProfile) -> FormulaDocum
     report.expect("the source parses")
 }
 
-fn main() {
-    println!("-- closed and open prefix");
-    let rows = [
-        ("p0", "p0", false), ("p0", "p1", false), ("p0", "", false), ("!p0", "p1", false),
-        ("p0&p1", "p0,p1", false), ("p0|p1", "p1", false), ("p0->p1", "p0", false),
-        ("p0<->p1", "p0,p1", false), ("true", "", false), ("false", "p0", false),
-        ("F[0,2] p0", "p1;p1;p0", false), ("F[0,2] p0", "p1;p1;p1", false),
-        ("F[0,2] p0", "p1;p1", false), ("G[0,2] p0", "p0;p0;p0", false),
-        ("G[0,2] p0", "p0;p1;p0", false), ("G[0,2] p0", "p0;p0", false),
-        ("F[2,4] p0", "p0;p0;p0;p0;p0", false), ("F[2,4] p0", "p0;p0", false),
-        ("G[0,0] p0", "p0", false), ("F[0,1] G[0,1] p0", "p1;p0;p0", false),
-        ("p0 U[0,3] p1", "p0;p0;p1", false), ("p0 U[1,2] p1", "p1;p0;p1", false),
-        ("p0 U[1,2] p1", "p1;p1;p1", false), ("p0 R[0,2] p1", "p1;p1;p1", false),
-        ("p0 R[0,2] p1", "p1;p1,p0;p1", false), ("p0 R[0,2] p1", "p1;p0", false),
-        ("p0 R[0,2] p1", "p1;p1", false), ("G[0,5](p0 -> F[1,3] p1)", "p0;;p1;p0;;", false),
+fn rows(kind: &str) -> Vec<(&'static str, &'static str, bool)> {
+    match kind {
+        "boolean" => vec![
+        ("p0", "p0", false),
+        ("p0|!p0", "", false),
+        ("p0", "p1", false),
+        ("p0", "", false),
+        ("!p0", "p1", false),
+        ("p0&p1", "p0,p1", false),
+        ("p0|p1", "p1", false),
+        ("p0->p1", "p0", false),
+        ("p0<->p1", "p0,p1", false),
+        ("true", "", false),
+        ("false", "p0", false),
+        ],
+        "future" => vec![
+        ("F[1,1]p0|!F[1,1]p0", "", false),
+        ("G[0,2]p0&!G[0,2]p0", "p0", false),
+        ("F[0,2] p0", "p1;p1;p0", false),
+        ("F[0,2] p0", "p1;p1;p1", false),
+        ("F[0,2] p0", "p1;p1", false),
+        ("G[0,2] p0", "p0;p0;p0", false),
+        ("G[0,2] p0", "p0;p1;p0", false),
+        ("G[0,2] p0", "p0;p0", false),
+        ("F[2,4] p0", "p0;p0;p0;p0;p0", false),
+        ("F[2,4] p0", "p0;p0", false),
+        ("G[0,0] p0", "p0", false),
+        ("F[0,1] G[0,1] p0", "p1;p0;p0", false),
+        ("p0 U[0,3] p1", "p0;p0;p1", false),
+        ("p0 U[1,2] p1", "p1;p0;p1", false),
+        ("p0 U[1,2] p1", "p1;p1;p1", false),
+        ("p0 R[0,2] p1", "p1;p1;p1", false),
+        ("p0 R[0,2] p1", "p1;p1,p0;p1", false),
+        ("p0 R[0,2] p1", "p1;p0", false),
+        ("p0 R[0,2] p1", "p1;p1", false),
+        ("G[0,5](p0 -> F[1,3] p1)", "p0;;p1;p0;;", false),
         ("G[0,3](p0 -> F[1,2] p1)", "p0;p1;p0;", false),
-        ("p0 W[0,2] p1", "p0;p0;p0", true), ("p0 W[0,2] p1", "p0;p1", true),
-        ("p0 W[0,2] p1", "p1;p0", true), ("p0 W[0,2] p1", "p0;;p1", true),
-        ("p0 M[0,2] p1", "p1;p1,p0;p1", true), ("p0 M[0,2] p1", "p1;p1;p1", true),
+        ],
+        _ => vec![
+        ("p0 W[0,2] p1", "p0;p0;p0", true),
+        ("p0 W[0,2] p1", "p0;p1", true),
+        ("p0 W[0,2] p1", "p1;p0", true),
+        ("p0 W[0,2] p1", "p0;;p1", true),
+        ("p0 M[0,2] p1", "p1;p1,p0;p1", true),
+        ("p0 M[0,2] p1", "p1;p1;p1", true),
         ("p0 M[0,2] p1", "p1,p0;p1", true),
-    ];
-    for (text, tr, derived) in rows {
+        ],
+    }
+}
+
+fn print(kind: &str) {
+    println!("{:<28} {:<18} {:<8} {}", "formula", "trace", "closed", "open prefix");
+    for (text, tr, derived) in rows(kind) {
         let t = trace(tr);
         let closed = future(text, derived, SemanticProfile::ClosedTraceV1);
         let c = evaluate_closed(closed.validate().unwrap(), "f", &t, "t", EvaluationLimits::default()).unwrap();
         let open = future(text, derived, SemanticProfile::OnlinePrefixV1);
         let o = evaluate_prefix(open.validate().unwrap(), "f", &t, "t", false, EvaluationLimits::default()).unwrap();
-        println!("| `{}` | `{}` | {} | {} |", text.replace('|', "\\|"), tr, word(c.verdict), word(o.verdict));
+        println!("{:<28} {:<18} {:<8} {}", text, if tr.is_empty() { "(empty)" } else { tr }, word(c.verdict), word(o.verdict));
     }
+}
 
-    println!("-- past");
+fn past() {
+    println!("{:<18} {:<14} {:<7} {}", "formula", "history", "anchor", "verdict");
     let rows = [
         ("O[0,2] p0", "p0;p1;p1;p1", 3), ("O[0,2] p0", "p0;p1;p1;p1", 2),
         ("O[0,2] p0", "p0;p1;p1;p1", 1), ("H[0,1] p0", "p0;p0;p1", 1),
@@ -100,10 +133,13 @@ fn main() {
             PastEvaluationRelationInput::Original, PastEvaluationLimits::default(),
         )
         .unwrap();
-        println!("| `{}` | `{}` | {} | {} |", text, tr, anchor, r.verdict);
+        println!("{:<18} {:<14} {:<7} {}", text, tr, anchor, r.verdict);
     }
 
-    println!("-- horizon");
+}
+
+fn horizon() {
+    println!("{:<28} {:<10} {:<6} {}", "formula", "lookahead", "delay", "buffer");
     for (text, derived) in [
         ("p0&p1", false), ("F[0,2] p0", false), ("F[2,4] p0", false), ("p0 U[0,3] p1", false),
         ("p0 R[0,2] p1", false), ("G[0,3](p0 -> F[1,2] p1)", false), ("G[0,5](p0 -> F[1,3] p1)", false),
@@ -111,6 +147,15 @@ fn main() {
     ] {
         let doc = future(text, derived, SemanticProfile::ClosedTraceV1);
         let h = analyze_horizon(doc.validate().unwrap(), "f").unwrap();
-        println!("| `{}` | {} | {} | {} |", text, h.lookahead, h.propagation_delay, h.required_buffer);
+        println!("{:<28} {:<10} {:<6} {}", text, h.lookahead, h.propagation_delay, h.required_buffer);
+    }
+}
+
+fn main() {
+    match std::env::args().nth(1).as_deref() {
+        Some("past") => past(),
+        Some("horizon") => horizon(),
+        Some(kind) => print(kind),
+        None => print("boolean"),
     }
 }

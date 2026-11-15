@@ -34,8 +34,38 @@ cargo run -q --example evaluate
 cargo run -q --example pipeline
 ```
 
-## Verdicts of the operators on small traces
+## Verdicts of the Boolean operators on small traces
 
-```bash step=operators
-cargo run -q --example operators
+```bash step=operators-boolean
+cargo run -q --example operators -- boolean
+```
+
+## Verdicts of the future operators on small traces
+
+```bash step=operators-future
+cargo run -q --example operators -- future
+```
+
+## Verdicts of the derived operators on small traces
+
+```bash step=operators-derived
+cargo run -q --example operators -- derived
+```
+
+## Verdicts of the past operators on small histories
+
+```bash step=operators-past
+cargo run -q --example operators -- past
+```
+
+## Horizon of formulas
+
+```bash step=operators-horizon
+cargo run -q --example operators -- horizon
+```
+
+## Past operators on an infinite trace
+
+```bash step=infinite
+cargo run -q --example infinite
 ```
