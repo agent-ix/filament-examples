@@ -1,0 +1,5 @@
+f64: 0.1 + 0.2 = 0.30000000000000004
+exact: 1/10 + 2/10 = 3/10
+equal fractions are equal values: true
+1/2 divided by 0: Undefined(DivisionByZero)
+with no work units: Incomplete(Incomplete { limit_kind: WorkUnits, limit: 0, consumed: 0, next_charge: Integer(1), charge_point: RationalArithmeticOperands })

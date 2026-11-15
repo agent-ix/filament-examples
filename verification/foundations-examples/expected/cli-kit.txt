@@ -1,0 +1,11 @@
+0 = ok, carries a payload: true
+1 = partial, carries a payload: true
+2 = refused, carries a payload: false
+3 = invalid, carries a payload: false
+4 = internal, carries a payload: false
+exit status 5 is reserved: None
+canonical: {"a":[3,1],"b":{"y":2,"z":1}}
+auto, terminal: true
+auto, piped: false
+auto, terminal, NO_COLOR set: false
+always, piped: true

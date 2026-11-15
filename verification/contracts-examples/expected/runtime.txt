@@ -1,0 +1,7 @@
+accepted 2
+rejected 1
+failed 1
+discarded 1
+total 4
+requirement=FR-001 revision=rev-7 accepted=2 rejected=1 failed=1 discarded=1
+other identity: true
