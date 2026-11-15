@@ -1,0 +1,6 @@
+## spec/functional/FR-001-refund-limit.md
+
+| Criterion | Statement | Binders | Status | Requirement Criticality |
+|---|---|---|---|---|
+| FR-001-AC-1 | A refund of at most the amount paid is accepted. | tests/refund.test.ts:6:1 | tagged | unassigned |
+| FR-001-AC-2 | A refund above the amount paid is refused. | tests/refund-refused.test.ts:6:1 | tagged | unassigned |

@@ -1,0 +1,6 @@
+resolved: true
+Claims (1)
+  verifies    FR-001-AC-2 tests/refund-refused.test.ts:6 a refund above the amount paid is refused [ts-trace-helper] (line_heuristic)
+
+Citations (0) — NOT verification evidence
+  (none)

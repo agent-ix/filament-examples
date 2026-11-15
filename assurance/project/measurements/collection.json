@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 2,
+  "collectionId": "refund-pass-rate-2026-11-14",
+  "subject": "shop refunds",
+  "scope": {"suite": "SUITE-001"},
+  "toolIdentity": "node --test",
+  "toolVersion": "24.0.0",
+  "timestamp": "2026-11-14T12:00:00.000Z",
+  "sourceRevision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "environment": {"runner": "local"},
+  "verificationStack": {
+    "schemaVersion": "verification-stack-attestation-v1",
+    "buildProfile": "release",
+    "capabilities": ["shop.refund-tests"],
+    "artifacts": ["tests/refund.test.ts"]
+  },
+  "observations": [
+    {"metric": "refund_test_pass_rate", "planId": "MP-001", "definitionVersion": "shop.refund-pass-rate-v1",
+     "state": "measured", "value": 1.0, "unit": "fraction", "shape": "ratio",
+     "population": {"examined": 2, "matched": 2, "complete": true, "repetitions": 1}}
+  ],
+  "rawEvidence": {"passed": 2, "failed": 0}
+}

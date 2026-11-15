@@ -28,6 +28,8 @@ The table lists each system with the number of cases that run today and the numb
 
 [quoin-first-spec](quoin-first-spec) is a small Python project with a user story, a functional requirement and tests, written with Quoin and validated with Quire. The Quoin documentation builds its "Get started" tutorial from it.
 
+[assurance](assurance/README.md) is a small shop service whose refund rule is written as requirements, tested with `node --test`, and backed by test runs, a change record and a measurement recorded with Quoin. The Assurance documentation builds its guides from it.
+
 ## Getting started
 
 You can run the examples in the toolchain image or with a driver you build yourself.
@@ -132,6 +134,12 @@ The install test runs the commands of [install-test/steps.md](install-test/steps
 
 ```
 make install-test
+```
+
+The assurance test runs the commands of [assurance/steps.md](assurance/steps.md) against the [assurance example](assurance/README.md), a small spec repository checked with `quire` and `quoin`. It needs Node.js, npm and git, and installs the tools into a temporary folder:
+
+```
+make assurance-test
 ```
 
 ## Contributing

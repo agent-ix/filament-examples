@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+	<testcase name="a refund above the amount paid is refused" classname="a refund above the amount paid is refused" file="tests/refund-refused.test.ts"><property name="trace" value="FR-001-AC-2"/></testcase>
+	<testcase name="a refund up to the amount paid is accepted" classname="a refund up to the amount paid is accepted" file="tests/refund.test.ts"><property name="trace" value="FR-001-AC-1"/></testcase>
+	<!-- tests 2 -->
+	<!-- suites 0 -->
+	<!-- pass 2 -->
+	<!-- fail 0 -->
+	<!-- cancelled 0 -->
+	<!-- skipped 0 -->
+	<!-- todo 0 -->
+</testsuites>
