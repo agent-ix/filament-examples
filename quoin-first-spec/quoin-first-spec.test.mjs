@@ -37,12 +37,15 @@ export function parseSteps(markdown) {
   return steps;
 }
 
-// Quire prints notices about the installed modules on standard error. They are
-// not part of a result.
-const notice = (line) => line.startsWith("semantic.") || line.startsWith("warning: [");
+// Quire prints notices about the installed modules on standard error, and they
+// differ between releases. A result is what a command prints on standard output
+// and, when it fails, the lines on standard error that name a document or count
+// the documents that failed.
+const diagnostic = (line) => /\.md: |document\(s\) failed/.test(line);
 
-export function recorded(stdout, stderr, dirs) {
-  let text = stdout + stderr.split("\n").filter((l) => !notice(l)).join("\n");
+export function recorded(stdout, stderr, dirs, status) {
+  let text = stdout;
+  if (status !== 0) text += stderr.split("\n").filter(diagnostic).join("\n");
   for (const dir of dirs) text = text.split(`${dir}/`).join("");
   return text.replace(/\n+$/, "") + "\n";
 }
@@ -69,7 +72,7 @@ test("the steps print the recorded output", { skip: missing.length ? `${missing.
       }
       const r = spawnSync("sh", ["-c", s.body], { cwd: dir, encoding: "utf8" });
       assert.equal(r.status, s.exit, `${s.id} exited ${r.status}: ${r.stderr}`);
-      const got = recorded(r.stdout, r.stderr, dirs);
+      const got = recorded(r.stdout, r.stderr, dirs, r.status);
       const file = join(HERE, "expected", `${s.id}.txt`);
       if (RECORD) writeFileSync(file, got === "\n" ? "" : got);
       else assert.equal(got === "\n" ? "" : got, readFileSync(file, "utf8"), `${s.id} printed something else`);

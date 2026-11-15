@@ -8,7 +8,7 @@ A fence is `<shell> step=<id>` followed by optional words:
 - `expect-exit=<n>` is the exit status the step must give (the default is 0).
 - `manual` marks a step the test does not run, such as an install. Its recorded output was captured once, by hand.
 
-The recorded output is what the command prints on standard output, followed by what it prints on standard error without the notices Quire gives about installed modules (lines that start with `semantic.` or `warning: [`). The project folder is shortened to nothing in paths.
+The recorded output is what the command prints on standard output. When the command fails, it also holds the lines on standard error that name a document or count the failed documents. Quire prints notices about its installed modules on standard error, and they change from release to release, so they are left out. The project folder is shortened to nothing in paths.
 
 ## Install
 
