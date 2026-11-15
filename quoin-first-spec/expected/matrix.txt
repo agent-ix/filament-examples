@@ -1,0 +1,5 @@
+document	criterion	status	binders	statement	requirement_criticality
+spec/functional/FR-001-reset-link-expiry.md	FR-001-AC-1	tagged	tests/test_reset_links.py:11:1	Given a link issued 29 minutes ago, the new password is accepted.	unassigned
+spec/functional/FR-001-reset-link-expiry.md	FR-001-AC-2	tagged	tests/test_reset_links.py:17:1	Given a link issued 30 minutes ago, the link is refused as expired.	unassigned
+spec/functional/FR-001-reset-link-expiry.md	FR-001-AC-3	untagged		Given a link that was already used, the link is refused.	unassigned
+spec/functional/FR-001-reset-link-expiry.md	FR-001-AC-4	method-without-symbol		The reset email states the time at which the link expires.	unassigned

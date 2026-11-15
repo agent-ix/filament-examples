@@ -1,0 +1,16 @@
+Adding marketplace…SSH not configured, cloning via HTTPS: https://github.com/agent-ix/agent-plugins.git
+Refreshing marketplace cache (timeout: 120s)…
+Cloning repository (timeout: 120s): https://github.com/agent-ix/agent-plugins.git
+Clone complete, validating marketplace…
+Cleaning up old marketplace cache…
+✔ Successfully added marketplace: agent-ix (declared in project settings)
+Installing plugin "quoin@agent-ix"...✔ Successfully installed plugin: quoin@agent-ix (scope: project)
+SSH not configured, cloning via HTTPS: https://github.com/agent-ix/quoin.git
+Installed plugins:
+
+  ❯ quoin@agent-ix
+    Version: 0.30.0
+    Scope: project
+    Status: ✔ enabled
+    Note: The packages it lists were not installed, because it uses a yarn or pnpm lockfile, which plugin installs do not support
+

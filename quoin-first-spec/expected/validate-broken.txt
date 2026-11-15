@@ -1,0 +1,2 @@
+spec/functional/FR-001-reset-link-expiry.md: line 23: [FR] 'acceptance_criteria_table': table columns ["ID", "Criteria", "Method"] do not match asserted columns ["ID", "Criteria", "Verification"] [assert]
+1 document(s) failed structural validation
