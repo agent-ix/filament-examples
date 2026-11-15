@@ -27,7 +27,7 @@
   },
   "parameters": {
     "amount": {
-      "integer": "3000"
+      "integer": "60000"
     },
     "approvers": {
       "set": [

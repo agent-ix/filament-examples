@@ -57,7 +57,7 @@ The rules in [rules/operations.fsl](rules/operations.fsl) check an operation cal
 
 | Rule | Requirement | Passing | Failing |
 | --- | --- | --- | --- |
-| `RefundApproval` | A refund over 500 dollars needs two approvers | `refund-large-two-approvers` | `refund-large-one-approver` |
+| `RefundApproval` | A refund over $500 needs two approvers | `refund-large-two-approvers` | `refund-large-one-approver` |
 | `PaidWhenCovered` | A charge that covers the total leaves the order Paid | `charge-completes` | `charge-leaves-open` |
 | Frame of `charge` | A charge changes only the amount charged and the status | `charge-frame-ok` | `charge-changes-total` |
 

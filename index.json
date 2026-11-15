@@ -2832,7 +2832,7 @@
       "case": "refund-small",
       "status": "running",
       "rule": "RefundApproval",
-      "statement": "Refunds over $20 need a second approver.",
+      "statement": "Refunds over $500 need a second approver.",
       "rule_file": "examples/shop/rules/operations.fsl",
       "data_files": [
         "examples/shop/data/refund-small.json",
@@ -2850,7 +2850,7 @@
       "case": "refund-large-one-approver",
       "status": "running",
       "rule": "RefundApproval",
-      "statement": "Refunds over $20 need a second approver.",
+      "statement": "Refunds over $500 need a second approver.",
       "rule_file": "examples/shop/rules/operations.fsl",
       "data_files": [
         "examples/shop/data/refund-large-one.json",
@@ -2868,7 +2868,7 @@
       "case": "refund-large-two-approvers",
       "status": "running",
       "rule": "RefundApproval",
-      "statement": "Refunds over $20 need a second approver.",
+      "statement": "Refunds over $500 need a second approver.",
       "rule_file": "examples/shop/rules/operations.fsl",
       "data_files": [
         "examples/shop/data/refund-large-two.json",
