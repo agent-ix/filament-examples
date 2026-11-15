@@ -33,3 +33,9 @@ cargo run -q --example evaluate
 ```bash step=pipeline
 cargo run -q --example pipeline
 ```
+
+## Verdicts of the operators on small traces
+
+```bash step=operators
+cargo run -q --example operators
+```
