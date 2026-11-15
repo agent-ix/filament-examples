@@ -34,7 +34,7 @@ The table lists each system with the number of cases that run today and the numb
 
 [verification/tl-examples](verification/tl-examples/steps.md) is a small Rust project that uses the four temporal logic crates (tl-syntax, tl-parse, tl-rewrite and tl-mltl): it builds a formula, parses text, rewrites a formula, evaluates it on a trace and runs the whole chain. The temporal logic pages of the Verification documentation draw their programs and output from it.
 
-[quire-library](quire-library/steps.md) is a small Rust project that uses the `quire-rs` library and the `@agent-ix/quire-wasm` package: it loads a module, validates a document, reads and edits it, queries a corpus and runs the same checks from Node.js. The Quire documentation builds its library pages from it.
+[quire-library](quire-library/steps.md) is a small Rust project that uses the `quire-rs` library and the `@agent-ix/quire-wasm` package: it loads a module, validates a document, reads and edits it, queries a corpus and runs the same checks from Node.js and Python. The Quire documentation builds its library pages from it.
 
 ## Getting started
 
@@ -158,6 +158,12 @@ The Quire library test builds and runs the programs of [quire-library/steps.md](
 
 ```
 make quire-library-test
+```
+
+The Python page of the same documentation has its own test, which builds the `quire` wheel from the `v0.60.0` tag of quire-rs (a few minutes, and it needs Python, Rust and git as well):
+
+```
+make quire-library-python-test
 ```
 
 ## Contributing

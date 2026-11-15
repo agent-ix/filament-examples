@@ -8,3 +8,5 @@ records: 1
   ]
 }
 changed lines: ["Rotate the keys every quarter."]
+"# Note\n\n## Goal {#blk-purpose}\n\nNew.\n"
+MissingField: required DSL key 'Missing' (locator: section(Missing))

@@ -16,5 +16,12 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let edited = quire_rs::update_section(&doc, "Purpose", "\nRotate the keys every quarter.\n\n")?;
     let changed: Vec<&str> = edited.lines().zip(text.lines()).filter(|(a, b)| a != b).map(|(a, _)| a).collect();
     println!("changed lines: {changed:?}");
+
+    // Replace a whole block, heading line included, by its {#name} attribute.
+    let small = quire_rs::parse_document("# Note\n\n## Purpose {#blk-purpose}\n\nOld.\n");
+    let renamed = quire_rs::update_block(&small, "blk-purpose", "## Goal {#blk-purpose}\n\nNew.\n")?;
+    println!("{renamed:?}");
+    // A heading that is not in the document is an error, and nothing changes.
+    println!("{}", quire_rs::update_section(&doc, "Missing", "x").unwrap_err());
     Ok(())
 }

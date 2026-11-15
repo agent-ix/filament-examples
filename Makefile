@@ -4,7 +4,7 @@ include config.mk
 NODE ?= node
 RUN = $(NODE) tools/run.mjs
 
-.PHONY: check staged record promote readme index models test install-test install-test-host assurance-test assurance-record quire-test quire-record tl-examples-test tl-examples-record quire-library-test quire-library-record
+.PHONY: check staged record promote readme index models test install-test install-test-host assurance-test assurance-record quire-test quire-record tl-examples-test tl-examples-record quire-library-test quire-library-record quire-library-python-test quire-library-python-record
 check:
 	@$(RUN) check
 staged:
@@ -37,7 +37,7 @@ models:
 # Unit tests for the runner (they use a fake driver and need no FSL binary) and the Quoin first-spec check
 # (skipped when quoin and quire are not installed).
 test:
-	$(NODE) --test tools/*.test.mjs quoin-first-spec/*.test.mjs quire-first-document/*.test.mjs verification/tl-examples/*.test.mjs quire-library/*.test.mjs
+	$(NODE) --test tools/*.test.mjs quoin-first-spec/*.test.mjs quire-first-document/*.test.mjs verification/tl-examples/*.test.mjs quire-library/*.test.mjs quire-library/python/*.test.mjs
 
 # Run the documented install steps on a bare ubuntu:22.04 container (needs Docker).
 # INSTALL_DRIVER=release (default) downloads the driver release; source builds it.
@@ -106,3 +106,15 @@ quire-library-test:
 # Record the outputs of the library steps again.
 quire-library-record:
 	$(QUIRE_LIBRARY_ENV) $(QUIRE_LIBRARY_RUN) --record
+
+# Build the quire wheel from the v0.60.0 tag of quire-rs and run the Python program of the Python page
+# (quire-library/python/steps.md). Needs Python 3.9 or later, Rust, git and network access to github.com,
+# crates.io and pypi.org, and takes a few minutes. The build output goes to a temporary folder that is removed
+# when the run ends.
+QUIRE_LIBRARY_PYTHON_RUN = $(NODE) tools/steps.mjs run quire-library/python/steps.md --host --copy quire-library/project --expected quire-library/python/expected
+quire-library-python-test:
+	$(QUIRE_LIBRARY_ENV) $(QUIRE_LIBRARY_PYTHON_RUN)
+
+# Record the output of the Python step again.
+quire-library-python-record:
+	$(QUIRE_LIBRARY_ENV) $(QUIRE_LIBRARY_PYTHON_RUN) --record
