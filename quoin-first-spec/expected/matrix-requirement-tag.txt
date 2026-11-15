@@ -1,0 +1,8 @@
+## spec/functional/FR-001-reset-link-expiry.md
+
+| Criterion | Statement | Binders | Status | Requirement Criticality |
+|---|---|---|---|---|
+| FR-001-AC-1 | Given a link issued 29 minutes ago, the new password is accepted. | tests/test_reset_links.py:11:1 | tagged | unassigned |
+| FR-001-AC-2 | Given a link issued 30 minutes ago, the link is refused as expired. | tests/test_reset_links.py:17:1 | tagged | unassigned |
+| FR-001-AC-3 | Given a link that was already used, the link is refused. | (none) | untagged | unassigned |
+| FR-001-AC-4 | The reset email states the time at which the link expires. | (none) | method-without-symbol | unassigned |

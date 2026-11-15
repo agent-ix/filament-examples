@@ -51,11 +51,17 @@ mv spec/functional/FR-001-reset-link-expiry.md.bak spec/functional/FR-001-reset-
 ## Test matrix
 
 ```bash step=matrix
-quire matrix --scope . --format tsv
+quire matrix --scope .
+```
+
+A test tagged with the requirement id instead of a criterion id binds to no criterion.
+
+```bash step=matrix-requirement-tag stage=tests/test_used_link_by_requirement.py
+quire matrix --scope .
 ```
 
 ```bash step=matrix-after stage=tests/test_used_link.py
-quire matrix --scope . --format tsv
+quire matrix --scope .
 ```
 
 ## Review

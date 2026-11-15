@@ -9,7 +9,7 @@ The requirement says that a password reset link works for 30 minutes and for one
 | Path | Contents |
 | --- | --- |
 | `project/` | The project as the tutorial reaches it before the matrix step: `spec/`, `src/` and `tests/` |
-| `staged/` | The two files the tutorial adds later: a third test and the review |
+| `staged/` | The files the tutorial adds later: a third test, a test tagged with the requirement id (a wrong tag, shown on the concept page) and the review |
 | `steps.md` | The commands the tutorial runs |
 | `expected/` | What each command printed |
 
