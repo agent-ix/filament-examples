@@ -1,0 +1,4 @@
+p0 at instant 1: True
+p0 never true: False
+one instant seen: Pending
+lookahead 2, buffer 3

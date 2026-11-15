@@ -1,0 +1,13 @@
+[package]
+name = "tl-examples"
+version = "0.0.0"
+edition = "2021"
+publish = false
+
+# The four TL crates at their 0.4.0 release commits. tl-rewrite pins the same
+# tl-syntax and tl-mltl commits, so the crates share one copy of each.
+[dependencies]
+tl-syntax = { version = "=0.4.0", git = "https://github.com/agent-ix/tl-syntax.git", rev = "9607722f24ac1978b5e0e0ceeb0cb2a828e10177", default-features = false, features = ["alloc", "serde"] }
+tl-parse = { version = "=0.4.0", git = "https://github.com/agent-ix/tl-parse.git", rev = "09191cfb9aebe0069724a28b0a648c2adfaeeb53" }
+tl-rewrite = { version = "=0.4.0", git = "https://github.com/agent-ix/tl-rewrite.git", rev = "59ff51b57ff3ea4b63e704ca1cfdf1ccd680de46" }
+tl-mltl = { version = "=0.4.0", git = "https://github.com/agent-ix/tl-mltl.git", rev = "011a4324dba88a93eddd21ad9ba25d3c5cdc4bef" }
