@@ -1,5 +1,5 @@
 {
-  "format": "quire.state.snapshot/v1",
+  "format": "filament.state.snapshot/v1",
   "identity": {
     "authority": "example",
     "identity": "ix://example/architecture/data/good-architecture"

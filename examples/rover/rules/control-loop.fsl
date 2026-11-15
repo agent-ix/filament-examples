@@ -1,5 +1,5 @@
 language "ix:native" edition "1-draft";
-profile t = "quire.temporal.complete/v1";
+profile t = "filament.temporal.complete/v1";
 model Rover = "example/rover";
 dimension Time;
 unit ms : Time = rational(1, 1);

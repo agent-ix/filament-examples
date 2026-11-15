@@ -1,5 +1,5 @@
 language "ix:native" edition "1-draft";
-profile inf = "quire.temporal.infinite-trace/v1";
+profile inf = "filament.temporal.infinite-trace/v1";
 model Rover = "example/rover";
 
 // One rule per temporal operator and interval form, over the rover's trace.

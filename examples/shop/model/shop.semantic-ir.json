@@ -27,7 +27,7 @@
         "identity": "none",
         "shape": "record",
         "members": {},
-        "meaning": "quire.meaning.model.object-type/v1"
+        "meaning": "filament.meaning.model.object-type/v1"
       }
     },
     {
@@ -40,7 +40,7 @@
         "identity": "none",
         "shape": "record",
         "members": {},
-        "meaning": "quire.meaning.model.population/v1"
+        "meaning": "filament.meaning.model.population/v1"
       }
     },
     {
@@ -53,7 +53,7 @@
         "identity": "none",
         "shape": "record",
         "members": {},
-        "meaning": "quire.meaning.model.value-type/v1"
+        "meaning": "filament.meaning.model.value-type/v1"
       }
     },
     {
@@ -68,7 +68,7 @@
         "members": {
           "variants": "required"
         },
-        "meaning": "quire.meaning.model.variant-type/v1"
+        "meaning": "filament.meaning.model.variant-type/v1"
       }
     }
   ],
@@ -100,7 +100,7 @@
           "operands": {
             "value": "0"
           },
-          "appliesTo": "ix://quire/native/Integer",
+          "appliesTo": "ix://filament/native/Integer",
           "diagnosticCode": "bound.min",
           "origin": {
             "generated": {
@@ -118,7 +118,7 @@
           "operands": {
             "value": "1000000"
           },
-          "appliesTo": "ix://quire/native/Integer",
+          "appliesTo": "ix://filament/native/Integer",
           "diagnosticCode": "bound.max",
           "origin": {
             "generated": {
@@ -159,7 +159,7 @@
           "operands": {
             "value": "1"
           },
-          "appliesTo": "ix://quire/native/Integer",
+          "appliesTo": "ix://filament/native/Integer",
           "diagnosticCode": "bound.min",
           "origin": {
             "generated": {
@@ -177,7 +177,7 @@
           "operands": {
             "value": "99"
           },
-          "appliesTo": "ix://quire/native/Integer",
+          "appliesTo": "ix://filament/native/Integer",
           "diagnosticCode": "bound.max",
           "origin": {
             "generated": {
@@ -218,7 +218,7 @@
           "operands": {
             "value": "0"
           },
-          "appliesTo": "ix://quire/native/Integer",
+          "appliesTo": "ix://filament/native/Integer",
           "diagnosticCode": "bound.min",
           "origin": {
             "generated": {
@@ -236,7 +236,7 @@
           "operands": {
             "value": "1000000"
           },
-          "appliesTo": "ix://quire/native/Integer",
+          "appliesTo": "ix://filament/native/Integer",
           "diagnosticCode": "bound.max",
           "origin": {
             "generated": {
@@ -702,7 +702,7 @@
             }
           ],
           "returns": {
-            "typeRef": "ix://quire/native/Boolean",
+            "typeRef": "ix://filament/native/Boolean",
             "multiplicity": {
               "lower": 1,
               "upper": 1,
@@ -783,7 +783,7 @@
             }
           ],
           "returns": {
-            "typeRef": "ix://quire/native/Boolean",
+            "typeRef": "ix://filament/native/Boolean",
             "multiplicity": {
               "lower": 1,
               "upper": 1,

@@ -1,5 +1,5 @@
 language "ix:native" edition "1-draft";
-profile v = "quire.value.complete/v1";
+profile v = "filament.value.complete/v1";
 
 type Whole = Decimal[0, 1000; 0, 0; nearest-even];
 type Cents = Decimal[0, 100000; 2, 2; exact];

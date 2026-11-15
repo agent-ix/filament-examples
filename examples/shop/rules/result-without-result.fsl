@@ -1,5 +1,5 @@
 language "ix:native" edition "1-draft";
-profile v = "quire.model.complete/v1";
+profile v = "filament.model.complete/v1";
 model Shop = "example/shop";
 
 // A note returns nothing, so a rule about a note cannot read a result.

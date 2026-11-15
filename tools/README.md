@@ -1,6 +1,6 @@
 # Tools
 
-This folder holds the example runner, the interim model generator and the install-test runner.
+This folder holds the example runner, the interim model generator, the install-test runner and the identifier rewrite.
 
 ## Runner
 
@@ -51,3 +51,7 @@ Regenerate all models with `make models`. The output is identical to the committ
 - library: `models/library.mjs` writes `examples/library/model/library.semantic-ir.json`.
 - payment-spec: `models/payment-spec.mjs` writes `examples/shop/model/payment-spec.semantic-ir.json`.
 - payment-client: `models/payment-client.mjs` writes `examples/shop/model/payment-client.semantic-ir.json`.
+
+## Identifier rewrite
+
+[rename-ids.mjs](rename-ids.mjs) rewrites the identifiers that the language rename changed (`quire.<family>/v1` profile ids, `quire-outcome/1`, `ix://quire/` identities and the like) in every text file of the repository, and skips `.git`, the licence data and this README, which quotes the old ids. It is repeatable: a second run changes nothing, and `--check` reports without writing. After it runs, `make models record readme index` has the driver write the models and recorded results again. [rename-ids.test.mjs](rename-ids.test.mjs) holds its tests.

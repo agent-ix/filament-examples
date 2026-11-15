@@ -1,5 +1,5 @@
 language "ix:native" edition "1-draft";
-profile v = "quire.model.complete/v1";
+profile v = "filament.model.complete/v1";
 model Rover = "example/rover";
 
 // Two-out-of-three voting: the rover believes what at least two sensors say.

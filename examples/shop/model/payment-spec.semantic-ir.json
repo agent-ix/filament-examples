@@ -27,7 +27,7 @@
         "identity": "none",
         "shape": "record",
         "members": {},
-        "meaning": "quire.meaning.model.object-type/v1"
+        "meaning": "filament.meaning.model.object-type/v1"
       }
     },
     {
@@ -40,7 +40,7 @@
         "identity": "none",
         "shape": "record",
         "members": {},
-        "meaning": "quire.meaning.model.population/v1"
+        "meaning": "filament.meaning.model.population/v1"
       }
     }
   ],
@@ -70,7 +70,7 @@
         {
           "identity": "ix://example/payment-spec/Payment/charged",
           "name": "charged",
-          "typeRef": "ix://quire/native/Boolean",
+          "typeRef": "ix://filament/native/Boolean",
           "presence": "required",
           "nullable": false,
           "defaultKind": "none",
@@ -97,7 +97,7 @@
           "name": "charge",
           "params": [],
           "returns": {
-            "typeRef": "ix://quire/native/Boolean",
+            "typeRef": "ix://filament/native/Boolean",
             "multiplicity": {
               "lower": 1,
               "upper": 1,

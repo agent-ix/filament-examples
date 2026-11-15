@@ -1,5 +1,5 @@
 language "ix:native" edition "1-draft";
-profile inf = "quire.temporal.infinite-trace/v1";
+profile inf = "filament.temporal.infinite-trace/v1";
 model Arch = "example/architecture";
 
 type Serving = Int[0, 10];
