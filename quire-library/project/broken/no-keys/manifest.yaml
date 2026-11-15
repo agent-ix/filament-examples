@@ -1,0 +1,5 @@
+manifest_version: 1.0.0
+name: no-keys
+version: 0.1.0
+artifact_types:
+- name: Bare

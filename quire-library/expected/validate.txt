@@ -1,0 +1,3 @@
+types: ["Runbook"]
+valid: true
+Missing: [Runbook] required 'purpose' (section_body(Purpose)) is missing

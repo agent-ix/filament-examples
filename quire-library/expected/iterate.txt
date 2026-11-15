@@ -1,0 +1,5 @@
+records: 2
+{"content":"Replace the signing keys without refusing a job. Run RB-001 first when the queue is stopped.","heading":"Purpose","name":"Purpose"}
+{"content":"- Create the new key pair.\n- Publish the new public key.\n- Switch the signer to the new private key.","heading":"Steps","name":"Steps"}
+edges: [ExtractedEdge { record_index: 0, edge_type: "runs_after", target: "RB-001" }, ExtractedEdge { record_index: 1, edge_type: "runs_after", target: "RB-001" }]
+diagnostics: []

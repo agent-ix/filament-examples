@@ -1,0 +1,5 @@
+project/target/
+project/node_modules/
+project/package.json
+project/package-lock.json
+python/build/

@@ -1,0 +1,4 @@
+RB-002: Rotate the signing keys [ 'Purpose', 'Steps' ]
+{"purpose":"Replace the signing keys without refusing a job. Run RB-001 first when the queue is stopped.","steps":["Create the new key pair.","Publish the new public key.","Switch the signer to the new private key."]} 0
+record is valid
+rejected: Error: validation failed: SchemaViolation { archetype: "Runbook", field_path: "id", expected: "pattern ^RB-[0-9]+$", observed: "\"bad\"" }

@@ -1,0 +1,9 @@
+[package]
+name = "quire-library"
+version = "0.0.0"
+edition = "2021"
+publish = false
+
+[dependencies]
+quire-rs = { git = "https://github.com/agent-ix/quire-rs", tag = "v0.60.0" }
+serde_json = "1"

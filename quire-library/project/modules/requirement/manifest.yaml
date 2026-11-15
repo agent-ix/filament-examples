@@ -1,0 +1,28 @@
+manifest_version: 1.0.0
+name: requirement
+version: 0.1.0
+description: One requirement type that the requirement grammar checks.
+grammars:
+- name: iso-spec-core
+  version: 0.1.0
+  description: Requirement statement grammar.
+  doc_kinds: [spec]
+artifact_types:
+- name: FR
+  grammar_ref: iso-spec-core
+  frontmatter_schema_ref: schemas/fr.schema.json
+  body_extraction:
+    yield_pattern:
+      match:
+        description:
+          from: section_body
+          after_heading: Description
+          required: true
+        criteria:
+          from: table_row
+          under_section: Acceptance Criteria
+          required: true
+          multiple: true
+          assert:
+            columns: [ID, Criteria, Verification]
+            min_rows: 1

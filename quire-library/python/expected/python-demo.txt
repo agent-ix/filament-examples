@@ -1,0 +1,9 @@
+valid: True [] []
+errors: [('missing', "[Runbook] required 'purpose' (section_body(Purpose)) is missing")]
+purpose: Replace the signing keys without refusing a job. Run RB-001 first when the queue is stopped.
+edges: [{'target': 'RB-001', 'edge_type': 'runs_after'}]
+sections: ['Purpose', 'Steps']
+rejected: SchemaViolation [Runbook]: field id — expected pattern ^RB-[0-9]+$; observed "bad"
+Runbook documents: ['RB-001', 'RB-002', 'RB-003']
+referencing RB-001: [('RB-002', 'runs_after')]
+dangling: [('RB-003', 'RB-009', 'runs_after')]
