@@ -7,7 +7,7 @@ import { tmpdir } from "node:os";
 import { dirname, join, resolve } from "node:path";
 import { test } from "node:test";
 import { fileURLToPath } from "node:url";
-import { closure, parseArgs, renderTexts, renderThirdParty } from "./licences.mjs";
+import { closure, parseArgs, releaseVersion, renderTexts, renderThirdParty } from "./licences.mjs";
 
 const REPO = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const LICENSES = join(REPO, "image", "licenses");
@@ -78,4 +78,9 @@ test("the Dockerfile keeps the licence files and carries the labels", () => {
 
 test("parseArgs reads options and words", () => {
   assert.deepEqual(parseArgs(["collect", "--driver", "d"]), { _: ["collect"], driver: "d" });
+});
+
+test("the shipped version is the release tag, not the root crate version", () => {
+  assert.equal(releaseVersion("v0.32.0"), "0.32.0");
+  assert.equal(releaseVersion("0.1.2"), "0.1.2");
 });
