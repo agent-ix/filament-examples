@@ -1,8 +1,13 @@
-## spec/functional/FR-001-reset-link-expiry.md
+## spec/functional/FR-001-password-reset-link-expiry.md
 
 | Criterion | Statement | Binders | Status | Requirement Criticality |
 |---|---|---|---|---|
-| FR-001-AC-1 | Given a link issued 29 minutes ago, the new password is accepted. | tests/test_reset_links.py:11:1 | tagged | unassigned |
-| FR-001-AC-2 | Given a link issued 30 minutes ago, the link is refused as expired. | tests/test_reset_links.py:17:1 | tagged | unassigned |
-| FR-001-AC-3 | Given a link that was already used, the link is refused. | tests/test_used_link.py:9:1 | tagged | unassigned |
-| FR-001-AC-4 | The reset email states the time at which the link expires. | (none) | method-without-symbol | unassigned |
+| FR-001-AC-1 | Given a link presented 29 minutes 59 seconds after issue and unused, the pass... | tests/test_reset_links.py:11:1 | tagged | unassigned |
+| FR-001-AC-2 | Given a link presented 30 minutes 0 seconds or more after issue, the request ... | tests/test_reset_links.py:17:1 | tagged | unassigned |
+| FR-001-AC-3 | Given a link that was already used successfully, a second presentation is rej... | tests/test_used_link.py:9:1 | tagged | unassigned |
+| FR-001-AC-4 | Given two concurrent presentations of the same unused link, exactly one succe... | (none) | untagged | unassigned |
+| FR-001-AC-5 | Given a link expired before first use, the link remains rejected and a later ... | (none) | untagged | unassigned |
+| FR-001-AC-6 | Given a newer link issued for the same account, presenting the older unused l... | (none) | untagged | unassigned |
+| FR-001-AC-7 | Given an unknown, malformed, or expired token, the rejection response is iden... | (none) | untagged | unassigned |
+| FR-001-CON-1 | The reset service SHALL compute expiry from the server clock, never from a cl... | (none) | untagged | unassigned |
+| FR-001-CON-2 | Rejection responses SHALL NOT reveal whether the token belongs to an existing... | (none) | untagged | unassigned |

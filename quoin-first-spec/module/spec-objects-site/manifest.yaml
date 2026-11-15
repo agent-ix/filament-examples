@@ -1,0 +1,32 @@
+manifest_version: 1.0.0
+name: spec-objects-site
+version: 0.1.0
+description: Site-specific object types for Acme specs.
+archetypes: []
+grammars: []
+artifact_types: []
+object_types:
+  - name: runbook_step
+    allowed_links:
+      references: ["*"]
+    data_schema:
+      schema: schemas/RunbookStep.json
+    body_extraction:
+      yield_pattern:
+        match:
+          id:
+            from: frontmatter_field
+            path: [id]
+            required: true
+          title:
+            from: frontmatter_field
+            path: [title]
+            required: true
+          type:
+            from: frontmatter_field
+            path: [type]
+            required: true
+          action:
+            from: section_body
+            after_heading: Action
+            required: true

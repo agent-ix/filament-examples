@@ -6,7 +6,8 @@ A fence is `<shell> step=<id>` followed by optional words:
 
 - `stage=<path>,<path>` copies those files from `staged/` into the project before the step runs.
 - `expect-exit=<n>` is the exit status the step must give (the default is 0).
-- `manual` marks a step the test does not run, such as an install. Its recorded output was captured once, by hand, in a scratch home directory. The Copilot step was not run at all, and its recorded output is empty.
+- `dir=module` runs the step in a copy of `module/` instead of `project/`.
+- `manual` marks a step the test does not run, such as an install. Its recorded output was captured once, by hand, in a scratch home directory. The Copilot step was not run, and its recorded output is empty.
 
 The recorded output is what the command prints on standard output. When the command fails, it also holds the lines on standard error that name a document or count the failed documents. Quire prints notices about its installed modules on standard error, and they change from release to release, so they are left out. The project folder is shortened to nothing in paths.
 
@@ -29,14 +30,18 @@ quoin catalog validate
 ```
 
 ```bash step=add-plugin manual
-claude plugin marketplace add agent-ix/agent-plugins --scope project
-claude plugin install quoin@agent-ix --scope project
+claude plugin marketplace add agent-ix/agent-plugins
+claude plugin install quoin@agent-ix
 claude plugin list
 ```
 
 ```bash step=add-plugin-codex manual
 codex plugin marketplace add agent-ix/agent-plugins
 codex plugin add quoin@agent-ix
+```
+
+```bash step=gh-login manual
+gh auth login
 ```
 
 ```bash step=add-skills-opencode manual
@@ -56,6 +61,19 @@ copilot plugin marketplace add agent-ix/quoin
 copilot plugin install quoin@quoin
 ```
 
+## Organization
+
+```bash step=set-org manual
+quoin config set org acme
+```
+
+## Switch to the example project
+
+```bash step=clone-examples manual
+git clone https://github.com/agent-ix/filament-examples
+cd filament-examples/quoin-first-spec/project
+```
+
 ## Validate
 
 ```bash step=validate
@@ -65,7 +83,7 @@ quire validate --scope . "spec/**/*.md" --summary
 Change the header of the criteria table, then validate again.
 
 ```bash step=break-fr
-sed -i.bak 's/| Verification |/| Method |/' spec/functional/FR-001-reset-link-expiry.md
+sed -i.bak 's/| Verification |/| Method |/' spec/functional/FR-001-password-reset-link-expiry.md
 ```
 
 ```bash step=validate-broken expect-exit=3
@@ -73,7 +91,7 @@ quire validate --scope . "spec/**/*.md"
 ```
 
 ```bash step=restore-fr
-mv spec/functional/FR-001-reset-link-expiry.md.bak spec/functional/FR-001-reset-link-expiry.md
+mv spec/functional/FR-001-password-reset-link-expiry.md.bak spec/functional/FR-001-password-reset-link-expiry.md
 ```
 
 ## Test matrix
@@ -94,6 +112,16 @@ quire matrix --scope .
 
 ## Review
 
-```bash step=validate-review stage=reviews/2026-11-14-reset-link-expiry-base.md
+```bash step=validate-review stage=reviews/2026-11-14-reset-link-base.md
 quire validate --scope . "reviews/*.md" --summary
+```
+
+## Add a module
+
+```bash step=module-validate dir=module
+QUOIN_MODULE_PATHS=. quoin catalog validate
+```
+
+```bash step=module-show dir=module
+QUOIN_MODULE_PATHS=. quoin catalog show runbook_step
 ```

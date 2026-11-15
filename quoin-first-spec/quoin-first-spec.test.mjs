@@ -1,5 +1,6 @@
-// Runs the steps of steps.md in a copy of project/ and compares what each prints
-// with expected/<id>.txt. Skipped when quoin or quire is not installed.
+// Runs the steps of steps.md in a copy of project/ (or of module/) and compares what each
+// prints with expected/<id>.txt. Skipped when quoin or quire is missing, or older than the
+// releases the recordings were made with.
 //   node --test quoin-first-spec/quoin-first-spec.test.mjs
 //   RECORD=1 node --test quoin-first-spec/quoin-first-spec.test.mjs    (rewrites expected/)
 import assert from "node:assert/strict";
@@ -12,8 +13,32 @@ import { fileURLToPath } from "node:url";
 
 const HERE = resolve(dirname(fileURLToPath(import.meta.url)));
 const RECORD = process.env.RECORD === "1";
-const have = (cmd) => spawnSync(cmd, ["--version"], { encoding: "utf8" }).status === 0;
-const missing = ["quoin", "quire"].filter((c) => !have(c));
+
+// The releases the outputs in expected/ were recorded with.
+export const RECORDED_WITH = { quoin: "0.30.1", quire: "0.45.0" };
+
+const versionOf = (cmd) => {
+  const r = spawnSync(cmd, ["--version"], { encoding: "utf8" });
+  if (r.status !== 0) return null;
+  return /(\d+)\.(\d+)\.(\d+)/.exec(r.stdout)?.slice(1).map(Number) ?? null;
+};
+const atLeast = (have, want) => {
+  const w = want.split(".").map(Number);
+  for (let i = 0; i < 3; i++) if (have[i] !== w[i]) return have[i] > w[i];
+  return true;
+};
+
+// Why the steps cannot be compared, or "" when they can.
+export function skipReason(versions = { quoin: versionOf("quoin"), quire: versionOf("quire") }) {
+  const missing = Object.keys(versions).filter((c) => !versions[c]);
+  if (missing.length) return `${missing.join(" and ")} not installed`;
+  const old = Object.keys(versions).filter((c) => !atLeast(versions[c], RECORDED_WITH[c]));
+  if (old.length)
+    return `${old.map((c) => `${c} ${versions[c].join(".")}`).join(" and ")} older than the recorded ${old
+      .map((c) => `${c} ${RECORDED_WITH[c]}`)
+      .join(" and ")}`;
+  return "";
+}
 
 export function parseSteps(markdown) {
   const steps = [];
@@ -32,6 +57,7 @@ export function parseSteps(markdown) {
       manual: words.includes("manual"),
       exit: Number(option("expect-exit") ?? 0),
       stage: (option("stage") ?? "").split(",").filter(Boolean),
+      dir: option("dir") ?? "project",
     });
   }
   return steps;
@@ -51,6 +77,7 @@ export function recorded(stdout, stderr, dirs, status) {
 }
 
 const steps = parseSteps(readFileSync(join(HERE, "steps.md"), "utf8"));
+const skip = skipReason();
 
 test("every step has a recorded output", () => {
   for (const s of steps) assert.ok(existsSync(join(HERE, "expected", `${s.id}.txt`)), `expected/${s.id}.txt is missing`);
@@ -60,12 +87,22 @@ test("the staged files exist", () => {
   for (const s of steps) for (const f of s.stage) assert.ok(existsSync(join(HERE, "staged", f)), `staged/${f} is missing`);
 });
 
-test("the steps print the recorded output", { skip: missing.length ? `${missing.join(" and ")} not installed` : false }, () => {
-  const dir = mkdtempSync(join(tmpdir(), "quoin-first-spec-"));
+test("the version check names the versions", () => {
+  assert.equal(skipReason({ quoin: [0, 30, 1], quire: [0, 45, 0] }), "");
+  assert.equal(skipReason({ quoin: [0, 29, 4], quire: [0, 38, 3] }), "quoin 0.29.4 and quire 0.38.3 older than the recorded quoin 0.30.1 and quire 0.45.0");
+  assert.equal(skipReason({ quoin: null, quire: [0, 45, 0] }), "quoin not installed");
+});
+
+test(`the steps print the recorded output (recorded with quoin ${RECORDED_WITH.quoin}, quire ${RECORDED_WITH.quire})`, { skip: skip || false }, () => {
+  const roots = {};
   try {
-    cpSync(join(HERE, "project"), dir, { recursive: true });
-    const dirs = [dir, realpathSync(dir)].sort((a, b) => b.length - a.length);
+    for (const name of ["project", "module"]) {
+      roots[name] = mkdtempSync(join(tmpdir(), `quoin-first-spec-${name}-`));
+      cpSync(join(HERE, name), roots[name], { recursive: true });
+    }
     for (const s of steps.filter((s) => !s.manual)) {
+      const dir = roots[s.dir];
+      const dirs = [dir, realpathSync(dir)].sort((a, b) => b.length - a.length);
       for (const f of s.stage) {
         mkdirSync(dirname(join(dir, f)), { recursive: true });
         cpSync(join(HERE, "staged", f), join(dir, f));
@@ -78,6 +115,6 @@ test("the steps print the recorded output", { skip: missing.length ? `${missing.
       else assert.equal(got === "\n" ? "" : got, readFileSync(file, "utf8"), `${s.id} printed something else`);
     }
   } finally {
-    rmSync(dir, { recursive: true, force: true });
+    for (const dir of Object.values(roots)) rmSync(dir, { recursive: true, force: true });
   }
 });
