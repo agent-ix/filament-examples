@@ -1,0 +1,8 @@
+first : {"a":1,"b":2.5}
+second: {"a":1,"b":2.5}
+first  digest: 85f690f66555cf39f8026463b2ed3d25a11fb4f1a9fea65051208e9ec9050629
+second digest: 85f690f66555cf39f8026463b2ed3d25a11fb4f1a9fea65051208e9ec9050629
+typed : {"a":"ö","b":1e+21}
+writer: {"a":"ö","b":[1,null]} (23 bytes)
+malformed: Some(Malformed { offset: 6, kind: UnexpectedCharacter })
+2^53 + 1: Some(IntegerMagnitudeAboveMaximum(9007199254740993))

@@ -1,0 +1,12 @@
+frontmatter: {"title":"Checkout","tags":["a","b"]}
+preamble: "Intro text."
+top-level sections: Scope, Flow
+section 'details': 1.1 Details
+level 2: Scope, Flow
+table: {"headers":["Name","Kind"],"rows":[["a","x"],["b","y"]]}
+bullets: In = orders and payments; Out = refunds
+diagram: mermaid Flow sequence
+search: [[{"line":3,"text":"- **In** — orders and payments"}]]
+updated: ["","## Scope","- replaced","### 1.1 Details","","| Name | Kind |"]
+bad frontmatter: {"frontmatter":null,"body":"---\nbad line\n---\nbody"}
+missing section: Section "Missing" not found in document
