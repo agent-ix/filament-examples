@@ -34,9 +34,10 @@ models:
 	$(NODE) tools/model.mjs tools/models/payment-spec.mjs examples/shop/model/payment-spec.semantic-ir.json
 	$(NODE) tools/model.mjs tools/models/payment-client.mjs examples/shop/model/payment-client.semantic-ir.json
 
-# Unit tests for the runner. They use a fake driver and need no FSL binary.
+# Unit tests for the runner (they use a fake driver and need no FSL binary) and the Quoin first-spec check
+# (skipped when quoin and quire are not installed).
 test:
-	$(NODE) --test tools/*.test.mjs
+	$(NODE) --test tools/*.test.mjs quoin-first-spec/*.test.mjs
 
 # Run the documented install steps on a bare ubuntu:22.04 container (needs Docker).
 # INSTALL_DRIVER=release (default) downloads the driver release; source builds it.

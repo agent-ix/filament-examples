@@ -24,6 +24,10 @@ The table lists each system with the number of cases that run today and the numb
 | [lock](examples/lock) | Safety | 8 | 2 |
 | [library](examples/library) | Shop | 4 | 0 |
 
+## Beyond FSL
+
+[quoin-first-spec](quoin-first-spec) is a small Python project with a user story, a functional requirement and tests, written with Quoin and validated with Quire. The Quoin documentation builds its "Get started" tutorial from it.
+
 ## Getting started
 
 You can run the examples in the toolchain image or with a driver you build yourself.
