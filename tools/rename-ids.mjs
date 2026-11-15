@@ -4,7 +4,7 @@
 // written and the exit status is 1 when any file would change. Recorded results, models and the licence data
 // are not rewritten by hand; run `make models record readme index` afterwards so that the driver writes them.
 import { readdirSync, readFileSync, statSync, writeFileSync } from "node:fs";
-import { join, resolve } from "node:path";
+import { join, relative, resolve, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 
 // Each rule maps an old identifier family to its new spelling.
@@ -21,6 +21,8 @@ export const RULES = [
 const SKIP_DIRS = new Set([".git", "node_modules", "licenses"]);
 // The rewrite and its test name the old identifiers on purpose.
 const SELF = /^rename-ids(\.test)?\.mjs$/;
+// Files, relative to the root, that quote the old identifiers on purpose: the rewrite's own documentation.
+const SKIP_FILES = new Set(["tools/README.md"]);
 
 export function rewrite(text) {
   let out = text;
@@ -34,12 +36,13 @@ export function rewrite(text) {
   return { text: out, counts };
 }
 
-function* walk(dir) {
+function* walk(dir, root = dir) {
   for (const name of readdirSync(dir)) {
     if (SKIP_DIRS.has(name) || SELF.test(name)) continue;
     const p = join(dir, name);
+    if (SKIP_FILES.has(relative(root, p).split(sep).join("/"))) continue;
     const st = statSync(p);
-    if (st.isDirectory()) yield* walk(p);
+    if (st.isDirectory()) yield* walk(p, root);
     else if (st.size < 32 * 1024 * 1024) yield p;
   }
 }

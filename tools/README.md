@@ -54,4 +54,4 @@ Regenerate all models with `make models`. The output is identical to the committ
 
 ## Identifier rewrite
 
-[rename-ids.mjs](rename-ids.mjs) rewrites the identifiers that the language rename changed (`quire.<family>/v1` profile ids, `quire-outcome/1`, `ix://quire/` identities and the like) in every text file of the repository, and skips `.git` and the licence data. It is repeatable: a second run changes nothing, and `--check` reports without writing. After it runs, `make models record readme index` has the driver write the models and recorded results again. [rename-ids.test.mjs](rename-ids.test.mjs) holds its tests.
+[rename-ids.mjs](rename-ids.mjs) rewrites the identifiers that the language rename changed (`quire.<family>/v1` profile ids, `quire-outcome/1`, `ix://quire/` identities and the like) in every text file of the repository, and skips `.git`, the licence data and this README, which quotes the old ids. It is repeatable: a second run changes nothing, and `--check` reports without writing. After it runs, `make models record readme index` has the driver write the models and recorded results again. [rename-ids.test.mjs](rename-ids.test.mjs) holds its tests.
