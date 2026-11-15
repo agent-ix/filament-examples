@@ -28,6 +28,8 @@ The table lists each system with the number of cases that run today and the numb
 
 [quoin-first-spec](quoin-first-spec) is a small Python project with a user story, a functional requirement and tests, written with Quoin and validated with Quire. The Quoin documentation builds its "Get started" tutorial from it.
 
+[quire-first-document](quire-first-document/README.md) is a small Node.js project with a user story, a requirement, code and tests, checked with `quire`. The Quire documentation builds its "Get started" tutorial and how-tos from it.
+
 [assurance](assurance/README.md) is a small shop service whose refund rule is written as requirements, tested with `node --test`, and backed by test runs, a change record and a measurement recorded with Quoin. The Assurance documentation builds its guides from it.
 
 [verification/tl-examples](verification/tl-examples/steps.md) is a small Rust project that uses the four temporal logic crates (tl-syntax, tl-parse, tl-rewrite and tl-mltl): it builds a formula, parses text, rewrites a formula, evaluates it on a trace and runs the whole chain. The temporal logic pages of the Verification documentation draw their programs and output from it.

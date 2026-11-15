@@ -1,0 +1,4 @@
+runbooks/RB-002-draft.md: [Runbook] frontmatter: "queue-restart" does not match "^RB-[0-9]+$" (at id) [frontmatter]
+runbooks/RB-002-draft.md: line 8: [Runbook] required 'purpose' (section_body(Purpose)) contains only placeholder content [placeholder]
+runbooks/RB-002-draft.md: [Runbook] required 'steps' (list_item(under Steps)) is missing [missing]
+1 document(s) failed structural validation

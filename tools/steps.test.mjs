@@ -3,13 +3,13 @@
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
 import { createHash } from "node:crypto";
-import { mkdtempSync, writeFileSync } from "node:fs";
+import { existsSync, mkdtempSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { readFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { test } from "node:test";
 import { fileURLToPath } from "node:url";
-import { buildScript, checkRecords, extractSteps, parseArgs, readMarkers, selectSteps, shellCommand } from "./steps.mjs";
+import { buildScript, checkRecords, extractSteps, parseArgs, readMarkers, selectSteps, shellCommand, withoutFolder, removeRunFolder } from "./steps.mjs";
 
 const REPO = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 
@@ -80,11 +80,36 @@ test("a step marked expect-exit runs with errexit off and reports its status", (
 test("a step marked stderr=hide keeps standard output and drops standard error", () => {
   const steps = extractSteps("```bash step=a stderr=hide\necho kept\necho dropped >&2\n```\n```bash step=b\necho shown >&2\n```\n");
   assert.equal(steps[0].hideStderr, true);
-  assert.throws(() => extractSteps("```bash step=a stderr=keep\n```\n"), /stderr takes only the value hide/);
+  assert.throws(() => extractSteps("```bash step=a stderr=keep\n```\n"), /stderr takes only the value hide or findings/);
   const run = spawnSync("bash", ["-s"], { input: buildScript(steps), encoding: "utf8" });
   assert.equal(run.status, 0);
   const { records } = readMarkers(run.stdout.split("\n"));
   assert.deepEqual(records.map((r) => [r.id, r.output]), [["a", "kept\n"], ["b", "shown\n"]]);
+});
+
+test("a step marked stderr=findings keeps the findings of standard error and the exit status", () => {
+  const md = "```bash step=a stderr=findings expect-exit=3\necho out\necho 'notice: modules' >&2\necho '/x/spec/a.md: line 2: broken' >&2\necho '1 document(s) failed structural validation' >&2\n(exit 3)\n```\n```bash step=b stderr=findings\necho fine\necho 'notice only' >&2\n```\n```bash step=c\necho after\n```\n";
+  const steps = extractSteps(md);
+  assert.equal(steps[0].findingsStderr, true);
+  const run = spawnSync("bash", ["-s"], { input: buildScript(steps), encoding: "utf8" });
+  assert.equal(run.status, 0, run.stderr);
+  const { records } = readMarkers(run.stdout.split("\n"));
+  assert.deepEqual(records.map((r) => [r.id, r.exit, r.output]), [["a", 3, "out\n/x/spec/a.md: line 2: broken\n1 document(s) failed structural validation\n"], ["b", null, "fine\n"], ["c", null, "after\n"]]);
+  const wrong = spawnSync("bash", ["-s"], { input: buildScript(extractSteps("```bash step=a stderr=findings\n(exit 4)\n```\n")), encoding: "utf8" });
+  assert.equal(wrong.status, 4);
+});
+
+test("removeRunFolder deletes the folder of a run, and --keep is a known option", () => {
+  const dir = mkdtempSync(join(tmpdir(), "steps-"));
+  writeFileSync(join(dir, "a.txt"), "x");
+  removeRunFolder(dir);
+  assert.equal(existsSync(dir), false);
+  assert.equal(parseArgs(["run", "s.md", "--host", "--keep"]).keep, true);
+  assert.equal(parseArgs(["run", "s.md", "--host"]).keep, false);
+});
+
+test("withoutFolder shows a path under the working folder relative to it", () => {
+  assert.equal(withoutFolder("/tmp/steps-1/spec/a.md: line 2", "/tmp/steps-1"), "spec/a.md: line 2");
 });
 
 test("a step marked output=ignore is left out of the comparison", () => {
@@ -117,7 +142,7 @@ test("readMarkers turns marker lines into step durations", () => {
 
 test("parseArgs reads skip and image", () => {
   assert.deepEqual(parseArgs(["run", "f.md", "--image", "ubuntu:22.04", "--skip", "a,b"]), {
-    command: "run", file: "f.md", skip: ["a", "b"], image: "ubuntu:22.04", shell: "bash", host: false, copy: null, expected: null, record: false,
+    command: "run", file: "f.md", skip: ["a", "b"], image: "ubuntu:22.04", shell: "bash", host: false, copy: null, expected: null, record: false, keep: false,
   });
   assert.deepEqual(parseArgs(["run", "f.md", "--host", "--shell", "zsh"]).shell, "zsh");
   assert.throws(() => parseArgs(["run", "f.md", "--bogus"]), /unknown argument/);

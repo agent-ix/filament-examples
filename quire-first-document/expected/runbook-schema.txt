@@ -1,0 +1,51 @@
+{
+  "archetype": "Runbook",
+  "diagnostics": [],
+  "frontmatter_schema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "properties": {
+      "id": {
+        "pattern": "^RB-[0-9]+$",
+        "type": "string"
+      },
+      "title": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "type": {
+        "const": "Runbook"
+      }
+    },
+    "required": [
+      "id",
+      "title",
+      "type"
+    ],
+    "type": "object"
+  },
+  "relationships": [
+    {
+      "category": "dependency",
+      "description": "Runs after the target.",
+      "targets": [
+        "*"
+      ],
+      "verb": "runs_after"
+    }
+  ],
+  "sections": [
+    {
+      "heading": "Purpose",
+      "key": "purpose",
+      "kind": "section_body",
+      "required": true
+    },
+    {
+      "heading": "Steps",
+      "key": "steps",
+      "kind": "list_item",
+      "min_items": 1,
+      "required": true
+    }
+  ]
+}

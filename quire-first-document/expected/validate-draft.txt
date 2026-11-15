@@ -1,0 +1,4 @@
+spec/functional/FR-002-withdraw-invitation.md: line 12: [FR] required 'description' (section_body(Description)) contains only placeholder content [placeholder]
+spec/functional/FR-002-withdraw-invitation.md: [FR] required 'acceptance_criteria' (section_body(Acceptance Criteria)) is missing [missing]
+spec/functional/FR-002-withdraw-invitation.md: [FR] required 'acceptance_criteria_table' (table_row(under Acceptance Criteria)) is missing [missing]
+1 document(s) failed structural validation

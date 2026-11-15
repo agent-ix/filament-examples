@@ -1,0 +1,7 @@
+resolved: true
+Claims (2)
+  verifies    FR-001-AC-1 tests/invitation.test.ts:8 an invitation opened after one day is accepted [ts-trace-helper] (line_heuristic)
+  verifies    FR-001-AC-2 tests/invitation.test.ts:13 an invitation opened after seven days is refused [ts-trace-helper] (line_heuristic)
+
+Citations (0) — NOT verification evidence
+  (none)

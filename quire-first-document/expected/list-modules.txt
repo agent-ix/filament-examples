@@ -1,0 +1,10 @@
+engineering-assurance
+spec-artifacts-app
+spec-artifacts-iso
+spec-artifacts-process
+spec-objects-architecture
+spec-objects-business
+spec-objects-enterprise
+spec-objects-operational
+spec-objects-safety
+spec-objects-security
