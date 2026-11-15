@@ -4,7 +4,7 @@ include config.mk
 NODE ?= node
 RUN = $(NODE) tools/run.mjs
 
-.PHONY: check staged record promote readme index models test install-test install-test-host assurance-test assurance-record quire-test quire-record tl-examples-test tl-examples-record
+.PHONY: check staged record promote readme index models test install-test install-test-host assurance-test assurance-record quire-test quire-record tl-examples-test tl-examples-record quire-library-test quire-library-record
 check:
 	@$(RUN) check
 staged:
@@ -37,7 +37,7 @@ models:
 # Unit tests for the runner (they use a fake driver and need no FSL binary) and the Quoin first-spec check
 # (skipped when quoin and quire are not installed).
 test:
-	$(NODE) --test tools/*.test.mjs quoin-first-spec/*.test.mjs quire-first-document/*.test.mjs verification/tl-examples/*.test.mjs
+	$(NODE) --test tools/*.test.mjs quoin-first-spec/*.test.mjs quire-first-document/*.test.mjs verification/tl-examples/*.test.mjs quire-library/*.test.mjs
 
 # Run the documented install steps on a bare ubuntu:22.04 container (needs Docker).
 # INSTALL_DRIVER=release (default) downloads the driver release; source builds it.
@@ -93,3 +93,16 @@ tl-examples-test:
 # Record the outputs of the temporal logic steps again.
 tl-examples-record:
 	$(TL_EXAMPLES_RUN) --record
+
+# Run the Rust and WebAssembly programs of the Quire library pages (quire-library/steps.md) in a fresh copy of
+# quire-library/project and compare each step's output with quire-library/expected. Needs cargo, Node.js and npm,
+# and network access to github.com, crates.io and npmjs.org. The build output goes to a temporary folder that is
+# removed when the run ends. It prints a message and succeeds when cargo is not installed.
+QUIRE_LIBRARY_ENV = quire_library_target="$$(mktemp -d)" && trap 'rm -rf "$$quire_library_target"' EXIT && export CARGO_TARGET_DIR="$$quire_library_target" &&
+QUIRE_LIBRARY_RUN = $(NODE) tools/steps.mjs run quire-library/steps.md --host --copy quire-library/project --expected quire-library/expected
+quire-library-test:
+	@if command -v cargo >/dev/null 2>&1; then $(QUIRE_LIBRARY_ENV) $(QUIRE_LIBRARY_RUN); else echo "quire-library-test skipped: cargo is not installed"; fi
+
+# Record the outputs of the library steps again.
+quire-library-record:
+	$(QUIRE_LIBRARY_ENV) $(QUIRE_LIBRARY_RUN) --record

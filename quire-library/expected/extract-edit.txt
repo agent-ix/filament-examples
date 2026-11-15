@@ -1,0 +1,10 @@
+records: 1
+{
+  "purpose": "Replace the signing keys without refusing a job. Run RB-001 first when the queue is stopped.",
+  "steps": [
+    "Create the new key pair.",
+    "Publish the new public key.",
+    "Switch the signer to the new private key."
+  ]
+}
+changed lines: ["Rotate the keys every quarter."]

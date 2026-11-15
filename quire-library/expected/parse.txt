@@ -1,0 +1,8 @@
+type: Some("Runbook")
+section "RB-002: Rotate the signing keys", level 1, lines 0..1
+  child "Purpose"
+  child "Steps"
+steps content: "\n- Create the new key pair.\n- Publish the new public key.\n- Switch the signer to the new private key.\n"
+steps: 3
+"Purpose": 1 match(es), first at line 4
+"Steps": 3 match(es), first at line 8
