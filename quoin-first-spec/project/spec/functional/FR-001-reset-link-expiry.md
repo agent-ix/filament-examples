@@ -5,7 +5,7 @@ type: FR
 org: acme
 relationships:
   - target: "ix://acme/widgets/US-001"
-    type: "implements"
+    type: "satisfies"
 ---
 
 # FR-001: Expire password reset links
