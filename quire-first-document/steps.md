@@ -57,6 +57,12 @@ cp fixtures/FR-002-draft.md spec/functional/FR-002-withdraw-invitation.md
 quire validate --scope . 'spec/**/*.md'
 ```
 
+Diagnostics can be printed as one JSON object per line.
+
+```bash step=validate-draft-json expect-exit=3 stderr=findings
+quire --diagnostics-format json validate --scope . 'spec/**/*.md'
+```
+
 ```bash step=fix-draft
 cp fixtures/FR-002.md spec/functional/FR-002-withdraw-invitation.md
 ```
