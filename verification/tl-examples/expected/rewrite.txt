@@ -1,0 +1,7 @@
+applied bool.and.true-left
+applied bool.not.double
+normal form: 1 node
+replay verified: true
+equivalent: true
+equivalent: false
+counterexample trace: Some([[]])

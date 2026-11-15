@@ -1,0 +1,3 @@
+p7 -> request_ready
+formula proposition 7 has no signal binding
+OperandNotPreceding { node: NodeId(0), operand: NodeId(1) }

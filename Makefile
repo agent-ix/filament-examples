@@ -4,7 +4,7 @@ include config.mk
 NODE ?= node
 RUN = $(NODE) tools/run.mjs
 
-.PHONY: check staged record promote readme index models test install-test install-test-host assurance-test assurance-record quire-test quire-record
+.PHONY: check staged record promote readme index models test install-test install-test-host assurance-test assurance-record quire-test quire-record tl-examples-test tl-examples-record
 check:
 	@$(RUN) check
 staged:
@@ -37,7 +37,7 @@ models:
 # Unit tests for the runner (they use a fake driver and need no FSL binary) and the Quoin first-spec check
 # (skipped when quoin and quire are not installed).
 test:
-	$(NODE) --test tools/*.test.mjs quoin-first-spec/*.test.mjs quire-first-document/*.test.mjs
+	$(NODE) --test tools/*.test.mjs quoin-first-spec/*.test.mjs quire-first-document/*.test.mjs verification/tl-examples/*.test.mjs
 
 # Run the documented install steps on a bare ubuntu:22.04 container (needs Docker).
 # INSTALL_DRIVER=release (default) downloads the driver release; source builds it.
@@ -81,3 +81,15 @@ quire-test:
 # Record the outputs of the Quire steps again.
 quire-record:
 	$(QUIRE_ENV) $(QUIRE_RUN) --record
+
+# Run the Rust programs of the temporal logic pages (verification/tl-examples/steps.md) in a
+# fresh copy of verification/tl-examples/project and compare each step's output with
+# verification/tl-examples/expected. Needs cargo and network access to github.com and crates.io;
+# it prints a message and succeeds when cargo is not installed.
+TL_EXAMPLES_RUN = $(NODE) tools/steps.mjs run verification/tl-examples/steps.md --host --copy verification/tl-examples/project --expected verification/tl-examples/expected
+tl-examples-test:
+	@if command -v cargo >/dev/null 2>&1; then $(TL_EXAMPLES_RUN); else echo "tl-examples-test skipped: cargo is not installed"; fi
+
+# Record the outputs of the temporal logic steps again.
+tl-examples-record:
+	$(TL_EXAMPLES_RUN) --record

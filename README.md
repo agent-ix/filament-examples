@@ -32,6 +32,8 @@ The table lists each system with the number of cases that run today and the numb
 
 [assurance](assurance/README.md) is a small shop service whose refund rule is written as requirements, tested with `node --test`, and backed by test runs, a change record and a measurement recorded with Quoin. The Assurance documentation builds its guides from it.
 
+[verification/tl-examples](verification/tl-examples/steps.md) is a small Rust project that uses the four temporal logic crates (tl-syntax, tl-parse, tl-rewrite and tl-mltl): it builds a formula, parses text, rewrites a formula, evaluates it on a trace and runs the whole chain. The temporal logic pages of the Verification documentation draw their programs and output from it.
+
 ## Getting started
 
 You can run the examples in the toolchain image or with a driver you build yourself.
@@ -142,6 +144,12 @@ The assurance test runs the commands of [assurance/steps.md](assurance/steps.md)
 
 ```
 make assurance-test
+```
+
+The temporal logic test builds and runs the Rust programs of [verification/tl-examples/steps.md](verification/tl-examples/steps.md). It needs cargo and network access to github.com and crates.io, and is skipped when cargo is missing:
+
+```
+make tl-examples-test
 ```
 
 ## Contributing
