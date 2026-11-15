@@ -6,7 +6,7 @@ import { createHash } from "node:crypto";
 import { mkdtempSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { readFileSync } from "node:fs";
-import { dirname, resolve } from "node:path";
+import { dirname, join, resolve } from "node:path";
 import { test } from "node:test";
 import { fileURLToPath } from "node:url";
 import { buildScript, checkRecords, extractSteps, parseArgs, readMarkers, selectSteps, shellCommand } from "./steps.mjs";
@@ -75,6 +75,25 @@ test("a step marked expect-exit runs with errexit off and reports its status", (
   assert.deepEqual(records.map((r) => [r.id, r.exit, r.output]), [["a", null, "before\n"], ["b", 3, "oops\n"], ["c", null, "after\n"]]);
   assert.deepEqual(checkRecords(steps, records, {}), []);
   assert.match(checkRecords(extractSteps(md.replace("expect-exit=3", "expect-exit=4")), records, {})[0], /b: exit 3, expected 4/);
+});
+
+test("a step marked stderr=hide keeps standard output and drops standard error", () => {
+  const steps = extractSteps("```bash step=a stderr=hide\necho kept\necho dropped >&2\n```\n```bash step=b\necho shown >&2\n```\n");
+  assert.equal(steps[0].hideStderr, true);
+  assert.throws(() => extractSteps("```bash step=a stderr=keep\n```\n"), /stderr takes only the value hide/);
+  const run = spawnSync("bash", ["-s"], { input: buildScript(steps), encoding: "utf8" });
+  assert.equal(run.status, 0);
+  const { records } = readMarkers(run.stdout.split("\n"));
+  assert.deepEqual(records.map((r) => [r.id, r.output]), [["a", "kept\n"], ["b", "shown\n"]]);
+});
+
+test("a step marked output=ignore is left out of the comparison", () => {
+  const steps = extractSteps("```bash step=a output=ignore\necho varies\n```\n");
+  assert.equal(steps[0].ignoreOutput, true);
+  assert.throws(() => extractSteps("```bash step=a output=keep\n```\n"), /output takes only the value ignore/);
+  const dir = mkdtempSync(join(tmpdir(), "expected-"));
+  writeFileSync(join(dir, "a.txt"), "other\n");
+  assert.deepEqual(checkRecords(steps, [{ id: "a", output: "varies\n", exit: null }], { expected: dir }), []);
 });
 
 test("checkRecords compares output with the expected folder", () => {

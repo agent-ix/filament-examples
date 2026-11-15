@@ -1,0 +1,2 @@
+receipt for refund-limit revision 1 verified
+  outcome: valid

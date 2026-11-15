@@ -16,7 +16,10 @@
 //
 // A steps file is Markdown. Every fenced block whose info string is
 // `<language> step=<id>` is a step. Extra words after the id are attributes:
-// `expect-exit=N` marks a step that must exit with N (default 0). `extract`
+// `expect-exit=N` marks a step that must exit with N (default 0), and
+// `stderr=hide` drops what the step writes to standard error, for a tool that
+// prints warnings with machine-specific paths there, and `output=ignore` keeps
+// a step out of the --expected comparison and recording. `extract`
 // prints the steps as one shell script. `run` streams that script into one shell
 // session in a container or, with --host, on this machine, the way a reader types
 // the commands into one terminal. It reports the duration of each step. The first
@@ -39,6 +42,10 @@ export function extractSteps(markdown) {
     const attrs = Object.fromEntries(open[3].trim().split(" ").filter(Boolean).map((a) => a.split("=")));
     const expectExit = "expect-exit" in attrs ? Number(attrs["expect-exit"]) : 0;
     if (!Number.isInteger(expectExit)) throw new Error(`step ${open[2]}: expect-exit must be an integer`);
+    if ("stderr" in attrs && attrs.stderr !== "hide") throw new Error(`step ${open[2]}: stderr takes only the value hide`);
+    const hideStderr = attrs.stderr === "hide";
+    if ("output" in attrs && attrs.output !== "ignore") throw new Error(`step ${open[2]}: output takes only the value ignore`);
+    const ignoreOutput = attrs.output === "ignore";
     const body = [];
     let closed = false;
     for (i++; i < lines.length; i++) {
@@ -50,7 +57,7 @@ export function extractSteps(markdown) {
     }
     if (!closed) throw new Error(`step ${open[2]}: fenced block is not closed`);
     if (steps.some((s) => s.id === open[2])) throw new Error(`duplicate step id ${open[2]}`);
-    steps.push({ id: open[2], language: open[1], body: body.join("\n"), expectExit });
+    steps.push({ id: open[2], language: open[1], body: body.join("\n"), expectExit, hideStderr, ignoreOutput });
   }
   return steps;
 }
@@ -71,8 +78,9 @@ export function buildScript(steps) {
   for (const s of steps) {
     if (s.language !== "bash") throw new Error(`step ${s.id}: only bash steps are supported`);
     parts.push(`echo "${MARK} ${s.id} $(date +%s)"`);
-    if (s.expectExit === 0) parts.push(s.body);
-    else parts.push("set +e", s.body, `echo "${EXIT} ${s.id} $?"`, "set -e");
+    const body = s.hideStderr ? `{\n${s.body}\n} 2>/dev/null` : s.body;
+    if (s.expectExit === 0) parts.push(body);
+    else parts.push("set +e", body, `echo "${EXIT} ${s.id} $?"`, "set -e");
   }
   parts.push(`echo "${MARK} end $(date +%s)"`);
   return parts.join("\n") + "\n";
@@ -172,7 +180,7 @@ export function checkRecords(steps, records, opts) {
   for (const r of records) {
     const step = steps.find((s) => s.id === r.id);
     if (step.expectExit !== 0 && r.exit !== step.expectExit) problems.push(`${r.id}: exit ${r.exit}, expected ${step.expectExit}`);
-    if (opts.expected && !opts.record) {
+    if (opts.expected && !opts.record && !step.ignoreOutput) {
       const file = join(opts.expected, `${r.id}.txt`);
       if (existsSync(file) && readFileSync(file, "utf8") !== r.output) problems.push(`${r.id}: output differs from ${file}`);
     }
@@ -199,7 +207,7 @@ async function main(argv) {
   }
   if (opts.record) {
     mkdirSync(opts.expected, { recursive: true });
-    for (const r of records) if (r.output !== "") writeFileSync(join(opts.expected, `${r.id}.txt`), r.output);
+    for (const r of records) if (r.output !== "" && !steps.find((s) => s.id === r.id).ignoreOutput) writeFileSync(join(opts.expected, `${r.id}.txt`), r.output);
     console.log(`recorded ${records.length} steps in ${opts.expected}`);
     return 0;
   }

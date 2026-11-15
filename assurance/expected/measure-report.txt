@@ -1,0 +1,18 @@
+# QA measurement report
+
+## What this repository measures
+
+| Metric | Plan | Stage | Current |
+| --- | --- | --- | --- |
+| refund_test_pass_rate | MP-001 (spec/assurance/MP-001-refund-test-pass-rate.md) | baseline | 1 fraction |
+
+## Current evidence
+
+Corpus gaps: not reported (no collection states bounds.gap_count)
+
+- refund-pass-rate-2026-11-14 (shop refunds) — 2026-11-14T12:00:00.000Z — node --test 24.0.0
+
+## Attention
+
+No factual attention items.
+

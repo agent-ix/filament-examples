@@ -130,6 +130,12 @@ The install test runs the commands of [install-test/steps.md](install-test/steps
 make install-test
 ```
 
+The assurance test runs the commands of [assurance/steps.md](assurance/steps.md) against the [assurance example](assurance/README.md), a small spec repository checked with `quire` and `quoin`. It needs Node.js, npm and git, and installs the tools into a temporary folder:
+
+```
+make assurance-test
+```
+
 ## Contributing
 
 Read [CONTRIBUTING.md](CONTRIBUTING.md) before you open a pull request: every contribution needs a signed Contributor License Agreement (CLA). [CONTENT_RIGHTS.md](CONTENT_RIGHTS.md) lists what may be committed.

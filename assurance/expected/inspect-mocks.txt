@@ -1,0 +1,2 @@
+recorded mock inspection SUITE-001 -> ./spec/evidence/mock-inspections/SUITE-001/2026-11-14T12~3A05~3A00Z.json
+  injections: 0

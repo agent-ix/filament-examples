@@ -1,0 +1,26 @@
+# Assurance case
+
+1 claim(s), 0 with an open branch.
+
+## ✅ StR-001 — Refunds never pay out more than the customer paid
+
+  - ✅ strategy — argued over `satisfies`: FR-001
+    - ✅ FR-001 — Refuse a refund above the amount paid
+      - ✅ **FR-001-AC-1** — A refund of at most the amount paid is accepted.
+        - evidence: suites SUITE-001 (2026-11-14T12:00:00Z); newest 2026-11-14T12:00:00Z; verdict bound
+      - ✅ **FR-001-AC-2** — A refund above the amount paid is refused.
+        - evidence: suites SUITE-001 (2026-11-14T12:00:00Z); newest 2026-11-14T12:00:00Z; verdict bound
+
+```mermaid
+flowchart TD
+  StR_001["StR-001: Refunds never pay out more than the customer paid"]
+  StR_001_strategy[/"StR-001/strategy: argued over 'satisfies': FR-001"/]
+  FR_001["FR-001: Refuse a refund above the amount paid"]
+  FR_001_AC_1(["FR-001-AC-1: A refund of at most the amount paid is accepted."])
+  FR_001 --> FR_001_AC_1
+  FR_001_AC_2(["FR-001-AC-2: A refund above the amount paid is refused."])
+  FR_001 --> FR_001_AC_2
+  StR_001_strategy --> FR_001
+  StR_001 --> StR_001_strategy
+```
+

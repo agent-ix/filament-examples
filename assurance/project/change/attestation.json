@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "record_type": "proof_attestation",
+  "attestation_id": "unit-tests-1",
+  "record_id": "refund-limit",
+  "record_revision": 1,
+  "candidate_revision": "candidate-1",
+  "proof_id": "unit-tests",
+  "command": {"argv": ["node", "--test"], "working_directory": "."},
+  "tool": {"identity": "node", "version": "24.0.0", "configuration_ref": "package.json"},
+  "environment": {"os": "linux"},
+  "observed_at": "2026-11-14T12:00:00Z",
+  "result": "passed",
+  "strength": "tested"
+}

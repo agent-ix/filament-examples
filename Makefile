@@ -4,7 +4,7 @@ include config.mk
 NODE ?= node
 RUN = $(NODE) tools/run.mjs
 
-.PHONY: check staged record promote readme index models test install-test install-test-host
+.PHONY: check staged record promote readme index models test install-test install-test-host assurance-test assurance-record
 check:
 	@$(RUN) check
 staged:
@@ -52,3 +52,17 @@ install-test:
 # Node.js, git, make and jq already). It installs the driver under $HOME.
 install-test-host:
 	$(NODE) tools/steps.mjs run install-test/steps.md --host --shell zsh --skip prerequisites,node,$(INSTALL_SKIP_release)
+
+# Run the Assurance steps (assurance/steps.md) on this machine against a fresh
+# copy of assurance/project and compare each step's output with
+# assurance/expected. Needs Node.js 22.18 or later, npm and git, and network
+# access to npmjs.org and github.com. HOME is a new temporary folder and npm
+# installs into it, so the tools and spec modules never touch your own.
+ASSURANCE_ENV = export HOME="$$(mktemp -d)" && export npm_config_prefix="$$HOME/npm" && export PATH="$$HOME/npm/bin:$$PATH" &&
+ASSURANCE_RUN = $(NODE) tools/steps.mjs run assurance/steps.md --host --copy assurance/project --expected assurance/expected
+assurance-test:
+	$(ASSURANCE_ENV) $(ASSURANCE_RUN)
+
+# Record the outputs of the Assurance steps again.
+assurance-record:
+	$(ASSURANCE_ENV) $(ASSURANCE_RUN) --record

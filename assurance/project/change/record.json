@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "record_type": "change_assurance",
+  "record_id": "refund-limit",
+  "revision": 1,
+  "subject": {"repository": "example/shop", "base_revision": "main", "scope": ["src/refund.mjs"]},
+  "source_connections": [
+    {"source_id": "FR-001", "kind": "requirement", "revision": "1", "path": "spec/functional/FR-001-refund-limit.md"}
+  ],
+  "impact_snapshot": {"identity": "impact-1", "revision": "1", "completeness": "complete", "truncated": false, "gaps": []},
+  "definition": {
+    "requirements": [{"id": "FR-001", "statement": "Refuse a refund above the amount paid.", "source_ids": ["FR-001"]}],
+    "preservation_constraints": [],
+    "proof_obligations": [
+      {"proof_id": "unit-tests", "statement": "The refund unit tests pass.", "obligation_ids": ["FR-001-AC-1", "FR-001-AC-2"],
+       "evidence_kind": "Unit", "command": {"argv": ["node", "--test"], "working_directory": "."},
+       "tool_identity": "node", "configuration_ref": "package.json"}
+    ],
+    "unknowns": []
+  },
+  "review_workflow": {"run_id": "review-1", "decision_event_kind": "change_assurance.review_decided"}
+}

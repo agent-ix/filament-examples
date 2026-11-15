@@ -1,0 +1,5 @@
+{"run_id": "review-1", "events": [
+  {"id": "event-1", "ts": "2026-11-14T13:00:00Z", "actor": {"kind": "human", "id": "dana"},
+   "kind": "change_assurance.review_decided",
+   "payload": {"schema_version": 1, "record_id": "refund-limit", "revision": 1, "decision": "approved"}, "sequence": 1}
+]}
