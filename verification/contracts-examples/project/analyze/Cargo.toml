@@ -1,0 +1,17 @@
+[package]
+name = "analyze-example"
+version = "0.0.0"
+edition = "2021"
+publish = false
+
+# A separate package, because filament-analyze and filament-verification-contracts pin
+# different versions of the same dependencies and cannot share one lock file.
+[workspace]
+
+[[bin]]
+name = "analyze"
+path = "main.rs"
+
+[dependencies]
+filament-analyze = { git = "https://github.com/agent-ix/filament-analyze", branch = "main" }
+filament-contract-model = { git = "https://github.com/agent-ix/filament-contract-ir", branch = "main" }

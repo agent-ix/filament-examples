@@ -1,0 +1,13 @@
+variables without a binding: 3
+variables with a binding: 2
+(set-info :smt-lib-version 2.6)
+(set-info :source |filament.smtlib2/v2|)
+(set-option :produce-models true)
+(set-logic QF_LIA)
+(declare-fun v_b_66756e646564 () Bool)
+(declare-fun v_s_2efb9e43e730287d84ab1f3ece7f9fdd6ae9904f1d101f49b71443172d05eb63 () Bool)
+(assert (! v_b_66756e646564 :named a_p6578616d706c652f6163636f756e74_r5245512d66756e646564_v1_c432d66756e646564_db34cc950583c85ba82c639b003d3ed359cd21652d2777209b111435e82dbd44f))
+(assert (! (and v_b_66756e646564 (not v_s_2efb9e43e730287d84ab1f3ece7f9fdd6ae9904f1d101f49b71443172d05eb63)) :named a_p6578616d706c652f6163636f756e74_r5245512d70617973_v1_c432d70617973_d78c32999e2e63793c0acbb1ad4cda408cbe23a35b37683b784343aa9c3b00fe1))
+(check-sat)
+(get-model)
+

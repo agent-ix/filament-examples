@@ -1,0 +1,4 @@
+Rect is member 0, positions [Integer, Integer]
+lookup is case sensitive: true
+Rect(2, 3) admitted by Shape: true
+Rect(2) built: false

@@ -1,0 +1,4 @@
+small tree: Continue(()), entered 4
+stop at node 2: Break("found"), entered 2
+chain of 100000: Continue(()), entered 100000
+arena of 4 nodes, value of the top node: 5

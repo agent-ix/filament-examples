@@ -4,7 +4,7 @@ include config.mk
 NODE ?= node
 RUN = $(NODE) tools/run.mjs
 
-.PHONY: check staged record promote readme index models test install-test install-test-host assurance-test assurance-record quire-test quire-record tl-examples-test tl-examples-record quire-library-test quire-library-record quire-library-python-test quire-library-python-record
+.PHONY: check staged record promote readme index models test install-test install-test-host assurance-test assurance-record quire-test quire-record tl-examples-test tl-examples-record quire-library-test quire-library-record quire-library-python-test quire-library-python-record foundations-examples-test foundations-examples-record contracts-examples-test contracts-examples-record
 check:
 	@$(RUN) check
 staged:
@@ -39,7 +39,7 @@ models:
 # and the Quire library tests build Rust programs from git and need cargo, npm and network access, and skip
 # themselves when cargo or npm is missing.
 test:
-	$(NODE) --test tools/*.test.mjs quoin-first-spec/*.test.mjs quire-first-document/*.test.mjs verification/tl-examples/*.test.mjs quire-library/*.test.mjs quire-library/python/*.test.mjs
+	$(NODE) --test tools/*.test.mjs quoin-first-spec/*.test.mjs quire-first-document/*.test.mjs verification/tl-examples/*.test.mjs verification/foundations-examples/*.test.mjs verification/contracts-examples/*.test.mjs quire-library/*.test.mjs quire-library/python/*.test.mjs
 
 # Run the documented install steps on a bare ubuntu:22.04 container (needs Docker).
 # INSTALL_DRIVER=release (default) downloads the driver release; source builds it.
@@ -120,3 +120,27 @@ quire-library-python-test:
 # Record the output of the Python step again.
 quire-library-python-record:
 	$(QUIRE_LIBRARY_ENV) $(QUIRE_LIBRARY_PYTHON_RUN) --record
+
+# Run the Rust programs of the foundation libraries pages (verification/foundations-examples/steps.md)
+# in a fresh copy of verification/foundations-examples/project and compare each step's output with
+# verification/foundations-examples/expected. Needs cargo and network access to github.com and
+# crates.io; it prints a message and succeeds when cargo is not installed.
+FOUNDATIONS_EXAMPLES_RUN = $(NODE) tools/steps.mjs run verification/foundations-examples/steps.md --host --copy verification/foundations-examples/project --expected verification/foundations-examples/expected
+foundations-examples-test:
+	@if command -v cargo >/dev/null 2>&1; then $(FOUNDATIONS_EXAMPLES_RUN); else echo "foundations-examples-test skipped: cargo is not installed"; fi
+
+# Record the outputs of the foundation libraries steps again.
+foundations-examples-record:
+	$(FOUNDATIONS_EXAMPLES_RUN) --record
+
+# Run the Rust programs of the contract libraries pages (verification/contracts-examples/steps.md)
+# in a fresh copy of verification/contracts-examples/project and compare each step's output with
+# verification/contracts-examples/expected. Needs cargo and network access to github.com and
+# crates.io; it prints a message and succeeds when cargo is not installed.
+CONTRACTS_EXAMPLES_RUN = $(NODE) tools/steps.mjs run verification/contracts-examples/steps.md --host --copy verification/contracts-examples/project --expected verification/contracts-examples/expected
+contracts-examples-test:
+	@if command -v cargo >/dev/null 2>&1; then $(CONTRACTS_EXAMPLES_RUN); else echo "contracts-examples-test skipped: cargo is not installed"; fi
+
+# Record the outputs of the contract libraries steps again.
+contracts-examples-record:
+	$(CONTRACTS_EXAMPLES_RUN) --record

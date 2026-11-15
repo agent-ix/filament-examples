@@ -1,0 +1,12 @@
+[package]
+name = "contracts-examples"
+version = "0.0.0"
+edition = "2021"
+publish = false
+
+# Two of the contract libraries, by git on `main`. Cargo.lock records the commit
+# each one resolved to.
+[dependencies]
+filament-contract-runtime = { git = "https://github.com/agent-ix/filament-contract-runtime", branch = "main" }
+filament-verification-contracts = { git = "https://github.com/agent-ix/filament-verification-contracts", branch = "main" }
+serde_json = "1"

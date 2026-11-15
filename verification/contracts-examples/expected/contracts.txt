@@ -1,0 +1,6 @@
+schema version: filament-verification/e02-draft-2
+same record: true
+digest: sha256-jcs:1225823a37dc3a3f61268c5eb889c7c0fbdd4c811871795d51a46bdefee73372
+unknown kind: schema_violation
+code is schema_violation: true
+oversized: json_document_too_large
