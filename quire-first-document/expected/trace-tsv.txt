@@ -1,0 +1,3 @@
+kind	trace_id	path	line	symbol	form	bucket	language	confidence
+verifies	FR-001-AC-2	tests/invitation.test.ts	13	an invitation opened after seven days is refused	ts-trace-helper		typescript	line_heuristic
+citation	FR-001-AC-2	src/invitation.ts	8	open		mention	typescript	line_heuristic

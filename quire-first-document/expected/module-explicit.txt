@@ -1,0 +1,2 @@
+4/4 docs grammar-clean (100%); 0 grammar finding(s): none
+7/7 criteria property-extractable (100%); 0 candidate (metamorphic, needs review)

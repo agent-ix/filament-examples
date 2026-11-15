@@ -1,0 +1,14 @@
+name: specs
+on: [push, pull_request]
+jobs:
+  specs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm install --global @agent-ix/quire-cli @agent-ix/quoin
+      - run: quoin module ensure-defaults
+      - run: quire validate --scope . 'spec/**/*.md'
+      - run: quire matrix --strict

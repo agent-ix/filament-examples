@@ -28,6 +28,8 @@ The table lists each system with the number of cases that run today and the numb
 
 [quoin-first-spec](quoin-first-spec) is a small Python project with a user story, a functional requirement and tests, written with Quoin and validated with Quire. The Quoin documentation builds its "Get started" tutorial from it.
 
+[quire-first-document](quire-first-document/README.md) is a small Node.js project with a user story, a requirement, code and tests, checked with `quire`. The Quire documentation builds its "Get started" tutorial and how-tos from it.
+
 [assurance](assurance/README.md) is a small shop service whose refund rule is written as requirements, tested with `node --test`, and backed by test runs, a change record and a measurement recorded with Quoin. The Assurance documentation builds its guides from it.
 
 ## Getting started

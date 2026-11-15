@@ -18,20 +18,24 @@
 // `<language> step=<id>` is a step. Extra words after the id are attributes:
 // `expect-exit=N` marks a step that must exit with N (default 0), and
 // `stderr=hide` drops what the step writes to standard error, for a tool that
-// prints warnings with machine-specific paths there, and `output=ignore` keeps
+// prints warnings with machine-specific paths there, `stderr=findings` keeps
+// only the lines of standard error that name a document or count the documents
+// that failed (the findings of `quire validate`) and drops the rest, and `output=ignore` keeps
 // a step out of the --expected comparison and recording. `extract`
 // prints the steps as one shell script. `run` streams that script into one shell
 // session in a container or, with --host, on this machine, the way a reader types
 // the commands into one terminal. It reports the duration of each step. The first
 // failing step stops the run and is named.
 import { spawn } from "node:child_process";
-import { cpSync, existsSync, mkdirSync, mkdtempSync, readFileSync, writeFileSync } from "node:fs";
+import { cpSync, existsSync, mkdirSync, mkdtempSync, readFileSync, realpathSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 
 const MARK = "@@STEP";
 const EXIT = "@@EXIT";
+// What stderr=findings keeps: a line that names a Markdown document, or counts the failed ones.
+const FINDINGS = String.raw`\.md: |document\(s\) failed`;
 
 export function extractSteps(markdown) {
   const steps = [];
@@ -42,8 +46,9 @@ export function extractSteps(markdown) {
     const attrs = Object.fromEntries(open[3].trim().split(" ").filter(Boolean).map((a) => a.split("=")));
     const expectExit = "expect-exit" in attrs ? Number(attrs["expect-exit"]) : 0;
     if (!Number.isInteger(expectExit)) throw new Error(`step ${open[2]}: expect-exit must be an integer`);
-    if ("stderr" in attrs && attrs.stderr !== "hide") throw new Error(`step ${open[2]}: stderr takes only the value hide`);
+    if ("stderr" in attrs && !["hide", "findings"].includes(attrs.stderr)) throw new Error(`step ${open[2]}: stderr takes only the value hide or findings`);
     const hideStderr = attrs.stderr === "hide";
+    const findingsStderr = attrs.stderr === "findings";
     if ("output" in attrs && attrs.output !== "ignore") throw new Error(`step ${open[2]}: output takes only the value ignore`);
     const ignoreOutput = attrs.output === "ignore";
     const body = [];
@@ -57,7 +62,7 @@ export function extractSteps(markdown) {
     }
     if (!closed) throw new Error(`step ${open[2]}: fenced block is not closed`);
     if (steps.some((s) => s.id === open[2])) throw new Error(`duplicate step id ${open[2]}`);
-    steps.push({ id: open[2], language: open[1], body: body.join("\n"), expectExit, hideStderr, ignoreOutput });
+    steps.push({ id: open[2], language: open[1], body: body.join("\n"), expectExit, hideStderr, findingsStderr, ignoreOutput });
   }
   return steps;
 }
@@ -78,6 +83,13 @@ export function buildScript(steps) {
   for (const s of steps) {
     if (s.language !== "bash") throw new Error(`step ${s.id}: only bash steps are supported`);
     parts.push(`echo "${MARK} ${s.id} $(date +%s)"`);
+    if (s.findingsStderr) {
+      // The step's standard error goes to a file; only its findings are printed, after the standard output.
+      parts.push("set +e", `__err=$(mktemp)`, `{\n${s.body}\n} 2>"$__err"`, "__status=$?", `grep -E '${FINDINGS}' "$__err"`, `rm -f "$__err"`, "set -e");
+      if (s.expectExit === 0) parts.push('[ "$__status" -eq 0 ] || exit "$__status"');
+      else parts.push(`echo "${EXIT} ${s.id} $__status"`);
+      continue;
+    }
     const body = s.hideStderr ? `{\n${s.body}\n} 2>/dev/null` : s.body;
     if (s.expectExit === 0) parts.push(body);
     else parts.push("set +e", body, `echo "${EXIT} ${s.id} $?"`, "set -e");
@@ -112,6 +124,12 @@ export function readMarkers(lines) {
     });
   }
   return { records, last: marks.length ? marks[marks.length - 1].id : null };
+}
+
+// A path under the folder the steps ran in is shown relative to it, so a recorded output is the same on every machine.
+export function withoutFolder(line, dir) {
+  const real = existsSync(dir) ? realpathSync(dir) : dir;
+  return [real, dir].reduce((l, d) => l.split(`${d}/`).join(""), line);
 }
 
 export function parseArgs(argv) {
@@ -168,7 +186,7 @@ function runScript(opts, script) {
     });
     child.on("close", (code) => {
       if (pending) lines.push(pending);
-      resolveRun({ code, lines });
+      resolveRun({ code, lines: hostDir ? lines.map((l) => withoutFolder(l, hostDir)) : lines });
     });
     child.stdin.end(script);
   });

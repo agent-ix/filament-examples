@@ -4,7 +4,7 @@ include config.mk
 NODE ?= node
 RUN = $(NODE) tools/run.mjs
 
-.PHONY: check staged record promote readme index models test install-test install-test-host assurance-test assurance-record
+.PHONY: check staged record promote readme index models test install-test install-test-host assurance-test assurance-record quire-test quire-record
 check:
 	@$(RUN) check
 staged:
@@ -68,3 +68,16 @@ assurance-test:
 # Record the outputs of the Assurance steps again.
 assurance-record:
 	$(ASSURANCE_ENV) $(ASSURANCE_RUN) --record
+
+# Run the Quire steps (quire-first-document/steps.md) on this machine against a fresh copy of
+# quire-first-document/project and compare each step's output with quire-first-document/expected.
+# Needs Node.js 22.18 or later, npm and git, and network access to npmjs.org and github.com. HOME is a
+# new temporary folder and npm installs into it, so the tools and spec modules never touch your own.
+QUIRE_ENV = quire_home="$$(mktemp -d)" && export HOME="$$quire_home" && export npm_config_prefix="$$HOME/npm" && export PATH="$$HOME/npm/bin:$$PATH" &&
+QUIRE_RUN = $(NODE) tools/steps.mjs run quire-first-document/steps.md --host --skip get-project --copy quire-first-document/project --expected quire-first-document/expected
+quire-test:
+	$(QUIRE_ENV) $(QUIRE_RUN)
+
+# Record the outputs of the Quire steps again.
+quire-record:
+	$(QUIRE_ENV) $(QUIRE_RUN) --record
