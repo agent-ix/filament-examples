@@ -21,7 +21,7 @@ test("the library programs build and print the recorded output", { skip: missing
   try {
     const r = spawnSync(
       process.execPath,
-      [join(ROOT, "tools", "steps.mjs"), "run", join(HERE, "steps.md"), "--host", "--copy", join(HERE, "project"), "--expected", join(HERE, "expected")],
+      [join(ROOT, "tools", "steps.mjs"), "run", join(HERE, "steps.md"), "--host", "--skip", "get-project", "--copy", join(HERE, "project"), "--expected", join(HERE, "expected")],
       // The steps run cargo, which behaves differently inside a test run, and share one build folder.
       { encoding: "utf8", cwd: ROOT, env: { ...process.env, NODE_TEST_CONTEXT: undefined, CARGO_TARGET_DIR: target } },
     );

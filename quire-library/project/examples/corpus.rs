@@ -6,6 +6,11 @@ fn main() {
     println!("documents: {}", spec.len());
     println!("RB-002 found: {}", spec.by_id("RB-002").is_some());
 
+    // Problems found while loading: a document without a uuid, a link to a missing document.
+    for d in spec.diagnostics() {
+        println!("diagnostic: {d:?}");
+    }
+
     // The links of one document.
     for e in spec.outgoing("RB-002") {
         println!("{} --{}--> {} ({:?})", e.source, e.edge_type, e.target, e.resolution);

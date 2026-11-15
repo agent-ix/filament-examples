@@ -1,0 +1,12 @@
+manifest_version: 1.0.0
+name: per-match-inside
+version: 0.1.0
+artifact_types:
+- name: Runbook
+  body_extraction:
+    yield_pattern:
+      iterate_over:
+        section_path: [Steps]
+        kind: heading
+        per_match:
+          name: { from: heading, level: 2 }

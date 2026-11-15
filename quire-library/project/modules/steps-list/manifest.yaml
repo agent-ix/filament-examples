@@ -1,0 +1,20 @@
+manifest_version: 1.0.0
+name: steps-list
+version: 0.1.0
+description: One record for each section of a runbook.
+artifact_types:
+- name: Runbook
+  allowed_links: [runs_after]
+  body_extraction:
+    yield_pattern:
+      iterate_over:
+        section_path: ["RB-002: Rotate the signing keys"]
+        kind: heading
+        depth: 1
+      per_match:
+        name: { from: heading, level: 2 }
+    emit_edges:
+    - type: runs_after
+      target: RB-001
+edge_types:
+  runs_after: { description: "Runs after the target.", category: dependency }

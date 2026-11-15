@@ -34,8 +34,10 @@ models:
 	$(NODE) tools/model.mjs tools/models/payment-spec.mjs examples/shop/model/payment-spec.semantic-ir.json
 	$(NODE) tools/model.mjs tools/models/payment-client.mjs examples/shop/model/payment-client.semantic-ir.json
 
-# Unit tests for the runner (they use a fake driver and need no FSL binary) and the Quoin first-spec check
-# (skipped when quoin and quire are not installed).
+# Unit tests for the runner (they use a fake driver and need no FSL binary), the Quoin first-spec check (skipped
+# when quoin and quire are not installed) and the example projects that run their steps: the temporal logic
+# and the Quire library tests build Rust programs from git and need cargo, npm and network access, and skip
+# themselves when cargo or npm is missing.
 test:
 	$(NODE) --test tools/*.test.mjs quoin-first-spec/*.test.mjs quire-first-document/*.test.mjs verification/tl-examples/*.test.mjs quire-library/*.test.mjs quire-library/python/*.test.mjs
 
@@ -99,7 +101,7 @@ tl-examples-record:
 # and network access to github.com, crates.io and npmjs.org. The build output goes to a temporary folder that is
 # removed when the run ends. It prints a message and succeeds when cargo is not installed.
 QUIRE_LIBRARY_ENV = quire_library_target="$$(mktemp -d)" && trap 'rm -rf "$$quire_library_target"' EXIT && export CARGO_TARGET_DIR="$$quire_library_target" &&
-QUIRE_LIBRARY_RUN = $(NODE) tools/steps.mjs run quire-library/steps.md --host --copy quire-library/project --expected quire-library/expected
+QUIRE_LIBRARY_RUN = $(NODE) tools/steps.mjs run quire-library/steps.md --host --skip get-project --copy quire-library/project --expected quire-library/expected
 quire-library-test:
 	@if command -v cargo >/dev/null 2>&1; then $(QUIRE_LIBRARY_ENV) $(QUIRE_LIBRARY_RUN); else echo "quire-library-test skipped: cargo is not installed"; fi
 
@@ -111,7 +113,7 @@ quire-library-record:
 # (quire-library/python/steps.md). Needs Python 3.9 or later, Rust, git and network access to github.com,
 # crates.io and pypi.org, and takes a few minutes. The build output goes to a temporary folder that is removed
 # when the run ends.
-QUIRE_LIBRARY_PYTHON_RUN = $(NODE) tools/steps.mjs run quire-library/python/steps.md --host --copy quire-library/project --expected quire-library/python/expected
+QUIRE_LIBRARY_PYTHON_RUN = $(NODE) tools/steps.mjs run quire-library/python/steps.md --host --skip get-project --copy quire-library --expected quire-library/python/expected
 quire-library-python-test:
 	$(QUIRE_LIBRARY_ENV) $(QUIRE_LIBRARY_PYTHON_RUN)
 

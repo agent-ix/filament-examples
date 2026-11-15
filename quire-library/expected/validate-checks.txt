@@ -1,0 +1,19 @@
+a valid document: valid true
+an id that breaks the schema: valid false
+  frontmatter (line None): [Runbook] frontmatter: "X-10" does not match "^RB-[0-9]+$" (at id)
+an empty type: valid false
+  frontmatter (line None): frontmatter: "" is shorter than 1 character (at type)
+  frontmatter (line None): [Runbook] frontmatter: "Runbook" was expected (at type)
+a description that is not text: valid false
+  frontmatter (line None): frontmatter: 5 is not of type "string" (at description)
+tags that are not text: valid false
+  frontmatter (line None): frontmatter: 1 is not of type "string" (at tags.0)
+an empty Purpose: valid false
+  empty (line Some(8)): [Runbook] required 'purpose' (section_body(Purpose)) is empty
+a placeholder Purpose: valid false
+  placeholder (line Some(8)): [Runbook] required 'purpose' (section_body(Purpose)) contains only placeholder content
+a repeated heading: valid false
+  duplicate-heading (line Some(12)): duplicate heading 'Purpose' at level 2 (heading text must be unique per level)
+two problems at once: valid false
+  frontmatter (line None): [Runbook] frontmatter: "X-10" does not match "^RB-[0-9]+$" (at id)
+  missing (line None): [Runbook] required 'purpose' (section_body(Purpose)) is missing

@@ -1,5 +1,9 @@
 documents: 3
 RB-002 found: true
+diagnostic: MissingUuid { path: "runbooks/RB-001-restart-the-queue.md" }
+diagnostic: MissingUuid { path: "runbooks/RB-002-rotate-keys.md" }
+diagnostic: MissingUuid { path: "runbooks/RB-003-retire-a-service.md" }
+diagnostic: DanglingReference { source: "RB-003", target: "RB-009", edge_type: "runs_after" }
 RB-002 --runs_after--> RB-001 (Resolved)
 dangling: RB-003 --runs_after--> RB-009
 RB-001 is referenced by RB-002

@@ -1,0 +1,3 @@
+valid: true, errors: 0, warnings: 2
+grammar (line Some(10)): [quality:ambiguous-term] ambiguous term `user-friendly`; state the quantity, threshold or condition that would satisfy this requirement
+grammar (line Some(10)): [quality:mixed-modal] statement mixes `shall` and `should`; one statement carries one obligation strength, or a reader cannot tell which part is binding

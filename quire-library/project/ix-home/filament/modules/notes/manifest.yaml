@@ -1,0 +1,6 @@
+manifest_version: 1.0.0
+name: notes
+version: 0.1.0
+artifact_types:
+- name: Note
+  frontmatter_schema_ref: schemas/note.schema.json

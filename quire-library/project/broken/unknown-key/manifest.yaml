@@ -1,0 +1,4 @@
+manifest_version: 1.0.0
+name: unknown-key
+version: 0.1.0
+bogus_key: 1

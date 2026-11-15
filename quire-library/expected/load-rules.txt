@@ -1,0 +1,11 @@
+missing-schema: Ok, types []
+  failure missing-schema/Note: read broken/missing-schema/schemas/missing.schema.json: No such file or directory (os error 2)
+unknown-key: Err ManifestError at broken/unknown-key/manifest.yaml: module `unknown-key` version 0.1.0: unknown field `bogus_key`, expected one of `manifest_version`, `grammars`, `doc_kinds`, `nav`, `depends_on`, `state_schemas`, `name`, `version`, `description`, `artifact_types`, `object_types`, `archetypes`, `clause_sets`, `lint_rules`, `edge_types`, `roles`, `lexicon`, `grammar_severity`, `observable_verbs`, `vacuous_predicates`, `property_idioms`, `traceability`, `ambiguity_terms`, `verification_catalog`, `semantic`, `plain_language_profiles` at line 4 column 1
+retired: Ok, types []
+  failure retired/Old: retired field `required_sections` is not supported; move its intent into `body_extraction` asserts (FR-033)
+null-key: Ok, types []
+  failure null-key/Empty: semantic.invalid-value: artifact_types[Empty].body_extraction: archetype `Empty` declares body_extraction as null; give a value, or omit the key
+no-keys: Ok, types ["Bare"]
+per-match-inside: Err ManifestError at broken/per-match-inside/manifest.yaml: module `per-match-inside` version 0.1.0: artifact_types[0].body_extraction.yield_pattern.iterate_over: unknown field `per_match`, expected one of `section_path`, `kind`, `depth` at line 11 column 9
+strict, missing root: [SearchPathMissing { path: "nope" }]
+from_env modules: ["notes", "requirement", "runbook", "steps-list"]

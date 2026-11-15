@@ -1,4 +1,4 @@
-// Runs the program of steps.md in a fresh copy of ../project and compares what it prints with
+// Runs the program of steps.md in a fresh copy of the quire-library folder and compares what it prints with
 // expected/<id>.txt. Skipped when python3 cannot import quire: the wheel is built by the first step of
 // steps.md, which this test leaves out.
 //   node --test quire-library/python/quire-library-python.test.mjs
@@ -17,8 +17,8 @@ test("the Python program prints the recorded output", { skip: hasQuire ? false :
   const r = spawnSync(
     process.execPath,
     [
-      join(ROOT, "tools", "steps.mjs"), "run", join(HERE, "steps.md"), "--host", "--skip", "python-wheel",
-      "--copy", join(HERE, "..", "project"), "--expected", join(HERE, "expected"),
+      join(ROOT, "tools", "steps.mjs"), "run", join(HERE, "steps.md"), "--host", "--skip", "python-wheel,get-project",
+      "--copy", join(HERE, ".."), "--expected", join(HERE, "expected"),
     ],
     { encoding: "utf8", cwd: ROOT, env: { ...process.env, NODE_TEST_CONTEXT: undefined } },
   );
