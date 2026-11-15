@@ -3,13 +3,13 @@
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
 import { createHash } from "node:crypto";
-import { mkdtempSync, writeFileSync } from "node:fs";
+import { existsSync, mkdtempSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { readFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { test } from "node:test";
 import { fileURLToPath } from "node:url";
-import { buildScript, checkRecords, extractSteps, parseArgs, readMarkers, selectSteps, shellCommand, withoutFolder } from "./steps.mjs";
+import { buildScript, checkRecords, extractSteps, parseArgs, readMarkers, selectSteps, shellCommand, withoutFolder, removeRunFolder } from "./steps.mjs";
 
 const REPO = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 
@@ -99,6 +99,15 @@ test("a step marked stderr=findings keeps the findings of standard error and the
   assert.equal(wrong.status, 4);
 });
 
+test("removeRunFolder deletes the folder of a run, and --keep is a known option", () => {
+  const dir = mkdtempSync(join(tmpdir(), "steps-"));
+  writeFileSync(join(dir, "a.txt"), "x");
+  removeRunFolder(dir);
+  assert.equal(existsSync(dir), false);
+  assert.equal(parseArgs(["run", "s.md", "--host", "--keep"]).keep, true);
+  assert.equal(parseArgs(["run", "s.md", "--host"]).keep, false);
+});
+
 test("withoutFolder shows a path under the working folder relative to it", () => {
   assert.equal(withoutFolder("/tmp/steps-1/spec/a.md: line 2", "/tmp/steps-1"), "spec/a.md: line 2");
 });
@@ -133,7 +142,7 @@ test("readMarkers turns marker lines into step durations", () => {
 
 test("parseArgs reads skip and image", () => {
   assert.deepEqual(parseArgs(["run", "f.md", "--image", "ubuntu:22.04", "--skip", "a,b"]), {
-    command: "run", file: "f.md", skip: ["a", "b"], image: "ubuntu:22.04", shell: "bash", host: false, copy: null, expected: null, record: false,
+    command: "run", file: "f.md", skip: ["a", "b"], image: "ubuntu:22.04", shell: "bash", host: false, copy: null, expected: null, record: false, keep: false,
   });
   assert.deepEqual(parseArgs(["run", "f.md", "--host", "--shell", "zsh"]).shell, "zsh");
   assert.throws(() => parseArgs(["run", "f.md", "--bogus"]), /unknown argument/);

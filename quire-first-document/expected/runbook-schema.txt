@@ -26,11 +26,11 @@
   "relationships": [
     {
       "category": "dependency",
-      "description": "Needs the target to be done first.",
+      "description": "Runs after the target.",
       "targets": [
         "*"
       ],
-      "verb": "depends_on"
+      "verb": "runs_after"
     }
   ],
   "sections": [

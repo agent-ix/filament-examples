@@ -11,6 +11,7 @@
 //                        on the host)
 //   --expected <dir>     compare the output of each step with <dir>/<id>.txt
 //                        when that file exists
+//   --keep               leave the folder of a --host run in place (it is removed by default)
 //   --record             write <dir>/<id>.txt for every step that prints
 //                        something, instead of comparing (needs --expected)
 //
@@ -19,23 +20,23 @@
 // `expect-exit=N` marks a step that must exit with N (default 0), and
 // `stderr=hide` drops what the step writes to standard error, for a tool that
 // prints warnings with machine-specific paths there, `stderr=findings` keeps
-// only the lines of standard error that name a document or count the documents
-// that failed (the findings of `quire validate`) and drops the rest, and `output=ignore` keeps
+// only the lines of standard error that name a document, count the documents
+// that failed (the findings of `quire validate`) or warn about a requirement id used as a trace tag and drops the rest, and `output=ignore` keeps
 // a step out of the --expected comparison and recording. `extract`
 // prints the steps as one shell script. `run` streams that script into one shell
 // session in a container or, with --host, on this machine, the way a reader types
 // the commands into one terminal. It reports the duration of each step. The first
 // failing step stops the run and is named.
 import { spawn } from "node:child_process";
-import { cpSync, existsSync, mkdirSync, mkdtempSync, readFileSync, realpathSync, writeFileSync } from "node:fs";
+import { cpSync, existsSync, mkdirSync, mkdtempSync, readFileSync, realpathSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 
 const MARK = "@@STEP";
 const EXIT = "@@EXIT";
-// What stderr=findings keeps: a line that names a Markdown document, or counts the failed ones.
-const FINDINGS = String.raw`\.md: |document\(s\) failed`;
+// What stderr=findings keeps: a line that names a Markdown document, counts the failed ones, or warns that a requirement id is used as a trace tag.
+const FINDINGS = String.raw`\.md: |document\(s\) failed|untracked-id-has-minted-children`;
 
 export function extractSteps(markdown) {
   const steps = [];
@@ -132,9 +133,14 @@ export function withoutFolder(line, dir) {
   return [real, dir].reduce((l, d) => l.split(`${d}/`).join(""), line);
 }
 
+// The folder a --host run copied the project to is removed when the run ends.
+export function removeRunFolder(dir) {
+  rmSync(dir, { recursive: true, force: true });
+}
+
 export function parseArgs(argv) {
   const [command, file, ...rest] = argv;
-  const opts = { command, file, skip: [], image: null, shell: "bash", host: false, copy: null, expected: null, record: false };
+  const opts = { command, file, skip: [], image: null, shell: "bash", host: false, copy: null, expected: null, record: false, keep: false };
   for (let i = 0; i < rest.length; i++) {
     if (rest[i] === "--skip") opts.skip = (rest[++i] ?? "").split(",").filter(Boolean);
     else if (rest[i] === "--image") opts.image = rest[++i];
@@ -143,6 +149,7 @@ export function parseArgs(argv) {
     else if (rest[i] === "--copy") opts.copy = rest[++i];
     else if (rest[i] === "--expected") opts.expected = rest[++i];
     else if (rest[i] === "--record") opts.record = true;
+    else if (rest[i] === "--keep") opts.keep = true;
     else throw new Error(`unknown argument ${rest[i]}`);
   }
   if (!["bash", "zsh"].includes(opts.shell)) throw new Error(`--shell must be bash or zsh, not ${opts.shell}`);
@@ -186,7 +193,9 @@ function runScript(opts, script) {
     });
     child.on("close", (code) => {
       if (pending) lines.push(pending);
-      resolveRun({ code, lines: hostDir ? lines.map((l) => withoutFolder(l, hostDir)) : lines });
+      const shown = hostDir ? lines.map((l) => withoutFolder(l, hostDir)) : lines;
+      if (hostDir && !opts.keep) removeRunFolder(hostDir);
+      resolveRun({ code, lines: shown });
     });
     child.stdin.end(script);
   });

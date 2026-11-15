@@ -5,4 +5,4 @@ Claims (2)
   verifies    FR-001-AC-2 tests/invitation.test.ts:13 an invitation opened after seven days is refused [ts-trace-helper] (line_heuristic)
 
 Citations (1) — NOT verification evidence
-  FR-001-AC-2 src/invitation.ts:8 open [mention/line_heuristic]
+  FR-001-AC-2 src/invitation.ts:6 open [mention/line_heuristic]

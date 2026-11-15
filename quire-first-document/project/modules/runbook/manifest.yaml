@@ -5,7 +5,7 @@ description: A module with one document type, the runbook.
 artifact_types:
 - name: Runbook
   frontmatter_schema_ref: schemas/runbook.schema.json
-  allowed_links: [depends_on]
+  allowed_links: [runs_after]
   body_extraction:
     yield_pattern:
       match:
@@ -21,4 +21,4 @@ artifact_types:
           assert:
             min_items: 1
 edge_types:
-  depends_on: { description: "Needs the target to be done first.", category: dependency }
+  runs_after: { description: "Runs after the target.", category: dependency }

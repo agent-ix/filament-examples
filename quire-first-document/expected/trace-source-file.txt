@@ -2,4 +2,4 @@ resolved: true
 Claims (0)
 
 Citations (1) — NOT verification evidence
-  FR-001-AC-2 src/invitation.ts:8 open [mention/line_heuristic]
+  FR-001-AC-2 src/invitation.ts:6 open [mention/line_heuristic]

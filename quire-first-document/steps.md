@@ -2,7 +2,7 @@
 
 The commands of the Quire "Get started" tutorial and how-tos on the docs site. The test runs every fenced block marked `step=<id>`, in order, in one shell, in a fresh copy of [project](project), and compares the output of each step with [expected](expected). Run it with `make quire-test`.
 
-Steps marked `stderr=hide` keep the command's standard output: `quire` also prints warnings about the installed module set on standard error, with paths that differ on every machine. Steps marked `stderr=findings` keep only the lines of standard error that name a document or count the failed ones. A path under the working folder is shown relative to it.
+Steps marked `stderr=hide` keep the command's standard output: `quire` also prints warnings about the installed module set on standard error, with paths that differ on every machine. Steps marked `stderr=findings` keep only the validation findings of standard error: the lines that name a document, the count of failed documents and the warning about a requirement id used as a trace tag. A path under the working folder is shown relative to it.
 
 ## Install
 
@@ -103,6 +103,24 @@ quire trace --file src/invitation.ts
 
 ```bash step=trace-tsv stderr=hide
 quire trace --id FR-001-AC-2 --format tsv
+```
+
+A test tagged with the requirement id `FR-001`, not with a criterion id, is found by the trace of `FR-001`. The matrix still shows every criterion `untagged`.
+
+```bash step=add-requirement-tag
+cp fixtures/requirement-tag.ts tests/requirement-tag.test.ts
+```
+
+```bash step=trace-requirement-tag stderr=hide
+quire trace --id FR-001
+```
+
+```bash step=matrix-requirement-tag stderr=findings
+quire matrix
+```
+
+```bash step=remove-requirement-tag
+rm tests/requirement-tag.test.ts
 ```
 
 ```bash step=add-test
