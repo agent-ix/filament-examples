@@ -64,6 +64,11 @@ export function closure(meta, root) {
   return [...seen].map((id) => byId.get(id));
 }
 
+// The version a program ships under is its release tag, which is what npm and the
+// driver archive carry. The root crate's own Cargo version can lag it (quoin
+// v0.32.0 is built from crates at 0.31.0), so it is not used.
+export const releaseVersion = (tag) => tag.replace(/^v/, "");
+
 function crateRecord(p, texts) {
   const source = p.source ?? "workspace";
   let repo = null;
@@ -112,12 +117,11 @@ function collect(args) {
       if (r.status !== 0) throw new Error(`cargo metadata failed for ${prog.id}: ${r.stderr}`);
       for (const p of closure(JSON.parse(r.stdout), prog.root)) perCrate.set(`${p.name}@${p.version}`, crateRecord(p, texts));
     }
-    const rootKey = [...perCrate.keys()].find((k) => k.startsWith(`${prog.root}@`));
     const crates = [...perCrate.values()].sort((a, b) => (a.name + a.version).localeCompare(b.name + b.version));
     const data = {
       program: prog.id,
       binary: prog.binary,
-      version: perCrate.get(rootKey).version,
+      version: releaseVersion(tag),
       repository: `${FIRST_PARTY}${prog.id}`,
       tag,
       commit,

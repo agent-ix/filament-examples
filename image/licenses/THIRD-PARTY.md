@@ -10,7 +10,7 @@ It lists what the image ships, with each component's licence identifier as its o
 | --- | --- | --- | --- | --- | --- | --- |
 | `fsl` (filament-driver) | 0.1.2 | AGPL-3.0-or-later | `texts/filament-driver.LICENSE` | https://github.com/agent-ix/filament-driver | v0.1.2 | 5276b9d8bcd8725ff2bb26822b33e37b4befa6dd |
 | `quire` (quire-cli) | 0.45.0 | AGPL-3.0-or-later | `texts/quire-cli.LICENSE` | https://github.com/agent-ix/quire-cli | v0.45.0 | d00ee4be259f07ef054d3fe7663d4a524f366760 |
-| `quoin` (quoin) | 0.30.1 | AGPL-3.0-or-later | `texts/quoin.LICENSE` | https://github.com/agent-ix/quoin | v0.30.1 | b52948c62b69d8268804c33ab3efbe229dc9f1b9 |
+| `quoin` (quoin) | 0.32.0 | AGPL-3.0-or-later | `texts/quoin.LICENSE` | https://github.com/agent-ix/quoin | v0.32.0 | 6ded990674c2fe997b5abcc9c0b5e2f01dc2f948 |
 | Filament examples (`/opt/filament-examples`) | this image | MIT | `texts/filament-examples.LICENSE` | https://github.com/agent-ix/filament-examples | the commit in the image label `org.opencontainers.image.revision` | |
 
 ## Other components
@@ -519,21 +519,21 @@ Third-party crates:
 | zlib-rs | 0.6.8 | Zlib |
 | zmij | 1.0.23 | MIT |
 
-## Rust crates built into `quoin` (quoin v0.30.1)
+## Rust crates built into `quoin` (quoin v0.32.0)
 
-Taken from `cargo metadata --locked` of https://github.com/agent-ix/quoin/tree/v0.30.1, for aarch64-unknown-linux-gnu and x86_64-unknown-linux-gnu, normal and build dependencies. There are 372 crates: 34 first-party and 338 third-party. Build-time crates (procedural macros, build scripts) are included, so the list may name a few crates that are not linked into the binary.
+Taken from `cargo metadata --locked` of https://github.com/agent-ix/quoin/tree/v0.32.0, for aarch64-unknown-linux-gnu and x86_64-unknown-linux-gnu, normal and build dependencies. There are 412 crates: 43 first-party and 369 third-party. Build-time crates (procedural macros, build scripts) are included, so the list may name a few crates that are not linked into the binary.
 
 Licences of the third-party crates, as the crates declare them:
 
 | Declared licence | Crates |
 | --- | --- |
-| MIT OR Apache-2.0 | 199 |
-| MIT | 57 |
+| MIT OR Apache-2.0 | 210 |
+| MIT | 68 |
 | Unicode-3.0 | 18 |
-| Apache-2.0 OR MIT | 14 |
+| Apache-2.0 OR MIT | 15 |
+| Apache-2.0 | 10 |
+| MIT/Apache-2.0 | 9 |
 | Unlicense OR MIT | 8 |
-| Apache-2.0 | 6 |
-| MIT/Apache-2.0 | 6 |
 | Apache-2.0 OR ISC OR MIT | 3 |
 | Apache-2.0 OR BSL-1.0 | 2 |
 | Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT | 2 |
@@ -545,6 +545,7 @@ Licences of the third-party crates, as the crates declare them:
 | 0BSD OR MIT OR Apache-2.0 | 1 |
 | Apache-2.0 / MIT | 1 |
 | Apache-2.0 AND ISC | 1 |
+| Apache-2.0 WITH LLVM-exception | 1 |
 | Apache-2.0/MIT | 1 |
 | BSD-2-Clause OR Apache-2.0 OR MIT | 1 |
 | BSD-3-Clause | 1 |
@@ -565,37 +566,46 @@ First-party crates (AGPL-3.0-or-later). The corresponding source is at the repos
 | agent-ix-engineering-assurance-campaign | 0.0.0 | https://github.com/agent-ix/engineering-assurance | 34695afc3cb2e14dbe3619b6dc5d808041d7e6e6 |
 | agent-ix-semantic-schema | 0.3.0 | https://github.com/agent-ix/filament-core-data | ce72bc519945ca4676f1b8f1e19f44f44303513d |
 | engineering-assurance | 0.8.2 | https://github.com/agent-ix/engineering-assurance | 34695afc3cb2e14dbe3619b6dc5d808041d7e6e6 |
-| ix-cli-kit | 0.1.0 | https://github.com/agent-ix/ix-cli-kit | be26cf02836e25f8ec7efa6de51e974d331a5816 |
-| ix-trace-rs | 0.1.2 | https://github.com/agent-ix/ix-trace-rs | e29cc07f70394ff018884d12406c1e150bded5f4 |
-| quire-canonical-derive | 0.3.0 | https://github.com/agent-ix/quire-canonical | 5dc4e12db63b8fae647825b4e4b78df9b6dcadfe |
-| quire-canonical | 0.3.0 | https://github.com/agent-ix/quire-canonical | 5dc4e12db63b8fae647825b4e4b78df9b6dcadfe |
-| quire-code-extraction | 0.1.0 | https://github.com/agent-ix/quire-rs | 73454c7d4606183c1d41b6f67269b7a173046159 |
+| ix-cli-kit | 0.1.0 | https://github.com/agent-ix/ix-cli-kit | 7f3b58b6a65e237bf733437c1c10cd609c84f835 |
+| ix-trace-rs | 0.1.2 | https://github.com/agent-ix/ix-trace-rs | 3cd3285055e32e4c08fb124d76e489b9dd412b6b |
+| quire-analyze-method-contract | 0.1.0 | https://github.com/agent-ix/filament-analyze | d57468a9b28a787664a4c59e4d98a1075c9d1d2e |
+| quire-analyze | 0.1.0 | https://github.com/agent-ix/filament-analyze | d57468a9b28a787664a4c59e4d98a1075c9d1d2e |
+| quire-canonical-derive | 0.3.0 | https://github.com/agent-ix/quire-canonical | 7d2f8389d01fcbf318e658746015b85a31526cc9 |
+| quire-canonical | 0.3.0 | https://github.com/agent-ix/quire-canonical | 7d2f8389d01fcbf318e658746015b85a31526cc9 |
+| quire-code-extraction | 0.1.0 | https://github.com/agent-ix/quire-rs | 5a45ec949737a41c69a90f6ac5eefcafb2e10716 |
 | quire-code-parse | 0.2.2 | https://github.com/agent-ix/quire-code-rs | 108ddda6bdeab1dd97e5c638d41b6df8167b1fa1 |
-| quire-rs | 0.56.0 | https://github.com/agent-ix/quire-rs | 73454c7d4606183c1d41b6f67269b7a173046159 |
-| quoin-assurance | 0.30.1 | https://github.com/agent-ix/quoin | b52948c62b69d8268804c33ab3efbe229dc9f1b9 (tag v0.30.1) |
-| quoin-auditor | 0.30.1 | https://github.com/agent-ix/quoin | b52948c62b69d8268804c33ab3efbe229dc9f1b9 (tag v0.30.1) |
-| quoin-catalog | 0.30.1 | https://github.com/agent-ix/quoin | b52948c62b69d8268804c33ab3efbe229dc9f1b9 (tag v0.30.1) |
-| quoin-change-assurance | 0.30.1 | https://github.com/agent-ix/quoin | b52948c62b69d8268804c33ab3efbe229dc9f1b9 (tag v0.30.1) |
-| quoin-cli | 0.30.1 | https://github.com/agent-ix/quoin | b52948c62b69d8268804c33ab3efbe229dc9f1b9 (tag v0.30.1) |
-| quoin-combinatorial | 0.30.1 | https://github.com/agent-ix/quoin | b52948c62b69d8268804c33ab3efbe229dc9f1b9 (tag v0.30.1) |
-| quoin-completeness | 0.30.1 | https://github.com/agent-ix/quoin | b52948c62b69d8268804c33ab3efbe229dc9f1b9 (tag v0.30.1) |
-| quoin-config | 0.30.1 | https://github.com/agent-ix/quoin | b52948c62b69d8268804c33ab3efbe229dc9f1b9 (tag v0.30.1) |
-| quoin-core | 0.30.1 | https://github.com/agent-ix/quoin | b52948c62b69d8268804c33ab3efbe229dc9f1b9 (tag v0.30.1) |
-| quoin-delivery | 0.30.1 | https://github.com/agent-ix/quoin | b52948c62b69d8268804c33ab3efbe229dc9f1b9 (tag v0.30.1) |
-| quoin-evidence-types | 0.30.1 | https://github.com/agent-ix/quoin | b52948c62b69d8268804c33ab3efbe229dc9f1b9 (tag v0.30.1) |
-| quoin-evidence | 0.30.1 | https://github.com/agent-ix/quoin | b52948c62b69d8268804c33ab3efbe229dc9f1b9 (tag v0.30.1) |
-| quoin-finding-types | 0.30.1 | https://github.com/agent-ix/quoin | b52948c62b69d8268804c33ab3efbe229dc9f1b9 (tag v0.30.1) |
-| quoin-graph-analysis | 0.30.1 | https://github.com/agent-ix/quoin | b52948c62b69d8268804c33ab3efbe229dc9f1b9 (tag v0.30.1) |
-| quoin-jsonschema | 0.30.1 | https://github.com/agent-ix/quoin | b52948c62b69d8268804c33ab3efbe229dc9f1b9 (tag v0.30.1) |
-| quoin-measurement-graph | 0.30.1 | https://github.com/agent-ix/quoin | b52948c62b69d8268804c33ab3efbe229dc9f1b9 (tag v0.30.1) |
-| quoin-measurement | 0.30.1 | https://github.com/agent-ix/quoin | b52948c62b69d8268804c33ab3efbe229dc9f1b9 (tag v0.30.1) |
-| quoin-modules | 0.30.1 | https://github.com/agent-ix/quoin | b52948c62b69d8268804c33ab3efbe229dc9f1b9 (tag v0.30.1) |
-| quoin-quire-types | 0.30.1 | https://github.com/agent-ix/quoin | b52948c62b69d8268804c33ab3efbe229dc9f1b9 (tag v0.30.1) |
-| quoin-quire | 0.30.1 | https://github.com/agent-ix/quoin | b52948c62b69d8268804c33ab3efbe229dc9f1b9 (tag v0.30.1) |
-| quoin-semantic | 0.30.1 | https://github.com/agent-ix/quoin | b52948c62b69d8268804c33ab3efbe229dc9f1b9 (tag v0.30.1) |
-| quoin-store | 0.30.1 | https://github.com/agent-ix/quoin | b52948c62b69d8268804c33ab3efbe229dc9f1b9 (tag v0.30.1) |
-| quoin-validators | 0.30.1 | https://github.com/agent-ix/quoin | b52948c62b69d8268804c33ab3efbe229dc9f1b9 (tag v0.30.1) |
-| quoin-yaml | 0.30.1 | https://github.com/agent-ix/quoin | b52948c62b69d8268804c33ab3efbe229dc9f1b9 (tag v0.30.1) |
+| quire-contract-model | 0.1.0 | https://github.com/agent-ix/quire-contract-ir | f582c0c428c997a5e3b23b45d32567274c3a8a14 |
+| quire-exact | 0.1.0 | https://github.com/agent-ix/quire-exact | e87ea030302e0abd762a88b4bbe2a6f148c4869d |
+| quire-rs | 0.60.0 | https://github.com/agent-ix/quire-rs | 5a45ec949737a41c69a90f6ac5eefcafb2e10716 |
+| quire-semantic-value | 0.1.0 | https://github.com/agent-ix/quire-semantic-value | 3c4616dafd4f739573c86af049661646f24dc293 |
+| quire-verification-contracts | 0.1.0 | https://github.com/agent-ix/quire-verification-contracts | 1bf72e68d425aa0233235883d0b6ed1139ff6cb1 |
+| quire-walk | 0.1.0 | https://github.com/agent-ix/quire-walk | b48d991914a964fcd39c2fe6d67b322f2498e3c9 |
+| quoin-anomaly | 0.31.0 | https://github.com/agent-ix/quoin | 6ded990674c2fe997b5abcc9c0b5e2f01dc2f948 (tag v0.32.0) |
+| quoin-assurance | 0.31.0 | https://github.com/agent-ix/quoin | 6ded990674c2fe997b5abcc9c0b5e2f01dc2f948 (tag v0.32.0) |
+| quoin-auditor | 0.31.0 | https://github.com/agent-ix/quoin | 6ded990674c2fe997b5abcc9c0b5e2f01dc2f948 (tag v0.32.0) |
+| quoin-catalog | 0.31.0 | https://github.com/agent-ix/quoin | 6ded990674c2fe997b5abcc9c0b5e2f01dc2f948 (tag v0.32.0) |
+| quoin-change-assurance | 0.31.0 | https://github.com/agent-ix/quoin | 6ded990674c2fe997b5abcc9c0b5e2f01dc2f948 (tag v0.32.0) |
+| quoin-cli | 0.31.0 | https://github.com/agent-ix/quoin | 6ded990674c2fe997b5abcc9c0b5e2f01dc2f948 (tag v0.32.0) |
+| quoin-combinatorial | 0.31.0 | https://github.com/agent-ix/quoin | 6ded990674c2fe997b5abcc9c0b5e2f01dc2f948 (tag v0.32.0) |
+| quoin-completeness | 0.31.0 | https://github.com/agent-ix/quoin | 6ded990674c2fe997b5abcc9c0b5e2f01dc2f948 (tag v0.32.0) |
+| quoin-config | 0.31.0 | https://github.com/agent-ix/quoin | 6ded990674c2fe997b5abcc9c0b5e2f01dc2f948 (tag v0.32.0) |
+| quoin-core | 0.31.0 | https://github.com/agent-ix/quoin | 6ded990674c2fe997b5abcc9c0b5e2f01dc2f948 (tag v0.32.0) |
+| quoin-delivery | 0.31.0 | https://github.com/agent-ix/quoin | 6ded990674c2fe997b5abcc9c0b5e2f01dc2f948 (tag v0.32.0) |
+| quoin-evidence-types | 0.31.0 | https://github.com/agent-ix/quoin | 6ded990674c2fe997b5abcc9c0b5e2f01dc2f948 (tag v0.32.0) |
+| quoin-evidence | 0.31.0 | https://github.com/agent-ix/quoin | 6ded990674c2fe997b5abcc9c0b5e2f01dc2f948 (tag v0.32.0) |
+| quoin-finding-types | 0.31.0 | https://github.com/agent-ix/quoin | 6ded990674c2fe997b5abcc9c0b5e2f01dc2f948 (tag v0.32.0) |
+| quoin-graph-analysis | 0.31.0 | https://github.com/agent-ix/quoin | 6ded990674c2fe997b5abcc9c0b5e2f01dc2f948 (tag v0.32.0) |
+| quoin-jsonschema | 0.31.0 | https://github.com/agent-ix/quoin | 6ded990674c2fe997b5abcc9c0b5e2f01dc2f948 (tag v0.32.0) |
+| quoin-measurement-graph | 0.31.0 | https://github.com/agent-ix/quoin | 6ded990674c2fe997b5abcc9c0b5e2f01dc2f948 (tag v0.32.0) |
+| quoin-measurement | 0.31.0 | https://github.com/agent-ix/quoin | 6ded990674c2fe997b5abcc9c0b5e2f01dc2f948 (tag v0.32.0) |
+| quoin-modules | 0.31.0 | https://github.com/agent-ix/quoin | 6ded990674c2fe997b5abcc9c0b5e2f01dc2f948 (tag v0.32.0) |
+| quoin-quire-types | 0.31.0 | https://github.com/agent-ix/quoin | 6ded990674c2fe997b5abcc9c0b5e2f01dc2f948 (tag v0.32.0) |
+| quoin-quire | 0.31.0 | https://github.com/agent-ix/quoin | 6ded990674c2fe997b5abcc9c0b5e2f01dc2f948 (tag v0.32.0) |
+| quoin-risk-advice | 0.31.0 | https://github.com/agent-ix/quoin | 6ded990674c2fe997b5abcc9c0b5e2f01dc2f948 (tag v0.32.0) |
+| quoin-semantic | 0.31.0 | https://github.com/agent-ix/quoin | 6ded990674c2fe997b5abcc9c0b5e2f01dc2f948 (tag v0.32.0) |
+| quoin-store | 0.31.0 | https://github.com/agent-ix/quoin | 6ded990674c2fe997b5abcc9c0b5e2f01dc2f948 (tag v0.32.0) |
+| quoin-validators | 0.31.0 | https://github.com/agent-ix/quoin | 6ded990674c2fe997b5abcc9c0b5e2f01dc2f948 (tag v0.32.0) |
+| quoin-yaml | 0.31.0 | https://github.com/agent-ix/quoin | 6ded990674c2fe997b5abcc9c0b5e2f01dc2f948 (tag v0.32.0) |
 
 Third-party crates:
 
@@ -606,6 +616,8 @@ Third-party crates:
 | aho-corasick | 1.1.5 | Unlicense OR MIT |
 | allocator-api2 | 0.2.21 | MIT OR Apache-2.0 |
 | anstyle | 1.0.14 | MIT OR Apache-2.0 |
+| anyhow | 1.0.104 | MIT OR Apache-2.0 |
+| ar_archive_writer | 0.5.5 | Apache-2.0 WITH LLVM-exception |
 | arc-swap | 1.9.2 | MIT OR Apache-2.0 |
 | arraydeque | 0.5.1 | MIT/Apache-2.0 |
 | arrayvec | 0.7.8 | MIT OR Apache-2.0 |
@@ -613,9 +625,12 @@ Third-party crates:
 | autocfg | 1.5.1 | Apache-2.0 OR MIT |
 | aws-lc-rs | 1.18.1 | ISC AND (Apache-2.0 OR ISC) |
 | aws-lc-sys | 0.45.0 | ISC AND (Apache-2.0 OR ISC) AND Apache-2.0 AND MIT AND BSD-3-Clause AND (Apache-2.0 OR ISC OR MIT) AND (Apache-2.0 OR ISC OR MIT-0) |
+| base64 | 0.21.7 | MIT OR Apache-2.0 |
 | base64 | 0.22.1 | MIT OR Apache-2.0 |
 | base64 | 0.23.1 | MIT OR Apache-2.0 |
+| bit-set | 0.5.3 | MIT/Apache-2.0 |
 | bit-set | 0.8.0 | Apache-2.0 OR MIT |
+| bit-vec | 0.6.3 | MIT/Apache-2.0 |
 | bit-vec | 0.8.0 | Apache-2.0 OR MIT |
 | bitflags | 1.3.2 | MIT/Apache-2.0 |
 | bitflags | 2.13.2 | MIT OR Apache-2.0 |
@@ -631,6 +646,7 @@ Third-party crates:
 | cfg_aliases | 0.2.2 | MIT |
 | cfg-if | 1.0.5 | MIT OR Apache-2.0 |
 | chacha20 | 0.10.2 | MIT OR Apache-2.0 |
+| chrono | 0.4.45 | MIT OR Apache-2.0 |
 | clap_builder | 4.5.47 | MIT OR Apache-2.0 |
 | clap_lex | 0.7.7 | MIT OR Apache-2.0 |
 | clap | 4.5.47 | MIT OR Apache-2.0 |
@@ -660,6 +676,7 @@ Third-party crates:
 | encoding_rs | 0.8.41 | (Apache-2.0 OR MIT) AND BSD-3-Clause |
 | equivalent | 1.0.2 | Apache-2.0 OR MIT |
 | errno | 0.3.14 | MIT OR Apache-2.0 |
+| fancy-regex | 0.11.0 | MIT |
 | fancy-regex | 0.19.2 | MIT |
 | faster-hex | 0.10.0 | MIT |
 | fastrand | 2.5.0 | Apache-2.0 OR MIT |
@@ -670,6 +687,7 @@ Third-party crates:
 | fnv | 1.0.7 | Apache-2.0 / MIT |
 | foldhash | 0.2.0 | Zlib |
 | form_urlencoded | 1.2.2 | MIT OR Apache-2.0 |
+| fraction | 0.13.1 | MIT/Apache-2.0 |
 | fraction | 0.17.0 | MIT OR Apache-2.0 |
 | fs_extra | 1.3.0 | MIT |
 | futures-channel | 0.3.34 | MIT OR Apache-2.0 |
@@ -773,14 +791,20 @@ Third-party crates:
 | indexmap | 2.14.2 | Apache-2.0 OR MIT |
 | io-close | 0.3.7 | MIT OR Apache-2.0 |
 | ipnet | 2.12.2 | MIT OR Apache-2.0 |
+| iso8601 | 0.6.6 | MIT |
 | itoa | 1.0.18 | MIT OR Apache-2.0 |
 | jiff-core | 0.1.1 | Unlicense OR MIT |
 | jiff-static | 0.2.37 | Unlicense OR MIT |
 | jiff | 0.2.37 | Unlicense OR MIT |
 | jobserver | 0.1.35 | MIT OR Apache-2.0 |
+| jsonschema-regex | 0.55.1 | MIT |
 | jsonschema-regex | 0.56.0 | MIT |
+| jsonschema-value | 0.55.1 | MIT |
 | jsonschema-value | 0.56.0 | MIT |
+| jsonschema | 0.17.1 | MIT |
+| jsonschema | 0.55.1 | MIT |
 | jsonschema | 0.56.0 | MIT |
+| lazy_static | 1.5.0 | MIT OR Apache-2.0 |
 | libc | 0.2.189 | MIT OR Apache-2.0 |
 | libyaml-rs | 0.3.0 | MIT |
 | linux-raw-sys | 0.12.1 | Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT |
@@ -797,6 +821,7 @@ Third-party crates:
 | multiversion_no_op | 1.0.0 | Apache-2.0 OR MIT |
 | multiversion-macros | 0.9.0 | MIT OR Apache-2.0 |
 | multiversion | 0.9.0 | MIT OR Apache-2.0 |
+| nom | 8.0.0 | MIT |
 | nonempty | 0.12.0 | MIT |
 | num-bigint | 0.4.8 | MIT OR Apache-2.0 |
 | num-cmp | 0.1.0 | MIT/Apache-2.0 |
@@ -807,6 +832,7 @@ Third-party crates:
 | num-rational | 0.4.2 | MIT OR Apache-2.0 |
 | num-traits | 0.2.19 | MIT OR Apache-2.0 |
 | num | 0.4.3 | MIT OR Apache-2.0 |
+| object | 0.39.1 | Apache-2.0 OR MIT |
 | once_cell | 1.21.4 | MIT OR Apache-2.0 |
 | openssl-probe | 0.2.1 | MIT OR Apache-2.0 |
 | ordered-float | 5.5.0 | MIT |
@@ -820,6 +846,7 @@ Third-party crates:
 | powerfmt | 0.2.0 | MIT OR Apache-2.0 |
 | proc-macro2 | 1.0.107 | MIT OR Apache-2.0 |
 | prodash | 31.0.0 | MIT |
+| psm | 0.1.32 | MIT OR Apache-2.0 |
 | quinn-proto | 0.11.18 | MIT OR Apache-2.0 |
 | quinn-udp | 0.5.15 | MIT OR Apache-2.0 |
 | quinn | 0.11.12 | MIT OR Apache-2.0 |
@@ -831,10 +858,12 @@ Third-party crates:
 | rayon | 1.12.0 | MIT OR Apache-2.0 |
 | ref-cast-impl | 1.0.27 | MIT OR Apache-2.0 |
 | ref-cast | 1.0.27 | MIT OR Apache-2.0 |
+| referencing | 0.55.1 | MIT |
 | referencing | 0.56.0 | MIT |
 | regex-automata | 0.4.18 | MIT OR Apache-2.0 |
 | regex-syntax | 0.8.11 | MIT OR Apache-2.0 |
 | regex | 1.13.1 | MIT OR Apache-2.0 |
+| regress | 0.11.1 | MIT OR Apache-2.0 |
 | reqwest | 0.13.5 | MIT OR Apache-2.0 |
 | ring | 0.17.14 | Apache-2.0 AND ISC |
 | rustc-hash | 2.1.3 | Apache-2.0 OR MIT |
@@ -850,15 +879,21 @@ Third-party crates:
 | same-file | 1.0.6 | Unlicense/MIT |
 | saphyr-parser | 0.0.12 | MIT OR Apache-2.0 |
 | saphyr | 0.0.12 | MIT OR Apache-2.0 |
+| schemars_derive | 0.8.22 | MIT |
 | schemars_derive | 1.2.2 | MIT |
+| schemars | 0.8.22 | MIT |
 | schemars | 1.2.2 | MIT |
 | scopeguard | 1.2.0 | MIT OR Apache-2.0 |
 | semver | 1.0.28 | MIT OR Apache-2.0 |
 | serde_core | 1.0.229 | MIT OR Apache-2.0 |
+| serde_derive_internals | 0.29.1 | MIT OR Apache-2.0 |
 | serde_derive_internals | 0.30.0 | MIT OR Apache-2.0 |
 | serde_derive | 1.0.229 | MIT OR Apache-2.0 |
 | serde_json_canonicalizer | 0.3.2 | MIT |
 | serde_json | 1.0.151 | MIT OR Apache-2.0 |
+| serde_path_to_error | 0.1.20 | MIT OR Apache-2.0 |
+| serde_stacker | 0.1.11 | MIT OR Apache-2.0 |
+| serde_tokenstream | 0.2.3 | Apache-2.0 |
 | serde | 1.0.229 | MIT OR Apache-2.0 |
 | sha1-checked | 0.10.0 | MIT OR Apache-2.0 |
 | sha1 | 0.10.7 | MIT OR Apache-2.0 |
@@ -871,7 +906,9 @@ Third-party crates:
 | slab | 0.4.12 | MIT |
 | smallvec | 1.16.1 | MIT OR Apache-2.0 |
 | socket2 | 0.6.5 | MIT OR Apache-2.0 |
+| spin | 0.9.9 | MIT |
 | stable_deref_trait | 1.2.1 | MIT OR Apache-2.0 |
+| stacker | 0.1.15 | MIT OR Apache-2.0 |
 | streaming-iterator | 0.1.9 | MIT OR Apache-2.0 |
 | strum_macros | 0.28.0 | MIT |
 | strum | 0.28.0 | MIT |
@@ -905,13 +942,17 @@ Third-party crates:
 | tree-sitter-rust | 0.24.2 | MIT |
 | tree-sitter-typescript | 0.23.2 | MIT |
 | tree-sitter | 0.26.13 | MIT |
+| triomphe | 0.1.17 | MIT OR Apache-2.0 |
 | try-lock | 0.2.5 | MIT |
 | typed-path | 0.12.3 | MIT OR Apache-2.0 |
 | typenum | 1.20.1 | MIT OR Apache-2.0 |
+| typify-impl | 0.7.0 | Apache-2.0 |
+| typify-macro | 0.7.0 | Apache-2.0 |
+| typify | 0.7.0 | Apache-2.0 |
 | uluru | 3.1.0 | MPL-2.0 |
 | unicode-bom | 2.0.3 | Apache-2.0 |
 | unicode-general-category | 1.1.0 | Apache-2.0 |
-| unicode-ident | 1.0.26 | (MIT OR Apache-2.0) AND Unicode-3.0 |
+| unicode-ident | 1.0.24 | (MIT OR Apache-2.0) AND Unicode-3.0 |
 | unicode-normalization | 0.1.25 | MIT OR Apache-2.0 |
 | untrusted | 0.9.0 | ISC |
 | url | 2.5.8 | MIT OR Apache-2.0 |
