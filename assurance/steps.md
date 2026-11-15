@@ -159,3 +159,9 @@ quoin measurement record --input measurements/collection.json
 ```bash step=measure-report
 quoin report
 ```
+
+The plan lists no population set, so the checker cannot decide a percentage and the verdict is `inconclusive`.
+
+```bash step=measure-verify expect-exit=1
+quoin measurement verify --plan MP-001
+```
