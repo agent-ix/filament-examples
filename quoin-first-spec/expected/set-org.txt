@@ -1,0 +1,1 @@
+Set quoin.org in ~/.config/ix/config.d/quoin.yaml.

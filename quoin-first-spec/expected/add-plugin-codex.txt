@@ -1,0 +1,4 @@
+Added marketplace `agent-ix` from https://github.com/agent-ix/agent-plugins.git.
+Installed marketplace root: ~/.codex/.tmp/marketplaces/agent-ix
+Added plugin `quoin` from marketplace `agent-ix`.
+Installed plugin root: ~/.codex/plugins/cache/agent-ix/quoin/0.30.0
