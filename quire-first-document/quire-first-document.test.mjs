@@ -62,7 +62,8 @@ test("the steps print the recorded output", { skip: skipReason() || false }, () 
       "--copy", join(HERE, "project"),
       "--expected", join(HERE, "expected"),
     ],
-    { encoding: "utf8" },
+    // The steps run `node --test`, which behaves differently inside a test run.
+    { encoding: "utf8", env: { ...process.env, NODE_TEST_CONTEXT: undefined } },
   );
   assert.equal(r.status, 0, `${r.stdout}\n${r.stderr}`);
 });
