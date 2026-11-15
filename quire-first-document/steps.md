@@ -180,6 +180,16 @@ DOC
 quire validate --scope . spec/functional/FR-003-invitation-reminder.md --summary
 ```
 
+`quire edit` replaces the body of one section and leaves every other byte of the file as it was. The new text comes from a file. `--out` names the file to write; without it the whole document goes to standard output.
+
+```bash step=edit-section
+quire edit spec/functional/FR-003-invitation-reminder.md --heading Description --content fixtures/FR-003-description.md --out spec/functional/FR-003-invitation-reminder.md
+```
+
+```bash step=lookup-edited stderr=hide
+quire lookup spec/functional/FR-003-invitation-reminder.md --heading Description --content
+```
+
 ## Select modules
 
 `--module` names the modules to use and replaces the search. A module that does not define `FR` leaves the documents without a type.
