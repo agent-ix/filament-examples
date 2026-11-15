@@ -25,6 +25,6 @@ quire matrix --scope . --format tsv
 
 The tests run with pytest (`pip install pytest`, then `pytest` in `project/` with `staged/tests/test_used_link.py` copied into `project/tests/`). They are not part of the matrix output: the matrix reads the trace tags in the test files, and nothing runs.
 
-`make test` runs `quoin-first-spec.test.mjs`. It runs each step of `steps.md` in a copy of `project/` and compares what it prints with `expected/`. It skips itself when `quoin` or `quire` is not installed. The recorded output was made with Quoin 0.30.1 and Quire 0.45.0; a newer release can print something else, and `RECORD=1 node --test quoin-first-spec/` records it again.
+`make test` runs `quoin-first-spec.test.mjs`. It runs each step of `steps.md` in a copy of `project/` and compares what it prints with `expected/`. It skips itself when `quoin` or `quire` is not installed. The recorded output was made with Quoin 0.30.1 and Quire 0.45.0; a newer release can print something else, and `RECORD=1 node --test quoin-first-spec/quoin-first-spec.test.mjs` records it again.
 
 The review in `staged/reviews/` was written by an agent that followed the `spec-review` skill. It is a fixture: nothing in the test asks an agent to write it again.

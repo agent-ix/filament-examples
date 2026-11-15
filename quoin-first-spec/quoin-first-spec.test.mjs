@@ -1,7 +1,7 @@
 // Runs the steps of steps.md in a copy of project/ and compares what each prints
 // with expected/<id>.txt. Skipped when quoin or quire is not installed.
-//   node --test quoin-first-spec/
-//   RECORD=1 node --test quoin-first-spec/    (rewrites expected/)
+//   node --test quoin-first-spec/quoin-first-spec.test.mjs
+//   RECORD=1 node --test quoin-first-spec/quoin-first-spec.test.mjs    (rewrites expected/)
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
 import { cpSync, existsSync, mkdirSync, mkdtempSync, readFileSync, realpathSync, rmSync, writeFileSync } from "node:fs";
