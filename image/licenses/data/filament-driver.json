@@ -1,10 +1,10 @@
 {
   "program": "filament-driver",
   "binary": "fsl",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "repository": "https://github.com/agent-ix/filament-driver",
-  "tag": "v0.1.2",
-  "commit": "5276b9d8bcd8725ff2bb26822b33e37b4befa6dd",
+  "tag": "v0.1.3",
+  "commit": "302044005fde382d481fea3be4b0fec49940015f",
   "targets": [
     "aarch64-unknown-linux-gnu",
     "x86_64-unknown-linux-gnu"
@@ -16,7 +16,7 @@
       "licence": "AGPL-3.0-or-later",
       "source": "git",
       "repository": "https://github.com/agent-ix/filament-core-data",
-      "commit": "327a49ca9d7ab2c12269a8db65b75f1331e165bd",
+      "commit": "d7a9b7b60527b9640001acfb6fc8fdb5a9875a8f",
       "licenceFiles": [
         "0d96a4ff68ad6d4b"
       ]
@@ -27,7 +27,7 @@
       "licence": "AGPL-3.0-or-later",
       "source": "git",
       "repository": "https://github.com/agent-ix/filament-core-data",
-      "commit": "327a49ca9d7ab2c12269a8db65b75f1331e165bd",
+      "commit": "d7a9b7b60527b9640001acfb6fc8fdb5a9875a8f",
       "licenceFiles": []
     },
     {
@@ -36,7 +36,7 @@
       "licence": "AGPL-3.0-or-later",
       "source": "git",
       "repository": "https://github.com/agent-ix/filament-core-data",
-      "commit": "327a49ca9d7ab2c12269a8db65b75f1331e165bd",
+      "commit": "d7a9b7b60527b9640001acfb6fc8fdb5a9875a8f",
       "licenceFiles": []
     },
     {
@@ -623,6 +623,150 @@
       ]
     },
     {
+      "name": "filament-cache",
+      "version": "0.1.0",
+      "licence": "AGPL-3.0-or-later",
+      "source": "workspace",
+      "repository": "https://github.com/agent-ix/filament-driver",
+      "commit": null,
+      "licenceFiles": []
+    },
+    {
+      "name": "filament-checked",
+      "version": "0.1.0",
+      "licence": "AGPL-3.0-or-later",
+      "source": "git",
+      "repository": "https://github.com/agent-ix/filament-eval",
+      "commit": "63d365201424de3964c5cead12eecf3879ecc22b",
+      "licenceFiles": []
+    },
+    {
+      "name": "filament-contract-codegen",
+      "version": "0.1.0",
+      "licence": "AGPL-3.0-or-later",
+      "source": "git",
+      "repository": "https://github.com/agent-ix/filament-contract-codegen",
+      "commit": "ebe100f720b673740dcfb32c2ad6693c34335b5a",
+      "licenceFiles": [
+        "0d96a4ff68ad6d4b"
+      ]
+    },
+    {
+      "name": "filament-contract-ir",
+      "version": "0.1.0",
+      "licence": "AGPL-3.0-or-later",
+      "source": "git",
+      "repository": "https://github.com/agent-ix/filament-contract-ir",
+      "commit": "80e3f67f9b5aee9159eb325d14e589a31a0f27a3",
+      "licenceFiles": [
+        "0d96a4ff68ad6d4b"
+      ]
+    },
+    {
+      "name": "filament-contract-model",
+      "version": "0.1.0",
+      "licence": "AGPL-3.0-or-later",
+      "source": "git",
+      "repository": "https://github.com/agent-ix/filament-contract-ir",
+      "commit": "80e3f67f9b5aee9159eb325d14e589a31a0f27a3",
+      "licenceFiles": []
+    },
+    {
+      "name": "filament-contract-runtime",
+      "version": "0.1.0",
+      "licence": "AGPL-3.0-or-later",
+      "source": "git",
+      "repository": "https://github.com/agent-ix/filament-contract-runtime",
+      "commit": "b86fb59841ee84947e7c830d86b3327d7bbda0e3",
+      "licenceFiles": [
+        "0d96a4ff68ad6d4b"
+      ]
+    },
+    {
+      "name": "filament-driver",
+      "version": "0.1.3",
+      "licence": "AGPL-3.0-or-later",
+      "source": "workspace",
+      "repository": "https://github.com/agent-ix/filament-driver",
+      "commit": null,
+      "licenceFiles": [
+        "0d96a4ff68ad6d4b"
+      ]
+    },
+    {
+      "name": "filament-eval",
+      "version": "0.1.0",
+      "licence": "AGPL-3.0-or-later",
+      "source": "git",
+      "repository": "https://github.com/agent-ix/filament-eval",
+      "commit": "63d365201424de3964c5cead12eecf3879ecc22b",
+      "licenceFiles": []
+    },
+    {
+      "name": "filament-exact",
+      "version": "0.1.0",
+      "licence": "AGPL-3.0-or-later",
+      "source": "git",
+      "repository": "https://github.com/agent-ix/filament-exact",
+      "commit": "f1ef4963d19e343d19fd85f415b509439126f1da",
+      "licenceFiles": [
+        "0d96a4ff68ad6d4b"
+      ]
+    },
+    {
+      "name": "filament-observation",
+      "version": "0.1.0",
+      "licence": "AGPL-3.0-or-later",
+      "source": "git",
+      "repository": "https://github.com/agent-ix/filament-observation",
+      "commit": "0b4543ace1250739960939a993792d7d5a967a4d",
+      "licenceFiles": [
+        "0d96a4ff68ad6d4b"
+      ]
+    },
+    {
+      "name": "filament-plugin-host",
+      "version": "0.1.0",
+      "licence": "AGPL-3.0-or-later",
+      "source": "workspace",
+      "repository": "https://github.com/agent-ix/filament-driver",
+      "commit": null,
+      "licenceFiles": []
+    },
+    {
+      "name": "filament-semantic-value",
+      "version": "0.1.0",
+      "licence": "AGPL-3.0-or-later",
+      "source": "git",
+      "repository": "https://github.com/agent-ix/filament-semantic-value",
+      "commit": "c943d9560f1c614ad6b8512bfe8b8f2963f8122d",
+      "licenceFiles": [
+        "0d96a4ff68ad6d4b"
+      ]
+    },
+    {
+      "name": "filament-verification-contracts",
+      "version": "0.1.0",
+      "licence": "AGPL-3.0-or-later",
+      "source": "git",
+      "repository": "https://github.com/agent-ix/filament-verification-contracts",
+      "commit": "b79af1b550c91288778ee5df1becc6e7388dd66f",
+      "licenceFiles": [
+        "0d96a4ff68ad6d4b"
+      ]
+    },
+    {
+      "name": "filament-walk",
+      "version": "0.1.0",
+      "licence": "AGPL-3.0-or-later",
+      "source": "git",
+      "repository": "https://github.com/agent-ix/filament-walk",
+      "commit": "ab0c37a0a88cf5bf4b45a32fc12a01992abea00d",
+      "licenceFiles": [
+        "0d96a4ff68ad6d4b"
+      ]
+    },
+    {
       "name": "find-msvc-tools",
       "version": "0.1.15",
       "licence": "MIT OR Apache-2.0",
@@ -705,12 +849,102 @@
       ]
     },
     {
+      "name": "fsl-analyze",
+      "version": "0.1.0",
+      "licence": "AGPL-3.0-or-later",
+      "source": "git",
+      "repository": "https://github.com/agent-ix/filament-spec-language",
+      "commit": "3c2710f337412f0e51ffd3c738d13d692cff4cae",
+      "licenceFiles": []
+    },
+    {
       "name": "fsl-cli",
-      "version": "0.1.2",
+      "version": "0.1.3",
       "licence": "AGPL-3.0-or-later",
       "source": "workspace",
       "repository": "https://github.com/agent-ix/filament-driver",
       "commit": null,
+      "licenceFiles": []
+    },
+    {
+      "name": "fsl-command",
+      "version": "0.1.0",
+      "licence": "AGPL-3.0-or-later",
+      "source": "git",
+      "repository": "https://github.com/agent-ix/filament-spec-language",
+      "commit": "3c2710f337412f0e51ffd3c738d13d692cff4cae",
+      "licenceFiles": []
+    },
+    {
+      "name": "fsl-cst",
+      "version": "0.1.0",
+      "licence": "AGPL-3.0-or-later",
+      "source": "git",
+      "repository": "https://github.com/agent-ix/filament-spec-language",
+      "commit": "3c2710f337412f0e51ffd3c738d13d692cff4cae",
+      "licenceFiles": []
+    },
+    {
+      "name": "fsl-eval",
+      "version": "0.1.0",
+      "licence": "AGPL-3.0-or-later",
+      "source": "git",
+      "repository": "https://github.com/agent-ix/filament-spec-language",
+      "commit": "3c2710f337412f0e51ffd3c738d13d692cff4cae",
+      "licenceFiles": []
+    },
+    {
+      "name": "fsl-forms",
+      "version": "0.1.0",
+      "licence": "AGPL-3.0-or-later",
+      "source": "git",
+      "repository": "https://github.com/agent-ix/filament-spec-language",
+      "commit": "3c2710f337412f0e51ffd3c738d13d692cff4cae",
+      "licenceFiles": []
+    },
+    {
+      "name": "fsl-foundation",
+      "version": "0.1.0",
+      "licence": "AGPL-3.0-or-later",
+      "source": "git",
+      "repository": "https://github.com/agent-ix/filament-spec-language",
+      "commit": "3c2710f337412f0e51ffd3c738d13d692cff4cae",
+      "licenceFiles": []
+    },
+    {
+      "name": "fsl-package",
+      "version": "0.1.0",
+      "licence": "AGPL-3.0-or-later",
+      "source": "git",
+      "repository": "https://github.com/agent-ix/filament-spec-language",
+      "commit": "3c2710f337412f0e51ffd3c738d13d692cff4cae",
+      "licenceFiles": []
+    },
+    {
+      "name": "fsl-replay",
+      "version": "0.1.0",
+      "licence": "AGPL-3.0-or-later",
+      "source": "git",
+      "repository": "https://github.com/agent-ix/filament-spec-language",
+      "commit": "3c2710f337412f0e51ffd3c738d13d692cff4cae",
+      "licenceFiles": []
+    },
+    {
+      "name": "fsl-route",
+      "version": "0.1.0",
+      "licence": "AGPL-3.0-or-later",
+      "source": "git",
+      "repository": "https://github.com/agent-ix/filament-spec-language",
+      "commit": "3c2710f337412f0e51ffd3c738d13d692cff4cae",
+      "licenceFiles": []
+    },
+    {
+      "name": "fsl-semantics",
+      "version": "0.1.0",
+      "licence": "AGPL-3.0-or-later",
+      "source": "git",
+      "repository": "https://github.com/agent-ix/filament-spec-language",
+      "commit": "3c2710f337412f0e51ffd3c738d13d692cff4cae",
       "licenceFiles": []
     },
     {
@@ -1450,105 +1684,6 @@
       ]
     },
     {
-      "name": "qsl-analyze",
-      "version": "0.1.0",
-      "licence": "AGPL-3.0-or-later",
-      "source": "git",
-      "repository": "https://github.com/agent-ix/quire-spec-language",
-      "commit": "5893d92cd164cfd752d8198387081a0cbe78e991",
-      "licenceFiles": []
-    },
-    {
-      "name": "qsl-command",
-      "version": "0.1.0",
-      "licence": "AGPL-3.0-or-later",
-      "source": "git",
-      "repository": "https://github.com/agent-ix/quire-spec-language",
-      "commit": "5893d92cd164cfd752d8198387081a0cbe78e991",
-      "licenceFiles": []
-    },
-    {
-      "name": "qsl-cst",
-      "version": "0.1.0",
-      "licence": "AGPL-3.0-or-later",
-      "source": "git",
-      "repository": "https://github.com/agent-ix/quire-spec-language",
-      "commit": "5893d92cd164cfd752d8198387081a0cbe78e991",
-      "licenceFiles": []
-    },
-    {
-      "name": "qsl-eval",
-      "version": "0.1.0",
-      "licence": "AGPL-3.0-or-later",
-      "source": "git",
-      "repository": "https://github.com/agent-ix/quire-spec-language",
-      "commit": "5893d92cd164cfd752d8198387081a0cbe78e991",
-      "licenceFiles": []
-    },
-    {
-      "name": "qsl-forms",
-      "version": "0.1.0",
-      "licence": "AGPL-3.0-or-later",
-      "source": "git",
-      "repository": "https://github.com/agent-ix/quire-spec-language",
-      "commit": "5893d92cd164cfd752d8198387081a0cbe78e991",
-      "licenceFiles": []
-    },
-    {
-      "name": "qsl-foundation",
-      "version": "0.1.0",
-      "licence": "AGPL-3.0-or-later",
-      "source": "git",
-      "repository": "https://github.com/agent-ix/quire-spec-language",
-      "commit": "5893d92cd164cfd752d8198387081a0cbe78e991",
-      "licenceFiles": []
-    },
-    {
-      "name": "qsl-package",
-      "version": "0.1.0",
-      "licence": "AGPL-3.0-or-later",
-      "source": "git",
-      "repository": "https://github.com/agent-ix/quire-spec-language",
-      "commit": "5893d92cd164cfd752d8198387081a0cbe78e991",
-      "licenceFiles": []
-    },
-    {
-      "name": "qsl-replay",
-      "version": "0.1.0",
-      "licence": "AGPL-3.0-or-later",
-      "source": "git",
-      "repository": "https://github.com/agent-ix/quire-spec-language",
-      "commit": "5893d92cd164cfd752d8198387081a0cbe78e991",
-      "licenceFiles": []
-    },
-    {
-      "name": "qsl-route",
-      "version": "0.1.0",
-      "licence": "AGPL-3.0-or-later",
-      "source": "git",
-      "repository": "https://github.com/agent-ix/quire-spec-language",
-      "commit": "5893d92cd164cfd752d8198387081a0cbe78e991",
-      "licenceFiles": []
-    },
-    {
-      "name": "qsl-semantics",
-      "version": "0.1.0",
-      "licence": "AGPL-3.0-or-later",
-      "source": "git",
-      "repository": "https://github.com/agent-ix/quire-spec-language",
-      "commit": "5893d92cd164cfd752d8198387081a0cbe78e991",
-      "licenceFiles": []
-    },
-    {
-      "name": "quire-cache",
-      "version": "0.1.0",
-      "licence": "AGPL-3.0-or-later",
-      "source": "workspace",
-      "repository": "https://github.com/agent-ix/filament-driver",
-      "commit": null,
-      "licenceFiles": []
-    },
-    {
       "name": "quire-canonical-derive",
       "version": "0.3.0",
       "licence": "AGPL-3.0-or-later",
@@ -1569,147 +1704,12 @@
       ]
     },
     {
-      "name": "quire-checked",
-      "version": "0.1.0",
-      "licence": "AGPL-3.0-or-later",
-      "source": "git",
-      "repository": "https://github.com/agent-ix/quire-eval",
-      "commit": "0e9f1a67e0142d8862f4bbc4a1ad96c32739d0ba",
-      "licenceFiles": []
-    },
-    {
-      "name": "quire-contract-codegen",
-      "version": "0.1.0",
-      "licence": "AGPL-3.0-or-later",
-      "source": "git",
-      "repository": "https://github.com/agent-ix/quire-contract-codegen",
-      "commit": "b4788a0d6e4ae7e5db00b45c551b323bcc8cbea7",
-      "licenceFiles": [
-        "0d96a4ff68ad6d4b"
-      ]
-    },
-    {
-      "name": "quire-contract-ir",
-      "version": "0.1.0",
-      "licence": "AGPL-3.0-or-later",
-      "source": "git",
-      "repository": "https://github.com/agent-ix/quire-contract-ir",
-      "commit": "f582c0c428c997a5e3b23b45d32567274c3a8a14",
-      "licenceFiles": [
-        "0d96a4ff68ad6d4b"
-      ]
-    },
-    {
-      "name": "quire-contract-model",
-      "version": "0.1.0",
-      "licence": "AGPL-3.0-or-later",
-      "source": "git",
-      "repository": "https://github.com/agent-ix/quire-contract-ir",
-      "commit": "f582c0c428c997a5e3b23b45d32567274c3a8a14",
-      "licenceFiles": []
-    },
-    {
-      "name": "quire-contract-runtime",
-      "version": "0.1.0",
-      "licence": "AGPL-3.0-or-later",
-      "source": "git",
-      "repository": "https://github.com/agent-ix/quire-contract-runtime",
-      "commit": "6ac69ce55d8167a2f50d19d448cf4eb6df5f4934",
-      "licenceFiles": [
-        "0d96a4ff68ad6d4b"
-      ]
-    },
-    {
-      "name": "quire-driver",
-      "version": "0.1.2",
-      "licence": "AGPL-3.0-or-later",
-      "source": "workspace",
-      "repository": "https://github.com/agent-ix/filament-driver",
-      "commit": null,
-      "licenceFiles": [
-        "0d96a4ff68ad6d4b"
-      ]
-    },
-    {
-      "name": "quire-eval",
-      "version": "0.1.0",
-      "licence": "AGPL-3.0-or-later",
-      "source": "git",
-      "repository": "https://github.com/agent-ix/quire-eval",
-      "commit": "0e9f1a67e0142d8862f4bbc4a1ad96c32739d0ba",
-      "licenceFiles": []
-    },
-    {
-      "name": "quire-exact",
-      "version": "0.1.0",
-      "licence": "AGPL-3.0-or-later",
-      "source": "git",
-      "repository": "https://github.com/agent-ix/quire-exact",
-      "commit": "b3bc38fa85eac3432dd0dc649dca1d1c57ad656a",
-      "licenceFiles": [
-        "0d96a4ff68ad6d4b"
-      ]
-    },
-    {
-      "name": "quire-observation",
-      "version": "0.1.0",
-      "licence": "AGPL-3.0-or-later",
-      "source": "git",
-      "repository": "https://github.com/agent-ix/quire-observation",
-      "commit": "46b71554a406897a62a3a8e0787afa6d8288030d",
-      "licenceFiles": [
-        "0d96a4ff68ad6d4b"
-      ]
-    },
-    {
-      "name": "quire-plugin-host",
-      "version": "0.1.0",
-      "licence": "AGPL-3.0-or-later",
-      "source": "workspace",
-      "repository": "https://github.com/agent-ix/filament-driver",
-      "commit": null,
-      "licenceFiles": []
-    },
-    {
       "name": "quire-rs",
       "version": "0.53.0",
       "licence": "AGPL-3.0-or-later",
       "source": "git",
       "repository": "https://github.com/agent-ix/quire-rs",
       "commit": "71a1f970bebc8d7267424dda26cf4c665bcc5ae5",
-      "licenceFiles": [
-        "0d96a4ff68ad6d4b"
-      ]
-    },
-    {
-      "name": "quire-semantic-value",
-      "version": "0.1.0",
-      "licence": "AGPL-3.0-or-later",
-      "source": "git",
-      "repository": "https://github.com/agent-ix/quire-semantic-value",
-      "commit": "3c4616dafd4f739573c86af049661646f24dc293",
-      "licenceFiles": [
-        "0d96a4ff68ad6d4b"
-      ]
-    },
-    {
-      "name": "quire-verification-contracts",
-      "version": "0.1.0",
-      "licence": "AGPL-3.0-or-later",
-      "source": "git",
-      "repository": "https://github.com/agent-ix/quire-verification-contracts",
-      "commit": "1bf72e68d425aa0233235883d0b6ed1139ff6cb1",
-      "licenceFiles": [
-        "0d96a4ff68ad6d4b"
-      ]
-    },
-    {
-      "name": "quire-walk",
-      "version": "0.1.0",
-      "licence": "AGPL-3.0-or-later",
-      "source": "git",
-      "repository": "https://github.com/agent-ix/quire-walk",
-      "commit": "b48d991914a964fcd39c2fe6d67b322f2498e3c9",
       "licenceFiles": [
         "0d96a4ff68ad6d4b"
       ]
