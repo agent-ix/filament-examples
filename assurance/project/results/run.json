@@ -1,4 +1,0 @@
-{"entries": [
-  {"symbol": "a refund up to the amount paid is accepted", "path": "tests/refund.test.ts", "outcome": "pass", "traceIds": ["FR-001-AC-1"]},
-  {"symbol": "a refund above the amount paid is refused", "path": "tests/refund-refused.test.ts", "outcome": "pass", "traceIds": ["FR-001-AC-2"]}
-]}

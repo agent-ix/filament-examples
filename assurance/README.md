@@ -11,9 +11,10 @@ You can check the requirements, read the test matrix, record test runs and a rev
   - `spec/functional/FR-001-refund-limit.md`: the functional requirement and its two acceptance criteria.
   - `spec/evidence/suites.md`: the test suite the evidence names.
   - `spec/assurance/MP-001-refund-test-pass-rate.md`: a measurement plan.
-  - `src/refund.mjs` and `tests/refund.test.ts`: the code and the test of the first criterion. `fixtures/refund-refused.ts` is the test of the second criterion, which a step copies into `tests/`.
-  - `results/`: the test results the evidence steps record, in the form `quoin evidence record` reads.
-  - `change/`: the change record, the proof attestation, the test result file it describes, the review decision and the audit report of the change steps.
+  - `src/refund.mjs` and `tests/refund.test.ts`: the code and the test of the first criterion. `fixtures/refund-refused.ts` is the test of the second criterion, which a step copies into `tests/`; `fixtures/refund-broken.mjs` is a change that breaks the rule.
+  - `tools/junit-trace.mjs`: adds the criterion ids each test is tagged with to the JUnit report of `node --test`, as a `<property name="trace">` per test case, which `quoin evidence record --adapter junit` reads. Node's own JUnit reporter does not write it.
+  - `results/`: empty; the steps write the test reports here.
+  - `change/`: the change record, the proof attestation, the review decision and the audit report of the change steps. They are written by hand in the forms `quoin` reads. Values such as the tool version, the operating system, `base_revision: main` and `candidate_revision: candidate-1` are illustrative.
   - `measurements/collection.json`: one measurement against the plan.
 - [steps.md](steps.md): every command, in order.
 - [expected](expected): the recorded output of each step.

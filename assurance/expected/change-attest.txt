@@ -1,2 +1,2 @@
 retained attestation → ./spec/evidence/change-assurance/attestations/unit-tests-1
-  output bytes: 289
+  output bytes: 602

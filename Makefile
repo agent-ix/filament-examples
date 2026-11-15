@@ -57,8 +57,9 @@ install-test-host:
 # copy of assurance/project and compare each step's output with
 # assurance/expected. Needs Node.js 22.18 or later, npm and git, and network
 # access to npmjs.org and github.com. HOME is a new temporary folder and npm
-# installs into it, so the tools and spec modules never touch your own.
-ASSURANCE_ENV = export HOME="$$(mktemp -d)" && export npm_config_prefix="$$HOME/npm" && export PATH="$$HOME/npm/bin:$$PATH" &&
+# installs into it, so the tools and spec modules never touch your own. The
+# folder is removed when the run ends.
+ASSURANCE_ENV = assurance_home="$$(mktemp -d)" && trap 'rm -rf "$$assurance_home"' EXIT && export HOME="$$assurance_home" && export npm_config_prefix="$$HOME/npm" && export PATH="$$HOME/npm/bin:$$PATH" &&
 ASSURANCE_RUN = $(NODE) tools/steps.mjs run assurance/steps.md --host --copy assurance/project --expected assurance/expected
 assurance-test:
 	$(ASSURANCE_ENV) $(ASSURANCE_RUN)

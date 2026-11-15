@@ -57,6 +57,10 @@ node --test --test-reporter=dot
 quire matrix
 ```
 
+```bash step=trace-id-after stderr=hide
+quire trace --id FR-001 --prefix
+```
+
 ```bash step=trace-file stderr=hide
 quire trace --file tests/refund-refused.test.ts
 ```
@@ -68,8 +72,19 @@ git -c user.name=Shop -c user.email=shop@example.com commit -qm "Test the refuse
 
 ## Record test evidence
 
+Run the tests with Node's JUnit reporter. Node's report does not say which criteria each test checks, so `tools/junit-trace.mjs` adds a `trace` property to each test case from the tags `quire` reads, and makes the report the same on every machine.
+
+```bash step=run-tests
+node --test --test-reporter=junit --test-reporter-destination=results/node.xml
+node tools/junit-trace.mjs results/node.xml results/junit.xml
+```
+
+```bash step=junit-file
+cat results/junit.xml
+```
+
 ```bash step=evidence-record
-quoin evidence record --suite SUITE-001 --tool 'node --test' --results results/run.json --timestamp 2026-11-14T12:00:00Z
+quoin evidence record --suite SUITE-001 --tool 'node --test' --adapter junit --results results/junit.xml --timestamp 2026-11-14T12:00:00Z
 ```
 
 ```bash step=inspect-mocks
@@ -84,10 +99,19 @@ quoin evidence audit
 quoin assurance
 ```
 
-A later run in which the second test fails is recorded the same way, and the audit reports it.
+A change that breaks the refund rule makes the second test fail. Its run is recorded the same way, and the audit reports it.
+
+```bash step=break-rule
+cp fixtures/refund-broken.mjs src/refund.mjs
+```
+
+```bash step=run-tests-failing expect-exit=1
+node --test --test-reporter=junit --test-reporter-destination=results/node-failing.xml
+```
 
 ```bash step=evidence-record-failing
-quoin evidence record --suite SUITE-001 --tool 'node --test' --results results/run-failing.json --timestamp 2026-11-14T13:00:00Z
+node tools/junit-trace.mjs results/node-failing.xml results/junit-failing.xml
+quoin evidence record --suite SUITE-001 --tool 'node --test' --adapter junit --results results/junit-failing.xml --timestamp 2026-11-14T13:00:00Z
 ```
 
 ```bash step=evidence-audit-failing
@@ -98,6 +122,12 @@ quoin evidence audit
 quoin evidence audit --strict
 ```
 
+Undo the breaking change before the next section.
+
+```bash step=restore-rule
+git checkout -- src/refund.mjs
+```
+
 ## Record a change and its proof
 
 ```bash step=change-record
@@ -105,7 +135,7 @@ quoin change-assurance write-record --input change/record.json
 ```
 
 ```bash step=change-attest
-quoin change-assurance prepare-attestation --input change/attestation.json --output change/junit.xml --media-type application/xml | quoin change-assurance intake --attestation - --output change/junit.xml
+quoin change-assurance prepare-attestation --input change/attestation.json --output results/junit.xml --media-type application/xml | quoin change-assurance intake --attestation - --output results/junit.xml
 ```
 
 ```bash step=change-receipt
