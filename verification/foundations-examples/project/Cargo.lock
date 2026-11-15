@@ -90,7 +90,7 @@ dependencies = [
 [[package]]
 name = "filament-exact"
 version = "0.1.0"
-source = "git+https://github.com/agent-ix/filament-exact?branch=main#9308a3b5c3bc96c260b26e46828c8589cf8861b2"
+source = "git+https://github.com/agent-ix/filament-exact?branch=main#f1ef4963d19e343d19fd85f415b509439126f1da"
 dependencies = [
  "allocator-api2",
  "arrayvec",
