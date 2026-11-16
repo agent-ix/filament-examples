@@ -1,0 +1,60 @@
+{
+  "format": "native-run/1",
+  "request": {
+    "models": [],
+    "program": {
+      "source": {
+        "file": "../rules/finite-window-indeterminate.fsl",
+        "authority": "example",
+        "identity": "example:rover/safe-stop-indeterminate",
+        "document": "SafeStopIndeterminate",
+        "formal_revision": 1
+      }
+    },
+    "clocks": {
+      "plant-ms": {
+        "kind": "timestamped_event",
+        "timestamp_unit": "ms"
+      }
+    },
+    "clause": {
+      "selection": {
+        "temporal": {
+          "name": "StopWithin200ms",
+          "trace": {
+            "timestamped": {
+              "observations": [
+                {
+                  "position": {
+                    "sample": {
+                      "level": {
+                        "integer": "0"
+                      }
+                    }
+                  },
+                  "stamp": 0
+                }
+              ],
+              "progress": {
+                "watermark": 200,
+                "completeness": "incomplete",
+                "scope": "closed",
+                "execution": "closed"
+              },
+              "lower_boundary": "authoritative-origin",
+              "binding": {
+                "profile": "filament.temporal.timestamped-event.finite-window/v1",
+                "clock": "plant-ms",
+                "parameters": {
+                  "kind": "timestamped_event",
+                  "timestamp_unit": "ms"
+                }
+              }
+            }
+          }
+        }
+      },
+      "observations": {}
+    }
+  }
+}

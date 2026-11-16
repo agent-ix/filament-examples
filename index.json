@@ -1689,6 +1689,21 @@
     },
     {
       "system": "rover",
+      "case": "safe-stop-indeterminate",
+      "status": "running",
+      "rule": "StopWithin200ms",
+      "statement": "The finite stop deadline remains open before 200 ms.",
+      "rule_file": "examples/rover/rules/finite-window-indeterminate.fsl",
+      "data_files": [],
+      "request_file": "examples/rover/requests/safe-stop-indeterminate.json",
+      "expected_file": "examples/rover/expected/safe-stop-indeterminate.json",
+      "verdict": "indeterminate",
+      "exit": 11,
+      "waits_on": null,
+      "needs": null
+    },
+    {
+      "system": "rover",
       "case": "obstacle-outvoted",
       "status": "running",
       "rule": "ObstacleSlows",
