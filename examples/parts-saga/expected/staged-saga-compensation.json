@@ -1,10 +1,7 @@
 {
-  "category": "refusal",
+  "category": "success",
   "last_stage": "S4",
   "result": null,
-  "first_diagnostic": {
-    "code": "missing_declaration",
-    "cause": "missing-selection"
-  },
+  "first_diagnostic": null,
   "items": []
 }

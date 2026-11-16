@@ -1198,17 +1198,17 @@
     {
       "system": "parts-saga",
       "case": "staged-saga-compensation",
-      "status": "staged",
+      "status": "running",
       "rule": null,
       "statement": "A job finishes within 120 seconds, and scrapping a part releases its machine.",
       "rule_file": "examples/parts-saga/rules/part-flow.fsl",
       "data_files": [],
       "request_file": "examples/parts-saga/requests/staged-saga-compensation.json",
       "expected_file": "examples/parts-saga/expected/staged-saga-compensation.json",
-      "verdict": null,
-      "exit": 20,
-      "waits_on": "QSL-1964",
-      "needs": "clock selection for timeouts"
+      "verdict": "holds",
+      "exit": 0,
+      "waits_on": null,
+      "needs": null
     },
     {
       "system": "parts-saga",
