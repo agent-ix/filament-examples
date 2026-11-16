@@ -1,7 +1,347 @@
 {
-  "category": "success",
+  "category": "violation",
   "last_stage": null,
   "result": null,
   "first_diagnostic": null,
-  "items": []
+  "items": [
+    {
+      "axes": {
+        "activation": "active",
+        "execution": "completed",
+        "settlement": "decisive-counterexample",
+        "truth": "false"
+      },
+      "category": "violation",
+      "claim_name": "",
+      "counterexample": {
+        "fairness": [],
+        "initial_state": 0,
+        "interval": null,
+        "kind": "deadlock",
+        "loop": [],
+        "over_binding": null,
+        "prefix": [
+          {
+            "post_state": {
+              "key": "eyJib3VuZHMiOnsiZW50cmllcyI6W10sInR5cGUiOiJtYXAifSwiY29udHJvbCI6eyJlbnRyaWVzIjpbXSwidHlwZSI6Im1hcCJ9LCJtZW1vcnkiOnsiZW50cmllcyI6W10sInR5cGUiOiJtYXAifSwib2JzZXJ2YXRpb25zIjp7ImVudHJpZXMiOltdLCJ0eXBlIjoibWFwIn0sInF1ZXVlcyI6eyJlbnRyaWVzIjpbXSwidHlwZSI6Im1hcCJ9LCJyb2xlcyI6eyJlbnRyaWVzIjpbXSwidHlwZSI6Im1hcCJ9LCJzZW1hbnRpYyI6eyJlbnRyaWVzIjpbeyJrZXkiOnsidHlwZSI6InRleHQiLCJ2YWx1ZSI6IntcIm5vZGVcIjpcIml4Oi8vZXhhbXBsZS90d28tbG9ja3MvbG9ja3NcIixcInBhY2thZ2VcIjpcImV4YW1wbGUvdHdvLWxvY2tzXCJ9In0sInZhbHVlIjp7ImVudHJpZXMiOlt7ImtleSI6eyJpZGVudGl0eSI6InBhaXIiLCJvYmplY3RfdHlwZSI6eyJvcmlnaW5hbCI6eyJub2RlIjoiaXg6Ly9leGFtcGxlL3R3by1sb2Nrcy9Mb2NrcyIsInBhY2thZ2UiOiJleGFtcGxlL3R3by1sb2NrcyJ9LCJvd25lcl9lZmZlY3RpdmVfdHlwZSI6bnVsbH0sInR5cGUiOiJyZWZlcmVuY2UiLCJ1bml2ZXJzZSI6eyJvcmRpbmFsIjowLCJwYWNrYWdlIjoiZXhhbXBsZS90d28tbG9ja3MiLCJwYXRoIjpbIm1vZGVsIiwib2JqZWN0X3R5cGUiLCJpeDovL2V4YW1wbGUvdHdvLWxvY2tzL0xvY2tzIl19fSwidmFsdWUiOnsiZmllbGRzIjpbeyJuYW1lIjoiYSIsInZhbHVlIjp7InR5cGUiOiJpbnRlZ2VyIiwidmFsdWUiOiIxIn19LHsibmFtZSI6ImIiLCJ2YWx1ZSI6eyJ0eXBlIjoiaW50ZWdlciIsInZhbHVlIjoiMCJ9fV0sIm5hbWUiOiJ7XCJub2RlXCI6XCJpeDovL2V4YW1wbGUvdHdvLWxvY2tzL0xvY2tzXCIsXCJwYWNrYWdlXCI6XCJleGFtcGxlL3R3by1sb2Nrc1wifSIsInR5cGUiOiJyZWNvcmQifX1dLCJ0eXBlIjoibWFwIn19XSwidHlwZSI6Im1hcCJ9LCJ0eXBlIjoic2ltdWxhdGlvbi1zdGF0ZSJ9",
+              "state": {
+                "bounds": {
+                  "entries": [],
+                  "type": "map"
+                },
+                "control": {
+                  "entries": [],
+                  "type": "map"
+                },
+                "memory": {
+                  "entries": [],
+                  "type": "map"
+                },
+                "observations": {
+                  "entries": [],
+                  "type": "map"
+                },
+                "queues": {
+                  "entries": [],
+                  "type": "map"
+                },
+                "roles": {
+                  "entries": [],
+                  "type": "map"
+                },
+                "semantic": {
+                  "entries": [
+                    {
+                      "key": {
+                        "type": "text",
+                        "value": "{\"node\":\"ix://example/two-locks/locks\",\"package\":\"example/two-locks\"}"
+                      },
+                      "value": {
+                        "entries": [
+                          {
+                            "key": {
+                              "identity": "pair",
+                              "object_type": {
+                                "original": {
+                                  "node": "ix://example/two-locks/Locks",
+                                  "package": "example/two-locks"
+                                },
+                                "owner_effective_type": null
+                              },
+                              "type": "reference",
+                              "universe": {
+                                "ordinal": 0,
+                                "package": "example/two-locks",
+                                "path": [
+                                  "model",
+                                  "object_type",
+                                  "ix://example/two-locks/Locks"
+                                ]
+                              }
+                            },
+                            "value": {
+                              "fields": [
+                                {
+                                  "name": "a",
+                                  "value": {
+                                    "type": "integer",
+                                    "value": "1"
+                                  }
+                                },
+                                {
+                                  "name": "b",
+                                  "value": {
+                                    "type": "integer",
+                                    "value": "0"
+                                  }
+                                }
+                              ],
+                              "name": "{\"node\":\"ix://example/two-locks/Locks\",\"package\":\"example/two-locks\"}",
+                              "type": "record"
+                            }
+                          }
+                        ],
+                        "type": "map"
+                      }
+                    }
+                  ],
+                  "type": "map"
+                },
+                "type": "simulation-state"
+              }
+            },
+            "transition": {
+              "arguments": [
+                {
+                  "type": "integer",
+                  "value": "1"
+                }
+              ],
+              "operation": {
+                "node": "ix://example/two-locks/Locks/lockFirst",
+                "package": "example/two-locks"
+              },
+              "receiver": {
+                "identity": "pair",
+                "object_type": {
+                  "original": {
+                    "node": "ix://example/two-locks/Locks",
+                    "package": "example/two-locks"
+                  },
+                  "owner_effective_type": null
+                },
+                "type": "reference",
+                "universe": {
+                  "ordinal": 0,
+                  "package": "example/two-locks",
+                  "path": [
+                    "model",
+                    "object_type",
+                    "ix://example/two-locks/Locks"
+                  ]
+                }
+              },
+              "type": "transition"
+            }
+          },
+          {
+            "post_state": {
+              "key": "eyJib3VuZHMiOnsiZW50cmllcyI6W10sInR5cGUiOiJtYXAifSwiY29udHJvbCI6eyJlbnRyaWVzIjpbXSwidHlwZSI6Im1hcCJ9LCJtZW1vcnkiOnsiZW50cmllcyI6W10sInR5cGUiOiJtYXAifSwib2JzZXJ2YXRpb25zIjp7ImVudHJpZXMiOltdLCJ0eXBlIjoibWFwIn0sInF1ZXVlcyI6eyJlbnRyaWVzIjpbXSwidHlwZSI6Im1hcCJ9LCJyb2xlcyI6eyJlbnRyaWVzIjpbXSwidHlwZSI6Im1hcCJ9LCJzZW1hbnRpYyI6eyJlbnRyaWVzIjpbeyJrZXkiOnsidHlwZSI6InRleHQiLCJ2YWx1ZSI6IntcIm5vZGVcIjpcIml4Oi8vZXhhbXBsZS90d28tbG9ja3MvbG9ja3NcIixcInBhY2thZ2VcIjpcImV4YW1wbGUvdHdvLWxvY2tzXCJ9In0sInZhbHVlIjp7ImVudHJpZXMiOlt7ImtleSI6eyJpZGVudGl0eSI6InBhaXIiLCJvYmplY3RfdHlwZSI6eyJvcmlnaW5hbCI6eyJub2RlIjoiaXg6Ly9leGFtcGxlL3R3by1sb2Nrcy9Mb2NrcyIsInBhY2thZ2UiOiJleGFtcGxlL3R3by1sb2NrcyJ9LCJvd25lcl9lZmZlY3RpdmVfdHlwZSI6bnVsbH0sInR5cGUiOiJyZWZlcmVuY2UiLCJ1bml2ZXJzZSI6eyJvcmRpbmFsIjowLCJwYWNrYWdlIjoiZXhhbXBsZS90d28tbG9ja3MiLCJwYXRoIjpbIm1vZGVsIiwib2JqZWN0X3R5cGUiLCJpeDovL2V4YW1wbGUvdHdvLWxvY2tzL0xvY2tzIl19fSwidmFsdWUiOnsiZmllbGRzIjpbeyJuYW1lIjoiYSIsInZhbHVlIjp7InR5cGUiOiJpbnRlZ2VyIiwidmFsdWUiOiIxIn19LHsibmFtZSI6ImIiLCJ2YWx1ZSI6eyJ0eXBlIjoiaW50ZWdlciIsInZhbHVlIjoiMiJ9fV0sIm5hbWUiOiJ7XCJub2RlXCI6XCJpeDovL2V4YW1wbGUvdHdvLWxvY2tzL0xvY2tzXCIsXCJwYWNrYWdlXCI6XCJleGFtcGxlL3R3by1sb2Nrc1wifSIsInR5cGUiOiJyZWNvcmQifX1dLCJ0eXBlIjoibWFwIn19XSwidHlwZSI6Im1hcCJ9LCJ0eXBlIjoic2ltdWxhdGlvbi1zdGF0ZSJ9",
+              "state": {
+                "bounds": {
+                  "entries": [],
+                  "type": "map"
+                },
+                "control": {
+                  "entries": [],
+                  "type": "map"
+                },
+                "memory": {
+                  "entries": [],
+                  "type": "map"
+                },
+                "observations": {
+                  "entries": [],
+                  "type": "map"
+                },
+                "queues": {
+                  "entries": [],
+                  "type": "map"
+                },
+                "roles": {
+                  "entries": [],
+                  "type": "map"
+                },
+                "semantic": {
+                  "entries": [
+                    {
+                      "key": {
+                        "type": "text",
+                        "value": "{\"node\":\"ix://example/two-locks/locks\",\"package\":\"example/two-locks\"}"
+                      },
+                      "value": {
+                        "entries": [
+                          {
+                            "key": {
+                              "identity": "pair",
+                              "object_type": {
+                                "original": {
+                                  "node": "ix://example/two-locks/Locks",
+                                  "package": "example/two-locks"
+                                },
+                                "owner_effective_type": null
+                              },
+                              "type": "reference",
+                              "universe": {
+                                "ordinal": 0,
+                                "package": "example/two-locks",
+                                "path": [
+                                  "model",
+                                  "object_type",
+                                  "ix://example/two-locks/Locks"
+                                ]
+                              }
+                            },
+                            "value": {
+                              "fields": [
+                                {
+                                  "name": "a",
+                                  "value": {
+                                    "type": "integer",
+                                    "value": "1"
+                                  }
+                                },
+                                {
+                                  "name": "b",
+                                  "value": {
+                                    "type": "integer",
+                                    "value": "2"
+                                  }
+                                }
+                              ],
+                              "name": "{\"node\":\"ix://example/two-locks/Locks\",\"package\":\"example/two-locks\"}",
+                              "type": "record"
+                            }
+                          }
+                        ],
+                        "type": "map"
+                      }
+                    }
+                  ],
+                  "type": "map"
+                },
+                "type": "simulation-state"
+              }
+            },
+            "transition": {
+              "arguments": [
+                {
+                  "type": "integer",
+                  "value": "2"
+                }
+              ],
+              "operation": {
+                "node": "ix://example/two-locks/Locks/lockFirst",
+                "package": "example/two-locks"
+              },
+              "receiver": {
+                "identity": "pair",
+                "object_type": {
+                  "original": {
+                    "node": "ix://example/two-locks/Locks",
+                    "package": "example/two-locks"
+                  },
+                  "owner_effective_type": null
+                },
+                "type": "reference",
+                "universe": {
+                  "ordinal": 0,
+                  "package": "example/two-locks",
+                  "path": [
+                    "model",
+                    "object_type",
+                    "ix://example/two-locks/Locks"
+                  ]
+                }
+              },
+              "type": "transition"
+            }
+          }
+        ],
+        "trace": "model",
+        "trace_position": null
+      },
+      "exploration": {
+        "automaton_states": "1",
+        "states": "6",
+        "transitions": "7"
+      },
+      "record": {
+        "cause": null,
+        "result": "refuted"
+      },
+      "replay": {
+        "reproduced": true,
+        "target": {
+          "state_clause": ""
+        }
+      },
+      "request": {
+        "candidates": {
+          "backends": [
+            "en-1"
+          ],
+          "type": "set"
+        },
+        "claim": {
+          "node": {
+            "ordinal": 0,
+            "package": "example/two-locks",
+            "path": [
+              "model",
+              "model_root"
+            ]
+          },
+          "occurrence": {
+            "ordinal": 0,
+            "role": "generated"
+          }
+        },
+        "extent": {
+          "classification": "unbounded",
+          "finite_bound_available": false
+        },
+        "kind": "temporal-satisfaction",
+        "request_index": 0,
+        "temporal": {
+          "fairness": [],
+          "item_kind": "deadlock-freedom",
+          "limits": {
+            "max_automaton_states": 1048576,
+            "max_relation_tuples": 16777216,
+            "max_states": 10000000,
+            "max_transitions": 100000000,
+            "max_walk_steps": 4096,
+            "max_witness_set": 65536
+          },
+          "subject": {
+            "initial_states": [
+              {
+                "authority": "example",
+                "identity": "example:lock/two-locks-free"
+              }
+            ],
+            "proof_bounds": [],
+            "universes": [
+              {
+                "authority": "example",
+                "identity": "example:lock/two-locks-free"
+              }
+            ]
+          }
+        }
+      },
+      "request_index": 0
+    }
+  ]
 }

@@ -60,14 +60,9 @@ refusal: undefined_expression: the checker refused the package: undefined_expres
 ```
 <!-- /output -->
 
-## Staged
+## Deadlock freedom
 
-These cases are staged until the language supports them.
-
-- `staged-saga-compensation`: A 120 second timeout and scrap compensation. Needs clock selection.
-- `staged-saga-deadlock-free`: Every job ends assembled, scrapped or given up. Needs the `analyze` command.
-
-`example.toml` records the exact reason and ticket for each.
+`staged-saga-deadlock-free` checks that the untimed protocol never gets stuck: every job ends assembled, scrapped or given up. The request supplies a starting state (`data/saga-start.json`, one job and one of each station), and `fsl analyze` explores all 8 reachable states and proves it.
 
 ## Protocol reference cases
 

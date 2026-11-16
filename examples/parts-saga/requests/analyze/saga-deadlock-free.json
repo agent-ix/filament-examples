@@ -30,6 +30,11 @@
           "item_kind": "deadlock-freedom"
         }
       }
+    ],
+    "documents": [
+      {
+        "file": "../../data/saga-start.json"
+      }
     ]
   }
 }
