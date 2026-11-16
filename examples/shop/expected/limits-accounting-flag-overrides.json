@@ -5,6 +5,12 @@
   "first_diagnostic": null,
   "items": [
     {
+      "axes": {
+        "activation": "active",
+        "execution": "failed",
+        "settlement": "unavailable",
+        "truth": null
+      },
       "category": "incomplete",
       "cause": {
         "code": "resource_exhausted",

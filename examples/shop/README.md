@@ -76,7 +76,7 @@ The recorded result is:
 <!-- output: paid-in-full -->
 ```
 exit 0
-{"category":"success","clause":"PaidInFull","result":"tested"}
+{"axes":{"activation":"active","execution":"completed","settlement":"closed-scope","truth":"true"},"category":"success","clause":"PaidInFull","result":"tested"}
 ```
 <!-- /output -->
 
@@ -91,7 +91,7 @@ The recorded result is:
 <!-- output: paid-short -->
 ```
 exit 10
-{"category":"violation","clause":"PaidInFull","result":"refuted"}
+{"axes":{"activation":"active","execution":"completed","settlement":"closed-scope","truth":"false"},"category":"violation","clause":"PaidInFull","result":"refuted"}
 ```
 <!-- /output -->
 

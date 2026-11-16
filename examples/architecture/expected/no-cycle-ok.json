@@ -5,6 +5,12 @@
   "first_diagnostic": null,
   "items": [
     {
+      "axes": {
+        "activation": "active",
+        "execution": "completed",
+        "settlement": "closed-scope",
+        "truth": "true"
+      },
       "category": "success",
       "cause": null,
       "clause": "NoDependencyCycle",

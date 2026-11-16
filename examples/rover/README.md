@@ -46,7 +46,7 @@ The recorded result is:
 <!-- output: safe-stop-in-time -->
 ```
 exit 0
-{"category":"success","clause":"SafeStopWithin3Steps","result":"tested"}
+{"axes":{"activation":"active","execution":"completed","settlement":"closed-scope","truth":"true"},"category":"success","clause":"SafeStopWithin3Steps","result":"tested"}
 ```
 <!-- /output -->
 
@@ -61,7 +61,7 @@ The recorded result is below. The full counterexample, with the trace prefix, th
 <!-- output: safe-stop-late -->
 ```
 exit 10
-{"category":"violation","clause":"SafeStopWithin3Steps","position":0,"result":"refuted","counterexample":"recorded in expected/safe-stop-late.json"}
+{"axes":{"activation":"active","execution":"completed","settlement":"closed-scope","truth":"false"},"category":"violation","clause":"SafeStopWithin3Steps","position":0,"result":"refuted","counterexample":"recorded in expected/safe-stop-late.json"}
 ```
 <!-- /output -->
 

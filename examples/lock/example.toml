@@ -92,17 +92,25 @@ expect_verdict = "compiled"
 serves = "Model checking reference (model subjects)"
 
 [[case]]
-id = "staged-one-served-strong"
+id = "analyze-served-strong-each"
 rule = "ServedIfEachAcquireIsStronglyFair"
-statement = "Process 1 holds the lock again and again when every acquire that is enabled again and again is taken."
+statement = "Process 1 holds the lock again and again when every acquire that is enabled again and again is taken: checked over every behavior of the lock."
 file = "rules/fairness/one-served.fsl"
-command = "analyze requests/staged-one-served.json"
-status = "staged"
-expect_exit = 21
-ready_exit = 0
-waits_on = "QSL-1976"
-why = "the rule compiles; deciding it over every behavior of the lock needs `quire analyze`, which exits 21 and prints nothing"
-needs = "model checking from the command line"
+command = "analyze requests/analyze/served-strong-each.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "Model checking reference (fairness)"
+
+[[case]]
+id = "analyze-served-weak-each"
+rule = "ServedIfEachAcquireIsWeaklyFair"
+statement = "Weak fairness on each acquire is not enough: process 2 can take every turn, and the counterexample shows how."
+file = "rules/fairness/one-served.fsl"
+command = "analyze requests/analyze/served-weak-each.json"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
 serves = "Model checking reference (fairness)"
 
 [[case]]
@@ -112,9 +120,9 @@ statement = "Two processes that take two locks in opposite orders can reach a st
 file = "rules/model-subjects/two-locks.fsl"
 command = "analyze requests/staged-two-locks-deadlock.json"
 status = "staged"
-expect_exit = 21
-ready_exit = 0
-waits_on = "QSL-1976"
-why = "the units compile; finding the deadlock needs `quire analyze`, which exits 21 and prints nothing"
-needs = "model checking from the command line"
+expect_exit = 0
+ready_exit = 10
+waits_on = "QSL-2122"
+why = "`fsl analyze` reads the request, but FSL derives no deadlock-freedom item for the two-lock model yet: with no rule over every behavior there is no model subject, so the outcome is `success` with no items"
+needs = "deadlock-freedom items in fsl analyze"
 serves = "Model checking reference (model subjects)"

@@ -19,6 +19,15 @@ The models are in [model](model).
 - `fairness-counted-window` shows that a rule with a counted window carries no fairness constraint.
 - `fairness-unknown-operation` shows that a fairness constraint names an operation of the model.
 
+## Model checking
+
+`fsl analyze` decides a rule over every behavior of the lock, starting from the free lock in [data/lock-free.json](data/lock-free.json). The requests are in [requests/analyze](requests/analyze).
+
+- `analyze-served-strong-each` checks "process 1 holds the lock again and again" with strong fairness on each acquire. It holds on every behavior, so the result is `proved` and `fsl analyze` exits 0.
+- `analyze-served-weak-each` checks the same rule with weak fairness on each acquire. It is `refuted`: the counterexample is a loop in which process 2 takes every turn, and `fsl analyze` replays it before it reports it. It exits 10.
+
+Run one with `fsl analyze requests/analyze/served-weak-each.json --format json`, or with `--format text` for one line per rule.
+
 ## Deadlock
 
 `model-subjects-two-locks` compiles the rules of the two-lock system. When process 1 holds A and process 2 holds B, each waits for the other's lock, and no operation is enabled.
@@ -27,7 +36,6 @@ The models are in [model](model).
 
 These cases are staged until the language supports them.
 
-- `staged-one-served-strong`: Process 1 holds the lock again and again when every acquire that is enabled again and again is taken. Needs model checking from the command line.
-- `staged-two-locks-deadlock`: The two-lock system can reach a state where neither process can move. Needs model checking from the command line.
+- `staged-two-locks-deadlock`: The two-lock system can reach a state where neither process can move. Needs deadlock-freedom items in `fsl analyze`.
 
 `example.toml` records the exact reason and ticket for each.

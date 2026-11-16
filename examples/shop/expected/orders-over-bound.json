@@ -5,6 +5,12 @@
   "first_diagnostic": null,
   "items": [
     {
+      "axes": {
+        "activation": "active",
+        "execution": "completed",
+        "settlement": "unavailable",
+        "truth": null
+      },
       "category": "refusal",
       "cause": {
         "code": "cardinality_out_of_bound",

@@ -1,3 +1,7 @@
 {
-  "outcome": null
+  "category": "success",
+  "last_stage": null,
+  "result": null,
+  "first_diagnostic": null,
+  "items": []
 }

@@ -1,3 +1,28 @@
 {
-  "outcome": null
+  "category": "refusal",
+  "last_stage": null,
+  "result": null,
+  "first_diagnostic": null,
+  "items": [
+    {
+      "category": "refusal",
+      "claim_name": "ClientChargesOnce",
+      "record": {
+        "cause": {
+          "code": "invalid-request",
+          "kind": "invalid-input"
+        },
+        "diagnostic": {
+          "cause": "unknown-claim",
+          "code": "invalid_capability",
+          "detail": {
+            "name": "ClientChargesOnce"
+          }
+        },
+        "result": "declined"
+      },
+      "request": null,
+      "request_index": 0
+    }
+  ]
 }

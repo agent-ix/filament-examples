@@ -5,6 +5,12 @@
   "first_diagnostic": null,
   "items": [
     {
+      "axes": {
+        "activation": "active",
+        "execution": "completed",
+        "settlement": "unsettled",
+        "truth": "pending"
+      },
       "category": "pending",
       "cause": null,
       "clause": "SafeStopWithin3Steps",

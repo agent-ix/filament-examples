@@ -388,13 +388,13 @@ id = "staged-client-charges-once"
 rule = ""
 statement = "A client that retries a charge with an idempotency key implements a payment that is charged at most once."
 file = "rules/refinement-charge-once.fsl"
-command = "analyze requests/staged-client-charges-once.json"
+command = "analyze requests/analyze/client-charges-once.json"
 status = "staged"
-expect_exit = 21
+expect_exit = 20
 ready_exit = 0
-waits_on = "QSL-1976"
+waits_on = "QSL-2127"
 needs = "refinement checking from the command line"
-why = "the refinement compiles (both models admitted); checking it needs `quire analyze`, which exits 21"
+why = "`fsl analyze` reads the request, but it does not resolve a refinement claim yet: the item is refused `invalid_capability`/`unknown-claim`"
 serves = "Learn: refinement"
 
 [[case]]
