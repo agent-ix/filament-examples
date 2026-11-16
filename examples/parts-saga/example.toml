@@ -72,12 +72,9 @@ rule = ""
 statement = "A job finishes within 120 seconds, and scrapping a part releases its machine."
 file = "rules/part-flow.fsl"
 command = "compile requests/staged-saga-compensation.json"
-status = "staged"
-expect_exit = 20
-ready_exit = 0
-waits_on = "QSL-1964"
-why = "full saga (compensation template FreeMachine and the 120 s await) passes the checker (S3) but is refused at S4: the compensate template 'has no selected clock configuration'"
-needs = "clock selection for timeouts"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
 serves = "Learn L6; landing tab Choreographies; cards U4, U7"
 
 [[case]]
