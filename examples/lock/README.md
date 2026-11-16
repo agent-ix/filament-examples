@@ -32,6 +32,8 @@ Run one with `fsl analyze requests/analyze/served-weak-each.json --format json`,
 
 `model-subjects-two-locks` compiles the rules of the two-lock system. When process 1 holds A and process 2 holds B, each waits for the other's lock, and no operation is enabled.
 
+`staged-two-locks-deadlock` asks `fsl analyze` whether the two-lock system can get stuck. It is `refuted` with a counterexample of two steps: process 1 takes A, then process 2 takes B. `fsl analyze` replays the counterexample before it reports it, and it exits 10.
+
 ## Staged
 
 These cases are staged until the language supports them.

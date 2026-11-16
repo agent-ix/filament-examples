@@ -1,27 +1,45 @@
 {
-  "category": "unsupported",
+  "category": "success",
   "last_stage": null,
   "result": null,
   "first_diagnostic": null,
   "items": [
     {
       "axes": {
-        "activation": "unavailable",
-        "execution": null,
-        "settlement": "unavailable",
-        "truth": null
+        "activation": "active",
+        "execution": "completed",
+        "settlement": "closed-scope",
+        "truth": "true"
       },
-      "category": "unsupported",
+      "category": "success",
+      "certificate": {
+        "accepted": true,
+        "checker": "en-1-closure",
+        "identity": {
+          "model": "example/parts",
+          "node_id": {
+            "ordinal": 0,
+            "package": "example:parts-saga/part-flow-untimed",
+            "path": [
+              "PartFlow"
+            ]
+          },
+          "ordinal": 0
+        }
+      },
       "claim_name": "PartFlow",
+      "exploration": {
+        "automaton_states": "1",
+        "states": "8",
+        "transitions": "48"
+      },
       "record": {
-        "diagnostic": {
-          "cause": "unsupported-requested-capability",
-          "code": "unsupported_projection",
-          "detail": {
-            "kind": "temporal-satisfaction"
-          }
+        "basis": {
+          "type": "exhaustive"
         },
-        "result": "unsupported"
+        "cause": null,
+        "certification": "certified",
+        "result": "proved"
       },
       "request": {
         "candidates": {
@@ -61,9 +79,19 @@
             "max_witness_set": 65536
           },
           "subject": {
-            "initial_states": [],
+            "initial_states": [
+              {
+                "authority": "example",
+                "identity": "ix://example/parts/data/saga-start"
+              }
+            ],
             "proof_bounds": [],
-            "universes": []
+            "universes": [
+              {
+                "authority": "example",
+                "identity": "ix://example/parts/data/saga-start"
+              }
+            ]
           }
         }
       },

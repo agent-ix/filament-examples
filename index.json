@@ -1087,17 +1087,17 @@
     {
       "system": "lock",
       "case": "staged-two-locks-deadlock",
-      "status": "staged",
+      "status": "running",
       "rule": null,
       "statement": "Two processes that take two locks in opposite orders can reach a state where neither can move.",
       "rule_file": "examples/lock/rules/model-subjects/two-locks.fsl",
       "data_files": [],
       "request_file": "examples/lock/requests/staged-two-locks-deadlock.json",
       "expected_file": "examples/lock/expected/staged-two-locks-deadlock.json",
-      "verdict": null,
-      "exit": 0,
-      "waits_on": "QSL-2122",
-      "needs": "deadlock-freedom items in fsl analyze"
+      "verdict": "violated",
+      "exit": 10,
+      "waits_on": null,
+      "needs": null
     },
     {
       "system": "parts-saga",
@@ -1213,17 +1213,17 @@
     {
       "system": "parts-saga",
       "case": "staged-saga-deadlock-free",
-      "status": "staged",
+      "status": "running",
       "rule": null,
       "statement": "Every job ends assembled, scrapped or given up.",
       "rule_file": "examples/parts-saga/rules/part-flow-untimed.fsl",
       "data_files": [],
       "request_file": "examples/parts-saga/requests/analyze/saga-deadlock-free.json",
       "expected_file": "examples/parts-saga/expected/staged-saga-deadlock-free.json",
-      "verdict": null,
-      "exit": 21,
-      "waits_on": "QSL-2224",
-      "needs": "model checking from the command line"
+      "verdict": "holds",
+      "exit": 0,
+      "waits_on": null,
+      "needs": null
     },
     {
       "system": "parts-saga",
