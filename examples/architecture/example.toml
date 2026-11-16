@@ -241,7 +241,7 @@ status = "staged"
 expect_exit = 21
 ready_exit = 0
 waits_on = "QSL-2000"
-why = "checks at S3, then S4 refuses: \"random-parameter `call(ok)` cannot be written to a checked-package/v2 graph yet\"; checking the claim would further need `quire analyze` (QSL-1976)"
+why = "checks at S3, then S4 refuses: \"random-parameter `call(ok)` cannot be written to a checked-package/v2 graph yet\"; checking the claim then runs through `fsl analyze`"
 needs = "probability"
 serves = "Landing card O6 / availability; Learn L7"
 

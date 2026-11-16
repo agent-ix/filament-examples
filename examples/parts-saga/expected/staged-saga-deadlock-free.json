@@ -1,10 +1,73 @@
 {
-  "category": "refusal",
+  "category": "unsupported",
   "last_stage": null,
   "result": null,
-  "first_diagnostic": {
-    "code": "invalid-request",
-    "cause": null
-  },
-  "items": []
+  "first_diagnostic": null,
+  "items": [
+    {
+      "axes": {
+        "activation": "unavailable",
+        "execution": null,
+        "settlement": "unavailable",
+        "truth": null
+      },
+      "category": "unsupported",
+      "claim_name": "PartFlow",
+      "record": {
+        "diagnostic": {
+          "cause": "unsupported-requested-capability",
+          "code": "unsupported_projection",
+          "detail": {
+            "kind": "temporal-satisfaction"
+          }
+        },
+        "result": "unsupported"
+      },
+      "request": {
+        "candidates": {
+          "backends": [
+            "en-1"
+          ],
+          "type": "set"
+        },
+        "claim": {
+          "node": {
+            "ordinal": 0,
+            "package": "example:parts-saga/part-flow-untimed",
+            "path": [
+              "PartFlow"
+            ]
+          },
+          "occurrence": {
+            "ordinal": 0,
+            "role": "declaration"
+          }
+        },
+        "extent": {
+          "bounds": [],
+          "classification": "bounded"
+        },
+        "kind": "temporal-satisfaction",
+        "request_index": 0,
+        "temporal": {
+          "fairness": [],
+          "item_kind": "deadlock-freedom",
+          "limits": {
+            "max_automaton_states": 1048576,
+            "max_relation_tuples": 16777216,
+            "max_states": 10000000,
+            "max_transitions": 100000000,
+            "max_walk_steps": 4096,
+            "max_witness_set": 65536
+          },
+          "subject": {
+            "initial_states": [],
+            "proof_bounds": [],
+            "universes": []
+          }
+        }
+      },
+      "request_index": 0
+    }
+  ]
 }

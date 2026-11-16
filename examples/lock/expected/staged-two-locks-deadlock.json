@@ -1,28 +1,7 @@
 {
-  "category": "refusal",
+  "category": "success",
   "last_stage": null,
   "result": null,
   "first_diagnostic": null,
-  "items": [
-    {
-      "category": "refusal",
-      "claim_name": "Pair",
-      "record": {
-        "cause": {
-          "code": "invalid-request",
-          "kind": "invalid-input"
-        },
-        "diagnostic": {
-          "cause": "unknown-claim",
-          "code": "invalid_capability",
-          "detail": {
-            "name": "Pair"
-          }
-        },
-        "result": "declined"
-      },
-      "request": null,
-      "request_index": 0
-    }
-  ]
+  "items": []
 }

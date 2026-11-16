@@ -1,10 +1,514 @@
 {
-  "category": "refusal",
+  "category": "incomplete",
   "last_stage": null,
   "result": null,
-  "first_diagnostic": {
-    "code": "invalid-request",
-    "cause": null
-  },
-  "items": []
+  "first_diagnostic": null,
+  "items": [
+    {
+      "axes": {
+        "activation": "active",
+        "execution": "failed",
+        "settlement": "unsettled",
+        "truth": null
+      },
+      "category": "incomplete",
+      "claim_name": "StopsAfterLidarLoss",
+      "exploration": {
+        "automaton_states": "2",
+        "states": "200",
+        "transitions": "200"
+      },
+      "record": {
+        "cause": {
+          "kind": "limit-reached",
+          "limit": "max_states",
+          "setting": "model_check.max_states",
+          "value": 200
+        },
+        "result": "incomplete"
+      },
+      "request": {
+        "candidates": {
+          "backends": [
+            "en-1"
+          ],
+          "type": "set"
+        },
+        "claim": {
+          "node": {
+            "ordinal": 0,
+            "package": "example:rover/mode-machine",
+            "path": [
+              "temporal",
+              "temporal_clause",
+              {
+                "ordinal": 0,
+                "package": "example:rover/mode-machine",
+                "path": [
+                  "value",
+                  "parameter",
+                  "name",
+                  {
+                    "ordinal": 0,
+                    "package": "example:rover/mode-machine",
+                    "path": [
+                      "scalar_type",
+                      "text"
+                    ]
+                  },
+                  "r",
+                  "level",
+                  {
+                    "ordinal": 0,
+                    "package": "example:rover/mode-machine",
+                    "path": [
+                      "scalar_type",
+                      "integer"
+                    ]
+                  },
+                  "0",
+                  {
+                    "ordinal": 0,
+                    "package": "example:rover/mode-machine",
+                    "path": [
+                      "composite_type",
+                      "reference",
+                      {
+                        "ordinal": 0,
+                        "package": "example/rover",
+                        "path": [
+                          "model",
+                          "object_type",
+                          "ix://example/rover/Rover"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "ordinal": 0,
+                "package": "example:rover/mode-machine",
+                "path": [
+                  "scalar_type",
+                  "text"
+                ]
+              },
+              "model-steps",
+              "kind",
+              "origin",
+              {
+                "ordinal": 0,
+                "package": "example:rover/mode-machine",
+                "path": [
+                  "temporal",
+                  "fairness",
+                  "filament.op.temporal.fair",
+                  {
+                    "ordinal": 0,
+                    "package": "example/rover",
+                    "path": [
+                      "model",
+                      "object_type",
+                      "ix://example/rover/Rover"
+                    ]
+                  },
+                  "brake",
+                  "temporal_fairness",
+                  {
+                    "ordinal": 0,
+                    "package": "example:rover/mode-machine",
+                    "path": [
+                      "scalar_type",
+                      "boolean"
+                    ]
+                  }
+                ]
+              },
+              {
+                "ordinal": 0,
+                "package": "example:rover/mode-machine",
+                "path": [
+                  "temporal",
+                  "fairness",
+                  "filament.op.temporal.fair",
+                  {
+                    "ordinal": 0,
+                    "package": "example/rover",
+                    "path": [
+                      "model",
+                      "object_type",
+                      "ix://example/rover/Rover"
+                    ]
+                  },
+                  "halt",
+                  "temporal_fairness",
+                  {
+                    "ordinal": 0,
+                    "package": "example:rover/mode-machine",
+                    "path": [
+                      "scalar_type",
+                      "boolean"
+                    ]
+                  }
+                ]
+              },
+              {
+                "ordinal": 0,
+                "package": "example:rover/mode-machine",
+                "path": [
+                  "temporal",
+                  "formula",
+                  {
+                    "ordinal": 0,
+                    "package": "example:rover/mode-machine",
+                    "path": [
+                      "temporal",
+                      "formula",
+                      {
+                        "ordinal": 0,
+                        "package": "example:rover/mode-machine",
+                        "path": [
+                          "temporal",
+                          "formula",
+                          {
+                            "ordinal": 0,
+                            "package": "example:rover/mode-machine",
+                            "path": [
+                              "expression",
+                              "unary",
+                              {
+                                "ordinal": 1,
+                                "package": "example:rover/mode-machine",
+                                "path": [
+                                  "expression",
+                                  "query",
+                                  {
+                                    "ordinal": 0,
+                                    "package": "example:rover/mode-machine",
+                                    "path": [
+                                      "expression",
+                                      "deref",
+                                      {
+                                        "ordinal": 0,
+                                        "package": "example:rover/mode-machine",
+                                        "path": [
+                                          "value",
+                                          "parameter",
+                                          "name",
+                                          {
+                                            "ordinal": 0,
+                                            "package": "example:rover/mode-machine",
+                                            "path": [
+                                              "scalar_type",
+                                              "text"
+                                            ]
+                                          },
+                                          "r",
+                                          "level",
+                                          {
+                                            "ordinal": 0,
+                                            "package": "example:rover/mode-machine",
+                                            "path": [
+                                              "scalar_type",
+                                              "integer"
+                                            ]
+                                          },
+                                          "0",
+                                          {
+                                            "ordinal": 0,
+                                            "package": "example:rover/mode-machine",
+                                            "path": [
+                                              "composite_type",
+                                              "reference",
+                                              {
+                                                "ordinal": 0,
+                                                "package": "example/rover",
+                                                "path": [
+                                                  "model",
+                                                  "object_type",
+                                                  "ix://example/rover/Rover"
+                                                ]
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      },
+                                      "filament.op.model.deref",
+                                      "deref",
+                                      {
+                                        "ordinal": 0,
+                                        "package": "example/rover",
+                                        "path": [
+                                          "model",
+                                          "object_type",
+                                          "ix://example/rover/Rover"
+                                        ]
+                                      }
+                                    ]
+                                  },
+                                  "filament.op.record.project",
+                                  "false",
+                                  "query",
+                                  {
+                                    "ordinal": 0,
+                                    "package": "example:rover/mode-machine",
+                                    "path": [
+                                      "scalar_type",
+                                      "boolean"
+                                    ]
+                                  }
+                                ]
+                              },
+                              "filament.op.boolean.not",
+                              "unary",
+                              {
+                                "ordinal": 0,
+                                "package": "example:rover/mode-machine",
+                                "path": [
+                                  "scalar_type",
+                                  "boolean"
+                                ]
+                              }
+                            ]
+                          },
+                          "filament.op.temporal.holds",
+                          "temporal_formula",
+                          {
+                            "ordinal": 0,
+                            "package": "example:rover/mode-machine",
+                            "path": [
+                              "scalar_type",
+                              "boolean"
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "ordinal": 0,
+                        "package": "example:rover/mode-machine",
+                        "path": [
+                          "temporal",
+                          "formula",
+                          {
+                            "ordinal": 0,
+                            "package": "example:rover/mode-machine",
+                            "path": [
+                              "temporal",
+                              "formula",
+                              {
+                                "ordinal": 0,
+                                "package": "example:rover/mode-machine",
+                                "path": [
+                                  "expression",
+                                  "query",
+                                  {
+                                    "ordinal": 0,
+                                    "package": "example:rover/mode-machine",
+                                    "path": [
+                                      "expression",
+                                      "deref",
+                                      {
+                                        "ordinal": 0,
+                                        "package": "example:rover/mode-machine",
+                                        "path": [
+                                          "value",
+                                          "parameter",
+                                          "name",
+                                          {
+                                            "ordinal": 0,
+                                            "package": "example:rover/mode-machine",
+                                            "path": [
+                                              "scalar_type",
+                                              "text"
+                                            ]
+                                          },
+                                          "r",
+                                          "level",
+                                          {
+                                            "ordinal": 0,
+                                            "package": "example:rover/mode-machine",
+                                            "path": [
+                                              "scalar_type",
+                                              "integer"
+                                            ]
+                                          },
+                                          "0",
+                                          {
+                                            "ordinal": 0,
+                                            "package": "example:rover/mode-machine",
+                                            "path": [
+                                              "composite_type",
+                                              "reference",
+                                              {
+                                                "ordinal": 0,
+                                                "package": "example/rover",
+                                                "path": [
+                                                  "model",
+                                                  "object_type",
+                                                  "ix://example/rover/Rover"
+                                                ]
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      },
+                                      "filament.op.model.deref",
+                                      "deref",
+                                      {
+                                        "ordinal": 0,
+                                        "package": "example/rover",
+                                        "path": [
+                                          "model",
+                                          "object_type",
+                                          "ix://example/rover/Rover"
+                                        ]
+                                      }
+                                    ]
+                                  },
+                                  "filament.op.record.project",
+                                  "false",
+                                  "query",
+                                  {
+                                    "ordinal": 0,
+                                    "package": "example:rover/mode-machine",
+                                    "path": [
+                                      "scalar_type",
+                                      "boolean"
+                                    ]
+                                  }
+                                ]
+                              },
+                              "filament.op.temporal.holds",
+                              "temporal_formula",
+                              {
+                                "ordinal": 0,
+                                "package": "example:rover/mode-machine",
+                                "path": [
+                                  "scalar_type",
+                                  "boolean"
+                                ]
+                              }
+                            ]
+                          },
+                          "filament.op.temporal.eventually",
+                          "temporal_formula",
+                          {
+                            "ordinal": 0,
+                            "package": "example:rover/mode-machine",
+                            "path": [
+                              "scalar_type",
+                              "boolean"
+                            ]
+                          }
+                        ]
+                      },
+                      "filament.op.temporal.implies",
+                      "temporal_formula",
+                      {
+                        "ordinal": 0,
+                        "package": "example:rover/mode-machine",
+                        "path": [
+                          "scalar_type",
+                          "boolean"
+                        ]
+                      }
+                    ]
+                  },
+                  "filament.op.temporal.always",
+                  "temporal_formula",
+                  {
+                    "ordinal": 0,
+                    "package": "example:rover/mode-machine",
+                    "path": [
+                      "scalar_type",
+                      "boolean"
+                    ]
+                  }
+                ]
+              },
+              "filament.op.temporal.clause",
+              "filament.temporal.infinite-trace/v1",
+              "temporal",
+              {
+                "ordinal": 0,
+                "package": "example:rover/mode-machine",
+                "path": [
+                  "scalar_type",
+                  "boolean"
+                ]
+              }
+            ]
+          },
+          "occurrence": {
+            "ordinal": 0,
+            "role": "claim"
+          }
+        },
+        "extent": {
+          "classification": "unbounded",
+          "finite_bound_available": false
+        },
+        "kind": "temporal-satisfaction",
+        "request_index": 0,
+        "temporal": {
+          "fairness": [
+            {
+              "granularity": "whole",
+              "kind": "weak",
+              "operation": {
+                "declaring_type": {
+                  "original": {
+                    "node": "ix://example/rover/Rover",
+                    "package": "example/rover"
+                  },
+                  "owner_effective_type": null
+                },
+                "name": "brake"
+              }
+            },
+            {
+              "granularity": "whole",
+              "kind": "weak",
+              "operation": {
+                "declaring_type": {
+                  "original": {
+                    "node": "ix://example/rover/Rover",
+                    "package": "example/rover"
+                  },
+                  "owner_effective_type": null
+                },
+                "name": "halt"
+              }
+            }
+          ],
+          "item_kind": "formula",
+          "limits": {
+            "max_automaton_states": 1048576,
+            "max_relation_tuples": 16777216,
+            "max_states": 200,
+            "max_transitions": 100000000,
+            "max_walk_steps": 4096,
+            "max_witness_set": 65536
+          },
+          "subject": {
+            "initial_states": [
+              {
+                "authority": "example",
+                "identity": "ix://example/rover/data/start-driving"
+              }
+            ],
+            "proof_bounds": [],
+            "universes": [
+              {
+                "authority": "example",
+                "identity": "ix://example/rover/data/start-driving"
+              }
+            ]
+          }
+        }
+      },
+      "request_index": 0
+    }
+  ]
 }

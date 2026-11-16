@@ -85,12 +85,12 @@ id = "staged-saga-deadlock-free"
 rule = ""
 statement = "Every job ends assembled, scrapped or given up."
 file = "rules/part-flow-untimed.fsl"
-command = "analyze requests/staged-saga-deadlock-free.json"
+command = "analyze requests/analyze/saga-deadlock-free.json"
 status = "staged"
-expect_exit = 20
+expect_exit = 21
 ready_exit = 0
 waits_on = "QSL-2224"
-why = "fsl analyze runs, but this request is still a compile request (exit 20); the exhaustive protocol check needs a native-analyze/1 request and protocol analysis items in fsl analyze"
+why = "`fsl analyze` reads the request, but no registered engine checks deadlock freedom over a protocol yet: the item is `unsupported`/`unsupported-requested-capability`"
 needs = "model checking from the command line"
 serves = "Learn L5/L6; Guide: check a model exhaustively"
 

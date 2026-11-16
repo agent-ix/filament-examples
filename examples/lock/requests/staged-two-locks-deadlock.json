@@ -22,7 +22,10 @@
         "formal_revision": 1
       }
     },
-    "documents": [{"file": "../data/two-locks-free.json"}],
-    "items": [{"claim": "Pair", "temporal": {"item_kind": "deadlock-freedom"}}]
+    "documents": [
+      {
+        "file": "../data/two-locks-free.json"
+      }
+    ]
   }
 }
