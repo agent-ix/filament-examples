@@ -1056,18 +1056,33 @@
     },
     {
       "system": "lock",
-      "case": "staged-one-served-strong",
-      "status": "staged",
+      "case": "analyze-served-strong-each",
+      "status": "running",
       "rule": "ServedIfEachAcquireIsStronglyFair",
-      "statement": "Process 1 holds the lock again and again when every acquire that is enabled again and again is taken.",
+      "statement": "Process 1 holds the lock again and again when every acquire that is enabled again and again is taken: checked over every behavior of the lock.",
       "rule_file": "examples/lock/rules/fairness/one-served.fsl",
       "data_files": [],
-      "request_file": "examples/lock/requests/staged-one-served.json",
-      "expected_file": "examples/lock/expected/staged-one-served-strong.json",
-      "verdict": null,
-      "exit": 21,
-      "waits_on": "QSL-1976",
-      "needs": "model checking from the command line"
+      "request_file": "examples/lock/requests/analyze/served-strong-each.json",
+      "expected_file": "examples/lock/expected/analyze-served-strong-each.json",
+      "verdict": "holds",
+      "exit": 0,
+      "waits_on": null,
+      "needs": null
+    },
+    {
+      "system": "lock",
+      "case": "analyze-served-weak-each",
+      "status": "running",
+      "rule": "ServedIfEachAcquireIsWeaklyFair",
+      "statement": "Weak fairness on each acquire is not enough: process 2 can take every turn, and the counterexample shows how.",
+      "rule_file": "examples/lock/rules/fairness/one-served.fsl",
+      "data_files": [],
+      "request_file": "examples/lock/requests/analyze/served-weak-each.json",
+      "expected_file": "examples/lock/expected/analyze-served-weak-each.json",
+      "verdict": "violated",
+      "exit": 10,
+      "waits_on": null,
+      "needs": null
     },
     {
       "system": "lock",
@@ -1080,9 +1095,9 @@
       "request_file": "examples/lock/requests/staged-two-locks-deadlock.json",
       "expected_file": "examples/lock/expected/staged-two-locks-deadlock.json",
       "verdict": null,
-      "exit": 21,
-      "waits_on": "QSL-1976",
-      "needs": "model checking from the command line"
+      "exit": 20,
+      "waits_on": "QSL-2122",
+      "needs": "deadlock-freedom items in fsl analyze"
     },
     {
       "system": "parts-saga",
@@ -1206,8 +1221,8 @@
       "request_file": "examples/parts-saga/requests/staged-saga-deadlock-free.json",
       "expected_file": "examples/parts-saga/expected/staged-saga-deadlock-free.json",
       "verdict": null,
-      "exit": 21,
-      "waits_on": "QSL-1976",
+      "exit": 20,
+      "waits_on": "QSL-2224",
       "needs": "model checking from the command line"
     },
     {
@@ -2185,8 +2200,8 @@
       "request_file": "examples/rover/requests/staged-control-loop-schedulable.json",
       "expected_file": "examples/rover/expected/staged-control-loop-schedulable.json",
       "verdict": null,
-      "exit": 21,
-      "waits_on": "QSL-1976",
+      "exit": 20,
+      "waits_on": "QSL-2131",
       "needs": "schedulability analysis from the command line"
     },
     {
@@ -2215,8 +2230,8 @@
       "request_file": "examples/rover/requests/staged-mode-machine.json",
       "expected_file": "examples/rover/expected/staged-mode-machine.json",
       "verdict": null,
-      "exit": 21,
-      "waits_on": "QSL-1976",
+      "exit": 20,
+      "waits_on": "QSL-1832",
       "needs": "model checking from the command line"
     },
     {
@@ -2245,8 +2260,8 @@
       "request_file": "examples/rover/requests/staged-controller-refinement.json",
       "expected_file": "examples/rover/expected/staged-controller-refinement.json",
       "verdict": null,
-      "exit": 21,
-      "waits_on": "QSL-1976",
+      "exit": 20,
+      "waits_on": "QSL-2127",
       "needs": "refinement checking from the command line"
     },
     {
@@ -3121,8 +3136,8 @@
       "request_file": "examples/shop/requests/staged-client-charges-once.json",
       "expected_file": "examples/shop/expected/staged-client-charges-once.json",
       "verdict": null,
-      "exit": 21,
-      "waits_on": "QSL-1976",
+      "exit": 20,
+      "waits_on": "QSL-2127",
       "needs": "refinement checking from the command line"
     },
     {

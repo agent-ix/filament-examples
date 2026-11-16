@@ -1,0 +1,20 @@
+{
+  "format": "filament.state.snapshot/v1",
+  "identity": {"authority": "example", "identity": "example:lock/two-locks-free"},
+  "observation": "current",
+  "model": {"identity": "example/two-locks"},
+  "anchor": {"kind": "initialization", "name": "free"},
+  "populations": [
+    {
+      "population": "ix://example/two-locks/locks",
+      "complete": true,
+      "objects": [
+        {
+          "key": "pair",
+          "type": "ix://example/two-locks/Locks",
+          "fields": {"a": {"integer": "0"}, "b": {"integer": "0"}}
+        }
+      ]
+    }
+  ]
+}

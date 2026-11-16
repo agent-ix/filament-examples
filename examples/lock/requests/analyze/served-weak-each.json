@@ -1,0 +1,28 @@
+{
+  "format": "native-analyze/1",
+  "request": {
+    "models": [
+      {
+        "format": "semantic-ir/2.0.0",
+        "source": {
+          "file": "../../model/lock.semantic-ir.json",
+          "authority": "example",
+          "identity": "example:lock/model",
+          "document": "model",
+          "formal_revision": 1
+        }
+      }
+    ],
+    "program": {
+      "source": {
+        "file": "../../rules/fairness/one-served.fsl",
+        "authority": "example",
+        "identity": "example:lock/one-served",
+        "document": "oneserved",
+        "formal_revision": 1
+      }
+    },
+    "documents": [{"file": "../../data/lock-free.json"}],
+    "items": [{"claim": "ServedIfEachAcquireIsWeaklyFair"}]
+  }
+}

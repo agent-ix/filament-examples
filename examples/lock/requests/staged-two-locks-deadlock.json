@@ -1,5 +1,5 @@
 {
-  "format": "native-compile/1",
+  "format": "native-analyze/1",
   "request": {
     "models": [
       {
@@ -21,6 +21,8 @@
         "document": "twolocks",
         "formal_revision": 1
       }
-    }
+    },
+    "documents": [{"file": "../data/two-locks-free.json"}],
+    "items": [{"claim": "Pair", "temporal": {"item_kind": "deadlock-freedom"}}]
   }
 }

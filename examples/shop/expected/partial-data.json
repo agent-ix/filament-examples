@@ -5,6 +5,12 @@
   "first_diagnostic": null,
   "items": [
     {
+      "axes": {
+        "activation": "unavailable",
+        "execution": null,
+        "settlement": "unavailable",
+        "truth": null
+      },
       "category": "incomplete",
       "cause": {
         "code": "incomplete_population",

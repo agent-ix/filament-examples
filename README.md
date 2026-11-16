@@ -21,7 +21,7 @@ The table lists each system with the number of cases that run today and the numb
 | [parts-saga](examples/parts-saga) | Distributed | 28 | 2 |
 | [cell](examples/cell) | Safety | 13 | 0 |
 | [rover](examples/rover) | Safety | 49 | 8 |
-| [lock](examples/lock) | Safety | 8 | 2 |
+| [lock](examples/lock) | Safety | 10 | 1 |
 | [library](examples/library) | Shop | 4 | 0 |
 
 ## Beyond FSL

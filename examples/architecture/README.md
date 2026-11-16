@@ -50,7 +50,7 @@ The recorded result is:
 <!-- output: no-cycle-ok -->
 ```
 exit 0
-{"category":"success","clause":"NoDependencyCycle","result":"tested"}
+{"axes":{"activation":"active","execution":"completed","settlement":"closed-scope","truth":"true"},"category":"success","clause":"NoDependencyCycle","result":"tested"}
 ```
 <!-- /output -->
 
@@ -65,7 +65,7 @@ The recorded result is:
 <!-- output: no-cycle-loop -->
 ```
 exit 10
-{"category":"violation","clause":"NoDependencyCycle","result":"refuted"}
+{"axes":{"activation":"active","execution":"completed","settlement":"closed-scope","truth":"false"},"category":"violation","clause":"NoDependencyCycle","result":"refuted"}
 ```
 <!-- /output -->
 

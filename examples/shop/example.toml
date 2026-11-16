@@ -390,11 +390,11 @@ statement = "A client that retries a charge with an idempotency key implements a
 file = "rules/refinement-charge-once.fsl"
 command = "analyze requests/staged-client-charges-once.json"
 status = "staged"
-expect_exit = 21
+expect_exit = 20
 ready_exit = 0
-waits_on = "QSL-1976"
+waits_on = "QSL-2127"
 needs = "refinement checking from the command line"
-why = "the refinement compiles (both models admitted); checking it needs `quire analyze`, which exits 21"
+why = "fsl analyze runs, but this request is still a compile request (exit 20); checking the refinement needs a native-analyze/1 request and refinement items in fsl analyze"
 serves = "Learn: refinement"
 
 [[case]]

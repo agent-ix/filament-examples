@@ -43,7 +43,7 @@ The recorded result is:
 <!-- output: guard-closed-running -->
 ```
 exit 0
-{"category":"success","clause":"GuardClosedWhileMoving","result":"tested"}
+{"axes":{"activation":"active","execution":"completed","settlement":"closed-scope","truth":"true"},"category":"success","clause":"GuardClosedWhileMoving","result":"tested"}
 ```
 <!-- /output -->
 
@@ -58,7 +58,7 @@ The recorded result is:
 <!-- output: guard-open-running -->
 ```
 exit 10
-{"category":"violation","clause":"GuardClosedWhileMoving","result":"refuted"}
+{"axes":{"activation":"active","execution":"completed","settlement":"closed-scope","truth":"false"},"category":"violation","clause":"GuardClosedWhileMoving","result":"refuted"}
 ```
 <!-- /output -->
 
