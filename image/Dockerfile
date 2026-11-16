@@ -10,13 +10,14 @@
 #   FSL_REPO     the driver repository
 
 ARG UBUNTU=22.04
+ARG RUST_VERSION=1.98.1
 
 # ------------------------------------------------------------ driver stage
 FROM ubuntu:${UBUNTU} AS driver
 ARG FSL_SOURCE=release
 ARG FSL_VERSION=latest
 ARG FSL_REPO=https://github.com/agent-ix/filament-driver
-ARG RUST_VERSION=1.98.1
+ARG RUST_VERSION
 ENV DEBIAN_FRONTEND=noninteractive
 # The source build: the driver's own release profile (thin LTO, one codegen
 # unit) exhausts the memory of an 8 GB machine. These two overrides use cargo's
@@ -55,7 +56,7 @@ RUN set -eu; \
 # The example runner, tools/fsl-examples, built from this repository. `make check`
 # and `make staged` call it through FSL_EXAMPLES, so the image needs no cargo.
 FROM ubuntu:${UBUNTU} AS runner
-ARG RUST_VERSION=1.98.1
+ARG RUST_VERSION
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update \
  && apt-get install -y --no-install-recommends ca-certificates curl build-essential \
