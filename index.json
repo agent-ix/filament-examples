@@ -2231,7 +2231,7 @@
       "expected_file": "examples/rover/expected/staged-mode-machine.json",
       "verdict": null,
       "exit": 22,
-      "waits_on": "QSL-1832",
+      "waits_on": "QSL-2287",
       "needs": "model checking from the command line"
     },
     {
