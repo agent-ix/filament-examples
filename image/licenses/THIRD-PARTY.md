@@ -11,6 +11,7 @@ It lists what the image ships, with each component's licence identifier as its o
 | `fsl` (filament-driver) | 0.1.3 | AGPL-3.0-or-later | `texts/filament-driver.LICENSE` | https://github.com/agent-ix/filament-driver | v0.1.3 | 302044005fde382d481fea3be4b0fec49940015f |
 | `quire` (quire-cli) | 0.45.0 | AGPL-3.0-or-later | `texts/quire-cli.LICENSE` | https://github.com/agent-ix/quire-cli | v0.45.0 | d00ee4be259f07ef054d3fe7663d4a524f366760 |
 | `quoin` (quoin) | 0.35.0 | AGPL-3.0-or-later | `texts/quoin.LICENSE` | https://github.com/agent-ix/quoin | v0.35.0 | 79ae456f162d2b29db06f98f05a7f01ccca1efae |
+| `fsl-examples` (tools/fsl-examples) | 0.1.0 | MIT | `texts/filament-examples.LICENSE` | https://github.com/agent-ix/filament-examples | built from this image's revision | the commit in the image label `org.opencontainers.image.revision` |
 | Filament examples (`/opt/filament-examples`) | this image | MIT | `texts/filament-examples.LICENSE` | https://github.com/agent-ix/filament-examples | the commit in the image label `org.opencontainers.image.revision` | |
 
 ## Other components
@@ -980,5 +981,54 @@ Third-party crates:
 | zlib-rs | 0.6.8 | Zlib |
 | zmij | 1.0.23 | MIT |
 | zopfli | 0.8.3 | Apache-2.0 |
+
+## Rust crates built into `fsl-examples` (tools/fsl-examples)
+
+Taken from `cargo metadata --locked` of tools/fsl-examples in https://github.com/agent-ix/filament-examples at the image revision, for aarch64-unknown-linux-gnu and x86_64-unknown-linux-gnu, normal and build dependencies. There are 24 crates: 1 first-party and 23 third-party. Build-time crates (procedural macros, build scripts) are included, so the list may name a few crates that are not linked into the binary.
+
+Licences of the third-party crates, as the crates declare them:
+
+| Declared licence | Crates |
+| --- | --- |
+| MIT OR Apache-2.0 | 16 |
+| Apache-2.0 OR MIT | 2 |
+| MIT | 2 |
+| (MIT OR Apache-2.0) AND Unicode-3.0 | 1 |
+| Unlicense OR MIT | 1 |
+| Zlib | 1 |
+
+First-party crates (MIT). The corresponding source is at the repository and commit shown:
+
+| Crate | Version | Repository | Commit |
+| --- | --- | --- | --- |
+| fsl-examples | 0.1.0 | https://github.com/agent-ix/filament-examples | the image revision |
+
+Third-party crates:
+
+| Crate | Version | Declared licence |
+| --- | --- | --- |
+| equivalent | 1.0.3 | Apache-2.0 OR MIT |
+| foldhash | 0.2.0 | Zlib |
+| hashbrown | 0.17.1 | MIT OR Apache-2.0 |
+| indexmap | 2.14.2 | Apache-2.0 OR MIT |
+| itoa | 1.0.19 | MIT OR Apache-2.0 |
+| memchr | 2.8.3 | Unlicense OR MIT |
+| proc-macro2 | 1.0.107 | MIT OR Apache-2.0 |
+| quote | 1.0.47 | MIT OR Apache-2.0 |
+| serde_core | 1.0.229 | MIT OR Apache-2.0 |
+| serde_derive | 1.0.229 | MIT OR Apache-2.0 |
+| serde_json | 1.0.154 | MIT OR Apache-2.0 |
+| serde_spanned | 1.1.3 | MIT OR Apache-2.0 |
+| serde | 1.0.229 | MIT OR Apache-2.0 |
+| syn | 3.0.10 | MIT OR Apache-2.0 |
+| thiserror-impl | 2.0.21 | MIT OR Apache-2.0 |
+| thiserror | 2.0.21 | MIT OR Apache-2.0 |
+| toml_datetime | 1.1.3+spec-1.1.0 | MIT OR Apache-2.0 |
+| toml_parser | 1.1.5+spec-1.1.0 | MIT OR Apache-2.0 |
+| toml_writer | 1.2.0+spec-1.1.0 | MIT OR Apache-2.0 |
+| toml | 1.2.1+spec-1.1.0 | MIT OR Apache-2.0 |
+| unicode-ident | 1.0.27 | (MIT OR Apache-2.0) AND Unicode-3.0 |
+| winnow | 1.0.5 | MIT |
+| zmij | 1.0.23 | MIT |
 
 The licence texts shipped inside those crates are in `THIRD-PARTY-LICENSES.txt`.

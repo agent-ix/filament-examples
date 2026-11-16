@@ -96,13 +96,15 @@ ENV FSL_EXAMPLES=fsl-examples
 # bundled components and the pointers to the corresponding source of each
 # program; /usr/share/licenses/filament-toolchain is where the image carries
 # them. The check fails the build when the installed npm programs or the driver
-# are not the versions those files describe. Ubuntu keeps the copyright file of
+# are not the versions those files describe, or when the example runner's Cargo.lock
+# names crates they do not describe. Ubuntu keeps the copyright file of
 # each package in /usr/share/doc, and this Dockerfile does not remove them.
 COPY image/licenses /usr/share/licenses/filament-toolchain
 COPY LICENSE /usr/share/licenses/filament-toolchain/texts/filament-examples.LICENSE
 COPY --from=driver /opt/fsl-driver/TAG /usr/share/licenses/filament-toolchain/DRIVER-TAG
 COPY tools/licences.mjs /tmp/licences/tools/licences.mjs
 COPY image/licenses /tmp/licences/image/licenses
+COPY tools/fsl-examples/Cargo.lock /tmp/licences/tools/fsl-examples/Cargo.lock
 RUN set -eu; \
     d=/usr/share/licenses/filament-toolchain; \
     node /tmp/licences/tools/licences.mjs verify-installed /usr/local/lib/node_modules "$(cat $d/DRIVER-TAG)"; \

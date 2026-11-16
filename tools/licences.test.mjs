@@ -7,7 +7,7 @@ import { tmpdir } from "node:os";
 import { dirname, join, resolve } from "node:path";
 import { test } from "node:test";
 import { fileURLToPath } from "node:url";
-import { closure, parseArgs, releaseVersion, renderTexts, renderThirdParty } from "./licences.mjs";
+import { closure, lockDrift, lockPackages, parseArgs, releaseVersion, renderTexts, renderThirdParty } from "./licences.mjs";
 
 const REPO = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const LICENSES = join(REPO, "image", "licenses");
@@ -83,4 +83,28 @@ test("parseArgs reads options and words", () => {
 test("the shipped version is the release tag, not the root crate version", () => {
   assert.equal(releaseVersion("v0.32.0"), "0.32.0");
   assert.equal(releaseVersion("0.1.2"), "0.1.2");
+});
+
+test("the notice lists the example runner the image builds, with its third-party crates", () => {
+  const md = read("image/licenses/THIRD-PARTY.md");
+  assert.match(md, /\| `fsl-examples` \(tools\/fsl-examples\) \| [0-9.]+ \| MIT \| `texts\/filament-examples.LICENSE` \| https:\/\/github.com\/agent-ix\/filament-examples \|/);
+  const section = md.slice(md.indexOf("## Rust crates built into `fsl-examples`"));
+  for (const crate of ["serde", "serde_json", "toml", "thiserror"]) assert.match(section, new RegExp(`\\| ${crate} \\| [^|]+ \\| [^|]*MIT`));
+  assert.doesNotMatch(section, /\| tempfile \|/, "development dependencies are not shipped");
+  assert.match(read("image/licenses/THIRD-PARTY-LICENSES.txt"), /serde_json 1\.0\.\d+/);
+});
+
+test("lockDrift reports lock packages the licence data does not describe, and the reverse", () => {
+  const lock = '[[package]]\nname = "a"\nversion = "1.0.0"\n\n[[package]]\nname = "dev"\nversion = "2.0.0"\ndependencies = [\n "a",\n]\n';
+  assert.deepEqual(lockPackages(lock), ["a@1.0.0", "dev@2.0.0"]);
+  const data = { path: "tools/r", crates: [{ name: "a", version: "1.0.0" }], notBuilt: ["dev@2.0.0"] };
+  assert.deepEqual(lockDrift(data, lock), []);
+  assert.deepEqual(lockDrift(data, lock.replace('"1.0.0"', '"1.1.0"')), [
+    "tools/r/Cargo.lock has a@1.1.0, which the licence data does not describe",
+    "the licence data describes a@1.0.0, which tools/r/Cargo.lock does not have",
+  ]);
+});
+
+test("the image build checks the runner's Cargo.lock against the licence data", () => {
+  assert.match(read("image/Dockerfile"), /COPY tools\/fsl-examples\/Cargo.lock \/tmp\/licences\/tools\/fsl-examples\/Cargo.lock/);
 });
