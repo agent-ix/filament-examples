@@ -3,4 +3,4 @@ include ../../config.mk
 
 .PHONY: check staged
 check staged:
-	@node ../../tools/run.mjs $@ .
+	@$(FSL_EXAMPLES) $@ .

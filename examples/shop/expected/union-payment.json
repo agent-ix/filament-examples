@@ -1,1 +1,13 @@
-{"artifacts":[],"category":"success","diagnostics":[],"format":"filament-outcome/1","items":[],"last_stage":"S6a","operation":"execute","result":{"kind":"completed","value":{"decimal":"300","kind":"integer"}}}
+{
+  "category": "success",
+  "last_stage": "S6a",
+  "result": {
+    "kind": "completed",
+    "value": {
+      "decimal": "300",
+      "kind": "integer"
+    }
+  },
+  "first_diagnostic": null,
+  "items": []
+}

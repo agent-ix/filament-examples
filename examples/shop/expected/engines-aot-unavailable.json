@@ -1,1 +1,10 @@
-{"artifacts":[],"category":"unsupported","diagnostics":[{"cause":null,"code":"unimplemented_capability","locus":null,"message":"execution engine aot is not linked into this binary"}],"format":"filament-outcome/1","items":[],"last_stage":null,"operation":"execute","result":null}
+{
+  "category": "unsupported",
+  "last_stage": null,
+  "result": null,
+  "first_diagnostic": {
+    "code": "unimplemented_capability",
+    "cause": null
+  },
+  "items": []
+}

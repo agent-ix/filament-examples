@@ -1,0 +1,1 @@
+temporal declaration at RawSourceRef { authority: "example", identity: "example:rover/staged-stops-in-four-events" } bytes Span { start: 210, end: 331 } has no selected clock configuration

@@ -1,1 +1,16 @@
-{"artifacts":[],"category":"incomplete","diagnostics":[],"format":"filament-outcome/1","items":[],"last_stage":"S6a","operation":"execute","result":{"kind":"incomplete","limit":{"bound":"3","counter":"4","field":"work_units","kind":"work_units","setting":"accounting.work_units"}}}
+{
+  "category": "incomplete",
+  "last_stage": "S6a",
+  "result": {
+    "kind": "incomplete",
+    "limit": {
+      "bound": "3",
+      "counter": "4",
+      "field": "work_units",
+      "kind": "work_units",
+      "setting": "accounting.work_units"
+    }
+  },
+  "first_diagnostic": null,
+  "items": []
+}

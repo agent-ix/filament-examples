@@ -1,1 +1,18 @@
-{"artifacts":[],"category":"refusal","diagnostics":[],"format":"filament-outcome/1","items":[{"category":"refusal","cause":{"code":"dangling_reference","kind":"absent-target-in-complete-population"},"clause":"PaidInFull","request_index":0,"result":"declined"}],"last_stage":"S4","operation":"monitor","result":null}
+{
+  "category": "refusal",
+  "last_stage": "S4",
+  "result": null,
+  "first_diagnostic": null,
+  "items": [
+    {
+      "category": "refusal",
+      "cause": {
+        "code": "dangling_reference",
+        "kind": "absent-target-in-complete-population"
+      },
+      "clause": "PaidInFull",
+      "request_index": 0,
+      "result": "declined"
+    }
+  ]
+}

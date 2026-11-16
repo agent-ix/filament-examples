@@ -1,1 +1,10 @@
-{"artifacts":[],"category":"incomplete","diagnostics":[{"cause":"input-bytes-exceeded","code":"stage_limit_exceeded","locus":null,"message":"S1 input byte limit 200 reached (294); raise it with `--limit s1.input_bytes=<n>` or the request's `stage_limits` entry `s1.input_bytes`"}],"format":"filament-outcome/1","items":[],"last_stage":"S1","operation":"monitor","result":null}
+{
+  "category": "incomplete",
+  "last_stage": "S1",
+  "result": null,
+  "first_diagnostic": {
+    "code": "stage_limit_exceeded",
+    "cause": "input-bytes-exceeded"
+  },
+  "items": []
+}

@@ -10,13 +10,14 @@
 #   FSL_REPO     the driver repository
 
 ARG UBUNTU=22.04
+ARG RUST_VERSION=1.98.1
 
 # ------------------------------------------------------------ driver stage
 FROM ubuntu:${UBUNTU} AS driver
 ARG FSL_SOURCE=release
 ARG FSL_VERSION=latest
 ARG FSL_REPO=https://github.com/agent-ix/filament-driver
-ARG RUST_VERSION=1.98.1
+ARG RUST_VERSION
 ENV DEBIAN_FRONTEND=noninteractive
 # The source build: the driver's own release profile (thin LTO, one codegen
 # unit) exhausts the memory of an 8 GB machine. These two overrides use cargo's
@@ -51,6 +52,20 @@ RUN set -eu; \
     fi; \
     rm -rf /var/lib/apt/lists/* /tmp/*
 
+# ------------------------------------------------------------ runner stage
+# The example runner, tools/fsl-examples, built from this repository. `make check`
+# and `make staged` call it through FSL_EXAMPLES, so the image needs no cargo.
+FROM ubuntu:${UBUNTU} AS runner
+ARG RUST_VERSION
+ENV DEBIAN_FRONTEND=noninteractive
+RUN apt-get update \
+ && apt-get install -y --no-install-recommends ca-certificates curl build-essential \
+ && curl -sSf https://sh.rustup.rs | sh -s -- -y --profile minimal --default-toolchain "$RUST_VERSION" \
+ && rm -rf /var/lib/apt/lists/*
+COPY tools/fsl-examples /src/fsl-examples
+RUN PATH=/root/.cargo/bin:$PATH cargo install --locked --path /src/fsl-examples --root /opt/fsl-examples \
+ && strip /opt/fsl-examples/bin/fsl-examples
+
 # ----------------------------------------------------------- runtime stage
 FROM ubuntu:${UBUNTU}
 ARG NODE_MAJOR=24
@@ -75,18 +90,22 @@ RUN set -eu; \
 # renamed.
 RUN npm i -g @agent-ix/quire-cli @agent-ix/quoin && npm cache clean --force
 COPY --from=driver /opt/fsl-driver/bin/fsl /usr/local/bin/fsl
+COPY --from=runner /opt/fsl-examples/bin/fsl-examples /usr/local/bin/fsl-examples
+ENV FSL_EXAMPLES=fsl-examples
 
 # Licence notices. image/licenses holds the licence texts, the notice for the
 # bundled components and the pointers to the corresponding source of each
 # program; /usr/share/licenses/filament-toolchain is where the image carries
 # them. The check fails the build when the installed npm programs or the driver
-# are not the versions those files describe. Ubuntu keeps the copyright file of
+# are not the versions those files describe, or when the example runner's Cargo.lock
+# names crates they do not describe. Ubuntu keeps the copyright file of
 # each package in /usr/share/doc, and this Dockerfile does not remove them.
 COPY image/licenses /usr/share/licenses/filament-toolchain
 COPY LICENSE /usr/share/licenses/filament-toolchain/texts/filament-examples.LICENSE
 COPY --from=driver /opt/fsl-driver/TAG /usr/share/licenses/filament-toolchain/DRIVER-TAG
 COPY tools/licences.mjs /tmp/licences/tools/licences.mjs
 COPY image/licenses /tmp/licences/image/licenses
+COPY tools/fsl-examples/Cargo.lock /tmp/licences/tools/fsl-examples/Cargo.lock
 RUN set -eu; \
     d=/usr/share/licenses/filament-toolchain; \
     node /tmp/licences/tools/licences.mjs verify-installed /usr/local/lib/node_modules "$(cat $d/DRIVER-TAG)"; \

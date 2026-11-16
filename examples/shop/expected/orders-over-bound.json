@@ -1,1 +1,18 @@
-{"artifacts":[],"category":"refusal","diagnostics":[],"format":"filament-outcome/1","items":[{"category":"refusal","cause":{"code":"cardinality_out_of_bound","kind":"above-maximum"},"clause":"OrderCapKept","request_index":0,"result":"declined"}],"last_stage":"S6a","operation":"monitor","result":null}
+{
+  "category": "refusal",
+  "last_stage": "S6a",
+  "result": null,
+  "first_diagnostic": null,
+  "items": [
+    {
+      "category": "refusal",
+      "cause": {
+        "code": "cardinality_out_of_bound",
+        "kind": "above-maximum"
+      },
+      "clause": "OrderCapKept",
+      "request_index": 0,
+      "result": "declined"
+    }
+  ]
+}

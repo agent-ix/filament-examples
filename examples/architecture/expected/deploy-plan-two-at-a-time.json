@@ -1,1 +1,76 @@
-{"artifacts":[],"category":"violation","diagnostics":[],"format":"filament-outcome/1","items":[{"category":"violation","cause":null,"clause":"ServingThroughout","counterexample":{"fairness":[],"initial_state":null,"interval":null,"kind":"formula","loop":[{"document":{"authority":"example","identity":"ix://example/architecture/data/all-serving"}}],"over_binding":null,"prefix":[{"document":{"authority":"example","identity":"ix://example/architecture/data/all-serving"}},{"document":{"authority":"example","identity":"ix://example/architecture/data/two-at-a-time-1"}},{"document":{"authority":"example","identity":"ix://example/architecture/data/two-at-a-time-2"}}],"trace":"observed","trace_position":0},"decisive":{"element":{"kind":"boolean","value":false},"position":1,"value_path":{"kind":"runtime_value","root":{"observation":{"authority":"example","identity":"ix://example/architecture/data/two-at-a-time-1"},"subject":{"object_identity":"web","tag":"object","type":"[{\"node\":\"ix://example/architecture/Service\",\"package\":\"example/architecture\"}]","universe":"{\"ordinal\":0,\"package\":\"example/architecture\",\"path\":[\"model\",\"object_type\",\"ix://example/architecture/Service\"]}"}},"steps":[]}},"position":0,"request_index":0,"result":"refuted"}],"last_stage":"S6a","operation":"monitor","result":null}
+{
+  "category": "violation",
+  "last_stage": "S6a",
+  "result": null,
+  "first_diagnostic": null,
+  "items": [
+    {
+      "category": "violation",
+      "cause": null,
+      "clause": "ServingThroughout",
+      "counterexample": {
+        "fairness": [],
+        "initial_state": null,
+        "interval": null,
+        "kind": "formula",
+        "loop": [
+          {
+            "document": {
+              "authority": "example",
+              "identity": "ix://example/architecture/data/all-serving"
+            }
+          }
+        ],
+        "over_binding": null,
+        "prefix": [
+          {
+            "document": {
+              "authority": "example",
+              "identity": "ix://example/architecture/data/all-serving"
+            }
+          },
+          {
+            "document": {
+              "authority": "example",
+              "identity": "ix://example/architecture/data/two-at-a-time-1"
+            }
+          },
+          {
+            "document": {
+              "authority": "example",
+              "identity": "ix://example/architecture/data/two-at-a-time-2"
+            }
+          }
+        ],
+        "trace": "observed",
+        "trace_position": 0
+      },
+      "decisive": {
+        "element": {
+          "kind": "boolean",
+          "value": false
+        },
+        "position": 1,
+        "value_path": {
+          "kind": "runtime_value",
+          "root": {
+            "observation": {
+              "authority": "example",
+              "identity": "ix://example/architecture/data/two-at-a-time-1"
+            },
+            "subject": {
+              "object_identity": "web",
+              "tag": "object",
+              "type": "[{\"node\":\"ix://example/architecture/Service\",\"package\":\"example/architecture\"}]",
+              "universe": "{\"ordinal\":0,\"package\":\"example/architecture\",\"path\":[\"model\",\"object_type\",\"ix://example/architecture/Service\"]}"
+            }
+          },
+          "steps": []
+        }
+      },
+      "position": 0,
+      "request_index": 0,
+      "result": "refuted"
+    }
+  ]
+}

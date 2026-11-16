@@ -1,1 +1,10 @@
-{"artifacts":[],"category":"refusal","diagnostics":[{"cause":"invalid-value","code":"invalid_package","locus":{"end":835,"kind":"region","source":{"authority":"example","identity":"example:parts-saga/control-join-omits-branch"},"start":246},"message":"the checker refused the package: invalid_package (invalid-value): the join of `Both` is unsound (OmitsBranch { branch: \"Assemble\" })"}],"format":"filament-outcome/1","items":[],"last_stage":"S3","operation":"package","result":null}
+{
+  "category": "refusal",
+  "last_stage": "S3",
+  "result": null,
+  "first_diagnostic": {
+    "code": "invalid_package",
+    "cause": "invalid-value"
+  },
+  "items": []
+}

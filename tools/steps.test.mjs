@@ -152,13 +152,13 @@ test("parseArgs reads skip and image", () => {
 test("the real steps file has the documented steps, each with a bash body", () => {
   const steps = extractSteps(readFileSync(resolve(REPO, "install-test/steps.md"), "utf8"));
   assert.deepEqual(steps.map((s) => s.id), [
-    "prerequisites", "node", "driver-target", "driver-download", "driver-verify", "driver-install",
-    "build-tools", "rust", "driver-source", "clone", "check",
+    "prerequisites", "build-tools", "rust", "driver-target", "driver-download", "driver-verify",
+    "driver-install", "driver-source", "clone", "check",
   ]);
   for (const s of steps) assert.ok(s.body.trim().length > 0, s.id);
   // The release path and the source path differ only in their driver steps.
   const release = ["driver-target", "driver-download", "driver-verify", "driver-install"];
-  const source = ["build-tools", "rust", "driver-source"];
+  const source = ["driver-source"];
   buildScript(selectSteps(steps, source));
   buildScript(selectSteps(steps, release));
 });

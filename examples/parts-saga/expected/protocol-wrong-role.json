@@ -1,1 +1,10 @@
-{"artifacts":[],"category":"refusal","diagnostics":[{"cause":"wrong-observation","code":"wrong_snapshot","locus":{"end":3604,"kind":"region","source":{"authority":"example","identity":"example:parts-saga/part-flow-wrong-role"},"start":785},"message":"the checker refused the package: wrong_snapshot (wrong-observation): `Again` reads `inspected`, which is no listed fact of `Machining` (other-role)"}],"format":"filament-outcome/1","items":[],"last_stage":"S3","operation":"package","result":null}
+{
+  "category": "refusal",
+  "last_stage": "S3",
+  "result": null,
+  "first_diagnostic": {
+    "code": "wrong_snapshot",
+    "cause": "wrong-observation"
+  },
+  "items": []
+}

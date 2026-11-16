@@ -1,1 +1,10 @@
-{"artifacts":[],"category":"refusal","diagnostics":[{"cause":"conflicting-definition","code":"invalid_package","locus":null,"message":"invalid_package/conflicting-definition: source units at positions 0 and 1 share owner example/example:library/multi-types"}],"format":"filament-outcome/1","items":[],"last_stage":"I1","operation":"package","result":null}
+{
+  "category": "refusal",
+  "last_stage": "I1",
+  "result": null,
+  "first_diagnostic": {
+    "code": "invalid_package",
+    "cause": "conflicting-definition"
+  },
+  "items": []
+}

@@ -1,1 +1,10 @@
-{"artifacts":[],"category":"refusal","diagnostics":[{"cause":"operator-ineligible","code":"ill_typed","locus":{"end":190,"kind":"region","source":{"authority":"filament","identity":"rules/values/records/record-enum-order.fsl"},"start":158},"message":"the checker refused the package: ill_typed (operator-ineligible)"}],"format":"filament-outcome/1","items":[],"last_stage":"S3","operation":"check","result":null}
+{
+  "category": "refusal",
+  "last_stage": "S3",
+  "result": null,
+  "first_diagnostic": {
+    "code": "ill_typed",
+    "cause": "operator-ineligible"
+  },
+  "items": []
+}

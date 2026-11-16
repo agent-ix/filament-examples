@@ -58,7 +58,7 @@ The [image folder](image/README.md) describes the image.
 
 ### With a release binary
 
-You need Node.js 20 or later, `make` and `curl`. Each [filament-driver release](https://github.com/agent-ix/filament-driver/releases) has an archive for Linux and macOS on x86_64 and arm64, and a `SHA256SUMS.txt` file. The [install steps](install-test/steps.md) list every command for a clean Ubuntu 22.04 machine: they download the archive for your platform, check its checksum and put `fsl` on your path. A manual workflow runs them in bash and zsh. The Makefile reads the driver path from one variable, `FSL`, set in [config.mk](config.mk). Its default is `fsl`.
+You need `make`, `curl` and Rust 1.98.1 or later: the example runner in [tools/fsl-examples](tools/README.md) is a Rust program that `make check` builds on its first run. Each [filament-driver release](https://github.com/agent-ix/filament-driver/releases) has an archive for Linux and macOS on x86_64 and arm64, and a `SHA256SUMS.txt` file. The [install steps](install-test/steps.md) list every command for a clean Ubuntu 22.04 machine: they download the archive for your platform, check its checksum and put `fsl` on your path. A manual workflow runs them in bash and zsh. The Makefile reads the driver path from one variable, `FSL`, set in [config.mk](config.mk). Its default is `fsl`.
 
 ```
 make check staged
@@ -66,7 +66,7 @@ make check staged
 
 ### From source
 
-You need a Rust toolchain besides Node.js and `make`. Build the driver from the public [filament-driver](https://github.com/agent-ix/filament-driver) repository. Pass the path of the program it builds:
+You need a Rust toolchain and `make`. Build the driver from the public [filament-driver](https://github.com/agent-ix/filament-driver) repository. Pass the path of the program it builds:
 
 ```
 git clone https://github.com/agent-ix/filament-driver
@@ -94,6 +94,8 @@ Run one system with `make -C examples/shop check FSL=/path/to/driver`.
 
 Each case prints a line such as `shop/paid-short: exit 10 ok`. The exit code is the verdict: 0 holds, 10 violated, 20 refused, 22 incomplete data, 21 not available yet.
 
+A case passes when its exit code and the structure of its outcome match the record: the category, the result value, the last stage, the code and cause of the first diagnostic, and the items with their witness fields. The message text of the diagnostics is kept apart and is not compared, so a reworded message does not fail a case.
+
 ## How staging works
 
 A staged case is an example for a feature the language does not support yet. It is written anyway, kept in the repository and run in CI, and the docs and landing page do not show it until it passes.
@@ -118,7 +120,7 @@ Each system folder holds the following.
 | `model/` | The domain model, as Semantic IR JSON |
 | `rules/` | FSL source, with each requirement as a comment |
 | `data/`, `requests/` | Snapshots and one request file per case |
-| `expected/` | Recorded driver output for each case |
+| `expected/` | For each case, `<id>.json` with the recorded outcome structure and, when the outcome has diagnostics, `<id>.messages.txt` with their message text |
 
 ## Index
 
@@ -130,11 +132,13 @@ The models are Semantic IR JSON documents, and no tool in the language can autho
 
 ## Building and testing
 
-The runner tests use a fake driver and need no FSL binary:
+The runner tests use a stand-in driver and need no FSL binary:
 
 ```
-make test
+make runner-test
 ```
+
+`make test` runs the tests of the Node tools and of the tutorial projects.
 
 The install test runs the commands of [install-test/steps.md](install-test/steps.md) on a bare `ubuntu:22.04` container. It needs Docker and a few minutes:
 

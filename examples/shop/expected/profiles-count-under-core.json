@@ -1,1 +1,10 @@
-{"artifacts":[],"category":"unsupported","diagnostics":[{"cause":"expression-form","code":"unsupported_construct","locus":{"end":318,"kind":"region","source":{"authority":"example","identity":"example:shop/count-under-core"},"start":281},"message":"the assembler refused the unit: expression-form is not an admitted form of `filament.state.core/v1`"}],"format":"filament-outcome/1","items":[],"last_stage":"S3","operation":"monitor","result":null}
+{
+  "category": "unsupported",
+  "last_stage": "S3",
+  "result": null,
+  "first_diagnostic": {
+    "code": "unsupported_construct",
+    "cause": "expression-form"
+  },
+  "items": []
+}

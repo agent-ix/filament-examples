@@ -4,7 +4,7 @@ This folder holds the example runner, the interim model generator, the install-t
 
 ## Runner
 
-[run.mjs](run.mjs) reads each `example.toml`, runs the cases through the FSL driver named by the `FSL` variable and compares the exit code and output with the manifest and `expected/`. The Makefile calls it as `make check`, `make staged`, `make record`, `make promote`, `make readme` and `make index`. [run.test.mjs](run.test.mjs) holds its unit tests, which run with `make test`.
+[fsl-examples](fsl-examples) is the example runner, a Rust program. It reads each `example.toml`, runs the cases through the FSL driver named by the `FSL` variable and compares the exit code and the structure of each outcome with the manifest and `expected/`: the category, the result value, the last stage, the code and cause of the first diagnostic, and the items with their witness fields. The diagnostic message text goes to a separate snapshot, `expected/<id>.messages.txt`, that `make record` rewrites and that never fails a case. The Makefile calls the runner as `make check`, `make staged`, `make record`, `make promote`, `make readme` and `make index`, through the `FSL_EXAMPLES` variable in [config.mk](../config.mk); the default builds it with cargo. Its tests run with `make runner-test`.
 
 ## Steps runner
 

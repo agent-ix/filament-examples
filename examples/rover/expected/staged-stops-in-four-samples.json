@@ -1,1 +1,10 @@
-{"artifacts":[],"category":"refusal","diagnostics":[{"cause":"missing-selection","code":"missing_declaration","locus":null,"message":"temporal declaration at RawSourceRef { authority: \"example\", identity: \"example:rover/staged-stops-in-four-samples\" } bytes Span { start: 212, end: 335 } has no selected clock configuration"}],"format":"filament-outcome/1","items":[],"last_stage":"S4","operation":"package","result":null}
+{
+  "category": "refusal",
+  "last_stage": "S4",
+  "result": null,
+  "first_diagnostic": {
+    "code": "missing_declaration",
+    "cause": "missing-selection"
+  },
+  "items": []
+}

@@ -1,1 +1,7 @@
-{"artifacts":[],"category":"success","diagnostics":[],"format":"filament-outcome/1","items":[],"last_stage":"S4","operation":"check","result":null}
+{
+  "category": "success",
+  "last_stage": "S4",
+  "result": null,
+  "first_diagnostic": null,
+  "items": []
+}
