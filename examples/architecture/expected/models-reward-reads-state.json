@@ -1,1 +1,10 @@
-{"artifacts":[],"category":"refusal","diagnostics":[{"cause":"state-read-in-reward","code":"invalid_probabilistic_model","locus":{"end":282,"kind":"region","source":{"authority":"example","identity":"example:architecture/models-reward-reads-state"},"start":278},"message":"the checker refused the package: invalid_probabilistic_model (state-read-in-reward): reward `cost` on `Arch::Service::call` reads state or an ambient value"}],"format":"filament-outcome/1","items":[],"last_stage":"S3","operation":"package","result":null}
+{
+  "category": "refusal",
+  "last_stage": "S3",
+  "result": null,
+  "first_diagnostic": {
+    "code": "invalid_probabilistic_model",
+    "cause": "state-read-in-reward"
+  },
+  "items": []
+}

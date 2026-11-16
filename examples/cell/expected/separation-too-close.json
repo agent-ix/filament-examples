@@ -1,1 +1,15 @@
-{"artifacts":[],"category":"violation","diagnostics":[],"format":"filament-outcome/1","items":[{"category":"violation","cause":null,"clause":"SpeedAndSeparation","request_index":0,"result":"refuted"}],"last_stage":"S6a","operation":"monitor","result":null}
+{
+  "category": "violation",
+  "last_stage": "S6a",
+  "result": null,
+  "first_diagnostic": null,
+  "items": [
+    {
+      "category": "violation",
+      "cause": null,
+      "clause": "SpeedAndSeparation",
+      "request_index": 0,
+      "result": "refuted"
+    }
+  ]
+}

@@ -1,1 +1,10 @@
-{"artifacts":[],"category":"refusal","diagnostics":[{"cause":"unproved-nonzero","code":"undefined_expression","locus":{"end":198,"kind":"region","source":{"authority":"filament","identity":"rules/values/units/unit-quotient-variable.fsl"},"start":190},"message":"the checker refused the package: undefined_expression (unproved-nonzero)"}],"format":"filament-outcome/1","items":[],"last_stage":"S3","operation":"check","result":null}
+{
+  "category": "refusal",
+  "last_stage": "S3",
+  "result": null,
+  "first_diagnostic": {
+    "code": "undefined_expression",
+    "cause": "unproved-nonzero"
+  },
+  "items": []
+}

@@ -1,1 +1,18 @@
-{"artifacts":[],"category":"unsupported","diagnostics":[],"format":"filament-outcome/1","items":[{"category":"unsupported","cause":{"code":"unsupported_projection","kind":"missing-fairness-premise"},"clause":"KeepsSampling","request_index":0,"result":"unsupported"}],"last_stage":"S6a","operation":"monitor","result":null}
+{
+  "category": "unsupported",
+  "last_stage": "S6a",
+  "result": null,
+  "first_diagnostic": null,
+  "items": [
+    {
+      "category": "unsupported",
+      "cause": {
+        "code": "unsupported_projection",
+        "kind": "missing-fairness-premise"
+      },
+      "clause": "KeepsSampling",
+      "request_index": 0,
+      "result": "unsupported"
+    }
+  ]
+}

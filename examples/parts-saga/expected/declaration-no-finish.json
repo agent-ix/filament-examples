@@ -1,1 +1,10 @@
-{"artifacts":[],"category":"refusal","diagnostics":[{"cause":"unexpected-token","code":"invalid_syntax","locus":{"end":292,"kind":"region","source":{"authority":"example","identity":"example:parts-saga/declaration-no-finish"},"start":291},"message":"expected `finish`"}],"format":"filament-outcome/1","items":[],"last_stage":"S1","operation":"package","result":null}
+{
+  "category": "refusal",
+  "last_stage": "S1",
+  "result": null,
+  "first_diagnostic": {
+    "code": "invalid_syntax",
+    "cause": "unexpected-token"
+  },
+  "items": []
+}

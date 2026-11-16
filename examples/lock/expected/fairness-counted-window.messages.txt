@@ -1,0 +1,1 @@
+the checker refused the package: unsupported_construct (expression-form): this profile admits no fairness constraint

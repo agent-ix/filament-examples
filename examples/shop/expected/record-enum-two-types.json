@@ -1,1 +1,10 @@
-{"artifacts":[],"category":"refusal","diagnostics":[{"cause":"type-mismatch","code":"ill_typed","locus":{"end":208,"kind":"region","source":{"authority":"filament","identity":"rules/values/records/record-enum-two-types.fsl"},"start":182},"message":"the checker refused the package: ill_typed (type-mismatch)"}],"format":"filament-outcome/1","items":[],"last_stage":"S3","operation":"check","result":null}
+{
+  "category": "refusal",
+  "last_stage": "S3",
+  "result": null,
+  "first_diagnostic": {
+    "code": "ill_typed",
+    "cause": "type-mismatch"
+  },
+  "items": []
+}

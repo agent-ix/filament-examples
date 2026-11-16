@@ -1,1 +1,10 @@
-{"artifacts":[],"category":"refusal","diagnostics":[{"cause":"random-read-in-precondition","code":"invalid_probabilistic_model","locus":{"end":347,"kind":"region","source":{"authority":"example","identity":"example:architecture/models-random-in-precondition"},"start":345},"message":"the checker refused the package: invalid_probabilistic_model (random-read-in-precondition): precondition Clause(\"NeedsOk\") of `call` reads its random parameter `ok`"}],"format":"filament-outcome/1","items":[],"last_stage":"S3","operation":"package","result":null}
+{
+  "category": "refusal",
+  "last_stage": "S3",
+  "result": null,
+  "first_diagnostic": {
+    "code": "invalid_probabilistic_model",
+    "cause": "random-read-in-precondition"
+  },
+  "items": []
+}

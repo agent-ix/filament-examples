@@ -1,1 +1,10 @@
-{"artifacts":[],"category":"refusal","diagnostics":[{"cause":"unsupported-selection","code":"unknown_profile","locus":{"end":82,"kind":"region","source":{"authority":"example","identity":"example:shop/profiles/unknown-id"},"start":52},"message":"header profile `v` does not resolve: unknown_profile/unsupported-selection"}],"format":"filament-outcome/1","items":[],"last_stage":"S3","operation":"monitor","result":null}
+{
+  "category": "refusal",
+  "last_stage": "S3",
+  "result": null,
+  "first_diagnostic": {
+    "code": "unknown_profile",
+    "cause": "unsupported-selection"
+  },
+  "items": []
+}

@@ -51,6 +51,20 @@ RUN set -eu; \
     fi; \
     rm -rf /var/lib/apt/lists/* /tmp/*
 
+# ------------------------------------------------------------ runner stage
+# The example runner, tools/fsl-examples, built from this repository. `make check`
+# and `make staged` call it through FSL_EXAMPLES, so the image needs no cargo.
+FROM ubuntu:${UBUNTU} AS runner
+ARG RUST_VERSION=1.98.1
+ENV DEBIAN_FRONTEND=noninteractive
+RUN apt-get update \
+ && apt-get install -y --no-install-recommends ca-certificates curl build-essential \
+ && curl -sSf https://sh.rustup.rs | sh -s -- -y --profile minimal --default-toolchain "$RUST_VERSION" \
+ && rm -rf /var/lib/apt/lists/*
+COPY tools/fsl-examples /src/fsl-examples
+RUN PATH=/root/.cargo/bin:$PATH cargo install --locked --path /src/fsl-examples --root /opt/fsl-examples \
+ && strip /opt/fsl-examples/bin/fsl-examples
+
 # ----------------------------------------------------------- runtime stage
 FROM ubuntu:${UBUNTU}
 ARG NODE_MAJOR=24
@@ -75,6 +89,8 @@ RUN set -eu; \
 # renamed.
 RUN npm i -g @agent-ix/quire-cli @agent-ix/quoin && npm cache clean --force
 COPY --from=driver /opt/fsl-driver/bin/fsl /usr/local/bin/fsl
+COPY --from=runner /opt/fsl-examples/bin/fsl-examples /usr/local/bin/fsl-examples
+ENV FSL_EXAMPLES=fsl-examples
 
 # Licence notices. image/licenses holds the licence texts, the notice for the
 # bundled components and the pointers to the corresponding source of each

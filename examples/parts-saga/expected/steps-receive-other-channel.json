@@ -1,1 +1,10 @@
-{"artifacts":[],"category":"refusal","diagnostics":[{"cause":"type-mismatch","code":"ill_typed","locus":{"end":859,"kind":"region","source":{"authority":"example","identity":"example:parts-saga/steps-receive-other-channel"},"start":164},"message":"the checker refused the package: ill_typed (type-mismatch): `receive` via `Back` names a `send` via `Release`"}],"format":"filament-outcome/1","items":[],"last_stage":"S3","operation":"package","result":null}
+{
+  "category": "refusal",
+  "last_stage": "S3",
+  "result": null,
+  "first_diagnostic": {
+    "code": "ill_typed",
+    "cause": "type-mismatch"
+  },
+  "items": []
+}

@@ -1,0 +1,1 @@
+S1 input byte limit 200 reached (294); raise it with `--limit s1.input_bytes=<n>` or the request's `stage_limits` entry `s1.input_bytes`

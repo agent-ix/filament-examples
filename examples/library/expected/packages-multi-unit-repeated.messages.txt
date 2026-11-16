@@ -1,0 +1,1 @@
+invalid_package/conflicting-definition: source units at positions 0 and 1 share owner example/example:library/multi-types

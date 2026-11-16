@@ -2,24 +2,27 @@
 
 These are the commands to install the FSL toolchain and run the examples. The install test runs every fenced block on this page, in order, in one shell on a bare `ubuntu:22.04` container, so the page cannot drift from what was tested. The commands run as root. On a machine where you are not root, prefix the `apt-get` commands with `sudo`.
 
-The FSL driver comes from a prebuilt release for Linux on x86_64 and arm64 and for macOS on Apple silicon and Intel. A second path builds the driver from source. You need network access to github.com and nodejs.org. The source build also needs crates.io and static.rust-lang.org. No account or token is needed.
+The FSL driver comes from a prebuilt release for Linux on x86_64 and arm64 and for macOS on Apple silicon and Intel. A second path builds the driver from source. You need network access to github.com, crates.io and static.rust-lang.org. No account or token is needed.
 
 ## Install the prerequisites
 
-The examples need `git`, `make`, `jq` and Node.js 20 or later. The release download needs `curl` and `tar`. Ubuntu 22.04 has no usable Node.js package, so the second block installs Node.js 24 from nodejs.org.
+The examples need `git`, `make` and Rust 1.98.1 or later with a C toolchain: the example runner in `tools/fsl-examples` is a Rust program that `make check` builds on its first run. The release download needs `curl` and `tar`.
 
-On macOS, install Node.js 20 or later and `jq` with Homebrew (the `node` and `jq` packages). `git`, `make`, `curl` and `tar` come with the Xcode command line tools. Then continue with the driver download.
+On macOS, `git`, `make`, `curl`, `tar` and the C toolchain come with the Xcode command line tools; install Rust with rustup as in the third block. Then continue with the driver download.
 
 ```bash step=prerequisites
 apt-get update
-apt-get install -y --no-install-recommends ca-certificates curl git jq make xz-utils
+apt-get install -y --no-install-recommends ca-certificates curl git make
 ```
 
-```bash step=node
-case "$(uname -m)" in aarch64) arch=arm64 ;; x86_64) arch=x64 ;; esac
-version=$(curl -sSf https://nodejs.org/dist/index.json | jq -r '[.[] | select(.version | startswith("v24."))][0].version')
-curl -sSf "https://nodejs.org/dist/$version/node-$version-linux-$arch.tar.xz" | tar -xJ -C /usr/local --strip-components=1
-node --version
+```bash step=build-tools
+apt-get install -y --no-install-recommends build-essential pkg-config
+```
+
+```bash step=rust
+curl -sSf https://sh.rustup.rs | sh -s -- -y --profile minimal
+. "$HOME/.cargo/env"
+cargo --version
 ```
 
 ## Install the FSL driver from a release
@@ -79,17 +82,7 @@ Add `export PATH="$HOME/.local/bin:$PATH"` to your shell profile to keep `fsl` o
 
 ## Build the FSL driver from source
 
-The source build is the second path. Skip this section if you installed the release. The driver is a Rust program that needs a C toolchain and Rust 1.98.1 or later.
-
-```bash step=build-tools
-apt-get install -y --no-install-recommends build-essential pkg-config
-```
-
-```bash step=rust
-curl -sSf https://sh.rustup.rs | sh -s -- -y --profile minimal
-. "$HOME/.cargo/env"
-cargo --version
-```
+The source build is the second path. Skip this section if you installed the release. The driver is a Rust program and uses the toolchain from the prerequisites.
 
 Build the driver. The two `CARGO_PROFILE_RELEASE` settings turn off link-time optimization and use 16 code-generation units. The driver's own release profile needs more than 8 GB of memory and does not finish on a small machine. This step takes several minutes and installs the program as `fsl`.
 

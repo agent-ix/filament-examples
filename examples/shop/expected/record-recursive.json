@@ -1,1 +1,10 @@
-{"artifacts":[],"category":"refusal","diagnostics":[{"cause":"type-mismatch","code":"ill_typed","locus":{"end":98,"kind":"region","source":{"authority":"filament","identity":"rules/values/records/record-recursive.fsl"},"start":90},"message":"the assembler refused the unit: the records and tuples are not an admitted declaration set"}],"format":"filament-outcome/1","items":[],"last_stage":"S3","operation":"check","result":null}
+{
+  "category": "refusal",
+  "last_stage": "S3",
+  "result": null,
+  "first_diagnostic": {
+    "code": "ill_typed",
+    "cause": "type-mismatch"
+  },
+  "items": []
+}

@@ -1,1 +1,10 @@
-{"artifacts":[],"category":"refusal","diagnostics":[{"cause":"quantile-over-fraction","code":"invalid_probabilistic_model","locus":{"end":384,"kind":"region","source":{"authority":"example","identity":"example:architecture/claims-quantile-over-fraction"},"start":351},"message":"the checker refused the package: invalid_probabilistic_model (quantile-over-fraction): claim `Q` takes a quantile of a fraction, which has none"}],"format":"filament-outcome/1","items":[],"last_stage":"S3","operation":"package","result":null}
+{
+  "category": "refusal",
+  "last_stage": "S3",
+  "result": null,
+  "first_diagnostic": {
+    "code": "invalid_probabilistic_model",
+    "cause": "quantile-over-fraction"
+  },
+  "items": []
+}

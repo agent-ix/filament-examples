@@ -17,8 +17,8 @@ export const RULES = [
   { name: "schema ids", from: /\bagent-ix\.github\.io\/quire-/g, to: "agent-ix.github.io/filament-" },
 ];
 
-// Folders and files the rewrite never reads: history, caches, and licence data that records the driver release.
-const SKIP_DIRS = new Set([".git", "node_modules", "licenses"]);
+// Folders and files the rewrite never reads: history, caches, build output, and licence data that records the driver release.
+const SKIP_DIRS = new Set([".git", "node_modules", "licenses", "target"]);
 // The rewrite and its test name the old identifiers on purpose.
 const SELF = /^rename-ids(\.test)?\.mjs$/;
 // Files, relative to the root, that quote the old identifiers on purpose: the rewrite's own documentation.

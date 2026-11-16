@@ -1,1 +1,10 @@
-{"artifacts":[],"category":"refusal","diagnostics":[{"cause":null,"code":"invalid_runtime_input","locus":null,"message":"the argument at position 1 is not a value of its parameter's declared type"}],"format":"filament-outcome/1","items":[],"last_stage":"S6a","operation":"execute","result":null}
+{
+  "category": "refusal",
+  "last_stage": "S6a",
+  "result": null,
+  "first_diagnostic": {
+    "code": "invalid_runtime_input",
+    "cause": null
+  },
+  "items": []
+}

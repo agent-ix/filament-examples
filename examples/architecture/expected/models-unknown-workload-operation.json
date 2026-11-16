@@ -1,1 +1,10 @@
-{"artifacts":[],"category":"refusal","diagnostics":[{"cause":"unknown-operation","code":"invalid_probabilistic_model","locus":{"end":294,"kind":"region","source":{"authority":"example","identity":"example:architecture/models-unknown-workload-operation"},"start":275},"message":"the checker refused the package: invalid_probabilistic_model (unknown-operation): workload `Traffic` weights `Arch::Service::nope`, which is not in its model, and 1 more"}],"format":"filament-outcome/1","items":[],"last_stage":"S3","operation":"package","result":null}
+{
+  "category": "refusal",
+  "last_stage": "S3",
+  "result": null,
+  "first_diagnostic": {
+    "code": "invalid_probabilistic_model",
+    "cause": "unknown-operation"
+  },
+  "items": []
+}

@@ -1,1 +1,18 @@
-{"artifacts":[],"category":"incomplete","diagnostics":[],"format":"filament-outcome/1","items":[{"category":"incomplete","cause":{"code":"incomplete_population","kind":"incomplete-scope"},"clause":"NoCallCycle","request_index":0,"result":"incomplete"}],"last_stage":"S6a","operation":"monitor","result":null}
+{
+  "category": "incomplete",
+  "last_stage": "S6a",
+  "result": null,
+  "first_diagnostic": null,
+  "items": [
+    {
+      "category": "incomplete",
+      "cause": {
+        "code": "incomplete_population",
+        "kind": "incomplete-scope"
+      },
+      "clause": "NoCallCycle",
+      "request_index": 0,
+      "result": "incomplete"
+    }
+  ]
+}

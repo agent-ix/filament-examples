@@ -1,10 +1,10 @@
-# Runs every example. The driver binary comes from FSL (config.mk).
+# Runs every example. The driver binary comes from FSL and the runner from FSL_EXAMPLES (config.mk).
 include config.mk
 
 NODE ?= node
-RUN = $(NODE) tools/run.mjs
+RUN = $(FSL_EXAMPLES)
 
-.PHONY: check staged record promote readme index models test install-test install-test-host assurance-test assurance-record quire-test quire-record tl-examples-test tl-examples-record quire-library-test quire-library-record quire-library-python-test quire-library-python-record foundations-examples-test foundations-examples-record contracts-examples-test contracts-examples-record
+.PHONY: check staged record promote readme index models test runner-test install-test install-test-host assurance-test assurance-record quire-test quire-record tl-examples-test tl-examples-record quire-library-test quire-library-record quire-library-python-test quire-library-python-record foundations-examples-test foundations-examples-record contracts-examples-test contracts-examples-record
 check:
 	@$(RUN) check
 staged:
@@ -34,7 +34,11 @@ models:
 	$(NODE) tools/model.mjs tools/models/payment-spec.mjs examples/shop/model/payment-spec.semantic-ir.json
 	$(NODE) tools/model.mjs tools/models/payment-client.mjs examples/shop/model/payment-client.semantic-ir.json
 
-# Unit tests for the runner (they use a fake driver and need no FSL binary), the Quoin first-spec check (skipped
+# Tests of the example runner in tools/fsl-examples. They use a stand-in driver and need cargo, not an FSL binary.
+runner-test:
+	cargo test --locked --manifest-path tools/fsl-examples/Cargo.toml
+
+# Unit tests for the Node tools (steps, licences, identifier rewrite), the Quoin first-spec check (skipped
 # when quoin and quire are not installed) and the example projects that run their steps: the temporal logic
 # and the Quire library tests build Rust programs from git and need cargo, npm and network access, and skip
 # themselves when cargo or npm is missing.
@@ -46,15 +50,15 @@ test:
 # INSTALL_SHELL=zsh runs the steps in zsh, the macOS default shell.
 INSTALL_DRIVER ?= release
 INSTALL_SHELL ?= bash
-INSTALL_SKIP_release = build-tools,rust,driver-source
+INSTALL_SKIP_release = driver-source
 INSTALL_SKIP_source = driver-target,driver-download,driver-verify,driver-install
 install-test:
 	$(NODE) tools/steps.mjs run install-test/steps.md --image ubuntu:22.04 --shell $(INSTALL_SHELL) --skip $(INSTALL_SKIP_$(INSTALL_DRIVER))
 
 # Run the release steps on this machine, in zsh (for a macOS runner, which has
-# Node.js, git, make and jq already). It installs the driver under $HOME.
+# git, make and Rust already). It installs the driver under $HOME.
 install-test-host:
-	$(NODE) tools/steps.mjs run install-test/steps.md --host --shell zsh --skip prerequisites,node,$(INSTALL_SKIP_release)
+	$(NODE) tools/steps.mjs run install-test/steps.md --host --shell zsh --skip prerequisites,build-tools,rust,$(INSTALL_SKIP_release)
 
 # Run the Assurance steps (assurance/steps.md) on this machine against a fresh
 # copy of assurance/project and compare each step's output with

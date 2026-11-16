@@ -1,1 +1,10 @@
-{"artifacts":[],"category":"unsupported","diagnostics":[{"cause":"expression-form","code":"unsupported_construct","locus":{"end":521,"kind":"region","source":{"authority":"example","identity":"example:lock/bounded-profile"},"start":490},"message":"the checker refused the package: unsupported_construct (expression-form): this profile admits no fairness constraint"}],"format":"filament-outcome/1","items":[],"last_stage":"S3","operation":"package","result":null}
+{
+  "category": "unsupported",
+  "last_stage": "S3",
+  "result": null,
+  "first_diagnostic": {
+    "code": "unsupported_construct",
+    "cause": "expression-form"
+  },
+  "items": []
+}

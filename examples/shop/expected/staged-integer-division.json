@@ -1,1 +1,10 @@
-{"artifacts":[],"category":"refusal","diagnostics":[{"cause":"missing-selection","code":"missing_declaration","locus":{"end":211,"kind":"region","source":{"authority":"example","identity":"example:shop/values/numbers/staged-integer-division"},"start":199},"message":"the checker refused the package: missing_declaration (missing-selection)"}],"format":"filament-outcome/1","items":[],"last_stage":"S3","operation":"execute","result":null}
+{
+  "category": "refusal",
+  "last_stage": "S3",
+  "result": null,
+  "first_diagnostic": {
+    "code": "missing_declaration",
+    "cause": "missing-selection"
+  },
+  "items": []
+}

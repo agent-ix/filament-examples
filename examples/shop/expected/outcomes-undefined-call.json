@@ -1,1 +1,10 @@
-{"artifacts":[],"category":"undefined","diagnostics":[],"format":"filament-outcome/1","items":[],"last_stage":"S6a","operation":"execute","result":{"kind":"undefined","reason":"division-by-zero"}}
+{
+  "category": "undefined",
+  "last_stage": "S6a",
+  "result": {
+    "kind": "undefined",
+    "reason": "division-by-zero"
+  },
+  "first_diagnostic": null,
+  "items": []
+}

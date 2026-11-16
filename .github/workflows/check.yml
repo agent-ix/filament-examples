@@ -80,4 +80,4 @@ jobs:
         if: inputs.driver != 'image'
         env:
           FSL_PATH: ${{ steps.driver.outputs.path }}
-        run: make test check staged FSL="$FSL_PATH"
+        run: make runner-test test check staged FSL="$FSL_PATH"

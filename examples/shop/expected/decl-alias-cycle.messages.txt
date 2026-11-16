@@ -1,0 +1,1 @@
+the assembler refused the unit: the alias `Cost` reaches itself

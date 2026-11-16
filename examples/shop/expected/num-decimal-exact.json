@@ -1,1 +1,10 @@
-{"artifacts":[],"category":"refusal","diagnostics":[{"cause":"nonzero-discarded-digit","code":"inexact_decimal","locus":{"file":"../../../rules/values/numbers/num-decimal-exact.fsl","kind":"located","span":{"end":{"byte":267,"column":29,"line":9},"start":{"byte":241,"column":3,"line":9}}},"message":"inexact_decimal/nonzero-discarded-digit"}],"format":"filament-outcome/1","items":[],"last_stage":"S6a","operation":"execute","result":null}
+{
+  "category": "refusal",
+  "last_stage": "S6a",
+  "result": null,
+  "first_diagnostic": {
+    "code": "inexact_decimal",
+    "cause": "nonzero-discarded-digit"
+  },
+  "items": []
+}

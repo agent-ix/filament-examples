@@ -1,1 +1,15 @@
-{"artifacts":[],"category":"pending","diagnostics":[],"format":"filament-outcome/1","items":[{"category":"pending","cause":null,"clause":"SafeStopWithin3Steps","request_index":0,"result":"pending"}],"last_stage":"S6a","operation":"monitor","result":null}
+{
+  "category": "pending",
+  "last_stage": "S6a",
+  "result": null,
+  "first_diagnostic": null,
+  "items": [
+    {
+      "category": "pending",
+      "cause": null,
+      "clause": "SafeStopWithin3Steps",
+      "request_index": 0,
+      "result": "pending"
+    }
+  ]
+}

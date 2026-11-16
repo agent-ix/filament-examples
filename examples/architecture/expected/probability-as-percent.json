@@ -1,1 +1,10 @@
-{"artifacts":[],"category":"refusal","diagnostics":[{"cause":"qualitative-threshold","code":"invalid_probabilistic_model","locus":{"end":729,"kind":"region","source":{"authority":"example","identity":"example:architecture/probability-as-percent"},"start":727},"message":"the checker refused the package: invalid_probabilistic_model (qualitative-threshold): a threshold of claim `UpAsPercent` is not strictly between 0 and 1; a threshold of 0 or 1 is a qualitative claim, stated as an ADR-018 TP-2 claim or as a possible property"}],"format":"filament-outcome/1","items":[],"last_stage":"S3","operation":"package","result":null}
+{
+  "category": "refusal",
+  "last_stage": "S3",
+  "result": null,
+  "first_diagnostic": {
+    "code": "invalid_probabilistic_model",
+    "cause": "qualitative-threshold"
+  },
+  "items": []
+}

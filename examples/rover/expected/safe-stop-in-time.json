@@ -1,1 +1,15 @@
-{"artifacts":[],"category":"success","diagnostics":[],"format":"filament-outcome/1","items":[{"category":"success","cause":null,"clause":"SafeStopWithin3Steps","request_index":0,"result":"tested"}],"last_stage":"S6a","operation":"monitor","result":null}
+{
+  "category": "success",
+  "last_stage": "S6a",
+  "result": null,
+  "first_diagnostic": null,
+  "items": [
+    {
+      "category": "success",
+      "cause": null,
+      "clause": "SafeStopWithin3Steps",
+      "request_index": 0,
+      "result": "tested"
+    }
+  ]
+}
