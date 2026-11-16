@@ -87,6 +87,16 @@ expect_exit = 10
 expect_verdict = "violated"
 
 [[case]]
+id = "safe-stop-indeterminate"
+rule = "StopWithin200ms"
+statement = "The finite stop deadline remains open before 200 ms."
+file = "rules/finite-window-indeterminate.fsl"
+command = "run requests/safe-stop-indeterminate.json"
+status = "running"
+expect_exit = 11
+expect_verdict = "indeterminate"
+
+[[case]]
 id = "obstacle-outvoted"
 rule = "ObstacleSlows"
 statement = "When two of the three range sensors see an obstacle within 500 mm, the rover crawls at 100 mm/s or less."

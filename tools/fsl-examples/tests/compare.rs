@@ -206,6 +206,21 @@ fn monitor_stream_is_recorded_as_events_and_summary() {
     );
 }
 
+/// Trace: QSL-2185; the runner preserves the driver's indeterminate verdict label.
+#[test]
+fn indeterminate_outcome_is_reported_as_indeterminate() {
+    let structure = json!({
+        "format": "filament-outcome/1",
+        "category": "indeterminate",
+        "result": null,
+        "items": []
+    });
+    assert_eq!(
+        fsl_examples::outcome::verdict_of(&structure),
+        "indeterminate"
+    );
+}
+
 #[test]
 fn changed_monitor_event_fails() {
     let expected = project(&monitor_stream("pending")).structure;

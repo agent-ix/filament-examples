@@ -1,0 +1,8 @@
+language "ix:native" edition "1-draft";
+profile t = "filament.temporal.timestamped-event.finite-window/v1";
+record Reading { level: Int[0, 9]; }
+
+// No positive reading has arrived, and the trace ends before the 200 ms deadline.
+temporal StopWithin200ms using t over (r: Reading) clock "plant-ms" on origin {
+  eventually[0,200] holds(r.level > 0)
+}

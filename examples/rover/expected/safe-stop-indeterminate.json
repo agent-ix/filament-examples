@@ -1,0 +1,24 @@
+{
+  "category": "indeterminate",
+  "last_stage": "S6a",
+  "result": null,
+  "first_diagnostic": null,
+  "items": [
+    {
+      "axes": {
+        "activation": "active",
+        "execution": "completed",
+        "settlement": "unavailable",
+        "truth": null
+      },
+      "category": "indeterminate",
+      "cause": {
+        "kind": "incomplete-input",
+        "where": "position 0"
+      },
+      "clause": "StopWithin200ms",
+      "request_index": 0,
+      "result": "indeterminate"
+    }
+  ]
+}
