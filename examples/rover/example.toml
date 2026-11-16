@@ -452,13 +452,10 @@ id = "staged-safe-stop-monitor"
 rule = ""
 statement = "A live feed of rover states is watched for the three-step safe stop."
 file = "rules/safe-stop-steps.fsl"
-command = "monitor requests/staged-safe-stop-monitor.json"
-status = "staged"
-expect_exit = 21
-ready_exit = 0
-waits_on = "QSL-1977"
-why = "running SafeStopWithin3Steps as a runtime monitor on a live feed needs `quire monitor`, which exits 21 and prints nothing"
-needs = "runtime monitoring"
+command = "monitor requests/staged-safe-stop-monitor.json --input records/safe-stop-feed.jsonl"
+status = "running"
+expect_exit = 0
+expect_verdict = "pending"
 serves = "Landing lifecycle stages 3-4; card U1"
 
 [[case]]

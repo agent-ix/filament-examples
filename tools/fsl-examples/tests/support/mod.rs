@@ -20,6 +20,13 @@ pub fn outcome_document(structure: &Value, messages: &str) -> String {
     if structure.get("outcome") == Some(&Value::Null) {
         return messages.to_owned();
     }
+    if let (Some(Value::Array(events)), Some(summary)) =
+        (structure.get("events"), structure.get("summary"))
+    {
+        let mut lines: Vec<String> = events.iter().map(Value::to_string).collect();
+        lines.push(summary.to_string());
+        return lines.join("\n");
+    }
     let field = |key: &str| structure.get(key).cloned().unwrap_or(Value::Null);
     let diagnostics = match structure.get("first_diagnostic") {
         Some(d) if !d.is_null() => json!([{

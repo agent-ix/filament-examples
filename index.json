@@ -2267,17 +2267,17 @@
     {
       "system": "rover",
       "case": "staged-safe-stop-monitor",
-      "status": "staged",
+      "status": "running",
       "rule": null,
       "statement": "A live feed of rover states is watched for the three-step safe stop.",
       "rule_file": "examples/rover/rules/safe-stop-steps.fsl",
       "data_files": [],
       "request_file": "examples/rover/requests/staged-safe-stop-monitor.json",
       "expected_file": "examples/rover/expected/staged-safe-stop-monitor.json",
-      "verdict": null,
-      "exit": 21,
-      "waits_on": "QSL-1977",
-      "needs": "runtime monitoring"
+      "verdict": "pending",
+      "exit": 0,
+      "waits_on": null,
+      "needs": null
     },
     {
       "system": "rover",

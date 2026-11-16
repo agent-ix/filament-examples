@@ -182,3 +182,42 @@ fn output_that_is_not_an_outcome_names_the_driver() {
         evaluation.message
     );
 }
+
+fn monitor_stream(category: &str) -> String {
+    let event = json!({"format": "filament.monitor-event/1", "clause": "C", "category": category});
+    let summary = json!({
+        "format": "filament.monitor-summary/1",
+        "clauses": [{"clause": "C", "category": category}],
+        "records": 2,
+        "refused": 0
+    });
+    format!("{event}\n{summary}\n")
+}
+
+#[test]
+fn monitor_stream_is_recorded_as_events_and_summary() {
+    let structure = project(&monitor_stream("pending")).structure;
+    assert_eq!(structure["events"].as_array().map(Vec::len), Some(1));
+    assert_eq!(structure["summary"]["records"], 2);
+    assert_eq!(
+        fsl_examples::outcome::verdict_of(&structure),
+        "pending",
+        "{structure}"
+    );
+}
+
+#[test]
+fn changed_monitor_event_fails() {
+    let expected = project(&monitor_stream("pending")).structure;
+    let run = Run {
+        exit: 0,
+        stdout: monitor_stream("violation"),
+    };
+    let evaluation = evaluate_case(&case(0), &run, Some(&expected), "demo/demo");
+    assert!(!evaluation.ok);
+    assert!(
+        evaluation.message.contains("events"),
+        "{}",
+        evaluation.message
+    );
+}
