@@ -22,6 +22,12 @@ pub struct Recorded {
 
 /// Splits driver output into structure and message text.
 pub fn project(stdout: &str) -> Recorded {
+    if let Some(structure) = monitor_stream(stdout) {
+        return Recorded {
+            structure,
+            messages: String::new(),
+        };
+    }
     let doc = match serde_json::from_str::<Value>(stdout) {
         Ok(Value::Object(doc))
             if doc.get("format").and_then(Value::as_str) == Some(OUTCOME_FORMAT) =>
@@ -71,6 +77,26 @@ pub fn project(stdout: &str) -> Recorded {
     }
 }
 
+/// The structure of `fsl monitor` output: JSON lines holding `filament.monitor-event/1` objects
+/// and ending in one `filament.monitor-summary/1`. `None` when the output is not such a stream.
+fn monitor_stream(stdout: &str) -> Option<Value> {
+    let mut lines: Vec<Value> = stdout
+        .lines()
+        .map(serde_json::from_str::<Value>)
+        .collect::<Result<_, _>>()
+        .ok()?;
+    let summary = lines.pop()?;
+    let format_of = |v: &Value| v.get("format").and_then(Value::as_str).map(str::to_owned);
+    if format_of(&summary).as_deref() != Some("filament.monitor-summary/1")
+        || !lines
+            .iter()
+            .all(|e| format_of(e).as_deref() == Some("filament.monitor-event/1"))
+    {
+        return None;
+    }
+    Some(json!({ "events": lines, "summary": summary }))
+}
+
 /// Whether a structure came from an outcome document.
 pub fn is_outcome(structure: &Value) -> bool {
     !matches!(structure.get("outcome"), Some(Value::Null))
@@ -80,6 +106,20 @@ pub fn is_outcome(structure: &Value) -> bool {
 pub fn verdict_of(structure: &Value) -> String {
     if !is_outcome(structure) {
         return "unreadable output".to_owned();
+    }
+    if let Some(clauses) = structure
+        .get("summary")
+        .and_then(|s| s.get("clauses"))
+        .and_then(Value::as_array)
+    {
+        let mut categories: Vec<String> = Vec::new();
+        for clause in clauses {
+            let category = display(clause.get("category").unwrap_or(&Value::Null));
+            if !categories.contains(&category) {
+                categories.push(category);
+            }
+        }
+        return categories.join(", ");
     }
     let category = structure.get("category").unwrap_or(&Value::Null);
     if category.as_str() == Some("violation") {
