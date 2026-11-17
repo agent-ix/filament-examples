@@ -1,6 +1,6 @@
 {
   "category": "refusal",
-  "last_stage": null,
+  "last_stage": "S4",
   "result": null,
   "first_diagnostic": null,
   "items": [
@@ -8,10 +8,6 @@
       "category": "refusal",
       "claim_name": "ControlFp",
       "record": {
-        "cause": {
-          "code": "invalid-request",
-          "kind": "invalid-input"
-        },
         "diagnostic": {
           "cause": "unknown-claim",
           "code": "invalid_capability",
@@ -19,7 +15,7 @@
             "name": "ControlFp"
           }
         },
-        "result": "declined"
+        "settled_by": "disposition"
       },
       "request": null,
       "request_index": 0
@@ -28,10 +24,6 @@
       "category": "refusal",
       "claim_name": "StopMonitorFast",
       "record": {
-        "cause": {
-          "code": "invalid-request",
-          "kind": "invalid-input"
-        },
         "diagnostic": {
           "cause": "unknown-claim",
           "code": "invalid_capability",
@@ -39,7 +31,7 @@
             "name": "StopMonitorFast"
           }
         },
-        "result": "declined"
+        "settled_by": "disposition"
       },
       "request": null,
       "request_index": 1

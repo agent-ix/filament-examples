@@ -807,12 +807,12 @@ serves = "Types reference (numbers)"
 [[case]]
 id = "num-decimal-numeral"
 rule = ""
-statement = "A decimal value is written decimal(coefficient, scale). The numeral 0.9 is refused."
+statement = "A decimal value is written decimal(coefficient, scale). The numeral 0.9 is ambiguous without an explicit decimal type."
 file = "rules/values/numbers/num-decimal-numeral.fsl"
 command = "check rules/values/numbers/num-decimal-numeral.fsl"
 status = "running"
 expect_exit = 20
-expect_verdict = "refused: invalid_syntax"
+expect_verdict = "refused: ill_typed ambiguous-literal"
 serves = "Types reference (numbers)"
 
 [[case]]
@@ -1561,12 +1561,9 @@ rule = "leftover"
 statement = "A pack size that may be 0 is refused when the unit is checked."
 file = "rules/values/numbers/staged-mod-zero-divisor.fsl"
 command = "check rules/values/numbers/staged-mod-zero-divisor.fsl"
-status = "staged"
-expect_exit = 0
-ready_exit = 20
-waits_on = "QSL-1962"
-needs = "a divisor that may be zero is refused"
-why = "a remainder by a divisor whose range includes 0 is accepted; the specification requires a guard"
+status = "running"
+expect_exit = 20
+expect_verdict = "refusal: undefined_expression"
 serves = "Types reference (numbers)"
 
 [[case]]
@@ -1649,10 +1646,10 @@ serves = "Checks: limits"
 [[case]]
 id = "outcomes-undefined-call"
 rule = "remainder"
-statement = "A call that divides by zero has no value, which is the category undefined and exit status 10."
+statement = "A call whose divisor may be zero is refused before execution."
 file = "rules/outcomes/remainder.fsl"
 command = "run requests/outcomes/remainder-zero.json"
 status = "running"
-expect_exit = 10
-expect_verdict = "undefined"
+expect_exit = 20
+expect_verdict = "refusal: undefined_expression"
 serves = "Checks: outcomes"
