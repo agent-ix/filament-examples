@@ -115,6 +115,10 @@ impl Driver for NoDriver {
 
 fn run() -> Result<bool> {
     let args: Vec<String> = std::env::args().skip(1).collect();
+    if matches!(args.as_slice(), [arg] if arg == "--help" || arg == "help") {
+        println!("{USAGE}");
+        return Ok(true);
+    }
     let (root, command) = parse(&args)?;
     let mut sink = StdSink;
     if !command.needs_driver() {

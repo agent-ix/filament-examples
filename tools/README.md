@@ -6,6 +6,20 @@ This folder holds the example runner, the interim model generator, the install-t
 
 [fsl-examples](fsl-examples) is the example runner, a Rust program. It reads each `example.toml`, runs the cases through the FSL driver named by the `FSL` variable and compares the exit code and the structure of each outcome with the manifest and `expected/`: the category, the result value, the last stage, the code and cause of the first diagnostic, and the items with their witness fields. The diagnostic message text goes to a separate snapshot, `expected/<id>.messages.txt`, that `make record` rewrites and that never fails a case. The Makefile calls the runner as `make check`, `make staged`, `make record`, `make promote`, `make readme` and `make index`, through the `FSL_EXAMPLES` variable in [config.mk](../config.mk); the default builds it with cargo. Its tests run with `make runner-test`.
 
+Run `fsl-examples --help` for the command summary. `check` accepts repeated `--case` selectors: a selector can be a case id or `<system>/<id>`, with `*` and `?` wildcards. A bare id selects that id in the chosen system folders, or across all systems when no folder is given. For example:
+
+```
+fsl-examples check shop --case 'paid-*'
+fsl-examples check --case 'shop/paid-*' --case 'rover/safe-stop-late'
+```
+
+`regenerate` refreshes the selected cases' expected records; `record` remains a backward-compatible alias. Add `--dry-run` to print the proposed expected-file changes without writing them. Both commands use the `FSL` driver path:
+
+```
+fsl-examples regenerate shop --case 'paid-*' --dry-run
+fsl-examples record shop --case paid-short
+```
+
 [`fr865-text.test.mjs`](fr865-text.test.mjs) runs three direct CLI commands without `--format` and compares their FR-865 stdout and exit status with the transcript fixtures under `verification/fr865-text/expected/`. Run it with `FSL=/path/to/fsl node --test tools/fr865-text.test.mjs`.
 
 ## Steps runner
