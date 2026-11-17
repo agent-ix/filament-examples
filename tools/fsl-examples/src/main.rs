@@ -152,7 +152,7 @@ mod tests {
     use std::path::PathBuf;
 
     #[test]
-    fn check_parses_repeated_case_selectors() {
+    fn check_parses_repeated_case_selectors() -> fsl_examples::Result<()> {
         let args = [
             "check".to_owned(),
             "shop".to_owned(),
@@ -161,7 +161,7 @@ mod tests {
             "--case".to_owned(),
             "rover/safe-stop-late".to_owned(),
         ];
-        let (_, command) = parse(&args).expect("valid options");
+        let (_, command) = parse(&args)?;
         assert_eq!(
             command,
             Command::Check {
@@ -169,10 +169,11 @@ mod tests {
                 cases: vec!["paid-*".to_owned(), "rover/safe-stop-late".to_owned()],
             }
         );
+        Ok(())
     }
 
     #[test]
-    fn record_aliases_regenerate_and_accepts_dry_run() {
+    fn record_aliases_regenerate_and_accepts_dry_run() -> fsl_examples::Result<()> {
         for name in ["record", "regenerate"] {
             let args = [
                 name.to_owned(),
@@ -181,7 +182,7 @@ mod tests {
                 "paid-short".to_owned(),
                 "--dry-run".to_owned(),
             ];
-            let (_, command) = parse(&args).expect("valid options");
+            let (_, command) = parse(&args)?;
             assert_eq!(
                 command,
                 Command::Record {
@@ -191,5 +192,6 @@ mod tests {
                 }
             );
         }
+        Ok(())
     }
 }
