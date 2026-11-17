@@ -1,0 +1,6 @@
+language "ix:native" edition "1-draft";
+profile t = "filament.temporal.event-position.false-extension/v1";
+record Reading { level: Int[0, 9]; }
+temporal ReachesWithin2Events using t over (r: Reading) clock "steps" on origin {
+  eventually[0,2] holds(r.level = 2)
+}

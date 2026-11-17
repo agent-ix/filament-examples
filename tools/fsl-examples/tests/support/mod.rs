@@ -111,6 +111,7 @@ pub fn scratch_repo() -> std::result::Result<tempfile::TempDir, Box<dyn std::err
     let dir = tempfile::tempdir()?;
     let root = repo_root();
     copy_tree(&root.join("examples"), &dir.path().join("examples"))?;
+    fs::copy(root.join("README.md"), dir.path().join("README.md"))?;
     fs::copy(root.join("index.json"), dir.path().join("index.json"))?;
     Ok(dir)
 }

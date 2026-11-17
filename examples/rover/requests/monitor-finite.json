@@ -1,0 +1,9 @@
+{
+  "format": "native-monitor/1",
+  "request": {
+    "models": [],
+    "program": {"source": {"file": "../rules/monitor-finite.fsl", "authority": "example", "identity": "example:rover/monitor-finite", "document": "monitorfinite", "formal_revision": 1}},
+    "clauses": [{"name": "EventuallyLevelTwo"}],
+    "trace": {"kind": "finite"}
+  }
+}

@@ -61,7 +61,7 @@ fn check_passes_on_all_running_cases() -> TestResult {
     assert!(ok);
     assert_eq!(
         sink.info.last().map(String::as_str),
-        Some("check: 288 passed, 0 failed")
+        Some("check: 293 passed, 0 failed")
     );
     Ok(())
 }
@@ -152,6 +152,30 @@ fn stale_index_or_readme_region_fails() -> TestResult {
     let mut sink = VecSink::default();
     assert!(execute(&Command::Generate, &root, &driver, &mut sink)?);
     assert_eq!(fs::read_to_string(&readme)?, fresh_readme);
+
+    let root_readme = root.join("README.md");
+    let fresh_root_readme = fs::read_to_string(&root_readme)?;
+    let stale_counts = fresh_root_readme.replace(
+        "| [library](examples/library) | Shop | 6 | 0 |",
+        "| [library](examples/library) | Shop | 5 | 0 |",
+    );
+    assert_ne!(
+        stale_counts, fresh_root_readme,
+        "the Systems table has a library row"
+    );
+    fs::write(&root_readme, stale_counts)?;
+    let mut sink = VecSink::default();
+    assert!(!check(&mut sink)?);
+    assert_eq!(
+        sink.errors,
+        vec![
+            "README.md system counts are stale: merge origin/main, then run make readme".to_owned()
+        ]
+    );
+
+    let mut sink = VecSink::default();
+    assert!(execute(&Command::Generate, &root, &driver, &mut sink)?);
+    assert_eq!(fs::read_to_string(&root_readme)?, fresh_root_readme);
     let mut sink = VecSink::default();
     assert!(check(&mut sink)?, "{:?}", sink.errors);
     Ok(())

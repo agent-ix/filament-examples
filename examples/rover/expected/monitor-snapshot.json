@@ -1,0 +1,45 @@
+{
+  "events": [
+    {
+      "basis": "unsettled",
+      "category": "pending",
+      "clause": "SafeStopWithin3Steps",
+      "disposition": {
+        "category": "pending",
+        "stage": "evaluate",
+        "temporal": {
+          "kind": "pending"
+        }
+      },
+      "format": "filament.monitor-event/1",
+      "position": 0,
+      "record": 0,
+      "settled": false
+    }
+  ],
+  "summary": {
+    "clauses": [
+      {
+        "basis": "unsettled",
+        "category": "pending",
+        "clause": "SafeStopWithin3Steps",
+        "disposition": {
+          "category": "pending",
+          "stage": "evaluate",
+          "temporal": {
+            "kind": "pending"
+          }
+        },
+        "settled": false,
+        "settlement": {
+          "step": "1",
+          "trigger": "finish"
+        }
+      }
+    ],
+    "format": "filament.monitor-summary/1",
+    "ledger": null,
+    "records": 2,
+    "refused": 0
+  }
+}
