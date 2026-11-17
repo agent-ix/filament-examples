@@ -61,7 +61,7 @@ fn check_passes_on_all_running_cases() -> TestResult {
     assert!(ok);
     assert_eq!(
         sink.info.last().map(String::as_str),
-        Some("check: 291 passed, 0 failed")
+        Some("check: 293 passed, 0 failed")
     );
     Ok(())
 }

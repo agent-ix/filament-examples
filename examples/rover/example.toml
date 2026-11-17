@@ -491,6 +491,28 @@ expect_verdict = "success"
 serves = "QSL-2260 monitor timestamped trace coverage"
 
 [[case]]
+id = "monitor-finite"
+rule = ""
+statement = "A finite monitor stream accepts samples and reports an open-ended rule as pending at the end."
+file = "rules/monitor-finite.fsl"
+command = "monitor requests/monitor-finite.json --input records/monitor-finite.jsonl"
+status = "running"
+expect_exit = 0
+expect_verdict = "pending"
+serves = "QSL-2260 monitor finite trace coverage"
+
+[[case]]
+id = "monitor-snapshot"
+rule = ""
+statement = "A finite monitor stream accepts a state snapshot supplied inline in an observation record."
+file = "rules/safe-stop-steps.fsl"
+command = "monitor requests/monitor-snapshot.json --input records/monitor-snapshot.jsonl"
+status = "running"
+expect_exit = 0
+expect_verdict = "pending"
+serves = "QSL-2260 monitor snapshot observation coverage"
+
+[[case]]
 id = "model-subjects-mode-machine"
 rule = ""
 statement = "The rover's operations give it a chain of modes: driving, degraded, safe stop and failsafe."
