@@ -357,16 +357,13 @@ serves = "State reference: operation rules"
 
 [[case]]
 id = "staged-charge-adds-amount"
-rule = ""
+rule = "ChargeAddsAmount"
 statement = "A charge adds exactly its amount to what the order has been charged."
 file = "rules/staged-charge-adds-amount.fsl"
 command = "compile requests/staged-charge-adds-amount.json"
-status = "staged"
-expect_exit = 20
-ready_exit = 0
-waits_on = "QSL-1901"
-why = "post `self.charged = pre(self.charged) + amount` is refused undefined_expression/unproved-range: FR-577 (preconditions discharge a postcondition's range obligations) is specified but not implemented"
-needs = "exact post-conditions"
+status = "running"
+expect_exit = 0
+expect_verdict = "compiles"
 serves = "Learn L3 (preferred form of the post rule)"
 
 [[case]]

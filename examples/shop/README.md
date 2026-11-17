@@ -99,6 +99,6 @@ The two request files differ only in the data file they name. Run all cases with
 
 ## Staged
 
-The case `staged-charge-adds-amount` states that a charge adds exactly its amount. The checker cannot prove the arithmetic yet, so the case stays staged. The case `staged-client-charges-once` states that a client which retries a charge with an idempotency key implements a payment that is charged at most once, over the models `payment-spec` and `payment-client`. Checking a refinement needs the `analyze` command. See `example.toml` for the reason.
+The case `staged-charge-adds-amount` states that a charge adds exactly its amount. Its precondition keeps the total guard and bounds both the current charged amount and the new amount to 500000, so the checker proves the postcondition's range obligation and compiles the rule. The case `staged-client-charges-once` states that a client which retries a charge with an idempotency key implements a payment that is charged at most once, over the models `payment-spec` and `payment-client`. Checking a refinement needs the `analyze` command. See `example.toml` for the remaining staged cases.
 
 The case `staged-optional-parameter` tests an optional operation parameter with `present`. The checker types the parameter as a required value, so the case stays staged.
