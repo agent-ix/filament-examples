@@ -1,0 +1,117 @@
+{
+  "contractVersion": "2.0.0",
+  "canonicalization": {
+    "algorithm": "rfc8785-v1"
+  },
+  "source": {
+    "identity": "ix://example/shop-outcomes/spec",
+    "version": "1.0.0",
+    "dialect": "spec-bundle"
+  },
+  "package": {
+    "identity": "example/shop-outcomes",
+    "version": "1.0.0",
+    "mappingVersions": [],
+    "profileVersions": []
+  },
+  "occurrences": [],
+  "extensions": [],
+  "constructs": [
+    {
+      "kind": {
+        "module": "example/shop-outcomes",
+        "name": "object_type"
+      },
+      "moduleVersion": "1.0.0",
+      "construct": {
+        "identity": "none",
+        "shape": "record",
+        "members": {},
+        "meaning": "filament.meaning.model.object-type/v1"
+      }
+    },
+    {
+      "kind": {
+        "module": "example/shop-outcomes",
+        "name": "population"
+      },
+      "moduleVersion": "1.0.0",
+      "construct": {
+        "identity": "none",
+        "shape": "record",
+        "members": {},
+        "meaning": "filament.meaning.model.population/v1"
+      }
+    }
+  ],
+  "types": [
+    {
+      "identity": "ix://example/shop-outcomes/Order",
+      "displayName": "Order",
+      "kind": {
+        "module": "example/shop-outcomes",
+        "name": "object_type"
+      },
+      "roles": [],
+      "origin": {
+        "generated": {
+          "generatorIdentity": "ix://example/shop-outcomes/Order",
+          "generatorVersion": "1.0.0",
+          "inputIdentities": [
+            "ix://example/shop-outcomes/Order"
+          ]
+        }
+      },
+      "constraints": [],
+      "extensions": [],
+      "unknownPolicy": "reject",
+      "supertypes": [],
+      "fields": [],
+      "operations": []
+    }
+  ],
+  "populations": [
+    {
+      "identity": "ix://example/shop-outcomes/orders",
+      "displayName": "orders",
+      "kind": {
+        "module": "example/shop-outcomes",
+        "name": "population"
+      },
+      "members": [
+        "ix://example/shop-outcomes/Order"
+      ],
+      "extent": "closed",
+      "origin": {
+        "generated": {
+          "generatorIdentity": "ix://example/shop-outcomes/orders",
+          "generatorVersion": "1.0.0",
+          "inputIdentities": [
+            "ix://example/shop-outcomes/orders"
+          ]
+        }
+      }
+    },
+    {
+      "identity": "ix://example/shop-outcomes/lookupTargets",
+      "displayName": "lookupTargets",
+      "kind": {
+        "module": "example/shop-outcomes",
+        "name": "population"
+      },
+      "members": [
+        "ix://example/shop-outcomes/Order"
+      ],
+      "extent": "closed",
+      "origin": {
+        "generated": {
+          "generatorIdentity": "ix://example/shop-outcomes/lookupTargets",
+          "generatorVersion": "1.0.0",
+          "inputIdentities": [
+            "ix://example/shop-outcomes/lookupTargets"
+          ]
+        }
+      }
+    }
+  ]
+}

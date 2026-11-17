@@ -1,0 +1,33 @@
+{
+  "format": "filament.state.snapshot/v1",
+  "identity": {
+    "authority": "example",
+    "identity": "ix://example/shop-outcomes/data/outcomes-undefined-call"
+  },
+  "model": {
+    "identity": "example/shop-outcomes"
+  },
+  "observation": "current",
+  "anchor": {
+    "kind": "handler",
+    "name": "query"
+  },
+  "populations": [
+    {
+      "population": "ix://example/shop-outcomes/orders",
+      "complete": true,
+      "objects": []
+    },
+    {
+      "population": "ix://example/shop-outcomes/lookupTargets",
+      "complete": true,
+      "objects": [
+        {
+          "key": "target",
+          "type": "ix://example/shop-outcomes/Order",
+          "fields": {}
+        }
+      ]
+    }
+  ]
+}

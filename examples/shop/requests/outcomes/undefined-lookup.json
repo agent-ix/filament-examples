@@ -1,0 +1,47 @@
+{
+  "format": "native-run/1",
+  "request": {
+    "models": [
+      {
+        "format": "semantic-ir/2.0.0",
+        "source": {
+          "file": "../../model/shop-outcomes.semantic-ir.json",
+          "authority": "example",
+          "identity": "example/shop-outcomes/model",
+          "document": "model",
+          "formal_revision": 1
+        }
+      }
+    ],
+    "program": {
+      "source": {
+        "file": "../../rules/outcomes/undefined-lookup.fsl",
+        "authority": "example",
+        "identity": "example:shop/outcomes-undefined-lookup",
+        "document": "outcomes",
+        "formal_revision": 1
+      }
+    },
+    "call": {
+      "function": "missingOrder",
+      "snapshot": "../../data/outcomes-undefined-call.json",
+      "arguments": [
+        {
+          "parameter": "p",
+          "value": {
+            "population": "ix://example/shop-outcomes/orders"
+          }
+        },
+        {
+          "parameter": "r",
+          "value": {
+            "reference": {
+              "population": "ix://example/shop-outcomes/lookupTargets",
+              "key": "target"
+            }
+          }
+        }
+      ]
+    }
+  }
+}
