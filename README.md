@@ -92,6 +92,19 @@ make staged FSL=/path/to/driver
 
 Run one system with `make -C examples/shop check FSL=/path/to/driver`.
 
+The runner can also check selected cases directly. Use a case id, a `<system>/<id>` name, or `*` and `?` wildcards; repeat `--case` to select more than one:
+
+```
+cargo run --quiet --manifest-path tools/fsl-examples/Cargo.toml -- check shop --case paid-short
+cargo run --quiet --manifest-path tools/fsl-examples/Cargo.toml -- check --case 'shop/paid-*' --case 'rover/safe-stop-late'
+```
+
+`regenerate` refreshes the selected cases' expected records. `record` remains an alias. Add `--dry-run` to print the proposed file changes without writing them:
+
+```
+cargo run --quiet --manifest-path tools/fsl-examples/Cargo.toml -- regenerate shop --case 'paid-*' --dry-run
+```
+
 Each case prints a line such as `shop/paid-short: exit 10 ok`. The exit code is the verdict: 0 holds, 10 violated, 20 refused, 22 incomplete data, 21 not available yet.
 
 A case passes when its exit code and the structure of its outcome match the record: the category, the result value, the last stage, the code and cause of the first diagnostic, and the items with their witness fields. The message text of the diagnostics is kept apart and is not compared, so a reworded message does not fail a case.

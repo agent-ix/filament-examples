@@ -245,9 +245,11 @@ pub struct Tally {
 pub fn check_systems(
     systems: &[System],
     selection: Selection,
+    selectors: &[String],
     driver: &dyn Driver,
     sink: &mut dyn Sink,
 ) -> Result<Tally> {
+    validate_selectors(systems, selectors)?;
     let mut tally = Tally::default();
     for system in systems {
         for case in &system.manifest.cases {
@@ -256,6 +258,9 @@ pub fn check_systems(
                 Selection::Staged => matches!(case.status, Status::Staged { .. }),
             };
             if !selected {
+                continue;
+            }
+            if !selectors.is_empty() && !is_selected(system, case, selectors) {
                 continue;
             }
             let run = run_case(system, case, driver)?;
@@ -285,13 +290,19 @@ pub fn check_systems(
 /// Records every case whose exit matches its manifest entry; returns how many were not recorded.
 pub fn record_systems(
     systems: &[System],
+    selectors: &[String],
+    dry_run: bool,
     driver: &dyn Driver,
     sink: &mut dyn Sink,
 ) -> Result<usize> {
+    validate_selectors(systems, selectors)?;
     let mut recorded = 0usize;
     let mut failed = 0usize;
     for system in systems {
         for case in &system.manifest.cases {
+            if !selectors.is_empty() && !is_selected(system, case, selectors) {
+                continue;
+            }
             let run = run_case(system, case, driver)?;
             let label = format!("{}/{}", system.name, case.id);
             if let Status::Staged { ready_exit, .. } = case.status
@@ -306,15 +317,132 @@ pub fn record_systems(
                     run.exit, case.expect_exit
                 ));
             } else {
-                write_recorded(&system.dir, &case.id, &project(&run.stdout))?;
+                let output = project(&run.stdout);
+                if dry_run {
+                    print_record_diff(system, case, &output, sink)?;
+                } else {
+                    write_recorded(&system.dir, &case.id, &output)?;
+                }
                 recorded += 1;
             }
         }
     }
-    sink.info(&format!(
-        "record: {recorded} recorded, {failed} not recorded"
-    ));
+    let summary = if dry_run {
+        format!("would regenerate: {recorded} records, {failed} not recorded")
+    } else {
+        format!("record: {recorded} recorded, {failed} not recorded")
+    };
+    sink.info(&summary);
     Ok(failed)
+}
+
+fn print_record_diff(
+    system: &System,
+    case: &Case,
+    recorded: &Recorded,
+    sink: &mut dyn Sink,
+) -> Result<()> {
+    let path = expected_path(&system.dir, &case.id);
+    let text = serde_json::to_string_pretty(&recorded.structure)
+        .map_err(|e| Error::new(ErrorCode::Recorded, format!("{}: {e}", path.display())))?;
+    let old = read_optional_text(&path)?;
+    let new = format!("{text}\n");
+    if old == new {
+        sink.info(&format!("unchanged {}", path.display()));
+    } else {
+        sink.info(&format!("--- {}", path.display()));
+        sink.info(&format!("+++ {} (regenerated)", path.display()));
+        for line in old.lines() {
+            sink.info(&format!("- {line}"));
+        }
+        for line in new.lines() {
+            sink.info(&format!("+ {line}"));
+        }
+    }
+    let snapshot = messages_path(&system.dir, &case.id);
+    let old_messages = read_optional_text(&snapshot)?;
+    if old_messages != recorded.messages {
+        sink.info(&format!("--- {}", snapshot.display()));
+        sink.info(&format!("+++ {} (regenerated)", snapshot.display()));
+        for line in old_messages.lines() {
+            sink.info(&format!("- {line}"));
+        }
+        for line in recorded.messages.lines() {
+            sink.info(&format!("+ {line}"));
+        }
+        if recorded.messages.is_empty() {
+            sink.info("(file would be removed)");
+        }
+    }
+    Ok(())
+}
+
+fn read_optional_text(path: &Path) -> Result<String> {
+    match fs::read_to_string(path) {
+        Ok(text) => Ok(text),
+        Err(error) if error.kind() == std::io::ErrorKind::NotFound => Ok(String::new()),
+        Err(error) => Err(Error::io(path, &error)),
+    }
+}
+
+fn validate_selectors(systems: &[System], selectors: &[String]) -> Result<()> {
+    for selector in selectors {
+        if !systems.iter().any(|system| {
+            system
+                .manifest
+                .cases
+                .iter()
+                .any(|case| selector_matches(selector, system, case))
+        }) {
+            return Err(Error::new(
+                ErrorCode::Usage,
+                format!("case selector {selector:?} matched no cases"),
+            ));
+        }
+    }
+    Ok(())
+}
+
+fn is_selected(system: &System, case: &Case, selectors: &[String]) -> bool {
+    selectors
+        .iter()
+        .any(|selector| selector_matches(selector, system, case))
+}
+
+fn selector_matches(selector: &str, system: &System, case: &Case) -> bool {
+    let label = format!("{}/{}", system.name, case.id);
+    let candidate = if selector.contains('/') {
+        label.as_str()
+    } else {
+        case.id.as_str()
+    };
+    glob_matches(selector, candidate)
+}
+
+fn glob_matches(pattern: &str, value: &str) -> bool {
+    let pattern: Vec<char> = pattern.chars().collect();
+    let value: Vec<char> = value.chars().collect();
+    let (mut p, mut v, mut star, mut retry) = (0, 0, None, 0);
+    while v < value.len() {
+        if p < pattern.len() && (pattern[p] == '?' || pattern[p] == value[v]) {
+            p += 1;
+            v += 1;
+        } else if p < pattern.len() && pattern[p] == '*' {
+            star = Some(p);
+            p += 1;
+            retry = v;
+        } else if let Some(star_at) = star {
+            retry += 1;
+            v = retry;
+            p = star_at + 1;
+        } else {
+            return false;
+        }
+    }
+    while p < pattern.len() && pattern[p] == '*' {
+        p += 1;
+    }
+    p == pattern.len()
 }
 
 /// Finds a case by `<system>/<id>` or a bare `<id>`.
@@ -383,12 +511,24 @@ pub fn promote_case(
 /// A runner command.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum Command {
-    /// Running cases must match their record; README regions and `index.json` must be fresh.
-    Check(Vec<PathBuf>),
+    /// Running cases must match their records. A full check also verifies generated docs.
+    Check {
+        /// System folders holding `example.toml`.
+        dirs: Vec<PathBuf>,
+        /// Case ids or `<system>/<id>` patterns; `*` and `?` are wildcards.
+        cases: Vec<String>,
+    },
     /// Staged cases must still fail as recorded.
     Staged(Vec<PathBuf>),
     /// Re-record `expected/` from the driver.
-    Record(Vec<PathBuf>),
+    Record {
+        /// System folders holding `example.toml`.
+        dirs: Vec<PathBuf>,
+        /// Case ids or `<system>/<id>` patterns; `*` and `?` are wildcards.
+        cases: Vec<String>,
+        /// Print proposed file changes without writing them.
+        dry_run: bool,
+    },
     /// Flip a staged case to running.
     Promote {
         /// `<system>/<id>` or a bare id.
@@ -418,7 +558,9 @@ pub fn execute(
         if dirs.is_empty() {
             load_all(root)
         } else {
-            dirs.iter().map(|d| load_system(d)).collect()
+            dirs.iter()
+                .map(|dir| load_system(&resolve_system_path(root, dir)))
+                .collect()
         }
     };
     match command {
@@ -431,24 +573,23 @@ pub fn execute(
             sync_generated(&load_all(root)?, root, true, sink)?;
             Ok(true)
         }
-        Command::Record(dirs) => {
+        Command::Record {
+            dirs,
+            cases,
+            dry_run,
+        } => {
             let systems = load(dirs)?;
-            let failed = record_systems(&systems, driver, sink)?;
-            if dirs.is_empty() {
+            let failed = record_systems(&systems, cases, *dry_run, driver, sink)?;
+            if dirs.is_empty() && cases.is_empty() && !dry_run {
                 sync_generated(&systems, root, true, sink)?;
             }
             Ok(failed == 0)
         }
-        Command::Check(dirs) | Command::Staged(dirs) => {
+        Command::Check { dirs, cases } => {
             let systems = load(dirs)?;
-            let selection = if matches!(command, Command::Check(_)) {
-                Selection::Running
-            } else {
-                Selection::Staged
-            };
-            let tally = check_systems(&systems, selection, driver, sink)?;
+            let tally = check_systems(&systems, Selection::Running, cases, driver, sink)?;
             let mut failed = tally.failed;
-            if selection == Selection::Running && dirs.is_empty() {
+            if dirs.is_empty() && cases.is_empty() {
                 for problem in sync_generated(&systems, root, false, sink)? {
                     sink.error(&problem);
                     failed += 1;
@@ -456,7 +597,23 @@ pub fn execute(
             }
             Ok(failed == 0)
         }
+        Command::Staged(dirs) => {
+            let systems = load(dirs)?;
+            let tally = check_systems(&systems, Selection::Staged, &[], driver, sink)?;
+            Ok(tally.failed == 0)
+        }
     }
+}
+
+fn resolve_system_path(root: &Path, dir: &Path) -> PathBuf {
+    if dir.join("example.toml").is_file() {
+        return dir.to_path_buf();
+    }
+    let rooted = root.join(dir);
+    if rooted.join("example.toml").is_file() {
+        return rooted;
+    }
+    root.join("examples").join(dir)
 }
 
 /// `path` as an absolute path with `.` and `..` removed, without touching the file system.

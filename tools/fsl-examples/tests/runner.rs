@@ -3,10 +3,12 @@
 mod support;
 
 use fsl_examples::manifest::Status;
+use fsl_examples::outcome::Run;
 use fsl_examples::runner::{
-    Command, VecSink, absolute, execute, expected_path, load_all, messages_path,
+    Command, Driver, VecSink, absolute, execute, expected_path, load_all, messages_path,
 };
 use serde_json::{Value, json};
+use std::cell::Cell;
 use std::collections::BTreeMap;
 use std::fs;
 use std::path::{Path, PathBuf};
@@ -51,17 +53,214 @@ fn structure_files(root: &Path) -> Result<BTreeMap<PathBuf, String>, Box<dyn std
     Ok(files)
 }
 
+fn expected_files(root: &Path) -> Result<BTreeMap<PathBuf, String>, Box<dyn std::error::Error>> {
+    let mut files = BTreeMap::new();
+    for system in load_all(root)? {
+        for entry in fs::read_dir(system.dir.join("expected"))? {
+            let path = entry?.path();
+            if path.is_file() {
+                files.insert(path.clone(), fs::read_to_string(path)?);
+            }
+        }
+    }
+    Ok(files)
+}
+
+struct CountingDriver {
+    inner: StandIn,
+    calls: Cell<usize>,
+}
+
+impl Driver for CountingDriver {
+    fn run(&self, dir: &Path, args: &[String]) -> fsl_examples::Result<Run> {
+        self.calls.set(self.calls.get() + 1);
+        self.inner.run(dir, args)
+    }
+}
+
 #[test]
 fn check_passes_on_all_running_cases() -> TestResult {
     let root = absolute(&repo_root())?;
     let driver = StandIn::faithful(&root)?;
     let mut sink = VecSink::default();
-    let ok = execute(&Command::Check(Vec::new()), &root, &driver, &mut sink)?;
+    let ok = execute(
+        &Command::Check {
+            dirs: Vec::new(),
+            cases: Vec::new(),
+        },
+        &root,
+        &driver,
+        &mut sink,
+    )?;
     assert_eq!(sink.errors, Vec::<String>::new());
     assert!(ok);
     assert_eq!(
         sink.info.last().map(String::as_str),
         Some("check: 293 passed, 0 failed")
+    );
+    Ok(())
+}
+
+#[test]
+fn check_selects_only_matching_cases_and_accepts_globs() -> TestResult {
+    let scratch = scratch_repo()?;
+    let root = absolute(scratch.path())?;
+    let driver = CountingDriver {
+        inner: StandIn::faithful(&root)?,
+        calls: Cell::new(0),
+    };
+    let mut sink = VecSink::default();
+    let ok = execute(
+        &Command::Check {
+            dirs: vec![PathBuf::from("shop")],
+            cases: vec![
+                "misspelled-*".to_owned(),
+                "shop/misspelled-fiel?".to_owned(),
+            ],
+        },
+        &root,
+        &driver,
+        &mut sink,
+    )?;
+    assert!(ok, "{:?}", sink.errors);
+    assert_eq!(driver.calls.get(), 1, "only the selected case runs");
+    assert_eq!(
+        sink.info.last().map(String::as_str),
+        Some("check: 1 passed, 0 failed")
+    );
+    Ok(())
+}
+
+#[test]
+fn check_rejects_unknown_case_selector_clearly() -> TestResult {
+    let scratch = scratch_repo()?;
+    let root = absolute(scratch.path())?;
+    let driver = CountingDriver {
+        inner: StandIn::faithful(&root)?,
+        calls: Cell::new(0),
+    };
+    let mut sink = VecSink::default();
+    let error = execute(
+        &Command::Check {
+            dirs: vec![PathBuf::from("shop")],
+            cases: vec!["does-not-exist".to_owned()],
+        },
+        &root,
+        &driver,
+        &mut sink,
+    )
+    .err()
+    .ok_or("unknown selector must fail")?;
+    assert!(
+        error
+            .to_string()
+            .contains("case selector \"does-not-exist\" matched no cases")
+    );
+    assert_eq!(
+        driver.calls.get(),
+        0,
+        "validation precedes driver execution"
+    );
+    Ok(())
+}
+
+#[test]
+fn filtered_regenerate_changes_only_selected_record_files() -> TestResult {
+    let scratch = scratch_repo()?;
+    let root = absolute(scratch.path())?;
+    let label = "shop/misspelled-field";
+    let reworded = "the selected diagnostic has new wording";
+    let driver = StandIn::new(&root, move |current, run| {
+        if current != label {
+            return;
+        }
+        if let Ok(mut doc) = serde_json::from_str::<Value>(&run.stdout)
+            && let Some(message) = doc.pointer_mut("/diagnostics/0/message")
+        {
+            *message = Value::from(reworded);
+            run.stdout = doc.to_string();
+        }
+    })?;
+    let before = expected_files(&root)?;
+    let readme_before = fs::read(root.join("README.md"))?;
+    let index_before = fs::read(root.join("index.json"))?;
+    let mut sink = VecSink::default();
+    assert!(execute(
+        &Command::Record {
+            dirs: vec![PathBuf::from("shop")],
+            cases: vec!["shop/misspelled-field".to_owned()],
+            dry_run: false,
+        },
+        &root,
+        &driver,
+        &mut sink,
+    )?);
+    let after = expected_files(&root)?;
+    let selected = root.join("examples/shop/expected/misspelled-field.messages.txt");
+    assert_eq!(
+        after.get(&selected).map(String::as_str),
+        Some(format!("{reworded}\n").as_str())
+    );
+    assert_ne!(
+        before.get(&selected),
+        after.get(&selected),
+        "selected snapshot changed"
+    );
+    assert_eq!(fs::read(root.join("README.md"))?, readme_before);
+    assert_eq!(fs::read(root.join("index.json"))?, index_before);
+    for (path, bytes) in before {
+        if path != selected {
+            assert_eq!(
+                after.get(&path),
+                Some(&bytes),
+                "unselected file changed: {}",
+                path.display()
+            );
+        }
+    }
+    Ok(())
+}
+
+#[test]
+fn filtered_regenerate_dry_run_prints_changes_without_writing() -> TestResult {
+    let scratch = scratch_repo()?;
+    let root = absolute(scratch.path())?;
+    let label = "shop/misspelled-field";
+    let reworded = "dry run wording";
+    let driver = StandIn::new(&root, move |current, run| {
+        if current != label {
+            return;
+        }
+        if let Ok(mut doc) = serde_json::from_str::<Value>(&run.stdout)
+            && let Some(message) = doc.pointer_mut("/diagnostics/0/message")
+        {
+            *message = Value::from(reworded);
+            run.stdout = doc.to_string();
+        }
+    })?;
+    let before = expected_files(&root)?;
+    let mut sink = VecSink::default();
+    assert!(execute(
+        &Command::Record {
+            dirs: vec![PathBuf::from("shop")],
+            cases: vec!["misspelled-field".to_owned()],
+            dry_run: true,
+        },
+        &root,
+        &driver,
+        &mut sink,
+    )?);
+    assert!(
+        sink.info
+            .iter()
+            .any(|line| line.contains("dry run wording")),
+        "{:?}",
+        sink.info
+    );
+    assert_eq!(
+        expected_files(&root)?,
+        before,
+        "dry-run must not write records"
     );
     Ok(())
 }
@@ -121,7 +320,17 @@ fn stale_index_or_readme_region_fails() -> TestResult {
     let scratch = scratch_repo()?;
     let root = absolute(scratch.path())?;
     let driver = StandIn::faithful(&root)?;
-    let check = |sink: &mut VecSink| execute(&Command::Check(Vec::new()), &root, &driver, sink);
+    let check = |sink: &mut VecSink| {
+        execute(
+            &Command::Check {
+                dirs: Vec::new(),
+                cases: Vec::new(),
+            },
+            &root,
+            &driver,
+            sink,
+        )
+    };
 
     let index = root.join("index.json");
     let fresh_index = fs::read_to_string(&index)?;
@@ -205,14 +414,26 @@ fn record_refreshes_the_message_snapshot_and_keeps_the_structure() -> TestResult
 
     let mut sink = VecSink::default();
     assert!(
-        execute(&Command::Check(Vec::new()), &root, &driver, &mut sink)?,
+        execute(
+            &Command::Check {
+                dirs: Vec::new(),
+                cases: Vec::new()
+            },
+            &root,
+            &driver,
+            &mut sink
+        )?,
         "a reworded message keeps the gate green before record: {:?}",
         sink.errors
     );
 
     let mut sink = VecSink::default();
     assert!(execute(
-        &Command::Record(Vec::new()),
+        &Command::Record {
+            dirs: Vec::new(),
+            cases: Vec::new(),
+            dry_run: false
+        },
         &root,
         &driver,
         &mut sink
@@ -226,7 +447,15 @@ fn record_refreshes_the_message_snapshot_and_keeps_the_structure() -> TestResult
 
     let mut sink = VecSink::default();
     assert!(
-        execute(&Command::Check(Vec::new()), &root, &driver, &mut sink)?,
+        execute(
+            &Command::Check {
+                dirs: Vec::new(),
+                cases: Vec::new()
+            },
+            &root,
+            &driver,
+            &mut sink
+        )?,
         "{:?}",
         sink.errors
     );
