@@ -1,1 +1,1 @@
-expected identifier
+ill_typed (ambiguous-literal)

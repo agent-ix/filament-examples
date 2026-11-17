@@ -1,6 +1,6 @@
 {
   "category": "violation",
-  "last_stage": null,
+  "last_stage": "S8",
   "result": null,
   "first_diagnostic": null,
   "items": [
@@ -277,8 +277,10 @@
         "transitions": "7"
       },
       "record": {
+        "backend": "en-1",
         "cause": null,
-        "result": "refuted"
+        "result": "refuted",
+        "settled_by": "result"
       },
       "replay": {
         "reproduced": true,

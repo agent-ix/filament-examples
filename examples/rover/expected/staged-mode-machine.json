@@ -1,6 +1,6 @@
 {
   "category": "incomplete",
-  "last_stage": null,
+  "last_stage": "S6c",
   "result": null,
   "first_diagnostic": null,
   "items": [
@@ -19,13 +19,15 @@
         "transitions": "200"
       },
       "record": {
+        "backend": "en-1",
         "cause": {
           "kind": "limit-reached",
           "limit": "max_states",
           "setting": "model_check.max_states",
           "value": 200
         },
-        "result": "incomplete"
+        "result": "incomplete",
+        "settled_by": "result"
       },
       "request": {
         "candidates": {

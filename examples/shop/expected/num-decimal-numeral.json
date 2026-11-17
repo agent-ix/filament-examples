@@ -1,10 +1,10 @@
 {
   "category": "refusal",
-  "last_stage": "S1",
+  "last_stage": "S3",
   "result": null,
   "first_diagnostic": {
-    "code": "invalid_syntax",
-    "cause": "unexpected-token"
+    "code": "ill_typed",
+    "cause": "ambiguous-literal"
   },
   "items": []
 }

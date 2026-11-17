@@ -1,0 +1,2 @@
+execute: success (exit 0) at S6a
+result: completed {"value":{"integer":"3750"}}

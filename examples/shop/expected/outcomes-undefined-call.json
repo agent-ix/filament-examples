@@ -3,7 +3,7 @@
   "last_stage": "S6a",
   "result": {
     "kind": "undefined",
-    "reason": "division-by-zero"
+    "reason": "absent-key"
   },
   "first_diagnostic": null,
   "items": []

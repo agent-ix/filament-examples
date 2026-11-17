@@ -1,7 +1,10 @@
 {
-  "category": "success",
-  "last_stage": "S4",
+  "category": "refusal",
+  "last_stage": "S3",
   "result": null,
-  "first_diagnostic": null,
+  "first_diagnostic": {
+    "code": "undefined_expression",
+    "cause": "unproved-nonzero"
+  },
   "items": []
 }

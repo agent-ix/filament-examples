@@ -1,0 +1,7 @@
+language "ix:native" edition "1-draft";
+profile v = "filament.model.complete/v1";
+model M = "example/shop-outcomes";
+
+function missingOrder using v(p: Population<M::Order>[0], r: M::Order): M::Order pure {
+  lookup<M::Order>(p, r) absent undefined
+}
