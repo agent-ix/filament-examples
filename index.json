@@ -3641,7 +3641,7 @@
       "case": "num-eq-sum-refused",
       "status": "running",
       "rule": null,
-      "statement": "The refusal names the arithmetic range, expected type and compared operand.",
+      "statement": "The unproved-range refusal names proved [0,20], expected Int[0,10], and peer operand c.",
       "rule_file": "examples/shop/rules/values/numbers/num-eq-sum-refused.fsl",
       "data_files": [],
       "request_file": null,

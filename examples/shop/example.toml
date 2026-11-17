@@ -697,7 +697,7 @@ serves = "Types reference (numbers)"
 [[case]]
 id = "num-eq-sum-refused"
 rule = ""
-statement = "The refusal names the arithmetic range, expected type and compared operand."
+statement = "The unproved-range refusal names proved [0,20], expected Int[0,10], and peer operand c."
 file = "rules/values/numbers/num-eq-sum-refused.fsl"
 command = "check rules/values/numbers/num-eq-sum-refused.fsl"
 status = "running"

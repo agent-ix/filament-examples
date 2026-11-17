@@ -1,1 +1,1 @@
-the checker refused the package: undefined_expression (unproved-range)
+the checker refused the package: undefined_expression (unproved-range): `proved [0, 20], expected Int[0, 10], peer operand c` must lie in [0, 10] but is proved only in [0, 20]
