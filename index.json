@@ -358,8 +358,8 @@
       "request_file": "examples/architecture/requests/staged-deploy-bounded.json",
       "expected_file": "examples/architecture/expected/staged-deploy-bounded.json",
       "verdict": null,
-      "exit": 20,
-      "waits_on": "QSL-1964",
+      "exit": 21,
+      "waits_on": "QSL-2240",
       "needs": "clock selection for counted windows"
     },
     {
@@ -2170,8 +2170,8 @@
       "request_file": "examples/rover/requests/staged-stops-in-four-events.json",
       "expected_file": "examples/rover/expected/staged-stops-in-four-events.json",
       "verdict": null,
-      "exit": 20,
-      "waits_on": "QSL-1964",
+      "exit": 21,
+      "waits_on": "QSL-2240",
       "needs": "clock selection for counted windows"
     },
     {
@@ -2185,8 +2185,8 @@
       "request_file": "examples/rover/requests/staged-stops-in-four-samples.json",
       "expected_file": "examples/rover/expected/staged-stops-in-four-samples.json",
       "verdict": null,
-      "exit": 20,
-      "waits_on": "QSL-1964",
+      "exit": 21,
+      "waits_on": "QSL-2240",
       "needs": "clock selection for counted windows"
     },
     {
@@ -2230,8 +2230,8 @@
       "request_file": "examples/rover/requests/staged-safe-stop-200ms.json",
       "expected_file": "examples/rover/expected/staged-safe-stop-200ms.json",
       "verdict": null,
-      "exit": 20,
-      "waits_on": "QSL-1964",
+      "exit": 21,
+      "waits_on": "QSL-2240",
       "needs": "clock selection for timed rules"
     },
     {

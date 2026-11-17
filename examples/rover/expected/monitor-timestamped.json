@@ -83,15 +83,18 @@
           },
           "covered": [
             {
-              "identity": "13:record-sample25:{\"level\":{\"integer\":\"0\"}}",
+              "fingerprint": "sha256:220c60867f915faa7fbce842d1498b75f3266528bc0fc72561b66cebe67b14be",
+              "identity": "13:record-sample1:0",
               "stamp": 0
             },
             {
-              "identity": "13:record-sample25:{\"level\":{\"integer\":\"1\"}}",
+              "fingerprint": "sha256:c6298ad305a163976b162baa9c02bfc05b2219367b13a4496c6f31cdb929230b",
+              "identity": "13:record-sample1:1",
               "stamp": 100
             },
             {
-              "identity": "13:record-sample25:{\"level\":{\"integer\":\"2\"}}",
+              "fingerprint": "sha256:24a15bf66eaf5d1f1f5d33b437521e0230db5f3ab4203b67e4f287dbd8a5bde9",
+              "identity": "13:record-sample1:2",
               "stamp": 200
             }
           ],

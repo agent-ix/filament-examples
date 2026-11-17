@@ -4,8 +4,7 @@
   "result": {
     "kind": "completed",
     "value": {
-      "kind": "boolean",
-      "value": true
+      "boolean": true
     }
   },
   "first_diagnostic": null,
