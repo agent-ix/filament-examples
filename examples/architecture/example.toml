@@ -224,10 +224,10 @@ statement = "Across the whole plan (five steps), the service never drops below i
 file = "rules/staged-deploy-temporal.fsl"
 command = "compile requests/staged-deploy-bounded.json"
 status = "staged"
-expect_exit = 20
+expect_exit = 21
 ready_exit = 0
-waits_on = "QSL-1964"
-why = "bounded temporal rule (event-position profile) is refused at S4: 'temporal declaration ... has no selected clock configuration'; no request member selects a clock"
+waits_on = "QSL-2240"
+why = "clock events over a model subject; the clock of a model claim is model-steps or model-time"
 needs = "clock selection for counted windows"
 serves = "Learn L4 (bounded windows)"
 

@@ -13,9 +13,12 @@
       },
       "category": "incomplete",
       "cause": {
+        "bound": "5",
+        "counter": "6",
+        "field": "work_units",
         "kind": "limit-reached",
         "limit": "work_units",
-        "setting": "work_units",
+        "setting": "accounting.work_units",
         "value": 5
       },
       "clause": "SafeStopWithin3Steps",

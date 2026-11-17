@@ -1,1 +1,1 @@
-temporal declaration at RawSourceRef { authority: "example", identity: "example:rover/staged-safe-stop-200ms" } bytes Span { start: 203, end: 361 } has no selected clock configuration
+unsupported_construct (declaration-form): `clock "ms"` over a model subject; the clock of a model claim is `model-steps` or `model-time`

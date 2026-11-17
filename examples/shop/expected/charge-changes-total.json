@@ -18,7 +18,41 @@
       },
       "clause": "Shop::Order::charge",
       "request_index": 0,
-      "result": "refuted"
+      "result": "refuted",
+      "witness": {
+        "after": "9000",
+        "before": "4200",
+        "cause": "unauthorized-change",
+        "change": {
+          "field": "total",
+          "kind": "field_write",
+          "modifies": [
+            {
+              "node": "ix://example/shop/Order/charged",
+              "package": "example/shop"
+            },
+            {
+              "node": "ix://example/shop/Order/status",
+              "package": "example/shop"
+            }
+          ],
+          "object": "o1"
+        },
+        "code": "frame_violation",
+        "invocation": {
+          "authority": "example",
+          "identity": "ix://example/shop/data/charge-changes-total"
+        },
+        "population": "ix://example/shop/orders",
+        "post": {
+          "authority": "example",
+          "identity": "ix://example/shop/data/after-charge-retotal"
+        },
+        "pre": {
+          "authority": "example",
+          "identity": "ix://example/shop/data/open-order"
+        }
+      }
     }
   ]
 }

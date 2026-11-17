@@ -4,7 +4,7 @@
   "result": null,
   "first_diagnostic": {
     "code": "invalid_runtime_input",
-    "cause": null
+    "cause": "invalid-value"
   },
   "items": []
 }

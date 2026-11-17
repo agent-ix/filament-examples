@@ -1,1 +1,1 @@
-the checker refused the package: ill_typed (type-mismatch)
+missing_declaration (missing-name): `Book` has no field `copy`

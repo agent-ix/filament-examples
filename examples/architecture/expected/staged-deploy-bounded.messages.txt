@@ -1,1 +1,1 @@
-temporal declaration at RawSourceRef { authority: "example", identity: "example:architecture/staged-deploy-temporal" } bytes Span { start: 297, end: 472 } has no selected clock configuration
+unsupported_construct (declaration-form): `clock "events"` over a model subject; the clock of a model claim is `model-steps` or `model-time`

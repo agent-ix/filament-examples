@@ -13,8 +13,14 @@
       },
       "category": "incomplete",
       "cause": {
+        "bound": "3",
         "code": "resource_exhausted",
-        "kind": "resource_exhausted"
+        "counter": "4",
+        "field": "work_units",
+        "kind": "resource_exhausted",
+        "limit": "work_units",
+        "setting": "accounting.work_units",
+        "value": 3
       },
       "clause": "PaidInFull",
       "request_index": 0,

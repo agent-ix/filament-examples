@@ -15,7 +15,42 @@
       "cause": null,
       "clause": "DataTierStaysDown",
       "request_index": 0,
-      "result": "refuted"
+      "result": "refuted",
+      "witness": {
+        "deciding_element": {
+          "kind": "reference",
+          "object_identity": "payments",
+          "type": "[{\"node\":\"ix://example/architecture/Service\",\"package\":\"example/architecture\"}]",
+          "universe": "{\"ordinal\":0,\"package\":\"example/architecture\",\"path\":[\"model\",\"object_type\",\"ix://example/architecture/Service\"]}"
+        },
+        "index": 0,
+        "quantifier": {
+          "node_id": "{\"ordinal\":0,\"package\":\"example:architecture/architecture\",\"path\":[\"expression\",\"quantify\",{\"ordinal\":0,\"package\":\"example:architecture/architecture\",\"path\":[\"expression\",\"query\",{\"ordinal\":0,\"package\":\"example:architecture/architecture\",\"path\":[\"expression\",\"deref\",{\"ordinal\":0,\"package\":\"example:architecture/architecture\",\"path\":[\"value\",\"parameter\",\"name\",{\"ordinal\":0,\"package\":\"example:architecture/architecture\",\"path\":[\"scalar_type\",\"text\"]},\"self\",\"level\",{\"ordinal\":0,\"package\":\"example:architecture/architecture\",\"path\":[\"scalar_type\",\"integer\"]},\"0\",{\"ordinal\":0,\"package\":\"example:architecture/architecture\",\"path\":[\"composite_type\",\"reference\",{\"ordinal\":0,\"package\":\"example/architecture\",\"path\":[\"model\",\"object_type\",\"ix://example/architecture/Service\"]}]}]},\"filament.op.model.deref\",\"deref\",{\"ordinal\":0,\"package\":\"example/architecture\",\"path\":[\"model\",\"object_type\",\"ix://example/architecture/Service\"]}]},\"filament.op.record.project\",\"false\",\"query\",{\"ordinal\":0,\"package\":\"example:architecture/architecture\",\"path\":[\"bounded_domain\",\"collection_bounds\",\"min\",{\"ordinal\":0,\"package\":\"example:architecture/architecture\",\"path\":[\"scalar_type\",\"integer\"]},\"0\",\"max\",\"8\",{\"ordinal\":0,\"package\":\"example:architecture/architecture\",\"path\":[\"composite_type\",\"sequence\",{\"ordinal\":0,\"package\":\"example:architecture/architecture\",\"path\":[\"composite_type\",\"reference\",{\"ordinal\":0,\"package\":\"example/architecture\",\"path\":[\"model\",\"object_type\",\"ix://example/architecture/Service\"]}]}]}]}]},\"d\",{\"ordinal\":0,\"package\":\"example:architecture/architecture\",\"path\":[\"expression\",\"binary\",{\"ordinal\":0,\"package\":\"example:architecture/architecture\",\"path\":[\"expression\",\"query\",{\"ordinal\":0,\"package\":\"example:architecture/architecture\",\"path\":[\"expression\",\"deref\",{\"ordinal\":0,\"package\":\"example:architecture/architecture\",\"path\":[\"value\",\"parameter\",\"name\",{\"ordinal\":0,\"package\":\"example:architecture/architecture\",\"path\":[\"scalar_type\",\"text\"]},\"d\",\"level\",{\"ordinal\":0,\"package\":\"example:architecture/architecture\",\"path\":[\"scalar_type\",\"integer\"]},\"1\",{\"ordinal\":0,\"package\":\"example:architecture/architecture\",\"path\":[\"composite_type\",\"reference\",{\"ordinal\":0,\"package\":\"example/architecture\",\"path\":[\"model\",\"object_type\",\"ix://example/architecture/Service\"]}]}]},\"filament.op.model.deref\",\"deref\",{\"ordinal\":0,\"package\":\"example/architecture\",\"path\":[\"model\",\"object_type\",\"ix://example/architecture/Service\"]}]},\"filament.op.record.project\",\"true\",\"query\",{\"ordinal\":0,\"package\":\"example/architecture\",\"path\":[\"model\",\"variant_type\",\"ix://example/architecture/Tier\"]}]},{\"ordinal\":0,\"package\":\"example:architecture/architecture\",\"path\":[\"value\",\"enum_value\",{\"ordinal\":0,\"package\":\"example/architecture\",\"path\":[\"model\",\"variant_type\",\"ix://example/architecture/Tier\"]},\"Data\"]},\"filament.op.enum.eq\",\"binary\",{\"ordinal\":0,\"package\":\"example:architecture/architecture\",\"path\":[\"scalar_type\",\"boolean\"]}]},\"filament.op.collection.forall\",\"quantify\",{\"ordinal\":0,\"package\":\"example:architecture/architecture\",\"path\":[\"scalar_type\",\"boolean\"]}]}",
+          "ordinal": 0,
+          "role": "expression"
+        },
+        "value_path": {
+          "kind": "runtime_value",
+          "root": {
+            "observation": {
+              "authority": "example",
+              "identity": "ix://example/architecture/data/data-calls-core"
+            },
+            "subject": {
+              "object_identity": "ledger",
+              "tag": "object",
+              "type": "[{\"node\":\"ix://example/architecture/Service\",\"package\":\"example/architecture\"}]",
+              "universe": "{\"ordinal\":0,\"package\":\"example/architecture\",\"path\":[\"model\",\"object_type\",\"ix://example/architecture/Service\"]}"
+            }
+          },
+          "steps": [
+            {
+              "name": "dependsOn",
+              "tag": "member"
+            }
+          ]
+        }
+      }
     }
   ]
 }
