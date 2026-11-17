@@ -16,13 +16,13 @@ The table lists each system with the number of cases that run today and the numb
 
 | System | Family | Running | Staged |
 | --- | --- | --- | --- |
-| [shop](examples/shop) | Shop | 139 | 5 |
+| [shop](examples/shop) | Shop | 144 | 5 |
 | [architecture](examples/architecture) | Enterprise | 34 | 4 |
-| [parts-saga](examples/parts-saga) | Distributed | 28 | 2 |
+| [parts-saga](examples/parts-saga) | Distributed | 30 | 0 |
 | [cell](examples/cell) | Safety | 13 | 0 |
-| [rover](examples/rover) | Safety | 49 | 8 |
-| [lock](examples/lock) | Safety | 10 | 1 |
-| [library](examples/library) | Shop | 4 | 0 |
+| [rover](examples/rover) | Safety | 53 | 7 |
+| [lock](examples/lock) | Safety | 11 | 0 |
+| [library](examples/library) | Shop | 6 | 0 |
 
 ## Beyond FSL
 
@@ -106,7 +106,7 @@ Every case has an entry in its system's `example.toml`. A staged entry records t
 - A staged case that now gives its ready exit code makes the target fail with `promote <case>`.
 - `make promote CASE=<system>/<case>` flips the manifest entry to running and records the output.
 - `make record` re-records every `expected/` file from the driver. Never edit those files by hand.
-- `make readme` rewrites the recorded output shown in each system README from `expected/`. `make index` rewrites [index.json](index.json). `make check` fails when either is stale.
+- `make readme` rewrites the recorded output shown in each system README from `expected/` and updates the Systems table counts from the manifests. `make index` rewrites [index.json](index.json). `make check` fails when any generated file is stale.
 
 Review the recorded output of a promoted case before you commit it. A failing case must fail for the reason it is meant to show.
 

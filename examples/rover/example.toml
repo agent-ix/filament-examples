@@ -469,6 +469,28 @@ expect_verdict = "pending"
 serves = "Landing lifecycle stages 3-4; card U1"
 
 [[case]]
+id = "monitor-event-position"
+rule = ""
+statement = "A progressed stream settles an event-position rule when its watermark closes the two-event window."
+file = "rules/monitor-event-position.fsl"
+command = "monitor requests/monitor-event-position.json --input records/monitor-event-position.jsonl"
+status = "running"
+expect_exit = 0
+expect_verdict = "success"
+serves = "QSL-2260 monitor progressed trace coverage"
+
+[[case]]
+id = "monitor-timestamped"
+rule = ""
+statement = "A timestamped stream settles a 200 ms rule when its watermark closes the time window."
+file = "rules/monitor-timestamped.fsl"
+command = "monitor requests/monitor-timestamped.json --input records/monitor-timestamped.jsonl"
+status = "running"
+expect_exit = 0
+expect_verdict = "success"
+serves = "QSL-2260 monitor timestamped trace coverage"
+
+[[case]]
 id = "model-subjects-mode-machine"
 rule = ""
 statement = "The rover's operations give it a chain of modes: driving, degraded, safe stop and failsafe."

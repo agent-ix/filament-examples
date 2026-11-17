@@ -1,0 +1,108 @@
+{
+  "events": [
+    {
+      "basis": "unsettled",
+      "category": "pending",
+      "clause": "ReachesWithin200ms",
+      "disposition": {
+        "category": "pending",
+        "stage": "evaluate",
+        "temporal": {
+          "kind": "pending"
+        }
+      },
+      "format": "filament.monitor-event/1",
+      "position": 0,
+      "record": 0,
+      "settled": false
+    },
+    {
+      "basis": "closed-scope",
+      "category": "success",
+      "clause": "ReachesWithin200ms",
+      "disposition": {
+        "category": "success",
+        "stage": "evaluate",
+        "temporal": {
+          "kind": "holds"
+        },
+        "truth": true
+      },
+      "format": "filament.monitor-event/1",
+      "position": 2,
+      "record": 3,
+      "settled": true,
+      "settlement": {
+        "basis": "closed-scope",
+        "horizon": "200",
+        "position": "2",
+        "step": "4",
+        "trigger": "decided"
+      }
+    }
+  ],
+  "summary": {
+    "clauses": [
+      {
+        "basis": "closed-scope",
+        "category": "success",
+        "clause": "ReachesWithin200ms",
+        "disposition": {
+          "category": "success",
+          "stage": "evaluate",
+          "temporal": {
+            "kind": "holds"
+          },
+          "truth": true
+        },
+        "settled": true,
+        "settlement": {
+          "basis": "closed-scope",
+          "horizon": "200",
+          "position": "2",
+          "step": "4",
+          "trigger": "decided"
+        }
+      }
+    ],
+    "format": "filament.monitor-summary/1",
+    "ledger": {
+      "entries": [
+        {
+          "binding": {
+            "clause": "{\"ordinal\":0,\"package\":\"example:rover/monitor-timestamped\",\"path\":[\"temporal\",\"temporal_clause\",{\"ordinal\":0,\"package\":\"example:rover/monitor-timestamped\",\"path\":[\"value\",\"parameter\",\"name\",{\"ordinal\":0,\"package\":\"example:rover/monitor-timestamped\",\"path\":[\"scalar_type\",\"text\"]},\"r\",\"level\",{\"ordinal\":0,\"package\":\"example:rover/monitor-timestamped\",\"path\":[\"scalar_type\",\"integer\"]},\"0\",{\"ordinal\":0,\"package\":\"example:rover/monitor-timestamped\",\"path\":[\"Reading\"]}]},{\"ordinal\":0,\"package\":\"example:rover/monitor-timestamped\",\"path\":[\"scalar_type\",\"text\"]},\"plant-ms\",\"kind\",\"origin\",{\"ordinal\":0,\"package\":\"example:rover/monitor-timestamped\",\"path\":[\"temporal\",\"formula\",{\"ordinal\":0,\"package\":\"example:rover/monitor-timestamped\",\"path\":[\"temporal\",\"formula\",{\"ordinal\":0,\"package\":\"example:rover/monitor-timestamped\",\"path\":[\"expression\",\"binary\",{\"ordinal\":0,\"package\":\"example:rover/monitor-timestamped\",\"path\":[\"expression\",\"query\",{\"ordinal\":0,\"package\":\"example:rover/monitor-timestamped\",\"path\":[\"value\",\"parameter\",\"name\",{\"ordinal\":0,\"package\":\"example:rover/monitor-timestamped\",\"path\":[\"scalar_type\",\"text\"]},\"r\",\"level\",{\"ordinal\":0,\"package\":\"example:rover/monitor-timestamped\",\"path\":[\"scalar_type\",\"integer\"]},\"0\",{\"ordinal\":0,\"package\":\"example:rover/monitor-timestamped\",\"path\":[\"Reading\"]}]},\"filament.op.record.project\",\"query\",{\"ordinal\":0,\"package\":\"example:rover/monitor-timestamped\",\"path\":[\"bounded_domain\",\"integer_range\",\"min\",{\"ordinal\":0,\"package\":\"example:rover/monitor-timestamped\",\"path\":[\"scalar_type\",\"integer\"]},\"0\",\"max\",\"9\"]}]},{\"ordinal\":0,\"package\":\"example:rover/monitor-timestamped\",\"path\":[\"expression\",\"conversion\",{\"ordinal\":0,\"package\":\"example:rover/monitor-timestamped\",\"path\":[\"value\",\"literal\",{\"ordinal\":0,\"package\":\"example:rover/monitor-timestamped\",\"path\":[\"scalar_type\",\"integer\"]},\"2\"]},\"filament.op.numeric.narrow\",\"convert\",{\"ordinal\":0,\"package\":\"example:rover/monitor-timestamped\",\"path\":[\"bounded_domain\",\"integer_range\",\"min\",{\"ordinal\":0,\"package\":\"example:rover/monitor-timestamped\",\"path\":[\"scalar_type\",\"integer\"]},\"0\",\"max\",\"9\"]}]},\"filament.op.integer.eq\",\"binary\",{\"ordinal\":0,\"package\":\"example:rover/monitor-timestamped\",\"path\":[\"scalar_type\",\"boolean\"]}]},\"filament.op.temporal.holds\",\"temporal_formula\",{\"ordinal\":0,\"package\":\"example:rover/monitor-timestamped\",\"path\":[\"scalar_type\",\"boolean\"]}]},\"filament.op.temporal.eventually\",\"temporal_formula\",{\"ordinal\":0,\"package\":\"example:rover/monitor-timestamped\",\"path\":[\"scalar_type\",\"boolean\"]}]},\"filament.op.temporal.clause\",\"filament.temporal.timestamped-event.finite-window/v1\",\"temporal\",{\"ordinal\":0,\"package\":\"example:rover/monitor-timestamped\",\"path\":[\"scalar_type\",\"boolean\"]}]}",
+            "clock": "plant-ms",
+            "occurrence": 0,
+            "package": "example:rover/monitor-timestamped",
+            "profile": "filament.temporal.timestamped-event.finite-window/v1"
+          },
+          "completeness": {
+            "complete": {
+              "through": 200
+            }
+          },
+          "covered": [
+            {
+              "identity": "13:record-sample25:{\"level\":{\"integer\":\"0\"}}",
+              "stamp": 0
+            },
+            {
+              "identity": "13:record-sample25:{\"level\":{\"integer\":\"1\"}}",
+              "stamp": 100
+            },
+            {
+              "identity": "13:record-sample25:{\"level\":{\"integer\":\"2\"}}",
+              "stamp": 200
+            }
+          ],
+          "execution": "closed",
+          "scope": "closed",
+          "watermark": 200
+        }
+      ],
+      "format": "filament.progress-ledger/1"
+    },
+    "records": 5,
+    "refused": 0
+  }
+}

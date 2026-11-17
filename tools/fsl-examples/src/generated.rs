@@ -170,6 +170,76 @@ pub fn sync_readmes(systems: &[System], write_files: bool) -> Result<Vec<PathBuf
     Ok(stale)
 }
 
+/// Regenerates the case and staged counts in the root README's Systems table from manifests.
+/// The system's grouping label remains editorial, while both counts are derived data.
+pub fn sync_system_counts(systems: &[System], root: &Path, write_files: bool) -> Result<bool> {
+    let file = absolute(root)?.join("README.md");
+    let old = fs::read_to_string(&file).map_err(|e| Error::io(&file, &e))?;
+    let mut seen = Vec::new();
+    let mut next = String::with_capacity(old.len());
+    for line in old.split_inclusive('\n') {
+        let rewritten = if let Some(system) = systems.iter().find(|system| {
+            line.starts_with(&format!("| [{}](examples/{}) |", system.name, system.name))
+        }) {
+            let columns: Vec<_> = line.trim_end_matches('\n').split('|').collect();
+            if columns.len() != 6 {
+                return Err(Error::new(
+                    ErrorCode::Recorded,
+                    format!(
+                        "{}: malformed Systems table row for {}",
+                        file.display(),
+                        system.name
+                    ),
+                ));
+            }
+            if seen.contains(&system.name.as_str()) {
+                return Err(Error::new(
+                    ErrorCode::Recorded,
+                    format!(
+                        "{}: duplicate Systems table row for {}",
+                        file.display(),
+                        system.name
+                    ),
+                ));
+            }
+            seen.push(system.name.as_str());
+            let staged = system
+                .manifest
+                .cases
+                .iter()
+                .filter(|case| matches!(case.status, Status::Staged { .. }))
+                .count();
+            let running = system.manifest.cases.len() - staged;
+            format!(
+                "|{}|{}| {} | {} |\n",
+                columns[1], columns[2], running, staged
+            )
+        } else {
+            line.to_owned()
+        };
+        next.push_str(&rewritten);
+    }
+    if seen.len() != systems.len() {
+        let missing = systems
+            .iter()
+            .filter(|system| !seen.contains(&system.name.as_str()))
+            .map(|system| system.name.as_str())
+            .collect::<Vec<_>>();
+        return Err(Error::new(
+            ErrorCode::Recorded,
+            format!(
+                "{}: Systems table is missing rows for {}",
+                file.display(),
+                missing.join(", ")
+            ),
+        ));
+    }
+    if next != old && write_files {
+        write(&file, &next)?;
+    }
+    Ok(next != old)
+}
+
 /// One entry of `index.json`.
 #[derive(Debug, Serialize)]
 struct IndexEntry {
@@ -297,6 +367,11 @@ pub fn sync_generated(
             "{}: recorded output is stale: merge origin/main, then run make readme",
             relative(&root, &file)
         ));
+    }
+    if sync_system_counts(systems, &root, write_files)? {
+        problems.push(
+            "README.md system counts are stale: merge origin/main, then run make readme".to_owned(),
+        );
     }
     let index_file = root.join("index.json");
     let next = build_index(systems, &root)?;

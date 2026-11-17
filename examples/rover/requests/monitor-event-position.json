@@ -1,0 +1,10 @@
+{
+  "format": "native-monitor/1",
+  "request": {
+    "models": [],
+    "program": {"source": {"file": "../rules/monitor-event-position.fsl", "authority": "example", "identity": "example:rover/monitor-event-position", "document": "monitoreventposition", "formal_revision": 1}},
+    "clocks": {"steps": {"kind": "event_position", "sequence_authority": "rover-events"}},
+    "clauses": [{"name": "ReachesWithin2Events"}],
+    "trace": {"kind": "progressed", "lower_boundary": "authoritative-origin", "binding": {"profile": "filament.temporal.event-position.false-extension/v1", "clock": "steps", "parameters": {"kind": "event_position", "sequence_authority": "rover-events"}}}
+  }
+}
