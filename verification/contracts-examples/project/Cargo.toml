@@ -4,9 +4,8 @@ version = "0.0.0"
 edition = "2021"
 publish = false
 
-# Two of the contract libraries, by git on `main`. Cargo.lock records the commit
-# each one resolved to.
+# Use the schema crate release whose generated timestamps use `time`.
 [dependencies]
 filament-contract-runtime = { git = "https://github.com/agent-ix/filament-contract-runtime", branch = "main" }
-filament-verification-contracts = { git = "https://github.com/agent-ix/filament-verification-contracts", branch = "main" }
+filament-verification-contracts = { git = "https://github.com/agent-ix/filament-verification-contracts", tag = "v0.2.0" }
 serde_json = "1"
