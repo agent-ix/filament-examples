@@ -1070,7 +1070,7 @@ serves = "Types reference (records, tuples and enums)"
 [[case]]
 id = "record-tuple-position"
 rule = ""
-statement = "A tuple position cannot be read by number."
+statement = "Tuple positions use bracket notation, such as p[0]; dot notation, such as p.0, is invalid."
 file = "rules/values/records/record-tuple-position.fsl"
 command = "check rules/values/records/record-tuple-position.fsl"
 status = "running"
