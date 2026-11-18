@@ -100,7 +100,7 @@ fn parses_every_example_toml() -> TestResult {
     assert_eq!(parsed, reference);
     let running = parsed.iter().filter(|c| c["status"] == "running").count();
     let staged = parsed.iter().filter(|c| c["status"] == "staged").count();
-    assert_eq!((running, staged), (294, 15));
+    assert_eq!((running, staged), (306, 18));
     Ok(())
 }
 
@@ -160,5 +160,39 @@ fn promote_text_flips_only_the_named_case() -> TestResult {
         }
     );
     assert!(out.ends_with("[[case]]\nid = \"other\"\nstatus = \"staged\"\n"));
+    Ok(())
+}
+
+#[test]
+fn engine_and_clock_tags_are_checked() -> TestResult {
+    let tagged = |extra: &str| {
+        STAGED_CASE.replace(
+            "needs = \"the operator\"\n",
+            &format!("needs = \"the operator\"\n{extra}"),
+        )
+    };
+    let parsed = parse_manifest(&tagged("engine = \"timed\"\nclock = \"steps\"\n"), "m.toml")?;
+    let case = parsed.cases.first().ok_or("no case")?;
+    assert_eq!(case.engine.as_deref(), Some("timed"));
+    assert_eq!(case.clock.as_deref(), Some("steps"));
+
+    let refused = |extra: &str| -> std::result::Result<String, Box<dyn std::error::Error>> {
+        Ok(parse_manifest(&tagged(extra), "m.toml")
+            .err()
+            .ok_or("an invalid tag was accepted")?
+            .to_string())
+    };
+    assert_eq!(
+        refused("engine = \"guessing\"\n")?,
+        "m.toml: case later: engine must be one of model-checking, refinement, protocol, probability, timed, monitor"
+    );
+    assert_eq!(
+        refused("engine = \"timed\"\n")?,
+        "m.toml: case later: a timed case names its clock"
+    );
+    assert_eq!(
+        refused("engine = \"monitor\"\nclock = \"steps\"\n")?,
+        "m.toml: case later: clock is a non-empty string, and only a timed case has one"
+    );
     Ok(())
 }

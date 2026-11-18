@@ -1,0 +1,44 @@
+{
+  "format": "native-analyze/1",
+  "request": {
+    "models": [
+      {
+        "format": "semantic-ir/2.0.0",
+        "source": {
+          "file": "../../model/lock.semantic-ir.json",
+          "authority": "example",
+          "identity": "example:lock/model",
+          "document": "model",
+          "formal_revision": 1
+        }
+      }
+    ],
+    "program": {
+      "source": {
+        "file": "../../rules/protocols/handover-heard.fsl",
+        "authority": "example",
+        "identity": "example:lock/handover-heard",
+        "document": "handoverheard",
+        "formal_revision": 1
+      }
+    },
+    "documents": [
+      {
+        "file": "../../data/lock-free.json"
+      },
+      {
+        "file": "../../records/handover-recorded.json"
+      }
+    ],
+    "items": [
+      {
+        "claim": "Handover",
+        "kind": "global-conformance",
+        "recording": {
+          "authority": "example",
+          "identity": "example:lock/handover-recorded"
+        }
+      }
+    ]
+  }
+}

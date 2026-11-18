@@ -1,0 +1,54 @@
+{
+  "format": "native-monitor/1",
+  "request": {
+    "models": [],
+    "program": {
+      "source": {
+        "file": "../rules/monitor-fixed-sample.fsl",
+        "authority": "example",
+        "identity": "example:rover/monitor-fixed-sample",
+        "document": "monitorfixedsample",
+        "formal_revision": 1
+      }
+    },
+    "clocks": {
+      "samples": {
+        "kind": "fixed_sample",
+        "epoch": {
+          "kind": "integer",
+          "decimal": "0"
+        },
+        "period": {
+          "kind": "integer",
+          "decimal": "1"
+        },
+        "unit": "ms"
+      }
+    },
+    "clauses": [
+      {
+        "name": "ReachesWithin2Samples"
+      }
+    ],
+    "trace": {
+      "kind": "progressed",
+      "lower_boundary": "authoritative-origin",
+      "binding": {
+        "profile": "filament.temporal.fixed-sample.false-extension/v1",
+        "clock": "samples",
+        "parameters": {
+          "kind": "fixed_sample",
+          "epoch": {
+            "kind": "integer",
+            "decimal": "0"
+          },
+          "period": {
+            "kind": "integer",
+            "decimal": "1"
+          },
+          "unit": "ms"
+        }
+      }
+    }
+  }
+}

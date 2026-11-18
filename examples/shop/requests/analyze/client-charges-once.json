@@ -34,7 +34,16 @@
     },
     "items": [
       {
-        "claim": "ClientChargesOnce"
+        "claim": "ClientChargesOnce",
+        "kind": "refinement",
+        "temporal": {
+          "item_kind": "refinement"
+        }
+      }
+    ],
+    "documents": [
+      {
+        "file": "../../data/payment-unsent.json"
       }
     ]
   }

@@ -1,0 +1,165 @@
+{
+  "events": [
+    {
+      "basis": "unsettled",
+      "category": "pending",
+      "clause": "SafeStopWithin3Steps",
+      "disposition": {
+        "category": "pending",
+        "stage": "evaluate",
+        "temporal": {
+          "kind": "pending"
+        }
+      },
+      "format": "filament.monitor-event/1",
+      "position": 0,
+      "record": 0,
+      "settled": false
+    },
+    {
+      "basis": "closed-scope",
+      "category": "violation",
+      "clause": "SafeStopWithin3Steps",
+      "disposition": {
+        "category": "violation",
+        "stage": "evaluate",
+        "temporal": {
+          "counterexample": {
+            "fairness": [],
+            "initial_state": null,
+            "interval": {
+              "lower": "0",
+              "upper": "3"
+            },
+            "kind": "formula",
+            "loop": [],
+            "over_binding": null,
+            "prefix": [
+              {
+                "document": {
+                  "authority": "example",
+                  "identity": "ix://example/rover/data/t0-driving"
+                }
+              },
+              {
+                "document": {
+                  "authority": "example",
+                  "identity": "ix://example/rover/data/t1-lidar-lost"
+                }
+              },
+              {
+                "document": {
+                  "authority": "example",
+                  "identity": "ix://example/rover/data/u2-still-driving"
+                }
+              },
+              {
+                "document": {
+                  "authority": "example",
+                  "identity": "ix://example/rover/data/u3-still-driving"
+                }
+              },
+              {
+                "document": {
+                  "authority": "example",
+                  "identity": "ix://example/rover/data/u4-still-driving"
+                }
+              }
+            ],
+            "trace": "observed",
+            "trace_position": 0
+          },
+          "kind": "violated",
+          "position": 0
+        },
+        "truth": false
+      },
+      "format": "filament.monitor-event/1",
+      "position": 4,
+      "record": 4,
+      "settled": true,
+      "settlement": {
+        "basis": "closed-scope",
+        "horizon": "4",
+        "position": "0",
+        "step": "5",
+        "trigger": "decided"
+      }
+    }
+  ],
+  "summary": {
+    "clauses": [
+      {
+        "basis": "closed-scope",
+        "category": "violation",
+        "clause": "SafeStopWithin3Steps",
+        "disposition": {
+          "category": "violation",
+          "stage": "evaluate",
+          "temporal": {
+            "counterexample": {
+              "fairness": [],
+              "initial_state": null,
+              "interval": {
+                "lower": "0",
+                "upper": "3"
+              },
+              "kind": "formula",
+              "loop": [],
+              "over_binding": null,
+              "prefix": [
+                {
+                  "document": {
+                    "authority": "example",
+                    "identity": "ix://example/rover/data/t0-driving"
+                  }
+                },
+                {
+                  "document": {
+                    "authority": "example",
+                    "identity": "ix://example/rover/data/t1-lidar-lost"
+                  }
+                },
+                {
+                  "document": {
+                    "authority": "example",
+                    "identity": "ix://example/rover/data/u2-still-driving"
+                  }
+                },
+                {
+                  "document": {
+                    "authority": "example",
+                    "identity": "ix://example/rover/data/u3-still-driving"
+                  }
+                },
+                {
+                  "document": {
+                    "authority": "example",
+                    "identity": "ix://example/rover/data/u4-still-driving"
+                  }
+                }
+              ],
+              "trace": "observed",
+              "trace_position": 0
+            },
+            "kind": "violated",
+            "position": 0
+          },
+          "truth": false
+        },
+        "settled": true,
+        "settlement": {
+          "basis": "closed-scope",
+          "horizon": "4",
+          "position": "0",
+          "step": "5",
+          "trigger": "decided"
+        }
+      }
+    ],
+    "format": "filament.monitor-summary/1",
+    "ledger": null,
+    "records": 6,
+    "refused": 0
+  }
+}

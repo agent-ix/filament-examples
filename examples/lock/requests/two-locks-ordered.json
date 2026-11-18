@@ -1,0 +1,31 @@
+{
+  "format": "native-analyze/1",
+  "request": {
+    "models": [
+      {
+        "format": "semantic-ir/2.0.0",
+        "source": {
+          "file": "../model/two-locks.semantic-ir.json",
+          "authority": "example",
+          "identity": "example:lock/model",
+          "document": "model",
+          "formal_revision": 1
+        }
+      }
+    ],
+    "program": {
+      "source": {
+        "file": "../rules/model-subjects/two-locks-ordered.fsl",
+        "authority": "example",
+        "identity": "example:lock/two-locks-ordered",
+        "document": "twolocksordered",
+        "formal_revision": 1
+      }
+    },
+    "documents": [
+      {
+        "file": "../data/two-locks-free.json"
+      }
+    ]
+  }
+}

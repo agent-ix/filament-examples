@@ -96,7 +96,7 @@ fn check_passes_on_all_running_cases() -> TestResult {
     assert!(ok);
     assert_eq!(
         sink.info.last().map(String::as_str),
-        Some("check: 294 passed, 0 failed")
+        Some("check: 306 passed, 0 failed")
     );
     Ok(())
 }
@@ -286,7 +286,7 @@ fn staged_fails_when_a_case_reaches_ready_exit() -> TestResult {
     );
     assert_eq!(
         sink.info.last().map(String::as_str),
-        Some("staged: 14 passed, 1 failed")
+        Some("staged: 17 passed, 1 failed")
     );
     Ok(())
 }

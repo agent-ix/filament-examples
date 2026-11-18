@@ -14,6 +14,8 @@ fn case(expect_exit: i32) -> Case {
         file: "rules/demo.fsl".to_owned(),
         command: "run requests/demo.json".to_owned(),
         expect_exit,
+        engine: None,
+        clock: None,
         status: Status::Running {
             expect_verdict: "demo".to_owned(),
         },

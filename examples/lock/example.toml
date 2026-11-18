@@ -97,6 +97,7 @@ rule = "ServedIfEachAcquireIsStronglyFair"
 statement = "Process 1 holds the lock again and again when every acquire that is enabled again and again is taken: checked over every behavior of the lock."
 file = "rules/fairness/one-served.fsl"
 command = "analyze requests/analyze/served-strong-each.json"
+engine = "model-checking"
 status = "running"
 expect_exit = 0
 expect_verdict = "holds"
@@ -108,6 +109,7 @@ rule = "ServedIfEachAcquireIsWeaklyFair"
 statement = "Weak fairness on each acquire is not enough: process 2 can take every turn, and the counterexample shows how."
 file = "rules/fairness/one-served.fsl"
 command = "analyze requests/analyze/served-weak-each.json"
+engine = "model-checking"
 status = "running"
 expect_exit = 10
 expect_verdict = "violated"
@@ -119,7 +121,68 @@ rule = ""
 statement = "Two processes that take two locks in opposite orders can reach a state where neither can move."
 file = "rules/model-subjects/two-locks.fsl"
 command = "analyze requests/staged-two-locks-deadlock.json"
+engine = "model-checking"
 status = "running"
 expect_exit = 10
 expect_verdict = "violated"
 serves = "Model checking reference (model subjects)"
+
+[[case]]
+id = "two-locks-ordered"
+rule = ""
+statement = "Two processes that take both locks in the same order never reach a state where neither can move."
+file = "rules/model-subjects/two-locks-ordered.fsl"
+command = "analyze requests/two-locks-ordered.json"
+engine = "model-checking"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "Model checking reference (model subjects)"
+
+[[case]]
+id = "protocol-handover-heard"
+rule = "Handover"
+statement = "The asker sends one request and the holder hears it, so every run of the protocol reaches its finish."
+file = "rules/protocols/handover-heard.fsl"
+command = "analyze requests/protocols/handover-heard.json"
+engine = "protocol"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "Protocol analysis reference (deadlock freedom)"
+
+[[case]]
+id = "protocol-handover-unheard"
+rule = "Handover"
+statement = "The holder's receive has a guard that never holds, so the request stays on the channel and the run stops before its finish."
+file = "rules/protocols/handover-unheard.fsl"
+command = "analyze requests/protocols/handover-unheard.json"
+engine = "protocol"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
+serves = "Protocol analysis reference (deadlock freedom)"
+
+[[case]]
+id = "protocol-recording-conforms"
+rule = "Handover"
+statement = "A recorded run in which the asker sends the request, the holder hears it and the run finishes conforms to the protocol."
+file = "rules/protocols/handover-heard.fsl"
+command = "analyze requests/protocols/handover-recorded.json"
+engine = "protocol"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "Protocol analysis reference (recorded runs)"
+
+[[case]]
+id = "protocol-recording-unasked"
+rule = "Handover"
+statement = "A recorded run in which the holder hears a request that was never sent does not conform: the send it needs is missing."
+file = "rules/protocols/handover-heard.fsl"
+command = "analyze requests/protocols/handover-unasked.json"
+engine = "protocol"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
+serves = "Protocol analysis reference (recorded runs)"

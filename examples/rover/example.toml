@@ -112,6 +112,8 @@ rule = "SafeStopWithin3Steps"
 statement = "Whenever the lidar is lost, the rover is stopped within three control steps."
 file = "rules/safe-stop-steps.fsl"
 command = "run requests/safe-stop-in-time.json"
+engine = "timed"
+clock = "model-steps"
 status = "running"
 expect_exit = 0
 expect_verdict = "holds"
@@ -123,6 +125,8 @@ rule = "SafeStopWithin3Steps"
 statement = "Whenever the lidar is lost, the rover is stopped within three control steps."
 file = "rules/safe-stop-steps.fsl"
 command = "run requests/safe-stop-late.json"
+engine = "timed"
+clock = "model-steps"
 status = "running"
 expect_exit = 10
 expect_verdict = "violated: stopped 4 steps after the lidar was lost"
@@ -394,10 +398,10 @@ statement = "The control task set meets its deadlines, and the stop monitor resp
 file = "rules/control-loop.fsl"
 command = "analyze requests/analyze/control-loop-schedulable.json"
 status = "staged"
-expect_exit = 20
+expect_exit = 21
 ready_exit = 0
 waits_on = "QSL-2131"
-why = "`fsl analyze` reads the request, but it does not resolve schedulability or response-time claims yet: both items are refused `invalid_capability`/`unknown-claim`"
+why = "`fsl analyze` reads the request, but it does not decide schedulability or response-time claims yet: both items settle `unsupported` with `unsupported_projection`/`unsupported-requested-capability`"
 needs = "schedulability analysis from the command line"
 serves = "Real-time reference; landing card U1"
 
@@ -421,6 +425,7 @@ rule = "StopsAfterLidarLoss"
 statement = "Starting from a driving rover with a working lidar, on every behavior where braking and halting are fair, a rover that loses its lidar is eventually stopped."
 file = "rules/model-checking/mode-machine.fsl"
 command = "analyze requests/analyze/mode-machine.json"
+engine = "model-checking"
 status = "staged"
 expect_exit = 22
 ready_exit = 0
@@ -435,6 +440,7 @@ rule = ""
 statement = "Over 100 samples, the vote is wrong with probability at most 1 in 10,000."
 file = "rules/staged-vote-probability.fsl"
 command = "compile requests/staged-vote-probability.json"
+engine = "probability"
 status = "staged"
 expect_exit = 21
 ready_exit = 0
@@ -449,20 +455,22 @@ rule = "ControllerRefinesStop"
 statement = "Halting is the abstract stop of a vehicle."
 file = "rules/refinement-controller.fsl"
 command = "analyze requests/analyze/controller-refinement.json"
+engine = "refinement"
 status = "staged"
-expect_exit = 20
+expect_exit = 22
 ready_exit = 0
-waits_on = "QSL-2127"
-why = "`fsl analyze` reads the request, but it does not resolve a refinement claim yet: the item is refused `invalid_capability`/`unknown-claim`"
+waits_on = "QSL-2287"
+why = "`fsl analyze` checks the refinement, but the search over the rover does not finish in minutes, as for the mode machine; under a 200-state budget the item is `incomplete` with `max_states` reached until the rover search scales, and unstaging the case also removes that 200-state cap from its request"
 needs = "refinement checking from the command line"
 serves = "Learn L8 (refinement); landing tab Refinement"
 
 [[case]]
 id = "staged-safe-stop-monitor"
-rule = ""
+rule = "SafeStopWithin3Steps"
 statement = "A live feed of rover states is watched for the three-step safe stop."
 file = "rules/safe-stop-steps.fsl"
 command = "monitor requests/staged-safe-stop-monitor.json --input records/safe-stop-feed.jsonl"
+engine = "monitor"
 status = "running"
 expect_exit = 0
 expect_verdict = "pending"
@@ -470,10 +478,12 @@ serves = "Landing lifecycle stages 3-4; card U1"
 
 [[case]]
 id = "monitor-event-position"
-rule = ""
+rule = "ReachesWithin2Events"
 statement = "A progressed stream settles an event-position rule when its watermark closes the two-event window."
 file = "rules/monitor-event-position.fsl"
 command = "monitor requests/monitor-event-position.json --input records/monitor-event-position.jsonl"
+engine = "timed"
+clock = "steps"
 status = "running"
 expect_exit = 0
 expect_verdict = "success"
@@ -481,10 +491,12 @@ serves = "QSL-2260 monitor progressed trace coverage"
 
 [[case]]
 id = "monitor-timestamped"
-rule = ""
+rule = "ReachesWithin200ms"
 statement = "A timestamped stream settles a 200 ms rule when its watermark closes the time window."
 file = "rules/monitor-timestamped.fsl"
 command = "monitor requests/monitor-timestamped.json --input records/monitor-timestamped.jsonl"
+engine = "timed"
+clock = "plant-ms"
 status = "running"
 expect_exit = 0
 expect_verdict = "success"
@@ -698,3 +710,82 @@ status = "running"
 expect_exit = 0
 expect_verdict = "compiled"
 serves = "Advanced analyses reference (refinement)"
+
+[[case]]
+id = "safe-stop-monitor-late"
+rule = "SafeStopWithin3Steps"
+statement = "A live feed in which the rover is still driving three steps after the lidar was lost violates the three-step safe stop."
+file = "rules/safe-stop-steps.fsl"
+command = "monitor requests/safe-stop-monitor-late.json --input records/safe-stop-late-feed.jsonl"
+engine = "monitor"
+status = "running"
+expect_exit = 10
+expect_verdict = "violation"
+serves = "Landing lifecycle stages 3-4; card U1"
+
+[[case]]
+id = "monitor-event-position-late"
+rule = "ReachesWithin2Events"
+statement = "A progressed stream whose level never reaches 2 within two events violates the event-position rule when its watermark closes the window."
+file = "rules/monitor-event-position.fsl"
+command = "monitor requests/monitor-event-position.json --input records/monitor-event-position-late.jsonl"
+engine = "timed"
+clock = "steps"
+status = "running"
+expect_exit = 10
+expect_verdict = "violation"
+serves = "Time reference (event-position clocks)"
+
+[[case]]
+id = "monitor-fixed-sample"
+rule = "ReachesWithin2Samples"
+statement = "A stream sampled at a fixed rate settles the rule when its level reaches 2 within two samples."
+file = "rules/monitor-fixed-sample.fsl"
+command = "monitor requests/monitor-fixed-sample.json --input records/monitor-fixed-sample.jsonl"
+engine = "timed"
+clock = "samples"
+status = "running"
+expect_exit = 0
+expect_verdict = "success"
+serves = "Time reference (fixed-sample clocks)"
+
+[[case]]
+id = "monitor-fixed-sample-late"
+rule = "ReachesWithin2Samples"
+statement = "A stream sampled at a fixed rate whose level never reaches 2 within two samples violates the rule."
+file = "rules/monitor-fixed-sample.fsl"
+command = "monitor requests/monitor-fixed-sample.json --input records/monitor-fixed-sample-late.jsonl"
+engine = "timed"
+clock = "samples"
+status = "running"
+expect_exit = 10
+expect_verdict = "violation"
+serves = "Time reference (fixed-sample clocks)"
+
+[[case]]
+id = "monitor-timestamped-late"
+rule = "ReachesWithin200ms"
+statement = "A timestamped stream whose level reaches 2 only at 300 ms violates the 200 ms rule."
+file = "rules/monitor-timestamped.fsl"
+command = "monitor requests/monitor-timestamped.json --input records/monitor-timestamped-late.jsonl"
+engine = "timed"
+clock = "plant-ms"
+status = "running"
+expect_exit = 10
+expect_verdict = "violation"
+serves = "Time reference (timestamped clocks)"
+
+[[case]]
+id = "staged-vote-probability-missed"
+rule = "VoteAlmostNeverWrong"
+statement = "Over 100 samples, the vote is wrong with probability at most 1 in 1,000,000: three sensors that each fail 1 time in 1,000 miss it."
+file = "rules/staged-vote-probability-missed.fsl"
+command = "compile requests/staged-vote-probability-missed.json"
+engine = "probability"
+status = "staged"
+expect_exit = 21
+ready_exit = 10
+waits_on = "QSL-2000"
+why = "checks at S3, then S4 refuses: a random parameter cannot be written to a checked-package/v2 graph yet; checking the claim then runs through `fsl analyze`, where it is missed"
+needs = "probability"
+serves = "Learn L7 (probability): a missed claim"

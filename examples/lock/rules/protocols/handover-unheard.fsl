@@ -1,0 +1,19 @@
+language "ix:native" edition "1-draft";
+profile pp = "filament.protocol.finite-global/v1";
+model L = "example/lock";
+
+record Request { granted: Boolean; }
+
+// The holder hears a request only when its guard holds, and the guard never
+// holds: the request stays on the channel and the run stops before the finish.
+protocol Handover using pp over (lock: L::Lock) on origin {
+  role Asker on L::Lock;
+  role Holder on L::Lock;
+  channel Ask from Asker to Holder carries Request
+    ordering unordered delivery exactly-once-premise capacity 4 overflow reject;
+  run sequence Main {
+    send Asked via Ask as (asked: Request) { true };
+    receive Heard via Ask of Asked as (heard: Request) { false };
+  }
+  finish Done as (done: Boolean) { true };
+}

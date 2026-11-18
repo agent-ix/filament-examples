@@ -254,6 +254,9 @@ struct IndexEntry {
     expected_file: String,
     verdict: Option<String>,
     exit: i32,
+    ready_exit: Option<i32>,
+    engine: Option<String>,
+    clock: Option<String>,
     waits_on: Option<String>,
     needs: Option<String>,
 }
@@ -324,6 +327,12 @@ pub fn build_index(systems: &[System], root: &Path) -> Result<String> {
                     .join(format!("{}.json", case.id)))?,
                 verdict,
                 exit: case.expect_exit,
+                ready_exit: match case.status {
+                    Status::Staged { ready_exit, .. } => Some(ready_exit),
+                    Status::Running { .. } => None,
+                },
+                engine: case.engine.clone(),
+                clock: case.clock.clone(),
                 waits_on,
                 needs,
             });

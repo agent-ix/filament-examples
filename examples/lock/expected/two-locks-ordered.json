@@ -1,0 +1,105 @@
+{
+  "category": "success",
+  "last_stage": "S6c",
+  "result": null,
+  "first_diagnostic": null,
+  "items": [
+    {
+      "axes": {
+        "activation": "active",
+        "execution": "completed",
+        "settlement": "closed-scope",
+        "truth": "true"
+      },
+      "category": "success",
+      "certificate": {
+        "accepted": true,
+        "checker": "en-1-closure",
+        "identity": {
+          "model": "example/two-locks",
+          "node_id": {
+            "ordinal": 0,
+            "package": "example/two-locks",
+            "path": [
+              "model",
+              "model_root"
+            ]
+          },
+          "ordinal": 0
+        }
+      },
+      "claim_name": "",
+      "exploration": {
+        "automaton_states": "1",
+        "states": "5",
+        "transitions": "6"
+      },
+      "record": {
+        "backend": "en-1",
+        "basis": {
+          "type": "exhaustive"
+        },
+        "cause": null,
+        "certification": "certified",
+        "result": "proved",
+        "settled_by": "result"
+      },
+      "request": {
+        "candidates": {
+          "backends": [
+            "en-1"
+          ],
+          "type": "set"
+        },
+        "claim": {
+          "node": {
+            "ordinal": 0,
+            "package": "example/two-locks",
+            "path": [
+              "model",
+              "model_root"
+            ]
+          },
+          "occurrence": {
+            "ordinal": 0,
+            "role": "generated"
+          }
+        },
+        "extent": {
+          "classification": "unbounded",
+          "finite_bound_available": false
+        },
+        "kind": "temporal-satisfaction",
+        "request_index": 0,
+        "temporal": {
+          "fairness": [],
+          "item_kind": "deadlock-freedom",
+          "limits": {
+            "max_automaton_states": 1048576,
+            "max_relation_tuples": 16777216,
+            "max_states": 10000000,
+            "max_transitions": 100000000,
+            "max_walk_steps": 4096,
+            "max_witness_set": 65536
+          },
+          "subject": {
+            "initial_states": [
+              {
+                "authority": "example",
+                "identity": "example:lock/two-locks-free"
+              }
+            ],
+            "proof_bounds": [],
+            "universes": [
+              {
+                "authority": "example",
+                "identity": "example:lock/two-locks-free"
+              }
+            ]
+          }
+        }
+      },
+      "request_index": 0
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "category": "unsupported",
+  "last_stage": "S4",
+  "result": null,
+  "first_diagnostic": {
+    "code": "unsupported_construct",
+    "cause": "not-yet-implemented"
+  },
+  "items": []
+}

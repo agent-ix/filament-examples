@@ -34,10 +34,10 @@ Run one with `fsl analyze requests/analyze/served-weak-each.json --format json`,
 
 `staged-two-locks-deadlock` asks `fsl analyze` whether the two-lock system can get stuck. It is `refuted` with a counterexample of two steps: process 1 takes A, then process 2 takes B. `fsl analyze` replays the counterexample before it reports it, and it exits 10.
 
-## Staged
+`two-locks-ordered` is the same system with both processes taking lock A first. No state leaves each process holding the lock the other waits for, so `fsl analyze` proves it deadlock-free and exits 0.
 
-These cases are staged until the language supports them.
+## Protocols
 
-- `staged-two-locks-deadlock`: The two-lock system can reach a state where neither process can move. Needs deadlock-freedom items in `fsl analyze`.
+The protocol `Handover` has an asker send one request to a holder over a channel. `protocol-handover-heard` checks that every run reaches the finish, and `fsl analyze` proves it. In `protocol-handover-unheard` the holder's receive has a guard that never holds, so the request stays on the channel; the counterexample names the blocked receive and the case exits 10.
 
-`example.toml` records the exact reason and ticket for each.
+A recorded run is checked against the same protocol. `protocol-recording-conforms` replays a recording of the send, the receive and the finish, and every obligation is satisfied. `protocol-recording-unasked` replays a recording in which the holder hears a request nobody sent: the send it needs is missing, and the case exits 10.

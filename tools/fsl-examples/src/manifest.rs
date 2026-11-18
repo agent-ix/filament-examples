@@ -6,6 +6,17 @@
 use crate::error::{Error, ErrorCode, Result};
 use toml::{Table, Value};
 
+/// The analysis engine families a case can name with `engine`. Each needs a running case that
+/// passes (exit 0) and one that fails (exit 10); `tests/verdicts.rs` enforces it over `index.json`.
+pub const ENGINES: &[&str] = &[
+    "model-checking",
+    "refinement",
+    "protocol",
+    "probability",
+    "timed",
+    "monitor",
+];
+
 /// Whether a case runs in `make check` or waits on a ticket in `make staged`.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum Status {
@@ -52,6 +63,11 @@ pub struct Case {
     pub command: String,
     /// The exit code the case gives today.
     pub expect_exit: i32,
+    /// The analysis engine family whose verdict the case gates, one of [`ENGINES`], when it
+    /// gates one.
+    pub engine: Option<String>,
+    /// The clock a `timed` case is counted on, as its rule names it (`clock "<name>"`).
+    pub clock: Option<String>,
     /// Running or staged, with the fields each needs.
     pub status: Status,
 }
@@ -133,6 +149,26 @@ fn read_case(fields: &Table) -> std::result::Result<Case, String> {
         Some(Value::String(s)) => Some(s.clone()),
         _ => None,
     };
+    let engine = match fields.get("engine") {
+        None => None,
+        Some(Value::String(s)) if ENGINES.contains(&s.as_str()) => Some(s.clone()),
+        Some(_) => {
+            return Err(format!(
+                "case {id}: engine must be one of {}",
+                ENGINES.join(", ")
+            ));
+        }
+    };
+    let clock = match (fields.get("clock"), engine.as_deref()) {
+        (Some(Value::String(c)), Some("timed")) if !c.trim().is_empty() => Some(c.clone()),
+        (None, Some("timed")) => return Err(format!("case {id}: a timed case names its clock")),
+        (None, _) => None,
+        _ => {
+            return Err(format!(
+                "case {id}: clock is a non-empty string, and only a timed case has one"
+            ));
+        }
+    };
     let status = if status_name == "running" {
         Status::Running {
             expect_verdict: string("expect_verdict")?,
@@ -169,6 +205,8 @@ fn read_case(fields: &Table) -> std::result::Result<Case, String> {
         file,
         command,
         expect_exit,
+        engine,
+        clock,
         status,
     })
 }

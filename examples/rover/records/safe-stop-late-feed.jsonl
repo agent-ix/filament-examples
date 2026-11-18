@@ -1,0 +1,6 @@
+{"observation": "t0-driving"}
+{"observation": "t1-lidar-lost"}
+{"observation": "u2-still-driving"}
+{"observation": "u3-still-driving"}
+{"observation": "u4-still-driving"}
+{"end": true}

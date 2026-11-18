@@ -1,0 +1,50 @@
+{
+  "format": "native-analyze/1",
+  "request": {
+    "models": [
+      {
+        "format": "semantic-ir/2.0.0",
+        "source": {
+          "file": "../../model/lock.semantic-ir.json",
+          "authority": "example",
+          "identity": "example:lock/model",
+          "document": "model",
+          "formal_revision": 1
+        }
+      }
+    ],
+    "program": {
+      "source": {
+        "file": "../../rules/protocols/handover-unheard.fsl",
+        "authority": "example",
+        "identity": "example:lock/handover-unheard",
+        "document": "handoverunheard",
+        "formal_revision": 1
+      }
+    },
+    "documents": [
+      {
+        "file": "../../data/lock-free.json"
+      }
+    ],
+    "items": [
+      {
+        "claim": "Handover",
+        "kind": "global-conformance",
+        "temporal": {
+          "item_kind": "deadlock-freedom",
+          "subject": {
+            "protocol": {
+              "protocol": "Handover",
+              "over": {"reference": {"population": "ix://example/lock/locks", "key": "m"}},
+              "roles": {
+                "Asker": {"type": "model-binding", "selection": "example/lock"},
+                "Holder": {"type": "model-binding", "selection": "example/lock"}
+              }
+            }
+          }
+        }
+      }
+    ]
+  }
+}
