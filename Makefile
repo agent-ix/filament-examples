@@ -51,15 +51,15 @@ test:
 # INSTALL_SHELL=zsh runs the steps in zsh, the macOS default shell.
 INSTALL_DRIVER ?= release
 INSTALL_SHELL ?= bash
-INSTALL_SKIP_release = driver-source
-INSTALL_SKIP_source = driver-target,driver-download,driver-verify,driver-install
+INSTALL_SKIP_release = driver-source,check-source
+INSTALL_SKIP_source = driver-target,driver-download,driver-verify,driver-install,check-release
 install-test:
-	$(NODE) tools/steps.mjs run install-test/steps.md --image ubuntu:22.04 --shell $(INSTALL_SHELL) --skip $(INSTALL_SKIP_$(INSTALL_DRIVER))
+	INSTALL_DRIVER=$(INSTALL_DRIVER) $(NODE) tools/steps.mjs run install-test/steps.md --image ubuntu:22.04 --shell $(INSTALL_SHELL) --skip $(INSTALL_SKIP_$(INSTALL_DRIVER))
 
 # Run the release steps on this machine, in zsh (for a macOS runner, which has
 # git, make and Rust already). It installs the driver under $HOME.
 install-test-host:
-	$(NODE) tools/steps.mjs run install-test/steps.md --host --shell zsh --skip prerequisites,build-tools,rust,$(INSTALL_SKIP_release)
+	INSTALL_DRIVER=release $(NODE) tools/steps.mjs run install-test/steps.md --host --shell zsh --skip prerequisites,build-tools,rust,$(INSTALL_SKIP_release)
 
 # Run the Assurance steps (assurance/steps.md) on this machine against a fresh
 # copy of assurance/project and compare each step's output with

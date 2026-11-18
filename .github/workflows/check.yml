@@ -5,11 +5,11 @@ on:
   workflow_dispatch:
     inputs:
       driver:
-        description: "Where the FSL driver comes from: image (the published toolchain image), release (a driver release archive, checked against its checksum) or source (build filament-driver)."
+        description: "Where the FSL driver comes from: source (build the pinned filament-driver revision), image (the published toolchain image) or release (a driver release archive, checked against its checksum)."
         required: true
         type: choice
         options: [image, release, source]
-        default: image
+        default: source
       image:
         description: "Toolchain image to run in when driver is image."
         required: false
@@ -18,6 +18,10 @@ on:
         description: "Driver release to download when driver is release, such as 0.1.1. latest is the newest release."
         required: false
         default: latest
+      fsl_revision:
+        description: "Exact filament-driver commit to build when driver is source."
+        required: false
+        default: 158bc4735167e75347afbfa883e03c1013d45f2d
 
 permissions:
   contents: read
@@ -29,8 +33,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # The default path: run the checks in the toolchain image. The login lets the
-      # pull work while the package is not public; it is harmless once it is.
+      # The image path remains available for checking the published toolchain.
+      # The default source path below builds an exact first-party driver revision.
       - name: Log in to the registry
         if: inputs.driver == 'image'
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
@@ -53,6 +57,7 @@ jobs:
         env:
           DRIVER: ${{ inputs.driver }}
           FSL_VERSION: ${{ inputs.fsl_version }}
+          FSL_REVISION: ${{ inputs.fsl_revision }}
         run: |
           if [ "$DRIVER" = release ]; then
             repo=https://github.com/agent-ix/filament-driver
@@ -70,14 +75,25 @@ jobs:
             tar -xzf "$archive" fsl
             echo "path=$RUNNER_TEMP/fsl-bin/fsl" >> "$GITHUB_OUTPUT"
           else
-            git clone --depth 1 https://github.com/agent-ix/filament-driver "$RUNNER_TEMP/filament-driver"
+            git clone --no-checkout --filter=blob:none https://github.com/agent-ix/filament-driver "$RUNNER_TEMP/filament-driver"
+            git -C "$RUNNER_TEMP/filament-driver" fetch --depth 1 origin "$FSL_REVISION"
+            git -C "$RUNNER_TEMP/filament-driver" checkout --detach FETCH_HEAD
             rustup toolchain install stable --profile minimal
-            cargo build --locked -p fsl-cli --manifest-path "$RUNNER_TEMP/filament-driver/Cargo.toml"
+            CARGO_INCREMENTAL=0 CARGO_PROFILE_DEV_DEBUG=0 cargo build --locked -p fsl-cli --manifest-path "$RUNNER_TEMP/filament-driver/Cargo.toml"
             echo "path=$RUNNER_TEMP/filament-driver/target/debug/fsl" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Check running cases and staged cases
-        if: inputs.driver != 'image'
+      - name: Check running cases and staged cases with the pinned source driver
+        if: inputs.driver == 'source'
         env:
           FSL_PATH: ${{ steps.driver.outputs.path }}
         run: make runner-test test check staged FSL="$FSL_PATH"
+
+      - name: Check examples with the release driver
+        if: inputs.driver == 'release'
+        env:
+          FSL_PATH: ${{ steps.driver.outputs.path }}
+        run: |
+          make runner-test test
+          FSL="$FSL_PATH" cargo run --quiet --locked --manifest-path tools/fsl-examples/Cargo.toml -- check --exclude-case shop/staged-charge-adds-amount
+          FSL="$FSL_PATH" cargo run --quiet --locked --manifest-path tools/fsl-examples/Cargo.toml -- staged

@@ -17,11 +17,15 @@ on:
         required: true
         default: "latest"
       fsl_source:
-        description: "release downloads the driver release archive and checks its checksum. source builds the driver from its repository."
+        description: "source builds the pinned driver revision. release downloads a driver archive and checks its checksum."
         required: true
         type: choice
         options: [release, source]
-        default: release
+        default: source
+      fsl_revision:
+        description: "Exact filament-driver commit to build when fsl_source is source."
+        required: false
+        default: 158bc4735167e75347afbfa883e03c1013d45f2d
 
 env:
   IMAGE: ghcr.io/agent-ix/filament-toolchain
@@ -72,6 +76,7 @@ jobs:
           build-args: |
             FSL_VERSION=${{ inputs.fsl_version }}
             FSL_SOURCE=${{ inputs.fsl_source }}
+            FSL_REVISION=${{ inputs.fsl_revision }}
             IMAGE_VERSION=${{ steps.meta.outputs.version }}
             IMAGE_REVISION=${{ github.sha }}
 
@@ -93,6 +98,7 @@ jobs:
           build-args: |
             FSL_VERSION=${{ inputs.fsl_version }}
             FSL_SOURCE=${{ inputs.fsl_source }}
+            FSL_REVISION=${{ inputs.fsl_revision }}
             IMAGE_VERSION=${{ steps.meta.outputs.version }}
             IMAGE_REVISION=${{ github.sha }}
           outputs: type=image,name=${{ env.IMAGE }},push-by-digest=true,name-canonical=true,push=true

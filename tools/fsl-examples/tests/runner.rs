@@ -87,6 +87,7 @@ fn check_passes_on_all_running_cases() -> TestResult {
         &Command::Check {
             dirs: Vec::new(),
             cases: Vec::new(),
+            excluded_cases: Vec::new(),
         },
         &root,
         &driver,
@@ -96,7 +97,7 @@ fn check_passes_on_all_running_cases() -> TestResult {
     assert!(ok);
     assert_eq!(
         sink.info.last().map(String::as_str),
-        Some("check: 306 passed, 0 failed")
+        Some("check: 307 passed, 0 failed")
     );
     Ok(())
 }
@@ -117,6 +118,7 @@ fn check_selects_only_matching_cases_and_accepts_globs() -> TestResult {
                 "misspelled-*".to_owned(),
                 "shop/misspelled-fiel?".to_owned(),
             ],
+            excluded_cases: Vec::new(),
         },
         &root,
         &driver,
@@ -144,6 +146,7 @@ fn check_rejects_unknown_case_selector_clearly() -> TestResult {
         &Command::Check {
             dirs: vec![PathBuf::from("shop")],
             cases: vec!["does-not-exist".to_owned()],
+            excluded_cases: Vec::new(),
         },
         &root,
         &driver,
@@ -155,6 +158,102 @@ fn check_rejects_unknown_case_selector_clearly() -> TestResult {
         error
             .to_string()
             .contains("case selector \"does-not-exist\" matched no cases")
+    );
+    assert_eq!(
+        driver.calls.get(),
+        0,
+        "validation precedes driver execution"
+    );
+    Ok(())
+}
+
+#[test]
+fn check_excludes_only_matching_cases_and_keeps_generated_checks() -> TestResult {
+    let scratch = scratch_repo()?;
+    let root = absolute(scratch.path())?;
+    let running = load_all(&root)?
+        .iter()
+        .flat_map(|system| &system.manifest.cases)
+        .filter(|case| matches!(case.status, Status::Running { .. }))
+        .count();
+    let driver = CountingDriver {
+        inner: StandIn::faithful(&root)?,
+        calls: Cell::new(0),
+    };
+    let command = Command::Check {
+        dirs: Vec::new(),
+        cases: Vec::new(),
+        excluded_cases: vec!["shop/misspelled-field".to_owned()],
+    };
+    let mut sink = VecSink::default();
+    assert!(
+        execute(&command, &root, &driver, &mut sink)?,
+        "{:?}",
+        sink.errors
+    );
+    assert_eq!(driver.calls.get(), running - 1);
+    assert_eq!(
+        sink.info.last().map(String::as_str),
+        Some(format!("check: {} passed, 0 failed", running - 1).as_str())
+    );
+
+    let index = root.join("index.json");
+    let fresh_index = fs::read_to_string(&index)?;
+    fs::write(&index, fresh_index.replace("\"exit\": 10", "\"exit\": 11"))?;
+    driver.calls.set(0);
+    let mut sink = VecSink::default();
+    assert!(!execute(&command, &root, &driver, &mut sink)?);
+    assert_eq!(driver.calls.get(), running - 1);
+    assert_eq!(
+        sink.errors,
+        vec!["index.json is stale: merge origin/main, then run make index".to_owned()]
+    );
+
+    fs::write(&index, fresh_index)?;
+    let readme = root.join("README.md");
+    let fresh_readme = fs::read_to_string(&readme)?;
+    let stale_counts = fresh_readme.replace(
+        "| [library](examples/library) | Shop | 6 | 0 |",
+        "| [library](examples/library) | Shop | 5 | 0 |",
+    );
+    assert_ne!(stale_counts, fresh_readme, "the Systems table has a library row");
+    fs::write(&readme, stale_counts)?;
+    driver.calls.set(0);
+    let mut sink = VecSink::default();
+    assert!(!execute(&command, &root, &driver, &mut sink)?);
+    assert_eq!(driver.calls.get(), running - 1);
+    assert_eq!(
+        sink.errors,
+        vec!["README.md system counts are stale: merge origin/main, then run make readme".to_owned()]
+    );
+    Ok(())
+}
+
+#[test]
+fn check_rejects_unknown_case_exclusion_clearly() -> TestResult {
+    let scratch = scratch_repo()?;
+    let root = absolute(scratch.path())?;
+    let driver = CountingDriver {
+        inner: StandIn::faithful(&root)?,
+        calls: Cell::new(0),
+    };
+    let mut sink = VecSink::default();
+    let error = execute(
+        &Command::Check {
+            dirs: vec![PathBuf::from("shop")],
+            cases: Vec::new(),
+            excluded_cases: vec!["does-not-exist".to_owned()],
+        },
+        &root,
+        &driver,
+        &mut sink,
+    )
+    .err()
+    .ok_or("unknown exclusion must fail")?;
+    assert!(
+        error
+            .to_string()
+            .contains("case exclusion \"does-not-exist\" matched no cases")
     );
     assert_eq!(
         driver.calls.get(),
@@ -325,6 +424,7 @@ fn stale_index_or_readme_region_fails() -> TestResult {
             &Command::Check {
                 dirs: Vec::new(),
                 cases: Vec::new(),
+                excluded_cases: Vec::new(),
             },
             &root,
             &driver,
@@ -417,7 +517,8 @@ fn record_refreshes_the_message_snapshot_and_keeps_the_structure() -> TestResult
         execute(
             &Command::Check {
                 dirs: Vec::new(),
-                cases: Vec::new()
+                cases: Vec::new(),
+                excluded_cases: Vec::new(),
             },
             &root,
             &driver,
@@ -450,7 +551,8 @@ fn record_refreshes_the_message_snapshot_and_keeps_the_structure() -> TestResult
         execute(
             &Command::Check {
                 dirs: Vec::new(),
-                cases: Vec::new()
+                cases: Vec::new(),
+                excluded_cases: Vec::new(),
             },
             &root,
             &driver,

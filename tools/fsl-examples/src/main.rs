@@ -1,7 +1,7 @@
 //! `fsl-examples`: the command line of the example runner.
 //!
 //! ```text
-//! fsl-examples [--root DIR] check   [dir ...] [--case PATTERN ...] running cases must match their record
+//! fsl-examples [--root DIR] check   [dir ...] [--case PATTERN ...] [--exclude-case PATTERN ...]
 //! fsl-examples [--root DIR] staged  [dir ...]           staged cases must still fail as recorded
 //! fsl-examples [--root DIR] regenerate [dir ...] [--case PATTERN ...] [--dry-run]
 //! fsl-examples [--root DIR] record  [dir ...]           alias for regenerate
@@ -11,15 +11,39 @@
 //!
 //! The driver comes from the `FSL` environment variable. The root is the repository folder and
 //! defaults to the current folder. A `<dir>` can be a system name or a folder holding
-//! `example.toml`; the default is every folder under `examples/`. `--case` accepts an id or
-//! `<system>/<id>` and may be repeated; `*` and `?` match case-name characters.
+//! `example.toml`; the default is every folder under `examples/`. `--case` and `--exclude-case`
+//! accept an id or `<system>/<id>` and may be repeated; `*` and `?` match case-name characters.
 
 use fsl_examples::runner::{Command, Driver, ProcessDriver, StdSink, execute};
 use fsl_examples::{Error, ErrorCode, Result};
 use std::path::PathBuf;
 use std::process::ExitCode;
 
-const USAGE: &str = "usage: fsl-examples [--root DIR] check|staged [dir ...] [--case PATTERN ...] | regenerate|record [dir ...] [--case PATTERN ...] [--dry-run] | promote <system>/<case> [--verdict V] | readme | index";
+const USAGE: &str = "usage: fsl-examples [--root DIR] check [dir ...] [--case PATTERN ...] [--exclude-case PATTERN ...] | staged [dir ...] | regenerate|record [dir ...] [--case PATTERN ...] [--dry-run] | promote <system>/<case> [--verdict V] | readme | index";
+
+fn parse_check_options(operands: &[String]) -> Result<(Vec<PathBuf>, Vec<String>, Vec<String>)> {
+    let mut dirs = Vec::new();
+    let mut cases = Vec::new();
+    let mut excluded_cases = Vec::new();
+    let mut it = operands.iter();
+    while let Some(arg) = it.next() {
+        match arg.as_str() {
+            "--case" => cases.push(
+                it.next()
+                    .ok_or_else(|| Error::new(ErrorCode::Usage, USAGE))?
+                    .clone(),
+            ),
+            "--exclude-case" => excluded_cases.push(
+                it.next()
+                    .ok_or_else(|| Error::new(ErrorCode::Usage, USAGE))?
+                    .clone(),
+            ),
+            _ if arg.starts_with('-') => return Err(Error::new(ErrorCode::Usage, USAGE)),
+            _ => dirs.push(PathBuf::from(arg)),
+        }
+    }
+    Ok((dirs, cases, excluded_cases))
+}
 
 fn parse_case_options(
     operands: &[String],
@@ -56,8 +80,12 @@ fn parse(args: &[String]) -> Result<(PathBuf, Command)> {
     let (name, operands) = rest.split_first().ok_or_else(usage)?;
     let command = match name.as_str() {
         "check" => {
-            let (dirs, cases, _) = parse_case_options(operands, false)?;
-            Command::Check { dirs, cases }
+            let (dirs, cases, excluded_cases) = parse_check_options(operands)?;
+            Command::Check {
+                dirs,
+                cases,
+                excluded_cases,
+            }
         }
         "staged" => {
             let (dirs, cases, _) = parse_case_options(operands, false)?;
@@ -167,6 +195,28 @@ mod tests {
             Command::Check {
                 dirs: vec![PathBuf::from("shop")],
                 cases: vec!["paid-*".to_owned(), "rover/safe-stop-late".to_owned()],
+                excluded_cases: Vec::new(),
+            }
+        );
+        Ok(())
+    }
+
+    #[test]
+    fn check_parses_repeated_case_exclusions() -> fsl_examples::Result<()> {
+        let args = [
+            "check".to_owned(),
+            "--exclude-case".to_owned(),
+            "shop/legacy-*".to_owned(),
+            "--exclude-case".to_owned(),
+            "released-only".to_owned(),
+        ];
+        let (_, command) = parse(&args)?;
+        assert_eq!(
+            command,
+            Command::Check {
+                dirs: Vec::new(),
+                cases: Vec::new(),
+                excluded_cases: vec!["shop/legacy-*".to_owned(), "released-only".to_owned()],
             }
         );
         Ok(())

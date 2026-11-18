@@ -246,10 +246,12 @@ pub fn check_systems(
     systems: &[System],
     selection: Selection,
     selectors: &[String],
+    excluded_cases: &[String],
     driver: &dyn Driver,
     sink: &mut dyn Sink,
 ) -> Result<Tally> {
     validate_selectors(systems, selectors)?;
+    validate_excluded_cases(systems, excluded_cases)?;
     let mut tally = Tally::default();
     for system in systems {
         for case in &system.manifest.cases {
@@ -261,6 +263,9 @@ pub fn check_systems(
                 continue;
             }
             if !selectors.is_empty() && !is_selected(system, case, selectors) {
+                continue;
+            }
+            if is_selected(system, case, excluded_cases) {
                 continue;
             }
             let run = run_case(system, case, driver)?;
@@ -403,6 +408,24 @@ fn validate_selectors(systems: &[System], selectors: &[String]) -> Result<()> {
     Ok(())
 }
 
+fn validate_excluded_cases(systems: &[System], excluded_cases: &[String]) -> Result<()> {
+    for selector in excluded_cases {
+        if !systems.iter().any(|system| {
+            system
+                .manifest
+                .cases
+                .iter()
+                .any(|case| selector_matches(selector, system, case))
+        }) {
+            return Err(Error::new(
+                ErrorCode::Usage,
+                format!("case exclusion {selector:?} matched no cases"),
+            ));
+        }
+    }
+    Ok(())
+}
+
 fn is_selected(system: &System, case: &Case, selectors: &[String]) -> bool {
     selectors
         .iter()
@@ -517,6 +540,8 @@ pub enum Command {
         dirs: Vec<PathBuf>,
         /// Case ids or `<system>/<id>` patterns; `*` and `?` are wildcards.
         cases: Vec<String>,
+        /// Case ids or `<system>/<id>` patterns omitted from the check.
+        excluded_cases: Vec<String>,
     },
     /// Staged cases must still fail as recorded.
     Staged(Vec<PathBuf>),
@@ -585,9 +610,20 @@ pub fn execute(
             }
             Ok(failed == 0)
         }
-        Command::Check { dirs, cases } => {
+        Command::Check {
+            dirs,
+            cases,
+            excluded_cases,
+        } => {
             let systems = load(dirs)?;
-            let tally = check_systems(&systems, Selection::Running, cases, driver, sink)?;
+            let tally = check_systems(
+                &systems,
+                Selection::Running,
+                cases,
+                excluded_cases,
+                driver,
+                sink,
+            )?;
             let mut failed = tally.failed;
             if dirs.is_empty() && cases.is_empty() {
                 for problem in sync_generated(&systems, root, false, sink)? {
@@ -599,7 +635,7 @@ pub fn execute(
         }
         Command::Staged(dirs) => {
             let systems = load(dirs)?;
-            let tally = check_systems(&systems, Selection::Staged, &[], driver, sink)?;
+            let tally = check_systems(&systems, Selection::Staged, &[], &[], driver, sink)?;
             Ok(tally.failed == 0)
         }
     }

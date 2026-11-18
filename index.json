@@ -4001,20 +4001,20 @@
     {
       "system": "shop",
       "case": "staged-charge-adds-amount",
-      "status": "staged",
+      "status": "running",
       "rule": "ChargeAddsAmount",
       "statement": "A charge adds exactly its amount to what the order has been charged.",
       "rule_file": "examples/shop/rules/staged-charge-adds-amount.fsl",
       "data_files": [],
       "request_file": "examples/shop/requests/staged-charge-adds-amount.json",
       "expected_file": "examples/shop/expected/staged-charge-adds-amount.json",
-      "verdict": null,
-      "exit": 20,
-      "ready_exit": 0,
+      "verdict": "compiled",
+      "exit": 0,
+      "ready_exit": null,
       "engine": null,
       "clock": null,
-      "waits_on": "QSL-2177",
-      "needs": "a released fsl carrying merged FSL #2817"
+      "waits_on": null,
+      "needs": null
     },
     {
       "system": "shop",

@@ -2,11 +2,12 @@
 #   docker build -f image/Dockerfile -t filament-toolchain .
 #   docker run --rm filament-toolchain smoke.sh
 #
-# The driver comes from a release by default: the build downloads the release
-# archive for its platform and checks it against SHA256SUMS.txt from the same
-# release. Build arguments:
+# The driver is built from a pinned source revision by default. The release
+# path downloads the archive for its platform and verifies its checksum.
+# Build arguments:
 #   FSL_VERSION  release to download, such as 0.1.1; "latest" is the newest release
-#   FSL_SOURCE   "release" (default) or "source" to build the driver from its repository
+#   FSL_SOURCE   "source" (default) or "release" to download a release archive
+#   FSL_REVISION exact filament-driver commit built when FSL_SOURCE=source
 #   FSL_REPO     the driver repository
 
 ARG UBUNTU=22.04
@@ -14,8 +15,9 @@ ARG RUST_VERSION=1.98.1
 
 # ------------------------------------------------------------ driver stage
 FROM ubuntu:${UBUNTU} AS driver
-ARG FSL_SOURCE=release
+ARG FSL_SOURCE=source
 ARG FSL_VERSION=latest
+ARG FSL_REVISION=158bc4735167e75347afbfa883e03c1013d45f2d
 ARG FSL_REPO=https://github.com/agent-ix/filament-driver
 ARG RUST_VERSION
 ENV DEBIAN_FRONTEND=noninteractive
@@ -24,7 +26,10 @@ ENV DEBIAN_FRONTEND=noninteractive
 # environment variables, change no file, and build the same package in a few
 # minutes.
 ENV CARGO_PROFILE_RELEASE_LTO=off \
-    CARGO_PROFILE_RELEASE_CODEGEN_UNITS=16
+    CARGO_PROFILE_RELEASE_CODEGEN_UNITS=16 \
+    CARGO_PROFILE_RELEASE_DEBUG=0 \
+    CARGO_PROFILE_RELEASE_INCREMENTAL=false \
+    CARGO_INCREMENTAL=0
 RUN set -eu; \
     apt-get update; \
     mkdir -p /opt/fsl-driver/bin; \
@@ -45,7 +50,7 @@ RUN set -eu; \
     else \
       apt-get install -y --no-install-recommends ca-certificates curl git build-essential pkg-config; \
       curl -sSf https://sh.rustup.rs | sh -s -- -y --profile minimal --default-toolchain "$RUST_VERSION"; \
-      PATH=/root/.cargo/bin:$PATH cargo install --git "$FSL_REPO" \
+      PATH=/root/.cargo/bin:$PATH cargo install --git "$FSL_REPO" --rev "$FSL_REVISION" \
         --locked --root /opt/fsl-driver fsl-cli; \
       strip /opt/fsl-driver/bin/fsl; \
       echo source > /opt/fsl-driver/TAG; \
