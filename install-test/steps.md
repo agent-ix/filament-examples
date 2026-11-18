@@ -104,7 +104,8 @@ cd filament-examples
 ```
 
 ```bash step=check-release
-FSL="$(command -v fsl)" cargo run --quiet --locked --manifest-path tools/fsl-examples/Cargo.toml -- check shop --case values-line-total
+FSL="$(command -v fsl)" cargo run --quiet --locked --manifest-path tools/fsl-examples/Cargo.toml -- check --exclude-case shop/staged-charge-adds-amount
+FSL="$(command -v fsl)" cargo run --quiet --locked --manifest-path tools/fsl-examples/Cargo.toml -- staged
 ```
 
 ```bash step=check-source

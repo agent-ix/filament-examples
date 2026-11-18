@@ -89,8 +89,11 @@ jobs:
           FSL_PATH: ${{ steps.driver.outputs.path }}
         run: make runner-test test check staged FSL="$FSL_PATH"
 
-      - name: Check a compatible example with the release driver
+      - name: Check examples with the release driver
         if: inputs.driver == 'release'
         env:
           FSL_PATH: ${{ steps.driver.outputs.path }}
-        run: FSL="$FSL_PATH" cargo run --quiet --locked --manifest-path tools/fsl-examples/Cargo.toml -- check shop --case values-line-total
+        run: |
+          make runner-test test
+          FSL="$FSL_PATH" cargo run --quiet --locked --manifest-path tools/fsl-examples/Cargo.toml -- check --exclude-case shop/staged-charge-adds-amount
+          FSL="$FSL_PATH" cargo run --quiet --locked --manifest-path tools/fsl-examples/Cargo.toml -- staged
