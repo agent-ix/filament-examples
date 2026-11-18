@@ -17,7 +17,7 @@
     }},
     "clause": {
       "selection": {"function": {"name": "yes", "arguments": [], "snapshot": "current"}},
-      "observations": {"current": "../data/claim-function-undefined.json"}
+      "observations": {"current": "../data/refund-ok.json"}
     }
   }
 }

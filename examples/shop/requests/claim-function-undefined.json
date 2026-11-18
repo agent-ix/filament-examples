@@ -20,12 +20,12 @@
         "name": "undefinedClaim",
         "arguments": [
           {"parameter": "r", "value": {"reference": {
-            "population": "ix://example/shop/orders", "key": "o1"
+            "population": "ix://example/shop/refunds", "key": "r1"
           }}}
         ],
         "snapshot": "current"
       }},
-      "observations": {"current": "../data/claim-function-undefined.json"}
+      "observations": {"current": "../data/refund-ok.json"}
     }
   }
 }
