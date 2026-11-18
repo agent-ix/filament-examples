@@ -11,5 +11,5 @@ function undefinedClaim using v(
   p: Population<Shop::Order>[1],
   r: Shop::Order
 ): Boolean pure {
-  lookup<Shop::Order>(p, r) absent undefined.total > 0
+  (lookup<Shop::Order>(p, r) absent undefined).total > 0
 }
