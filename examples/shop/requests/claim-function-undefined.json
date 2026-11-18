@@ -2,9 +2,9 @@
   "format": "native-run/1",
   "request": {
     "models": [{"format": "semantic-ir/2.0.0", "source": {
-      "file": "../model/shop.semantic-ir.json",
+      "file": "../model/shop-outcomes.semantic-ir.json",
       "authority": "example",
-      "identity": "example:shop/model",
+      "identity": "example/shop-outcomes/model",
       "document": "model",
       "formal_revision": 1
     }}],
@@ -21,12 +21,12 @@
         "arguments": [
           {"parameter": "p", "value": {"population": "ix://example/shop/orders"}},
           {"parameter": "r", "value": {"reference": {
-            "population": "ix://example/shop/orders", "key": "ghost"
+            "population": "ix://example/shop-outcomes/lookupTargets", "key": "target"
           }}}
         ],
         "snapshot": "current"
       }},
-      "observations": {"current": "../data/paid-in-full.json"}
+      "observations": {"current": "../data/outcomes-undefined-call.json"}
     }
   }
 }

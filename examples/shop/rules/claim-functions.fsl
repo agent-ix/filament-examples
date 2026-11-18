@@ -1,6 +1,6 @@
 language "ix:native" edition "1-draft";
 profile v = "filament.model.complete/v1";
-model Shop = "example/shop";
+model Shop = "example/shop-outcomes";
 
 function yes using v(): Boolean pure { true }
 function no using v(): Boolean pure { false }
