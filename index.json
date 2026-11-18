@@ -3173,17 +3173,17 @@
     {
       "system": "shop",
       "case": "staged-charge-adds-amount",
-      "status": "running",
+      "status": "staged",
       "rule": "ChargeAddsAmount",
       "statement": "A charge adds exactly its amount to what the order has been charged.",
       "rule_file": "examples/shop/rules/staged-charge-adds-amount.fsl",
       "data_files": [],
       "request_file": "examples/shop/requests/staged-charge-adds-amount.json",
       "expected_file": "examples/shop/expected/staged-charge-adds-amount.json",
-      "verdict": "compiles",
-      "exit": 0,
-      "waits_on": null,
-      "needs": null
+      "verdict": null,
+      "exit": 20,
+      "waits_on": "QSL-2177",
+      "needs": "a released fsl carrying merged FSL #2817"
     },
     {
       "system": "shop",
