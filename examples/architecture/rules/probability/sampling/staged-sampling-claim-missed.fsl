@@ -1,0 +1,18 @@
+language "ix:native" edition "1-draft";
+profile v = "filament.model.complete/v1";
+profile ev = "filament.temporal.event-position.false-extension/v1";
+profile inf = "filament.temporal.infinite-trace/v1";
+model Arch = "example/architecture";
+
+// Each call to a service fails 1 time in 10,000, so each service stays up through 10 calls with
+// probability about 0.999.
+random Arch::Service::call(ok) ~ { true: 9999, false: 1 };
+workload Traffic on Arch { weight Arch::Service::call = 1; }
+
+// The claim asks for at least 0.9999, which a service that stays up with
+// probability about 0.999 misses. It states alpha, beta and indifference, so
+// sampling decides it.
+probabilistic CheckoutAvailable using ev on Arch over (s: Arch::Service) under Traffic on origin
+  with alpha 0.01, beta 0.01, indifference 0.00005 {
+  probability >= 0.9999 [ always[0,10] holds(s.up) ]
+}

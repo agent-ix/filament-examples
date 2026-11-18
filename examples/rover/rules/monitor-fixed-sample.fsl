@@ -1,0 +1,6 @@
+language "ix:native" edition "1-draft";
+profile t = "filament.temporal.fixed-sample.false-extension/v1";
+record Reading { level: Int[0, 9]; }
+temporal ReachesWithin2Samples using t over (r: Reading) clock "samples" on origin {
+  eventually[0,2] holds(r.level = 2)
+}

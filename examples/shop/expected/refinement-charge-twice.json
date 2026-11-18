@@ -1,0 +1,636 @@
+{
+  "category": "violation",
+  "last_stage": "S8",
+  "result": null,
+  "first_diagnostic": null,
+  "items": [
+    {
+      "axes": {
+        "activation": "active",
+        "execution": "completed",
+        "settlement": "decisive-counterexample",
+        "truth": "false"
+      },
+      "category": "violation",
+      "claim_name": "DuplicateChargesAgain",
+      "counterexample": {
+        "fairness": [],
+        "initial_state": 0,
+        "interval": null,
+        "kind": "formula",
+        "loop": [],
+        "over_binding": null,
+        "prefix": [
+          {
+            "post_state": {
+              "key": "eyJib3VuZHMiOnsiZW50cmllcyI6W10sInR5cGUiOiJtYXAifSwiY29udHJvbCI6eyJlbnRyaWVzIjpbXSwidHlwZSI6Im1hcCJ9LCJtZW1vcnkiOnsiZW50cmllcyI6W10sInR5cGUiOiJtYXAifSwib2JzZXJ2YXRpb25zIjp7ImVudHJpZXMiOltdLCJ0eXBlIjoibWFwIn0sInF1ZXVlcyI6eyJlbnRyaWVzIjpbXSwidHlwZSI6Im1hcCJ9LCJyb2xlcyI6eyJlbnRyaWVzIjpbXSwidHlwZSI6Im1hcCJ9LCJzZW1hbnRpYyI6eyJlbnRyaWVzIjpbeyJrZXkiOnsidHlwZSI6InRleHQiLCJ2YWx1ZSI6IntcIm5vZGVcIjpcIml4Oi8vZXhhbXBsZS9wYXltZW50LWNsaWVudC9wYXltZW50c1wiLFwicGFja2FnZVwiOlwiZXhhbXBsZS9wYXltZW50LWNsaWVudFwifSJ9LCJ2YWx1ZSI6eyJlbnRyaWVzIjpbeyJrZXkiOnsiaWRlbnRpdHkiOiJwMSIsIm9iamVjdF90eXBlIjp7Im9yaWdpbmFsIjp7Im5vZGUiOiJpeDovL2V4YW1wbGUvcGF5bWVudC1jbGllbnQvUGF5bWVudCIsInBhY2thZ2UiOiJleGFtcGxlL3BheW1lbnQtY2xpZW50In0sIm93bmVyX2VmZmVjdGl2ZV90eXBlIjpudWxsfSwidHlwZSI6InJlZmVyZW5jZSIsInVuaXZlcnNlIjp7Im9yZGluYWwiOjAsInBhY2thZ2UiOiJleGFtcGxlL3BheW1lbnQtY2xpZW50IiwicGF0aCI6WyJtb2RlbCIsIm9iamVjdF90eXBlIiwiaXg6Ly9leGFtcGxlL3BheW1lbnQtY2xpZW50L1BheW1lbnQiXX19LCJ2YWx1ZSI6eyJmaWVsZHMiOlt7Im5hbWUiOiJhdHRlbXB0cyIsInZhbHVlIjp7InR5cGUiOiJpbnRlZ2VyIiwidmFsdWUiOiIwIn19LHsibmFtZSI6ImtleVNlZW4iLCJ2YWx1ZSI6eyJ0eXBlIjoiYm9vbGVhbiIsInZhbHVlIjp0cnVlfX1dLCJuYW1lIjoie1wibm9kZVwiOlwiaXg6Ly9leGFtcGxlL3BheW1lbnQtY2xpZW50L1BheW1lbnRcIixcInBhY2thZ2VcIjpcImV4YW1wbGUvcGF5bWVudC1jbGllbnRcIn0iLCJ0eXBlIjoicmVjb3JkIn19XSwidHlwZSI6Im1hcCJ9fV0sInR5cGUiOiJtYXAifSwidHlwZSI6InNpbXVsYXRpb24tc3RhdGUifQ",
+              "state": {
+                "bounds": {
+                  "entries": [],
+                  "type": "map"
+                },
+                "control": {
+                  "entries": [],
+                  "type": "map"
+                },
+                "memory": {
+                  "entries": [],
+                  "type": "map"
+                },
+                "observations": {
+                  "entries": [],
+                  "type": "map"
+                },
+                "queues": {
+                  "entries": [],
+                  "type": "map"
+                },
+                "roles": {
+                  "entries": [],
+                  "type": "map"
+                },
+                "semantic": {
+                  "entries": [
+                    {
+                      "key": {
+                        "type": "text",
+                        "value": "{\"node\":\"ix://example/payment-client/payments\",\"package\":\"example/payment-client\"}"
+                      },
+                      "value": {
+                        "entries": [
+                          {
+                            "key": {
+                              "identity": "p1",
+                              "object_type": {
+                                "original": {
+                                  "node": "ix://example/payment-client/Payment",
+                                  "package": "example/payment-client"
+                                },
+                                "owner_effective_type": null
+                              },
+                              "type": "reference",
+                              "universe": {
+                                "ordinal": 0,
+                                "package": "example/payment-client",
+                                "path": [
+                                  "model",
+                                  "object_type",
+                                  "ix://example/payment-client/Payment"
+                                ]
+                              }
+                            },
+                            "value": {
+                              "fields": [
+                                {
+                                  "name": "attempts",
+                                  "value": {
+                                    "type": "integer",
+                                    "value": "0"
+                                  }
+                                },
+                                {
+                                  "name": "keySeen",
+                                  "value": {
+                                    "type": "boolean",
+                                    "value": true
+                                  }
+                                }
+                              ],
+                              "name": "{\"node\":\"ix://example/payment-client/Payment\",\"package\":\"example/payment-client\"}",
+                              "type": "record"
+                            }
+                          }
+                        ],
+                        "type": "map"
+                      }
+                    }
+                  ],
+                  "type": "map"
+                },
+                "type": "simulation-state"
+              }
+            },
+            "transition": {
+              "arguments": [],
+              "operation": {
+                "node": "ix://example/payment-client/Payment/apply",
+                "package": "example/payment-client"
+              },
+              "receiver": {
+                "identity": "p1",
+                "object_type": {
+                  "original": {
+                    "node": "ix://example/payment-client/Payment",
+                    "package": "example/payment-client"
+                  },
+                  "owner_effective_type": null
+                },
+                "type": "reference",
+                "universe": {
+                  "ordinal": 0,
+                  "package": "example/payment-client",
+                  "path": [
+                    "model",
+                    "object_type",
+                    "ix://example/payment-client/Payment"
+                  ]
+                }
+              },
+              "type": "transition"
+            }
+          },
+          {
+            "post_state": {
+              "key": "eyJib3VuZHMiOnsiZW50cmllcyI6W10sInR5cGUiOiJtYXAifSwiY29udHJvbCI6eyJlbnRyaWVzIjpbXSwidHlwZSI6Im1hcCJ9LCJtZW1vcnkiOnsiZW50cmllcyI6W10sInR5cGUiOiJtYXAifSwib2JzZXJ2YXRpb25zIjp7ImVudHJpZXMiOltdLCJ0eXBlIjoibWFwIn0sInF1ZXVlcyI6eyJlbnRyaWVzIjpbXSwidHlwZSI6Im1hcCJ9LCJyb2xlcyI6eyJlbnRyaWVzIjpbXSwidHlwZSI6Im1hcCJ9LCJzZW1hbnRpYyI6eyJlbnRyaWVzIjpbeyJrZXkiOnsidHlwZSI6InRleHQiLCJ2YWx1ZSI6IntcIm5vZGVcIjpcIml4Oi8vZXhhbXBsZS9wYXltZW50LWNsaWVudC9wYXltZW50c1wiLFwicGFja2FnZVwiOlwiZXhhbXBsZS9wYXltZW50LWNsaWVudFwifSJ9LCJ2YWx1ZSI6eyJlbnRyaWVzIjpbeyJrZXkiOnsiaWRlbnRpdHkiOiJwMSIsIm9iamVjdF90eXBlIjp7Im9yaWdpbmFsIjp7Im5vZGUiOiJpeDovL2V4YW1wbGUvcGF5bWVudC1jbGllbnQvUGF5bWVudCIsInBhY2thZ2UiOiJleGFtcGxlL3BheW1lbnQtY2xpZW50In0sIm93bmVyX2VmZmVjdGl2ZV90eXBlIjpudWxsfSwidHlwZSI6InJlZmVyZW5jZSIsInVuaXZlcnNlIjp7Im9yZGluYWwiOjAsInBhY2thZ2UiOiJleGFtcGxlL3BheW1lbnQtY2xpZW50IiwicGF0aCI6WyJtb2RlbCIsIm9iamVjdF90eXBlIiwiaXg6Ly9leGFtcGxlL3BheW1lbnQtY2xpZW50L1BheW1lbnQiXX19LCJ2YWx1ZSI6eyJmaWVsZHMiOlt7Im5hbWUiOiJhdHRlbXB0cyIsInZhbHVlIjp7InR5cGUiOiJpbnRlZ2VyIiwidmFsdWUiOiIwIn19LHsibmFtZSI6ImtleVNlZW4iLCJ2YWx1ZSI6eyJ0eXBlIjoiYm9vbGVhbiIsInZhbHVlIjp0cnVlfX1dLCJuYW1lIjoie1wibm9kZVwiOlwiaXg6Ly9leGFtcGxlL3BheW1lbnQtY2xpZW50L1BheW1lbnRcIixcInBhY2thZ2VcIjpcImV4YW1wbGUvcGF5bWVudC1jbGllbnRcIn0iLCJ0eXBlIjoicmVjb3JkIn19XSwidHlwZSI6Im1hcCJ9fV0sInR5cGUiOiJtYXAifSwidHlwZSI6InNpbXVsYXRpb24tc3RhdGUifQ",
+              "state": {
+                "bounds": {
+                  "entries": [],
+                  "type": "map"
+                },
+                "control": {
+                  "entries": [],
+                  "type": "map"
+                },
+                "memory": {
+                  "entries": [],
+                  "type": "map"
+                },
+                "observations": {
+                  "entries": [],
+                  "type": "map"
+                },
+                "queues": {
+                  "entries": [],
+                  "type": "map"
+                },
+                "roles": {
+                  "entries": [],
+                  "type": "map"
+                },
+                "semantic": {
+                  "entries": [
+                    {
+                      "key": {
+                        "type": "text",
+                        "value": "{\"node\":\"ix://example/payment-client/payments\",\"package\":\"example/payment-client\"}"
+                      },
+                      "value": {
+                        "entries": [
+                          {
+                            "key": {
+                              "identity": "p1",
+                              "object_type": {
+                                "original": {
+                                  "node": "ix://example/payment-client/Payment",
+                                  "package": "example/payment-client"
+                                },
+                                "owner_effective_type": null
+                              },
+                              "type": "reference",
+                              "universe": {
+                                "ordinal": 0,
+                                "package": "example/payment-client",
+                                "path": [
+                                  "model",
+                                  "object_type",
+                                  "ix://example/payment-client/Payment"
+                                ]
+                              }
+                            },
+                            "value": {
+                              "fields": [
+                                {
+                                  "name": "attempts",
+                                  "value": {
+                                    "type": "integer",
+                                    "value": "0"
+                                  }
+                                },
+                                {
+                                  "name": "keySeen",
+                                  "value": {
+                                    "type": "boolean",
+                                    "value": true
+                                  }
+                                }
+                              ],
+                              "name": "{\"node\":\"ix://example/payment-client/Payment\",\"package\":\"example/payment-client\"}",
+                              "type": "record"
+                            }
+                          }
+                        ],
+                        "type": "map"
+                      }
+                    }
+                  ],
+                  "type": "map"
+                },
+                "type": "simulation-state"
+              }
+            },
+            "transition": {
+              "arguments": [],
+              "operation": {
+                "node": "ix://example/payment-client/Payment/dropDuplicate",
+                "package": "example/payment-client"
+              },
+              "receiver": {
+                "identity": "p1",
+                "object_type": {
+                  "original": {
+                    "node": "ix://example/payment-client/Payment",
+                    "package": "example/payment-client"
+                  },
+                  "owner_effective_type": null
+                },
+                "type": "reference",
+                "universe": {
+                  "ordinal": 0,
+                  "package": "example/payment-client",
+                  "path": [
+                    "model",
+                    "object_type",
+                    "ix://example/payment-client/Payment"
+                  ]
+                }
+              },
+              "type": "transition"
+            }
+          }
+        ],
+        "refinement_failure": {
+          "cause": {
+            "clause": "ChargeOnce",
+            "type": "Precondition"
+          },
+          "kind": "AbstractStepRejected",
+          "position": 2,
+          "transition": {
+            "arguments": [],
+            "operation": {
+              "node": "ix://example/payment-spec/Payment/charge",
+              "package": "example/payment-spec"
+            },
+            "receiver": {
+              "identity": "p1",
+              "object_type": {
+                "original": {
+                  "node": "ix://example/payment-spec/Payment",
+                  "package": "example/payment-spec"
+                },
+                "owner_effective_type": null
+              },
+              "type": "reference",
+              "universe": {
+                "ordinal": 0,
+                "package": "example/payment-spec",
+                "path": [
+                  "model",
+                  "object_type",
+                  "ix://example/payment-spec/Payment"
+                ]
+              }
+            },
+            "type": "transition"
+          }
+        },
+        "step_simulations": [
+          {
+            "ordinal": 0,
+            "role": "generated"
+          },
+          {
+            "ordinal": 1,
+            "role": "generated"
+          },
+          {
+            "ordinal": 2,
+            "role": "generated"
+          },
+          {
+            "ordinal": 3,
+            "role": "generated"
+          },
+          {
+            "ordinal": 4,
+            "role": "generated"
+          }
+        ],
+        "steps": [
+          {
+            "abstract_state": {
+              "bounds": {
+                "entries": [],
+                "type": "map"
+              },
+              "control": {
+                "entries": [],
+                "type": "map"
+              },
+              "memory": {
+                "entries": [],
+                "type": "map"
+              },
+              "observations": {
+                "entries": [],
+                "type": "map"
+              },
+              "queues": {
+                "entries": [],
+                "type": "map"
+              },
+              "roles": {
+                "entries": [],
+                "type": "map"
+              },
+              "semantic": {
+                "entries": [
+                  {
+                    "key": {
+                      "type": "text",
+                      "value": "{\"node\":\"ix://example/payment-spec/payments\",\"package\":\"example/payment-spec\"}"
+                    },
+                    "value": {
+                      "entries": [
+                        {
+                          "key": {
+                            "identity": "p1",
+                            "object_type": {
+                              "original": {
+                                "node": "ix://example/payment-spec/Payment",
+                                "package": "example/payment-spec"
+                              },
+                              "owner_effective_type": null
+                            },
+                            "type": "reference",
+                            "universe": {
+                              "ordinal": 0,
+                              "package": "example/payment-spec",
+                              "path": [
+                                "model",
+                                "object_type",
+                                "ix://example/payment-spec/Payment"
+                              ]
+                            }
+                          },
+                          "value": {
+                            "fields": [
+                              {
+                                "name": "charged",
+                                "value": {
+                                  "type": "boolean",
+                                  "value": false
+                                }
+                              }
+                            ],
+                            "name": "{\"node\":\"ix://example/payment-spec/Payment\",\"package\":\"example/payment-spec\"}",
+                            "type": "record"
+                          }
+                        }
+                      ],
+                      "type": "map"
+                    }
+                  }
+                ],
+                "type": "map"
+              },
+              "type": "simulation-state"
+            },
+            "position": 0
+          },
+          {
+            "abstract_state": {
+              "bounds": {
+                "entries": [],
+                "type": "map"
+              },
+              "control": {
+                "entries": [],
+                "type": "map"
+              },
+              "memory": {
+                "entries": [],
+                "type": "map"
+              },
+              "observations": {
+                "entries": [],
+                "type": "map"
+              },
+              "queues": {
+                "entries": [],
+                "type": "map"
+              },
+              "roles": {
+                "entries": [],
+                "type": "map"
+              },
+              "semantic": {
+                "entries": [
+                  {
+                    "key": {
+                      "type": "text",
+                      "value": "{\"node\":\"ix://example/payment-spec/payments\",\"package\":\"example/payment-spec\"}"
+                    },
+                    "value": {
+                      "entries": [
+                        {
+                          "key": {
+                            "identity": "p1",
+                            "object_type": {
+                              "original": {
+                                "node": "ix://example/payment-spec/Payment",
+                                "package": "example/payment-spec"
+                              },
+                              "owner_effective_type": null
+                            },
+                            "type": "reference",
+                            "universe": {
+                              "ordinal": 0,
+                              "package": "example/payment-spec",
+                              "path": [
+                                "model",
+                                "object_type",
+                                "ix://example/payment-spec/Payment"
+                              ]
+                            }
+                          },
+                          "value": {
+                            "fields": [
+                              {
+                                "name": "charged",
+                                "value": {
+                                  "type": "boolean",
+                                  "value": true
+                                }
+                              }
+                            ],
+                            "name": "{\"node\":\"ix://example/payment-spec/Payment\",\"package\":\"example/payment-spec\"}",
+                            "type": "record"
+                          }
+                        }
+                      ],
+                      "type": "map"
+                    }
+                  }
+                ],
+                "type": "map"
+              },
+              "type": "simulation-state"
+            },
+            "position": 1
+          },
+          {
+            "abstract_state": {
+              "bounds": {
+                "entries": [],
+                "type": "map"
+              },
+              "control": {
+                "entries": [],
+                "type": "map"
+              },
+              "memory": {
+                "entries": [],
+                "type": "map"
+              },
+              "observations": {
+                "entries": [],
+                "type": "map"
+              },
+              "queues": {
+                "entries": [],
+                "type": "map"
+              },
+              "roles": {
+                "entries": [],
+                "type": "map"
+              },
+              "semantic": {
+                "entries": [
+                  {
+                    "key": {
+                      "type": "text",
+                      "value": "{\"node\":\"ix://example/payment-spec/payments\",\"package\":\"example/payment-spec\"}"
+                    },
+                    "value": {
+                      "entries": [
+                        {
+                          "key": {
+                            "identity": "p1",
+                            "object_type": {
+                              "original": {
+                                "node": "ix://example/payment-spec/Payment",
+                                "package": "example/payment-spec"
+                              },
+                              "owner_effective_type": null
+                            },
+                            "type": "reference",
+                            "universe": {
+                              "ordinal": 0,
+                              "package": "example/payment-spec",
+                              "path": [
+                                "model",
+                                "object_type",
+                                "ix://example/payment-spec/Payment"
+                              ]
+                            }
+                          },
+                          "value": {
+                            "fields": [
+                              {
+                                "name": "charged",
+                                "value": {
+                                  "type": "boolean",
+                                  "value": true
+                                }
+                              }
+                            ],
+                            "name": "{\"node\":\"ix://example/payment-spec/Payment\",\"package\":\"example/payment-spec\"}",
+                            "type": "record"
+                          }
+                        }
+                      ],
+                      "type": "map"
+                    }
+                  }
+                ],
+                "type": "map"
+              },
+              "type": "simulation-state"
+            },
+            "position": 2
+          }
+        ],
+        "trace": "model",
+        "trace_position": 2
+      },
+      "record": {
+        "backend": "en-1",
+        "cause": null,
+        "result": "refuted",
+        "settled_by": "result"
+      },
+      "replay": {
+        "reproduced": true,
+        "target": {
+          "state_clause": "DuplicateChargesAgain"
+        }
+      },
+      "request": {
+        "candidates": {
+          "backends": [
+            "en-1"
+          ],
+          "type": "set"
+        },
+        "claim": {
+          "node": {
+            "ordinal": 0,
+            "package": "example:shop/client-charges-twice",
+            "path": [
+              "DuplicateChargesAgain"
+            ]
+          },
+          "occurrence": {
+            "ordinal": 0,
+            "role": "declaration"
+          }
+        },
+        "extent": {
+          "classification": "unbounded",
+          "finite_bound_available": false
+        },
+        "kind": "temporal-satisfaction",
+        "request_index": 0,
+        "temporal": {
+          "fairness": [],
+          "item_kind": "refinement",
+          "limits": {
+            "max_automaton_states": 1048576,
+            "max_relation_tuples": 16777216,
+            "max_states": 10000000,
+            "max_transitions": 100000000,
+            "max_walk_steps": 4096,
+            "max_witness_set": 65536
+          },
+          "subject": {
+            "initial_states": [
+              {
+                "authority": "example",
+                "identity": "example:shop/payment-unsent"
+              }
+            ],
+            "proof_bounds": [],
+            "universes": [
+              {
+                "authority": "example",
+                "identity": "example:shop/payment-unsent"
+              }
+            ]
+          }
+        }
+      },
+      "request_index": 0
+    }
+  ]
+}

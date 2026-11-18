@@ -1,0 +1,16 @@
+{
+  "format": "filament.state.snapshot/v1",
+  "identity": {"authority": "example", "identity": "example:shop/payment-unsent"},
+  "observation": "current",
+  "model": {"identity": "example/payment-client"},
+  "anchor": {"kind": "initialization", "name": "unsent"},
+  "populations": [
+    {
+      "population": "ix://example/payment-client/payments",
+      "complete": true,
+      "objects": [
+        {"key": "p1", "type": "ix://example/payment-client/Payment", "fields": {"attempts": {"integer": "0"}, "keySeen": {"boolean": false}}}
+      ]
+    }
+  ]
+}

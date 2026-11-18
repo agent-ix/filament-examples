@@ -1,0 +1,304 @@
+{
+  "category": "violation",
+  "last_stage": "S8",
+  "result": null,
+  "first_diagnostic": null,
+  "items": [
+    {
+      "axes": {
+        "activation": "active",
+        "execution": "completed",
+        "settlement": "decisive-counterexample",
+        "truth": "false"
+      },
+      "category": "violation",
+      "claim_name": "Handover",
+      "closure": {
+        "premises": [
+          {
+            "kind": "execution",
+            "node": "Handover::Done"
+          }
+        ],
+        "producer": "recording",
+        "state": "closed"
+      },
+      "counterexample": {
+        "kind": "recording",
+        "recording": "eyJjbG9zdXJlIjp7InByZW1pc2VzIjpbeyJraW5kIjoiZXhlY3V0aW9uIiwibm9kZSI6IkhhbmRvdmVyOjpEb25lIn1dLCJzdGF0ZSI6ImNsb3NlZCJ9LCJjb3JyZWxhdGlvbnMiOltdLCJmb3JtYXQiOiJmaWxhbWVudC5wcm90b2NvbC1yZWNvcmRpbmcvMSIsImxvY2FsX29yZGVyIjp7IkhvbGRlciI6WzAsMV19LCJvYnNlcnZhdGlvbnMiOlt7Imluc3RhbmNlIjoidy0xIiwia2V5cyI6eyJkZWxpdmVyeSI6ImQtMSIsIm1lc3NhZ2UiOiJtLTEifSwia2luZCI6InJlY2VpdmUiLCJub2RlIjoiSGFuZG92ZXI6Ok1haW46OkhlYXJkIiwicmVjb3JkIjp7ImdyYW50ZWQiOnRydWV9LCJyb2xlIjoiSG9sZGVyIn0seyJpbnN0YW5jZSI6InctMSIsImtleXMiOnt9LCJraW5kIjoiZmluaXNoIiwibm9kZSI6IkhhbmRvdmVyOjpEb25lIiwicmVjb3JkIjp7ImRvbmUiOnRydWV9LCJyb2xlIjoiSG9sZGVyIn1dLCJwcm90b2NvbCI6IkhhbmRvdmVyIn0=",
+        "trace_position": null
+      },
+      "global": {
+        "basis": "decisive-counterexample",
+        "complete": false,
+        "label": "refuted"
+      },
+      "obligations": [
+        {
+          "basis": "recording",
+          "obligation": {
+            "instance": "w-1",
+            "kind": "enabledness",
+            "node": "Handover::Main::Heard"
+          },
+          "verdict": "satisfied",
+          "witness": [
+            0
+          ]
+        },
+        {
+          "basis": "recording",
+          "obligation": {
+            "instance": "w-1",
+            "kind": "enabledness",
+            "node": "Handover::Done"
+          },
+          "verdict": "satisfied",
+          "witness": [
+            1
+          ]
+        },
+        {
+          "basis": "recording",
+          "cause": "missing",
+          "obligation": {
+            "instance": "w-1",
+            "kind": "causal-edge",
+            "node": "Handover::Main::Asked -> Handover::Main::Heard"
+          },
+          "verdict": "violated"
+        },
+        {
+          "basis": "recording",
+          "obligation": {
+            "kind": "channel-premise",
+            "node": "Ask"
+          },
+          "verdict": "satisfied"
+        },
+        {
+          "basis": "recording",
+          "cause": "missing",
+          "obligation": {
+            "instance": "w-1",
+            "kind": "constraint",
+            "node": "Handover::Main::Asked"
+          },
+          "verdict": "violated"
+        },
+        {
+          "basis": "recording",
+          "obligation": {
+            "instance": "w-1",
+            "kind": "constraint",
+            "node": "Handover::Main::Heard"
+          },
+          "verdict": "satisfied",
+          "witness": [
+            0
+          ]
+        },
+        {
+          "basis": "recording",
+          "obligation": {
+            "instance": "w-1",
+            "kind": "constraint",
+            "node": "Handover::Done"
+          },
+          "verdict": "satisfied",
+          "witness": [
+            1
+          ]
+        },
+        {
+          "basis": "recording",
+          "obligation": {
+            "instance": "w-1",
+            "kind": "closure"
+          },
+          "verdict": "satisfied",
+          "witness": [
+            1
+          ]
+        }
+      ],
+      "record": {
+        "backend": "protocol-analysis",
+        "cause": null,
+        "closure": {
+          "premises": [
+            {
+              "kind": "execution",
+              "node": "Handover::Done"
+            }
+          ],
+          "producer": "recording",
+          "state": "closed"
+        },
+        "global": {
+          "basis": "decisive-counterexample",
+          "complete": false,
+          "label": "refuted"
+        },
+        "obligations": [
+          {
+            "basis": "recording",
+            "obligation": {
+              "instance": "w-1",
+              "kind": "enabledness",
+              "node": "Handover::Main::Heard"
+            },
+            "verdict": "satisfied",
+            "witness": [
+              0
+            ]
+          },
+          {
+            "basis": "recording",
+            "obligation": {
+              "instance": "w-1",
+              "kind": "enabledness",
+              "node": "Handover::Done"
+            },
+            "verdict": "satisfied",
+            "witness": [
+              1
+            ]
+          },
+          {
+            "basis": "recording",
+            "cause": "missing",
+            "obligation": {
+              "instance": "w-1",
+              "kind": "causal-edge",
+              "node": "Handover::Main::Asked -> Handover::Main::Heard"
+            },
+            "verdict": "violated"
+          },
+          {
+            "basis": "recording",
+            "obligation": {
+              "kind": "channel-premise",
+              "node": "Ask"
+            },
+            "verdict": "satisfied"
+          },
+          {
+            "basis": "recording",
+            "cause": "missing",
+            "obligation": {
+              "instance": "w-1",
+              "kind": "constraint",
+              "node": "Handover::Main::Asked"
+            },
+            "verdict": "violated"
+          },
+          {
+            "basis": "recording",
+            "obligation": {
+              "instance": "w-1",
+              "kind": "constraint",
+              "node": "Handover::Main::Heard"
+            },
+            "verdict": "satisfied",
+            "witness": [
+              0
+            ]
+          },
+          {
+            "basis": "recording",
+            "obligation": {
+              "instance": "w-1",
+              "kind": "constraint",
+              "node": "Handover::Done"
+            },
+            "verdict": "satisfied",
+            "witness": [
+              1
+            ]
+          },
+          {
+            "basis": "recording",
+            "obligation": {
+              "instance": "w-1",
+              "kind": "closure"
+            },
+            "verdict": "satisfied",
+            "witness": [
+              1
+            ]
+          }
+        ],
+        "recording": {
+          "authority": "example",
+          "identity": "example:lock/handover-unasked"
+        },
+        "result": "refuted",
+        "settled_by": "result"
+      },
+      "recording": {
+        "authority": "example",
+        "identity": "example:lock/handover-unasked"
+      },
+      "request": {
+        "candidates": {
+          "backends": [
+            "protocol-analysis"
+          ],
+          "type": "set"
+        },
+        "claim": {
+          "node": {
+            "ordinal": 0,
+            "package": "example:lock/handover-heard",
+            "path": [
+              "Handover"
+            ]
+          },
+          "occurrence": {
+            "ordinal": 0,
+            "role": "declaration"
+          }
+        },
+        "extent": {
+          "bounds": [],
+          "classification": "bounded"
+        },
+        "kind": "global-conformance",
+        "recording": {
+          "authority": "example",
+          "identity": "example:lock/handover-unasked"
+        },
+        "request_index": 0,
+        "temporal": {
+          "fairness": [],
+          "item_kind": "formula",
+          "limits": {
+            "max_automaton_states": 1048576,
+            "max_relation_tuples": 16777216,
+            "max_states": 10000000,
+            "max_transitions": 100000000,
+            "max_walk_steps": 4096,
+            "max_witness_set": 65536
+          },
+          "subject": {
+            "initial_states": [
+              {
+                "authority": "example",
+                "identity": "example:lock/lock-free"
+              }
+            ],
+            "proof_bounds": [],
+            "universes": [
+              {
+                "authority": "example",
+                "identity": "example:lock/lock-free"
+              }
+            ]
+          }
+        }
+      },
+      "request_index": 0
+    }
+  ]
+}

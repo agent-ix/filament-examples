@@ -34,7 +34,19 @@
     },
     "items": [
       {
-        "claim": "ControllerRefinesStop"
+        "claim": "ControllerRefinesStop",
+        "kind": "refinement",
+        "temporal": {
+          "item_kind": "refinement",
+          "limits": {
+            "max_states": 200
+          }
+        }
+      }
+    ],
+    "documents": [
+      {
+        "file": "../../data/start-driving.json"
       }
     ]
   }

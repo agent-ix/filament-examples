@@ -16,12 +16,12 @@ The table lists each system with the number of cases that run today and the numb
 
 | System | Family | Running | Staged |
 | --- | --- | --- | --- |
-| [shop](examples/shop) | Shop | 145 | 4 |
-| [architecture](examples/architecture) | Enterprise | 34 | 4 |
+| [shop](examples/shop) | Shop | 147 | 3 |
+| [architecture](examples/architecture) | Enterprise | 34 | 7 |
 | [parts-saga](examples/parts-saga) | Distributed | 30 | 0 |
 | [cell](examples/cell) | Safety | 13 | 0 |
-| [rover](examples/rover) | Safety | 55 | 7 |
-| [lock](examples/lock) | Safety | 11 | 0 |
+| [rover](examples/rover) | Safety | 60 | 8 |
+| [lock](examples/lock) | Safety | 16 | 0 |
 | [library](examples/library) | Shop | 6 | 0 |
 
 ## Beyond FSL

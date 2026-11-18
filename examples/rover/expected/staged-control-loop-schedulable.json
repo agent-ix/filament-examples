@@ -1,39 +1,502 @@
 {
-  "category": "refusal",
-  "last_stage": "S4",
+  "category": "unsupported",
+  "last_stage": "S6b",
   "result": null,
   "first_diagnostic": null,
   "items": [
     {
-      "category": "refusal",
+      "category": "unsupported",
       "claim_name": "ControlFp",
       "record": {
         "diagnostic": {
-          "cause": "unknown-claim",
-          "code": "invalid_capability",
+          "cause": "unsupported-requested-capability",
+          "code": "unsupported_projection",
           "detail": {
-            "name": "ControlFp"
+            "kind": "schedulability"
           }
         },
+        "result": "unsupported",
         "settled_by": "disposition"
       },
-      "request": null,
+      "request": {
+        "candidates": {
+          "backends": [
+            "en-7"
+          ],
+          "type": "set"
+        },
+        "claim": {
+          "node": {
+            "ordinal": 0,
+            "package": "example:rover/control-loop",
+            "path": [
+              "claim",
+              "schedulability",
+              "kind",
+              "schedulable",
+              "policy",
+              "fixed-priority",
+              "task",
+              "bound",
+              "tasks",
+              "task",
+              "name",
+              "fusion",
+              "arrival",
+              "periodic",
+              "period",
+              "10/1",
+              {
+                "ordinal": 2,
+                "package": "example:rover/control-loop",
+                "path": [
+                  "ms"
+                ]
+              },
+              "deadline",
+              "10/1",
+              {
+                "ordinal": 2,
+                "package": "example:rover/control-loop",
+                "path": [
+                  "ms"
+                ]
+              },
+              "bcet",
+              "0/1",
+              {
+                "ordinal": 2,
+                "package": "example:rover/control-loop",
+                "path": [
+                  "ms"
+                ]
+              },
+              "wcet",
+              "2/1",
+              {
+                "ordinal": 2,
+                "package": "example:rover/control-loop",
+                "path": [
+                  "ms"
+                ]
+              },
+              "wcet_hi",
+              "criticality",
+              "lo",
+              "priority",
+              "3",
+              "jitter",
+              "0/1",
+              {
+                "ordinal": 2,
+                "package": "example:rover/control-loop",
+                "path": [
+                  "ms"
+                ]
+              },
+              "blocking",
+              "0/1",
+              {
+                "ordinal": 2,
+                "package": "example:rover/control-loop",
+                "path": [
+                  "ms"
+                ]
+              },
+              "task",
+              "name",
+              "planner",
+              "arrival",
+              "periodic",
+              "period",
+              "50/1",
+              {
+                "ordinal": 2,
+                "package": "example:rover/control-loop",
+                "path": [
+                  "ms"
+                ]
+              },
+              "deadline",
+              "50/1",
+              {
+                "ordinal": 2,
+                "package": "example:rover/control-loop",
+                "path": [
+                  "ms"
+                ]
+              },
+              "bcet",
+              "0/1",
+              {
+                "ordinal": 2,
+                "package": "example:rover/control-loop",
+                "path": [
+                  "ms"
+                ]
+              },
+              "wcet",
+              "15/1",
+              {
+                "ordinal": 2,
+                "package": "example:rover/control-loop",
+                "path": [
+                  "ms"
+                ]
+              },
+              "wcet_hi",
+              "criticality",
+              "lo",
+              "priority",
+              "1",
+              "jitter",
+              "0/1",
+              {
+                "ordinal": 2,
+                "package": "example:rover/control-loop",
+                "path": [
+                  "ms"
+                ]
+              },
+              "blocking",
+              "0/1",
+              {
+                "ordinal": 2,
+                "package": "example:rover/control-loop",
+                "path": [
+                  "ms"
+                ]
+              },
+              "task",
+              "name",
+              "stopMonitor",
+              "arrival",
+              "periodic",
+              "period",
+              "20/1",
+              {
+                "ordinal": 2,
+                "package": "example:rover/control-loop",
+                "path": [
+                  "ms"
+                ]
+              },
+              "deadline",
+              "20/1",
+              {
+                "ordinal": 2,
+                "package": "example:rover/control-loop",
+                "path": [
+                  "ms"
+                ]
+              },
+              "bcet",
+              "0/1",
+              {
+                "ordinal": 2,
+                "package": "example:rover/control-loop",
+                "path": [
+                  "ms"
+                ]
+              },
+              "wcet",
+              "3/1",
+              {
+                "ordinal": 2,
+                "package": "example:rover/control-loop",
+                "path": [
+                  "ms"
+                ]
+              },
+              "wcet_hi",
+              "criticality",
+              "lo",
+              "priority",
+              "2",
+              "jitter",
+              "0/1",
+              {
+                "ordinal": 2,
+                "package": "example:rover/control-loop",
+                "path": [
+                  "ms"
+                ]
+              },
+              "blocking",
+              "0/1",
+              {
+                "ordinal": 2,
+                "package": "example:rover/control-loop",
+                "path": [
+                  "ms"
+                ]
+              }
+            ]
+          },
+          "occurrence": {
+            "ordinal": 0,
+            "role": "claim"
+          }
+        },
+        "extent": {
+          "bounds": [],
+          "classification": "bounded"
+        },
+        "kind": "schedulability",
+        "request_index": 0
+      },
       "request_index": 0
     },
     {
-      "category": "refusal",
+      "category": "unsupported",
       "claim_name": "StopMonitorFast",
       "record": {
         "diagnostic": {
-          "cause": "unknown-claim",
-          "code": "invalid_capability",
+          "cause": "unsupported-requested-capability",
+          "code": "unsupported_projection",
           "detail": {
-            "name": "StopMonitorFast"
+            "kind": "schedulability"
           }
         },
+        "result": "unsupported",
         "settled_by": "disposition"
       },
-      "request": null,
+      "request": {
+        "candidates": {
+          "backends": [
+            "en-7"
+          ],
+          "type": "set"
+        },
+        "claim": {
+          "node": {
+            "ordinal": 0,
+            "package": "example:rover/control-loop",
+            "path": [
+              "claim",
+              "schedulability",
+              "kind",
+              "response",
+              "policy",
+              "fixed-priority",
+              "task",
+              "stopMonitor",
+              "bound",
+              "10/1",
+              {
+                "ordinal": 2,
+                "package": "example:rover/control-loop",
+                "path": [
+                  "ms"
+                ]
+              },
+              "tasks",
+              "task",
+              "name",
+              "fusion",
+              "arrival",
+              "periodic",
+              "period",
+              "10/1",
+              {
+                "ordinal": 2,
+                "package": "example:rover/control-loop",
+                "path": [
+                  "ms"
+                ]
+              },
+              "deadline",
+              "10/1",
+              {
+                "ordinal": 2,
+                "package": "example:rover/control-loop",
+                "path": [
+                  "ms"
+                ]
+              },
+              "bcet",
+              "0/1",
+              {
+                "ordinal": 2,
+                "package": "example:rover/control-loop",
+                "path": [
+                  "ms"
+                ]
+              },
+              "wcet",
+              "2/1",
+              {
+                "ordinal": 2,
+                "package": "example:rover/control-loop",
+                "path": [
+                  "ms"
+                ]
+              },
+              "wcet_hi",
+              "criticality",
+              "lo",
+              "priority",
+              "3",
+              "jitter",
+              "0/1",
+              {
+                "ordinal": 2,
+                "package": "example:rover/control-loop",
+                "path": [
+                  "ms"
+                ]
+              },
+              "blocking",
+              "0/1",
+              {
+                "ordinal": 2,
+                "package": "example:rover/control-loop",
+                "path": [
+                  "ms"
+                ]
+              },
+              "task",
+              "name",
+              "planner",
+              "arrival",
+              "periodic",
+              "period",
+              "50/1",
+              {
+                "ordinal": 2,
+                "package": "example:rover/control-loop",
+                "path": [
+                  "ms"
+                ]
+              },
+              "deadline",
+              "50/1",
+              {
+                "ordinal": 2,
+                "package": "example:rover/control-loop",
+                "path": [
+                  "ms"
+                ]
+              },
+              "bcet",
+              "0/1",
+              {
+                "ordinal": 2,
+                "package": "example:rover/control-loop",
+                "path": [
+                  "ms"
+                ]
+              },
+              "wcet",
+              "15/1",
+              {
+                "ordinal": 2,
+                "package": "example:rover/control-loop",
+                "path": [
+                  "ms"
+                ]
+              },
+              "wcet_hi",
+              "criticality",
+              "lo",
+              "priority",
+              "1",
+              "jitter",
+              "0/1",
+              {
+                "ordinal": 2,
+                "package": "example:rover/control-loop",
+                "path": [
+                  "ms"
+                ]
+              },
+              "blocking",
+              "0/1",
+              {
+                "ordinal": 2,
+                "package": "example:rover/control-loop",
+                "path": [
+                  "ms"
+                ]
+              },
+              "task",
+              "name",
+              "stopMonitor",
+              "arrival",
+              "periodic",
+              "period",
+              "20/1",
+              {
+                "ordinal": 2,
+                "package": "example:rover/control-loop",
+                "path": [
+                  "ms"
+                ]
+              },
+              "deadline",
+              "20/1",
+              {
+                "ordinal": 2,
+                "package": "example:rover/control-loop",
+                "path": [
+                  "ms"
+                ]
+              },
+              "bcet",
+              "0/1",
+              {
+                "ordinal": 2,
+                "package": "example:rover/control-loop",
+                "path": [
+                  "ms"
+                ]
+              },
+              "wcet",
+              "3/1",
+              {
+                "ordinal": 2,
+                "package": "example:rover/control-loop",
+                "path": [
+                  "ms"
+                ]
+              },
+              "wcet_hi",
+              "criticality",
+              "lo",
+              "priority",
+              "2",
+              "jitter",
+              "0/1",
+              {
+                "ordinal": 2,
+                "package": "example:rover/control-loop",
+                "path": [
+                  "ms"
+                ]
+              },
+              "blocking",
+              "0/1",
+              {
+                "ordinal": 2,
+                "package": "example:rover/control-loop",
+                "path": [
+                  "ms"
+                ]
+              }
+            ]
+          },
+          "occurrence": {
+            "ordinal": 0,
+            "role": "claim"
+          }
+        },
+        "extent": {
+          "bounds": [],
+          "classification": "bounded"
+        },
+        "kind": "schedulability",
+        "request_index": 1
+      },
       "request_index": 1
     }
   ]

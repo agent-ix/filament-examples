@@ -1,23 +1,83 @@
 {
-  "category": "refusal",
-  "last_stage": "S4",
+  "category": "incomplete",
+  "last_stage": "S6c",
   "result": null,
   "first_diagnostic": null,
   "items": [
     {
-      "category": "refusal",
+      "axes": {
+        "activation": "active",
+        "execution": "failed",
+        "settlement": "unsettled",
+        "truth": null
+      },
+      "category": "incomplete",
       "claim_name": "ControllerRefinesStop",
       "record": {
-        "diagnostic": {
-          "cause": "unknown-claim",
-          "code": "invalid_capability",
-          "detail": {
-            "name": "ControllerRefinesStop"
+        "backend": "en-1",
+        "cause": {
+          "kind": "limit-reached",
+          "limit": "max_states",
+          "setting": "model_check.max_states",
+          "value": 200
+        },
+        "result": "incomplete",
+        "settled_by": "result"
+      },
+      "request": {
+        "candidates": {
+          "backends": [
+            "en-1"
+          ],
+          "type": "set"
+        },
+        "claim": {
+          "node": {
+            "ordinal": 0,
+            "package": "example:rover/staged-controller-refinement",
+            "path": [
+              "ControllerRefinesStop"
+            ]
+          },
+          "occurrence": {
+            "ordinal": 0,
+            "role": "declaration"
           }
         },
-        "settled_by": "disposition"
+        "extent": {
+          "classification": "unbounded",
+          "finite_bound_available": false
+        },
+        "kind": "temporal-satisfaction",
+        "request_index": 0,
+        "temporal": {
+          "fairness": [],
+          "item_kind": "refinement",
+          "limits": {
+            "max_automaton_states": 1048576,
+            "max_relation_tuples": 16777216,
+            "max_states": 200,
+            "max_transitions": 100000000,
+            "max_walk_steps": 4096,
+            "max_witness_set": 65536
+          },
+          "subject": {
+            "initial_states": [
+              {
+                "authority": "example",
+                "identity": "ix://example/rover/data/start-driving"
+              }
+            ],
+            "proof_bounds": [],
+            "universes": [
+              {
+                "authority": "example",
+                "identity": "ix://example/rover/data/start-driving"
+              }
+            ]
+          }
+        }
       },
-      "request": null,
       "request_index": 0
     }
   ]

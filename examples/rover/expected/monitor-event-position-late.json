@@ -1,0 +1,161 @@
+{
+  "events": [
+    {
+      "basis": "unsettled",
+      "category": "pending",
+      "clause": "ReachesWithin2Events",
+      "disposition": {
+        "category": "pending",
+        "stage": "evaluate",
+        "temporal": {
+          "kind": "pending"
+        }
+      },
+      "format": "filament.monitor-event/1",
+      "position": 0,
+      "record": 0,
+      "settled": false
+    },
+    {
+      "basis": "closed-scope",
+      "category": "violation",
+      "clause": "ReachesWithin2Events",
+      "disposition": {
+        "category": "violation",
+        "stage": "evaluate",
+        "temporal": {
+          "counterexample": {
+            "fairness": [],
+            "initial_state": null,
+            "interval": {
+              "lower": "0",
+              "upper": "2"
+            },
+            "kind": "formula",
+            "loop": [],
+            "over_binding": null,
+            "prefix": [
+              {
+                "sample": "0"
+              },
+              {
+                "sample": "1"
+              },
+              {
+                "sample": "2"
+              }
+            ],
+            "trace": "observed",
+            "trace_position": 0
+          },
+          "kind": "violated",
+          "position": 0
+        },
+        "truth": false
+      },
+      "format": "filament.monitor-event/1",
+      "position": 2,
+      "record": 3,
+      "settled": true,
+      "settlement": {
+        "basis": "decisive-counterexample",
+        "horizon": "2",
+        "position": "0",
+        "step": "4",
+        "trigger": "decided"
+      }
+    }
+  ],
+  "summary": {
+    "clauses": [
+      {
+        "basis": "closed-scope",
+        "category": "violation",
+        "clause": "ReachesWithin2Events",
+        "disposition": {
+          "category": "violation",
+          "stage": "evaluate",
+          "temporal": {
+            "counterexample": {
+              "fairness": [],
+              "initial_state": null,
+              "interval": {
+                "lower": "0",
+                "upper": "2"
+              },
+              "kind": "formula",
+              "loop": [],
+              "over_binding": null,
+              "prefix": [
+                {
+                  "sample": "0"
+                },
+                {
+                  "sample": "1"
+                },
+                {
+                  "sample": "2"
+                }
+              ],
+              "trace": "observed",
+              "trace_position": 0
+            },
+            "kind": "violated",
+            "position": 0
+          },
+          "truth": false
+        },
+        "settled": true,
+        "settlement": {
+          "basis": "decisive-counterexample",
+          "horizon": "2",
+          "position": "0",
+          "step": "4",
+          "trigger": "decided"
+        }
+      }
+    ],
+    "format": "filament.monitor-summary/1",
+    "ledger": {
+      "entries": [
+        {
+          "binding": {
+            "clause": "{\"ordinal\":0,\"package\":\"example:rover/monitor-event-position\",\"path\":[\"temporal\",\"temporal_clause\",{\"ordinal\":0,\"package\":\"example:rover/monitor-event-position\",\"path\":[\"value\",\"parameter\",\"name\",{\"ordinal\":0,\"package\":\"example:rover/monitor-event-position\",\"path\":[\"scalar_type\",\"text\"]},\"r\",\"level\",{\"ordinal\":0,\"package\":\"example:rover/monitor-event-position\",\"path\":[\"scalar_type\",\"integer\"]},\"0\",{\"ordinal\":0,\"package\":\"example:rover/monitor-event-position\",\"path\":[\"Reading\"]}]},{\"ordinal\":0,\"package\":\"example:rover/monitor-event-position\",\"path\":[\"scalar_type\",\"text\"]},\"steps\",\"kind\",\"origin\",{\"ordinal\":0,\"package\":\"example:rover/monitor-event-position\",\"path\":[\"temporal\",\"formula\",{\"ordinal\":0,\"package\":\"example:rover/monitor-event-position\",\"path\":[\"temporal\",\"formula\",{\"ordinal\":0,\"package\":\"example:rover/monitor-event-position\",\"path\":[\"expression\",\"binary\",{\"ordinal\":0,\"package\":\"example:rover/monitor-event-position\",\"path\":[\"expression\",\"query\",{\"ordinal\":0,\"package\":\"example:rover/monitor-event-position\",\"path\":[\"value\",\"parameter\",\"name\",{\"ordinal\":0,\"package\":\"example:rover/monitor-event-position\",\"path\":[\"scalar_type\",\"text\"]},\"r\",\"level\",{\"ordinal\":0,\"package\":\"example:rover/monitor-event-position\",\"path\":[\"scalar_type\",\"integer\"]},\"0\",{\"ordinal\":0,\"package\":\"example:rover/monitor-event-position\",\"path\":[\"Reading\"]}]},\"filament.op.record.project\",\"query\",{\"ordinal\":0,\"package\":\"example:rover/monitor-event-position\",\"path\":[\"bounded_domain\",\"integer_range\",\"min\",{\"ordinal\":0,\"package\":\"example:rover/monitor-event-position\",\"path\":[\"scalar_type\",\"integer\"]},\"0\",\"max\",\"9\"]}]},{\"ordinal\":0,\"package\":\"example:rover/monitor-event-position\",\"path\":[\"expression\",\"conversion\",{\"ordinal\":0,\"package\":\"example:rover/monitor-event-position\",\"path\":[\"value\",\"literal\",{\"ordinal\":0,\"package\":\"example:rover/monitor-event-position\",\"path\":[\"scalar_type\",\"integer\"]},\"2\"]},\"filament.op.numeric.narrow\",\"convert\",{\"ordinal\":0,\"package\":\"example:rover/monitor-event-position\",\"path\":[\"bounded_domain\",\"integer_range\",\"min\",{\"ordinal\":0,\"package\":\"example:rover/monitor-event-position\",\"path\":[\"scalar_type\",\"integer\"]},\"0\",\"max\",\"9\"]}]},\"filament.op.integer.eq\",\"binary\",{\"ordinal\":0,\"package\":\"example:rover/monitor-event-position\",\"path\":[\"scalar_type\",\"boolean\"]}]},\"filament.op.temporal.holds\",\"temporal_formula\",{\"ordinal\":0,\"package\":\"example:rover/monitor-event-position\",\"path\":[\"scalar_type\",\"boolean\"]}]},\"filament.op.temporal.eventually\",\"temporal_formula\",{\"ordinal\":0,\"package\":\"example:rover/monitor-event-position\",\"path\":[\"scalar_type\",\"boolean\"]}]},\"filament.op.temporal.clause\",\"filament.temporal.event-position.false-extension/v1\",\"temporal\",{\"ordinal\":0,\"package\":\"example:rover/monitor-event-position\",\"path\":[\"scalar_type\",\"boolean\"]}]}",
+            "clock": "steps",
+            "occurrence": 0,
+            "package": "example:rover/monitor-event-position",
+            "profile": "filament.temporal.event-position.false-extension/v1"
+          },
+          "completeness": {
+            "complete": {
+              "through": 2
+            }
+          },
+          "covered": [
+            {
+              "fingerprint": "sha256:220c60867f915faa7fbce842d1498b75f3266528bc0fc72561b66cebe67b14be",
+              "identity": "13:record-sample1:0",
+              "stamp": 0
+            },
+            {
+              "fingerprint": "sha256:c6298ad305a163976b162baa9c02bfc05b2219367b13a4496c6f31cdb929230b",
+              "identity": "13:record-sample1:1",
+              "stamp": 1
+            },
+            {
+              "fingerprint": "sha256:c6298ad305a163976b162baa9c02bfc05b2219367b13a4496c6f31cdb929230b",
+              "identity": "13:record-sample1:2",
+              "stamp": 2
+            }
+          ],
+          "execution": "closed",
+          "scope": "closed",
+          "watermark": 2
+        }
+      ],
+      "format": "filament.progress-ledger/1"
+    },
+    "records": 5,
+    "refused": 0
+  }
+}

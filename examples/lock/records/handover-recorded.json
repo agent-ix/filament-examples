@@ -1,0 +1,16 @@
+{
+  "format": "filament.protocol-recording/1",
+  "identity": {"authority": "example", "identity": "example:lock/handover-recorded"},
+  "protocol": "Handover",
+  "observations": [
+    {"kind": "send", "node": "Handover::Main::Asked", "role": "Asker", "instance": "w-1",
+     "keys": {"message": "m-1", "delivery": "d-1"}, "record": {"granted": true}},
+    {"kind": "receive", "node": "Handover::Main::Heard", "role": "Holder", "instance": "w-1",
+     "keys": {"message": "m-1", "delivery": "d-1"}, "record": {"granted": true}},
+    {"kind": "finish", "node": "Handover::Done", "role": "Holder", "instance": "w-1",
+     "keys": {}, "record": {"done": true}}
+  ],
+  "local_order": {"Asker": [0], "Holder": [1, 2]},
+  "correlations": [{"send": 0, "receive": 1}],
+  "closure": {"state": "closed", "premises": [{"kind": "execution", "node": "Handover::Done"}]}
+}

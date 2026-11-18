@@ -77,6 +77,7 @@ These cases are staged until the language supports them.
 
 - `staged-deploy-bounded`: The deploy rule over a window of five steps. Needs clock selection.
 - `staged-availability`: 99% availability over 10 calls with 1-in-1,000 failures. Needs packaging of random parameters.
+- `staged-availability-missed`, `staged-sampling-claim-missed` and `staged-exact-reachability-missed`: the failing counterparts of the availability, sampling and exact claims, each with a bound the system misses. Need packaging of random parameters.
 
 `example.toml` records the exact reason and ticket for each.
 

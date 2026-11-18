@@ -1,0 +1,124 @@
+{
+  "category": "success",
+  "last_stage": "S6c",
+  "result": null,
+  "first_diagnostic": null,
+  "items": [
+    {
+      "axes": {
+        "activation": "active",
+        "execution": "completed",
+        "settlement": "closed-scope",
+        "truth": "true"
+      },
+      "category": "success",
+      "certificate": {
+        "accepted": true,
+        "checker": "en-1-closure",
+        "identity": {
+          "model": "example/lock",
+          "node_id": {
+            "ordinal": 0,
+            "package": "example:lock/handover-heard",
+            "path": [
+              "Handover"
+            ]
+          },
+          "ordinal": 0
+        }
+      },
+      "claim_name": "Handover",
+      "exploration": {
+        "automaton_states": "1",
+        "states": "5",
+        "transitions": "6"
+      },
+      "record": {
+        "backend": "protocol-analysis",
+        "basis": {
+          "type": "exhaustive"
+        },
+        "cause": null,
+        "certification": "certified",
+        "result": "proved",
+        "settled_by": "result"
+      },
+      "request": {
+        "candidates": {
+          "backends": [
+            "protocol-analysis"
+          ],
+          "type": "set"
+        },
+        "claim": {
+          "node": {
+            "ordinal": 0,
+            "package": "example:lock/handover-heard",
+            "path": [
+              "Handover"
+            ]
+          },
+          "occurrence": {
+            "ordinal": 0,
+            "role": "declaration"
+          }
+        },
+        "extent": {
+          "bounds": [],
+          "classification": "bounded"
+        },
+        "kind": "global-conformance",
+        "memory": [],
+        "request_index": 0,
+        "temporal": {
+          "fairness": [],
+          "item_kind": "deadlock-freedom",
+          "limits": {
+            "max_automaton_states": 1048576,
+            "max_relation_tuples": 16777216,
+            "max_states": 10000000,
+            "max_transitions": 100000000,
+            "max_walk_steps": 4096,
+            "max_witness_set": 65536
+          },
+          "subject": {
+            "initial_states": [
+              {
+                "authority": "example",
+                "identity": "example:lock/lock-free"
+              }
+            ],
+            "proof_bounds": [],
+            "protocol": {
+              "capacities": {},
+              "over": {
+                "reference": {
+                  "key": "m",
+                  "population": "ix://example/lock/locks"
+                }
+              },
+              "protocol": "Handover",
+              "roles": {
+                "Asker": {
+                  "selection": "example/lock",
+                  "type": "model-binding"
+                },
+                "Holder": {
+                  "selection": "example/lock",
+                  "type": "model-binding"
+                }
+              }
+            },
+            "universes": [
+              {
+                "authority": "example",
+                "identity": "example:lock/lock-free"
+              }
+            ]
+          }
+        }
+      },
+      "request_index": 0
+    }
+  ]
+}
