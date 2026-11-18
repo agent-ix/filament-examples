@@ -99,9 +99,7 @@ These cases are staged until the language supports them.
 - `staged-safe-stop-200ms`: Stopped within 200 ms. Needs clock selection.
 - `staged-stops-in-four-events`: Stopped within four recorded events. Needs clock selection.
 - `staged-stops-in-four-samples`: Stopped within four fixed-rate samples. Needs clock selection.
-- `staged-mode-machine`: A rover that loses its lidar is eventually stopped, on every behavior where braking and halting are fair. Needs a search over the rover that finishes.
 - `staged-control-loop-schedulable`: The task set fits and the monitor responds in 10 ms. Needs schedulability analysis in the `analyze` command.
-- `staged-controller-refinement`: Halting is the abstract stop. Needs a search over the rover that finishes.
 - `staged-vote-probability` and `staged-vote-probability-missed`: The vote is rarely wrong, and a stricter bound that the vote misses. Needs packaging of random parameters.
 
 The step rule also runs on a live feed: `staged-safe-stop-monitor` watches a feed in which the rover stops in time and stays pending, since a rule that must hold always is never settled by a finite feed, and `safe-stop-monitor-late` watches a feed in which the rover is still driving three steps after the lidar was lost, a violation.

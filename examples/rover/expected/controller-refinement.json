@@ -1,5 +1,5 @@
 {
-  "category": "incomplete",
+  "category": "success",
   "last_stage": "S6c",
   "result": null,
   "first_diagnostic": null,
@@ -7,21 +7,20 @@
     {
       "axes": {
         "activation": "active",
-        "execution": "failed",
-        "settlement": "unsettled",
-        "truth": null
+        "execution": "completed",
+        "settlement": "closed-scope",
+        "truth": "true"
       },
-      "category": "incomplete",
+      "category": "success",
       "claim_name": "ControllerRefinesStop",
       "record": {
         "backend": "en-1",
-        "cause": {
-          "kind": "limit-reached",
-          "limit": "max_states",
-          "setting": "model_check.max_states",
-          "value": 200
+        "basis": {
+          "type": "exhaustive"
         },
-        "result": "incomplete",
+        "cause": null,
+        "certification": "uncertified",
+        "result": "proved",
         "settled_by": "result"
       },
       "request": {
@@ -56,7 +55,7 @@
           "limits": {
             "max_automaton_states": 1048576,
             "max_relation_tuples": 16777216,
-            "max_states": 200,
+            "max_states": 10000000,
             "max_transitions": 100000000,
             "max_walk_steps": 4096,
             "max_witness_set": 65536
