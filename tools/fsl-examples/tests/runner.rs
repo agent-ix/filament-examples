@@ -208,6 +208,24 @@ fn check_excludes_only_matching_cases_and_keeps_generated_checks() -> TestResult
         sink.errors,
         vec!["index.json is stale: merge origin/main, then run make index".to_owned()]
     );
+
+    fs::write(&index, fresh_index)?;
+    let readme = root.join("README.md");
+    let fresh_readme = fs::read_to_string(&readme)?;
+    let stale_counts = fresh_readme.replace(
+        "| [library](examples/library) | Shop | 6 | 0 |",
+        "| [library](examples/library) | Shop | 5 | 0 |",
+    );
+    assert_ne!(stale_counts, fresh_readme, "the Systems table has a library row");
+    fs::write(&readme, stale_counts)?;
+    driver.calls.set(0);
+    let mut sink = VecSink::default();
+    assert!(!execute(&command, &root, &driver, &mut sink)?);
+    assert_eq!(driver.calls.get(), running - 1);
+    assert_eq!(
+        sink.errors,
+        vec!["README.md system counts are stale: merge origin/main, then run make readme".to_owned()]
+    );
     Ok(())
 }
 
