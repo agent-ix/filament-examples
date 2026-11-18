@@ -420,18 +420,15 @@ needs = "clock selection for timed rules"
 serves = "Landing hero H3 SafeStopWithin200ms; Learn L4 (clocks); card U1"
 
 [[case]]
-id = "staged-mode-machine"
+id = "mode-machine"
 rule = "StopsAfterLidarLoss"
 statement = "Starting from a driving rover with a working lidar, on every behavior where braking and halting are fair, a rover that loses its lidar is eventually stopped."
 file = "rules/model-checking/mode-machine.fsl"
 command = "analyze requests/analyze/mode-machine.json"
 engine = "model-checking"
-status = "staged"
-expect_exit = 22
-ready_exit = 0
-waits_on = "QSL-2287"
-why = "`fsl analyze` explores the driving rover, but the full search does not finish in minutes; under a 200-state budget the item is `incomplete` with `max_states` reached until the mode-machine search scales, and unstaging the case also removes that 200-state cap from its request"
-needs = "model checking from the command line"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
 serves = "Learn L5 (model checking)"
 
 [[case]]
@@ -450,18 +447,15 @@ needs = "probability"
 serves = "Learn L7 (probability); landing tab Probability"
 
 [[case]]
-id = "staged-controller-refinement"
+id = "controller-refinement"
 rule = "ControllerRefinesStop"
 statement = "Halting is the abstract stop of a vehicle."
 file = "rules/refinement-controller.fsl"
 command = "analyze requests/analyze/controller-refinement.json"
 engine = "refinement"
-status = "staged"
-expect_exit = 22
-ready_exit = 0
-waits_on = "QSL-2287"
-why = "`fsl analyze` checks the refinement, but the search over the rover does not finish in minutes, as for the mode machine; under a 200-state budget the item is `incomplete` with `max_states` reached until the rover search scales, and unstaging the case also removes that 200-state cap from its request"
-needs = "refinement checking from the command line"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
 serves = "Learn L8 (refinement); landing tab Refinement"
 
 [[case]]

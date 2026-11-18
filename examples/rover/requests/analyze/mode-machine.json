@@ -29,12 +29,7 @@
     ],
     "items": [
       {
-        "claim": "StopsAfterLidarLoss",
-        "temporal": {
-          "limits": {
-            "max_states": 200
-          }
-        }
+        "claim": "StopsAfterLidarLoss"
       }
     ]
   }
