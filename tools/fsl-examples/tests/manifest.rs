@@ -100,7 +100,7 @@ fn parses_every_example_toml() -> TestResult {
     assert_eq!(parsed, reference);
     let running = parsed.iter().filter(|c| c["status"] == "running").count();
     let staged = parsed.iter().filter(|c| c["status"] == "staged").count();
-    assert_eq!((running, staged), (306, 18));
+    assert_eq!((running, staged), (307, 18));
     Ok(())
 }
 
