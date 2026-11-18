@@ -7,6 +7,9 @@ function no using v(): Boolean pure { false }
 function seven using v(): Integer pure { 7 }
 function boundedValue using v(): Int[0, 3] pure { 3 }
 
-function undefinedClaim using v(r: Shop::Order): Boolean pure {
-  lookup<Shop::Order>(Shop::orders, r) absent undefined = r
+function undefinedClaim using v(
+  p: Population<Shop::Order>[0],
+  r: Shop::Order
+): Boolean pure {
+  lookup<Shop::Order>(p, r) absent undefined = r
 }

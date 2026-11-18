@@ -19,6 +19,7 @@
       "selection": {"function": {
         "name": "undefinedClaim",
         "arguments": [
+          {"parameter": "p", "value": {"population": "ix://example/shop-outcomes/orders"}},
           {"parameter": "r", "value": {"reference": {
             "population": "ix://example/shop-outcomes/lookupTargets", "key": "target"
           }}}
