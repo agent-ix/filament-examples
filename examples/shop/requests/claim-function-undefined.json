@@ -26,7 +26,7 @@
         ],
         "snapshot": "current"
       }},
-      "observations": {"current": "../data/paid-order.json"}
+      "observations": {"current": "../data/paid-in-full.json"}
     }
   }
 }
