@@ -8,6 +8,5 @@ function seven using v(): Integer pure { 7 }
 function boundedValue using v(): Int[0, 3] pure { 3 }
 
 function undefinedClaim using v(r: Shop::Refund): Boolean pure {
-  (value(deref(r).secondApprover) absent undefined)
-    = (value(deref(r).secondApprover) absent undefined)
+  deref(value(deref(r).secondApprover)).badge > 0
 }
