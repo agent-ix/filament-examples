@@ -1,0 +1,43 @@
+{
+  "format": "filament.state.snapshot/v1",
+  "identity": {
+    "authority": "example",
+    "identity": "ix://example/shop/data/claim-function-undefined"
+  },
+  "model": {
+    "identity": "example/shop"
+  },
+  "observation": "current",
+  "anchor": {
+    "kind": "handler",
+    "name": "validate"
+  },
+  "populations": [
+    {
+      "population": "ix://example/shop/staff",
+      "complete": true,
+      "objects": []
+    },
+    {
+      "population": "ix://example/shop/orders",
+      "complete": false,
+      "objects": [
+        {
+          "key": "o1",
+          "type": "ix://example/shop/Order",
+          "fields": {}
+        }
+      ]
+    },
+    {
+      "population": "ix://example/shop/charges",
+      "complete": true,
+      "objects": []
+    },
+    {
+      "population": "ix://example/shop/refunds",
+      "complete": true,
+      "objects": []
+    }
+  ]
+}

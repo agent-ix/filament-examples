@@ -1,6 +1,6 @@
 language "ix:native" edition "1-draft";
 profile v = "filament.model.complete/v1";
-model Shop = "example/shop-outcomes";
+model Shop = "example/shop";
 
 function yes using v(): Boolean pure { true }
 function no using v(): Boolean pure { false }
@@ -8,9 +8,7 @@ function seven using v(): Integer pure { 7 }
 function boundedValue using v(): Int[0, 3] pure { 3 }
 
 function undefinedClaim using v(
-  p: Population<Shop::Order>[1],
   r: Shop::Order
 ): Boolean pure {
-  lookup<Shop::Order>(p, r) absent undefined
-    = lookup<Shop::Order>(p, r) absent undefined
+  deref(r).total > 0
 }

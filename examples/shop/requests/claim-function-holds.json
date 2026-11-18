@@ -2,9 +2,9 @@
   "format": "native-run/1",
   "request": {
     "models": [{"format": "semantic-ir/2.0.0", "source": {
-      "file": "../model/shop-outcomes.semantic-ir.json",
+      "file": "../model/shop.semantic-ir.json",
       "authority": "example",
-      "identity": "example/shop-outcomes/model",
+      "identity": "example:shop/model",
       "document": "model",
       "formal_revision": 1
     }}],
@@ -17,7 +17,7 @@
     }},
     "clause": {
       "selection": {"function": {"name": "yes", "arguments": [], "snapshot": "current"}},
-      "observations": {"current": "../data/outcomes-undefined-call.json"}
+      "observations": {"current": "../data/claim-function-undefined.json"}
     }
   }
 }
