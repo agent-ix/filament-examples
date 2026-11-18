@@ -1,8 +1,6 @@
 language "ix:native" edition "1-draft";
 profile v = "filament.value.complete/v1";
 
-type Cents = Int[0, 1000000];
-
-function settled using v(charged: Cents, refunded: Cents, left: Cents): Boolean pure {
-  left = charged - refunded
+function sumsFit using v(a: Int[0, 10], b: Int[0, 10], c: Int[0, 10]): Boolean pure {
+  c = a + b
 }

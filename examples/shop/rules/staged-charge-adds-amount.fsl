@@ -4,6 +4,8 @@ model Shop = "example/shop";
 
 pre ChargeWithinTotal using v on Shop::Order::charge {
   self.charged + amount <= self.total
+  and self.charged <= 500000
+  and amount <= 500000
 }
 
 // A charge adds exactly its amount to what the order has been charged.
