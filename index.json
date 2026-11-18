@@ -5171,7 +5171,7 @@
       "case": "record-tuple-position",
       "status": "running",
       "rule": null,
-      "statement": "A tuple position cannot be read by number.",
+      "statement": "Tuple positions use bracket notation, such as p[0]; dot notation, such as p.0, is invalid.",
       "rule_file": "examples/shop/rules/values/records/record-tuple-position.fsl",
       "data_files": [],
       "request_file": null,
