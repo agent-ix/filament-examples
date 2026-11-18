@@ -31,9 +31,12 @@ rule = "undefinedClaim"
 statement = "A function claim with an undefined evaluation is refuted."
 file = "rules/claim-functions.fsl"
 command = "run requests/claim-function-undefined.json"
-status = "running"
-expect_exit = 10
-expect_verdict = "violated"
+status = "staged"
+expect_exit = 20
+ready_exit = 10
+waits_on = "QSL-2462"
+needs = "Population<Order>[0] function-claim argument role mapping"
+why = "the population argument is refused invalid_runtime_input/wrong-role-mapping at argument 0; QSL-2462 must map the selected population and reference before this claim can be refuted as undefined"
 serves = "Function claims"
 
 [[case]]
