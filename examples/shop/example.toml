@@ -361,12 +361,8 @@ rule = "ChargeAddsAmount"
 statement = "A charge adds exactly its amount to what the order has been charged."
 file = "rules/staged-charge-adds-amount.fsl"
 command = "compile requests/staged-charge-adds-amount.json"
-status = "staged"
-expect_exit = 20
-ready_exit = 0
-waits_on = "QSL-2177"
-why = "fsl v0.1.4 from driver #175 pins FSL 6f5d277b before #2817 (2b0f1ed); driver lock bump #169/QSL-2344 also predates #2817, so promotion waits for a later compatible driver release"
-needs = "a released fsl carrying merged FSL #2817"
+status = "running"
+expect_exit = 0
 serves = "Learn L3 (preferred form of the post rule)"
 
 [[case]]
