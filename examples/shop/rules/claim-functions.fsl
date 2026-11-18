@@ -1,12 +1,12 @@
 language "ix:native" edition "1-draft";
 profile v = "filament.model.complete/v1";
-model Shop = "example/shop";
+model Shop = "example/shop-outcomes";
 
 function yes using v(): Boolean pure { true }
 function no using v(): Boolean pure { false }
 function seven using v(): Integer pure { 7 }
 function boundedValue using v(): Int[0, 3] pure { 3 }
 
-function undefinedClaim using v(r: Shop::Refund): Boolean pure {
-  deref(deref(r).secondApprover absent undefined).badge > 0
+function undefinedClaim using v(r: Shop::Order): Boolean pure {
+  lookup<Shop::Order>(Shop::orders, r) absent undefined = r
 }
