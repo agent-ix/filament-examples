@@ -87,8 +87,10 @@ The source build is the second path. Skip this section if you installed the rele
 Build the driver. The two `CARGO_PROFILE_RELEASE` settings turn off link-time optimization and use 16 code-generation units. The driver's own release profile needs more than 8 GB of memory and does not finish on a small machine. This step takes several minutes and installs the program as `fsl`.
 
 ```bash step=driver-source
-CARGO_PROFILE_RELEASE_LTO=off CARGO_PROFILE_RELEASE_CODEGEN_UNITS=16 \
-  cargo install --git https://github.com/agent-ix/filament-driver --locked fsl-cli
+FSL_REVISION=158bc4735167e75347afbfa883e03c1013d45f2d
+CARGO_INCREMENTAL=0 CARGO_PROFILE_RELEASE_DEBUG=0 CARGO_PROFILE_RELEASE_INCREMENTAL=false \
+  CARGO_PROFILE_RELEASE_LTO=off CARGO_PROFILE_RELEASE_CODEGEN_UNITS=16 \
+  cargo install --git https://github.com/agent-ix/filament-driver --rev "$FSL_REVISION" --locked fsl-cli
 fsl --version
 ```
 
@@ -101,7 +103,11 @@ git clone https://github.com/agent-ix/filament-examples
 cd filament-examples
 ```
 
-```bash step=check
+```bash step=check-release
+FSL="$(command -v fsl)" cargo run --quiet --locked --manifest-path tools/fsl-examples/Cargo.toml -- check shop --case values-line-total
+```
+
+```bash step=check-source
 make check
 make staged
 ```

@@ -83,8 +83,14 @@ jobs:
             echo "path=$RUNNER_TEMP/filament-driver/target/debug/fsl" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Check running cases and staged cases
-        if: inputs.driver != 'image'
+      - name: Check running cases and staged cases with the pinned source driver
+        if: inputs.driver == 'source'
         env:
           FSL_PATH: ${{ steps.driver.outputs.path }}
         run: make runner-test test check staged FSL="$FSL_PATH"
+
+      - name: Check a compatible example with the release driver
+        if: inputs.driver == 'release'
+        env:
+          FSL_PATH: ${{ steps.driver.outputs.path }}
+        run: FSL="$FSL_PATH" cargo run --quiet --locked --manifest-path tools/fsl-examples/Cargo.toml -- check shop --case values-line-total
