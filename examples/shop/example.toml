@@ -363,6 +363,7 @@ file = "rules/staged-charge-adds-amount.fsl"
 command = "compile requests/staged-charge-adds-amount.json"
 status = "running"
 expect_exit = 0
+expect_verdict = "compiled"
 serves = "Learn L3 (preferred form of the post rule)"
 
 [[case]]
