@@ -1,0 +1,23 @@
+{
+  "format": "native-run/1",
+  "request": {
+    "models": [{"format": "semantic-ir/2.0.0", "source": {
+      "file": "../model/shop.semantic-ir.json",
+      "authority": "example",
+      "identity": "example:shop/model",
+      "document": "model",
+      "formal_revision": 1
+    }}],
+    "program": {"source": {
+      "file": "../rules/claim-functions.fsl",
+      "authority": "example",
+      "identity": "example:shop/claim-functions",
+      "document": "claim-functions",
+      "formal_revision": 1
+    }},
+    "clause": {
+      "selection": {"function": {"name": "yes", "arguments": [], "snapshot": "current"}},
+      "observations": {"current": "../data/paid-order.json"}
+    }
+  }
+}
