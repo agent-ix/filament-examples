@@ -1,0 +1,8 @@
+{
+  "name": "fsl-agent-evals",
+  "private": true,
+  "type": "module",
+  "devDependencies": {
+    "@agent-ix/cli-agent-evals": "0.3.0"
+  }
+}
