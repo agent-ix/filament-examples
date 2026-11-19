@@ -1,0 +1,20 @@
+{
+  "format": "native-run/1",
+  "request": {
+    "models": [],
+    "program": {
+      "source": {
+        "file": "../rules/division-euclidean.fsl",
+        "authority": "example",
+        "identity": "docs-values/division-euclidean-positive-negative",
+        "document": "division-euclidean-positive-negative",
+        "formal_revision": 1
+      }
+    },
+    "call": {
+      "function": "negativeDivisor",
+      "arguments": []
+    }
+  }
+}
+

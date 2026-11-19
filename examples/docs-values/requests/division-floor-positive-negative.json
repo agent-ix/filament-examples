@@ -1,0 +1,20 @@
+{
+  "format": "native-run/1",
+  "request": {
+    "models": [],
+    "program": {
+      "source": {
+        "file": "../rules/division-floor.fsl",
+        "authority": "example",
+        "identity": "docs-values/division-floor-positive-negative",
+        "document": "division-floor-positive-negative",
+        "formal_revision": 1
+      }
+    },
+    "call": {
+      "function": "negativeDivisor",
+      "arguments": []
+    }
+  }
+}
+

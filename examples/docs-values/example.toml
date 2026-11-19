@@ -1,0 +1,152 @@
+name = "docs-values"
+summary = "Numeric programs used by the FSL documentation: selected division laws and guarded remainder."
+
+[[case]]
+id = "division-truncating-positive-positive"
+rule = "bothPositive"
+statement = "Under truncating division, 7 divided by 2 gives quotient 3 and remainder 1."
+file = "rules/division-truncating.fsl"
+command = "run requests/division-truncating-positive-positive.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "division-truncating-negative-positive"
+rule = "negativeDividend"
+statement = "Under truncating division, -7 divided by 2 gives quotient -3 and remainder -1."
+file = "rules/division-truncating.fsl"
+command = "run requests/division-truncating-negative-positive.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "division-truncating-positive-negative"
+rule = "negativeDivisor"
+statement = "Under truncating division, 7 divided by -2 gives quotient -3 and remainder 1."
+file = "rules/division-truncating.fsl"
+command = "run requests/division-truncating-positive-negative.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "division-truncating-negative-negative"
+rule = "bothNegative"
+statement = "Under truncating division, -7 divided by -2 gives quotient 3 and remainder -1."
+file = "rules/division-truncating.fsl"
+command = "run requests/division-truncating-negative-negative.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "division-floor-positive-positive"
+rule = "bothPositive"
+statement = "Under floor division, 7 divided by 2 gives quotient 3 and remainder 1."
+file = "rules/division-floor.fsl"
+command = "run requests/division-floor-positive-positive.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "division-floor-negative-positive"
+rule = "negativeDividend"
+statement = "Under floor division, -7 divided by 2 gives quotient -4 and remainder 1."
+file = "rules/division-floor.fsl"
+command = "run requests/division-floor-negative-positive.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "division-floor-positive-negative"
+rule = "negativeDivisor"
+statement = "Under floor division, 7 divided by -2 gives quotient -4 and remainder -1."
+file = "rules/division-floor.fsl"
+command = "run requests/division-floor-positive-negative.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "division-floor-negative-negative"
+rule = "bothNegative"
+statement = "Under floor division, -7 divided by -2 gives quotient 3 and remainder -1."
+file = "rules/division-floor.fsl"
+command = "run requests/division-floor-negative-negative.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "division-euclidean-positive-positive"
+rule = "bothPositive"
+statement = "Under euclidean division, 7 divided by 2 gives quotient 3 and remainder 1."
+file = "rules/division-euclidean.fsl"
+command = "run requests/division-euclidean-positive-positive.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "division-euclidean-negative-positive"
+rule = "negativeDividend"
+statement = "Under euclidean division, -7 divided by 2 gives quotient -4 and remainder 1."
+file = "rules/division-euclidean.fsl"
+command = "run requests/division-euclidean-negative-positive.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "division-euclidean-positive-negative"
+rule = "negativeDivisor"
+statement = "Under euclidean division, 7 divided by -2 gives quotient -3 and remainder 1."
+file = "rules/division-euclidean.fsl"
+command = "run requests/division-euclidean-positive-negative.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "division-euclidean-negative-negative"
+rule = "bothNegative"
+statement = "Under euclidean division, -7 divided by -2 gives quotient 4 and remainder 1."
+file = "rules/division-euclidean.fsl"
+command = "run requests/division-euclidean-negative-negative.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "guarded-remainder-negative"
+rule = "negativeDividend"
+statement = "The guarded Euclidean remainder of -7 by 3 is 2."
+file = "rules/guarded-remainder.fsl"
+command = "run requests/guarded-remainder-negative.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "2"
+
+[[case]]
+id = "guarded-remainder-zero"
+rule = "zeroDivisor"
+statement = "The zero-divisor branch returns its explicit default without evaluating mod."
+file = "rules/guarded-remainder.fsl"
+command = "run requests/guarded-remainder-zero.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "0"
+
+[[case]]
+id = "unguarded-remainder"
+statement = "An unguarded divisor that can be zero is refused while compiling."
+file = "rules/unguarded-remainder.fsl"
+command = "compile requests/unguarded-remainder.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: unproved-nonzero"
+

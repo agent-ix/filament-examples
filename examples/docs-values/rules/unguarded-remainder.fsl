@@ -1,0 +1,7 @@
+language "ix:native" edition "1-draft";
+profile values = "filament.value.complete/v1";
+
+function remainder using values(dividend: Integer, divisor: Integer): Integer pure {
+  dividend mod divisor
+}
+

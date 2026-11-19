@@ -1,0 +1,17 @@
+language "ix:native" edition "1-draft";
+profile values = "filament.value.complete/v1";
+profile division = "filament.value.integer-division.floor/v1";
+
+function bothPositive using values(): Boolean pure {
+  (7 div 2) = 3 and (7 rem 2) = 1
+}
+function negativeDividend using values(): Boolean pure {
+  (-7 div 2) = -4 and (-7 rem 2) = 1
+}
+function negativeDivisor using values(): Boolean pure {
+  (7 div -2) = -4 and (7 rem -2) = -1
+}
+function bothNegative using values(): Boolean pure {
+  (-7 div -2) = 3 and (-7 rem -2) = -1
+}
+
