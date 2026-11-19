@@ -185,7 +185,7 @@ fn documented_local_install_runs_version_check_and_an_original_sample_in_a_clean
         0,
         "installed fsl runs the original sample without ambient configuration",
     )?;
-    let run = outcome(&run, "run", "success")?;
+    let run = outcome(&run, "execute", "success")?;
     assert_eq!(
         run["result"],
         json!({"kind": "completed", "value": {"kind": "integer", "value": "42"}}),
