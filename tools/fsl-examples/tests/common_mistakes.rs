@@ -69,17 +69,27 @@ fn assert_refusal(dir: &Path, args: &[&str], expected: Expected<'_>) -> TestResu
         let region = source
             .get(usize::try_from(start)?..usize::try_from(end)?)
             .ok_or("invalid source region")?;
-        if region.is_empty() {
+        if expected.code == "invalid_syntax" && expected.cause == Some("unexpected-end") {
+            assert!(
+                region.is_empty(),
+                "unfinished declaration must locate EOF: {outcome}"
+            );
             assert_eq!(
                 usize::try_from(end)?,
                 source.len(),
                 "EOF refusal must point to EOF: {outcome}"
             );
         } else {
-            assert!(
-                region.contains(expected.context),
-                "refusal region {region:?} omits offending context {:?}: {outcome}",
-                expected.context
+            assert_eq!(
+                region, expected.context,
+                "wrong offending source span: {outcome}"
+            );
+            assert_eq!(
+                usize::try_from(start)?,
+                source
+                    .find(expected.context)
+                    .ok_or("expected offending source absent from fixture")?,
+                "wrong offending source offset: {outcome}"
             );
         }
     }
@@ -160,7 +170,7 @@ source_case!(
     "invalid_syntax",
     "invalid-escape",
     "S1",
-    "\\q"
+    "\"\\q\""
 );
 source_case!(
     integer_returned_as_boolean,
@@ -192,7 +202,7 @@ source_case!(
     "ill_typed",
     "type-mismatch",
     "S3",
-    "+"
+    "true + 4"
 );
 source_case!(
     division_without_selected_law,
@@ -200,7 +210,7 @@ source_case!(
     "missing_declaration",
     "missing-selection",
     "S3",
-    "div"
+    "9 div 2"
 );
 source_case!(
     library_not_supplied,
@@ -208,7 +218,7 @@ source_case!(
     "missing_import",
     "missing-selection",
     "I1",
-    "price-library"
+    "\"price-library\""
 );
 
 #[test]
@@ -361,6 +371,16 @@ fn unknown_output_format_pending_2642() -> TestResult {
     assert!(
         diagnostic.contains("--format") && diagnostic.contains("yaml"),
         "{diagnostic}"
+    );
+    let operands: Vec<_> = diagnostic
+        .split_whitespace()
+        .map(|token| token.trim_matches(['`', '\"', '\'', '.', ',', ';', ':']))
+        .collect();
+    assert!(
+        operands
+            .windows(2)
+            .any(|pair| pair[0] == "--format" && matches!(pair[1], "text" | "json")),
+        "diagnostic must supply a usable correction such as --format json: {diagnostic}"
     );
     assert!(
         !diagnostic.contains("No such file"),
