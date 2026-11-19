@@ -1,0 +1,14 @@
+language "ix:native" edition "1-draft";
+profile inf = "filament.temporal.infinite-trace/v1";
+model Fleet = "example/rover";
+
+temporal FastStartRequiresStop using inf over (vehicle: Fleet::Rover) clock "model-steps" on origin {
+  capture wasFast: Boolean = vehicle.speed > 300;
+  eventually[0,3] holds(vehicle.stopped or not wasFast)
+}
+
+temporal InitiallySlow using inf over (vehicle: Fleet::Rover) clock "model-steps" on origin {
+  capture wasSlow: Boolean = vehicle.speed <= 300;
+  always holds(wasSlow)
+}
+

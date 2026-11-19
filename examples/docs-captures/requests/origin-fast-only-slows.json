@@ -1,0 +1,54 @@
+{
+  "format": "native-run/1",
+  "request": {
+    "models": [
+      {
+        "format": "semantic-ir/2.0.0",
+        "source": {
+          "file": "../../rover/model/rover.semantic-ir.json",
+          "authority": "example",
+          "identity": "example:rover/model",
+          "document": "model",
+          "formal_revision": 1
+        }
+      }
+    ],
+    "program": {
+      "source": {
+        "file": "../rules/origin.fsl",
+        "authority": "example",
+        "identity": "example:docs-captures/origin",
+        "document": "origin",
+        "formal_revision": 1
+      }
+    },
+    "clause": {
+      "selection": {
+        "temporal": {
+          "name": "FastStartRequiresStop",
+          "trace": {
+            "lasso": {
+              "prefix": [
+                "drive"
+              ],
+              "loop": [
+                "brake"
+              ]
+            }
+          },
+          "over": {
+            "reference": {
+              "population": "ix://example/rover/rovers",
+              "key": "r1"
+            }
+          }
+        }
+      },
+      "observations": {
+        "drive": "../../rover/data/t0-driving.json",
+        "brake": "../../rover/data/t2-braking.json"
+      }
+    }
+  }
+}
+

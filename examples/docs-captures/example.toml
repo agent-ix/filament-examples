@@ -1,0 +1,73 @@
+name = "docs-captures"
+summary = "Activation-time values and independent captures, using the canonical Rover model and observations."
+
+[[case]]
+id = "origin-fast-stops"
+rule = "FastStartRequiresStop"
+statement = "An initially fast rover stops within three steps even as its speed changes."
+file = "rules/origin.fsl"
+command = "run requests/origin-fast-stops.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "origin-fast-only-slows"
+rule = "FastStartRequiresStop"
+statement = "Slowing down after activation does not erase the captured obligation to stop."
+file = "rules/origin.fsl"
+command = "run requests/origin-fast-only-slows.json"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
+
+[[case]]
+id = "origin-slow-then-fast"
+rule = "InitiallySlow"
+statement = "A captured slow-at-origin value stays true after the current speed rises."
+file = "rules/origin.fsl"
+command = "run requests/origin-slow-then-fast.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "origin-fast-then-slow"
+rule = "InitiallySlow"
+statement = "A later low speed cannot repair a false slow-at-origin capture."
+file = "rules/origin.fsl"
+command = "run requests/origin-fast-then-slow.json"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
+
+[[case]]
+id = "reactivate-slow-then-fast-stops"
+rule = "StopForEachFastStart"
+statement = "A new fast activation captures its own value and is followed by a stop."
+file = "rules/reactivation.fsl"
+command = "run requests/reactivate-slow-then-fast-stops.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "reactivate-slow-then-fast-misses"
+rule = "StopForEachFastStart"
+statement = "A later fast activation cannot borrow the first slow activation's exemption."
+file = "rules/reactivation.fsl"
+command = "run requests/reactivate-slow-then-fast-misses.json"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
+
+[[case]]
+id = "reactivate-fast-then-slow"
+rule = "StopForEachFastStart"
+statement = "A later slow activation does not inherit an earlier fast activation's stopping requirement."
+file = "rules/reactivation.fsl"
+command = "run requests/reactivate-fast-then-slow.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+

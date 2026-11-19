@@ -1052,6 +1052,156 @@
       "needs": null
     },
     {
+      "system": "docs-captures",
+      "case": "origin-fast-stops",
+      "status": "running",
+      "rule": "FastStartRequiresStop",
+      "statement": "An initially fast rover stops within three steps even as its speed changes.",
+      "rule_file": "examples/docs-captures/rules/origin.fsl",
+      "data_files": [
+        "examples/rover/data/t0-driving.json",
+        "examples/rover/data/t2-braking.json",
+        "examples/rover/data/t3-stopped.json"
+      ],
+      "request_file": "examples/docs-captures/requests/origin-fast-stops.json",
+      "expected_file": "examples/docs-captures/expected/origin-fast-stops.json",
+      "verdict": "holds",
+      "exit": 0,
+      "ready_exit": null,
+      "engine": null,
+      "clock": null,
+      "waits_on": null,
+      "needs": null
+    },
+    {
+      "system": "docs-captures",
+      "case": "origin-fast-only-slows",
+      "status": "running",
+      "rule": "FastStartRequiresStop",
+      "statement": "Slowing down after activation does not erase the captured obligation to stop.",
+      "rule_file": "examples/docs-captures/rules/origin.fsl",
+      "data_files": [
+        "examples/rover/data/t0-driving.json",
+        "examples/rover/data/t2-braking.json"
+      ],
+      "request_file": "examples/docs-captures/requests/origin-fast-only-slows.json",
+      "expected_file": "examples/docs-captures/expected/origin-fast-only-slows.json",
+      "verdict": "violated",
+      "exit": 10,
+      "ready_exit": null,
+      "engine": null,
+      "clock": null,
+      "waits_on": null,
+      "needs": null
+    },
+    {
+      "system": "docs-captures",
+      "case": "origin-slow-then-fast",
+      "status": "running",
+      "rule": "InitiallySlow",
+      "statement": "A captured slow-at-origin value stays true after the current speed rises.",
+      "rule_file": "examples/docs-captures/rules/origin.fsl",
+      "data_files": [
+        "examples/rover/data/t2-braking.json",
+        "examples/rover/data/t0-driving.json"
+      ],
+      "request_file": "examples/docs-captures/requests/origin-slow-then-fast.json",
+      "expected_file": "examples/docs-captures/expected/origin-slow-then-fast.json",
+      "verdict": "holds",
+      "exit": 0,
+      "ready_exit": null,
+      "engine": null,
+      "clock": null,
+      "waits_on": null,
+      "needs": null
+    },
+    {
+      "system": "docs-captures",
+      "case": "origin-fast-then-slow",
+      "status": "running",
+      "rule": "InitiallySlow",
+      "statement": "A later low speed cannot repair a false slow-at-origin capture.",
+      "rule_file": "examples/docs-captures/rules/origin.fsl",
+      "data_files": [
+        "examples/rover/data/t0-driving.json",
+        "examples/rover/data/t2-braking.json"
+      ],
+      "request_file": "examples/docs-captures/requests/origin-fast-then-slow.json",
+      "expected_file": "examples/docs-captures/expected/origin-fast-then-slow.json",
+      "verdict": "violated",
+      "exit": 10,
+      "ready_exit": null,
+      "engine": null,
+      "clock": null,
+      "waits_on": null,
+      "needs": null
+    },
+    {
+      "system": "docs-captures",
+      "case": "reactivate-slow-then-fast-stops",
+      "status": "running",
+      "rule": "StopForEachFastStart",
+      "statement": "A new fast activation captures its own value and is followed by a stop.",
+      "rule_file": "examples/docs-captures/rules/reactivation.fsl",
+      "data_files": [
+        "examples/rover/data/t2-braking.json",
+        "examples/rover/data/t0-driving.json",
+        "examples/rover/data/t3-stopped.json"
+      ],
+      "request_file": "examples/docs-captures/requests/reactivate-slow-then-fast-stops.json",
+      "expected_file": "examples/docs-captures/expected/reactivate-slow-then-fast-stops.json",
+      "verdict": "holds",
+      "exit": 0,
+      "ready_exit": null,
+      "engine": null,
+      "clock": null,
+      "waits_on": null,
+      "needs": null
+    },
+    {
+      "system": "docs-captures",
+      "case": "reactivate-slow-then-fast-misses",
+      "status": "running",
+      "rule": "StopForEachFastStart",
+      "statement": "A later fast activation cannot borrow the first slow activation's exemption.",
+      "rule_file": "examples/docs-captures/rules/reactivation.fsl",
+      "data_files": [
+        "examples/rover/data/t2-braking.json",
+        "examples/rover/data/t0-driving.json"
+      ],
+      "request_file": "examples/docs-captures/requests/reactivate-slow-then-fast-misses.json",
+      "expected_file": "examples/docs-captures/expected/reactivate-slow-then-fast-misses.json",
+      "verdict": "violated",
+      "exit": 10,
+      "ready_exit": null,
+      "engine": null,
+      "clock": null,
+      "waits_on": null,
+      "needs": null
+    },
+    {
+      "system": "docs-captures",
+      "case": "reactivate-fast-then-slow",
+      "status": "running",
+      "rule": "StopForEachFastStart",
+      "statement": "A later slow activation does not inherit an earlier fast activation's stopping requirement.",
+      "rule_file": "examples/docs-captures/rules/reactivation.fsl",
+      "data_files": [
+        "examples/rover/data/t0-driving.json",
+        "examples/rover/data/t3-stopped.json",
+        "examples/rover/data/t2-braking.json"
+      ],
+      "request_file": "examples/docs-captures/requests/reactivate-fast-then-slow.json",
+      "expected_file": "examples/docs-captures/expected/reactivate-fast-then-slow.json",
+      "verdict": "holds",
+      "exit": 0,
+      "ready_exit": null,
+      "engine": null,
+      "clock": null,
+      "waits_on": null,
+      "needs": null
+    },
+    {
       "system": "docs-values",
       "case": "division-truncating-positive-positive",
       "status": "running",

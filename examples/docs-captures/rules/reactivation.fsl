@@ -1,0 +1,10 @@
+language "ix:native" edition "1-draft";
+profile inf = "filament.temporal.infinite-trace/v1";
+model Fleet = "example/rover";
+
+temporal StopForEachFastStart using inf over (vehicle: Fleet::Rover) clock "model-steps"
+  on each (trigger: Fleet::Rover) when (trigger.speed > 0) {
+  capture beganFast: Boolean = trigger.speed > 300;
+  eventually[0,1] holds(vehicle.stopped or not beganFast)
+}
+
