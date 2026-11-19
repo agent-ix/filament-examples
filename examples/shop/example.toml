@@ -34,9 +34,9 @@ command = "run requests/claim-function-undefined.json"
 status = "staged"
 expect_exit = 20
 ready_exit = 10
-waits_on = "QSL-2462"
-needs = "Population<Order>[0] function-claim argument role mapping"
-why = "the population argument is refused invalid_runtime_input/wrong-role-mapping at argument 0; QSL-2462 must map the selected population and reference before this claim can be refuted as undefined"
+waits_on = "QSL-2500"
+needs = "FR-867 undefined claim item serialization"
+why = "the claim now reaches undefined evaluation, but the serializer must emit a refuted violation item with where and cause before this example can run at exit 10"
 serves = "Function claims"
 
 [[case]]

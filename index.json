@@ -3410,8 +3410,8 @@
       "ready_exit": 10,
       "engine": null,
       "clock": null,
-      "waits_on": "QSL-2462",
-      "needs": "Population<Order>[0] function-claim argument role mapping"
+      "waits_on": "QSL-2500",
+      "needs": "FR-867 undefined claim item serialization"
     },
     {
       "system": "shop",
