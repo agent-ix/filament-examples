@@ -12,6 +12,6 @@ Run `fsl check postage.fsl` to validate your repair. A source that merely parses
 or checks is not enough: the repaired function must return the required charge
 for negative, zero and positive unit counts.
 
-When finished, put `TASK_DONE_EV006` on the final line of your response, and only
+When finished, run `echo '<<<EVAL-COMPLETE>>>'` as your final action, and only
 then. The independent grader executes the repaired function on hidden boundary
 inputs; your response or this sentinel cannot make an incorrect function pass.
