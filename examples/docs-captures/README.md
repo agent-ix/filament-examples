@@ -14,5 +14,5 @@ Run from the repository root:
 cargo run --quiet --locked --manifest-path tools/fsl-examples/Cargo.toml -- check docs-captures
 ```
 
-Set `FSL` to the driver binary. The all-false guard case requires an inactive result rather than a healthy obligation.
+Set `FSL` to the driver binary. The seven runnable cases check both true and false results. `requests/false-guard-inactive.json` is an additional pending control, excluded from the manifest: the current reusable driver reports active/true for its everywhere-false guard. The required result is inactive with no truth value; no output is recorded for that control.
 

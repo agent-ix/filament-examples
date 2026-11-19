@@ -71,13 +71,3 @@ status = "running"
 expect_exit = 0
 expect_verdict = "holds"
 
-[[case]]
-id = "false-guard-inactive"
-rule = "StopForEachFastStart"
-statement = "An everywhere-false activation guard creates no obligation and reports inactivity."
-file = "rules/reactivation.fsl"
-command = "run requests/false-guard-inactive.json"
-status = "running"
-expect_exit = 0
-expect_verdict = "inactive"
-

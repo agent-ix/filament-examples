@@ -1,0 +1,79 @@
+{
+  "category": "violation",
+  "last_stage": "S6a",
+  "result": null,
+  "first_diagnostic": null,
+  "items": [
+    {
+      "axes": {
+        "activation": "active",
+        "execution": "completed",
+        "settlement": "closed-scope",
+        "truth": "false"
+      },
+      "category": "violation",
+      "cause": null,
+      "clause": "StopForEachFastStart",
+      "counterexample": {
+        "fairness": [],
+        "initial_state": null,
+        "interval": {
+          "lower": "0",
+          "upper": "1"
+        },
+        "kind": "formula",
+        "loop": [
+          {
+            "document": {
+              "authority": "example",
+              "identity": "ix://example/rover/data/t2-braking"
+            }
+          }
+        ],
+        "over_binding": null,
+        "prefix": [
+          {
+            "document": {
+              "authority": "example",
+              "identity": "ix://example/rover/data/t2-braking"
+            }
+          },
+          {
+            "document": {
+              "authority": "example",
+              "identity": "ix://example/rover/data/t0-driving"
+            }
+          }
+        ],
+        "trace": "observed",
+        "trace_position": 1
+      },
+      "decisive": {
+        "element": {
+          "kind": "boolean",
+          "value": false
+        },
+        "position": 1,
+        "value_path": {
+          "kind": "runtime_value",
+          "root": {
+            "observation": {
+              "authority": "example",
+              "identity": "ix://example/rover/data/t0-driving"
+            },
+            "subject": {
+              "object_identity": "r1",
+              "tag": "object",
+              "type": "[{\"node\":\"ix://example/rover/Rover\",\"package\":\"example/rover\"}]",
+              "universe": "{\"ordinal\":0,\"package\":\"example/rover\",\"path\":[\"model\",\"object_type\",\"ix://example/rover/Rover\"]}"
+            }
+          },
+          "steps": []
+        }
+      },
+      "position": 1,
+      "request_index": 0,
+      "result": "refuted"
+    }
+  ]
+}
