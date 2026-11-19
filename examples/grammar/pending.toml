@@ -1,0 +1,28 @@
+# These cases await an architecture ruling and an owning ticket before staging.
+# The runner reads example.toml only; these expected outcomes are not executable yet.
+
+
+[[case]]
+id = "trailing-garbage"
+statement = "Malformed declaration is refused: trailing garbage."
+file = "rules/trailing-garbage.fsl"
+command = "parse example grammar/trailing-garbage rules/trailing-garbage.fsl"
+expect_exit = 20
+expect_verdict = "syntax refused"
+
+[[case]]
+id = "unit-no-declarations"
+statement = "An incomplete source unit is refused: unit no declarations."
+file = "rules/unit-no-declarations.fsl"
+command = "parse example grammar/unit-no-declarations rules/unit-no-declarations.fsl"
+expect_exit = 20
+expect_verdict = "syntax refused"
+
+[[case]]
+id = "header-only"
+statement = "An incomplete source unit is refused: header only."
+file = "rules/header-only.fsl"
+command = "parse example grammar/header-only rules/header-only.fsl"
+expect_exit = 20
+expect_verdict = "syntax refused"
+

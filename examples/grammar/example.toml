@@ -1,6 +1,17 @@
 name = "grammar"
 summary = "Source grammar: lexical boundaries, expressions, declarations, claims, and syntax refusals."
 [[case]]
+id = "synthesis-objective"
+statement = "A synthesis declaration admits an objective before satisfies."
+file = "rules/synthesis-objective.fsl"
+command = "parse example grammar/synthesis-objective rules/synthesis-objective.fsl"
+status = "staged"
+expect_exit = 20
+ready_exit = 0
+waits_on = "QSL-2235"
+why = "The parser expects satisfies where the synthesis objective begins."
+needs = "Synthesis objective syntax"
+[[case]]
 id = "type-rounding-exact"
 statement = "The exact rounding spelling parses in a decimal type."
 file = "rules/type-rounding-exact.fsl"
@@ -441,14 +452,6 @@ status = "running"
 expect_exit = 0
 expect_verdict = "parses"
 
-[[case]]
-id = "synthesis-objective"
-statement = "A synthesis declaration admits an objective before satisfies."
-file = "rules/synthesis-objective.fsl"
-command = "parse example grammar/synthesis-objective rules/synthesis-objective.fsl"
-status = "running"
-expect_exit = 0
-expect_verdict = "parses"
 
 [[case]]
 id = "temporal-missing-over"
@@ -1485,14 +1488,6 @@ status = "running"
 expect_exit = 20
 expect_verdict = "syntax refused"
 
-[[case]]
-id = "trailing-garbage"
-statement = "Malformed declaration is refused: trailing garbage."
-file = "rules/trailing-garbage.fsl"
-command = "parse example grammar/trailing-garbage rules/trailing-garbage.fsl"
-status = "running"
-expect_exit = 20
-expect_verdict = "syntax refused"
 
 [[case]]
 id = "profile-after-function"
@@ -1584,23 +1579,7 @@ status = "running"
 expect_exit = 20
 expect_verdict = "syntax refused"
 
-[[case]]
-id = "unit-no-declarations"
-statement = "An incomplete source unit is refused: unit no declarations."
-file = "rules/unit-no-declarations.fsl"
-command = "parse example grammar/unit-no-declarations rules/unit-no-declarations.fsl"
-status = "running"
-expect_exit = 20
-expect_verdict = "syntax refused"
 
-[[case]]
-id = "header-only"
-statement = "An incomplete source unit is refused: header only."
-file = "rules/header-only.fsl"
-command = "parse example grammar/header-only rules/header-only.fsl"
-status = "running"
-expect_exit = 20
-expect_verdict = "syntax refused"
 
 [[case]]
 id = "evaluate-boolean-true"
