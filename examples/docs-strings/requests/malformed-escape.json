@@ -1,0 +1,15 @@
+{
+  "format": "native-compile/1",
+  "request": {
+    "models": [],
+    "program": {
+      "source": {
+        "file": "../rules/bad-escape.fsl",
+        "authority": "example",
+        "identity": "docs-strings/malformed-escape",
+        "document": "malformed-escape",
+        "formal_revision": 1
+      }
+    }
+  }
+}

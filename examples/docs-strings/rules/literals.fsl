@@ -1,0 +1,9 @@
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+function sameLiteral using v(): Boolean pure { "copper" = "copper" and "Copper" != "copper" }
+function emptyLiteral using v(): String pure { "" }
+function composedEscape using v(): Boolean pure { "na\u00efve" = "naïve" }
+function combiningDistinct using v(): Boolean pure { "é" = "e\u0301" }
+function surrogatePair using v(): Boolean pure { "\ud83d\ude03" = "😃" }
+function embeddedNul using v(): String pure { "before\u0000after" }
+function jsonEscapes using v(): String pure { "\"\\\/\b\f\n\r\t" }

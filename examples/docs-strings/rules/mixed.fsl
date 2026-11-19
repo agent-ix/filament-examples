@@ -1,0 +1,3 @@
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+function mixed using v(s: String, t: Text[0, 8; nfc]): Boolean pure { s = t }

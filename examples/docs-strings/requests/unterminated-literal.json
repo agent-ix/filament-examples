@@ -1,0 +1,15 @@
+{
+  "format": "native-compile/1",
+  "request": {
+    "models": [],
+    "program": {
+      "source": {
+        "file": "../rules/bad-end.fsl",
+        "authority": "example",
+        "identity": "docs-strings/unterminated-literal",
+        "document": "unterminated-literal",
+        "formal_revision": 1
+      }
+    }
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "format": "native-compile/1",
+  "request": {
+    "models": [],
+    "program": {
+      "source": {
+        "file": "../rules/bad-low.fsl",
+        "authority": "example",
+        "identity": "docs-strings/lone-low-surrogate",
+        "document": "lone-low-surrogate",
+        "formal_revision": 1
+      }
+    }
+  }
+}

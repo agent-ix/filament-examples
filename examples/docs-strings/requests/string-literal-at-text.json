@@ -1,0 +1,15 @@
+{
+  "format": "native-compile/1",
+  "request": {
+    "models": [],
+    "program": {
+      "source": {
+        "file": "../rules/mixed-literal.fsl",
+        "authority": "example",
+        "identity": "docs-strings/string-literal-at-text",
+        "document": "string-literal-at-text",
+        "formal_revision": 1
+      }
+    }
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "format": "native-compile/1",
+  "request": {
+    "models": [],
+    "program": {
+      "source": {
+        "file": "../rules/mixed.fsl",
+        "authority": "example",
+        "identity": "docs-strings/string-text-mixed",
+        "document": "string-text-mixed",
+        "formal_revision": 1
+      }
+    }
+  }
+}

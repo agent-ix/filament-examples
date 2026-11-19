@@ -1,0 +1,142 @@
+name = "docs-strings"
+summary = "Exact String literals, Unicode scalar equality, JSON escapes and type boundaries for documentation."
+
+[[case]]
+id = "literal-equality"
+rule = "sameLiteral"
+statement = "Exact spelling is equal and case changes remain distinct."
+file = "rules/literals.fsl"
+command = "run requests/literal-equality.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "empty-literal"
+rule = "emptyLiteral"
+statement = "The empty String value is retained."
+file = "rules/literals.fsl"
+command = "run requests/empty-literal.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "composed-escape"
+rule = "composedEscape"
+statement = "A Unicode escape and its precomposed scalar literal are equal."
+file = "rules/literals.fsl"
+command = "run requests/composed-escape.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "combining-distinct"
+rule = "combiningDistinct"
+statement = "A combining sequence is distinct from a precomposed scalar."
+file = "rules/literals.fsl"
+command = "run requests/combining-distinct.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "surrogate-pair"
+rule = "surrogatePair"
+statement = "A JSON surrogate pair decodes to the same supplementary scalar."
+file = "rules/literals.fsl"
+command = "run requests/surrogate-pair.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "embedded-nul"
+rule = "embeddedNul"
+statement = "An escaped NUL remains part of the String value."
+file = "rules/literals.fsl"
+command = "run requests/embedded-nul.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "json-escapes"
+rule = "jsonEscapes"
+statement = "Every JSON short escape decodes to its exact scalar sequence."
+file = "rules/literals.fsl"
+command = "run requests/json-escapes.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "malformed-escape"
+rule = "badEscape"
+statement = "An unknown JSON escape is a source syntax error."
+file = "rules/bad-escape.fsl"
+command = "compile requests/malformed-escape.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refusal"
+
+[[case]]
+id = "lone-high-surrogate"
+rule = "badHigh"
+statement = "A high surrogate without its low partner is a source syntax error."
+file = "rules/bad-high.fsl"
+command = "compile requests/lone-high-surrogate.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refusal"
+
+[[case]]
+id = "lone-low-surrogate"
+rule = "badLow"
+statement = "A low surrogate without its high partner is a source syntax error."
+file = "rules/bad-low.fsl"
+command = "compile requests/lone-low-surrogate.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refusal"
+
+[[case]]
+id = "unterminated-literal"
+rule = "badEnd"
+statement = "An unterminated String literal refuses before checking."
+file = "rules/bad-end.fsl"
+command = "compile requests/unterminated-literal.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refusal"
+
+[[case]]
+id = "string-ordering"
+rule = "ordered"
+statement = "Ordering is not an admitted String operator."
+file = "rules/ordering.fsl"
+command = "compile requests/string-ordering.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refusal"
+
+[[case]]
+id = "string-text-mixed"
+rule = "mixed"
+statement = "String and bounded Text remain different comparison types."
+file = "rules/mixed.fsl"
+command = "compile requests/string-text-mixed.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refusal"
+
+[[case]]
+id = "string-literal-at-text"
+rule = "mixedLiteral"
+statement = "A String literal is not implicitly coerced to bounded Text."
+file = "rules/mixed-literal.fsl"
+command = "compile requests/string-literal-at-text.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refusal"
