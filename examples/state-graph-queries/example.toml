@@ -1,0 +1,40 @@
+# State-graph queries over the delivery rover's mode machine
+name = "state-graph-queries"
+summary = "Ask whether a rover can reach failsafe, whether every degraded state can reach a stop, and whether exactly one path leads from driving to failsafe."
+model = "../rover/model/rover.semantic-ir.json"
+
+[[case]]
+id = "possible-proved"
+rule = "FailsafeReachable"
+statement = "From a driving rover with a working lidar, some path reaches failsafe."
+file = "../rover/rules/model-checking/mode-machine.fsl"
+command = "analyze requests/possible.json"
+engine = "model-checking"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "Model checking reference (state-graph queries)"
+
+[[case]]
+id = "always-possible-proved"
+rule = "DegradedCanStop"
+statement = "From every degraded state, some path ends with the rover stopped."
+file = "../rover/rules/model-checking/mode-machine.fsl"
+command = "analyze requests/always-possible.json"
+engine = "model-checking"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "Model checking reference (state-graph queries)"
+
+[[case]]
+id = "unique-path-refuted"
+rule = "OneRouteToFailsafe"
+statement = "There is more than one path from driving to failsafe."
+file = "../rover/rules/model-checking/mode-machine.fsl"
+command = "analyze requests/unique-path.json"
+engine = "model-checking"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
+serves = "Model checking reference (state-graph queries)"
