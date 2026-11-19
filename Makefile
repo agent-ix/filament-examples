@@ -4,10 +4,12 @@ include config.mk
 NODE ?= node
 RUN = $(FSL_EXAMPLES)
 
-.PHONY: tutorial-test tutorial-first-rule-test
-tutorial-test: tutorial-first-rule-test
+.PHONY: tutorial-test tutorial-first-rule-test tutorial-write-model-test
+tutorial-test: tutorial-first-rule-test tutorial-write-model-test
 tutorial-first-rule-test:
 	$(NODE) tools/steps.mjs run tutorials/first-rule/steps.md --host --copy examples/shop
+tutorial-write-model-test:
+	$(NODE) tools/steps.mjs run tutorials/write-a-model/steps.md --host --copy .
 
 .PHONY: check staged record promote readme index models test runner-test install-test install-test-host assurance-test assurance-record quire-test quire-record tl-examples-test tl-examples-record quire-library-test quire-library-record quire-library-python-test quire-library-python-record foundations-examples-test foundations-examples-record contracts-examples-test contracts-examples-record
 check:
