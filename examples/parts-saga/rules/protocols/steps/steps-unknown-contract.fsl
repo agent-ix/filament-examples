@@ -10,7 +10,7 @@ protocol PartFlow using p over (job: Parts::Job) on origin {
     ordering unordered delivery at-least-once capacity 4 overflow block;
   run sequence Main {
     attempt Reserved by Machining on Parts::MachiningStation::reserve contracts [MachineFree]
-      as (reserved: Parts::AttemptView) { reserved.ok };
+      as (reserved: Boolean) { reserved };
   }
   finish Over as (closing: Parts::ClosureView) { closing.complete };
 }

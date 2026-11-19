@@ -29,9 +29,9 @@ protocol PartFlow using p over (job: Parts::Job) on origin {
     send Released via Release as (order: Parts::WorkOrder) { order.part = job.part };
     receive Received via Release of Released as (got: Parts::WorkOrder) { got.ok };
     attempt Reserved by Machining on Parts::MachiningStation::reserve contracts [MachineFree]
-      as (reserved: Parts::AttemptView) { reserved.ok };
+      as (reserved: Boolean) { reserved };
     attempt Processed by Machining on Parts::MachiningStation::process contracts []
-      as (processed: Parts::AttemptView) { processed.ok };
+      as (processed: Boolean) { processed };
     effect Machined of Processed as (machined: Parts::EffectView) { machined.ok };
     send Handed via ToInspect as (handed: Parts::Handoff) { handed.part = job.part };
     receive Inspected via ToInspect of Handed as (inspected: Parts::Handoff) { inspected.ok };
@@ -40,19 +40,19 @@ protocol PartFlow using p over (job: Parts::Job) on origin {
         send ToAssembly via ToAssemble as (onward: Parts::Handoff) { onward.part = job.part };
         receive AtAssembly via ToAssemble of ToAssembly as (arrived: Parts::Handoff) { arrived.ok };
         attempt Assembled by Assembly on Parts::AssemblyStation::assemble contracts []
-          as (assembled: Parts::AttemptView) { assembled.ok };
+          as (assembled: Boolean) { assembled };
       }
       case rework when { not inspected.pass and inspected.rework } sequence Rework {
         repeat Again by Inspection visible (inspected.rework) max 2 while { inspected.rework }
           sequence Remachine {
             attempt Remachined by Machining on Parts::MachiningStation::process contracts []
-              as (again: Parts::AttemptView) { again.ok };
+              as (again: Boolean) { again };
           }
           exhausted sequence GiveUp {}
       }
       case scrap when { not inspected.pass and not inspected.rework } sequence Scrap {
         attempt Freed by Machining on Parts::MachiningStation::release contracts [MachineReleased]
-          as (freed: Parts::AttemptView) { freed.ok };
+          as (freed: Boolean) { freed };
       }
     }
     commit Done by Planning as (done: Parts::CommitView) { done.ok };

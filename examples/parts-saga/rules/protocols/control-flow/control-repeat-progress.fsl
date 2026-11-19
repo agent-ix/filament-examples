@@ -13,7 +13,7 @@ protocol PartFlow using p over (job: Parts::Job) on origin {
     receive Inspected via ToInspect of Handed as (seen: Parts::Handoff) { seen.ok };
     repeat Again by Inspection visible (seen.rework) while { seen.rework }
       attempt Remachined by Machining on Parts::MachiningStation::process contracts []
-        as (again: Parts::AttemptView) { again.ok };
+        as (again: Boolean) { again };
   }
   finish Over as (closing: Parts::ClosureView) { closing.complete };
 }

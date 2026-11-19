@@ -13,7 +13,7 @@ protocol PartFlow using p over (job: Parts::Job) on origin {
     send Released via Release as (order: Parts::WorkOrder) { order.part = job.part };
     receive Received via Release of Released as (got: Parts::WorkOrder) { got.ok };
     attempt Reserved by Machining on Parts::MachiningStation::reserve contracts [MachineFree]
-      as (reserved: Parts::AttemptView) { reserved.ok };
+      as (reserved: Boolean) { reserved };
     effect Machined of Reserved as (done: Parts::EffectView) { done.ok };
     check Safe using v { true };
     commit Done by Planning as (finished: Parts::CommitView) { finished.ok };
