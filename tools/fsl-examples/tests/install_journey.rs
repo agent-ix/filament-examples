@@ -188,7 +188,7 @@ fn documented_local_install_runs_version_check_and_an_original_sample_in_a_clean
     let run = outcome(&run, "execute", "success")?;
     assert_eq!(
         run["result"],
-        json!({"kind": "completed", "value": {"kind": "integer", "value": "42"}}),
+        json!({"kind": "completed", "value": {"integer": "42"}}),
         "{run}"
     );
 
