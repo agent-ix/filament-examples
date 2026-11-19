@@ -1,5 +1,33 @@
 name = "grammar"
 summary = "Source grammar: lexical boundaries, expressions, declarations, claims, and syntax refusals."
+
+[[case]]
+id = "header-only"
+statement = "A source containing only its header parses; package completeness is checked later."
+file = "rules/header-only.fsl"
+command = "parse example grammar/header-only rules/header-only.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "unit-no-declarations"
+statement = "A source containing a header and profile parses without a declaration."
+file = "rules/unit-no-declarations.fsl"
+command = "parse example grammar/unit-no-declarations rules/unit-no-declarations.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "trailing-garbage"
+statement = "An identifier that begins no declaration form is reported as unsupported."
+file = "rules/trailing-garbage.fsl"
+command = "parse example grammar/trailing-garbage rules/trailing-garbage.fsl"
+status = "running"
+expect_exit = 21
+expect_verdict = "unsupported: declaration-form"
+
 [[case]]
 id = "synthesis-objective"
 statement = "A synthesis declaration admits an objective before satisfies."
