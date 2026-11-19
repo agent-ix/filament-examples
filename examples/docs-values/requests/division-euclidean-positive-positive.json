@@ -1,0 +1,20 @@
+{
+  "format": "native-run/1",
+  "request": {
+    "models": [],
+    "program": {
+      "source": {
+        "file": "../rules/division-euclidean.fsl",
+        "authority": "example",
+        "identity": "docs-values/division-euclidean-positive-positive",
+        "document": "division-euclidean-positive-positive",
+        "formal_revision": 1
+      }
+    },
+    "call": {
+      "function": "bothPositive",
+      "arguments": []
+    }
+  }
+}
+

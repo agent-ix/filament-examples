@@ -1,0 +1,9 @@
+language "ix:native" edition "1-draft";
+profile values = "filament.value.complete/v1";
+
+function guardedRemainder using values(dividend: Integer, divisor: Integer): Integer pure {
+  if divisor = 0 then 0 else dividend mod divisor
+}
+function negativeDividend using values(): Integer pure { guardedRemainder(-7, 3) }
+function zeroDivisor using values(): Integer pure { guardedRemainder(-7, 0) }
+

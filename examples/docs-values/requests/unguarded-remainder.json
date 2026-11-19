@@ -1,0 +1,16 @@
+{
+  "format": "native-compile/1",
+  "request": {
+    "models": [],
+    "program": {
+      "source": {
+        "file": "../rules/unguarded-remainder.fsl",
+        "authority": "example",
+        "identity": "docs-values/unguarded-remainder",
+        "document": "unguarded-remainder",
+        "formal_revision": 1
+      }
+    }
+  }
+}
+
