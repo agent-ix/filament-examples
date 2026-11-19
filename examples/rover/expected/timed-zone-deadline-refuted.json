@@ -1,0 +1,403 @@
+{
+  "category": "violation",
+  "last_stage": "S8",
+  "result": null,
+  "first_diagnostic": null,
+  "items": [
+    {
+      "axes": {
+        "activation": "active",
+        "execution": "completed",
+        "settlement": "decisive-counterexample",
+        "truth": "false"
+      },
+      "category": "violation",
+      "claim_name": "StopsWithin50ms",
+      "counterexample": {
+        "fairness": [],
+        "initial_state": 0,
+        "interval": null,
+        "kind": "formula",
+        "loop": [],
+        "over_binding": {
+          "identity": "r1",
+          "object_type": {
+            "original": {
+              "node": "ix://example/rover/Rover",
+              "package": "example/rover"
+            },
+            "owner_effective_type": null
+          },
+          "type": "reference",
+          "universe": {
+            "ordinal": 0,
+            "package": "example/rover",
+            "path": [
+              "model",
+              "object_type",
+              "ix://example/rover/Rover"
+            ]
+          }
+        },
+        "prefix": [
+          {
+            "delay": {
+              "denominator": "1",
+              "numerator": "0"
+            },
+            "post_state": {
+              "key": "eyJjbG9ja3MiOltdLCJzdGF0ZSI6eyJib3VuZHMiOnsiZW50cmllcyI6W10sInR5cGUiOiJtYXAifSwiY29udHJvbCI6eyJlbnRyaWVzIjpbXSwidHlwZSI6Im1hcCJ9LCJtZW1vcnkiOnsiZW50cmllcyI6W10sInR5cGUiOiJtYXAifSwib2JzZXJ2YXRpb25zIjp7ImVudHJpZXMiOltdLCJ0eXBlIjoibWFwIn0sInF1ZXVlcyI6eyJlbnRyaWVzIjpbXSwidHlwZSI6Im1hcCJ9LCJyb2xlcyI6eyJlbnRyaWVzIjpbXSwidHlwZSI6Im1hcCJ9LCJzZW1hbnRpYyI6eyJlbnRyaWVzIjpbeyJrZXkiOnsidHlwZSI6InRleHQiLCJ2YWx1ZSI6IntcIm5vZGVcIjpcIml4Oi8vZXhhbXBsZS9yb3Zlci9yb3ZlcnNcIixcInBhY2thZ2VcIjpcImV4YW1wbGUvcm92ZXJcIn0ifSwidmFsdWUiOnsiZW50cmllcyI6W3sia2V5Ijp7ImlkZW50aXR5IjoicjEiLCJvYmplY3RfdHlwZSI6eyJvcmlnaW5hbCI6eyJub2RlIjoiaXg6Ly9leGFtcGxlL3JvdmVyL1JvdmVyIiwicGFja2FnZSI6ImV4YW1wbGUvcm92ZXIifSwib3duZXJfZWZmZWN0aXZlX3R5cGUiOm51bGx9LCJ0eXBlIjoicmVmZXJlbmNlIiwidW5pdmVyc2UiOnsib3JkaW5hbCI6MCwicGFja2FnZSI6ImV4YW1wbGUvcm92ZXIiLCJwYXRoIjpbIm1vZGVsIiwib2JqZWN0X3R5cGUiLCJpeDovL2V4YW1wbGUvcm92ZXIvUm92ZXIiXX19LCJ2YWx1ZSI6eyJmaWVsZHMiOlt7Im5hbWUiOiJtb2RlIiwidmFsdWUiOnsibWVtYmVyIjoiRGVncmFkZWQiLCJuYW1lIjoie1wibm9kZVwiOlwiaXg6Ly9leGFtcGxlL3JvdmVyL01vZGVcIixcInBhY2thZ2VcIjpcImV4YW1wbGUvcm92ZXJcIn0iLCJ0eXBlIjoiZW51bSJ9fSx7Im5hbWUiOiJzcGVlZCIsInZhbHVlIjp7InR5cGUiOiJpbnRlZ2VyIiwidmFsdWUiOiIzMDAifX0seyJuYW1lIjoic3RvcHBlZCIsInZhbHVlIjp7InR5cGUiOiJib29sZWFuIiwidmFsdWUiOmZhbHNlfX0seyJuYW1lIjoibGlkYXJPayIsInZhbHVlIjp7InR5cGUiOiJib29sZWFuIiwidmFsdWUiOmZhbHNlfX0seyJuYW1lIjoicmFuZ2VBIiwidmFsdWUiOnsidHlwZSI6ImludGVnZXIiLCJ2YWx1ZSI6IjUwMDAifX0seyJuYW1lIjoicmFuZ2VCIiwidmFsdWUiOnsidHlwZSI6ImludGVnZXIiLCJ2YWx1ZSI6IjUwMDAifX0seyJuYW1lIjoicmFuZ2VDIiwidmFsdWUiOnsidHlwZSI6ImludGVnZXIiLCJ2YWx1ZSI6IjUwMDAifX0seyJuYW1lIjoiY2xvY2siLCJ2YWx1ZSI6eyJ0eXBlIjoiaW50ZWdlciIsInZhbHVlIjoiNTAifX0seyJuYW1lIjoidm90ZVdyb25nIiwidmFsdWUiOnsidHlwZSI6ImJvb2xlYW4iLCJ2YWx1ZSI6ZmFsc2V9fV0sIm5hbWUiOiJ7XCJub2RlXCI6XCJpeDovL2V4YW1wbGUvcm92ZXIvUm92ZXJcIixcInBhY2thZ2VcIjpcImV4YW1wbGUvcm92ZXJcIn0iLCJ0eXBlIjoicmVjb3JkIn19XSwidHlwZSI6Im1hcCJ9fV0sInR5cGUiOiJtYXAifSwidHlwZSI6InNpbXVsYXRpb24tc3RhdGUifSwidHlwZSI6InRpbWVkLXN0YXRlIn0"
+            },
+            "transition": {
+              "arguments": [
+                {
+                  "type": "boolean",
+                  "value": false
+                },
+                {
+                  "type": "boolean",
+                  "value": false
+                },
+                {
+                  "type": "boolean",
+                  "value": false
+                }
+              ],
+              "operation": {
+                "node": "ix://example/rover/Rover/sample",
+                "package": "example/rover"
+              },
+              "receiver": {
+                "identity": "r1",
+                "object_type": {
+                  "original": {
+                    "node": "ix://example/rover/Rover",
+                    "package": "example/rover"
+                  },
+                  "owner_effective_type": null
+                },
+                "type": "reference",
+                "universe": {
+                  "ordinal": 0,
+                  "package": "example/rover",
+                  "path": [
+                    "model",
+                    "object_type",
+                    "ix://example/rover/Rover"
+                  ]
+                }
+              },
+              "type": "transition"
+            }
+          },
+          {
+            "delay": {
+              "denominator": "1",
+              "numerator": "0"
+            },
+            "post_state": {
+              "key": "eyJjbG9ja3MiOltdLCJzdGF0ZSI6eyJib3VuZHMiOnsiZW50cmllcyI6W10sInR5cGUiOiJtYXAifSwiY29udHJvbCI6eyJlbnRyaWVzIjpbXSwidHlwZSI6Im1hcCJ9LCJtZW1vcnkiOnsiZW50cmllcyI6W10sInR5cGUiOiJtYXAifSwib2JzZXJ2YXRpb25zIjp7ImVudHJpZXMiOltdLCJ0eXBlIjoibWFwIn0sInF1ZXVlcyI6eyJlbnRyaWVzIjpbXSwidHlwZSI6Im1hcCJ9LCJyb2xlcyI6eyJlbnRyaWVzIjpbXSwidHlwZSI6Im1hcCJ9LCJzZW1hbnRpYyI6eyJlbnRyaWVzIjpbeyJrZXkiOnsidHlwZSI6InRleHQiLCJ2YWx1ZSI6IntcIm5vZGVcIjpcIml4Oi8vZXhhbXBsZS9yb3Zlci9yb3ZlcnNcIixcInBhY2thZ2VcIjpcImV4YW1wbGUvcm92ZXJcIn0ifSwidmFsdWUiOnsiZW50cmllcyI6W3sia2V5Ijp7ImlkZW50aXR5IjoicjEiLCJvYmplY3RfdHlwZSI6eyJvcmlnaW5hbCI6eyJub2RlIjoiaXg6Ly9leGFtcGxlL3JvdmVyL1JvdmVyIiwicGFja2FnZSI6ImV4YW1wbGUvcm92ZXIifSwib3duZXJfZWZmZWN0aXZlX3R5cGUiOm51bGx9LCJ0eXBlIjoicmVmZXJlbmNlIiwidW5pdmVyc2UiOnsib3JkaW5hbCI6MCwicGFja2FnZSI6ImV4YW1wbGUvcm92ZXIiLCJwYXRoIjpbIm1vZGVsIiwib2JqZWN0X3R5cGUiLCJpeDovL2V4YW1wbGUvcm92ZXIvUm92ZXIiXX19LCJ2YWx1ZSI6eyJmaWVsZHMiOlt7Im5hbWUiOiJtb2RlIiwidmFsdWUiOnsibWVtYmVyIjoiRGVncmFkZWQiLCJuYW1lIjoie1wibm9kZVwiOlwiaXg6Ly9leGFtcGxlL3JvdmVyL01vZGVcIixcInBhY2thZ2VcIjpcImV4YW1wbGUvcm92ZXJcIn0iLCJ0eXBlIjoiZW51bSJ9fSx7Im5hbWUiOiJzcGVlZCIsInZhbHVlIjp7InR5cGUiOiJpbnRlZ2VyIiwidmFsdWUiOiIzMDAifX0seyJuYW1lIjoic3RvcHBlZCIsInZhbHVlIjp7InR5cGUiOiJib29sZWFuIiwidmFsdWUiOmZhbHNlfX0seyJuYW1lIjoibGlkYXJPayIsInZhbHVlIjp7InR5cGUiOiJib29sZWFuIiwidmFsdWUiOmZhbHNlfX0seyJuYW1lIjoicmFuZ2VBIiwidmFsdWUiOnsidHlwZSI6ImludGVnZXIiLCJ2YWx1ZSI6IjUwMDAifX0seyJuYW1lIjoicmFuZ2VCIiwidmFsdWUiOnsidHlwZSI6ImludGVnZXIiLCJ2YWx1ZSI6IjUwMDAifX0seyJuYW1lIjoicmFuZ2VDIiwidmFsdWUiOnsidHlwZSI6ImludGVnZXIiLCJ2YWx1ZSI6IjUwMDAifX0seyJuYW1lIjoiY2xvY2siLCJ2YWx1ZSI6eyJ0eXBlIjoiaW50ZWdlciIsInZhbHVlIjoiNTAifX0seyJuYW1lIjoidm90ZVdyb25nIiwidmFsdWUiOnsidHlwZSI6ImJvb2xlYW4iLCJ2YWx1ZSI6ZmFsc2V9fV0sIm5hbWUiOiJ7XCJub2RlXCI6XCJpeDovL2V4YW1wbGUvcm92ZXIvUm92ZXJcIixcInBhY2thZ2VcIjpcImV4YW1wbGUvcm92ZXJcIn0iLCJ0eXBlIjoicmVjb3JkIn19XSwidHlwZSI6Im1hcCJ9fV0sInR5cGUiOiJtYXAifSwidHlwZSI6InNpbXVsYXRpb24tc3RhdGUifSwidHlwZSI6InRpbWVkLXN0YXRlIn0"
+            },
+            "transition": {
+              "arguments": [
+                {
+                  "type": "boolean",
+                  "value": false
+                },
+                {
+                  "type": "boolean",
+                  "value": false
+                },
+                {
+                  "type": "boolean",
+                  "value": false
+                }
+              ],
+              "operation": {
+                "node": "ix://example/rover/Rover/sample",
+                "package": "example/rover"
+              },
+              "receiver": {
+                "identity": "r1",
+                "object_type": {
+                  "original": {
+                    "node": "ix://example/rover/Rover",
+                    "package": "example/rover"
+                  },
+                  "owner_effective_type": null
+                },
+                "type": "reference",
+                "universe": {
+                  "ordinal": 0,
+                  "package": "example/rover",
+                  "path": [
+                    "model",
+                    "object_type",
+                    "ix://example/rover/Rover"
+                  ]
+                }
+              },
+              "type": "transition"
+            }
+          }
+        ],
+        "trace": "model",
+        "trace_position": 2
+      },
+      "record": {
+        "backend": "en-6",
+        "cause": null,
+        "result": "refuted",
+        "settled_by": "result"
+      },
+      "replay": {
+        "reproduced": true,
+        "target": {
+          "state_clause": "StopsWithin50ms"
+        }
+      },
+      "request": {
+        "candidates": {
+          "backends": [
+            "en-6"
+          ],
+          "type": "set"
+        },
+        "claim": {
+          "node": {
+            "ordinal": 0,
+            "package": "example:rover/timed-analyze",
+            "path": [
+              "temporal",
+              "temporal_clause",
+              {
+                "ordinal": 0,
+                "package": "example:rover/timed-analyze",
+                "path": [
+                  "value",
+                  "parameter",
+                  "name",
+                  {
+                    "ordinal": 0,
+                    "package": "example:rover/timed-analyze",
+                    "path": [
+                      "scalar_type",
+                      "text"
+                    ]
+                  },
+                  "r",
+                  "level",
+                  {
+                    "ordinal": 0,
+                    "package": "example:rover/timed-analyze",
+                    "path": [
+                      "scalar_type",
+                      "integer"
+                    ]
+                  },
+                  "0",
+                  {
+                    "ordinal": 0,
+                    "package": "example:rover/timed-analyze",
+                    "path": [
+                      "composite_type",
+                      "reference",
+                      {
+                        "ordinal": 0,
+                        "package": "example/rover",
+                        "path": [
+                          "model",
+                          "object_type",
+                          "ix://example/rover/Rover"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "ordinal": 0,
+                "package": "example:rover/timed-analyze",
+                "path": [
+                  "scalar_type",
+                  "text"
+                ]
+              },
+              "model-time",
+              "kind",
+              "origin",
+              {
+                "ordinal": 1,
+                "package": "example:rover/timed-analyze",
+                "path": [
+                  "temporal",
+                  "formula",
+                  {
+                    "ordinal": 0,
+                    "package": "example:rover/timed-analyze",
+                    "path": [
+                      "temporal",
+                      "formula",
+                      {
+                        "ordinal": 0,
+                        "package": "example:rover/timed-analyze",
+                        "path": [
+                          "expression",
+                          "query",
+                          {
+                            "ordinal": 0,
+                            "package": "example:rover/timed-analyze",
+                            "path": [
+                              "expression",
+                              "deref",
+                              {
+                                "ordinal": 0,
+                                "package": "example:rover/timed-analyze",
+                                "path": [
+                                  "value",
+                                  "parameter",
+                                  "name",
+                                  {
+                                    "ordinal": 0,
+                                    "package": "example:rover/timed-analyze",
+                                    "path": [
+                                      "scalar_type",
+                                      "text"
+                                    ]
+                                  },
+                                  "r",
+                                  "level",
+                                  {
+                                    "ordinal": 0,
+                                    "package": "example:rover/timed-analyze",
+                                    "path": [
+                                      "scalar_type",
+                                      "integer"
+                                    ]
+                                  },
+                                  "0",
+                                  {
+                                    "ordinal": 0,
+                                    "package": "example:rover/timed-analyze",
+                                    "path": [
+                                      "composite_type",
+                                      "reference",
+                                      {
+                                        "ordinal": 0,
+                                        "package": "example/rover",
+                                        "path": [
+                                          "model",
+                                          "object_type",
+                                          "ix://example/rover/Rover"
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              },
+                              "filament.op.model.deref",
+                              "deref",
+                              {
+                                "ordinal": 0,
+                                "package": "example/rover",
+                                "path": [
+                                  "model",
+                                  "object_type",
+                                  "ix://example/rover/Rover"
+                                ]
+                              }
+                            ]
+                          },
+                          "filament.op.record.project",
+                          "false",
+                          "query",
+                          {
+                            "ordinal": 0,
+                            "package": "example:rover/timed-analyze",
+                            "path": [
+                              "scalar_type",
+                              "boolean"
+                            ]
+                          }
+                        ]
+                      },
+                      "filament.op.temporal.holds",
+                      "temporal_formula",
+                      {
+                        "ordinal": 0,
+                        "package": "example:rover/timed-analyze",
+                        "path": [
+                          "scalar_type",
+                          "boolean"
+                        ]
+                      }
+                    ]
+                  },
+                  "filament.op.temporal.eventually",
+                  "temporal_formula",
+                  {
+                    "ordinal": 0,
+                    "package": "example:rover/timed-analyze",
+                    "path": [
+                      "scalar_type",
+                      "boolean"
+                    ]
+                  }
+                ]
+              },
+              "filament.op.temporal.clause",
+              "filament.temporal.timed/v1",
+              "temporal",
+              {
+                "ordinal": 0,
+                "package": "example:rover/timed-analyze",
+                "path": [
+                  "scalar_type",
+                  "boolean"
+                ]
+              }
+            ]
+          },
+          "occurrence": {
+            "ordinal": 0,
+            "role": "claim"
+          }
+        },
+        "extent": {
+          "classification": "unbounded",
+          "finite_bound_available": false
+        },
+        "kind": "temporal-satisfaction",
+        "request_index": 0,
+        "temporal": {
+          "fairness": [],
+          "item_kind": "formula",
+          "limits": {
+            "max_automaton_states": 1048576,
+            "max_relation_tuples": 16777216,
+            "max_states": 10000000,
+            "max_transitions": 100000000,
+            "max_walk_steps": 4096,
+            "max_witness_set": 65536
+          },
+          "subject": {
+            "initial_states": [
+              {
+                "authority": "example",
+                "identity": "ix://example/rover/data/timed-lidar-lost-start"
+              }
+            ],
+            "proof_bounds": [],
+            "universes": [
+              {
+                "authority": "example",
+                "identity": "ix://example/rover/data/timed-lidar-lost-start"
+              }
+            ]
+          }
+        }
+      },
+      "request_index": 0
+    }
+  ]
+}
