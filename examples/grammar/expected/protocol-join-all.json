@@ -1,0 +1,37 @@
+{
+  "category": "success",
+  "last_stage": "S2",
+  "result": {
+    "bytes": "409",
+    "kind": "parsed",
+    "path": "rules/protocol-join-all.fsl",
+    "source": {
+      "authority": "example",
+      "identity": "grammar/protocol-join-all"
+    },
+    "usage": [
+      {
+        "bound": "1048576",
+        "setting": "s1.input_bytes",
+        "used": "409"
+      },
+      {
+        "bound": "100000",
+        "setting": "s1.tokens",
+        "used": "151"
+      },
+      {
+        "bound": "50000",
+        "setting": "s1.nodes",
+        "used": "61"
+      },
+      {
+        "bound": "288",
+        "setting": "s1.work_units",
+        "used": "1142"
+      }
+    ]
+  },
+  "first_diagnostic": null,
+  "items": []
+}

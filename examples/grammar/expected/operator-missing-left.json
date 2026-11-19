@@ -1,0 +1,40 @@
+{
+  "category": "refusal",
+  "last_stage": "S1",
+  "result": {
+    "bytes": "168",
+    "kind": "parsed",
+    "path": "rules/operator-missing-left.fsl",
+    "source": {
+      "authority": "example",
+      "identity": "grammar/operator-missing-left"
+    },
+    "usage": [
+      {
+        "bound": "1048576",
+        "setting": "s1.input_bytes",
+        "used": "168"
+      },
+      {
+        "bound": "100000",
+        "setting": "s1.tokens",
+        "used": "43"
+      },
+      {
+        "bound": "50000",
+        "setting": "s1.nodes",
+        "used": "3"
+      },
+      {
+        "bound": "288",
+        "setting": "s1.work_units",
+        "used": "689"
+      }
+    ]
+  },
+  "first_diagnostic": {
+    "code": "invalid_syntax",
+    "cause": "unexpected-token"
+  },
+  "items": []
+}

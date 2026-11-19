@@ -1,0 +1,37 @@
+{
+  "category": "success",
+  "last_stage": "S2",
+  "result": {
+    "bytes": "165",
+    "kind": "parsed",
+    "path": "rules/comparison-greater.fsl",
+    "source": {
+      "authority": "example",
+      "identity": "grammar/comparison-greater"
+    },
+    "usage": [
+      {
+        "bound": "1048576",
+        "setting": "s1.input_bytes",
+        "used": "165"
+      },
+      {
+        "bound": "100000",
+        "setting": "s1.tokens",
+        "used": "45"
+      },
+      {
+        "bound": "50000",
+        "setting": "s1.nodes",
+        "used": "22"
+      },
+      {
+        "bound": "288",
+        "setting": "s1.work_units",
+        "used": "545"
+      }
+    ]
+  },
+  "first_diagnostic": null,
+  "items": []
+}

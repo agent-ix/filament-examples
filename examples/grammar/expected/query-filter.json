@@ -1,0 +1,37 @@
+{
+  "category": "success",
+  "last_stage": "S2",
+  "result": {
+    "bytes": "197",
+    "kind": "parsed",
+    "path": "rules/query-filter.fsl",
+    "source": {
+      "authority": "example",
+      "identity": "grammar/query-filter"
+    },
+    "usage": [
+      {
+        "bound": "1048576",
+        "setting": "s1.input_bytes",
+        "used": "197"
+      },
+      {
+        "bound": "100000",
+        "setting": "s1.tokens",
+        "used": "58"
+      },
+      {
+        "bound": "50000",
+        "setting": "s1.nodes",
+        "used": "46"
+      },
+      {
+        "bound": "288",
+        "setting": "s1.work_units",
+        "used": "1096"
+      }
+    ]
+  },
+  "first_diagnostic": null,
+  "items": []
+}

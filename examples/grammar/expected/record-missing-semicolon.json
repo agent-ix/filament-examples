@@ -1,0 +1,40 @@
+{
+  "category": "refusal",
+  "last_stage": "S1",
+  "result": {
+    "bytes": "184",
+    "kind": "parsed",
+    "path": "rules/record-missing-semicolon.fsl",
+    "source": {
+      "authority": "example",
+      "identity": "grammar/record-missing-semicolon"
+    },
+    "usage": [
+      {
+        "bound": "1048576",
+        "setting": "s1.input_bytes",
+        "used": "184"
+      },
+      {
+        "bound": "100000",
+        "setting": "s1.tokens",
+        "used": "50"
+      },
+      {
+        "bound": "50000",
+        "setting": "s1.nodes",
+        "used": "17"
+      },
+      {
+        "bound": "288",
+        "setting": "s1.work_units",
+        "used": "660"
+      }
+    ]
+  },
+  "first_diagnostic": {
+    "code": "invalid_syntax",
+    "cause": "unexpected-token"
+  },
+  "items": []
+}

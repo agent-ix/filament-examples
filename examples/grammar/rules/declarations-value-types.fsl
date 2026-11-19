@@ -1,0 +1,10 @@
+// QSL FR-002-AC-6; FSpec FR-339
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+ordered enum Rank { Low = "low", High = "high", }
+record Point { x: Integer; y: Integer?; }
+tuple Pair(Integer, Boolean);
+union Maybe { Miss, Hit(Integer), }
+type Count = Int[0, 99];
+function probe using v(): Boolean pure { true }
+

@@ -1,0 +1,37 @@
+{
+  "category": "success",
+  "last_stage": "S2",
+  "result": {
+    "bytes": "211",
+    "kind": "parsed",
+    "path": "rules/identifier-helper.fsl",
+    "source": {
+      "authority": "example",
+      "identity": "grammar/identifier-helper"
+    },
+    "usage": [
+      {
+        "bound": "1048576",
+        "setting": "s1.input_bytes",
+        "used": "211"
+      },
+      {
+        "bound": "100000",
+        "setting": "s1.tokens",
+        "used": "69"
+      },
+      {
+        "bound": "50000",
+        "setting": "s1.nodes",
+        "used": "47"
+      },
+      {
+        "bound": "288",
+        "setting": "s1.work_units",
+        "used": "952"
+      }
+    ]
+  },
+  "first_diagnostic": null,
+  "items": []
+}

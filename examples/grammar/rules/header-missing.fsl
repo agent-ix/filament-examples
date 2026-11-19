@@ -1,0 +1,3 @@
+// QSL FR-002-AC-6; FSpec FR-339
+function probe(): Boolean pure { true }
+

@@ -1,0 +1,40 @@
+{
+  "category": "refusal",
+  "last_stage": "S1",
+  "result": {
+    "bytes": "178",
+    "kind": "parsed",
+    "path": "rules/reserved-parameter.fsl",
+    "source": {
+      "authority": "example",
+      "identity": "grammar/reserved-parameter"
+    },
+    "usage": [
+      {
+        "bound": "1048576",
+        "setting": "s1.input_bytes",
+        "used": "178"
+      },
+      {
+        "bound": "100000",
+        "setting": "s1.tokens",
+        "used": "45"
+      },
+      {
+        "bound": "50000",
+        "setting": "s1.nodes",
+        "used": "3"
+      },
+      {
+        "bound": "288",
+        "setting": "s1.work_units",
+        "used": "501"
+      }
+    ]
+  },
+  "first_diagnostic": {
+    "code": "invalid_syntax",
+    "cause": "unexpected-token"
+  },
+  "items": []
+}

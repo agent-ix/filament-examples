@@ -1,0 +1,37 @@
+{
+  "category": "success",
+  "last_stage": "S2",
+  "result": {
+    "bytes": "202",
+    "kind": "parsed",
+    "path": "rules/nested-conditional.fsl",
+    "source": {
+      "authority": "example",
+      "identity": "grammar/nested-conditional"
+    },
+    "usage": [
+      {
+        "bound": "1048576",
+        "setting": "s1.input_bytes",
+        "used": "202"
+      },
+      {
+        "bound": "100000",
+        "setting": "s1.tokens",
+        "used": "61"
+      },
+      {
+        "bound": "50000",
+        "setting": "s1.nodes",
+        "used": "59"
+      },
+      {
+        "bound": "288",
+        "setting": "s1.work_units",
+        "used": "911"
+      }
+    ]
+  },
+  "first_diagnostic": null,
+  "items": []
+}

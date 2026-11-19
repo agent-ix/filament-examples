@@ -1,0 +1,37 @@
+{
+  "category": "success",
+  "last_stage": "S2",
+  "result": {
+    "bytes": "222",
+    "kind": "parsed",
+    "path": "rules/text-json-escapes.fsl",
+    "source": {
+      "authority": "example",
+      "identity": "grammar/text-json-escapes"
+    },
+    "usage": [
+      {
+        "bound": "1048576",
+        "setting": "s1.input_bytes",
+        "used": "222"
+      },
+      {
+        "bound": "100000",
+        "setting": "s1.tokens",
+        "used": "50"
+      },
+      {
+        "bound": "50000",
+        "setting": "s1.nodes",
+        "used": "18"
+      },
+      {
+        "bound": "288",
+        "setting": "s1.work_units",
+        "used": "492"
+      }
+    ]
+  },
+  "first_diagnostic": null,
+  "items": []
+}

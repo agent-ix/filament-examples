@@ -1,0 +1,6 @@
+// QSL FR-035-AC-7
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+function cast using v(n: Integer): Integer pure { n }
+function probe using v(): Integer pure { cast(1) }
+

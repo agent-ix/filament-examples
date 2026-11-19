@@ -1,0 +1,19 @@
+{
+  "format": "native-run/1",
+  "request": {
+    "models": [],
+    "program": {
+      "source": {
+        "file": "../rules/arithmetic-grouping.fsl",
+        "authority": "example",
+        "identity": "grammar/arithmetic-grouping",
+        "document": "grammar",
+        "formal_revision": 1
+      }
+    },
+    "call": {
+      "function": "probe",
+      "arguments": []
+    }
+  }
+}

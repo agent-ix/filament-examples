@@ -1,0 +1,40 @@
+{
+  "category": "refusal",
+  "last_stage": "S1",
+  "result": {
+    "bytes": "162",
+    "kind": "parsed",
+    "path": "rules/integer-leading-zero.fsl",
+    "source": {
+      "authority": "example",
+      "identity": "grammar/integer-leading-zero"
+    },
+    "usage": [
+      {
+        "bound": "1048576",
+        "setting": "s1.input_bytes",
+        "used": "162"
+      },
+      {
+        "bound": "100000",
+        "setting": "s1.tokens",
+        "used": "41"
+      },
+      {
+        "bound": "50000",
+        "setting": "s1.nodes",
+        "used": "3"
+      },
+      {
+        "bound": "288",
+        "setting": "s1.work_units",
+        "used": "687"
+      }
+    ]
+  },
+  "first_diagnostic": {
+    "code": "invalid_syntax",
+    "cause": "invalid-token"
+  },
+  "items": []
+}

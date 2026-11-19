@@ -1,0 +1,1 @@
+the string key of a reference literal must touch its `#`

@@ -1,0 +1,5 @@
+// QSL FR-002-AC-6; FSpec FR-339
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+function probe using v(): Boolean pure { false implies true implies false }
+

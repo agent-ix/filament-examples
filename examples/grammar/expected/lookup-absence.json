@@ -1,0 +1,37 @@
+{
+  "category": "success",
+  "last_stage": "S2",
+  "result": {
+    "bytes": "220",
+    "kind": "parsed",
+    "path": "rules/lookup-absence.fsl",
+    "source": {
+      "authority": "example",
+      "identity": "grammar/lookup-absence"
+    },
+    "usage": [
+      {
+        "bound": "1048576",
+        "setting": "s1.input_bytes",
+        "used": "220"
+      },
+      {
+        "bound": "100000",
+        "setting": "s1.tokens",
+        "used": "64"
+      },
+      {
+        "bound": "50000",
+        "setting": "s1.nodes",
+        "used": "43"
+      },
+      {
+        "bound": "288",
+        "setting": "s1.work_units",
+        "used": "933"
+      }
+    ]
+  },
+  "first_diagnostic": null,
+  "items": []
+}

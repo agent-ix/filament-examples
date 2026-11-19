@@ -1,0 +1,37 @@
+{
+  "category": "success",
+  "last_stage": "S2",
+  "result": {
+    "bytes": "209",
+    "kind": "parsed",
+    "path": "rules/type-rounding-toward-zero.fsl",
+    "source": {
+      "authority": "example",
+      "identity": "grammar/type-rounding-toward-zero"
+    },
+    "usage": [
+      {
+        "bound": "1048576",
+        "setting": "s1.input_bytes",
+        "used": "209"
+      },
+      {
+        "bound": "100000",
+        "setting": "s1.tokens",
+        "used": "62"
+      },
+      {
+        "bound": "50000",
+        "setting": "s1.nodes",
+        "used": "23"
+      },
+      {
+        "bound": "288",
+        "setting": "s1.work_units",
+        "used": "523"
+      }
+    ]
+  },
+  "first_diagnostic": null,
+  "items": []
+}

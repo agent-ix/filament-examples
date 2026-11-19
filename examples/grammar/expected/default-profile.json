@@ -1,0 +1,37 @@
+{
+  "category": "success",
+  "last_stage": "S2",
+  "result": {
+    "bytes": "114",
+    "kind": "parsed",
+    "path": "rules/default-profile.fsl",
+    "source": {
+      "authority": "example",
+      "identity": "grammar/default-profile"
+    },
+    "usage": [
+      {
+        "bound": "1048576",
+        "setting": "s1.input_bytes",
+        "used": "114"
+      },
+      {
+        "bound": "100000",
+        "setting": "s1.tokens",
+        "used": "28"
+      },
+      {
+        "bound": "50000",
+        "setting": "s1.nodes",
+        "used": "16"
+      },
+      {
+        "bound": "288",
+        "setting": "s1.work_units",
+        "used": "392"
+      }
+    ]
+  },
+  "first_diagnostic": null,
+  "items": []
+}
