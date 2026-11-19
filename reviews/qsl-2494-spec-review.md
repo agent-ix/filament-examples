@@ -33,3 +33,18 @@ Mergeable once FND-001 and FND-002 are addressed. Neither is high: the schedule,
 | FND-002 | medium | Redaction replaces only the literal run root and home folder in reports: macOS /var/folders vs /private/var/folders aliases, other operator paths quoted in failure text, and triage.md (which carries the first failure) are not covered, in a public repository | agent-evals/spec/functional/FR-002-scheduled-runs-scorecard-and-triage.md:62 |
 | FND-003 | low | `agent-evals clean` is used but is missing from FR-001's subcommand table and has no AC. Transcripts kept under the OS temp folder for triage may be purged by macOS temp cleanup before a slow triage | agent-evals/spec/functional/FR-002-scheduled-runs-scorecard-and-triage.md:65 |
 | FND-004 | low | The schedule entry runs `cargo run --manifest-path <checkout>/agent-evals/Cargo.toml`, so the `scheduled` driver is built from whatever branch or uncommitted state the checkout has at 03:00, which contradicts "uses the harness on main" for that step | agent-evals/spec/functional/FR-002-scheduled-runs-scorecard-and-triage.md:30 |
+
+## New findings (disposition pass 1)
+
+| ID | Severity | Summary | Refs |
+| --- | --- | --- | --- |
+| FND-005 | low | The Makefile targets `agent-evals` and `agent-evals-check` are not placed in a named Makefile; in the root Makefile the target `agent-evals` has the same name as the `agent-evals/` folder, so unless it is listed in .PHONY (as the root Makefile's other targets are) make reports it up to date and runs nothing | agent-evals/spec/functional/FR-002-scheduled-runs-scorecard-and-triage.md:104 |
+
+## Dispositions
+
+| FND | Outcome | Reason |
+| --- | --- | --- |
+| FND-001 | fixed | - |
+| FND-002 | fixed | - |
+| FND-003 | fixed | - |
+| FND-004 | fixed | - |

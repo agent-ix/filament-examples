@@ -35,3 +35,12 @@ Not mergeable. There are two high findings. First, the EV-105 expectation contra
 | FND-002 | high | The outcome map turns every `measured` into pass, but a measured result carries accepted/rejected/undecided and the docs say a rejected measurement fails a run, so a rejected statistical claim would discharge the criterion | agent-evals/spec/functional/FR-003-fsl-claim-evidence-link-scenario.md:149 |
 | FND-003 | low | The EV-205 probe names no fsl command: the docs say only a `compile` request refuses the extraction member with `extraction-requires-run`, while `run` refuses it as an unknown member. Nothing says what a different refusal code means for activation | agent-evals/spec/functional/FR-003-fsl-claim-evidence-link-scenario.md:104 |
 | FND-004 | low | The relationships use `ix://agent-ix/filament-examples/FR-001`/`FR-002`, but the repository already holds other FR-001 and FR-002 documents (assurance, quoin-first-spec, quire-first-document projects, which use ix://example/... namespaces), so the repo-level id is ambiguous | agent-evals/spec/functional/FR-003-fsl-claim-evidence-link-scenario.md:6 |
+
+## Dispositions
+
+| FND | Outcome | Reason |
+| --- | --- | --- |
+| FND-001 | fixed | - |
+| FND-002 | fixed | - |
+| FND-003 | fixed | - |
+| FND-004 | fixed | - |

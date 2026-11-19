@@ -41,7 +41,12 @@ factory or environment function. The provider program is the Cargo package
 | `clean --run <run id>` | Deletes the run root and the run's kept transcripts (FR-002). |
 | `scorecard`, `triage`, `scheduled`, `schedule install` | FR-002. |
 
-The Makefile target `agent-evals` calls `agent-evals run` and nothing else. No
+The targets `agent-evals` and `agent-evals-check` (FR-002) live in the
+repository's root `Makefile` and are listed in its `.PHONY`, because the
+folder `agent-evals/` has the same name as the target and would otherwise make
+`make agent-evals` report the target up to date. `agent-evals` calls
+`agent-evals run` (built with `cargo run --locked --manifest-path
+agent-evals/Cargo.toml`) and nothing else. No
 Python, no JavaScript assertion or setup code and no logic-bearing shell exists
 in the harness. Scenario logic in Rust keeps it testable with `cargo test` and
 reviewable with the rest of the FSL toolchain.
@@ -120,6 +125,11 @@ environment, so runner and agents share the per-run home and the transcripts
 land where the runner reads them. The agent therefore loads no operator
 instructions, memory, skills or plugins.
 
+`run` removes `CLAUDE_CONFIG_DIR`, `CODEX_HOME` and `CLAUDECODE` from the
+environment it passes to `cli-evals`, so an operator setting or a parent
+Claude Code session cannot move the agent's state out of the per-run home or
+change how the agent starts.
+
 Credentials: Claude Code authenticates through `CLAUDE_CODE_OAUTH_TOKEN`,
 which `run` reads from the operator's environment (created once with
 `claude setup-token`); `<root>/home/.claude` is seeded only with the settings
@@ -152,14 +162,41 @@ or program. Standard system tools in `/usr/bin` and `/bin` are allowed.
 `assert`, `<workspace>/.cli-agent-evals/transcripts/<digest>.transcript`, and
 extracts the inputs of every tool call: for a Claude Code transcript the
 `input` of each `tool_use` item, for a Codex transcript the `arguments` of each
-`function_call` and the command of each `local_shell_call`. A sample fails with
-class `sandbox-breach` when a tool-call input names:
+`function_call` and the command of each `local_shell_call`.
 
-- an absolute path outside the workspace, `<root>/tools`, `/usr`, `/bin`,
-  `/sbin`, `/etc` and `/dev` (the run root's other folders, other temporary
-  folders and the source tree are outside);
-- a relative path whose `..` components, resolved against the workspace,
-  leave the workspace;
+Each path in a tool call is resolved against the working directory that call
+actually had, not against the workspace root. The scan starts in the
+workspace and tracks the working directory through the transcript: a Codex
+call's `workdir` argument sets it for that call; a top-level `cd <dir>` in a
+shell command (a part separated by `&&`, `||`, `;` or a newline) changes it
+for the parts after it, and, for Claude Code, whose shell keeps its working
+directory between calls, for the later calls too. A `cd` the scan cannot
+resolve (`cd "$(...)"`, `cd -` with no earlier directory) fails the sample as
+`harness-error`, never as a pass. Both sides of every comparison are
+canonicalized first: symbolic links are resolved (for a path that does not
+exist yet, its longest existing ancestor is resolved and the rest appended),
+so `/var/folders/...` and `/private/var/folders/...` name the same folder and
+the agent's own workspace passes in either form.
+
+Allowed locations:
+
+| Location | Allowed use |
+| --- | --- |
+| The workspace | Read, write and execute |
+| `<root>/tools` | Read and execute |
+| The folder of `node` and the folder of the agent command, as on the agent's `PATH` (such as `/opt/homebrew/bin`) | Read and execute |
+| The install root of `node` and of each agent command: the canonical path of the executable up to its package folder (such as `/opt/homebrew/Cellar/node/<version>`, or the agent's `node_modules/<package>` folder) | Read and execute |
+| `/usr`, `/bin`, `/sbin`, `/etc`, `/dev` | Read and execute (`/dev/null` and `/dev/std*` also written) |
+
+A write is a file-writing tool call (Claude Code `Write`, `Edit` and
+`NotebookEdit` paths, Codex `apply_patch` paths), a shell redirection target
+(`>`, `>>`, `tee`), or the destination of `cp`, `mv`, `rm`, `mkdir`, `touch`
+or `ln`. A sample fails with class `sandbox-breach` when a tool-call input
+names:
+
+- a path, after resolution, outside every allowed location (the run root's
+  other folders, other workspaces, other temporary folders and the source tree
+  are outside), or a write to a read-and-execute location;
 - a path starting with `~`, `$HOME` or `${HOME}`;
 - a URL under `github.com/agent-ix/`, `raw.githubusercontent.com/agent-ix/` or
   `api.github.com/repos/agent-ix/`, or the SSH remote `git@github.com:agent-ix/`;
@@ -237,13 +274,15 @@ sandbox-breach scan is clean.
 | FR-001-AC-3 | `agent-evals tools` against a release whose archive for the host does not match `SHA256SUMS.txt`, or whose archive for the host is missing, exits non-zero, writes no `tools.json` and leaves no `fsl` in the run root. Against a matching release it writes `tools.json` with `format` `agent-evals.tools/1` and non-empty `fsl`, `quoin`, `quire_cli`, `cli_agent_evals`, `docs_commit` (40 or 64 hexadecimal characters) and `host`, and an `inactive` map. | Test (TC-001) |
 | FR-001-AC-4 | `prepare` for EV-000 writes `unit.fsl`, `docs/` and `.ix/` into the workspace and no credential file; it returns a non-empty prompt starting with the fixed preamble, and an environment whose `PATH` lists `<root>/tools/npm/bin` and the `fsl` folder before any other folder, contains neither `<root>/bin` nor any folder under the operator's home other than the node and agent-command folders, and whose `IX_HOME` and `TMPDIR` lie inside the workspace. | Test (TC-001) |
 | FR-001-AC-5 | `run` with `CLAUDE_CODE_OAUTH_TOKEN` unset, or with no Codex `auth.json`, exits non-zero before any sample and names the missing credential; no report is written. With both present, the stub runner `run` starts sees `HOME` = `<root>/home`, every `XDG_*_HOME` under it and `<root>/bin` first on `PATH`; `<root>/home/.codex/auth.json` exists while the stub runs, is absent after `run` ends (also when the stub exits 2), and the operator's `auth.json` is byte-identical before and after. | Test (TC-001) |
-| FR-001-AC-6 | `assert` fails with a failure starting `sandbox-breach:` over transcript fixtures whose tool-call input: reads `$HOME/dev/filament-spec-language/README.md`; reads `~/dev/x`; reads `../../x` from the workspace; reads an absolute path in another workspace under `<root>/work` or in the source tree; runs `git clone git@github.com:agent-ix/filament-driver`; runs `gh repo clone agent-ix/filament-driver` or `gh api repos/agent-ix/filament-driver/contents`; or fetches `https://raw.githubusercontent.com/agent-ix/filament-driver/main/README.md` (one Claude Code and one Codex fixture each). It passes the scan for a fixture with all of these only in assistant text and for tool calls that read `docs/fsl/index.md`, `./unit.fsl` and `/usr/bin/env`. A missing transcript or an unknown format fails with a failure starting `harness-error:`. | Test (TC-001) |
+| FR-001-AC-6 | Over one Claude Code and one Codex transcript fixture for each case, `assert` fails with a failure starting `sandbox-breach:` when a tool call: reads `$HOME/dev/filament-spec-language/README.md`; reads `~/dev/x`; runs `cat ../../x` from the workspace; runs `cd docs && cat ../../x`; reads an absolute path in another workspace under `<root>/work` or in the source tree; writes `/opt/homebrew/bin/x`; runs `git clone git@github.com:agent-ix/filament-driver`; runs `gh repo clone agent-ix/filament-driver` or `gh api repos/agent-ix/filament-driver/contents`; or fetches `https://raw.githubusercontent.com/agent-ix/filament-driver/main/README.md`. It passes the scan for: all of these only in assistant text; `cat docs/fsl/index.md`, `./unit.fsl` and `/usr/bin/env`; `cd docs && cat ../unit.fsl`; a `cd docs` call followed by a later call `cat ../unit.fsl` (Claude Code); a Codex call with `workdir` `docs` reading `../unit.fsl`; the workspace's own absolute path written through the `/private/var/folders` alias and through the `/var/folders` form; and running `/opt/homebrew/bin/node --version` when that folder holds the agent's `node`. A missing transcript, an unknown format, or a `cd "$(pwd)/docs"` the scan cannot resolve fails with a failure starting `harness-error:`. | Test (TC-001) |
 | FR-001-AC-7 | EV-000 `assert` passes for a workspace whose `result.json` matches `tools.json` and the provider's own `fsl check` status, and fails when `fsl_version` differs, when `check_exit` differs, or when `result.json` is missing or is not JSON. | Test (TC-001) |
 | FR-001-AC-8 | A live run of EV-000 with `--agent codex` and with `--agent claude`, each with three repeats and `--keep`, in the per-run home, produces two `cli-agent-evals.report/v1` reports whose `model` members equal `agents.toml`, whose `repeats` is 3, whose EV-000 samples each have `transcriptRetention` `retained`, and whose EV-000 `passRate` is `3/3`; both reports are committed under `agent-evals/reports/` (FR-002). | Demonstration (TC-001) |
 | FR-001-AC-9 | The cell rule maps `3/3` to `pass`, `2/3` and `1/3` to `unstable` and `0/3` to `fail`; a report whose `repeats` is not 3 is refused by the scorecard with a message naming the report. | Test (TC-001) |
 | FR-001-AC-10 | With a stub `fsl` that sleeps past EV-000's `assert_budget_ms`, `assert` returns within the budget plus 5 seconds with a failed assertion whose failure starts `harness-error: assert budget exceeded`, and every `fsl` it started has exited. | Test (TC-001) |
 | FR-001-AC-11 | `run` with a stub `cli-evals` that writes a report and exits 1 records that agent's report as completed; a stub that exits 1 without a report, or exits 2, records `harness-error` for that agent and still runs the other agent. | Test (TC-001) |
 | FR-001-AC-12 | `clean --run <run id>` deletes the run root and the run's kept-transcript folder (FR-002) and nothing else; for an unknown run id it exits non-zero and deletes nothing. | Test (TC-001) |
+| FR-001-AC-13 | With `CLAUDE_CONFIG_DIR`, `CODEX_HOME` and `CLAUDECODE` set in its own environment, `run` starts a stub `cli-evals` that records its environment; the recorded environment holds none of the three, and holds `HOME` = `<root>/home`. | Test (TC-001) |
+| FR-001-AC-14 | The root `Makefile` lists `agent-evals` and `agent-evals-check` in `.PHONY`; with the folder `agent-evals/` present, `make -n agent-evals` prints the `agent-evals run` command (never "is up to date"), and `make agent-evals` with a stub `cli-evals` on `PATH` runs `agent-evals run` to completion. | Test (TC-001) |
 
 ## Dependencies
 

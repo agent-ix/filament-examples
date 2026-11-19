@@ -14,7 +14,7 @@ Verify that the `agent-evals` program answers the runner's provider protocol,
 installs only released tools, builds the sandbox, detects a sandbox breach,
 scores EV-000, and that a live EV-000 run passes for both agents.
 
-Scope: FR-001-AC-1 through FR-001-AC-12.
+Scope: FR-001-AC-1 through FR-001-AC-14.
 
 ## Test Procedure
 
@@ -30,7 +30,8 @@ Scope: FR-001-AC-1 through FR-001-AC-12.
    environment (AC-4).
 5. Run `run` with each credential missing, then with both present and a stub
    runner that records its environment and exits 0 or 2 (AC-5).
-6. Run `assert` over every breach and clean transcript fixture, a missing transcript and
+6. Run `assert` over every breach and pass transcript fixture (working
+   directory tracking, path aliases, tool folders), a missing transcript and
    an unknown format (AC-6).
 7. Run `assert` for EV-000 over a passing workspace and each failing variant
    (AC-7).
@@ -41,6 +42,10 @@ Scope: FR-001-AC-1 through FR-001-AC-12.
 11. Run `run` with stub `cli-evals` programs that exit 1 with a report, 1
     without one, and 2 (AC-11).
 12. Run `clean` for a known and an unknown run id (AC-12).
+13. Run `run` with `CLAUDE_CONFIG_DIR`, `CODEX_HOME` and `CLAUDECODE` set and a
+    stub runner that records its environment (AC-13).
+14. Read the root `Makefile` `.PHONY` line, run `make -n agent-evals` and
+    `make agent-evals` with a stub `cli-evals` (AC-14).
 
 ## Expected Results
 

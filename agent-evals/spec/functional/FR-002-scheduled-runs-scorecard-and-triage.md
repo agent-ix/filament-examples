@@ -101,7 +101,8 @@ root and that folder after the run's pull request merges.
 ### Decision: the merge gate is a local check
 
 CI here is started by hand only, so no workflow enforces the gate. The merger
-runs `make agent-evals-check RUN=<run id>` on the pull request's branch before
+runs `make agent-evals-check RUN=<run id>` (a target of the root `Makefile`,
+listed in `.PHONY`, FR-001) on the pull request's branch before
 merging; the target calls `agent-evals triage --check --run <run id>` and
 `agent-evals scorecard --check` and nothing else. The pull request is merged
 only when both exit 0, and is otherwise reviewed like any other change.

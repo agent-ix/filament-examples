@@ -36,3 +36,21 @@ Not mergeable. FND-001 is high: cli-agent-evals 0.3.0 looks for Claude transcrip
 | FND-004 | low | Runner integration is unstated: how `agent-evals` is on the runner's PATH (provider.command is a bare name resolved by spawnSync; under cargo run it is not), and that `cli-evals run` exits 1 whenever any scenario fails, which `run` must not treat as fatal | agent-evals/spec/functional/FR-001-agent-eval-harness.md:30 |
 | FND-005 | low | The operator's Codex auth.json is copied into every workspace (and kept with --keep), so the agent can read or commit it. Codex rotates refresh tokens, so concurrent copies can invalidate the operator's login | agent-evals/spec/functional/FR-001-agent-eval-harness.md:90 |
 | FND-006 | low | The Constraints sections of FR-001 and FR-002 are bullet lists; quire matrix warns section-holds-no-table for both | agent-evals/spec/functional/FR-001-agent-eval-harness.md:200 |
+
+## New findings (disposition pass 1)
+
+| ID | Severity | Summary | Refs |
+| --- | --- | --- | --- |
+| FND-007 | medium | The tightened breach scan now gives false sandbox-breach results: absolute workspace paths in the macOS /private/var/folders realpath form, absolute paths into the node and agent-command PATH folders (e.g. /opt/homebrew/bin), and `..` resolved against the workspace root instead of the call's cwd (`cd docs && cat ../unit.fsl`) all count as breaches, and AC-6 has no pass case for them | agent-evals/spec/functional/FR-001-agent-eval-harness.md:158 |
+| FND-008 | low | `run` sets HOME/XDG for the runner but does not clear inherited CLAUDE_CONFIG_DIR, CODEX_HOME or CLAUDECODE; when set in the operator environment (an agent session, a profile) they override the per-run home and transcripts again land where the runner does not look, or nested claude refuses to start | agent-evals/spec/functional/FR-001-agent-eval-harness.md:114 |
+
+## Dispositions
+
+| FND | Outcome | Reason |
+| --- | --- | --- |
+| FND-001 | fixed | - |
+| FND-002 | fixed | - |
+| FND-003 | fixed | - |
+| FND-004 | fixed | - |
+| FND-005 | fixed | - |
+| FND-006 | fixed | - |
