@@ -62,6 +62,12 @@ assert.equal(result.last_stage, 'S3');
 assert.ok(result.diagnostics.length > 0, 'the undeclared field has a diagnostic');
 assert.equal(result.diagnostics[0].code, 'missing_declaration');
 assert.equal(result.diagnostics[0].cause, 'missing-name');
+assert.deepEqual(result.diagnostics[0].locus, {
+  kind: 'region',
+  source: { authority: 'example', identity: 'example:library/misspelled' },
+  start: 301,
+  end: 310,
+});
 assert.deepEqual(result.items, []);
 console.log('The misspelled field is refused before evaluation');
 JS
