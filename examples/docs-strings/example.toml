@@ -9,7 +9,7 @@ file = "rules/literals.fsl"
 command = "run requests/literal-equality.json"
 status = "running"
 expect_exit = 0
-expect_verdict = "holds"
+expect_verdict = "completed"
 
 [[case]]
 id = "empty-literal"
@@ -19,7 +19,7 @@ file = "rules/literals.fsl"
 command = "run requests/empty-literal.json"
 status = "running"
 expect_exit = 0
-expect_verdict = "holds"
+expect_verdict = "completed"
 
 [[case]]
 id = "composed-escape"
@@ -29,7 +29,7 @@ file = "rules/literals.fsl"
 command = "run requests/composed-escape.json"
 status = "running"
 expect_exit = 0
-expect_verdict = "holds"
+expect_verdict = "completed"
 
 [[case]]
 id = "combining-distinct"
@@ -39,7 +39,7 @@ file = "rules/literals.fsl"
 command = "run requests/combining-distinct.json"
 status = "running"
 expect_exit = 0
-expect_verdict = "holds"
+expect_verdict = "completed"
 
 [[case]]
 id = "surrogate-pair"
@@ -49,7 +49,7 @@ file = "rules/literals.fsl"
 command = "run requests/surrogate-pair.json"
 status = "running"
 expect_exit = 0
-expect_verdict = "holds"
+expect_verdict = "completed"
 
 [[case]]
 id = "embedded-nul"
@@ -59,7 +59,7 @@ file = "rules/literals.fsl"
 command = "run requests/embedded-nul.json"
 status = "running"
 expect_exit = 0
-expect_verdict = "holds"
+expect_verdict = "completed"
 
 [[case]]
 id = "json-escapes"
@@ -69,7 +69,7 @@ file = "rules/literals.fsl"
 command = "run requests/json-escapes.json"
 status = "running"
 expect_exit = 0
-expect_verdict = "holds"
+expect_verdict = "completed"
 
 [[case]]
 id = "malformed-escape"
@@ -113,7 +113,7 @@ expect_verdict = "refusal"
 
 [[case]]
 id = "string-ordering"
-rule = "ordered"
+rule = "compareStrings"
 statement = "Ordering is not an admitted String operator."
 file = "rules/ordering.fsl"
 command = "compile requests/string-ordering.json"

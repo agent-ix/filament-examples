@@ -1,0 +1,13 @@
+{
+  "category": "success",
+  "last_stage": "S6a",
+  "result": {
+    "kind": "completed",
+    "value": {
+      "kind": "string",
+      "text": "before\u0000after"
+    }
+  },
+  "first_diagnostic": null,
+  "items": []
+}

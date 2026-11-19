@@ -1,0 +1,10 @@
+{
+  "category": "refusal",
+  "last_stage": "S1",
+  "result": null,
+  "first_diagnostic": {
+    "code": "invalid_syntax",
+    "cause": "invalid-token"
+  },
+  "items": []
+}
