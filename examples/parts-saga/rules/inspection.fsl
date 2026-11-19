@@ -29,13 +29,13 @@ protocol Inspect using p over (job: Parts::Job) on origin {
         repeat Again by Inspection visible (inspected.rework) max 2 while { inspected.rework }
           sequence Remachine {
             attempt Remachined by Machining on Parts::MachiningStation::process contracts []
-              as (again: Parts::AttemptView) { again.ok };
+              as (again: Boolean) { again };
           }
           exhausted sequence GiveUp {}
       }
       case scrap when { not inspected.pass and not inspected.rework } sequence Scrap {
         attempt Freed by Machining on Parts::MachiningStation::release contracts [MachineReleased]
-          as (freed: Parts::AttemptView) { freed.ok };
+          as (freed: Boolean) { freed };
       }
     }
   }
