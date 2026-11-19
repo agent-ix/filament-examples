@@ -83,4 +83,4 @@ These cases are staged until the language supports them.
 
 ## Probability reference cases
 
-The folder `rules/probability` holds one subfolder for each page of the probability reference: `models`, `claims`, `schedulers`, `sampling` and `exact`. The claims that quantify over every scheduler compile. The model has no random parameter, so the scheduler chooses each call's argument and an every-scheduler probability is 0 or 1. The two staged cases use a random parameter, which the driver refuses when it writes the package.
+The folder `rules/probability` holds one subfolder for each page of the probability reference: `models`, `claims`, `schedulers`, `sampling` and `exact`. The claims that quantify over every scheduler compile. `claims-probability-on-each` records a separate claim for every service. The model has no random parameter, so the scheduler chooses each call's argument and an every-scheduler probability is 0 or 1. The two staged cases use a random parameter, which the driver refuses when it writes the package.

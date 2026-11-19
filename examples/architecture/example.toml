@@ -313,6 +313,17 @@ expect_verdict = "checked: probability claim"
 serves = "Probability reference (claims)"
 
 [[case]]
+id = "claims-probability-on-each"
+rule = "ServiceAvailable"
+statement = "Each service stays up for the next 10 steps with probability at least 0.99 under every scheduler."
+file = "rules/probability/claims/claims-probability-on-each.fsl"
+command = "compile requests/probability/claims/claims-probability-on-each.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "checked: probability claim"
+serves = "Probability reference (claims)"
+
+[[case]]
 id = "claims-quantile-steps"
 rule = ""
 statement = "The claim states that once a service is up, it is down within 5 steps on at least 95% of runs."

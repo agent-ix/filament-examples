@@ -1,0 +1,11 @@
+language "ix:native" edition "1-draft";
+profile v = "filament.model.complete/v1";
+profile ev = "filament.temporal.event-position.false-extension/v1";
+model Arch = "example/architecture";
+
+// Each service has its own probability claim. With no random parameter, the
+// every-scheduler probability is 0 or 1 for each service independently.
+probabilistic ServiceAvailable using ev on Arch over (s: Arch::Service)
+    under every scheduler on each (member: Arch::Service) {
+  probability >= 0.99 [ always[0,10] holds(member.up) ]
+}
