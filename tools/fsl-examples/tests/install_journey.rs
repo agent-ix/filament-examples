@@ -128,8 +128,17 @@ fn documented_local_install_runs_version_check_and_an_original_sample_in_a_clean
     if let Some(config) = std::env::var_os("FSL_INSTALL_CONFIG") {
         install.arg("--config").arg(config);
     }
-    let installed = install.output()?;
-    expect_exit(&installed, 0, "README cargo install into an empty prefix")?;
+    eprintln!(
+        "README cargo install from {} into {}",
+        driver.display(),
+        prefix.display()
+    );
+    let installed = install.status()?;
+    if !installed.success() {
+        return Err(
+            format!("README cargo install into an empty prefix failed: {installed}").into(),
+        );
+    }
     let binary = prefix
         .join("bin")
         .join(format!("fsl{}", std::env::consts::EXE_SUFFIX));
