@@ -3,9 +3,9 @@ id: FR-003
 title: "Scenario EV-005: write a requirement, validate it and link an FSL claim to its matrix row"
 type: FR
 relationships:
-  - target: ix://agent-ix/filament-examples/FR-001
+  - target: ix://agent-ix/filament-examples/agent-evals/FR-001
     type: depends_on
-  - target: ix://agent-ix/filament-examples/FR-002
+  - target: ix://agent-ix/filament-examples/agent-evals/FR-002
     type: depends_on
 ---
 
@@ -43,11 +43,14 @@ status comes from the run.
   `{"entries": [{"symbol": "<unit file>#<claim name>", "path": "<unit file>", "outcome": "<outcome>", "traceIds": ["<criterion id>"]}]}`,
   with one entry for every item of the analyze request, in request order. The
   path is relative to the repository root.
-- **Outcome.** Taken from the item's `record.result` in the `analyze`
-  document: `proved` and `measured` give `pass`; `refuted` gives `fail`;
-  `tested`, `inconclusive`, `unsupported`, `declined`, `incomplete`, `failed`
-  and a disposition with no result give `error`. Only a proof or a measurement
-  the claim asks for discharges the criterion.
+- **Outcome.** Taken from the item's settlement in the `analyze` document,
+  three ways, as the FSL documentation's outcomes page defines them: `proved`
+  gives `pass`; `refuted` gives `fail`; `measured` gives `pass` when its
+  decision is `accepted`, `fail` when it is `rejected` (a rejected measurement
+  fails a run exactly as a violated rule does) and `error` when it is
+  `undecided`; every other result (`tested`, `inconclusive`, `unsupported`,
+  `declined`, `incomplete`, `failed`) and a disposition with no result give
+  `error`. Only a proof or an accepted measurement discharges the criterion.
 - **Where it is emitted.** By whoever runs the analysis: run the suite's
   command, write the entries file from the `analyze` document, record it with
   `quoin evidence record --suite SUITE-<n> --tool fsl --adapter entries --results <file>`,
@@ -61,16 +64,20 @@ status comes from the run.
 
 ### Refusal when the record is stale or missing
 
-The released quoin refuses a criterion's evidence in these cases, and the
-scenario relies on them:
+Quoin binds a criterion only through a passing entry; a failing, erroring or
+skipped entry binds nothing. A criterion's evidence is refused in these cases,
+as the released quoin reports them:
 
 | Case | `quoin matrix` evidence status | `quoin evidence audit` finding |
 | --- | --- | --- |
-| The latest run's entry for the criterion is `fail` or `error` | `stale` | `stale-evidence` |
-| The latest run of the suite has no entry for a bound claim | `suspect` | `vacuous-evidence` |
-| No run binds the criterion | `undischarged`, or `no run evidence` when the store holds no run at all | `undischarged` |
+| An earlier run bound the criterion with a passing entry, and the latest run's entry for it is `fail` or `error` | `stale` | `stale-evidence` |
+| An earlier run bound the criterion, and the latest run of the suite has no entry for the bound claim | `suspect` | `vacuous-evidence` |
+| No run ever bound the criterion, and the store binds no criterion at all: no run is recorded, or every recorded run bound nothing (such as a first and only run whose entry is `fail`) | `no run evidence` | `undischarged` |
+| No run ever bound the criterion, while other criteria are bound | `undischarged` | `undischarged` |
 
-`quoin evidence audit --strict` exits 1 in each case. Quoin does not compare a
+`quoin evidence audit --strict` exits 1 in each case. A claim that fails on its
+first recorded run is therefore shown as never evidenced, not as stale; it
+becomes `stale` only once a passing run had bound it. Quoin does not compare a
 run with later commits, so it does not see a claim edited after its run. The
 scenario closes that gap itself: `assert` runs the sandbox `fsl analyze` on the
 final workspace, maps each item as above, and fails the sample as
@@ -80,32 +87,41 @@ as `claim-edited` when the unit file differs from the fixture.
 ### Scenarios
 
 **EV-005 (the claim holds).** Fixture: a git repository with one commit holding
-`claims/door.fsl` (a unit with the claims `DoorHeld` and `DoorSlams` and the
-model they need), `claims/analyze.json` (a `native-analyze/1` request with one
-item, `DoorHeld`), and no `spec/` folder. With the release `fsl`, `DoorHeld`
-settles `proved` and `DoorSlams` settles `refuted`; the provider's tests check
-both. Task: write `spec/functional/FR-001-*.md` whose criterion `FR-001-AC-1`
-says the door is held while it is open, is verified by analysis with `fsl` and
-names `DoorHeld`; validate it with `quire`; declare the analysis suite; run the
+`claims/door.fsl` (a unit with the claim `DoorHeld` and the model it needs),
+`claims/analyze.json` (a `native-analyze/1` request with one item,
+`DoorHeld`), and no `spec/` folder. With the release `fsl`, `DoorHeld` settles
+`proved`; the provider's tests check it. Task: write
+`spec/functional/FR-001-*.md` whose criterion `FR-001-AC-1` says the door is
+held while it is open, is verified by analysis with `fsl` and names
+`DoorHeld`; validate it with `quire`; declare the analysis suite; run the
 analysis and record its result as evidence for `FR-001-AC-1`; show the test
 matrix; and write `result.json` with `criterion` and `evidence_status` (the
 status `quoin matrix` shows for it).
 
-**EV-105 (the claim is refuted).** The same fixture and task, but the
-request's item and the criterion name `DoorSlams`. The expected outcome is the
-refusal: the run is recorded with outcome `fail`, the row is `stale`, and
-`result.json` says `stale`.
+**EV-105 (a change breaks the claim).** Fixture: the EV-005 repository after a
+correct EV-005 solution (the requirement, the suite row, one recorded run of
+`2026-01-05T12:00:00Z` whose `DoorHeld` entry passed and bound `FR-001-AC-1`,
+and its mock inspection), plus a second commit that changes the door model in
+`claims/door.fsl` so that `DoorHeld` settles `refuted`. Task: the controller
+changed in the last commit; run the analysis suite again, record the result as
+evidence for `FR-001-AC-1`, show the test matrix, and write `result.json` with
+`criterion` and `evidence_status`. The expected outcome is the refusal: a
+second run recorded with outcome `fail`, the row `stale` with a
+`stale-evidence` finding, and `result.json` saying `stale`.
 
 **EV-205 (the rule written in the requirement).** The same task as EV-005, with
 the rule written in the requirement's Markdown under a `### <clause id>`
 heading and read in place by `fsl` through the package's extraction member, as
 the documentation's "Rules in a Markdown specification" describes. The entry's
 symbol is `<requirement file>#<clause id>`. It passes on the EV-005 criteria.
-`agent-evals tools` probes the sandbox `fsl` with a fixture package holding an
-extraction member; while `fsl` refuses it (`extraction-requires-run`),
-`tools.json` marks EV-205 inactive with that code, `describe` leaves it out, and
-the scorecard lists it as inactive. When a release accepts the member, EV-205
-runs with no change to the harness.
+`agent-evals tools` probes the sandbox `fsl` with `fsl compile` on a fixture
+compile request whose package holds an extraction member. While `fsl compile`
+refuses it, `tools.json` marks EV-205 inactive with the refusal code (today
+`extraction-requires-run`), `describe` leaves it out, and the scorecard lists
+it as inactive with that code; any refusal code keeps it inactive, and a code
+other than `extraction-requires-run` is shown as a changed reason. When a
+release's `fsl compile` accepts the member, EV-205 runs with no change to the
+harness.
 
 ### Assertion
 
@@ -126,8 +142,11 @@ For EV-005, `assert` passes when all of these hold:
 7. `result.json` has `criterion` `FR-001-AC-1` and `evidence_status` `bound`.
 8. The FR-001 sandbox-breach scan is clean.
 
-For EV-105, items 3, 4 and 7 expect `stale`, a `stale-evidence` finding for
-`FR-001-AC-1` and `evidence_status` `stale`, and item 5 expects outcome `fail`.
+For EV-105, item 3 expects `evidence_status` `stale`; item 4 expects a
+`stale-evidence` finding for `FR-001-AC-1`; item 5 expects a latest run newer
+than the fixture's run, with outcome `fail`, while the fixture's passing run is
+still in the store; item 6 needs `fsl analyze` and `quoin evidence record`; and
+item 7 expects `evidence_status` `stale`.
 
 ## Inputs
 
@@ -145,12 +164,12 @@ For EV-105, items 3, 4 and 7 expect `stale`, a `stale-evidence` finding for
 
 | ID | Criteria | Verification |
 | --- | --- | --- |
-| FR-003-AC-1 | With the release `fsl`, the EV-005 fixture request settles `DoorHeld` `proved` and a request naming `DoorSlams` settles it `refuted`. | Test (TC-003) |
-| FR-003-AC-2 | The outcome map turns `proved` and `measured` into `pass`, `refuted` into `fail`, and `tested`, `inconclusive`, `unsupported`, `declined`, `incomplete`, `failed` and a disposition with no result into `error`. | Test (TC-003) |
+| FR-003-AC-1 | With the release `fsl`, the EV-005 fixture request settles `DoorHeld` `proved`, and the same request over the EV-105 fixture's second commit settles it `refuted`. | Test (TC-003) |
+| FR-003-AC-2 | The outcome map turns `proved` into `pass`, `refuted` into `fail`, `measured` with decision `accepted` into `pass`, `measured` with decision `rejected` into `fail`, `measured` with decision `undecided` into `error`, and `tested`, `inconclusive`, `unsupported`, `declined`, `incomplete`, `failed` and a disposition with no result into `error`. Recording a `rejected` measurement's entry with the released quoin leaves its criterion unbound (`no run evidence` or `undischarged`), never `bound`. | Test (TC-003) |
 | FR-003-AC-3 | On a reference solution workspace for EV-005 (the requirement, the suite row, one entries run recorded with `--adapter entries` and one mock inspection), `assert` passes and its `checks` hold one member for each of the eight items. | Test (TC-003) |
-| FR-003-AC-4 | `assert` on EV-005 fails: as `stale-record` when the recorded entry says `pass` but the provider's analysis gives `fail`; as `claim-edited` when `claims/door.fsl` differs from the fixture; when the criterion's Verification is `Test` (item 2); when the latest run has no entry for `DoorHeld` (item 3, `suspect`); when no run is recorded (item 3); and when the transcript has no `quoin evidence record` tool call (item 6). | Test (TC-003) |
-| FR-003-AC-5 | On a reference solution workspace for EV-105 (the run recorded with outcome `fail`), `assert` passes with `evidence_status` `stale` and a `stale-evidence` finding, and fails when the entry was recorded as `pass`. | Test (TC-003) |
-| FR-003-AC-6 | While the sandbox `fsl` refuses an extraction member with `extraction-requires-run`, `tools.json` marks EV-205 inactive with that code and `describe` omits it; with a stub `fsl` that accepts the probe, `describe` lists EV-205. | Test (TC-003) |
+| FR-003-AC-4 | `assert` on EV-005 fails: as `stale-record` when the recorded entry says `pass` but the provider's analysis gives `fail`; as `claim-edited` when `claims/door.fsl` differs from the fixture; when the criterion's Verification is `Test` (item 2); when the only recorded run's entry is `fail` (item 3, `no run evidence`); when no run is recorded (item 3); and when the transcript has no `quoin evidence record` tool call (item 6). | Test (TC-003) |
+| FR-003-AC-5 | On a reference solution workspace for EV-105 (the fixture's passing run, then a second run recorded with outcome `fail`), `quoin matrix` shows `stale` and `quoin evidence audit` a `stale-evidence` finding for `FR-001-AC-1`, and `assert` passes. `assert` fails when the second run's entry was recorded as `pass`, when no second run was recorded (item 5), and when the fixture's passing run was deleted from the store (item 5). | Test (TC-003) |
+| FR-003-AC-6 | While the sandbox `fsl compile` refuses the probe request's extraction member with `extraction-requires-run`, `tools.json` marks EV-205 inactive with that code and `describe` omits it; with a stub `fsl` whose `compile` refuses with another code, EV-205 stays inactive with that code; with a stub `fsl` whose `compile` accepts the probe, `describe` lists EV-205. | Test (TC-003) |
 | FR-003-AC-7 | EV-005 and EV-105 run three times for `codex` and for `claude` in a scheduled run, and every failed sample has a class and a Linear key in the run's `triage.md`. | Demonstration (TC-003) |
 
 ## Dependencies

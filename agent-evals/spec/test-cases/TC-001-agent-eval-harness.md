@@ -3,7 +3,7 @@ id: TC-001
 title: "Agent eval harness: provider protocol, released tools, sandbox and EV-000"
 type: TC
 relationships:
-  - target: ix://agent-ix/filament-examples/FR-001
+  - target: ix://agent-ix/filament-examples/agent-evals/FR-001
     type: verifies
 ---
 # TC-001: Agent eval harness
@@ -14,7 +14,7 @@ Verify that the `agent-evals` program answers the runner's provider protocol,
 installs only released tools, builds the sandbox, detects a sandbox breach,
 scores EV-000, and that a live EV-000 run passes for both agents.
 
-Scope: FR-001-AC-1 through FR-001-AC-9.
+Scope: FR-001-AC-1 through FR-001-AC-12.
 
 ## Test Procedure
 
@@ -28,14 +28,19 @@ Scope: FR-001-AC-1 through FR-001-AC-9.
    and `npm` programs on `PATH` (AC-3).
 4. Run `prepare` for EV-000 and check the workspace files, prompt and
    environment (AC-4).
-5. Run `run` with each credential missing (AC-5).
-6. Run `assert` over the three transcript fixtures, a missing transcript and
+5. Run `run` with each credential missing, then with both present and a stub
+   runner that records its environment and exits 0 or 2 (AC-5).
+6. Run `assert` over every breach and clean transcript fixture, a missing transcript and
    an unknown format (AC-6).
 7. Run `assert` for EV-000 over a passing workspace and each failing variant
    (AC-7).
 8. Run EV-000 live for `codex` and `claude` with three repeats and `--keep`
    and commit the two reports (AC-8).
 9. Feed the cell rule each pass count and a report with `repeats` 2 (AC-9).
+10. Run EV-000 `assert` with a stub `fsl` that sleeps past the budget (AC-10).
+11. Run `run` with stub `cli-evals` programs that exit 1 with a report, 1
+    without one, and 2 (AC-11).
+12. Run `clean` for a known and an unknown run id (AC-12).
 
 ## Expected Results
 
