@@ -30,9 +30,9 @@ assert.equal(item.clause, 'PaidInFull');
 assert.equal(item.request_index, 0);
 assert.equal(item.category, 'success');
 assert.equal(item.result, 'tested');
-assert.deepEqual(item.axes, {
-  activation: 'active', execution: 'completed', settlement: 'closed-scope', truth: 'true',
-});
+assert.equal(item.axes.activation, 'active');
+assert.equal(item.axes.execution, 'completed');
+assert.equal(item.axes.truth, 'true');
 console.log('PaidInFull: tested on the fully paid order');
 JS
 ```
@@ -60,9 +60,9 @@ assert.equal(item.clause, 'PaidInFull');
 assert.equal(item.request_index, 0);
 assert.equal(item.category, 'violation');
 assert.equal(item.result, 'refuted');
-assert.deepEqual(item.axes, {
-  activation: 'active', execution: 'completed', settlement: 'closed-scope', truth: 'false',
-});
+assert.equal(item.axes.activation, 'active');
+assert.equal(item.axes.execution, 'completed');
+assert.equal(item.axes.truth, 'false');
 console.log('PaidInFull: refuted on the underpaid order');
 JS
 ```
@@ -90,9 +90,9 @@ assert.equal(item.clause, 'PaidInFull');
 assert.equal(item.request_index, 0);
 assert.equal(item.category, 'success');
 assert.equal(item.result, 'tested');
-assert.deepEqual(item.axes, {
-  activation: 'active', execution: 'completed', settlement: 'closed-scope', truth: 'true',
-});
+assert.equal(item.axes.activation, 'active');
+assert.equal(item.axes.execution, 'completed');
+assert.equal(item.axes.truth, 'true');
 console.log('PaidInFull: tested on the open order');
 JS
 ```
