@@ -1,0 +1,6 @@
+// QSL FR-035-AC-2; FSpec FR-339
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+type Items = Population<M::Item>[0];
+function probe(): Boolean pure { true }
+

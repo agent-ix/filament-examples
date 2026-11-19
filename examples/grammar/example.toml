@@ -1,0 +1,1812 @@
+name = "grammar"
+summary = "Source grammar: lexical boundaries, expressions, declarations, claims, and syntax refusals."
+[[case]]
+id = "type-rounding-exact"
+statement = "The exact rounding spelling parses in a decimal type."
+file = "rules/type-rounding-exact.fsl"
+command = "parse example grammar/type-rounding-exact rules/type-rounding-exact.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "type-rounding-toward-zero"
+statement = "The toward-zero rounding spelling parses in a decimal type."
+file = "rules/type-rounding-toward-zero.fsl"
+command = "parse example grammar/type-rounding-toward-zero rules/type-rounding-toward-zero.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "type-rounding-toward-positive"
+statement = "The toward-positive rounding spelling parses in a decimal type."
+file = "rules/type-rounding-toward-positive.fsl"
+command = "parse example grammar/type-rounding-toward-positive rules/type-rounding-toward-positive.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "type-rounding-toward-negative"
+statement = "The toward-negative rounding spelling parses in a decimal type."
+file = "rules/type-rounding-toward-negative.fsl"
+command = "parse example grammar/type-rounding-toward-negative rules/type-rounding-toward-negative.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "type-rounding-nearest-even"
+statement = "The nearest-even rounding spelling parses in a decimal type."
+file = "rules/type-rounding-nearest-even.fsl"
+command = "parse example grammar/type-rounding-nearest-even rules/type-rounding-nearest-even.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "type-rounding-nearest-away"
+statement = "The nearest-away rounding spelling parses in a decimal type."
+file = "rules/type-rounding-nearest-away.fsl"
+command = "parse example grammar/type-rounding-nearest-away rules/type-rounding-nearest-away.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "type-text-unicode-scalars"
+statement = "The unicode-scalars text profile parses in a text type."
+file = "rules/type-text-unicode-scalars.fsl"
+command = "parse example grammar/type-text-unicode-scalars rules/type-text-unicode-scalars.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "type-text-nfc"
+statement = "The nfc text profile parses in a text type."
+file = "rules/type-text-nfc.fsl"
+command = "parse example grammar/type-text-nfc rules/type-text-nfc.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "type-text-nfd"
+statement = "The nfd text profile parses in a text type."
+file = "rules/type-text-nfd.fsl"
+command = "parse example grammar/type-text-nfd rules/type-text-nfd.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "type-text-nfkc"
+statement = "The nfkc text profile parses in a text type."
+file = "rules/type-text-nfkc.fsl"
+command = "parse example grammar/type-text-nfkc rules/type-text-nfkc.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "type-text-nfkd"
+statement = "The nfkd text profile parses in a text type."
+file = "rules/type-text-nfkd.fsl"
+command = "parse example grammar/type-text-nfkd rules/type-text-nfkd.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "type-text-binary-utf8"
+statement = "The binary-utf8 text profile parses in a text type."
+file = "rules/type-text-binary-utf8.fsl"
+command = "parse example grammar/type-text-binary-utf8 rules/type-text-binary-utf8.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "type-population"
+statement = "A population maximum uses one unsigned bound."
+file = "rules/type-population.fsl"
+command = "parse example grammar/type-population rules/type-population.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "type-quantity-compound"
+statement = "Compound unit factors take signed integer powers."
+file = "rules/type-quantity-compound.fsl"
+command = "parse example grammar/type-quantity-compound rules/type-quantity-compound.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "object-members"
+statement = "Source objects admit identity, fields, population, and operation members."
+file = "rules/object-members.fsl"
+command = "parse example grammar/object-members rules/object-members.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "model-import"
+statement = "Imports precede model declarations and function declarations."
+file = "rules/model-import.fsl"
+command = "parse example grammar/model-import rules/model-import.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "temporal-eventually-bounded"
+statement = "A bounded eventually temporal operator parses."
+file = "rules/temporal-eventually-bounded.fsl"
+command = "parse example grammar/temporal-eventually-bounded rules/temporal-eventually-bounded.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "temporal-eventually-unbounded"
+statement = "A unbounded eventually temporal operator parses."
+file = "rules/temporal-eventually-unbounded.fsl"
+command = "parse example grammar/temporal-eventually-unbounded rules/temporal-eventually-unbounded.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "temporal-always-bounded"
+statement = "A bounded always temporal operator parses."
+file = "rules/temporal-always-bounded.fsl"
+command = "parse example grammar/temporal-always-bounded rules/temporal-always-bounded.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "temporal-always-unbounded"
+statement = "A unbounded always temporal operator parses."
+file = "rules/temporal-always-unbounded.fsl"
+command = "parse example grammar/temporal-always-unbounded rules/temporal-always-unbounded.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "temporal-once-bounded"
+statement = "A bounded once temporal operator parses."
+file = "rules/temporal-once-bounded.fsl"
+command = "parse example grammar/temporal-once-bounded rules/temporal-once-bounded.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "temporal-once-unbounded"
+statement = "A unbounded once temporal operator parses."
+file = "rules/temporal-once-unbounded.fsl"
+command = "parse example grammar/temporal-once-unbounded rules/temporal-once-unbounded.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "temporal-historically-bounded"
+statement = "A bounded historically temporal operator parses."
+file = "rules/temporal-historically-bounded.fsl"
+command = "parse example grammar/temporal-historically-bounded rules/temporal-historically-bounded.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "temporal-historically-unbounded"
+statement = "A unbounded historically temporal operator parses."
+file = "rules/temporal-historically-unbounded.fsl"
+command = "parse example grammar/temporal-historically-unbounded rules/temporal-historically-unbounded.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "temporal-until"
+statement = "A bounded until temporal relation parses."
+file = "rules/temporal-until.fsl"
+command = "parse example grammar/temporal-until rules/temporal-until.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "temporal-release"
+statement = "A bounded release temporal relation parses."
+file = "rules/temporal-release.fsl"
+command = "parse example grammar/temporal-release rules/temporal-release.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "temporal-since"
+statement = "A bounded since temporal relation parses."
+file = "rules/temporal-since.fsl"
+command = "parse example grammar/temporal-since rules/temporal-since.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "temporal-triggered"
+statement = "A bounded triggered temporal relation parses."
+file = "rules/temporal-triggered.fsl"
+command = "parse example grammar/temporal-triggered rules/temporal-triggered.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "temporal-activation-capture"
+statement = "Temporal activation, filtering, clock, and capture syntax compose."
+file = "rules/temporal-activation-capture.fsl"
+command = "parse example grammar/temporal-activation-capture rules/temporal-activation-capture.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "temporal-fairness"
+statement = "A temporal body admits fairness before its formula."
+file = "rules/temporal-fairness.fsl"
+command = "parse example grammar/temporal-fairness rules/temporal-fairness.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "protocol-sequence"
+statement = "A protocol sequence contains a named check."
+file = "rules/protocol-sequence.fsl"
+command = "parse example grammar/protocol-sequence rules/protocol-sequence.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "protocol-choice"
+statement = "A choice has two guarded control branches."
+file = "rules/protocol-choice.fsl"
+command = "parse example grammar/protocol-choice rules/protocol-choice.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "protocol-join-all"
+statement = "Parallel branches join with all."
+file = "rules/protocol-join-all.fsl"
+command = "parse example grammar/protocol-join-all rules/protocol-join-all.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "protocol-join-any"
+statement = "Parallel branches join with any."
+file = "rules/protocol-join-any.fsl"
+command = "parse example grammar/protocol-join-any rules/protocol-join-any.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "protocol-join-quorum1"
+statement = "Parallel branches join with quorum(1)."
+file = "rules/protocol-join-quorum1.fsl"
+command = "parse example grammar/protocol-join-quorum1 rules/protocol-join-quorum1.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "protocol-fence-acquire"
+statement = "A protocol fence takes acquire ordering."
+file = "rules/protocol-fence-acquire.fsl"
+command = "parse example grammar/protocol-fence-acquire rules/protocol-fence-acquire.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "protocol-fence-release"
+statement = "A protocol fence takes release ordering."
+file = "rules/protocol-fence-release.fsl"
+command = "parse example grammar/protocol-fence-release rules/protocol-fence-release.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "protocol-fence-acq_rel"
+statement = "A protocol fence takes acq_rel ordering."
+file = "rules/protocol-fence-acq_rel.fsl"
+command = "parse example grammar/protocol-fence-acq_rel rules/protocol-fence-acq_rel.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "protocol-fence-seq_cst"
+statement = "A protocol fence takes seq_cst ordering."
+file = "rules/protocol-fence-seq_cst.fsl"
+command = "parse example grammar/protocol-fence-seq_cst rules/protocol-fence-seq_cst.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "channel-delivery-unknown"
+statement = "A channel admits delivery policy unknown."
+file = "rules/channel-delivery-unknown.fsl"
+command = "parse example grammar/channel-delivery-unknown rules/channel-delivery-unknown.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "channel-delivery-at-most-once"
+statement = "A channel admits delivery policy at-most-once."
+file = "rules/channel-delivery-at-most-once.fsl"
+command = "parse example grammar/channel-delivery-at-most-once rules/channel-delivery-at-most-once.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "channel-delivery-at-least-once"
+statement = "A channel admits delivery policy at-least-once."
+file = "rules/channel-delivery-at-least-once.fsl"
+command = "parse example grammar/channel-delivery-at-least-once rules/channel-delivery-at-least-once.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "channel-delivery-exactly-once-premise"
+statement = "A channel admits delivery policy exactly-once-premise."
+file = "rules/channel-delivery-exactly-once-premise.fsl"
+command = "parse example grammar/channel-delivery-exactly-once-premise rules/channel-delivery-exactly-once-premise.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "channel-delivery-0-2"
+statement = "A channel admits delivery policy [0, 2]."
+file = "rules/channel-delivery-0-2.fsl"
+command = "parse example grammar/channel-delivery-0-2 rules/channel-delivery-0-2.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "state-invariant"
+statement = "A state invariant has an explicit current anchor."
+file = "rules/state-invariant.fsl"
+command = "parse example grammar/state-invariant rules/state-invariant.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "state-pre-post"
+statement = "Preconditions and postconditions name an operation."
+file = "rules/state-pre-post.fsl"
+command = "parse example grammar/state-pre-post rules/state-pre-post.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "graph-possible"
+statement = "A possible claim admits a model binding and temporal graph predicate."
+file = "rules/graph-possible.fsl"
+command = "parse example grammar/graph-possible rules/graph-possible.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "graph-unique-path"
+statement = "A unique-path claim names source and target predicates."
+file = "rules/graph-unique-path.fsl"
+command = "parse example grammar/graph-unique-path rules/graph-unique-path.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "verification-plan"
+statement = "A verification plan names claim, method, domain, and bound."
+file = "rules/verification-plan.fsl"
+command = "parse example grammar/verification-plan rules/verification-plan.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "synthesis-objective"
+statement = "A synthesis declaration admits an objective before satisfies."
+file = "rules/synthesis-objective.fsl"
+command = "parse example grammar/synthesis-objective rules/synthesis-objective.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "temporal-missing-over"
+statement = "A temporal declaration without its over binding is refused."
+file = "rules/temporal-missing-over.fsl"
+command = "parse example grammar/temporal-missing-over rules/temporal-missing-over.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "syntax refused"
+
+[[case]]
+id = "temporal-malformed-interval"
+statement = "An interval needs a comma between its bounds."
+file = "rules/temporal-malformed-interval.fsl"
+command = "parse example grammar/temporal-malformed-interval rules/temporal-malformed-interval.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "syntax refused"
+
+[[case]]
+id = "protocol-empty-join"
+statement = "A parallel join list cannot be empty."
+file = "rules/protocol-empty-join.fsl"
+command = "parse example grammar/protocol-empty-join rules/protocol-empty-join.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "syntax refused"
+
+[[case]]
+id = "boolean-true"
+statement = "boolean true"
+file = "rules/boolean-true.fsl"
+command = "parse example grammar/boolean-true rules/boolean-true.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "boolean-false"
+statement = "boolean false"
+file = "rules/boolean-false.fsl"
+command = "parse example grammar/boolean-false rules/boolean-false.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "integer-zero"
+statement = "integer zero"
+file = "rules/integer-zero.fsl"
+command = "parse example grammar/integer-zero rules/integer-zero.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "integer-large"
+statement = "integer large"
+file = "rules/integer-large.fsl"
+command = "parse example grammar/integer-large rules/integer-large.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "integer-negative"
+statement = "integer negative"
+file = "rules/integer-negative.fsl"
+command = "parse example grammar/integer-negative rules/integer-negative.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "unary-chain"
+statement = "unary chain"
+file = "rules/unary-chain.fsl"
+command = "parse example grammar/unary-chain rules/unary-chain.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "decimal-exact"
+statement = "decimal exact"
+file = "rules/decimal-exact.fsl"
+command = "parse example grammar/decimal-exact rules/decimal-exact.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "rational-signed"
+statement = "rational signed"
+file = "rules/rational-signed.fsl"
+command = "parse example grammar/rational-signed rules/rational-signed.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "text-comment-markers"
+statement = "text comment markers"
+file = "rules/text-comment-markers.fsl"
+command = "parse example grammar/text-comment-markers rules/text-comment-markers.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "text-json-escapes"
+statement = "text json escapes"
+file = "rules/text-json-escapes.fsl"
+command = "parse example grammar/text-json-escapes rules/text-json-escapes.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "text-unicode-escape"
+statement = "text unicode escape"
+file = "rules/text-unicode-escape.fsl"
+command = "parse example grammar/text-unicode-escape rules/text-unicode-escape.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "text-unicode-scalar"
+statement = "text unicode scalar"
+file = "rules/text-unicode-scalar.fsl"
+command = "parse example grammar/text-unicode-scalar rules/text-unicode-scalar.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "arithmetic-grouping"
+statement = "arithmetic grouping"
+file = "rules/arithmetic-grouping.fsl"
+command = "parse example grammar/arithmetic-grouping rules/arithmetic-grouping.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "arithmetic-product"
+statement = "arithmetic product"
+file = "rules/arithmetic-product.fsl"
+command = "parse example grammar/arithmetic-product rules/arithmetic-product.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "arithmetic-left-chain"
+statement = "arithmetic left chain"
+file = "rules/arithmetic-left-chain.fsl"
+command = "parse example grammar/arithmetic-left-chain rules/arithmetic-left-chain.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "division-rem-mod"
+statement = "division rem mod"
+file = "rules/division-rem-mod.fsl"
+command = "parse example grammar/division-rem-mod rules/division-rem-mod.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "boolean-precedence"
+statement = "boolean precedence"
+file = "rules/boolean-precedence.fsl"
+command = "parse example grammar/boolean-precedence rules/boolean-precedence.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "implication-right"
+statement = "implication right"
+file = "rules/implication-right.fsl"
+command = "parse example grammar/implication-right rules/implication-right.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "comparison-equality"
+statement = "comparison equality"
+file = "rules/comparison-equality.fsl"
+command = "parse example grammar/comparison-equality rules/comparison-equality.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "comparison-not-equal"
+statement = "comparison not equal"
+file = "rules/comparison-not-equal.fsl"
+command = "parse example grammar/comparison-not-equal rules/comparison-not-equal.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "comparison-less-equal"
+statement = "comparison less equal"
+file = "rules/comparison-less-equal.fsl"
+command = "parse example grammar/comparison-less-equal rules/comparison-less-equal.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "comparison-greater-equal"
+statement = "comparison greater equal"
+file = "rules/comparison-greater-equal.fsl"
+command = "parse example grammar/comparison-greater-equal rules/comparison-greater-equal.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "comparison-less"
+statement = "comparison less"
+file = "rules/comparison-less.fsl"
+command = "parse example grammar/comparison-less rules/comparison-less.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "comparison-greater"
+statement = "comparison greater"
+file = "rules/comparison-greater.fsl"
+command = "parse example grammar/comparison-greater rules/comparison-greater.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "negated-comparison"
+statement = "negated comparison"
+file = "rules/negated-comparison.fsl"
+command = "parse example grammar/negated-comparison rules/negated-comparison.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "conditional"
+statement = "conditional"
+file = "rules/conditional.fsl"
+command = "parse example grammar/conditional rules/conditional.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "nested-conditional"
+statement = "nested conditional"
+file = "rules/nested-conditional.fsl"
+command = "parse example grammar/nested-conditional rules/nested-conditional.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "let-binding"
+statement = "let binding"
+file = "rules/let-binding.fsl"
+command = "parse example grammar/let-binding rules/let-binding.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "let-annotated"
+statement = "let annotated"
+file = "rules/let-annotated.fsl"
+command = "parse example grammar/let-annotated rules/let-annotated.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "let-nested"
+statement = "let nested"
+file = "rules/let-nested.fsl"
+command = "parse example grammar/let-nested rules/let-nested.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "call-zero-arguments"
+statement = "call zero arguments"
+file = "rules/call-zero-arguments.fsl"
+command = "parse example grammar/call-zero-arguments rules/call-zero-arguments.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "call-multiple-arguments"
+statement = "call multiple arguments"
+file = "rules/call-multiple-arguments.fsl"
+command = "parse example grammar/call-multiple-arguments rules/call-multiple-arguments.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "qualified-reference"
+statement = "qualified reference"
+file = "rules/qualified-reference.fsl"
+command = "parse example grammar/qualified-reference rules/qualified-reference.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "qualified-call"
+statement = "qualified call"
+file = "rules/qualified-call.fsl"
+command = "parse example grammar/qualified-call rules/qualified-call.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "field-selection"
+statement = "field selection"
+file = "rules/field-selection.fsl"
+command = "parse example grammar/field-selection rules/field-selection.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "index-selection"
+statement = "index selection"
+file = "rules/index-selection.fsl"
+command = "parse example grammar/index-selection rules/index-selection.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "member-reserved-word"
+statement = "member reserved word"
+file = "rules/member-reserved-word.fsl"
+command = "parse example grammar/member-reserved-word rules/member-reserved-word.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "member-field-reserved"
+statement = "member field reserved"
+file = "rules/member-field-reserved.fsl"
+command = "parse example grammar/member-field-reserved rules/member-field-reserved.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "sequence-literal"
+statement = "sequence literal"
+file = "rules/sequence-literal.fsl"
+command = "parse example grammar/sequence-literal rules/sequence-literal.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "empty-sequence"
+statement = "empty sequence"
+file = "rules/empty-sequence.fsl"
+command = "parse example grammar/empty-sequence rules/empty-sequence.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "set-literal"
+statement = "set literal"
+file = "rules/set-literal.fsl"
+command = "parse example grammar/set-literal rules/set-literal.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "bag-literal"
+statement = "bag literal"
+file = "rules/bag-literal.fsl"
+command = "parse example grammar/bag-literal rules/bag-literal.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "ordered-set-literal"
+statement = "ordered set literal"
+file = "rules/ordered-set-literal.fsl"
+command = "parse example grammar/ordered-set-literal rules/ordered-set-literal.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "record-literal"
+statement = "record literal"
+file = "rules/record-literal.fsl"
+command = "parse example grammar/record-literal rules/record-literal.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "option-some"
+statement = "option some"
+file = "rules/option-some.fsl"
+command = "parse example grammar/option-some rules/option-some.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "option-none"
+statement = "option none"
+file = "rules/option-none.fsl"
+command = "parse example grammar/option-none rules/option-none.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "option-absent"
+statement = "option absent"
+file = "rules/option-absent.fsl"
+command = "parse example grammar/option-absent rules/option-absent.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "case-union"
+statement = "case union"
+file = "rules/case-union.fsl"
+command = "parse example grammar/case-union rules/case-union.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "reference-solid"
+statement = "reference solid"
+file = "rules/reference-solid.fsl"
+command = "parse example grammar/reference-solid rules/reference-solid.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "reference-empty-key"
+statement = "reference empty key"
+file = "rules/reference-empty-key.fsl"
+command = "parse example grammar/reference-empty-key rules/reference-empty-key.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "text-constructor"
+statement = "text constructor"
+file = "rules/text-constructor.fsl"
+command = "parse example grammar/text-constructor rules/text-constructor.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "typed-conversion"
+statement = "typed conversion"
+file = "rules/typed-conversion.fsl"
+command = "parse example grammar/typed-conversion rules/typed-conversion.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "quantifier-forall"
+statement = "quantifier forall"
+file = "rules/quantifier-forall.fsl"
+command = "parse example grammar/quantifier-forall rules/quantifier-forall.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "quantifier-exists"
+statement = "quantifier exists"
+file = "rules/quantifier-exists.fsl"
+command = "parse example grammar/quantifier-exists rules/quantifier-exists.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "query-filter"
+statement = "query filter"
+file = "rules/query-filter.fsl"
+command = "parse example grammar/query-filter rules/query-filter.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "query-map"
+statement = "query map"
+file = "rules/query-map.fsl"
+command = "parse example grammar/query-map rules/query-map.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "query-size"
+statement = "query size"
+file = "rules/query-size.fsl"
+command = "parse example grammar/query-size rules/query-size.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "query-contains"
+statement = "query contains"
+file = "rules/query-contains.fsl"
+command = "parse example grammar/query-contains rules/query-contains.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "query-count"
+statement = "query count"
+file = "rules/query-count.fsl"
+command = "parse example grammar/query-count rules/query-count.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "query-sum"
+statement = "query sum"
+file = "rules/query-sum.fsl"
+command = "parse example grammar/query-sum rules/query-sum.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "lookup-absence"
+statement = "lookup absence"
+file = "rules/lookup-absence.fsl"
+command = "parse example grammar/lookup-absence rules/lookup-absence.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "comments-before-between-after"
+statement = "Line comments separate tokens without consuming adjacent syntax."
+file = "rules/comments-before-between-after.fsl"
+command = "parse example grammar/comments-before-between-after rules/comments-before-between-after.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "whitespace-tabs"
+statement = "Tabs separate tokens."
+file = "rules/whitespace-tabs.fsl"
+command = "parse example grammar/whitespace-tabs rules/whitespace-tabs.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "line-endings-crlf"
+statement = "CRLF source parses without changing line boundaries."
+file = "rules/line-endings-crlf.fsl"
+command = "parse example grammar/line-endings-crlf rules/line-endings-crlf.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "identifier-keyword-prefix"
+statement = "A keyword prefix does not split a longer identifier."
+file = "rules/identifier-keyword-prefix.fsl"
+command = "parse example grammar/identifier-keyword-prefix rules/identifier-keyword-prefix.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "identifier-underscore"
+statement = "An ASCII underscore and following digit are valid identifier characters."
+file = "rules/identifier-underscore.fsl"
+command = "parse example grammar/identifier-underscore rules/identifier-underscore.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "identifier-helper"
+statement = "The spelling helper is an ordinary function identifier under 1-draft."
+file = "rules/identifier-helper.fsl"
+command = "parse example grammar/identifier-helper rules/identifier-helper.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "identifier-rec"
+statement = "The spelling rec is an ordinary function identifier under 1-draft."
+file = "rules/identifier-rec.fsl"
+command = "parse example grammar/identifier-rec rules/identifier-rec.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "identifier-cast"
+statement = "The spelling cast is an ordinary function identifier under 1-draft."
+file = "rules/identifier-cast.fsl"
+command = "parse example grammar/identifier-cast rules/identifier-cast.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "identifier-tuple"
+statement = "The spelling Tuple is an ordinary function identifier under 1-draft."
+file = "rules/identifier-tuple.fsl"
+command = "parse example grammar/identifier-tuple rules/identifier-tuple.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "declarations-value-types"
+statement = "Value declarations compose in one source unit."
+file = "rules/declarations-value-types.fsl"
+command = "parse example grammar/declarations-value-types rules/declarations-value-types.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "declarations-generic-types"
+statement = "Nested type arguments and collection bounds parse."
+file = "rules/declarations-generic-types.fsl"
+command = "parse example grammar/declarations-generic-types rules/declarations-generic-types.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "declarations-dimensions-units"
+statement = "Dimensions and units have distinct declaration forms."
+file = "rules/declarations-dimensions-units.fsl"
+command = "parse example grammar/declarations-dimensions-units rules/declarations-dimensions-units.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "default-profile"
+statement = "A function can omit the using selector."
+file = "rules/default-profile.fsl"
+command = "parse example grammar/default-profile rules/default-profile.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "parses"
+
+[[case]]
+id = "comparison-chain-less"
+statement = "Malformed source is refused: comparison chain less."
+file = "rules/comparison-chain-less.fsl"
+command = "parse example grammar/comparison-chain-less rules/comparison-chain-less.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "syntax refused"
+
+[[case]]
+id = "comparison-chain-mixed"
+statement = "Malformed source is refused: comparison chain mixed."
+file = "rules/comparison-chain-mixed.fsl"
+command = "parse example grammar/comparison-chain-mixed rules/comparison-chain-mixed.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "syntax refused"
+
+[[case]]
+id = "comparison-chain-sum"
+statement = "Malformed source is refused: comparison chain sum."
+file = "rules/comparison-chain-sum.fsl"
+command = "parse example grammar/comparison-chain-sum rules/comparison-chain-sum.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "syntax refused"
+
+[[case]]
+id = "integer-leading-zero"
+statement = "Malformed source is refused: integer leading zero."
+file = "rules/integer-leading-zero.fsl"
+command = "parse example grammar/integer-leading-zero rules/integer-leading-zero.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "syntax refused"
+
+[[case]]
+id = "integer-hex-shortcut"
+statement = "Malformed source is refused: integer hex shortcut."
+file = "rules/integer-hex-shortcut.fsl"
+command = "parse example grammar/integer-hex-shortcut rules/integer-hex-shortcut.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "syntax refused"
+
+[[case]]
+id = "number-malformed-exponent"
+statement = "Malformed source is refused: number malformed exponent."
+file = "rules/number-malformed-exponent.fsl"
+command = "parse example grammar/number-malformed-exponent rules/number-malformed-exponent.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "syntax refused"
+
+[[case]]
+id = "string-invalid-escape"
+statement = "Malformed source is refused: string invalid escape."
+file = "rules/string-invalid-escape.fsl"
+command = "parse example grammar/string-invalid-escape rules/string-invalid-escape.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "syntax refused"
+
+[[case]]
+id = "string-unpaired-high-surrogate"
+statement = "Malformed source is refused: string unpaired high surrogate."
+file = "rules/string-unpaired-high-surrogate.fsl"
+command = "parse example grammar/string-unpaired-high-surrogate rules/string-unpaired-high-surrogate.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "syntax refused"
+
+[[case]]
+id = "string-unpaired-low-surrogate"
+statement = "Malformed source is refused: string unpaired low surrogate."
+file = "rules/string-unpaired-low-surrogate.fsl"
+command = "parse example grammar/string-unpaired-low-surrogate rules/string-unpaired-low-surrogate.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "syntax refused"
+
+[[case]]
+id = "string-unclosed"
+statement = "Malformed source is refused: string unclosed."
+file = "rules/string-unclosed.fsl"
+command = "parse example grammar/string-unclosed rules/string-unclosed.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "syntax refused"
+
+[[case]]
+id = "block-comment"
+statement = "Malformed source is refused: block comment."
+file = "rules/block-comment.fsl"
+command = "parse example grammar/block-comment rules/block-comment.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "syntax refused"
+
+[[case]]
+id = "hash-not-comment"
+statement = "Malformed source is refused: hash not comment."
+file = "rules/hash-not-comment.fsl"
+command = "parse example grammar/hash-not-comment rules/hash-not-comment.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "syntax refused"
+
+[[case]]
+id = "expression-empty"
+statement = "Malformed source is refused: expression empty."
+file = "rules/expression-empty.fsl"
+command = "parse example grammar/expression-empty rules/expression-empty.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "syntax refused"
+
+[[case]]
+id = "operator-missing-right"
+statement = "Malformed source is refused: operator missing right."
+file = "rules/operator-missing-right.fsl"
+command = "parse example grammar/operator-missing-right rules/operator-missing-right.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "syntax refused"
+
+[[case]]
+id = "operator-missing-left"
+statement = "Malformed source is refused: operator missing left."
+file = "rules/operator-missing-left.fsl"
+command = "parse example grammar/operator-missing-left rules/operator-missing-left.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "syntax refused"
+
+[[case]]
+id = "conditional-no-then"
+statement = "Malformed source is refused: conditional no then."
+file = "rules/conditional-no-then.fsl"
+command = "parse example grammar/conditional-no-then rules/conditional-no-then.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "syntax refused"
+
+[[case]]
+id = "conditional-no-else"
+statement = "Malformed source is refused: conditional no else."
+file = "rules/conditional-no-else.fsl"
+command = "parse example grammar/conditional-no-else rules/conditional-no-else.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "syntax refused"
+
+[[case]]
+id = "let-no-in"
+statement = "Malformed source is refused: let no in."
+file = "rules/let-no-in.fsl"
+command = "parse example grammar/let-no-in rules/let-no-in.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "syntax refused"
+
+[[case]]
+id = "let-no-initializer"
+statement = "Malformed source is refused: let no initializer."
+file = "rules/let-no-initializer.fsl"
+command = "parse example grammar/let-no-initializer rules/let-no-initializer.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "syntax refused"
+
+[[case]]
+id = "let-reserved-binder"
+statement = "Malformed source is refused: let reserved binder."
+file = "rules/let-reserved-binder.fsl"
+command = "parse example grammar/let-reserved-binder rules/let-reserved-binder.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "syntax refused"
+
+[[case]]
+id = "call-missing-comma"
+statement = "Malformed source is refused: call missing comma."
+file = "rules/call-missing-comma.fsl"
+command = "parse example grammar/call-missing-comma rules/call-missing-comma.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "syntax refused"
+
+[[case]]
+id = "call-trailing-comma"
+statement = "Malformed source is refused: call trailing comma."
+file = "rules/call-trailing-comma.fsl"
+command = "parse example grammar/call-trailing-comma rules/call-trailing-comma.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "syntax refused"
+
+[[case]]
+id = "parenthesis-unclosed"
+statement = "Malformed source is refused: parenthesis unclosed."
+file = "rules/parenthesis-unclosed.fsl"
+command = "parse example grammar/parenthesis-unclosed rules/parenthesis-unclosed.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "syntax refused"
+
+[[case]]
+id = "comparison-split-token"
+statement = "Malformed source is refused: comparison split token."
+file = "rules/comparison-split-token.fsl"
+command = "parse example grammar/comparison-split-token rules/comparison-split-token.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "syntax refused"
+
+[[case]]
+id = "qualified-split-token"
+statement = "Malformed source is refused: qualified split token."
+file = "rules/qualified-split-token.fsl"
+command = "parse example grammar/qualified-split-token rules/qualified-split-token.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "syntax refused"
+
+[[case]]
+id = "reference-space-before-hash"
+statement = "Malformed source is refused: reference space before hash."
+file = "rules/reference-space-before-hash.fsl"
+command = "parse example grammar/reference-space-before-hash rules/reference-space-before-hash.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "syntax refused"
+
+[[case]]
+id = "reference-space-after-hash"
+statement = "Malformed source is refused: reference space after hash."
+file = "rules/reference-space-after-hash.fsl"
+command = "parse example grammar/reference-space-after-hash rules/reference-space-after-hash.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "syntax refused"
+
+[[case]]
+id = "reference-non-string-key"
+statement = "Malformed source is refused: reference non string key."
+file = "rules/reference-non-string-key.fsl"
+command = "parse example grammar/reference-non-string-key rules/reference-non-string-key.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "syntax refused"
+
+[[case]]
+id = "reference-extra-hash"
+statement = "Malformed source is refused: reference extra hash."
+file = "rules/reference-extra-hash.fsl"
+command = "parse example grammar/reference-extra-hash rules/reference-extra-hash.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "syntax refused"
+
+[[case]]
+id = "reference-on-parenthesis"
+statement = "Malformed source is refused: reference on parenthesis."
+file = "rules/reference-on-parenthesis.fsl"
+command = "parse example grammar/reference-on-parenthesis rules/reference-on-parenthesis.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "syntax refused"
+
+[[case]]
+id = "reference-leading-hash"
+statement = "Malformed source is refused: reference leading hash."
+file = "rules/reference-leading-hash.fsl"
+command = "parse example grammar/reference-leading-hash rules/reference-leading-hash.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "syntax refused"
+
+[[case]]
+id = "power-chained"
+statement = "Malformed source is refused: power chained."
+file = "rules/power-chained.fsl"
+command = "parse example grammar/power-chained rules/power-chained.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "syntax refused"
+
+[[case]]
+id = "reserved-function-name"
+statement = "Malformed declaration is refused: reserved function name."
+file = "rules/reserved-function-name.fsl"
+command = "parse example grammar/reserved-function-name rules/reserved-function-name.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "syntax refused"
+
+[[case]]
+id = "reserved-parameter"
+statement = "Malformed declaration is refused: reserved parameter."
+file = "rules/reserved-parameter.fsl"
+command = "parse example grammar/reserved-parameter rules/reserved-parameter.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "syntax refused"
+
+[[case]]
+id = "unicode-identifier"
+statement = "Malformed declaration is refused: unicode identifier."
+file = "rules/unicode-identifier.fsl"
+command = "parse example grammar/unicode-identifier rules/unicode-identifier.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "syntax refused"
+
+[[case]]
+id = "function-no-pure"
+statement = "Malformed declaration is refused: function no pure."
+file = "rules/function-no-pure.fsl"
+command = "parse example grammar/function-no-pure rules/function-no-pure.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "syntax refused"
+
+[[case]]
+id = "function-no-return-type"
+statement = "Malformed declaration is refused: function no return type."
+file = "rules/function-no-return-type.fsl"
+command = "parse example grammar/function-no-return-type rules/function-no-return-type.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "syntax refused"
+
+[[case]]
+id = "function-no-closing-brace"
+statement = "Malformed declaration is refused: function no closing brace."
+file = "rules/function-no-closing-brace.fsl"
+command = "parse example grammar/function-no-closing-brace rules/function-no-closing-brace.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "syntax refused"
+
+[[case]]
+id = "trailing-garbage"
+statement = "Malformed declaration is refused: trailing garbage."
+file = "rules/trailing-garbage.fsl"
+command = "parse example grammar/trailing-garbage rules/trailing-garbage.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "syntax refused"
+
+[[case]]
+id = "profile-after-function"
+statement = "Malformed declaration is refused: profile after function."
+file = "rules/profile-after-function.fsl"
+command = "parse example grammar/profile-after-function rules/profile-after-function.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "syntax refused"
+
+[[case]]
+id = "record-missing-semicolon"
+statement = "Malformed declaration is refused: record missing semicolon."
+file = "rules/record-missing-semicolon.fsl"
+command = "parse example grammar/record-missing-semicolon rules/record-missing-semicolon.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "syntax refused"
+
+[[case]]
+id = "decimal-missing-mode"
+statement = "Malformed declaration is refused: decimal missing mode."
+file = "rules/decimal-missing-mode.fsl"
+command = "parse example grammar/decimal-missing-mode rules/decimal-missing-mode.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "syntax refused"
+
+[[case]]
+id = "tuple-missing-semicolon"
+statement = "Malformed declaration is refused: tuple missing semicolon."
+file = "rules/tuple-missing-semicolon.fsl"
+command = "parse example grammar/tuple-missing-semicolon rules/tuple-missing-semicolon.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "syntax refused"
+
+[[case]]
+id = "model-version-suffix"
+statement = "Malformed declaration is refused: model version suffix."
+file = "rules/model-version-suffix.fsl"
+command = "parse example grammar/model-version-suffix rules/model-version-suffix.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "syntax refused"
+
+[[case]]
+id = "model-digest-suffix"
+statement = "Malformed declaration is refused: model digest suffix."
+file = "rules/model-digest-suffix.fsl"
+command = "parse example grammar/model-digest-suffix rules/model-digest-suffix.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "syntax refused"
+
+[[case]]
+id = "header-no-semicolon"
+statement = "An incomplete source unit is refused: header no semicolon."
+file = "rules/header-no-semicolon.fsl"
+command = "parse example grammar/header-no-semicolon rules/header-no-semicolon.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "syntax refused"
+
+[[case]]
+id = "header-no-edition"
+statement = "An incomplete source unit is refused: header no edition."
+file = "rules/header-no-edition.fsl"
+command = "parse example grammar/header-no-edition rules/header-no-edition.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "syntax refused"
+
+[[case]]
+id = "header-unquoted-edition"
+statement = "An incomplete source unit is refused: header unquoted edition."
+file = "rules/header-unquoted-edition.fsl"
+command = "parse example grammar/header-unquoted-edition rules/header-unquoted-edition.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "syntax refused"
+
+[[case]]
+id = "header-missing"
+statement = "An incomplete source unit is refused: header missing."
+file = "rules/header-missing.fsl"
+command = "parse example grammar/header-missing rules/header-missing.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "syntax refused"
+
+[[case]]
+id = "unit-no-declarations"
+statement = "An incomplete source unit is refused: unit no declarations."
+file = "rules/unit-no-declarations.fsl"
+command = "parse example grammar/unit-no-declarations rules/unit-no-declarations.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "syntax refused"
+
+[[case]]
+id = "header-only"
+statement = "An incomplete source unit is refused: header only."
+file = "rules/header-only.fsl"
+command = "parse example grammar/header-only rules/header-only.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "syntax refused"
+
+[[case]]
+id = "evaluate-boolean-true"
+statement = "Evaluation preserves the parsed boolean true expression."
+file = "rules/boolean-true.fsl"
+command = "run requests/boolean-true.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "evaluates"
+
+[[case]]
+id = "evaluate-boolean-false"
+statement = "Evaluation preserves the parsed boolean false expression."
+file = "rules/boolean-false.fsl"
+command = "run requests/boolean-false.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "evaluates"
+
+[[case]]
+id = "evaluate-integer-zero"
+statement = "Evaluation preserves the parsed integer zero expression."
+file = "rules/integer-zero.fsl"
+command = "run requests/integer-zero.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "evaluates"
+
+[[case]]
+id = "evaluate-integer-large"
+statement = "Evaluation preserves the parsed integer large expression."
+file = "rules/integer-large.fsl"
+command = "run requests/integer-large.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "evaluates"
+
+[[case]]
+id = "evaluate-integer-negative"
+statement = "Evaluation preserves the parsed integer negative expression."
+file = "rules/integer-negative.fsl"
+command = "run requests/integer-negative.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "evaluates"
+
+[[case]]
+id = "evaluate-unary-chain"
+statement = "Evaluation preserves the parsed unary chain expression."
+file = "rules/unary-chain.fsl"
+command = "run requests/unary-chain.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "evaluates"
+
+[[case]]
+id = "evaluate-arithmetic-grouping"
+statement = "Evaluation preserves the parsed arithmetic grouping expression."
+file = "rules/arithmetic-grouping.fsl"
+command = "run requests/arithmetic-grouping.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "evaluates"
+
+[[case]]
+id = "evaluate-arithmetic-product"
+statement = "Evaluation preserves the parsed arithmetic product expression."
+file = "rules/arithmetic-product.fsl"
+command = "run requests/arithmetic-product.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "evaluates"
+
+[[case]]
+id = "evaluate-arithmetic-left-chain"
+statement = "Evaluation preserves the parsed arithmetic left chain expression."
+file = "rules/arithmetic-left-chain.fsl"
+command = "run requests/arithmetic-left-chain.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "evaluates"
+
+[[case]]
+id = "evaluate-division-rem-mod"
+statement = "Evaluation preserves the parsed division rem mod expression."
+file = "rules/division-rem-mod.fsl"
+command = "run requests/division-rem-mod.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "evaluates"
+
+[[case]]
+id = "evaluate-boolean-precedence"
+statement = "Evaluation preserves the parsed boolean precedence expression."
+file = "rules/boolean-precedence.fsl"
+command = "run requests/boolean-precedence.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "evaluates"
+
+[[case]]
+id = "evaluate-implication-right"
+statement = "Evaluation preserves the parsed implication right expression."
+file = "rules/implication-right.fsl"
+command = "run requests/implication-right.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "evaluates"
+
+[[case]]
+id = "evaluate-comparison-equality"
+statement = "Evaluation preserves the parsed comparison equality expression."
+file = "rules/comparison-equality.fsl"
+command = "run requests/comparison-equality.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "evaluates"
+
+[[case]]
+id = "evaluate-comparison-not-equal"
+statement = "Evaluation preserves the parsed comparison not equal expression."
+file = "rules/comparison-not-equal.fsl"
+command = "run requests/comparison-not-equal.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "evaluates"
+
+[[case]]
+id = "evaluate-comparison-less-equal"
+statement = "Evaluation preserves the parsed comparison less equal expression."
+file = "rules/comparison-less-equal.fsl"
+command = "run requests/comparison-less-equal.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "evaluates"
+
+[[case]]
+id = "evaluate-comparison-greater-equal"
+statement = "Evaluation preserves the parsed comparison greater equal expression."
+file = "rules/comparison-greater-equal.fsl"
+command = "run requests/comparison-greater-equal.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "evaluates"
+
+[[case]]
+id = "evaluate-comparison-less"
+statement = "Evaluation preserves the parsed comparison less expression."
+file = "rules/comparison-less.fsl"
+command = "run requests/comparison-less.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "evaluates"
+
+[[case]]
+id = "evaluate-comparison-greater"
+statement = "Evaluation preserves the parsed comparison greater expression."
+file = "rules/comparison-greater.fsl"
+command = "run requests/comparison-greater.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "evaluates"
+
+[[case]]
+id = "evaluate-negated-comparison"
+statement = "Evaluation preserves the parsed negated comparison expression."
+file = "rules/negated-comparison.fsl"
+command = "run requests/negated-comparison.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "evaluates"
+
+[[case]]
+id = "evaluate-conditional"
+statement = "Evaluation preserves the parsed conditional expression."
+file = "rules/conditional.fsl"
+command = "run requests/conditional.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "evaluates"
+
+[[case]]
+id = "evaluate-nested-conditional"
+statement = "Evaluation preserves the parsed nested conditional expression."
+file = "rules/nested-conditional.fsl"
+command = "run requests/nested-conditional.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "evaluates"
+
+[[case]]
+id = "evaluate-let-binding"
+statement = "Evaluation preserves the parsed let binding expression."
+file = "rules/let-binding.fsl"
+command = "run requests/let-binding.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "evaluates"
+
+[[case]]
+id = "evaluate-let-nested"
+statement = "Evaluation preserves the parsed let nested expression."
+file = "rules/let-nested.fsl"
+command = "run requests/let-nested.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "evaluates"
+
+

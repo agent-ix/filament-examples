@@ -1,0 +1,6 @@
+// QSL FR-002-AC-6; FSpec FR-339
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+profile arithmetic = "filament.value.integer-division.euclidean/v1";
+function probe using v(): Integer pure { (17 div 3) + (17 rem 3) + (17 mod 3) }
+

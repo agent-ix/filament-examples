@@ -1,0 +1,5 @@
+// QSL FR-002-AC-2
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+function probe using v(): Boolean pure { 1 = 2 != 3 }
+

@@ -1,0 +1,40 @@
+{
+  "category": "refusal",
+  "last_stage": "S1",
+  "result": {
+    "bytes": "174",
+    "kind": "parsed",
+    "path": "rules/conditional-no-else.fsl",
+    "source": {
+      "authority": "example",
+      "identity": "grammar/conditional-no-else"
+    },
+    "usage": [
+      {
+        "bound": "1048576",
+        "setting": "s1.input_bytes",
+        "used": "174"
+      },
+      {
+        "bound": "100000",
+        "setting": "s1.tokens",
+        "used": "47"
+      },
+      {
+        "bound": "50000",
+        "setting": "s1.nodes",
+        "used": "3"
+      },
+      {
+        "bound": "288",
+        "setting": "s1.work_units",
+        "used": "899"
+      }
+    ]
+  },
+  "first_diagnostic": {
+    "code": "invalid_syntax",
+    "cause": "unexpected-token"
+  },
+  "items": []
+}

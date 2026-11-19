@@ -1,0 +1,37 @@
+{
+  "category": "success",
+  "last_stage": "S2",
+  "result": {
+    "bytes": "234",
+    "kind": "parsed",
+    "path": "rules/temporal-fairness.fsl",
+    "source": {
+      "authority": "example",
+      "identity": "grammar/temporal-fairness"
+    },
+    "usage": [
+      {
+        "bound": "1048576",
+        "setting": "s1.input_bytes",
+        "used": "234"
+      },
+      {
+        "bound": "100000",
+        "setting": "s1.tokens",
+        "used": "67"
+      },
+      {
+        "bound": "50000",
+        "setting": "s1.nodes",
+        "used": "31"
+      },
+      {
+        "bound": "288",
+        "setting": "s1.work_units",
+        "used": "807"
+      }
+    ]
+  },
+  "first_diagnostic": null,
+  "items": []
+}

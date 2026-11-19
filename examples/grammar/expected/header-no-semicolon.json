@@ -1,0 +1,40 @@
+{
+  "category": "refusal",
+  "last_stage": "S1",
+  "result": {
+    "bytes": "121",
+    "kind": "parsed",
+    "path": "rules/header-no-semicolon.fsl",
+    "source": {
+      "authority": "example",
+      "identity": "grammar/header-no-semicolon"
+    },
+    "usage": [
+      {
+        "bound": "1048576",
+        "setting": "s1.input_bytes",
+        "used": "121"
+      },
+      {
+        "bound": "100000",
+        "setting": "s1.tokens",
+        "used": "31"
+      },
+      {
+        "bound": "50000",
+        "setting": "s1.nodes",
+        "used": "1"
+      },
+      {
+        "bound": "288",
+        "setting": "s1.work_units",
+        "used": "48"
+      }
+    ]
+  },
+  "first_diagnostic": {
+    "code": "invalid_syntax",
+    "cause": "unexpected-token"
+  },
+  "items": []
+}

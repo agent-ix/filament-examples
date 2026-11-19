@@ -1,0 +1,4 @@
+// QSL FR-002-AC-6; FSpec FR-339
+language "ix:native" edition 1;
+function probe using v(): Boolean pure { true }
+

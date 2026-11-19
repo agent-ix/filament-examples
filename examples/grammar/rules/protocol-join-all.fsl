@@ -1,0 +1,11 @@
+// QSL FR-035-AC-2; FSpec FR-339
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+protocol Transfer using v over (item: M::Item) on origin {
+ role sender on M::Sender;
+ role receiver on M::Receiver;
+ 
+ run parallel fork { branch left check a using v { true }; branch right check b using v { true }; } join all [left, right];
+ finish done as (receipt: M::Receipt) { true };
+}
+

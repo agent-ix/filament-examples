@@ -1,0 +1,37 @@
+{
+  "category": "success",
+  "last_stage": "S2",
+  "result": {
+    "bytes": "298",
+    "kind": "parsed",
+    "path": "rules/temporal-activation-capture.fsl",
+    "source": {
+      "authority": "example",
+      "identity": "grammar/temporal-activation-capture"
+    },
+    "usage": [
+      {
+        "bound": "1048576",
+        "setting": "s1.input_bytes",
+        "used": "298"
+      },
+      {
+        "bound": "100000",
+        "setting": "s1.tokens",
+        "used": "98"
+      },
+      {
+        "bound": "50000",
+        "setting": "s1.nodes",
+        "used": "60"
+      },
+      {
+        "bound": "288",
+        "setting": "s1.work_units",
+        "used": "1366"
+      }
+    ]
+  },
+  "first_diagnostic": null,
+  "items": []
+}

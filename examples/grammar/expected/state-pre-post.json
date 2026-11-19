@@ -1,0 +1,37 @@
+{
+  "category": "success",
+  "last_stage": "S2",
+  "result": {
+    "bytes": "223",
+    "kind": "parsed",
+    "path": "rules/state-pre-post.fsl",
+    "source": {
+      "authority": "example",
+      "identity": "grammar/state-pre-post"
+    },
+    "usage": [
+      {
+        "bound": "1048576",
+        "setting": "s1.input_bytes",
+        "used": "223"
+      },
+      {
+        "bound": "100000",
+        "setting": "s1.tokens",
+        "used": "68"
+      },
+      {
+        "bound": "50000",
+        "setting": "s1.nodes",
+        "used": "31"
+      },
+      {
+        "bound": "288",
+        "setting": "s1.work_units",
+        "used": "643"
+      }
+    ]
+  },
+  "first_diagnostic": null,
+  "items": []
+}

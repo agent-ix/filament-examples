@@ -1,0 +1,19 @@
+{
+  "format": "native-run/1",
+  "request": {
+    "models": [],
+    "program": {
+      "source": {
+        "file": "../rules/division-rem-mod.fsl",
+        "authority": "example",
+        "identity": "grammar/division-rem-mod",
+        "document": "grammar",
+        "formal_revision": 1
+      }
+    },
+    "call": {
+      "function": "probe",
+      "arguments": []
+    }
+  }
+}

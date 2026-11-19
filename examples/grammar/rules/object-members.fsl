@@ -1,0 +1,6 @@
+// QSL FR-035-AC-2; FSpec FR-339
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+object Counter identity(key) { key: Integer; countValue: Integer; population counters; operation bump(n: Integer): Integer modifies self.countValue; }
+function probe(): Boolean pure { true }
+

@@ -1,0 +1,37 @@
+{
+  "category": "success",
+  "last_stage": "S2",
+  "result": {
+    "bytes": "185",
+    "kind": "parsed",
+    "path": "rules/qualified-call.fsl",
+    "source": {
+      "authority": "example",
+      "identity": "grammar/qualified-call"
+    },
+    "usage": [
+      {
+        "bound": "1048576",
+        "setting": "s1.input_bytes",
+        "used": "185"
+      },
+      {
+        "bound": "100000",
+        "setting": "s1.tokens",
+        "used": "49"
+      },
+      {
+        "bound": "50000",
+        "setting": "s1.nodes",
+        "used": "40"
+      },
+      {
+        "bound": "288",
+        "setting": "s1.work_units",
+        "used": "792"
+      }
+    ]
+  },
+  "first_diagnostic": null,
+  "items": []
+}

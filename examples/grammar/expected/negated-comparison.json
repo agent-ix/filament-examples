@@ -1,0 +1,37 @@
+{
+  "category": "success",
+  "last_stage": "S2",
+  "result": {
+    "bytes": "171",
+    "kind": "parsed",
+    "path": "rules/negated-comparison.fsl",
+    "source": {
+      "authority": "example",
+      "identity": "grammar/negated-comparison"
+    },
+    "usage": [
+      {
+        "bound": "1048576",
+        "setting": "s1.input_bytes",
+        "used": "171"
+      },
+      {
+        "bound": "100000",
+        "setting": "s1.tokens",
+        "used": "49"
+      },
+      {
+        "bound": "50000",
+        "setting": "s1.nodes",
+        "used": "33"
+      },
+      {
+        "bound": "288",
+        "setting": "s1.work_units",
+        "used": "722"
+      }
+    ]
+  },
+  "first_diagnostic": null,
+  "items": []
+}

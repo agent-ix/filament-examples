@@ -1,0 +1,6 @@
+// QSL FR-035-AC-2; FSpec FR-339
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+type Amount = Decimal[-999, 999; 0, 3; toward-zero];
+function probe(): Boolean pure { true }
+
