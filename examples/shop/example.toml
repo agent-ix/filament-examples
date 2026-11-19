@@ -36,7 +36,7 @@ expect_exit = 20
 ready_exit = 10
 waits_on = "QSL-2500"
 needs = "FR-867 undefined claim item serialization"
-why = "the claim now reaches undefined evaluation, but the serializer must emit a refuted violation item with where and cause before this example can run at exit 10"
+why = "the current driver pin predates QSL-2462 and refuses argument 0 as wrong-role-mapping; after QSL-2500 and the planned pin to an FSL revision containing QSL-2462, this should reach undefined evaluation and exit 10 with a refuted violation item"
 serves = "Function claims"
 
 [[case]]
