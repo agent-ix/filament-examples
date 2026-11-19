@@ -1,0 +1,24 @@
+{
+  "category": "refusal",
+  "last_stage": "S4",
+  "result": null,
+  "first_diagnostic": null,
+  "items": [
+    {
+      "axes": {
+        "activation": "unavailable",
+        "execution": null,
+        "settlement": "unavailable",
+        "truth": null
+      },
+      "category": "refusal",
+      "cause": {
+        "code": "missing_declaration",
+        "kind": "missing-name"
+      },
+      "clause": "nope",
+      "request_index": 0,
+      "result": "declined"
+    }
+  ]
+}

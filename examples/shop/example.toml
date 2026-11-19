@@ -4,6 +4,75 @@ summary = "An online shop takes orders, charges payments and issues refunds. Val
 model = "model/shop.semantic-ir.json"
 
 [[case]]
+id = "claim-function-holds"
+rule = "yes"
+statement = "A Boolean function selected as a claim is tested against the current snapshot."
+file = "rules/claim-functions.fsl"
+command = "run requests/claim-function-holds.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "Function claims"
+
+[[case]]
+id = "claim-function-false"
+rule = "no"
+statement = "A Boolean function returning false is refuted as a claim."
+file = "rules/claim-functions.fsl"
+command = "run requests/claim-function-false.json"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
+serves = "Function claims"
+
+[[case]]
+id = "claim-function-undefined"
+rule = "undefinedClaim"
+statement = "A function claim with an undefined evaluation is refuted."
+file = "rules/claim-functions.fsl"
+command = "run requests/claim-function-undefined.json"
+status = "staged"
+expect_exit = 20
+ready_exit = 10
+waits_on = "QSL-2500"
+needs = "FR-867 undefined claim item serialization"
+why = "the current driver pin predates QSL-2462 and refuses argument 0 as wrong-role-mapping; after QSL-2500 and the planned pin to an FSL revision containing QSL-2462, this should reach undefined evaluation and exit 10 with a refuted violation item"
+serves = "Function claims"
+
+[[case]]
+id = "claim-function-integer"
+rule = "seven"
+statement = "A non-Boolean function selected as a claim is refused with its result type."
+file = "rules/claim-functions.fsl"
+command = "run requests/claim-function-integer.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: type-mismatch"
+serves = "Function claims"
+
+[[case]]
+id = "claim-function-bounded"
+rule = "boundedValue"
+statement = "A bounded non-Boolean function claim names its declared result type."
+file = "rules/claim-functions.fsl"
+command = "run requests/claim-function-bounded.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: type-mismatch"
+serves = "Function claims"
+
+[[case]]
+id = "claim-function-unknown"
+rule = "nope"
+statement = "A function claim naming no declaration is refused with that name."
+file = "rules/claim-functions.fsl"
+command = "run requests/claim-function-unknown.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: missing-name"
+serves = "Function claims"
+
+[[case]]
 id = "values-line-total"
 rule = "lineTotal"
 statement = "A line costs price times quantity."

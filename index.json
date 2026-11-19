@@ -3355,6 +3355,126 @@
     },
     {
       "system": "shop",
+      "case": "claim-function-holds",
+      "status": "running",
+      "rule": "yes",
+      "statement": "A Boolean function selected as a claim is tested against the current snapshot.",
+      "rule_file": "examples/shop/rules/claim-functions.fsl",
+      "data_files": [
+        "examples/shop/data/outcomes-undefined-call.json"
+      ],
+      "request_file": "examples/shop/requests/claim-function-holds.json",
+      "expected_file": "examples/shop/expected/claim-function-holds.json",
+      "verdict": "holds",
+      "exit": 0,
+      "ready_exit": null,
+      "engine": null,
+      "clock": null,
+      "waits_on": null,
+      "needs": null
+    },
+    {
+      "system": "shop",
+      "case": "claim-function-false",
+      "status": "running",
+      "rule": "no",
+      "statement": "A Boolean function returning false is refuted as a claim.",
+      "rule_file": "examples/shop/rules/claim-functions.fsl",
+      "data_files": [
+        "examples/shop/data/outcomes-undefined-call.json"
+      ],
+      "request_file": "examples/shop/requests/claim-function-false.json",
+      "expected_file": "examples/shop/expected/claim-function-false.json",
+      "verdict": "violated",
+      "exit": 10,
+      "ready_exit": null,
+      "engine": null,
+      "clock": null,
+      "waits_on": null,
+      "needs": null
+    },
+    {
+      "system": "shop",
+      "case": "claim-function-undefined",
+      "status": "staged",
+      "rule": "undefinedClaim",
+      "statement": "A function claim with an undefined evaluation is refuted.",
+      "rule_file": "examples/shop/rules/claim-functions.fsl",
+      "data_files": [
+        "examples/shop/data/outcomes-undefined-call.json"
+      ],
+      "request_file": "examples/shop/requests/claim-function-undefined.json",
+      "expected_file": "examples/shop/expected/claim-function-undefined.json",
+      "verdict": null,
+      "exit": 20,
+      "ready_exit": 10,
+      "engine": null,
+      "clock": null,
+      "waits_on": "QSL-2500",
+      "needs": "FR-867 undefined claim item serialization"
+    },
+    {
+      "system": "shop",
+      "case": "claim-function-integer",
+      "status": "running",
+      "rule": "seven",
+      "statement": "A non-Boolean function selected as a claim is refused with its result type.",
+      "rule_file": "examples/shop/rules/claim-functions.fsl",
+      "data_files": [
+        "examples/shop/data/outcomes-undefined-call.json"
+      ],
+      "request_file": "examples/shop/requests/claim-function-integer.json",
+      "expected_file": "examples/shop/expected/claim-function-integer.json",
+      "verdict": "refused: type-mismatch",
+      "exit": 20,
+      "ready_exit": null,
+      "engine": null,
+      "clock": null,
+      "waits_on": null,
+      "needs": null
+    },
+    {
+      "system": "shop",
+      "case": "claim-function-bounded",
+      "status": "running",
+      "rule": "boundedValue",
+      "statement": "A bounded non-Boolean function claim names its declared result type.",
+      "rule_file": "examples/shop/rules/claim-functions.fsl",
+      "data_files": [
+        "examples/shop/data/outcomes-undefined-call.json"
+      ],
+      "request_file": "examples/shop/requests/claim-function-bounded.json",
+      "expected_file": "examples/shop/expected/claim-function-bounded.json",
+      "verdict": "refused: type-mismatch",
+      "exit": 20,
+      "ready_exit": null,
+      "engine": null,
+      "clock": null,
+      "waits_on": null,
+      "needs": null
+    },
+    {
+      "system": "shop",
+      "case": "claim-function-unknown",
+      "status": "running",
+      "rule": "nope",
+      "statement": "A function claim naming no declaration is refused with that name.",
+      "rule_file": "examples/shop/rules/claim-functions.fsl",
+      "data_files": [
+        "examples/shop/data/outcomes-undefined-call.json"
+      ],
+      "request_file": "examples/shop/requests/claim-function-unknown.json",
+      "expected_file": "examples/shop/expected/claim-function-unknown.json",
+      "verdict": "refused: missing-name",
+      "exit": 20,
+      "ready_exit": null,
+      "engine": null,
+      "clock": null,
+      "waits_on": null,
+      "needs": null
+    },
+    {
+      "system": "shop",
       "case": "values-line-total",
       "status": "running",
       "rule": "lineTotal",

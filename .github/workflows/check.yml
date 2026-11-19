@@ -21,7 +21,7 @@ on:
       fsl_revision:
         description: "Exact filament-driver commit to build when driver is source."
         required: false
-        default: 158bc4735167e75347afbfa883e03c1013d45f2d
+        default: c6e7741ac632074126c8e7fd8a8108581e22f0c0
 
 permissions:
   contents: read
