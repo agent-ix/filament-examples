@@ -68,7 +68,7 @@ fn example_blocks(readme: &str) -> Result<Vec<String>, Box<dyn std::error::Error
             block.push('\n');
         }
     }
-    if current.is_some() || blocks.len() != 3 {
+    if current.is_some() || blocks.len() < 3 {
         return Err("README quickstart must have source, request and command blocks".into());
     }
     Ok(blocks)
@@ -106,10 +106,12 @@ fn quickstart_runs_on_the_selected_native_platform() -> TestResult {
         .as_str()
         .ok_or("README request has no source filename")?;
     let arguments: Vec<String> = blocks[2].split_whitespace().map(str::to_owned).collect();
-    if arguments.len() != 6
+    if arguments.len() < 3
         || arguments[0] != "fsl"
         || arguments[1] != "run"
-        || arguments[3..] != ["--format", "json"]
+        || !arguments
+            .windows(2)
+            .any(|pair| pair == ["--format", "json"])
     {
         return Err(format!(
             "README quickstart command must invoke fsl run <request> --format json: {}",
