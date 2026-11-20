@@ -37,6 +37,8 @@ pub struct Assertion {
 pub mod scenarios {
     /// Source-owned object model authoring and independent model checks.
     pub mod author_model;
+    /// Refusal-only repair with independent public function executions.
+    pub mod refusal_repair;
     /// Finite safety proof and counterexample analysis.
     pub mod safety_analyze;
     /// Bounded trace monitoring and open-prefix finality.

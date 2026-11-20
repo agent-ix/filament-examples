@@ -1,0 +1,70 @@
+{
+  "format": "fsl-agent-scorecard/v1",
+  "scenario": "EV-001",
+  "scope": "source-owned native object model authoring and checking",
+  "cohort": {
+    "driver": "18d6fb0d84f36df16d77d242897703c6da274c14",
+    "fsl": "deac8870a05e0b9ae28392f597f829011b44ebb8",
+    "codegen": "889e999589c98d3b2dfd96abc1b0c9b233d864de",
+    "ir": "e576f74916b8624c8301aee5d0e3cf72a0078e4c",
+    "cli_agent_evals": "0.3.0"
+  },
+  "agent": "codex",
+  "model": "gpt-6.1-sol",
+  "task_samples": 1,
+  "live_sdk_pass_rate": "0/1",
+  "original_attempt": {
+    "status": "failed",
+    "classification": "harness-error",
+    "cause": "Provider did not consume the current Codex execution-event format.",
+    "runner_exit": 1,
+    "exit_reason": "complete",
+    "wall_ms": 46707,
+    "tool_calls": 11,
+    "turns": null,
+    "token_usage": {
+      "input": 18333,
+      "output": 706,
+      "cacheCreation": 0,
+      "cacheRead": 162560,
+      "contextInput": 180893,
+      "total": 181599
+    },
+    "model_checks": {
+      "public_check": {
+        "category": "success",
+        "exit": 0,
+        "stage": "S4"
+      },
+      "independent_invariant_bindings": 156
+    }
+  },
+  "retained_evidence_attempts": [
+    {
+      "status": "failed",
+      "classification": "harness-error",
+      "cause": "Quoted sed replacement data was misclassified as an absolute path."
+    },
+    {
+      "status": "passed",
+      "checks": {
+        "agent_command_count": 11,
+        "command_evidence": {
+          "check:model.fsl": true
+        },
+        "transcript_boundary": {
+          "ok": true,
+          "violations": []
+        }
+      }
+    }
+  ],
+  "final_artifact_assessment": "passed: original model and all 156 semantic bindings plus corrected retained command and boundary evidence",
+  "live_reruns": 0,
+  "notes": [
+    "The original SDK report remains a failure; its live pass rate is not rewritten.",
+    "Retained evidence grading did not rerun model checking, semantic probes, or the live agent.",
+    "Assistant turns are unavailable in the SDK report.",
+    "Full native domain-package authoring remains outside EV-001, pending QSL-1980 under EV-101."
+  ]
+}

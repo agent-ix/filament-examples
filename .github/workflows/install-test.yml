@@ -2,15 +2,32 @@ name: Install test
 
 # Manual only. Runs the commands in install-test/steps.md on a bare
 # ubuntu:22.04 container on an x86_64 and an arm64 runner: the release path in
-# bash and zsh, the source path in bash. A macOS job runs the release path in zsh.
+# bash and zsh, the source path in bash. The Mac main lane consumes an exact
+# native main-build artifact and runs the README smoke without release assets.
 on:
   workflow_dispatch:
+    inputs:
+      lane:
+        description: Native Mac main smoke, or the existing full install matrix
+        type: choice
+        options: [macos-main, install-matrix]
+        default: macos-main
+      driver_run_id:
+        description: Successful driver release.yml main build run (publish=false)
+        type: string
+      driver_sha:
+        description: Exact 40-character driver commit of that main build
+        type: string
+      artifact_digest:
+        description: sha256 digest of the fsl-aarch64-apple-darwin workflow artifact
+        type: string
 
 permissions:
   contents: read
 
 jobs:
   install:
+    if: inputs.lane == 'install-matrix'
     strategy:
       fail-fast: false
       matrix:
@@ -36,6 +53,7 @@ jobs:
   # The release path in zsh on macOS, without a container: the steps run in the
   # runner's own shell.
   install-macos:
+    if: inputs.lane == 'install-matrix'
     name: install (release, zsh, macos-15)
     runs-on: macos-15
     steps:
@@ -47,3 +65,33 @@ jobs:
         run: command -v jq >/dev/null || brew install jq
       - name: Run the install steps
         run: make install-test-host
+
+  macos-main:
+    if: inputs.lane == 'macos-main'
+    name: README smoke (native macOS arm64, main artifact)
+    runs-on: macos-15
+    timeout-minutes: 30
+    permissions:
+      contents: read
+      actions: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: dtolnay/rust-toolchain@stable
+      - name: Verify the main-build artifact and run its README quickstart
+        env:
+          GH_TOKEN: ${{ github.token }}
+          DRIVER_RUN_ID: ${{ inputs.driver_run_id }}
+          DRIVER_SHA: ${{ inputs.driver_sha }}
+          ARTIFACT_DIGEST: ${{ inputs.artifact_digest }}
+        run: bash tools/macos-main-smoke.sh
+      - name: Retain build and native smoke receipts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: macos-main-smoke
+          path: |
+            ${{ runner.temp }}/fsl-macos-smoke.log
+            ${{ runner.temp }}/fsl-macos-cohort.txt
+          if-no-files-found: ignore
