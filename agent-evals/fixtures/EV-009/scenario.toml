@@ -1,4 +1,5 @@
 id = "EV-009"
+assert_budget_ms = 120000
 shipped_references = false
 active_verbs = ["check", "run", "analyze", "monitor"]
 required_program_verbs = ["check", "run", "analyze", "monitor", "export"]

@@ -60,6 +60,9 @@ After independent review, run its single Codex sample with:
 All four semantic contracts and their actual public command evidence must pass.
 The monitor comparison retains every ordered event and the complete summary;
 only JSON whitespace and object-key ordering are ignored.
+One assertion budget covers input validation, domain-input regeneration, all
+four public commands and the final artifact checks. Exhaustion is reported as a
+harness error after the owned child has been terminated and reaped.
 Its report keeps separate per-verb results and marks program completion pending:
 the required export workflow is recorded separately as pending its owning mapper
 fix. This task's pass covers four runnable contracts, not every FSL verb.

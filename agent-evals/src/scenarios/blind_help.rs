@@ -1,16 +1,33 @@
 //! EV-009: learn supported public FSL verbs from CLI help and original inputs.
 
+use crate::capture::{self, CaptureCode, CaptureError};
 use crate::{Assertion, ScenarioResult, Tools};
 use serde_json::{Value, json};
 use std::collections::BTreeMap;
 use std::fs;
+use std::io::Read;
 use std::path::Path;
 use std::process::Command;
+use std::time::{Duration, Instant};
 
 /// Stable identity for the blind public-CLI journey.
 pub const ID: &str = "EV-009";
 /// User workflow exposed in the scenario catalogue.
 pub const TITLE: &str = "Discover check, run, analyze and monitor using only CLI help";
+
+const ARTIFACT_LIMIT: u64 = 1_048_576;
+
+fn assertion_budget() -> ScenarioResult<Duration> {
+    let manifest: toml::Value =
+        toml::from_str(include_str!("../../fixtures/EV-009/scenario.toml"))?;
+    let milliseconds = manifest
+        .get("assert_budget_ms")
+        .and_then(toml::Value::as_integer)
+        .and_then(|value| u64::try_from(value).ok())
+        .filter(|value| (1..300_000).contains(value))
+        .ok_or("EV-009 assertion budget must be positive and below the SDK provider timeout")?;
+    Ok(Duration::from_millis(milliseconds))
+}
 
 const INPUTS: &[(&str, &str)] = &[
     (
@@ -93,51 +110,69 @@ impl Verb {
     }
 }
 
-fn generated_domain() -> ScenarioResult<Vec<u8>> {
+fn generated_domain(deadline: Instant) -> ScenarioResult<Vec<u8>> {
+    capture::before_deadline(deadline)?;
     let scratch = tempfile::tempdir()?;
     let manifest = Path::new(env!("CARGO_MANIFEST_DIR"));
     let destination = scratch.path().join("domain.json");
-    let generated = Command::new("node")
+    let mut command = Command::new("node");
+    command
         .arg(manifest.join("../tools/model.mjs"))
         .arg(manifest.join("fixtures/EV-009/domain.mjs"))
-        .arg(&destination)
-        .output()?;
+        .arg(&destination);
+    let generated = capture::capture_command(&mut command, deadline)?;
     if !generated.status.success() {
         return Err("original domain input generation failed".into());
     }
-    Ok(fs::read(destination)?)
+    let bytes = regular_file(&destination)?;
+    capture::before_deadline(deadline)?;
+    Ok(bytes)
 }
 
 /// Supply only original problem inputs; the provider must disable shipped references.
 pub fn prepare(workspace: &Path, _tools: &Tools) -> ScenarioResult<String> {
+    let deadline = Instant::now()
+        .checked_add(assertion_budget()?)
+        .ok_or("invalid preparation budget")?;
     for &(name, content) in INPUTS {
+        capture::before_deadline(deadline)?;
         fs::write(workspace.join(name), content)?;
     }
-    fs::write(workspace.join("domain.json"), generated_domain()?)?;
+    fs::write(workspace.join("domain.json"), generated_domain(deadline)?)?;
     let prompt = include_str!("../../fixtures/EV-009/task.md");
     fs::write(workspace.join("task.md"), prompt)?;
+    capture::before_deadline(deadline)?;
     Ok(prompt.to_owned())
 }
 
 fn regular_file(path: &Path) -> ScenarioResult<Vec<u8>> {
     let metadata = fs::symlink_metadata(path)?;
-    if !metadata.file_type().is_file() || metadata.len() > 1_048_576 {
+    if !metadata.file_type().is_file() || metadata.len() > ARTIFACT_LIMIT {
         return Err("scenario artifact must be a bounded regular file".into());
     }
-    Ok(fs::read(path)?)
+    let mut bytes = Vec::new();
+    fs::File::open(path)?
+        .take(ARTIFACT_LIMIT + 1)
+        .read_to_end(&mut bytes)?;
+    if u64::try_from(bytes.len())? > ARTIFACT_LIMIT {
+        return Err("scenario artifact grew beyond its byte budget".into());
+    }
+    Ok(bytes)
 }
 
-fn immutable_inputs(workspace: &Path) -> ScenarioResult<Vec<String>> {
+fn immutable_inputs(workspace: &Path, deadline: Instant) -> ScenarioResult<Vec<String>> {
     let mut changed = Vec::new();
     for &(name, expected) in INPUTS {
+        capture::before_deadline(deadline)?;
         if !regular_file(&workspace.join(name)).is_ok_and(|actual| actual == expected.as_bytes()) {
             changed.push(name.to_owned());
         }
     }
-    let domain = generated_domain()?;
+    let domain = generated_domain(deadline)?;
     if !regular_file(&workspace.join("domain.json")).is_ok_and(|actual| actual == domain) {
         changed.push("domain.json".to_owned());
     }
+    capture::before_deadline(deadline)?;
     Ok(changed)
 }
 
@@ -261,7 +296,12 @@ fn semantic_artifact(verb: Verb, bytes: &[u8]) -> Option<Value> {
     }
 }
 
-fn public_outcome(workspace: &Path, tools: &Tools, verb: Verb) -> ScenarioResult<(i32, Vec<u8>)> {
+fn public_outcome(
+    workspace: &Path,
+    tools: &Tools,
+    verb: Verb,
+    deadline: Instant,
+) -> ScenarioResult<(i32, Vec<u8>)> {
     let mut command = Command::new(&tools.fsl);
     command
         .current_dir(workspace)
@@ -269,7 +309,8 @@ fn public_outcome(workspace: &Path, tools: &Tools, verb: Verb) -> ScenarioResult
     if matches!(verb, Verb::Monitor) {
         command.args(["--input", "readings.jsonl"]);
     }
-    let result = command.args(["--format", "json"]).output()?;
+    command.args(["--format", "json"]);
+    let result = capture::capture_command(&mut command, deadline)?;
     let exit = result
         .status
         .code()
@@ -277,12 +318,19 @@ fn public_outcome(workspace: &Path, tools: &Tools, verb: Verb) -> ScenarioResult
     Ok((exit, result.stdout))
 }
 
-fn grade_case(workspace: &Path, tools: &Tools, verb: Verb) -> ScenarioResult<(bool, Value)> {
-    let (exit, actual) = public_outcome(workspace, tools, verb)?;
+fn grade_case(
+    workspace: &Path,
+    tools: &Tools,
+    verb: Verb,
+    deadline: Instant,
+) -> ScenarioResult<(bool, Value)> {
+    capture::before_deadline(deadline)?;
+    let (exit, actual) = public_outcome(workspace, tools, verb, deadline)?;
     let expected = semantic_artifact(verb, &actual);
     let saved = regular_file(&workspace.join(verb.result_file()))
         .ok()
         .and_then(|bytes| semantic_artifact(verb, &bytes));
+    capture::before_deadline(deadline)?;
     let pass = exit == verb.expected_exit() && expected.is_some() && saved == expected;
     Ok((
         pass,
@@ -290,11 +338,11 @@ fn grade_case(workspace: &Path, tools: &Tools, verb: Verb) -> ScenarioResult<(bo
     ))
 }
 
-/// Grade each verb's actual public result and saved semantic artifact independently.
-pub fn grade(workspace: &Path, tools: &Tools) -> ScenarioResult<Assertion> {
+fn assess(workspace: &Path, tools: &Tools, deadline: Instant) -> ScenarioResult<Assertion> {
+    capture::before_deadline(deadline)?;
     let mut failures = Vec::new();
     let mut checks = BTreeMap::new();
-    let changed = immutable_inputs(workspace)?;
+    let changed = immutable_inputs(workspace, deadline)?;
     checks.insert("changed_inputs".to_owned(), json!(changed));
     if !changed.is_empty() {
         return Ok(Assertion {
@@ -305,7 +353,7 @@ pub fn grade(workspace: &Path, tools: &Tools) -> ScenarioResult<Assertion> {
     }
     let mut per_verb = serde_json::Map::new();
     for &verb in Verb::ALL {
-        let (pass, detail) = grade_case(workspace, tools, verb)?;
+        let (pass, detail) = grade_case(workspace, tools, verb, deadline)?;
         per_verb.insert(verb.name().to_owned(), detail);
         if !pass {
             failures.push(format!(
@@ -321,10 +369,53 @@ pub fn grade(workspace: &Path, tools: &Tools) -> ScenarioResult<Assertion> {
     );
     checks.insert("program_status".to_owned(), json!("partial/export-pending"));
     checks.insert("overall_completion".to_owned(), json!("pending"));
+    capture::before_deadline(deadline)?;
     Ok(Assertion {
         ok: failures.is_empty(),
         checks,
         failures,
+    })
+}
+
+/// Independently grade all four verbs within the manifest's single assertion budget.
+pub fn grade(workspace: &Path, tools: &Tools) -> ScenarioResult<Assertion> {
+    grade_with_budget(workspace, tools, assertion_budget()?)
+}
+
+fn grade_with_budget(
+    workspace: &Path,
+    tools: &Tools,
+    budget: Duration,
+) -> ScenarioResult<Assertion> {
+    let deadline = Instant::now()
+        .checked_add(budget)
+        .ok_or("invalid assertion budget")?;
+    Ok(match assess(workspace, tools, deadline) {
+        Ok(assertion) => assertion,
+        Err(error) => {
+            let capture_error = error.downcast_ref::<CaptureError>();
+            let expired =
+                capture_error.is_some_and(|failure| failure.code == CaptureCode::AssertionTimeout);
+            let mut checks = BTreeMap::from([
+                ("failure_class".to_owned(), json!("harness-error")),
+                ("assert_budget_ms".to_owned(), json!(budget.as_millis())),
+                ("program_status".to_owned(), json!("partial/export-pending")),
+                ("overall_completion".to_owned(), json!("pending")),
+            ]);
+            if let Some(child_id) = capture_error.and_then(|failure| failure.reaped_child) {
+                checks.insert("terminated_reaped_child".to_owned(), json!(child_id));
+            }
+            let failure = if expired {
+                format!("harness-error: assert budget exceeded ({ID}): {error}")
+            } else {
+                format!("harness-error: validation failed ({ID}): {error}")
+            };
+            Assertion {
+                ok: false,
+                checks,
+                failures: vec![failure],
+            }
+        }
     })
 }
 
@@ -347,7 +438,10 @@ mod tests {
         let tools = tools()?;
         let workspace = tempfile::tempdir()?;
         prepare(workspace.path(), &tools)?;
-        let (exit, bytes) = public_outcome(workspace.path(), &tools, verb)?;
+        let deadline = Instant::now()
+            .checked_add(assertion_budget()?)
+            .ok_or("invalid reference budget")?;
+        let (exit, bytes) = public_outcome(workspace.path(), &tools, verb, deadline)?;
         assert_eq!(
             exit,
             verb.expected_exit(),
@@ -362,7 +456,7 @@ mod tests {
             String::from_utf8_lossy(&bytes)
         );
         fs::write(workspace.path().join(verb.result_file()), &bytes)?;
-        let (pass, observed) = grade_case(workspace.path(), &tools, verb)?;
+        let (pass, observed) = grade_case(workspace.path(), &tools, verb, deadline)?;
         assert!(pass, "{}: {observed}", verb.name());
         assert!(semantic_artifact(verb, b"FSL-EVAL-DONE").is_none());
         Ok(bytes)
@@ -538,6 +632,58 @@ mod tests {
                 "{name} must not match the complete actual stream"
             );
         }
+        Ok(())
+    }
+
+    /// Provenance: QSL-2493
+    #[test]
+    fn assertion_deadline_classifies_timeout_and_reaps_its_public_tool() -> ScenarioResult<()> {
+        use std::os::unix::fs::PermissionsExt;
+        let workspace = tempfile::tempdir()?;
+        let stub = workspace.path().join("controlled-fsl");
+        fs::write(
+            &stub,
+            "#!/bin/sh\nprintf '%s\\n' \"$$\" > child.pid\nexec sleep 30\n",
+        )?;
+        fs::set_permissions(&stub, fs::Permissions::from_mode(0o755))?;
+        let tools = Tools {
+            fsl: stub,
+            docs: ".".into(),
+            quire: "quire".into(),
+            quoin: "quoin".into(),
+        };
+        prepare(workspace.path(), &tools)?;
+        let budget = Duration::from_secs(1);
+        let started = Instant::now();
+        let result = grade_with_budget(workspace.path(), &tools, budget)?;
+        assert!(!result.ok);
+        assert!(
+            result
+                .failures
+                .iter()
+                .any(|failure| failure.starts_with("harness-error: assert budget exceeded")),
+            "{:?}",
+            result.failures
+        );
+        assert_eq!(result.checks["failure_class"], "harness-error");
+        assert_eq!(result.checks["assert_budget_ms"], 1000);
+        let child_id: u32 = fs::read_to_string(workspace.path().join("child.pid"))?
+            .trim()
+            .parse()?;
+        assert_eq!(result.checks["terminated_reaped_child"], child_id);
+        assert!(
+            started.elapsed() < budget + Duration::from_secs(5),
+            "assertion must terminate within its budget plus the contract's cleanup allowance"
+        );
+        let alive = Command::new("/bin/kill")
+            .args(["-0", &child_id.to_string()])
+            .stdout(std::process::Stdio::null())
+            .stderr(std::process::Stdio::null())
+            .status()?;
+        assert!(
+            !alive.success(),
+            "the owned public-tool child must have exited"
+        );
         Ok(())
     }
 }
