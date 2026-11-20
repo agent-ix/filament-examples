@@ -1,0 +1,32 @@
+{
+  "format": "filament.state.snapshot/v1",
+  "identity": {
+    "authority": "eval",
+    "identity": "eval:safety-counter/start"
+  },
+  "observation": "current",
+  "model": {
+    "identity": "eval/safety-counter"
+  },
+  "anchor": {
+    "kind": "initialization",
+    "name": "zero"
+  },
+  "populations": [
+    {
+      "population": "ix://eval/safety-counter/counters",
+      "complete": true,
+      "objects": [
+        {
+          "key": "meter",
+          "type": "ix://eval/safety-counter/Counter",
+          "fields": {
+            "level": {
+              "integer": "0"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

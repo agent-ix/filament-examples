@@ -1,0 +1,36 @@
+{
+  "format": "native-analyze/1",
+  "request": {
+    "models": [
+      {
+        "format": "semantic-ir/2.0.0",
+        "source": {
+          "file": "counter.semantic-ir.json",
+          "authority": "eval",
+          "identity": "eval:safety-counter/model",
+          "document": "counter-model",
+          "formal_revision": 1
+        }
+      }
+    ],
+    "program": {
+      "source": {
+        "file": "counter.fsl",
+        "authority": "eval",
+        "identity": "eval:safety-counter/program",
+        "document": "counter",
+        "formal_revision": 1
+      }
+    },
+    "documents": [
+      {
+        "file": "start.json"
+      }
+    ],
+    "items": [
+      {
+        "claim": "TooSmall"
+      }
+    ]
+  }
+}

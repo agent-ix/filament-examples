@@ -1,0 +1,10 @@
+language "ix:native" edition "1-draft";
+profile v = "filament.model.complete/v1";
+profile inf = "filament.temporal.infinite-trace/v1";
+model Meter = "eval/safety-counter";
+
+post Advance using v on Meter::Counter::advance {
+  if pre(self.level) < 3 then self.level = pre(self.level) + 1
+  else self.level = pre(self.level)
+}
+
