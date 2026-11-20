@@ -331,13 +331,30 @@ fn matches_invocation_in(
     trusted: Option<&Path>,
     workspace: Option<&Path>,
 ) -> bool {
+    matches_invocation_at(
+        command,
+        verb,
+        operand,
+        trusted,
+        workspace,
+        workspace.unwrap_or(Path::new(".")),
+    )
+}
+fn matches_invocation_at(
+    command: &str,
+    verb: &str,
+    operand: Option<&str>,
+    trusted: Option<&Path>,
+    workspace: Option<&Path>,
+    initial_cwd: &Path,
+) -> bool {
     if changes_tool_resolution(command) {
         return false;
     }
     let Some(tokens) = shell_tokens(command) else {
         return false;
     };
-    let mut cwd = workspace.unwrap_or(Path::new(".")).to_owned();
+    let mut cwd = initial_cwd.to_owned();
     tokens
         .split(|t| *t == ShellToken::Separator)
         .any(|statement| {
@@ -600,6 +617,47 @@ fn enforce_transcript_boundary(
     Ok(())
 }
 
+fn recorded_command_evidence(
+    workspace: &Path,
+    tools: &Tools,
+    inputs: &[RecordedInput],
+    verb: &str,
+    operand: &str,
+) -> bool {
+    let mut persistent_cwd = workspace.to_owned();
+    let mut found = false;
+    for input in inputs {
+        let mut cwd = if input.persistent_cwd {
+            persistent_cwd.clone()
+        } else {
+            workspace.to_owned()
+        };
+        if let Some(workdir) = input.value.get("workdir").and_then(Value::as_str) {
+            cwd = resolve_path(workspace, workdir);
+        }
+        let mut commands = Vec::new();
+        collect_commands(&input.value, &mut commands);
+        for command in commands {
+            found |= matches_invocation_at(
+                &command,
+                verb,
+                Some(operand),
+                Some(&tools.fsl),
+                Some(workspace),
+                &cwd,
+            );
+            // Reuse the boundary scan's exact shell/cd handling. Boundary
+            // violations were already applied; here its cwd is the evidence
+            // context for subsequent calls, never a fresh workspace default.
+            inspect_command(&command, &mut cwd, workspace, tools, &mut Vec::new());
+        }
+        if input.persistent_cwd {
+            persistent_cwd = cwd;
+        }
+    }
+    found
+}
+
 fn references(workspace: &Path, tools: &Tools) -> ScenarioResult<()> {
     let docs = workspace.join("docs");
     fs::create_dir_all(&docs)?;
@@ -673,22 +731,19 @@ pub fn respond(input: &[u8]) -> ScenarioResult<Value> {
                 },
             };
             enforce_transcript_boundary(&workspace, &tools, &mut assertion)?;
-            match agent_commands(&workspace) {
-                Ok(commands) => {
+            match agent_inputs(&workspace) {
+                Ok(inputs) => {
+                    let mut commands = Vec::new();
+                    for input in &inputs {
+                        collect_commands(&input.value, &mut commands);
+                    }
                     assertion
                         .checks
                         .insert("agent_command_count".to_owned(), json!(commands.len()));
                     let mut evidence = serde_json::Map::new();
                     for &(verb, operand) in entry.commands {
-                        let check = commands.iter().any(|command| {
-                            matches_invocation_in(
-                                command,
-                                verb,
-                                Some(operand),
-                                Some(&tools.fsl),
-                                Some(&workspace),
-                            )
-                        });
+                        let check =
+                            recorded_command_evidence(&workspace, &tools, &inputs, verb, operand);
                         evidence.insert(format!("{verb}:{operand}"), json!(check));
                         if !check {
                             assertion.ok = false;
@@ -720,6 +775,69 @@ mod tests {
             persistent_cwd: false,
             writes_files: false,
         }
+    }
+    /// Trace: FR-001 AC-6
+    #[test]
+    fn evidence_context_binds_workspace_model_across_claude_and_codex_calls() -> ScenarioResult<()>
+    {
+        let temp = tempfile::tempdir()?;
+        let workspace = temp.path().join("work");
+        fs::create_dir_all(workspace.join("docs"))?;
+        fs::write(workspace.join("model.fsl"), "workspace model")?;
+        fs::write(workspace.join("docs/model.fsl"), "different model")?;
+        let tools = Tools {
+            fsl: temp.path().join("fsl"),
+            docs: temp.path().join("published"),
+            quire: temp.path().join("quire"),
+            quoin: temp.path().join("quoin"),
+        };
+        let transcript = workspace.join(".cli-agent-evals/transcripts");
+        fs::create_dir_all(&transcript)?;
+        for (persistent, operand, expected) in [
+            (true, "model.fsl", false),
+            (true, "../model.fsl", true),
+            (false, "model.fsl", false),
+            (false, "../model.fsl", true),
+        ] {
+            let calls = if persistent {
+                vec![
+                    json!({"message":{"content":[{"type":"tool_use","name":"Bash","input":{"command":"cd docs"}}]}}),
+                    json!({"message":{"content":[{"type":"tool_use","name":"Bash","input":{"command":format!("fsl check eval authored {operand} --format json > check.json")}}]}}),
+                ]
+            } else {
+                vec![
+                    json!({"payload":{"type":"function_call","name":"exec_command","arguments":json!({"workdir":"docs","cmd":format!("fsl check eval authored {operand} --format json > check.json")}).to_string()}}),
+                ]
+            };
+            fs::write(
+                transcript.join("sample.transcript"),
+                calls
+                    .iter()
+                    .map(Value::to_string)
+                    .collect::<Vec<_>>()
+                    .join("\n"),
+            )?;
+            let inputs = agent_inputs(&workspace)?;
+            assert_eq!(
+                recorded_command_evidence(&workspace, &tools, &inputs, "check", "model.fsl"),
+                expected,
+                "persistent={persistent}, operand={operand}"
+            );
+        }
+        // A later ordinary Codex call starts back in the workspace; a workdir
+        // override on its predecessor must not leak into its execution context.
+        let inputs = [
+            recorded(json!({"workdir":"docs","cmd":"pwd"})),
+            recorded(json!({"cmd":"fsl check eval authored model.fsl --format json"})),
+        ];
+        assert!(recorded_command_evidence(
+            &workspace,
+            &tools,
+            &inputs,
+            "check",
+            "model.fsl"
+        ));
+        Ok(())
     }
     /// Trace: FR-001 AC-6
     #[test]
