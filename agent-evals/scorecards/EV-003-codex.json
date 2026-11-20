@@ -1,0 +1,89 @@
+{
+  "format": "fsl-agent-scorecard/v1",
+  "scenario": "EV-003",
+  "scope": "Finite safety proof and counterexample from public analyze",
+  "cohort": {
+    "driver": "18d6fb0d84f36df16d77d242897703c6da274c14",
+    "fsl": "deac8870a05e0b9ae28392f597f829011b44ebb8",
+    "codegen": "889e999589c98d3b2dfd96abc1b0c9b233d864de",
+    "ir": "e576f74916b8624c8301aee5d0e3cf72a0078e4c",
+    "cli_agent_evals": "0.3.0"
+  },
+  "agent": "codex",
+  "model": "gpt-6.1-sol",
+  "functional_head": "d9434152bb296db1766561c47ef74280baf3c596",
+  "task_samples": 1,
+  "live_sdk_pass_rate": "0/1",
+  "adjudicated_pass_rate": "1/1",
+  "original_attempt": {
+    "status": "failed",
+    "classification": "CLI gap",
+    "cause": "Native command/boundary evidence false positives; independent semantic checks passed",
+    "runner_exit": 1,
+    "exit_reason": "complete",
+    "wall_ms": 74876,
+    "tool_calls": 14,
+    "recorded_commands": 14,
+    "turns": null,
+    "artifact_checks": {
+      "fixed_inputs_and_requested_properties": true,
+      "holding": "proved",
+      "violating": "refuted",
+      "counterexample_levels": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "saved_outcomes_and_summary_match": true
+    },
+    "command_evidence": {
+      "analyze:holding-request.json": false,
+      "analyze:violating-request.json": false
+    },
+    "transcript_boundary": {
+      "ok": false,
+      "violations": [
+        "sandbox-breach: path outside allowed workspace/reference access"
+      ]
+    },
+    "failure_count": 3
+  },
+  "triage": {
+    "classification": "CLI gap",
+    "description": "Literal stdout redirects and exit-status captures lost valid CLI evidence; rg pattern data was scanned as a path, including a duplicate opaque JavaScript cmd string. Reviewed AST/argument-role fixes preserve actual typed command and outside-path guards."
+  },
+  "live_reruns": 0,
+  "public_semantic_reruns": 0,
+  "retained_evidence_attempts": [
+    {
+      "status": "failed",
+      "command_count": 14,
+      "both_analyzers": true,
+      "boundary_ok": false,
+      "scope": "retained command/boundary only"
+    },
+    {
+      "status": "passed",
+      "command_count": 14,
+      "command_evidence": {
+        "analyze:holding-request.json": true,
+        "analyze:violating-request.json": true
+      },
+      "transcript_boundary": {
+        "ok": true,
+        "violations": []
+      },
+      "scope": "retained command/boundary only"
+    }
+  ],
+  "final_artifact_assessment": {
+    "status": "passed",
+    "basis": "Original accepted semantic proof/refutation/counterexample checks plus final retained command/boundary adjudication"
+  },
+  "notes": [
+    "One original Codex task sample; the SDK report remains unchanged at 0/1.",
+    "Retained adjudication used the same saved sample without another agent run or semantic/proof execution.",
+    "SDK turns metric was unavailable. Raw reports, workspaces, credentials and transcripts remain private."
+  ]
+}

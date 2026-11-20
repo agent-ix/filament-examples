@@ -1,0 +1,5 @@
+id = "EV-003"
+title = "Prove a finite safety property and read its counterexample"
+use_case = "QSL-2487"
+assert_budget_ms = 30000
+canary = false
