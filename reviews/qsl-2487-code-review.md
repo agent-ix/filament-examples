@@ -13,7 +13,7 @@ Reviewed the new finite-safety agent scenario, its independent public-analyzer g
 
 ## Verdict
 
-**PASS** — FND-001 and FND-002 are fixed. Unknown or combined ripgrep option arity now fails closed; the known actual pattern forms remain usable. Retained command/boundary grading and current-code gates remain pending.
+**PASS** — FND-001 and FND-002 remain fixed. The additional opaque-command fix at d9434152 masks only AST-identified literal command data corroborated by typed execution, whose actual command and working directory remain guarded. Retained command/boundary grading and current-code gates remain pending.
 
 ## Findings
 
@@ -55,3 +55,11 @@ Runtime follow-up inspected only 23580ac..3e5df881 for PR65. Literal stdout redi
 Accepted runtime evidence: one Codex task, 14 commands and 74876 ms; proof/refutation, fixed inputs, current counterexample and saved outcomes passed. The original SDK 0/1 remains recorded, and command/boundary-only retained grading is pending. Three new focused tests reportedly passed; no tests, analyzers, semantic checks, builds, retained grades or live agents were rerun by the reviewer.
 
 Round 3 inspected only 3e5df881..76b1c21e for FND-002. `rg_path_operands` now returns `None` for unknown/combined option arity or a missing option argument, and the caller records `harness-error: unsupported rg option arity in boundary evidence`. Known -n/-L and simple pattern arguments retain their intended roles; explicit file/preprocessor operands retain path checks. The one new affected-arity test reportedly passed. No tests, prior semantic/reference checks, retained grades, builds, Clippy, Mac checks or agent runs were repeated.
+
+## Bounded runtime follow-up 4
+
+Inspected only 52bd168..d9434152: the declared registry dependency tree-sitter-javascript, the private typed-execution marker, AST command-data extraction, its boundary-scan integration and one affected regression test. No additional finding was identified; earlier findings were not reopened.
+
+The parser identifies only literal `cmd` string values inside direct `tools.exec_command` calls with one object argument. It masks those string values only when their decoded contents exactly match a typed executed command. JavaScript is never executed and supplies no positive command evidence. Every typed command is still inspected at its actual recorded working directory; uncorroborated commands, non-shell inputs, other object properties and unmatched literals remain in the raw scan. Missing or malformed syntax leaves the original scan intact. Masking uses AST byte ranges with checked string access, rather than arbitrary substring removal. The dependency is declared normally in Cargo.toml and Cargo.lock; no SDK fork or copied source is introduced.
+
+Accepted evidence is one new two-wrapper/typed-event regression test including unmatched non-shell reads, uncorroborated commands and actual typed outside-command negatives. The preceding retained grade recorded both required analyze calls and all14 commands but rejected duplicate opaque data. Its original failure is preserved; the next action is one new command/boundary-only retained receipt, not a semantic or agent rerun. No tests, builds, Clippy, public analyzers, authentication probes or retained grades were run by this reviewer.
