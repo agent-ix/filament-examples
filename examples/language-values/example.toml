@@ -133,7 +133,7 @@ expect_verdict = "holds"
 
 [[case]]
 id = "function-selection"
-rule = "example"
+rule = "selected"
 statement = "The run request selects the requested named function beside a decoy function."
 file = "rules/function-selection.fsl"
 command = "run requests/function-selection.json"
@@ -144,7 +144,7 @@ expect_verdict = "holds"
 [[case]]
 id = "text-constructor"
 rule = "example"
-statement = "Text constructs a bounded NFC value at its expected type."
+statement = "Text construction returns the independently expected literal café as bounded NFC text."
 file = "rules/text-constructor.fsl"
 command = "run requests/text-constructor.json"
 status = "running"

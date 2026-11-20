@@ -1,5 +1,4 @@
 language "ix:native" edition "1-draft";
 profile v = "filament.value.complete/v1";
 function selected using v(): Integer pure { 42 }
-function decoy using v(): Integer pure { 99 }
-function example using v(): Boolean pure { selected() = 42 }
+function example using v(): Integer pure { 99 }

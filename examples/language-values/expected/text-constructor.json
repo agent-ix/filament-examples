@@ -4,7 +4,8 @@
   "result": {
     "kind": "completed",
     "value": {
-      "boolean": true
+      "kind": "text",
+      "text": "café"
     }
   },
   "first_diagnostic": null,
