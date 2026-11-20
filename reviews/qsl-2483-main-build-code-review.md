@@ -49,3 +49,21 @@ Plan completion: not assessed
   {"id":"existing-platform-oracle","path":"tools/fsl-examples/tests/platform_smoke.rs","role":"context_only","excerpt":"fn quickstart_runs_on_the_selected_native_platform() -> TestResult {"}
 ]
 ```
+
+## Dispositions
+
+Round 1, fix head ec32952, inspected only the fix diff from 9cfac97.
+
+| FND | outcome | reason |
+| --- | --- | --- |
+| FND-001 | fixed | The consumer no longer builds FSL or requires 20 GiB. It downloads the pinned native arm64 artifact of one successful manual driver main build, verifies run/commit/artifact identities and archive bytes, and runs the existing native quickstart oracle. Only the small test harness is compiled here; the user's disk rule was not lowered and no paid runner was introduced. |
+
+**Round 1 verdict: PASS** for the reviewed capacity fix; no new findings. Actual producer success and native Mac execution remain required final-gate evidence, not a code-review claim.
+
+After excerpt:
+
+```bash
+# Consume one exact successful native main build; no FSL build runs here.
+```
+
+Additional fix scope examined: exact numeric run ID, 40-character driver SHA and SHA-256 artifact digest; successful completed manual main release.yml run; unique unexpired named artifact; downloaded ZIP digest; one versioned arm64 archive containing one regular fsl file; arm64 executable check; same-commit README; owned temporary download/checkout/harness target cleanup; native uname guard and unchanged exact platform smoke. The existing producer's no-publication behavior and native artifact shape are accepted in-lane facts from the lead. No producer was dispatched, artifact downloaded, or test/build/check repeated by this reviewer. Accepted changed bash syntax/diff checks remain the coder's evidence.

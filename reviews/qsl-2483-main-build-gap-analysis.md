@@ -69,3 +69,9 @@ Plan completion: not assessed
   }
 ]
 ```
+
+## Disposition round 1 coverage
+
+Fix head ec32952 replaces local FSL compilation with consumption of an exact native main-build artifact. SR-1437 FND-001 is fixed. The fix preserves the actual Darwin-arm64 guard and the existing meaningful README quickstart oracle, binds the executable artifact to a successful manual main run and exact driver commit/digest, and fetches that commit's README. No newly introduced requirement/oracle gaps were found in this fix diff.
+
+The scoped code review is now clear. This analysis remains **CONDITIONAL** only on the actual main-build producer result and native Mac gate. Neither a downloaded artifact nor a native Mac pass is claimed. No broad analysis, tests, builds, producer workflow dispatch, artifact download or platform journey was performed by this reviewer.
