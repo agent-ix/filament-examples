@@ -3,9 +3,8 @@
 use std::collections::BTreeMap;
 use std::fmt;
 use std::fs;
-use std::io::{Read, Seek, SeekFrom};
 use std::path::Path;
-use std::process::{Child, Command, Output, Stdio};
+use std::process::{Command, Output};
 use std::time::{Duration, Instant};
 
 use serde::Deserialize;
@@ -333,112 +332,24 @@ fn check_summary(workspace: &Path) -> Checked<()> {
     Ok(())
 }
 
-fn before_deadline(deadline: Instant) -> Checked<()> {
-    if Instant::now() >= deadline {
-        return Err(Failure::new(
-            FailureCode::AssertionTimeout,
-            "the shared safety assertion deadline expired",
-        ));
-    }
-    Ok(())
+fn capture_failure(error: crate::capture::CaptureError) -> Failure {
+    let code = match error.code {
+        crate::capture::CaptureCode::AssertionTimeout => FailureCode::AssertionTimeout,
+        crate::capture::CaptureCode::OutputLimit | crate::capture::CaptureCode::ToolFailure => {
+            FailureCode::ToolFailure
+        }
+    };
+    let mut failure = Failure::new(code, error.to_string());
+    failure.reaped_child = error.reaped_child;
+    failure
 }
 
-fn terminate_and_reap(child: &mut Child) -> Checked<()> {
-    // The child may exit between try_wait and kill; wait still collects its status.
-    let _ = child.kill();
-    child.wait().map_err(|_| {
-        Failure::new(
-            FailureCode::ToolFailure,
-            "could not reap the owned analyzer child",
-        )
-    })?;
-    Ok(())
+fn before_deadline(deadline: Instant) -> Checked<()> {
+    crate::capture::before_deadline(deadline).map_err(capture_failure)
 }
 
 fn capture_analyzer(command: &mut Command, deadline: Instant) -> Checked<Output> {
-    before_deadline(deadline)?;
-    // File-backed capture cannot deadlock when either output exceeds a pipe buffer.
-    let mut stdout = tempfile::tempfile().map_err(|_| {
-        Failure::new(
-            FailureCode::ToolFailure,
-            "cannot create analyzer stdout capture",
-        )
-    })?;
-    let mut stderr = tempfile::tempfile().map_err(|_| {
-        Failure::new(
-            FailureCode::ToolFailure,
-            "cannot create analyzer stderr capture",
-        )
-    })?;
-    let out_handle = stdout.try_clone().map_err(|_| {
-        Failure::new(
-            FailureCode::ToolFailure,
-            "cannot attach analyzer stdout capture",
-        )
-    })?;
-    let err_handle = stderr.try_clone().map_err(|_| {
-        Failure::new(
-            FailureCode::ToolFailure,
-            "cannot attach analyzer stderr capture",
-        )
-    })?;
-    before_deadline(deadline)?;
-    let mut child = command
-        .stdin(Stdio::null())
-        .stdout(out_handle)
-        .stderr(err_handle)
-        .spawn()
-        .map_err(|_| {
-            Failure::new(
-                FailureCode::ToolFailure,
-                "trusted public fsl analyze could not start",
-            )
-        })?;
-    let child_id = child.id();
-    let status = loop {
-        if Instant::now() >= deadline {
-            terminate_and_reap(&mut child)?;
-            let mut failure = Failure::new(
-                FailureCode::AssertionTimeout,
-                "owned analyzer exceeded the shared safety assertion deadline and was terminated and reaped",
-            );
-            failure.reaped_child = Some(child_id);
-            return Err(failure);
-        }
-        match child.try_wait() {
-            Ok(Some(status)) => break status,
-            Ok(None) => std::thread::sleep(
-                deadline
-                    .saturating_duration_since(Instant::now())
-                    .min(Duration::from_millis(5)),
-            ),
-            Err(_) => {
-                terminate_and_reap(&mut child)?;
-                return Err(Failure::new(
-                    FailureCode::ToolFailure,
-                    "could not collect the owned analyzer status",
-                ));
-            }
-        }
-    };
-    let mut out = Vec::new();
-    let mut err = Vec::new();
-    for (file, bytes) in [(&mut stdout, &mut out), (&mut stderr, &mut err)] {
-        file.seek(SeekFrom::Start(0))
-            .and_then(|_| file.read_to_end(bytes))
-            .map_err(|_| {
-                Failure::new(
-                    FailureCode::ToolFailure,
-                    "could not read completed analyzer output",
-                )
-            })?;
-    }
-    before_deadline(deadline)?;
-    Ok(Output {
-        status,
-        stdout: out,
-        stderr: err,
-    })
+    crate::capture::capture_command(command, deadline).map_err(capture_failure)
 }
 
 fn analyze(
@@ -644,6 +555,7 @@ fn grade_with_budget(
 mod tests {
     use super::*;
     use std::path::PathBuf;
+    use std::process::Stdio;
 
     fn tools(fsl: PathBuf) -> Tools {
         Tools {
