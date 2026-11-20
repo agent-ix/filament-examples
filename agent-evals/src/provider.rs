@@ -125,25 +125,25 @@ fn collect_commands(value: &Value, commands: &mut Vec<String>) {
     {
         commands.push(cmd.to_owned());
     }
-    if let Some(parts) = value.get("command").and_then(Value::as_array) {
-        if parts.iter().all(Value::is_string) {
-            let words = parts.iter().filter_map(Value::as_str).collect::<Vec<_>>();
-            if words.first().is_some_and(|p| {
-                ["sh", "bash", "zsh"].contains(
-                    &Path::new(p)
-                        .file_name()
-                        .unwrap_or_default()
-                        .to_string_lossy()
-                        .as_ref(),
-                )
-            }) && words.iter().any(|w| ["-c", "-lc"].contains(w))
-            {
-                if let Some(script) = words.last() {
-                    commands.push((*script).to_owned());
-                }
-            } else {
-                commands.push(words.join(" "));
+    if let Some(parts) = value.get("command").and_then(Value::as_array)
+        && parts.iter().all(Value::is_string)
+    {
+        let words = parts.iter().filter_map(Value::as_str).collect::<Vec<_>>();
+        if words.first().is_some_and(|p| {
+            ["sh", "bash", "zsh"].contains(
+                &Path::new(p)
+                    .file_name()
+                    .unwrap_or_default()
+                    .to_string_lossy()
+                    .as_ref(),
+            )
+        }) && words.iter().any(|w| ["-c", "-lc"].contains(w))
+        {
+            if let Some(script) = words.last() {
+                commands.push((*script).to_owned());
             }
+        } else {
+            commands.push(words.join(" "));
         }
     }
     if let Some(action) = value.get("action") {
@@ -171,10 +171,10 @@ pub fn agent_commands(workspace: &Path) -> ScenarioResult<Vec<String>> {
                 .map_err(|e| format!("harness-error: invalid SDK transcript: {e}"))?;
             if let Some(content) = record.pointer("/message/content").and_then(Value::as_array) {
                 for item in content {
-                    if item["type"] == "tool_use" {
-                        if let Some(input) = item.get("input") {
-                            collect_commands(input, &mut commands);
-                        }
+                    if item["type"] == "tool_use"
+                        && let Some(input) = item.get("input")
+                    {
+                        collect_commands(input, &mut commands);
                     }
                 }
             }
@@ -296,10 +296,10 @@ pub fn respond(input: &[u8]) -> ScenarioResult<Value> {
                 }
             }
             for program in ["node", "codex", "claude"] {
-                if let Ok(path) = executable(program) {
-                    if let Some(parent) = path.parent() {
-                        paths.push(parent.to_owned());
-                    }
+                if let Ok(path) = executable(program)
+                    && let Some(parent) = path.parent()
+                {
+                    paths.push(parent.to_owned());
                 }
             }
             paths.extend([PathBuf::from("/usr/bin"), PathBuf::from("/bin")]);
@@ -391,6 +391,16 @@ mod tests {
         )));
         assert!(!invokes_fsl(
             "echo 'fsl check model.fsl'",
+            "check",
+            Some("model.fsl")
+        ));
+        assert!(!invokes_fsl(
+            "echo 'example && fsl check model.fsl'",
+            "check",
+            Some("model.fsl")
+        ));
+        assert!(!invokes_fsl(
+            "fsl check other-model.fsl",
             "check",
             Some("model.fsl")
         ));
