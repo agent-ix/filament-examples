@@ -95,8 +95,14 @@ fn mismatch(failures: &mut Vec<String>, ok: bool, description: &str) {
         failures.push(description.to_owned());
     }
 }
-fn value_run(tools: &Tools, directory: &Path, occupied: u64, limit: u64) -> ScenarioResult<bool> {
-    let request = json!({"format":"native-run/1","request":{"models":[],"program":{"source":{"file":"probe.fsl","authority":"eval","identity":"invariant-probe","document":"InvariantProbe","formal_revision":1}},"call":{"function":"gradeInvariant","arguments":[{"parameter":"occupied","value":{"integer":occupied.to_string()}},{"parameter":"limit","value":{"integer":limit.to_string()}}]}}});
+fn value_run(
+    tools: &Tools,
+    directory: &Path,
+    occupied: u64,
+    limit: u64,
+    names: (&str, &str),
+) -> ScenarioResult<bool> {
+    let request = json!({"format":"native-run/1","request":{"models":[],"program":{"source":{"file":"probe.fsl","authority":"eval","identity":"invariant-probe","document":"InvariantProbe","formal_revision":1}},"call":{"function":"gradeInvariant","arguments":[{"parameter":names.0,"value":{"integer":occupied.to_string()}},{"parameter":names.1,"value":{"integer":limit.to_string()}}]}}});
     fs::write(directory.join("run.json"), request.to_string())?;
     let output = Command::new(&tools.fsl)
         .current_dir(directory)
@@ -293,10 +299,28 @@ pub fn grade(workspace: &Path, tools: &Tools) -> ScenarioResult<Assertion> {
             "reserve must return Boolean",
         );
         let frames = direct(&parsed, op, Production::FrameClause);
+        let mut frame_fields = BTreeSet::new();
+        let modifies_only = frames.iter().all(|frame| {
+            if tokens(&parsed, frame)
+                .first()
+                .is_none_or(|token| token != "modifies")
+            {
+                return false;
+            }
+            for field in direct(&parsed, frame, Production::FieldTarget) {
+                frame_fields.insert(tokens(&parsed, field));
+            }
+            true
+        });
         mismatch(
             &mut failures,
-            frames.len() == 1
-                && tokens(&parsed, frames[0]) == ["modifies", "self", ".", "occupied"],
+            modifies_only
+                && frame_fields
+                    == BTreeSet::from([vec![
+                        "self".to_owned(),
+                        ".".to_owned(),
+                        "occupied".to_owned(),
+                    ]]),
             "reserve may modify only self.occupied and creates/deletes nothing",
         );
     }
@@ -340,6 +364,17 @@ pub fn grade(workspace: &Path, tools: &Tools) -> ScenarioResult<Assertion> {
         .and_then(|b| direct(&parsed, b, Production::Expression).first().copied())
         .ok_or("invariant has no expression")?;
     let mut expr_tokens = tokens(&parsed, expression);
+    let fresh = |base: &str| {
+        let mut name = base.to_owned();
+        let mut suffix = 0;
+        while expr_tokens.contains(&name) {
+            suffix += 1;
+            name = format!("{base}{suffix}");
+        }
+        name
+    };
+    let occupied_name = fresh("evalOccupied");
+    let limit_name = fresh("evalLimit");
     let mut index = 0;
     while index < expr_tokens.len() {
         if expr_tokens[index] == "self" {
@@ -353,7 +388,11 @@ pub fn grade(workspace: &Path, tools: &Tools) -> ScenarioResult<Assertion> {
                 );
                 break;
             }
-            let replacement = expr_tokens[index + 2].clone();
+            let replacement = if expr_tokens[index + 2] == "occupied" {
+                occupied_name.clone()
+            } else {
+                limit_name.clone()
+            };
             expr_tokens.splice(index..index + 3, [replacement]);
         }
         index += 1;
@@ -361,7 +400,7 @@ pub fn grade(workspace: &Path, tools: &Tools) -> ScenarioResult<Assertion> {
     if failures.is_empty() {
         let probe = tempfile::tempdir()?;
         let program = format!(
-            "language \"ix:native\" edition \"1-draft\";\nfunction gradeInvariant(occupied: Integer, limit: Integer): Boolean pure {{ {} }}\n",
+            "language \"ix:native\" edition \"1-draft\";\nfunction gradeInvariant({occupied_name}: Int[0,12], {limit_name}: Int[1,12]): Boolean pure {{ {} }}\n",
             expr_tokens.join(" ")
         );
         fs::write(probe.path().join("probe.fsl"), program)?;
@@ -369,7 +408,13 @@ pub fn grade(workspace: &Path, tools: &Tools) -> ScenarioResult<Assertion> {
         'bindings: for occupied in 0..=12 {
             for limit in 1..=12 {
                 evaluated += 1;
-                match value_run(tools, probe.path(), occupied, limit) {
+                match value_run(
+                    tools,
+                    probe.path(),
+                    occupied,
+                    limit,
+                    (&occupied_name, &limit_name),
+                ) {
                     Ok(value) if value == (occupied <= limit) => {}
                     Ok(value) => {
                         failures.push(format!("WithinCapacity returns {value} for occupied={occupied}, limit={limit}; expected {}",occupied<=limit));
@@ -438,7 +483,7 @@ mod tests {
             .replace("limit: Int[1, 12]", "limit: Slots")
             .replace(
                 "self.occupied <= self.limit",
-                "not (self.occupied // comment is not an assertion\n > self.limit)",
+                "let occupied = self.occupied in not (occupied // comment is not an assertion\n > self.limit)",
             );
         let result = grade_source(&source)?;
         assert!(result.ok, "{:?}", result.failures);
