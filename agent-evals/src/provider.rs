@@ -403,11 +403,19 @@ fn command_evidence_tokens(script: &str) -> Option<Vec<ShellToken>> {
         }
         let literal = shell_tokens(command.utf8_text(script.as_bytes()).ok()?)?;
         if let Some(ShellToken::Word(program)) = literal.first()
+            && (matches!(program.as_str(), "exit" | "exec" | "return")
+                || (program == "command"
+                    && !matches!(literal.get(1), Some(ShellToken::Word(flag)) if matches!(flag.as_str(), "-v" | "-V"))))
+        {
+            // Keep earlier unconditional evidence, but never credit commands
+            // after termination or an unrecognized command-builtin execution.
+            break;
+        }
+        if let Some(ShellToken::Word(program)) = literal.first()
             && matches!(
                 program.as_str(),
                 "." | "source"
                     | "eval"
-                    | "exec"
                     | "alias"
                     | "unalias"
                     | "hash"
@@ -1746,5 +1754,49 @@ fsl run postage-example.json --format json
                 "false run evidence: {script}"
             );
         }
+    }
+    #[test]
+    fn heredoc_command_evidence_stops_at_top_level_termination() {
+        // Parser input, never executed. Body text cannot alter parent-shell flow.
+        let editor = "python - <<'PY'\nprint('editor data only')\nPY\n";
+        for barrier in ["exit 0", "exec /bin/true", "return 0", "command exit 0"] {
+            let unreachable = format!(
+                "{editor}{barrier}\nfsl check postage.fsl\nfsl run postage-example.json --format json\n"
+            );
+            assert!(
+                !matches_invocation(&unreachable, "check", Some("postage.fsl"), None),
+                "unreachable check after {barrier}"
+            );
+            assert!(
+                !matches_invocation(&unreachable, "run", Some("postage-example.json"), None),
+                "unreachable run after {barrier}"
+            );
+            let partly_reachable = format!(
+                "{editor}fsl check postage.fsl\n{barrier}\nfsl run postage-example.json --format json\n"
+            );
+            assert!(
+                matches_invocation(&partly_reachable, "check", Some("postage.fsl"), None),
+                "reachable check before {barrier}"
+            );
+            assert!(
+                !matches_invocation(&partly_reachable, "run", Some("postage-example.json"), None),
+                "unreachable run after {barrier}"
+            );
+        }
+        let reachable = format!(
+            "{editor}fsl check postage.fsl\nfsl run postage-example.json --format json\nexit 0\n"
+        );
+        assert!(matches_invocation(
+            &reachable,
+            "check",
+            Some("postage.fsl"),
+            None
+        ));
+        assert!(matches_invocation(
+            &reachable,
+            "run",
+            Some("postage-example.json"),
+            None
+        ));
     }
 }
