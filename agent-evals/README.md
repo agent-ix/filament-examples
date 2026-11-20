@@ -44,7 +44,7 @@ The invariant is evaluated through public FSL execution for all 156 occupied/lim
 
 The full native domain-package variant is recorded separately in [its pending scenario](fixtures/EV-101/scenario.toml).
 
-## Build and test
+## Run a blind CLI journey
 
 The blind-help task covers four explicit workflows: checking a function,
 executing a freight quote, proving an inventory bound, and detecting a violation
@@ -67,6 +67,8 @@ Run only its new deterministic grader checks during authoring:
 ```sh
 FSL=/absolute/path/to/fsl cargo test --locked scenarios::blind_help::tests -- --include-ignored --test-threads=1
 ```
+
+## Build and test
 
 The deterministic grader tests require the same accepted FSL executable. Run only the new model grader during authoring:
 
