@@ -3,11 +3,13 @@
 use std::collections::BTreeMap;
 use std::fmt;
 use std::fs;
+use std::io::{Read, Seek, SeekFrom};
 use std::path::Path;
-use std::process::Command;
+use std::process::{Child, Command, Output, Stdio};
+use std::time::{Duration, Instant};
 
 use serde::Deserialize;
-use serde_json::{json, Value};
+use serde_json::{Value, json};
 
 use crate::{Assertion, ScenarioResult, Tools};
 
@@ -25,6 +27,7 @@ const TASK: &str = include_str!("../../fixtures/EV-003/task.md");
 const WITHIN: &str = "temporal WithinLimit using inf over (c: Meter::Counter) clock \"model-steps\" on origin { always holds(c.level <= 3) }";
 const SMALL: &str = "temporal TooSmall using inf over (c: Meter::Counter) clock \"model-steps\" on origin { always holds(c.level <= 2) }";
 const FILE_LIMIT: u64 = 524_288;
+const ASSERT_BUDGET: Duration = Duration::from_secs(30);
 
 #[derive(Clone, Copy, Debug)]
 enum FailureCode {
@@ -36,12 +39,14 @@ enum FailureCode {
     OutputMismatch,
     WrongSummary,
     ToolFailure,
+    AssertionTimeout,
 }
 
 #[derive(Debug)]
 struct Failure {
     code: FailureCode,
     detail: String,
+    reaped_child: Option<u32>,
 }
 
 impl Failure {
@@ -49,6 +54,7 @@ impl Failure {
         Self {
             code,
             detail: detail.into(),
+            reaped_child: None,
         }
     }
 }
@@ -327,17 +333,126 @@ fn check_summary(workspace: &Path) -> Checked<()> {
     Ok(())
 }
 
-fn analyze(workspace: &Path, tools: &Tools, request: &str, exit: i32) -> Checked<Value> {
-    let output = Command::new(&tools.fsl)
-        .current_dir(workspace)
-        .args(["analyze", request, "--format", "json"])
-        .output()
+fn before_deadline(deadline: Instant) -> Checked<()> {
+    if Instant::now() >= deadline {
+        return Err(Failure::new(
+            FailureCode::AssertionTimeout,
+            "the shared safety assertion deadline expired",
+        ));
+    }
+    Ok(())
+}
+
+fn terminate_and_reap(child: &mut Child) -> Checked<()> {
+    // The child may exit between try_wait and kill; wait still collects its status.
+    let _ = child.kill();
+    child.wait().map_err(|_| {
+        Failure::new(
+            FailureCode::ToolFailure,
+            "could not reap the owned analyzer child",
+        )
+    })?;
+    Ok(())
+}
+
+fn capture_analyzer(command: &mut Command, deadline: Instant) -> Checked<Output> {
+    before_deadline(deadline)?;
+    // File-backed capture cannot deadlock when either output exceeds a pipe buffer.
+    let mut stdout = tempfile::tempfile().map_err(|_| {
+        Failure::new(
+            FailureCode::ToolFailure,
+            "cannot create analyzer stdout capture",
+        )
+    })?;
+    let mut stderr = tempfile::tempfile().map_err(|_| {
+        Failure::new(
+            FailureCode::ToolFailure,
+            "cannot create analyzer stderr capture",
+        )
+    })?;
+    let out_handle = stdout.try_clone().map_err(|_| {
+        Failure::new(
+            FailureCode::ToolFailure,
+            "cannot attach analyzer stdout capture",
+        )
+    })?;
+    let err_handle = stderr.try_clone().map_err(|_| {
+        Failure::new(
+            FailureCode::ToolFailure,
+            "cannot attach analyzer stderr capture",
+        )
+    })?;
+    before_deadline(deadline)?;
+    let mut child = command
+        .stdin(Stdio::null())
+        .stdout(out_handle)
+        .stderr(err_handle)
+        .spawn()
         .map_err(|_| {
             Failure::new(
                 FailureCode::ToolFailure,
                 "trusted public fsl analyze could not start",
             )
         })?;
+    let child_id = child.id();
+    let status = loop {
+        if Instant::now() >= deadline {
+            terminate_and_reap(&mut child)?;
+            let mut failure = Failure::new(
+                FailureCode::AssertionTimeout,
+                "owned analyzer exceeded the shared safety assertion deadline and was terminated and reaped",
+            );
+            failure.reaped_child = Some(child_id);
+            return Err(failure);
+        }
+        match child.try_wait() {
+            Ok(Some(status)) => break status,
+            Ok(None) => std::thread::sleep(
+                deadline
+                    .saturating_duration_since(Instant::now())
+                    .min(Duration::from_millis(5)),
+            ),
+            Err(_) => {
+                terminate_and_reap(&mut child)?;
+                return Err(Failure::new(
+                    FailureCode::ToolFailure,
+                    "could not collect the owned analyzer status",
+                ));
+            }
+        }
+    };
+    let mut out = Vec::new();
+    let mut err = Vec::new();
+    for (file, bytes) in [(&mut stdout, &mut out), (&mut stderr, &mut err)] {
+        file.seek(SeekFrom::Start(0))
+            .and_then(|_| file.read_to_end(bytes))
+            .map_err(|_| {
+                Failure::new(
+                    FailureCode::ToolFailure,
+                    "could not read completed analyzer output",
+                )
+            })?;
+    }
+    before_deadline(deadline)?;
+    Ok(Output {
+        status,
+        stdout: out,
+        stderr: err,
+    })
+}
+
+fn analyze(
+    workspace: &Path,
+    tools: &Tools,
+    request: &str,
+    exit: i32,
+    deadline: Instant,
+) -> Checked<Value> {
+    let mut command = Command::new(&tools.fsl);
+    command
+        .current_dir(workspace)
+        .args(["analyze", request, "--format", "json"]);
+    let output = capture_analyzer(&mut command, deadline)?;
     if output.status.code() != Some(exit) {
         return Err(Failure::new(
             FailureCode::ToolFailure,
@@ -457,21 +572,24 @@ fn semantic_outcome_matches(
     Ok(())
 }
 
-fn assess(workspace: &Path, tools: &Tools) -> Checked<BTreeMap<String, Value>> {
+fn assess(workspace: &Path, tools: &Tools, deadline: Instant) -> Checked<BTreeMap<String, Value>> {
+    before_deadline(deadline)?;
     check_inputs(workspace)?;
     check_summary(workspace)?;
+    before_deadline(deadline)?;
     let holding = json_artifact(workspace, "holding.json")?;
     let violating = json_artifact(workspace, "violating.json")?;
     terminal_item(&holding, "WithinLimit", "proved")?;
     counterexample_levels(terminal_item(&violating, "TooSmall", "refuted")?)?;
 
     // Invoke the trusted executable directly, never an agent-supplied wrapper or result.
-    let trusted_holding = analyze(workspace, tools, "holding-request.json", 0)?;
-    let trusted_violating = analyze(workspace, tools, "violating-request.json", 10)?;
+    let trusted_holding = analyze(workspace, tools, "holding-request.json", 0, deadline)?;
+    let trusted_violating = analyze(workspace, tools, "violating-request.json", 10, deadline)?;
     terminal_item(&trusted_holding, "WithinLimit", "proved")?;
     let levels = counterexample_levels(terminal_item(&trusted_violating, "TooSmall", "refuted")?)?;
     semantic_outcome_matches(&holding, &trusted_holding, "WithinLimit", "proved")?;
     semantic_outcome_matches(&violating, &trusted_violating, "TooSmall", "refuted")?;
+    before_deadline(deadline)?;
     Ok(BTreeMap::from([
         ("fixed_inputs_and_requested_properties".into(), json!(true)),
         ("independent_holding_verdict".into(), json!("proved")),
@@ -483,12 +601,37 @@ fn assess(workspace: &Path, tools: &Tools) -> Checked<BTreeMap<String, Value>> {
 
 /// Independently prove/refute the exact submitted properties using the trusted public CLI.
 pub fn grade(workspace: &Path, tools: &Tools) -> ScenarioResult<Assertion> {
-    Ok(match assess(workspace, tools) {
+    grade_with_budget(workspace, tools, ASSERT_BUDGET)
+}
+
+fn grade_with_budget(
+    workspace: &Path,
+    tools: &Tools,
+    budget: Duration,
+) -> ScenarioResult<Assertion> {
+    let deadline = Instant::now() + budget;
+    Ok(match assess(workspace, tools, deadline) {
         Ok(checks) => Assertion {
             ok: true,
             checks,
             failures: Vec::new(),
         },
+        Err(error) if matches!(error.code, FailureCode::AssertionTimeout) => {
+            let mut checks = BTreeMap::from([
+                ("failure_class".into(), json!("harness-error")),
+                ("assert_budget_ms".into(), json!(budget.as_millis())),
+            ]);
+            if let Some(child_id) = error.reaped_child {
+                checks.insert("terminated_reaped_child".into(), json!(child_id));
+            }
+            Assertion {
+                ok: false,
+                checks,
+                failures: vec![format!(
+                    "harness-error: assert budget exceeded ({ID}): {error}"
+                )],
+            }
+        }
         Err(error) => Assertion {
             ok: false,
             checks: BTreeMap::new(),
@@ -509,6 +652,71 @@ mod tests {
             quire: PathBuf::new(),
             quoin: PathBuf::new(),
         }
+    }
+
+    /// Deterministic OS-child timeout fixture; no FSL or live agent runs.
+    #[test]
+    fn deadline_expiry_terminates_and_reaps_the_owned_child() {
+        let mut command = Command::new("sleep");
+        command.arg("30");
+        let error =
+            capture_analyzer(&mut command, Instant::now() + Duration::from_millis(80)).unwrap_err();
+        assert!(matches!(error.code, FailureCode::AssertionTimeout));
+        let pid = error
+            .reaped_child
+            .expect("timeout returns only after owned child is reaped");
+        let status = Command::new("kill")
+            .args(["-0", &pid.to_string()])
+            .stdout(Stdio::null())
+            .stderr(Stdio::null())
+            .status()
+            .unwrap();
+        assert!(
+            !status.success(),
+            "the timed-out analyzer child must no longer exist"
+        );
+    }
+
+    /// Deterministic file-backed capture fixture, including output beyond pipe capacity.
+    #[test]
+    fn deadline_normal_capture_preserves_both_output_streams_and_exit_status() {
+        let mut command = Command::new("sh");
+        command.args(["-c", "i=0; while [ \"$i\" -lt 2048 ]; do printf 'proof-record-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\\n'; printf 'diagnostic-record-yyyyyyyyyyyyyyyyyyyyyyyyyy\\n' >&2; i=$((i+1)); done; exit 7"]);
+        let output =
+            capture_analyzer(&mut command, Instant::now() + Duration::from_secs(2)).unwrap();
+        assert_eq!(output.status.code(), Some(7));
+        assert_eq!(
+            output.stdout,
+            "proof-record-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\n"
+                .repeat(2048)
+                .as_bytes()
+        );
+        assert_eq!(
+            output.stderr,
+            "diagnostic-record-yyyyyyyyyyyyyyyyyyyyyyyyyy\n"
+                .repeat(2048)
+                .as_bytes()
+        );
+    }
+
+    /// A shared expired assertion budget must never start another analyzer or blame the agent.
+    #[test]
+    fn deadline_exhaustion_prevents_second_spawn_and_is_a_harness_failure() {
+        let expired = Instant::now();
+        let mut command = Command::new("/must-not-be-started");
+        let error = capture_analyzer(&mut command, expired).unwrap_err();
+        assert!(matches!(error.code, FailureCode::AssertionTimeout));
+        assert!(error.reaped_child.is_none());
+        let workspace = tempfile::tempdir().unwrap();
+        let result = grade_with_budget(
+            workspace.path(),
+            &tools(PathBuf::from("/must-not-be-started")),
+            Duration::ZERO,
+        )
+        .unwrap();
+        assert!(!result.ok);
+        assert_eq!(result.checks["failure_class"], "harness-error");
+        assert!(result.failures[0].starts_with("harness-error: assert budget exceeded"));
     }
 
     fn reference_summary() -> Value {
@@ -626,10 +834,23 @@ mod tests {
             include_str!("../../fixtures/EV-003/reference/counter.fsl"),
         )
         .expect("reference source");
-        let holding =
-            analyze(workspace.path(), &tools, "holding-request.json", 0).expect("public proof");
-        let violating = analyze(workspace.path(), &tools, "violating-request.json", 10)
-            .expect("public refutation");
+        let deadline = Instant::now() + ASSERT_BUDGET;
+        let holding = analyze(
+            workspace.path(),
+            &tools,
+            "holding-request.json",
+            0,
+            deadline,
+        )
+        .expect("public proof");
+        let violating = analyze(
+            workspace.path(),
+            &tools,
+            "violating-request.json",
+            10,
+            deadline,
+        )
+        .expect("public refutation");
         for (name, value) in [
             ("holding.json", holding),
             ("violating.json", violating),

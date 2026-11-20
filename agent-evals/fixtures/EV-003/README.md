@@ -55,3 +55,11 @@ both required commands and rejects a missing command, another verb or request,
 and an echoed command. This fixture is deterministic assertion coverage and
 does not represent a live agent run. The final success sentinel alone cannot
 satisfy the artifact and command checks.
+
+## Assertion budget
+
+One 30-second deadline covers artifact checks and both independent analyzer
+commands. A timed-out analyzer is terminated and reaped. Deadline exhaustion is
+reported as a harness error, so it cannot become an agent failure or a proof.
+Stdout and stderr use temporary file-backed capture to retain complete output
+without pipe-buffer blocking.
