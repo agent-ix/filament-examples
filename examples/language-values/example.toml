@@ -1,0 +1,222 @@
+name = "language-values"
+summary = "Original runnable value-language forms with independently stated semantic results."
+
+[[case]]
+id = "float-specials-nan"
+rule = "example"
+statement = "NaN is unequal to itself."
+file = "rules/float-specials-nan.fsl"
+command = "run requests/float-specials-nan.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "float-specials-positive-infinity"
+rule = "example"
+statement = "Positive infinity exceeds the largest finite binary64 value."
+file = "rules/float-specials-positive-infinity.fsl"
+command = "run requests/float-specials-positive-infinity.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "float-specials-negative-infinity"
+rule = "example"
+statement = "Negative infinity precedes the most negative finite binary64 value."
+file = "rules/float-specials-negative-infinity.fsl"
+command = "run requests/float-specials-negative-infinity.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "float-specials-positive-zero"
+rule = "example"
+statement = "Negating negative zero produces positive zero bits."
+file = "rules/float-specials-positive-zero.fsl"
+command = "run requests/float-specials-positive-zero.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "float-specials-negative-zero"
+rule = "example"
+statement = "Negative zero has different bits from positive zero."
+file = "rules/float-specials-negative-zero.fsl"
+command = "run requests/float-specials-negative-zero.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "bag-multiplicity"
+rule = "example"
+statement = "Bag equality preserves duplicate multiplicity."
+file = "rules/bag-multiplicity.fsl"
+command = "run requests/bag-multiplicity.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "bag-permutation"
+rule = "example"
+statement = "Bag equality ignores traversal order."
+file = "rules/bag-permutation.fsl"
+command = "run requests/bag-permutation.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "ordered-set-order"
+rule = "example"
+statement = "OrderedSet equality observes member order."
+file = "rules/ordered-set-order.fsl"
+command = "run requests/ordered-set-order.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "ordered-set-duplicate"
+rule = "example"
+statement = "OrderedSet retains the first occurrence of each member."
+file = "rules/ordered-set-duplicate.fsl"
+command = "run requests/ordered-set-duplicate.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "remove-one-sequence"
+rule = "example"
+statement = "removeOne removes the first matching sequence member exactly once."
+file = "rules/remove-one-sequence.fsl"
+command = "run requests/remove-one-sequence.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "remove-one-bag"
+rule = "example"
+statement = "removeOne removes one occurrence from a Bag."
+file = "rules/remove-one-bag.fsl"
+command = "run requests/remove-one-bag.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "remove-one-absent"
+rule = "example"
+statement = "Removing an absent value leaves a sequence unchanged."
+file = "rules/remove-one-absent.fsl"
+command = "run requests/remove-one-absent.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "flat-map"
+rule = "example"
+statement = "flatMap concatenates each produced sequence in traversal order."
+file = "rules/flat-map.fsl"
+command = "run requests/flat-map.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "function-selection"
+rule = "example"
+statement = "The run request selects the requested named function beside a decoy function."
+file = "rules/function-selection.fsl"
+command = "run requests/function-selection.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "text-constructor"
+rule = "example"
+statement = "Text constructs a bounded NFC value at its expected type."
+file = "rules/text-constructor.fsl"
+command = "run requests/text-constructor.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "rounding-toward-negative"
+rule = "example"
+statement = "Rounding -1/8 toward negative at two decimal places yields -0.13."
+file = "rules/rounding-toward-negative.fsl"
+command = "run requests/rounding-toward-negative.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "recursive-run-values"
+rule = "example"
+statement = "Recursive calls reduce a bounded argument and produce the triangular sum."
+file = "rules/recursive-run-values.fsl"
+command = "run requests/recursive-run-values.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "imported-library-call"
+rule = "example"
+statement = "An imported library function is linked and called with its argument."
+file = "rules/imported-library-call.fsl"
+command = "run requests/imported-library-call.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "index-sequence"
+rule = "example"
+statement = "A zero-based sequence index returns its second member."
+file = "rules/index-sequence.fsl"
+command = "run requests/index-sequence.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "index-ordered-set"
+rule = "example"
+statement = "An OrderedSet index follows insertion order after duplicate removal."
+file = "rules/index-ordered-set.fsl"
+command = "run requests/index-ordered-set.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "bag-duplicate-drop-first-refusal"
+rule = "example"
+statement = "dropFirst refuses an unordered Bag even when it contains duplicate occurrences."
+file = "rules/bag-duplicate-drop-first-refusal.fsl"
+command = "run requests/bag-duplicate-drop-first-refusal.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refusal: ill_typed"
+
+[[case]]
+id = "ordered-set-ordering-mismatch"
+rule = "example"
+statement = "An OrderedSet with a different member order fails the asserted equality."
+file = "rules/ordered-set-ordering-mismatch.fsl"
+command = "run requests/ordered-set-ordering-mismatch.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"

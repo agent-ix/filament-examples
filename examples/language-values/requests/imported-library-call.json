@@ -1,0 +1,31 @@
+{
+  "format": "native-run/1",
+  "request": {
+    "models": [],
+    "program": {
+      "source": {
+        "file": "../rules/imported-library-call.fsl",
+        "authority": "example",
+        "identity": "language-values/imported-library-call",
+        "document": "imported-library-call",
+        "formal_revision": 1
+      }
+    },
+    "call": {
+      "function": "example",
+      "arguments": []
+    },
+    "libraries": [
+      {
+        "identity": "sample-arithmetic",
+        "source": {
+          "file": "../rules/arithmetic-library.fsl",
+          "authority": "example",
+          "identity": "language-values/arithmetic-library",
+          "document": "arithmetic-library",
+          "formal_revision": 1
+        }
+      }
+    ]
+  }
+}

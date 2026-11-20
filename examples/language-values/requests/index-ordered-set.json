@@ -1,0 +1,19 @@
+{
+  "format": "native-run/1",
+  "request": {
+    "models": [],
+    "program": {
+      "source": {
+        "file": "../rules/index-ordered-set.fsl",
+        "authority": "example",
+        "identity": "language-values/index-ordered-set",
+        "document": "index-ordered-set",
+        "formal_revision": 1
+      }
+    },
+    "call": {
+      "function": "example",
+      "arguments": []
+    }
+  }
+}

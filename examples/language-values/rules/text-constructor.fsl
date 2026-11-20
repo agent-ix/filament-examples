@@ -1,0 +1,4 @@
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+function label using v(): Text[0, 8; nfc] pure { Text("café") }
+function example using v(): Boolean pure { label() = Text("café") }

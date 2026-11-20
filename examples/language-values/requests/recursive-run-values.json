@@ -1,0 +1,19 @@
+{
+  "format": "native-run/1",
+  "request": {
+    "models": [],
+    "program": {
+      "source": {
+        "file": "../rules/recursive-run-values.fsl",
+        "authority": "example",
+        "identity": "language-values/recursive-run-values",
+        "document": "recursive-run-values",
+        "formal_revision": 1
+      }
+    },
+    "call": {
+      "function": "example",
+      "arguments": []
+    }
+  }
+}

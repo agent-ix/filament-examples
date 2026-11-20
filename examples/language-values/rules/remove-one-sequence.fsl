@@ -1,0 +1,3 @@
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+function example using v(): Boolean pure { let a: Sequence<Integer>[0, 8] = sequence[5, 3, 5] in removeOne(a, 5) = sequence[3, 5] }
