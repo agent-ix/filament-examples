@@ -23,6 +23,34 @@ fsl-examples record shop --case paid-short
 
 [`fr865-text.test.mjs`](fr865-text.test.mjs) runs three direct CLI commands without `--format` and compares their FR-865 stdout and exit status with the transcript fixtures under `verification/fr865-text/expected/`. Run it with `FSL=/path/to/fsl node --test tools/fr865-text.test.mjs`.
 
+### Native Mac source smoke
+
+The manual [Install test workflow](../.github/workflows/install-test.yml) has a
+`macos-main` lane. It downloads the native arm64 FSL artifact from one successful
+driver main build, checks its digest, and runs the driver's README quickstart on
+`macos-15`. The existing smoke test requires actual Darwin arm64 and checks the
+completed Boolean result and empty diagnostics.
+
+First run the driver's existing `release.yml` manually on `main` with
+`publish=false`. That builds workflow artifacts without publishing a release.
+Use the successful run ID, its exact driver commit, and the SHA-256 digest of
+its `fsl-aarch64-apple-darwin` artifact to dispatch the reviewed examples revision.
+
+```bash
+gh workflow run install-test.yml --ref main -f lane=macos-main \
+  -f driver_run_id="$DRIVER_RUN_ID" -f driver_sha="$DRIVER_SHA" \
+  -f artifact_digest="$ARTIFACT_DIGEST"
+```
+
+The job requires a successful manual build on main, the exact driver commit,
+an unexpired artifact with the selected name and digest, and matching downloaded
+bytes. It checks the executable's arm64 architecture and reads the README from
+that same driver commit. It retains those identities and the native smoke log
+as `macos-main-smoke`. Temporary artifacts, sources and the small test harness
+target are removed when the step ends. This consumer performs no FSL build.
+The `install-matrix` choice runs the existing Linux install matrix and Mac
+release installation.
+
 ## Steps runner
 
 [steps.mjs](steps.mjs) reads a Markdown file such as [install-test/steps.md](../install-test/steps.md), takes every fenced block marked `step=<id>`, and runs the blocks in order in one shell, in a bare container or on the host, in bash or zsh. A block can add `expect-exit=N` for a step that must fail. The runner reports the duration of each step, names the step that failed, and can compare each step's output with recorded files (`--expected`, `--record`). `make install-test` calls it, and [steps.test.mjs](steps.test.mjs) holds its unit tests. The project template uses an unmodified copy of this file for its tutorial.

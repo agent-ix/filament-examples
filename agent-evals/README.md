@@ -26,7 +26,7 @@ The task asks the agent to create an identified StorageBin object with bounded f
 ./target/debug/agent-evals run EV-001 claude
 ```
 
-Each command invokes the SDK for that scenario and agent. It creates a private run directory outside the checkout, isolates the agent home, and removes the temporary credentials after execution. The result names the private SDK report for triage.
+Each command invokes the SDK for that scenario and agent. It creates a private run directory outside the checkout, isolates the agent home, and removes the temporary credentials after execution. Claude project trust is set only for the fresh scenario workspace inside that temporary home. The result names the private SDK report for triage.
 
 Summarize one actual report:
 
@@ -34,7 +34,7 @@ Summarize one actual report:
 ./target/debug/agent-evals summarize /absolute/path/to/private/raw-report.json
 ```
 
-The summary includes actual pass rate, available command/turn metrics and independent checks. Keep transcripts and workspaces private. Classify a failure as a doc gap, CLI gap, FSL bug or agent error before committing its compact scorecard.
+The summary includes actual pass rate, available command/turn metrics and independent checks. Keep transcripts and workspaces private. `agent-evals evidence EV-001 <retained-workspace>` checks only retained command and boundary evidence after an integration fix; it does not rerun the agent or model semantics. Preserve the original report when recording such a correction. Classify a failure as a doc gap, CLI gap, FSL bug or agent error before committing its compact scorecard.
 
 ## Scenario checks
 
