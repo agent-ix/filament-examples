@@ -44,6 +44,35 @@ The invariant is evaluated through public FSL execution for all 156 occupied/lim
 
 The full native domain-package variant is recorded separately in [its pending scenario](fixtures/EV-101/scenario.toml).
 
+## Run a blind CLI journey
+
+The blind-help task covers four explicit workflows: checking a function,
+executing a freight quote, proving an inventory bound, and detecting a violation
+in a closed recording. The agent receives original inputs and the FSL executable;
+documentation, grammar and source checkouts are outside its boundary.
+
+After independent review, run its single Codex sample with:
+
+```sh
+./target/debug/agent-evals run EV-009 codex
+```
+
+All four semantic contracts and their actual public command evidence must pass.
+The monitor comparison retains every ordered event and the complete summary;
+only JSON whitespace and object-key ordering are ignored.
+One assertion budget covers input validation, domain-input regeneration, all
+four public commands and the final artifact checks. Exhaustion is reported as a
+harness error after the owned child has been terminated and reaped.
+Its report keeps separate per-verb results and marks program completion pending:
+the required export workflow is recorded separately as pending its owning mapper
+fix. This task's pass covers four runnable contracts, not every FSL verb.
+
+Run only its new deterministic grader checks during authoring:
+
+```sh
+FSL=/absolute/path/to/fsl cargo test --locked scenarios::blind_help::tests -- --include-ignored --test-threads=1
+```
+
 ## Build and test
 
 The deterministic grader tests require the same accepted FSL executable. Run only the new model grader during authoring:

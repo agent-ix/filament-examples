@@ -1,0 +1,19 @@
+{
+  "format": "native-run/1",
+  "request": {
+    "models": [],
+    "program": {
+      "source": {
+        "file": "calculation.fsl",
+        "authority": "eval",
+        "identity": "eval:blind-help/calculation",
+        "document": "FreightQuote",
+        "formal_revision": 1
+      }
+    },
+    "call": {
+      "function": "quote",
+      "arguments": [{"parameter": "pallets", "value": {"integer": "5"}}]
+    }
+  }
+}

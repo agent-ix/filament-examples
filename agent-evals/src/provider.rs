@@ -1,7 +1,7 @@
 //! Thin Rust consumer of the SDK's published external-provider protocol.
 use crate::{
     Assertion, ScenarioResult, Tools,
-    scenarios::{author_model, refusal_repair, safety_analyze, trace_monitor},
+    scenarios::{author_model, blind_help, refusal_repair, safety_analyze, trace_monitor},
 };
 use serde::Deserialize;
 use serde_json::{Value, json};
@@ -34,6 +34,20 @@ const ENTRIES: &[Entry] = &[
         prepare: refusal_repair::prepare,
         grade: refusal_repair::grade,
         commands: &[("check", "postage.fsl"), ("run", "postage-example.json")],
+        shipped_references: false,
+    },
+    Entry {
+        id: blind_help::ID,
+        title: blind_help::TITLE,
+        use_case: "blind-help-supported-verbs",
+        prepare: blind_help::prepare,
+        grade: blind_help::grade,
+        commands: &[
+            ("check", "calculation.fsl"),
+            ("run", "run-request.json"),
+            ("analyze", "analyze-request.json"),
+            ("monitor", "readings.jsonl"),
+        ],
         shipped_references: false,
     },
     Entry {

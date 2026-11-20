@@ -1,0 +1,11 @@
+language "ix:native" edition "1-draft";
+profile m = "filament.model.complete/v1";
+profile t = "filament.temporal.infinite-trace/v1";
+model S = "eval/blind-stock";
+
+pre Space using m on S::Stock::add { self.count < 3 }
+post Added using m on S::Stock::add { self.count = pre(self.count) + 1 }
+terminal Full using m on S when { self.count = 3 };
+temporal WithinLimit using t over (stock: S::Stock) on origin {
+  always holds(stock.count <= 3)
+}

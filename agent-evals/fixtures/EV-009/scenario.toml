@@ -1,0 +1,9 @@
+id = "EV-009"
+assert_budget_ms = 120000
+shipped_references = false
+active_verbs = ["check", "run", "analyze", "monitor"]
+required_program_verbs = ["check", "run", "analyze", "monitor", "export"]
+overall_completion = "pending"
+pending_verb = "export"
+pending_owner = "QSL-1979"
+pending_oracle = "A real exported target artifact with the requested obligations; the known mapper failure is never a successful verb result."

@@ -1,0 +1,19 @@
+{
+  "format": "native-monitor/1",
+  "request": {
+    "models": [],
+    "program": {"source": {
+      "file": "monitor.fsl", "authority": "eval", "identity": "eval:blind-help/monitor",
+      "document": "StockMonitor", "formal_revision": 1
+    }},
+    "clocks": {"stock-events": {"kind": "event_position", "sequence_authority": "stock-counts"}},
+    "clauses": [{"name": "WithinThree"}],
+    "trace": {
+      "kind": "progressed", "lower_boundary": "authoritative-origin",
+      "binding": {
+        "profile": "filament.temporal.event-position.false-extension/v1", "clock": "stock-events",
+        "parameters": {"kind": "event_position", "sequence_authority": "stock-counts"}
+      }
+    }
+  }
+}

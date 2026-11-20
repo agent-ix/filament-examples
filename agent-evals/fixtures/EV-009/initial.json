@@ -1,0 +1,11 @@
+{
+  "format": "filament.state.snapshot/v1",
+  "identity": {"authority": "eval", "identity": "ix://eval/blind-stock/start"},
+  "model": {"identity": "eval/blind-stock"},
+  "observation": "current",
+  "anchor": {"kind": "initialization", "name": "start"},
+  "populations": [{
+    "population": "ix://eval/blind-stock/stocks", "complete": true,
+    "objects": [{"key": "stock", "type": "ix://eval/blind-stock/Stock", "fields": {"count": {"integer": "0"}}}]
+  }]
+}
