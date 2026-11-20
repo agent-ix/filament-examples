@@ -1,0 +1,296 @@
+{
+  "contractVersion": "2.0.0",
+  "canonicalization": {
+    "algorithm": "rfc8785-v1"
+  },
+  "source": {
+    "identity": "ix://example/rover-deadline/spec",
+    "version": "1.0.0",
+    "dialect": "spec-bundle"
+  },
+  "package": {
+    "identity": "example/rover-deadline",
+    "version": "1.0.0",
+    "mappingVersions": [],
+    "profileVersions": []
+  },
+  "occurrences": [],
+  "extensions": [],
+  "constructs": [
+    {
+      "kind": {
+        "module": "example/rover-deadline",
+        "name": "object_type"
+      },
+      "moduleVersion": "1.0.0",
+      "construct": {
+        "identity": "none",
+        "shape": "record",
+        "members": {},
+        "meaning": "filament.meaning.model.object-type/v1"
+      }
+    },
+    {
+      "kind": {
+        "module": "example/rover-deadline",
+        "name": "population"
+      },
+      "moduleVersion": "1.0.0",
+      "construct": {
+        "identity": "none",
+        "shape": "record",
+        "members": {},
+        "meaning": "filament.meaning.model.population/v1"
+      }
+    },
+    {
+      "kind": {
+        "module": "example/rover-deadline",
+        "name": "variant_type"
+      },
+      "moduleVersion": "1.0.0",
+      "construct": {
+        "identity": "none",
+        "shape": "enumeration",
+        "members": {
+          "variants": "required"
+        },
+        "meaning": "filament.meaning.model.variant-type/v1"
+      }
+    }
+  ],
+  "types": [
+    {
+      "identity": "ix://example/rover-deadline/Mode",
+      "displayName": "Mode",
+      "kind": {
+        "module": "example/rover-deadline",
+        "name": "variant_type"
+      },
+      "roles": [],
+      "origin": {
+        "generated": {
+          "generatorIdentity": "ix://example/rover-deadline/Mode",
+          "generatorVersion": "1.0.0",
+          "inputIdentities": [
+            "ix://example/rover-deadline/Mode"
+          ]
+        }
+      },
+      "constraints": [],
+      "extensions": [],
+      "unknownPolicy": "reject",
+      "variants": [
+        {
+          "identity": "ix://example/rover-deadline/variant/Mode-Degraded",
+          "name": "Degraded",
+          "origin": {
+            "source": {
+              "sourceIdentity": "ix://example/rover-deadline/spec",
+              "path": "spec.qspec",
+              "startLine": 1,
+              "startColumn": 1
+            }
+          }
+        },
+        {
+          "identity": "ix://example/rover-deadline/variant/Mode-SafeStop",
+          "name": "SafeStop",
+          "origin": {
+            "source": {
+              "sourceIdentity": "ix://example/rover-deadline/spec",
+              "path": "spec.qspec",
+              "startLine": 1,
+              "startColumn": 1
+            }
+          }
+        }
+      ]
+    },
+    {
+      "identity": "ix://example/rover-deadline/Rover",
+      "displayName": "Rover",
+      "kind": {
+        "module": "example/rover-deadline",
+        "name": "object_type"
+      },
+      "roles": [],
+      "origin": {
+        "generated": {
+          "generatorIdentity": "ix://example/rover-deadline/Rover",
+          "generatorVersion": "1.0.0",
+          "inputIdentities": [
+            "ix://example/rover-deadline/Rover"
+          ]
+        }
+      },
+      "constraints": [],
+      "extensions": [],
+      "unknownPolicy": "reject",
+      "supertypes": [],
+      "fields": [
+        {
+          "identity": "ix://example/rover-deadline/Rover/mode",
+          "name": "mode",
+          "typeRef": "ix://example/rover-deadline/Mode",
+          "presence": "required",
+          "nullable": false,
+          "defaultKind": "none",
+          "multiplicity": {
+            "lower": 1,
+            "upper": 1,
+            "ordered": false,
+            "unique": true
+          },
+          "origin": {
+            "generated": {
+              "generatorIdentity": "ix://example/rover-deadline/Rover/mode",
+              "generatorVersion": "1.0.0",
+              "inputIdentities": [
+                "ix://example/rover-deadline/Rover/mode"
+              ]
+            }
+          }
+        },
+        {
+          "identity": "ix://example/rover-deadline/Rover/stopped",
+          "name": "stopped",
+          "typeRef": "ix://filament/native/Boolean",
+          "presence": "required",
+          "nullable": false,
+          "defaultKind": "none",
+          "multiplicity": {
+            "lower": 1,
+            "upper": 1,
+            "ordered": false,
+            "unique": true
+          },
+          "origin": {
+            "generated": {
+              "generatorIdentity": "ix://example/rover-deadline/Rover/stopped",
+              "generatorVersion": "1.0.0",
+              "inputIdentities": [
+                "ix://example/rover-deadline/Rover/stopped"
+              ]
+            }
+          }
+        },
+        {
+          "identity": "ix://example/rover-deadline/Rover/x",
+          "name": "x",
+          "typeRef": "ix://filament/native/Clock",
+          "presence": "required",
+          "nullable": false,
+          "defaultKind": "none",
+          "multiplicity": {
+            "lower": 1,
+            "upper": 1,
+            "ordered": false,
+            "unique": true
+          },
+          "origin": {
+            "generated": {
+              "generatorIdentity": "ix://example/rover-deadline/Rover/x",
+              "generatorVersion": "1.0.0",
+              "inputIdentities": [
+                "ix://example/rover-deadline/Rover/x"
+              ]
+            }
+          }
+        }
+      ],
+      "operations": [
+        {
+          "identity": "ix://example/rover-deadline/Rover/brake",
+          "name": "brake",
+          "params": [],
+          "returns": {
+            "typeRef": "ix://filament/native/Boolean",
+            "multiplicity": {
+              "lower": 1,
+              "upper": 1,
+              "ordered": false,
+              "unique": true
+            },
+            "nullable": false
+          },
+          "pre": [],
+          "post": [],
+          "origin": {
+            "generated": {
+              "generatorIdentity": "ix://example/rover-deadline/Rover/brake",
+              "generatorVersion": "1.0.0",
+              "inputIdentities": [
+                "ix://example/rover-deadline/Rover/brake"
+              ]
+            }
+          },
+          "frame": {
+            "modifies": [
+              "ix://example/rover-deadline/Rover/mode",
+              "ix://example/rover-deadline/Rover/x"
+            ],
+            "creates": [],
+            "deletes": []
+          }
+        },
+        {
+          "identity": "ix://example/rover-deadline/Rover/halt",
+          "name": "halt",
+          "params": [],
+          "returns": {
+            "typeRef": "ix://filament/native/Boolean",
+            "multiplicity": {
+              "lower": 1,
+              "upper": 1,
+              "ordered": false,
+              "unique": true
+            },
+            "nullable": false
+          },
+          "pre": [],
+          "post": [],
+          "origin": {
+            "generated": {
+              "generatorIdentity": "ix://example/rover-deadline/Rover/halt",
+              "generatorVersion": "1.0.0",
+              "inputIdentities": [
+                "ix://example/rover-deadline/Rover/halt"
+              ]
+            }
+          },
+          "frame": {
+            "modifies": [
+              "ix://example/rover-deadline/Rover/stopped"
+            ],
+            "creates": [],
+            "deletes": []
+          }
+        }
+      ]
+    }
+  ],
+  "populations": [
+    {
+      "identity": "ix://example/rover-deadline/rovers",
+      "displayName": "rovers",
+      "kind": {
+        "module": "example/rover-deadline",
+        "name": "population"
+      },
+      "members": [
+        "ix://example/rover-deadline/Rover"
+      ],
+      "extent": "closed",
+      "origin": {
+        "generated": {
+          "generatorIdentity": "ix://example/rover-deadline/rovers",
+          "generatorVersion": "1.0.0",
+          "inputIdentities": [
+            "ix://example/rover-deadline/rovers"
+          ]
+        }
+      }
+    }
+  ]
+}

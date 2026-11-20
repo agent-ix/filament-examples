@@ -1,0 +1,12 @@
+language "ix:native" edition "1-draft";
+profile win = "filament.temporal.event-position.false-extension/v1";
+profile inf = "filament.temporal.infinite-trace/v1";
+record MeterReading { level: Int[0, 4]; }
+
+temporal WindowBelowThree using win over (m: MeterReading) clock "ticks" on origin {
+  always[0,2] holds(m.level <= 2)
+}
+
+temporal ForeverBelowThree using inf over (m: MeterReading) clock "ticks" on origin {
+  always holds(m.level <= 2)
+}

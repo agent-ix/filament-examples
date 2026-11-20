@@ -27,7 +27,7 @@ const id = (s) => `ix://${P}/${s}`;
 const gen = (identity) => ({
   generated: { generatorIdentity: identity, generatorVersion: "1.0.0", inputIdentities: [identity] },
 });
-const NATIVE = { Boolean: 1, Integer: 1, String: 1, UUID: 1, Timestamp: 1 };
+const NATIVE = { Boolean: 1, Integer: 1, String: 1, UUID: 1, Timestamp: 1, Clock: 1 };
 const typeRef = (t) => (NATIVE[t] ? `ix://filament/native/${t}` : id(t));
 const one = { lower: 1, upper: 1, ordered: false, unique: true };
 const member = (owner, name, spec) => {

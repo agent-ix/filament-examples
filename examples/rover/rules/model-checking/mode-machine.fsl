@@ -1,14 +1,7 @@
 language "ix:native" edition "1-draft";
 profile v = "filament.model.complete/v1";
 profile inf = "filament.temporal.infinite-trace/v1";
-profile tc = "filament.temporal.complete/v1";
-profile t = "filament.temporal.timed/v1";
 model Rover = "example/rover";
-
-dimension Time;
-unit s : Time = rational(1, 1);
-unit ms : Time = rational(1, 1000) * s;
-time Rover tick Rover::Rover::sample period 50 ms unit ms;
 
 // The lidar is lost while driving. The rover drops to degraded mode and slows.
 pre LidarLossWhileDriving using v on Rover::Rover::loseLidar {
@@ -74,15 +67,3 @@ unique path OneRouteToFailsafe using v over (r: Rover::Rover) from (r.mode = Rov
 
 // The search can be cut to the states where the rover is at most this fast.
 constraint AtMostCruise using v on Rover::Rover at current { self.speed <= 800 }
-
-temporal StopsWithin200ms using t over (r: Rover::Rover) clock "model-time" on origin {
-  eventually[0 ms, 200 ms] holds(r.stopped)
-}
-
-temporal StopsWithin50ms using t over (r: Rover::Rover) clock "model-time" on origin {
-  eventually[0 ms, 50 ms] holds(r.stopped)
-}
-
-temporal StoppedRoverRemainsStoppedInModelTime using t over (r: Rover::Rover) clock "model-time" on origin {
-  always (holds(r.stopped) implies eventually holds(r.stopped))
-}
