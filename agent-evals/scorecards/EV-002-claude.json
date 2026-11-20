@@ -1,0 +1,35 @@
+{
+  "format": "fsl-agent-scorecard/v1",
+  "scenario": "EV-002",
+  "scope": "repair a refused Integer postage function using task files, public refusal and CLI only",
+  "cohort": {
+    "driver": "18d6fb0d84f36df16d77d242897703c6da274c14",
+    "fsl": "deac8870a05e0b9ae28392f597f829011b44ebb8",
+    "codegen": "889e999589c98d3b2dfd96abc1b0c9b233d864de",
+    "ir": "e576f74916b8624c8301aee5d0e3cf72a0078e4c",
+    "cli_agent_evals": "0.3.0"
+  },
+  "agent": "claude",
+  "model": "claude-opus-5-5",
+  "status": "pending",
+  "pending_prerequisite": "Usable existing Claude authentication in the isolated run home.",
+  "startup_attempts": 0,
+  "task_samples": 0,
+  "model_artifacts": 0,
+  "live_sdk_pass_rate": null,
+  "wall_ms": null,
+  "tool_calls": null,
+  "turns": null,
+  "classification": null,
+  "shared_prerequisite": {
+    "scenario": "EV-001",
+    "startup_attempts": 3,
+    "task_samples": 0,
+    "status": "unusable authentication"
+  },
+  "notes": [
+    "No EV-002 Claude startup or task was attempted.",
+    "Shared prerequisite startup attempts are not EV-002 samples or failures.",
+    "No authentication, doctor or startup retry was performed."
+  ]
+}

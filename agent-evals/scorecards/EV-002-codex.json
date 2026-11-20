@@ -1,0 +1,94 @@
+{
+  "format": "fsl-agent-scorecard/v1",
+  "scenario": "EV-002",
+  "scope": "repair a refused Integer postage function using task files, public refusal and CLI only",
+  "cohort": {
+    "driver": "18d6fb0d84f36df16d77d242897703c6da274c14",
+    "fsl": "deac8870a05e0b9ae28392f597f829011b44ebb8",
+    "codegen": "889e999589c98d3b2dfd96abc1b0c9b233d864de",
+    "ir": "e576f74916b8624c8301aee5d0e3cf72a0078e4c",
+    "cli_agent_evals": "0.3.0"
+  },
+  "agent": "codex",
+  "model": "gpt-6.1-sol",
+  "functional_head": "ff7f82fc46d86445b092386554338abcd94d4b7e",
+  "task_samples": 1,
+  "live_sdk_pass_rate": "0/1",
+  "original_attempt": {
+    "status": "failed",
+    "classification": "harness-error",
+    "cause": "Command evidence discarded real public invocations following an editor heredoc in a multiline shell execution.",
+    "runner_exit": 1,
+    "exit_reason": "complete",
+    "wall_ms": 50729,
+    "tool_calls": 7,
+    "recorded_commands": 7,
+    "turns": null,
+    "token_usage": {
+      "input": 4644,
+      "output": 639,
+      "cacheCreation": 0,
+      "cacheRead": 88960,
+      "contextInput": 93604,
+      "total": 94243
+    },
+    "artifact_checks": {
+      "regular_source_file": true,
+      "public_check": {
+        "ok": true,
+        "exit": 0,
+        "category": "success",
+        "stage": "S4"
+      },
+      "independent_boundary_executions": 8,
+      "all_boundary_executions_passed": true
+    },
+    "command_evidence": {
+      "check:postage.fsl": false,
+      "run:postage-example.json": false
+    },
+    "transcript_boundary": {
+      "ok": true,
+      "violations": []
+    },
+    "failures": [
+      "no recorded direct public fsl check invocation for postage.fsl",
+      "no recorded direct public fsl run invocation for postage-example.json"
+    ]
+  },
+  "triage": {
+    "typed_execution_event_contains_required_commands": true,
+    "actual_combined_command_exit": 0,
+    "actual_check_stage": "S4",
+    "actual_sample_run_integer": "13",
+    "description": "The completed shell event includes direct fsl check and run lines after the heredoc, with successful public CLI output; this was not an agent self-report."
+  },
+  "live_reruns": 0,
+  "notes": [
+    "Original SDK report remains failed 0/1; successful independent artifact checks do not rewrite its live pass rate.",
+    "Assistant turns are unavailable in this SDK report.",
+    "Raw reports, transcripts, credentials and workstation paths remain private.",
+    "One retained command/boundary-only grade passed after the reviewed parser correction; no agent, source checking or boundary execution was rerun."
+  ],
+  "retained_evidence_attempts": [
+    {
+      "status": "passed",
+      "functional_head": "5addd7283ee6e1a14954644ad06e776ff8ec3bd0",
+      "scope": "command and transcript-boundary evidence only",
+      "checks": {
+        "agent_command_count": 7,
+        "command_evidence": {
+          "check:postage.fsl": true,
+          "run:postage-example.json": true
+        },
+        "transcript_boundary": {
+          "ok": true,
+          "violations": []
+        }
+      },
+      "failures": []
+    }
+  ],
+  "final_artifact_assessment": "passed: original public source check and all eight boundary executions, plus corrected retained command and boundary evidence",
+  "public_semantic_reruns": 0
+}
