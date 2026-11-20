@@ -13,10 +13,10 @@
     }],
     "program": {
       "source": {
-        "file": "../../rules/timed-analyze.fsl",
+        "file": "../../rules/model-checking/mode-machine.fsl",
         "authority": "example",
-        "identity": "example:rover/timed-analyze",
-        "document": "timedanalyze",
+        "identity": "example:rover/mode-machine",
+        "document": "modemachine",
         "formal_revision": 1
       }
     },
