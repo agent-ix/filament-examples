@@ -352,6 +352,111 @@ fn analyze(workspace: &Path, tools: &Tools, request: &str, exit: i32) -> Checked
     })
 }
 
+fn semantic_outcome_matches(
+    artifact: &Value,
+    trusted: &Value,
+    claim: &str,
+    verdict: &str,
+) -> Checked<()> {
+    let submitted_item = terminal_item(artifact, claim, verdict)?;
+    let trusted_item = terminal_item(trusted, claim, verdict)?;
+    for field in ["format", "category", "last_stage", "operation"] {
+        if artifact[field] != trusted[field] {
+            return Err(Failure::new(
+                FailureCode::OutputMismatch,
+                format!("{claim}: outcome {field} differs from independent analyze"),
+            ));
+        }
+    }
+    for field in ["claim_name", "category", "request_index", "request"] {
+        if submitted_item[field] != trusted_item[field] {
+            return Err(Failure::new(
+                FailureCode::OutputMismatch,
+                format!("{claim}: item {field} differs from independent analyze"),
+            ));
+        }
+    }
+    for field in ["result", "settled_by", "cause", "backend"] {
+        if submitted_item["record"][field] != trusted_item["record"][field] {
+            return Err(Failure::new(
+                FailureCode::OutputMismatch,
+                format!("{claim}: record {field} differs from independent analyze"),
+            ));
+        }
+    }
+    for field in ["activation", "execution", "truth", "settlement"] {
+        if submitted_item["axes"][field] != trusted_item["axes"][field] {
+            return Err(Failure::new(
+                FailureCode::OutputMismatch,
+                format!("{claim}: axis {field} differs from independent analyze"),
+            ));
+        }
+    }
+    if verdict == "proved" {
+        let certificate = &submitted_item["certificate"];
+        if certificate["accepted"] != true
+            || certificate["checker"] != trusted_item["certificate"]["checker"]
+            || certificate["identity"] != trusted_item["certificate"]["identity"]
+            || certificate["identity"]["node_id"].is_null()
+            || certificate["identity"]["node_id"] != submitted_item["request"]["claim"]["node"]
+        {
+            return Err(Failure::new(
+                FailureCode::OutputMismatch,
+                "the accepted proof certificate must bind the current submitted claim",
+            ));
+        }
+    } else {
+        let actual_levels = counterexample_levels(submitted_item)?;
+        let trusted_levels = counterexample_levels(trusted_item)?;
+        if actual_levels != trusted_levels {
+            return Err(Failure::new(
+                FailureCode::CounterexampleMismatch,
+                "counterexample levels differ from independent analyze",
+            ));
+        }
+        for field in [
+            "kind",
+            "trace",
+            "trace_position",
+            "initial_state",
+            "over_binding",
+            "fairness",
+        ] {
+            if submitted_item["counterexample"][field] != trusted_item["counterexample"][field] {
+                return Err(Failure::new(
+                    FailureCode::CounterexampleMismatch,
+                    format!("counterexample {field} differs from independent analyze"),
+                ));
+            }
+        }
+        let actual = submitted_item["counterexample"]["prefix"]
+            .as_array()
+            .ok_or_else(|| {
+                Failure::new(
+                    FailureCode::CounterexampleMismatch,
+                    "missing submitted prefix",
+                )
+            })?;
+        let expected = trusted_item["counterexample"]["prefix"]
+            .as_array()
+            .ok_or_else(|| {
+                Failure::new(
+                    FailureCode::CounterexampleMismatch,
+                    "missing independent prefix",
+                )
+            })?;
+        for (actual, expected) in actual.iter().zip(expected) {
+            if actual["transition"] != expected["transition"] {
+                return Err(Failure::new(
+                    FailureCode::CounterexampleMismatch,
+                    "counterexample transition differs from independent analyze",
+                ));
+            }
+        }
+    }
+    Ok(())
+}
+
 fn assess(workspace: &Path, tools: &Tools) -> Checked<BTreeMap<String, Value>> {
     check_inputs(workspace)?;
     check_summary(workspace)?;
@@ -365,12 +470,8 @@ fn assess(workspace: &Path, tools: &Tools) -> Checked<BTreeMap<String, Value>> {
     let trusted_violating = analyze(workspace, tools, "violating-request.json", 10)?;
     terminal_item(&trusted_holding, "WithinLimit", "proved")?;
     let levels = counterexample_levels(terminal_item(&trusted_violating, "TooSmall", "refuted")?)?;
-    if holding != trusted_holding || violating != trusted_violating {
-        return Err(Failure::new(
-            FailureCode::OutputMismatch,
-            "saved analysis output differs from independent public analyze",
-        ));
-    }
+    semantic_outcome_matches(&holding, &trusted_holding, "WithinLimit", "proved")?;
+    semantic_outcome_matches(&violating, &trusted_violating, "TooSmall", "refuted")?;
     Ok(BTreeMap::from([
         ("fixed_inputs_and_requested_properties".into(), json!(true)),
         ("independent_holding_verdict".into(), json!("proved")),
