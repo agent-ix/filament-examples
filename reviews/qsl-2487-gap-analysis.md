@@ -13,7 +13,7 @@ Compared the requested safety-property/proof/counterexample journey with the new
 
 ## Verdict
 
-**CONDITIONAL** — final live acceptance remains pending. SR-1441's bounded-subprocess finding is fixed at 8f5c0a25. Claude task acceptance remains pending usable authentication, not an FSL or agent defect.
+**CONDITIONAL** — the actual Codex task's semantics passed; retained command/boundary acceptance and current-code gates remain pending. SR-1441 FND-001 and FND-002 are fixed. Claude task acceptance remains pending usable authentication, not an FSL or agent defect.
 
 ## Findings
 
@@ -34,8 +34,12 @@ This is a diff-scoped gap analysis, not a repository-wide matrix audit. No matri
 - FR-001-AC-2 integration: catalogue entry, module registration and preparation expose the new scenario. Its two required analyze operands are registered for observed-command checks.
 - Evidence tests cover absent/wrong/echoed commands, wrong or stale certificate, incomplete results and artifact mutations. The supplied original model is problem data; full native-domain authoring is not claimed.
 
-Actual Codex task acceptance has not yet run. Claude's known authentication prerequisite remains pending; this review neither retries it nor records a failed or passed Claude task. Shared framework behavior already reviewed in PR62 is excluded. Semantic inspection was the explicitly assigned review scope; no additional optional semantic-review campaign or whole-repository assurance claim was added.
+At the initial review, actual Codex task acceptance had not yet run. The subsequent actual Codex task and bounded runtime follow-up are recorded below. Claude's known authentication prerequisite remains pending; this review neither retries it nor records a failed or passed Claude task. Shared framework behavior already reviewed in PR62 is excluded except for the explicitly assigned actual-runtime fix. Semantic inspection was the assigned review scope; no additional optional semantic-review campaign or whole-repository assurance claim was added.
 
 ## Disposition evidence
 
 The bounded-runtime gap recorded separately in SR-1441 is fixed at 8f5c0a25. Accepted coder evidence consists of three new short-budget tests covering terminated/reaped child, both output streams beyond pipe capacity, and exhausted shared budget preventing another spawn with harness-error classification. Original reference/evidence checks were not repeated; no additional gap was found in this focused fix.
+
+Runtime follow-up 23580ac..3e5df881 accepted the reported single Codex task's semantic results: proved/refuted claims, current counterexample levels [0,1,2,3], fixed-input binding and saved outcomes all passed. Original SDK 0/1 is preserved. The command/boundary fix adds valid stdout-capture/status handling and regex-data classification; its combined-option path defect is recorded only as SR-1441 FND-002. No additional semantic gap was found, and no accepted checks or live runs were repeated.
+
+Focused follow-up 3e5df881..76b1c21e fixes FND-002 by rejecting unresolved ripgrep option arity rather than assigning its next operand a regex role. Accepted evidence is one new affected test covering rejection of combined/unknown option arity and permission for the known actual pattern forms. The original task semantics and prior tests were not rerun; the next authorized action is command/boundary-only retained grading, not a new agent sample.
