@@ -1,0 +1,5 @@
+id = "EV-004"
+title = "Monitor bounded trace evidence and preserve an open-prefix unknown"
+use_case = "QSL-2488"
+assert_budget_ms = 30000
+canary = false

@@ -1,0 +1,38 @@
+{
+  "format": "native-monitor/1",
+  "request": {
+    "models": [],
+    "program": {
+      "source": {
+        "file": "monitor.fsl",
+        "authority": "eval",
+        "identity": "eval:trace-meter/rules",
+        "document": "meter-monitor",
+        "formal_revision": 1
+      }
+    },
+    "clocks": {
+      "ticks": {
+        "kind": "event_position",
+        "sequence_authority": "meter-samples"
+      }
+    },
+    "clauses": [
+      {
+        "name": "WindowBelowThree"
+      }
+    ],
+    "trace": {
+      "kind": "progressed",
+      "lower_boundary": "authoritative-origin",
+      "binding": {
+        "profile": "filament.temporal.event-position.false-extension/v1",
+        "clock": "ticks",
+        "parameters": {
+          "kind": "event_position",
+          "sequence_authority": "meter-samples"
+        }
+      }
+    }
+  }
+}

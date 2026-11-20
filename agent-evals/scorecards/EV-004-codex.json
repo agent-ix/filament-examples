@@ -1,0 +1,51 @@
+{
+  "format": "fsl-agent-scorecard/v1",
+  "scenario": "EV-004",
+  "scope": "Bounded trace settlement and counterexample; unsettled unbounded finite prefix",
+  "cohort": {
+    "driver": "18d6fb0d84f36df16d77d242897703c6da274c14",
+    "fsl": "deac8870a05e0b9ae28392f597f829011b44ebb8",
+    "codegen": "889e999589c98d3b2dfd96abc1b0c9b233d864de",
+    "ir": "e576f74916b8624c8301aee5d0e3cf72a0078e4c",
+    "cli_agent_evals": "0.3.0"
+  },
+  "agent": "codex",
+  "model": "gpt-6.1-sol",
+  "functional_head": "5d7f430dacb80315e1ac26acded93ab4a3992a60",
+  "status": "passed",
+  "task_samples": 1,
+  "live_sdk_pass_rate": "1/1",
+  "runner_exit": 0,
+  "exit_reason": "complete",
+  "wall_ms": 48709,
+  "tool_calls": 10,
+  "recorded_commands": 10,
+  "turns": null,
+  "failure_count": 0,
+  "command_evidence": {
+    "monitor:holding.jsonl": true,
+    "monitor:open.jsonl": true,
+    "monitor:violating.jsonl": true
+  },
+  "transcript_boundary": {
+    "ok": true,
+    "violations": []
+  },
+  "artifact_checks": {
+    "supplied_inputs_and_intended_rules": true,
+    "holding": "holds",
+    "violating": "violated",
+    "open": "pending",
+    "evaluation_position": 0,
+    "observed_position": 2,
+    "bad_sample": 2,
+    "bad_level": 3,
+    "complete_ordered_stream_and_current_bindings": true
+  },
+  "live_reruns": 0,
+  "notes": [
+    "One original sample; no retained regrade.",
+    "A good finite prefix is not an unbounded proof.",
+    "Turns unavailable; raw reports, workspaces and transcripts remain private."
+  ]
+}

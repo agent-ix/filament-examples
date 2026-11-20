@@ -1,7 +1,7 @@
 //! Thin Rust consumer of the SDK's published external-provider protocol.
 use crate::{
     Assertion, ScenarioResult, Tools,
-    scenarios::{author_model, refusal_repair, safety_analyze},
+    scenarios::{author_model, refusal_repair, safety_analyze, trace_monitor},
 };
 use serde::Deserialize;
 use serde_json::{Value, json};
@@ -45,6 +45,19 @@ const ENTRIES: &[Entry] = &[
         commands: &[
             ("analyze", "holding-request.json"),
             ("analyze", "violating-request.json"),
+        ],
+        shipped_references: true,
+    },
+    Entry {
+        id: trace_monitor::ID,
+        title: trace_monitor::TITLE,
+        use_case: "bounded-trace-and-open-prefix-monitoring",
+        prepare: trace_monitor::prepare,
+        grade: trace_monitor::grade,
+        commands: &[
+            ("monitor", "holding.jsonl"),
+            ("monitor", "violating.jsonl"),
+            ("monitor", "open.jsonl"),
         ],
         shipped_references: true,
     },

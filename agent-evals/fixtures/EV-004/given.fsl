@@ -1,0 +1,5 @@
+language "ix:native" edition "1-draft";
+profile win = "filament.temporal.event-position.false-extension/v1";
+profile inf = "filament.temporal.infinite-trace/v1";
+record MeterReading { level: Int[0, 4]; }
+
