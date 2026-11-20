@@ -38,3 +38,7 @@ pub mod scenarios {
     /// Source-owned object model authoring and independent model checks.
     pub mod author_model;
 }
+
+/// Published external-provider integration and independent command evidence.
+pub mod provider;
+pub use provider::{agent_commands, invokes_fsl};
