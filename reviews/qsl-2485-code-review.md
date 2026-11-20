@@ -15,7 +15,7 @@ Diff-scoped independent review of QSL-2485, filament-examples PR 62. Code review
 
 ## Verdict
 
-**CONDITIONAL** — Both original findings are fixed. The reviewed integration is ready for the authorized single Codex sample followed by the single Claude sample. Live scenario acceptance remains pending; deterministic checks are not agent success rates.
+**CONDITIONAL** — Both original findings remain fixed. The bounded private Claude account-metadata setup correction is approved for the code lead to authorize one warm provider compile and one affected final Claude retry. Codex retained evidence is accepted as clean. Claude authentication/refresh and live task acceptance remain unproven.
 
 ## Findings
 
@@ -151,3 +151,27 @@ Inspected only the FND-002 fix in 253fd2d5883a0e559902d9bd0ab1a627f998b5d4..5f85
 | FND | outcome | reason |
 | --- | --- | --- |
 | FND-002 | fixed | Assert now retains ordered RecordedInput contexts. Evidence uses per-call Codex workdir and Claude persistent cwd while binding the expected operand to the exact workspace file. The targeted fixture rejects docs/model.fsl, accepts ../model.fsl from docs, and verifies that a Codex workdir override does not leak into the next call. |
+
+## Runtime integration correction
+
+Inspected only ae74cf2..fa959c7712134b68b08a10eed3d79cd5e82d7c65. This addresses actual observed runtime failures, not another sweep or a reopening of either original finding.
+
+The original Codex sample authored a correct model and passed all 156 public semantic probes, but its command evidence was zero because the parser missed the actual SDK typed CommandExecution events. The original Claude sample performed no task work because it timed out at the project-trust dialog. These original outcomes must remain in the scorecard.
+
+The fix reads published typed event_msg/item_completed/CommandExecution argv and file-URI cwd via the declared url dependency. It ignores aggregated output and assistant prose for positive command evidence, does not evaluate opaque JavaScript, and retains custom tool inputs for boundary inspection. The retained-evidence subcommand reuses command/boundary checks without invoking model checking, the 156 semantic probes, or an agent.
+
+Claude trust preparation changes only the isolated per-run home config, guards the configured home against the actual HOME, canonicalizes the SDK workspace and constrains it beneath the sibling private work root. It trusts that one workspace without changing operator settings.
+
+No additional findings in this scoped runtime diff. Accepted reported typed-execution/context/space-URI/comment-output/invalid-URI tests, private trust positive/outside-rejection tests, and scoped all-target Clippy. No tests, builds, probes, live agents or original findings were rerun or re-reviewed. Ready for code-lead-directed offline retained Codex evidence grading and one affected Claude retry; no broader live rerun is warranted.
+
+## Retained sed classification correction
+
+Inspected only the actual sed-classification change in agent-evals/src/provider.rs through 72e949dde7089e06b718971d6983ec44854e2ffd. Generic equals-sign splitting no longer invents an absolute path from quoted sed replacement data. Nonempty shell-assignment and long-option prefixes still expose their path values for boundary inspection. The exact retained sed command and opaque custom-tool input are represented in the new focused test, alongside forbidden quoted absolute evaluator operands and SOURCE assignments. No additional findings in this bounded correction; prior findings remain closed and were not re-reviewed.
+
+Accepted the reported new exact-input test without rerun. Existing retained Codex model correctness, all 156 probes, typed command count 11 and check evidence true remain accepted; this correction only addresses the boundary false positive. One retained Codex evidence grade may proceed. Claude retry reached the task trust boundary successfully but stopped at Not logged in before performing task work: authentication acceptance is pending, not an agent-task error. No more live runs or authentication probes are authorized here. Original reports and failure classifications must remain honest.
+
+## Private Claude account-metadata correction
+
+Inspected only the 35-line main.rs diff c8841d1..e7707caab7b30797d0a80b64a75d2755ee444377. The new helper seeds onboarding and the existing oauthAccount object into the already isolated temporary Claude home. It does not copy operator project trust, settings, plugins or helpers, does not mutate the operator configuration, and does not print account contents. The new test uses only fake account and organization identifiers. Existing temporary-home cleanup remains the owner of this private runtime data; no live credentials or identity data enter the fixture or public diff. No additional findings in this bounded setup correction.
+
+Accepted the reported one new fake-data test without rerun. Accepted the single final retained Codex evidence grade: 11 commands, exact check evidence true, boundary clean; accepted existing model and 156 semantic probes. Original failed samples remain recorded. Neither retained evidence nor earlier findings were rechecked. The copied access cache was expired and refresh validity is not established: this review makes no authentication or Claude task-success claim. Ready for the code lead to authorize one warm native provider compile and one affected final Claude retry; no FSL build, authentication/device/login probe, old check or wider sweep is authorized here.

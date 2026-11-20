@@ -353,6 +353,45 @@ expect_verdict = "checked timed rule"
 serves = "Time reference (timed rules and models)"
 
 [[case]]
+id = "timed-zone-deadline-holds"
+rule = "StopsWithin200ms"
+statement = "A stopped rover is stopped at some point within the next 200 ms of model time."
+file = "rules/model-checking/mode-machine.fsl"
+command = "analyze requests/analyze/timed-zone-deadline-holds.json"
+engine = "timed"
+clock = "model-time"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "Time reference (timed zone search)"
+
+[[case]]
+id = "timed-zone-deadline-refuted"
+rule = "StopsWithin50ms"
+statement = "A rover that has lost lidar is not stopped on every behavior within 50 ms of model time."
+file = "rules/model-checking/mode-machine.fsl"
+command = "analyze requests/analyze/timed-zone-deadline-refuted.json"
+engine = "timed"
+clock = "model-time"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
+serves = "Time reference (timed zone search)"
+
+[[case]]
+id = "timed-liveness-holds"
+rule = "StoppedRoverRemainsStoppedInModelTime"
+statement = "Whenever the rover is stopped, it is stopped at some point in its model-time behavior."
+file = "rules/model-checking/mode-machine.fsl"
+command = "analyze requests/analyze/timed-liveness-holds.json"
+engine = "timed"
+clock = "model-time"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "Time reference (timed liveness)"
+
+[[case]]
 id = "staged-stops-in-four-events"
 rule = ""
 statement = "Counted by recorded event, the rover is stopped within four events."

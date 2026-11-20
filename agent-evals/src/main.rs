@@ -32,6 +32,16 @@ fn copy_auth(source: &Path, destination: &Path) -> ScenarioResult<()> {
     fs::set_permissions(destination, fs::Permissions::from_mode(0o600))?;
     Ok(())
 }
+fn private_claude_config(operator: &Value) -> Value {
+    let mut config = json!({"hasCompletedOnboarding":true});
+    if let Some(account) = operator
+        .get("oauthAccount")
+        .filter(|value| value.is_object())
+    {
+        config["oauthAccount"] = account.clone();
+    }
+    config
+}
 fn initialize_home(agent: &str, home: &Path, model: &str) -> ScenarioResult<()> {
     fs::create_dir_all(home)?;
     let operator_home =
@@ -64,9 +74,14 @@ fn initialize_home(agent: &str, home: &Path, model: &str) -> ScenarioResult<()> 
             {
                 return Err("Claude prerequisite missing: existing credentials or CLAUDE_CODE_OAUTH_TOKEN/ANTHROPIC_API_KEY".into());
             }
+            let operator_config = match fs::read(operator_home.join(".claude.json")) {
+                Ok(bytes) => serde_json::from_slice(&bytes)?,
+                Err(error) if error.kind() == std::io::ErrorKind::NotFound => json!({}),
+                Err(error) => return Err(error.into()),
+            };
             fs::write(
                 home.join(".claude.json"),
-                "{\"hasCompletedOnboarding\":true}",
+                serde_json::to_vec(&private_claude_config(&operator_config))?,
             )?;
         }
         _ => return Err("select codex or claude".into()),
@@ -194,6 +209,25 @@ fn execute() -> ScenarioResult<()> {
             println!("{}",serde_json::to_string_pretty(&result)?);Ok(())
         },
         _=>Err("usage: agent-evals provider | run <EV-ID> <codex|claude> | summarize <private-report.json> | evidence <EV-ID> <retained-workspace>".into()),
+    }
+}
+#[cfg(test)]
+mod tests {
+    use super::*;
+    /// Trace: FR-001 AC-6
+    #[test]
+    fn private_claude_config_retains_only_existing_account_metadata() {
+        let account = json!({"accountUuid":"fake-account","organizationUuid":"fake-organization"});
+        let operator = json!({"oauthAccount":account,"projects":{"/private/operator/project":{"hasTrustDialogAccepted":true}},"apiKeyHelper":"operator-only-helper","plugins":{"operator":"private"},"hasCompletedOnboarding":false});
+        let private = private_claude_config(&operator);
+        assert_eq!(
+            private,
+            json!({"hasCompletedOnboarding":true,"oauthAccount":account})
+        );
+        assert_eq!(
+            private_claude_config(&json!({"projects":{}})),
+            json!({"hasCompletedOnboarding":true})
+        );
     }
 }
 fn main() -> ExitCode {
