@@ -1,0 +1,15 @@
+{
+  "format": "native-analyze/1",
+  "request": {
+    "models": [{"format": "semantic-ir/2.0.0", "source": {
+      "file": "domain.json", "authority": "eval", "identity": "eval:blind-help/domain",
+      "document": "StockDomain", "formal_revision": 1
+    }}],
+    "program": {"source": {
+      "file": "inventory.fsl", "authority": "eval", "identity": "eval:blind-help/inventory",
+      "document": "Inventory", "formal_revision": 1
+    }},
+    "items": [{"claim": "WithinLimit", "kind": "temporal-satisfaction"}],
+    "documents": [{"file": "initial.json"}]
+  }
+}

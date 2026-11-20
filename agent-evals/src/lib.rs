@@ -37,6 +37,8 @@ pub struct Assertion {
 pub mod scenarios {
     /// Source-owned object model authoring and independent model checks.
     pub mod author_model;
+    /// Four public CLI tasks learned from help without shipped references.
+    pub mod blind_help;
 }
 
 /// Published external-provider integration and independent command evidence.
