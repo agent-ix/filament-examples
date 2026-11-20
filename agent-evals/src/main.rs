@@ -74,7 +74,7 @@ fn initialize_home(agent: &str, home: &Path, model: &str) -> ScenarioResult<()> 
     Ok(())
 }
 fn run(scenario: &str, agent: &str) -> ScenarioResult<()> {
-    if scenario != "EV-001" {
+    if !provider::is_active_scenario(scenario) {
         return Err(
             "run requires an implemented individual scenario; EV-101 is pending QSL-1980".into(),
         );
@@ -187,7 +187,7 @@ fn execute() -> ScenarioResult<()> {
         },
         [operation,scenario,agent] if operation=="run"=>run(scenario,agent),
         [operation,file] if operation=="summarize"=>summarize(Path::new(file)),
-        _=>Err("usage: agent-evals provider | run <EV-001> <codex|claude> | summarize <private-report.json>".into()),
+        _=>Err("usage: agent-evals provider | run <EV-ID> <codex|claude> | summarize <private-report.json>".into()),
     }
 }
 fn main() -> ExitCode {

@@ -22,6 +22,11 @@ const ENTRIES: &[Entry] = &[Entry {
     commands: &[("check", "model.fsl")],
 }];
 
+/// Whether the catalogue exposes this individual scenario for a live SDK run.
+pub fn is_active_scenario(id: &str) -> bool {
+    ENTRIES.iter().any(|entry| entry.id == id)
+}
+
 #[derive(Deserialize)]
 #[serde(deny_unknown_fields)]
 struct Metadata {
