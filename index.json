@@ -7884,7 +7884,7 @@
     {
       "system": "shop",
       "case": "claim-function-undefined",
-      "status": "staged",
+      "status": "running",
       "rule": "undefinedClaim",
       "statement": "A function claim with an undefined evaluation is refuted.",
       "rule_file": "examples/shop/rules/claim-functions.fsl",
@@ -7893,13 +7893,13 @@
       ],
       "request_file": "examples/shop/requests/claim-function-undefined.json",
       "expected_file": "examples/shop/expected/claim-function-undefined.json",
-      "verdict": null,
-      "exit": 20,
-      "ready_exit": 10,
+      "verdict": "violated",
+      "exit": 10,
+      "ready_exit": null,
       "engine": null,
       "clock": null,
-      "waits_on": "QSL-2500",
-      "needs": "FR-867 undefined claim item serialization"
+      "waits_on": null,
+      "needs": null
     },
     {
       "system": "shop",
