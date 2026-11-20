@@ -5,6 +5,8 @@ use serde_json::Value;
 use std::collections::BTreeMap;
 use std::path::PathBuf;
 
+pub(crate) mod capture;
+
 /// A scenario preparation or independent artifact grading failure.
 pub type ScenarioResult<T> = Result<T, Box<dyn std::error::Error + Send + Sync>>;
 
