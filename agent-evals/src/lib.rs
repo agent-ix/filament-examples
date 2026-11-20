@@ -39,6 +39,8 @@ pub mod scenarios {
     pub mod author_model;
     /// Finite safety proof and counterexample analysis.
     pub mod safety_analyze;
+    /// Bounded trace monitoring and open-prefix finality.
+    pub mod trace_monitor;
 }
 
 /// Published external-provider integration and independent command evidence.

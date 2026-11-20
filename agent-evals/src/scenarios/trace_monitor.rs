@@ -502,3 +502,296 @@ pub fn grade(workspace: &Path, tools: &Tools) -> ScenarioResult<Assertion> {
         },
     })
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use std::path::PathBuf;
+
+    fn tools(fsl: PathBuf) -> Tools {
+        Tools {
+            fsl,
+            docs: PathBuf::new(),
+            quire: PathBuf::new(),
+            quoin: PathBuf::new(),
+        }
+    }
+
+    fn report() -> Value {
+        json!({
+            "holding":{"clause":"WindowBelowThree","kind":"holds","exit_code":0,"settled":true,"evaluation_position":0,"observed_position":2},
+            "violating":{"clause":"WindowBelowThree","kind":"violated","exit_code":10,"settled":true,"evaluation_position":0,"observed_position":2,"bad_sample":2,"bad_level":3},
+            "open":{"clause":"ForeverBelowThree","kind":"pending","exit_code":0,"settled":false,"unbounded_proof":false}
+        })
+    }
+
+    // ORIGINAL synthetic public-wire unit data; it is not a live monitor receipt.
+    fn synthetic(case: Case) -> MonitorOutput {
+        let initial = json!({"format":"filament.monitor-event/1","clause":case.clause,
+            "category":"pending","settled":false,"position":0,"record":0});
+        let mut disposition =
+            json!({"category":case.category,"stage":"evaluate","temporal":{"kind":case.kind}});
+        let settled = case.kind != "pending";
+        if settled {
+            disposition["truth"] = json!(case.kind == "holds");
+        }
+        if case.kind == "violated" {
+            disposition["temporal"]["position"] = json!(0);
+            disposition["temporal"]["counterexample"] = json!({"kind":"formula","trace":"observed","trace_position":0,
+                "interval":{"lower":"0","upper":"2"},"prefix":[{"sample":"0"},{"sample":"1"},{"sample":"2"}],"loop":[]});
+        }
+        let settlement = if settled {
+            json!({"basis":if case.kind=="holds"{"decisive-witness"}else{"decisive-counterexample"},
+                "horizon":"2","position":"0","step":"4","trigger":"decided"})
+        } else {
+            json!({"step":"3","trigger":"finish"})
+        };
+        let clause = json!({"clause":case.clause,"category":case.category,"settled":settled,
+            "basis":if settled{"closed-scope"}else{"unsettled"},"disposition":disposition,"settlement":settlement});
+        let mut events = vec![initial];
+        if settled {
+            events.push(
+                json!({"format":"filament.monitor-event/1","clause":case.clause,
+            "category":case.category,"settled":true,"position":2,"record":3,
+            "disposition":disposition,"settlement":settlement}),
+            );
+        }
+        let mut summary = json!({"format":"filament.monitor-summary/1","records":if settled{5}else{4},"refused":0,"clauses":[clause]});
+        if settled {
+            summary["ledger"] = json!({"format":"filament.progress-ledger/1","entries":[{
+                "binding":{"package":"eval:trace-meter/rules","profile":"filament.temporal.event-position.false-extension/v1","clock":"ticks","clause":"synthetic-current-rule"},
+                "watermark":2,"scope":"closed","execution":"closed","completeness":{"complete":{"through":2}},
+                "covered":[{"stamp":0,"fingerprint":"sha256:unit-zero"},{"stamp":1,"fingerprint":"sha256:unit-one"},{"stamp":2,"fingerprint":"sha256:unit-two"}]
+            }]});
+        }
+        MonitorOutput { events, summary }
+    }
+
+    fn render(output: &MonitorOutput) -> String {
+        output
+            .events
+            .iter()
+            .chain(std::iter::once(&output.summary))
+            .map(Value::to_string)
+            .collect::<Vec<_>>()
+            .join("\n")
+    }
+
+    /// Provenance: QSL-2488. Explicit public-monitor reference and counterfeit-evidence lane.
+    #[test]
+    #[ignore = "public FSL monitor reference lane: set FSL to the accepted shared binary"]
+    fn public_monitor_reference_and_current_binding_rejection() {
+        let fsl = PathBuf::from(std::env::var_os("FSL").expect("set FSL for this lane"));
+        let tools = tools(fsl);
+        let workspace = tempfile::tempdir().unwrap();
+        prepare(workspace.path(), &tools).unwrap();
+        fs::write(
+            workspace.path().join("monitor.fsl"),
+            include_str!("../../fixtures/EV-004/reference/monitor.fsl"),
+        )
+        .unwrap();
+        for &case in CASES {
+            let output = Command::new(&tools.fsl)
+                .current_dir(workspace.path())
+                .args([
+                    "monitor",
+                    case.request,
+                    "--input",
+                    case.input,
+                    "--format",
+                    "json",
+                ])
+                .output()
+                .unwrap();
+            assert_eq!(output.status.code(), Some(case.exit), "{}", case.input);
+            fs::write(workspace.path().join(case.output), output.stdout).unwrap();
+        }
+        fs::write(
+            workspace.path().join("result.json"),
+            serde_json::to_vec(&report()).unwrap(),
+        )
+        .unwrap();
+        let result = grade(workspace.path(), &tools).unwrap();
+        assert!(result.ok, "{:?}", result.failures);
+        assert_eq!(result.checks["holding.jsonl"]["kind"], "holds");
+        assert_eq!(result.checks["violating.jsonl"]["observed_position"], 2);
+        assert_eq!(result.checks["open.jsonl"]["settled"], false);
+        let holding = read_artifact(workspace.path(), "holding-result.jsonl").unwrap();
+        let mut parsed = parse_output(&holding).unwrap();
+        parsed.summary["ledger"]["entries"][0]["binding"]["clause"] = json!("another-rule");
+        fs::write(
+            workspace.path().join("holding-result.jsonl"),
+            render(&parsed),
+        )
+        .unwrap();
+        let result = grade(workspace.path(), &tools).unwrap();
+        assert!(!result.ok);
+        assert!(
+            result.failures[0].contains("EvidenceMismatch"),
+            "{:?}",
+            result.failures
+        );
+    }
+
+    /// Provenance: QSL-2488.
+    #[test]
+    fn bounded_result_requires_decisive_position_and_complete_progress() {
+        let case = CASES[0];
+        let mut output = synthetic(case);
+        assert!(observe(case, &output).is_ok());
+        output.events[1]["position"] = json!(0);
+        assert!(matches!(
+            observe(case, &output),
+            Err(Fault {
+                code: FaultCode::WrongPosition,
+                ..
+            })
+        ));
+        output = synthetic(case);
+        output.summary["ledger"]["entries"][0]["completeness"]["complete"]["through"] = json!(1);
+        assert!(matches!(
+            observe(case, &output),
+            Err(Fault {
+                code: FaultCode::MissingProgress,
+                ..
+            })
+        ));
+    }
+
+    /// Provenance: QSL-2488.
+    #[test]
+    fn open_prefix_success_is_not_an_unbounded_proof() {
+        let case = CASES[2];
+        let mut output = synthetic(case);
+        assert!(observe(case, &output).is_ok());
+        output.summary["clauses"][0]["settled"] = json!(true);
+        output.summary["clauses"][0]["disposition"]["temporal"]["kind"] = json!("holds");
+        assert!(matches!(
+            observe(case, &output),
+            Err(Fault {
+                code: FaultCode::WrongDisposition,
+                ..
+            })
+        ));
+    }
+
+    /// Provenance: QSL-2488.
+    #[test]
+    fn semantic_evidence_ignores_timings_and_retains_current_rule_binding() {
+        let case = CASES[0];
+        let mut output = synthetic(case);
+        let original = observe(case, &output).unwrap();
+        output.summary["elapsed_ms"] = json!(99);
+        output.events[1]["wall_ms"] = json!(123);
+        assert_eq!(observe(case, &output).unwrap(), original);
+        output.summary["ledger"]["entries"][0]["binding"]["clause"] = json!("another-rule");
+        assert_ne!(observe(case, &output).unwrap(), original);
+    }
+
+    /// Provenance: QSL-2488.
+    #[test]
+    fn changed_inputs_tautologies_and_false_reports_are_rejected() {
+        let workspace = tempfile::tempdir().unwrap();
+        let tools = tools(PathBuf::from("/not-an-executable"));
+        prepare(workspace.path(), &tools).unwrap();
+        fs::write(
+            workspace.path().join("monitor.fsl"),
+            format!(
+                "{GIVEN}{}{}",
+                WINDOW_RULE.replace("m.level <= 2", "true"),
+                OPEN_RULE
+            ),
+        )
+        .unwrap();
+        let result = grade(workspace.path(), &tools).unwrap();
+        assert!(!result.ok);
+        assert!(result.failures[0].contains("WrongRule"));
+        fs::write(
+            workspace.path().join("monitor.fsl"),
+            format!("{GIVEN}{WINDOW_RULE}{OPEN_RULE}"),
+        )
+        .unwrap();
+        fs::write(
+            workspace.path().join("result.json"),
+            serde_json::to_vec(&report()).unwrap(),
+        )
+        .unwrap();
+        assert!(check_inputs(workspace.path()).is_ok());
+        assert!(check_report(workspace.path()).is_ok());
+        let mut invented = report();
+        invented["open"]["unbounded_proof"] = json!(true);
+        fs::write(
+            workspace.path().join("result.json"),
+            serde_json::to_vec(&invented).unwrap(),
+        )
+        .unwrap();
+        assert!(matches!(
+            check_report(workspace.path()),
+            Err(Fault {
+                code: FaultCode::SummaryMismatch,
+                ..
+            })
+        ));
+        fs::write(workspace.path().join("holding.jsonl"), "{\"end\":true}\n").unwrap();
+        assert!(matches!(
+            check_inputs(workspace.path()),
+            Err(Fault {
+                code: FaultCode::ChangedInput,
+                ..
+            })
+        ));
+    }
+
+    /// Provenance: QSL-2488.
+    #[test]
+    fn jsonl_stream_rejects_malformed_or_invented_monitor_results() {
+        let correct = render(&synthetic(CASES[1]));
+        assert!(parse_output(&correct).is_ok());
+        for text in [
+            "not JSON",
+            "{\"format\":\"filament-outcome/1\",\"category\":\"success\"}",
+            "{\"format\":\"filament.monitor-summary/1\"}",
+        ] {
+            assert!(parse_output(text).is_err(), "{text}");
+        }
+        assert!(parse_output(&format!(
+            "{correct}\n{{\"format\":\"filament.monitor-event/1\"}}"
+        ))
+        .is_err());
+    }
+
+    /// ORIGINAL synthetic SDK transcript, not a live-agent command receipt.
+    #[test]
+    fn command_evidence_requires_all_three_actual_monitor_inputs() {
+        let workspace = tempfile::tempdir().unwrap();
+        let directory = workspace.path().join(".cli-agent-evals/transcripts");
+        fs::create_dir_all(&directory).unwrap();
+        let path = directory.join("monitor-unit.transcript");
+        let holding = "fsl monitor window-request.json --input holding.jsonl --format json > holding-result.jsonl";
+        let violating = "fsl monitor window-request.json --input violating.jsonl --format json > violating-result.jsonl";
+        let open =
+            "fsl monitor open-request.json --input open.jsonl --format json > open-result.jsonl";
+        for (commands, expected) in [
+            (vec![holding, violating, open], true),
+            (vec![holding, violating], false),
+            (
+                vec![
+                    holding,
+                    violating,
+                    "echo 'fsl monitor open-request.json --input open.jsonl'",
+                ],
+                false,
+            ),
+        ] {
+            let records:Vec<String>=commands.into_iter().map(|command|json!({"type":"assistant","message":{"content":[{"type":"tool_use","name":"Bash","input":{"command":command}}]}}).to_string()).collect();
+            fs::write(&path, records.join("\n")).unwrap();
+            let commands = crate::agent_commands(workspace.path()).unwrap();
+            let evidence = CASES.iter().all(|case| {
+                commands
+                    .iter()
+                    .any(|command| crate::invokes_fsl(command, "monitor", Some(case.input)))
+            });
+            assert_eq!(evidence, expected, "{commands:?}");
+        }
+    }
+}
