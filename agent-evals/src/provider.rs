@@ -387,14 +387,42 @@ fn command_evidence_tokens(script: &str) -> Option<Vec<ShellToken>> {
     for statement in root.named_children(&mut cursor) {
         let command = match statement.kind() {
             "comment" => continue,
+            "variable_assignment" => {
+                let name = statement
+                    .child_by_field_name("name")?
+                    .utf8_text(script.as_bytes())
+                    .ok()?;
+                let value = statement
+                    .child_by_field_name("value")?
+                    .utf8_text(script.as_bytes())
+                    .ok()?;
+                if value == "$?"
+                    && !matches!(
+                        name,
+                        "PATH"
+                            | "CDPATH"
+                            | "BASH_ENV"
+                            | "ENV"
+                            | "SHELLOPTS"
+                            | "BASHOPTS"
+                            | "IFS"
+                            | "fsl"
+                    )
+                {
+                    // Recording an exit code does not change literal command resolution.
+                    continue;
+                }
+                break;
+            }
             "command" => statement,
             "redirected_statement" => {
                 let mut redirects = statement.walk();
                 if statement
                     .children_by_field_name("redirect", &mut redirects)
                     .any(|redirect| {
-                        redirect.child_by_field_name("right").is_some()
-                            || redirect.child_by_field_name("operator").is_some()
+                        (redirect.child_by_field_name("right").is_some()
+                            || redirect.child_by_field_name("operator").is_some())
+                            && !literal_stdout_capture(redirect, script)
                     })
                 {
                     return None;
@@ -413,7 +441,10 @@ fn command_evidence_tokens(script: &str) -> Option<Vec<ShellToken>> {
         {
             return None;
         }
-        let literal = shell_tokens(command.utf8_text(script.as_bytes()).ok()?)?;
+        let Some(literal) = shell_tokens(command.utf8_text(script.as_bytes()).ok()?) else {
+            // Later opaque formatting cannot invalidate an earlier unconditional call.
+            break;
+        };
         if let Some(ShellToken::Word(program)) = literal.first()
             && (matches!(program.as_str(), "exit" | "exec" | "return")
                 || (program == "command"
@@ -452,6 +483,28 @@ fn command_evidence_tokens(script: &str) -> Option<Vec<ShellToken>> {
         tokens.push(ShellToken::Separator);
     }
     Some(tokens)
+}
+
+fn literal_stdout_capture(redirect: tree_sitter::Node<'_>, script: &str) -> bool {
+    if redirect.kind() != "file_redirect" {
+        return false;
+    }
+    let Some(tokens) = redirect
+        .utf8_text(script.as_bytes())
+        .ok()
+        .and_then(shell_tokens)
+    else {
+        return false;
+    };
+    match tokens.as_slice() {
+        [ShellToken::Redirect(true), ShellToken::Word(_)] => true,
+        [
+            ShellToken::Word(fd),
+            ShellToken::Redirect(true),
+            ShellToken::Word(_),
+        ] => fd == "1",
+        _ => false,
+    }
 }
 fn changes_tool_resolution(command: &str) -> bool {
     command
@@ -651,6 +704,108 @@ fn inspect_paths(
         }
     }
 }
+fn rg_path_operands<'a>(words: &[&'a str]) -> Vec<Option<&'a str>> {
+    #[derive(Clone, Copy)]
+    enum Argument {
+        Pattern,
+        PatternFile,
+        Path,
+        Data,
+    }
+    let mut paths: Vec<Option<&str>> = words.iter().map(|word| Some(*word)).collect();
+    let mut next = None;
+    let mut options = true;
+    let mut files = false;
+    let mut supplied_pattern = false;
+    let mut implicit_pattern = None;
+    for (index, &word) in words.iter().enumerate().skip(1) {
+        if let Some(role) = next.take() {
+            match role {
+                Argument::Pattern | Argument::Data => paths[index] = None,
+                Argument::PatternFile | Argument::Path => {}
+            }
+            continue;
+        }
+        if options && word == "--" {
+            options = false;
+            paths[index] = None;
+            continue;
+        }
+        if options && word == "--files" {
+            files = true;
+            paths[index] = None;
+            if let Some(pattern) = implicit_pattern.take() {
+                paths[pattern] = Some(words[pattern]);
+            }
+            continue;
+        }
+        if options {
+            match word {
+                "-e" | "--regexp" => {
+                    next = Some(Argument::Pattern);
+                    supplied_pattern = true;
+                    paths[index] = None;
+                    if let Some(pattern) = implicit_pattern.take() {
+                        paths[pattern] = Some(words[pattern]);
+                    }
+                    continue;
+                }
+                "-f" | "--file" => {
+                    next = Some(Argument::PatternFile);
+                    supplied_pattern = true;
+                    paths[index] = None;
+                    if let Some(pattern) = implicit_pattern.take() {
+                        paths[pattern] = Some(words[pattern]);
+                    }
+                    continue;
+                }
+                "--pre" | "--ignore-file" => {
+                    next = Some(Argument::Path);
+                    paths[index] = None;
+                    continue;
+                }
+                "-g" | "--glob" | "--iglob" | "-A" | "-B" | "-C" | "--after-context"
+                | "--before-context" | "--context" => {
+                    next = Some(Argument::Data);
+                    paths[index] = None;
+                    continue;
+                }
+                _ => {}
+            }
+            if let Some(path) = word
+                .strip_prefix("--file=")
+                .or_else(|| word.strip_prefix("-f").filter(|s| !s.is_empty()))
+            {
+                supplied_pattern = true;
+                paths[index] = Some(path);
+                if let Some(pattern) = implicit_pattern.take() {
+                    paths[pattern] = Some(words[pattern]);
+                }
+                continue;
+            }
+            if word.starts_with("--regexp=")
+                || (word.starts_with("-e") && !word.starts_with("--") && word.len() > 2)
+            {
+                supplied_pattern = true;
+                paths[index] = None;
+                if let Some(pattern) = implicit_pattern.take() {
+                    paths[pattern] = Some(words[pattern]);
+                }
+                continue;
+            }
+            if word.starts_with('-') {
+                continue;
+            }
+        }
+        if !files && !supplied_pattern {
+            supplied_pattern = true;
+            implicit_pattern = Some(index);
+            paths[index] = None;
+        }
+    }
+    paths
+}
+
 fn inspect_command(
     command: &str,
     cwd: &mut PathBuf,
@@ -715,10 +870,20 @@ fn inspect_command(
             .first()
             .and_then(|w| Path::new(w).file_name())
             .and_then(|p| p.to_str());
+        let rg_paths = (program == Some("rg")).then(|| rg_path_operands(&words));
+        let mut word_index = 0;
         for (index, token) in statement.iter().enumerate() {
             match token {
                 ShellToken::Redirect(writes) => redirect = *writes,
                 ShellToken::Word(word) => {
+                    let path_word = if redirect {
+                        Some(word.as_str())
+                    } else if let Some(paths) = &rg_paths {
+                        paths[word_index]
+                    } else {
+                        Some(word.as_str())
+                    };
+                    word_index += 1;
                     let destination = matches!(program, Some("cp" | "mv" | "ln"))
                         && statement[index + 1..]
                             .iter()
@@ -726,15 +891,17 @@ fn inspect_command(
                     let writes = redirect
                         || destination
                         || (index > 0 && matches!(program, Some("rm" | "mkdir" | "touch" | "tee")));
-                    inspect_paths(
-                        word,
-                        cwd,
-                        workspace,
-                        tools,
-                        shipped_references,
-                        writes,
-                        violations,
-                    );
+                    if let Some(path_word) = path_word {
+                        inspect_paths(
+                            path_word,
+                            cwd,
+                            workspace,
+                            tools,
+                            shipped_references,
+                            writes,
+                            violations,
+                        );
+                    }
                     redirect = false;
                 }
                 ShellToken::Separator => {}
@@ -1084,6 +1251,135 @@ pub fn respond(input: &[u8]) -> ScenarioResult<Value> {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    /// ORIGINAL retained-input reproduction, parsed only; no shell/FSL/model is executed.
+    #[test]
+    fn runtime_safety_actual_script_records_redirected_analyzers() -> ScenarioResult<()> {
+        let (_temp, workspace, tools) = reference_policy_fixture()?;
+        let transcript = workspace.join(".cli-agent-evals/transcripts");
+        fs::create_dir_all(&transcript)?;
+        let script = r#"cat >> counter.fsl <<'EOF'
+temporal WithinLimit using inf over (c: Meter::Counter) clock "model-steps" on origin {
+  always holds(c.level <= 3)
+}
+
+temporal TooSmall using inf over (c: Meter::Counter) clock "model-steps" on origin {
+  always holds(c.level <= 2)
+}
+EOF
+fsl analyze holding-request.json --format json > holding.json
+holding_exit=$?
+fsl analyze violating-request.json --format json > violating.json
+violating_exit=$?
+printf 'holding_exit=%s\nviolating_exit=%s\n' "$holding_exit" "$violating_exit"
+cat holding.json violating.json
+"#;
+        let cwd = url::Url::from_directory_path(&workspace)
+            .map_err(|_| "workspace URL")?
+            .to_string();
+        let records = [script, r#"rg --files -L docs/shipped | rg '/fsl\.(md|mdx)$|/fsl/' | tail -8"#].iter().map(|command| {
+            json!({"type":"event_msg","payload":{"type":"item_completed","item":{
+                "type":"CommandExecution","command":["/bin/bash","-lc",command],"cwd":cwd,"status":"completed","exit_code":0
+            }}}).to_string()
+        }).collect::<Vec<_>>();
+        fs::write(
+            transcript.join("actual-shape-unit.transcript"),
+            records.join("\n"),
+        )?;
+        let assertion = retained_evidence(&workspace, &tools, safety_analyze::ID)?;
+        assert!(
+            assertion.ok,
+            "{:?}; tokens {:?}",
+            assertion.failures,
+            command_evidence_tokens(script)
+        );
+        assert_eq!(
+            assertion.checks["command_evidence"]["analyze:holding-request.json"],
+            true
+        );
+        assert_eq!(
+            assertion.checks["command_evidence"]["analyze:violating-request.json"],
+            true
+        );
+        assert_eq!(assertion.checks["transcript_boundary"]["ok"], true);
+        Ok(())
+    }
+
+    #[test]
+    fn runtime_safety_redirection_targets_and_unreachable_text_are_not_inputs() {
+        for script in [
+            "echo fake > holding-request.json",
+            "fsl analyze other.json > holding-request.json",
+            "cat <<'EOF'\nfsl analyze holding-request.json > holding.json\nEOF\n",
+            "exit 0\nfsl analyze holding-request.json > holding.json",
+            "false && fsl analyze holding-request.json > holding.json",
+            "fsl() { echo fake; }\nfsl analyze holding-request.json > holding.json",
+            "PATH=$?\nfsl analyze holding-request.json > holding.json",
+            "cat < holding-request.json",
+        ] {
+            assert!(
+                !matches_invocation(script, "analyze", Some("holding-request.json"), None),
+                "false evidence: {script}"
+            );
+        }
+        let prefix = "fsl analyze holding-request.json > holding.json\nexit 0\nfsl analyze violating-request.json > violating.json";
+        assert!(matches_invocation(
+            prefix,
+            "analyze",
+            Some("holding-request.json"),
+            None
+        ));
+        assert!(!matches_invocation(
+            prefix,
+            "analyze",
+            Some("violating-request.json"),
+            None
+        ));
+    }
+
+    #[test]
+    fn runtime_safety_rg_patterns_are_data_but_sources_and_evaluators_are_guarded()
+    -> ScenarioResult<()> {
+        let (_temp, workspace, tools) = reference_policy_fixture()?;
+        for command in [
+            r#"rg --files -L docs/shipped | rg '/fsl\.(md|mdx)$|/fsl/' | tail -8"#,
+            "rg '/outside/pattern' docs",
+            "rg -e '/outside/pattern' docs",
+            "rg --regexp='/outside/pattern' docs",
+            "rg -n -A 2 '/outside/pattern' docs",
+        ] {
+            let violations = boundary_violations(
+                &workspace,
+                &tools,
+                &[recorded(json!({"cmd":command}))],
+                true,
+            );
+            assert!(violations.is_empty(), "{command}: {violations:?}");
+        }
+        for command in [
+            "rg --files /outside/tree",
+            "rg --files '/outside/tree'",
+            "rg -f /outside/patterns docs",
+            "rg --file=/outside/patterns docs",
+            "rg -f/outside/patterns docs",
+            "rg --pre /outside/evaluator needle docs",
+            "rg --pre=/outside/evaluator needle docs",
+            "rg '/outside/pattern' /outside/source",
+            "rg /outside/source -e needle",
+            "rg '/outside/pattern' > /outside/output",
+            "cat '/outside/source'",
+            "fsl analyze /outside/request.json",
+        ] {
+            let violations = boundary_violations(
+                &workspace,
+                &tools,
+                &[recorded(json!({"cmd":command}))],
+                true,
+            );
+            assert!(!violations.is_empty(), "unguarded real path: {command}");
+        }
+        Ok(())
+    }
     fn recorded(value: Value) -> RecordedInput {
         RecordedInput {
             value,
