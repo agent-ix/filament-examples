@@ -3,12 +3,15 @@
 use std::collections::BTreeMap;
 use std::fmt;
 use std::fs;
+use std::io::Read;
 use std::path::Path;
 use std::process::Command;
+use std::time::{Duration, Instant};
 
 use serde::Deserialize;
 use serde_json::{Value, json};
 
+use crate::capture::{CaptureCode, CaptureError, before_deadline, capture_command};
 use crate::{Assertion, ScenarioResult, Tools};
 
 /// Stable scenario identifier in ticket order.
@@ -20,6 +23,8 @@ const GIVEN: &str = include_str!("../../fixtures/EV-004/given.fsl");
 const WINDOW_RULE: &str = "temporal WindowBelowThree using win over (m: MeterReading) clock \"ticks\" on origin { always[0,2] holds(m.level <= 2) }";
 const OPEN_RULE: &str = "temporal ForeverBelowThree using inf over (m: MeterReading) clock \"ticks\" on origin { always holds(m.level <= 2) }";
 const TASK: &str = include_str!("../../fixtures/EV-004/task.md");
+const ASSERT_BUDGET: Duration = Duration::from_secs(30);
+const ARTIFACT_LIMIT: u64 = 1_048_576;
 const INPUTS: &[(&str, &str)] = &[
     (
         "window-request.json",
@@ -97,6 +102,10 @@ enum FaultCode {
     ToolFailure,
     SummaryMismatch,
     EvidenceMismatch,
+    Capture {
+        code: CaptureCode,
+        reaped_child: Option<u32>,
+    },
 }
 
 #[derive(Debug)]
@@ -110,6 +119,17 @@ impl fmt::Display for Fault {
     }
 }
 impl std::error::Error for Fault {}
+impl From<CaptureError> for Fault {
+    fn from(error: CaptureError) -> Self {
+        Self {
+            code: FaultCode::Capture {
+                code: error.code,
+                reaped_child: error.reaped_child,
+            },
+            detail: error.to_string(),
+        }
+    }
+}
 type Checked<T> = Result<T, Fault>;
 
 fn need(condition: bool, code: FaultCode, detail: &str) -> Checked<()> {
@@ -179,11 +199,27 @@ fn read_artifact(workspace: &Path, name: &str) -> Checked<String> {
         detail: format!("missing {name}"),
     })?;
     need(
-        metadata.file_type().is_file() && metadata.len() <= 1_048_576,
+        metadata.file_type().is_file() && metadata.len() <= ARTIFACT_LIMIT,
         FaultCode::InvalidArtifact,
         "artifacts must be bounded regular files",
     )?;
-    fs::read_to_string(path).map_err(|_| Fault {
+    let file = fs::File::open(path).map_err(|_| Fault {
+        code: FaultCode::InvalidArtifact,
+        detail: format!("cannot open {name}"),
+    })?;
+    let mut bytes = Vec::new();
+    file.take(ARTIFACT_LIMIT + 1)
+        .read_to_end(&mut bytes)
+        .map_err(|_| Fault {
+            code: FaultCode::InvalidArtifact,
+            detail: format!("cannot read {name}"),
+        })?;
+    need(
+        u64::try_from(bytes.len()).is_ok_and(|size| size <= ARTIFACT_LIMIT),
+        FaultCode::InvalidArtifact,
+        "artifact grew beyond its byte budget",
+    )?;
+    String::from_utf8(bytes).map_err(|_| Fault {
         code: FaultCode::InvalidArtifact,
         detail: format!("{name} must be UTF-8"),
     })
@@ -455,22 +491,22 @@ fn check_report(workspace: &Path) -> Checked<()> {
     )
 }
 
-fn monitor(workspace: &Path, tools: &Tools, case: Case) -> Checked<MonitorOutput> {
-    let output = Command::new(&tools.fsl)
-        .current_dir(workspace)
-        .args([
-            "monitor",
-            case.request,
-            "--input",
-            case.input,
-            "--format",
-            "json",
-        ])
-        .output()
-        .map_err(|_| Fault {
-            code: FaultCode::ToolFailure,
-            detail: "trusted public fsl monitor could not start".into(),
-        })?;
+fn monitor(
+    workspace: &Path,
+    tools: &Tools,
+    case: Case,
+    deadline: Instant,
+) -> Checked<MonitorOutput> {
+    let mut command = Command::new(&tools.fsl);
+    command.current_dir(workspace).args([
+        "monitor",
+        case.request,
+        "--input",
+        case.input,
+        "--format",
+        "json",
+    ]);
+    let output = capture_command(&mut command, deadline).map_err(Fault::from)?;
     need(
         output.status.code() == Some(case.exit),
         FaultCode::ToolFailure,
@@ -510,16 +546,21 @@ fn require_same_stream(saved: &MonitorOutput, trusted: &MonitorOutput) -> Checke
     )
 }
 
-fn assess(workspace: &Path, tools: &Tools) -> Checked<BTreeMap<String, Value>> {
+fn assess(workspace: &Path, tools: &Tools, deadline: Instant) -> Checked<BTreeMap<String, Value>> {
+    before_deadline(deadline).map_err(Fault::from)?;
     check_inputs(workspace)?;
     check_report(workspace)?;
+    before_deadline(deadline).map_err(Fault::from)?;
     let mut checks = BTreeMap::new();
     for &case in CASES {
+        before_deadline(deadline).map_err(Fault::from)?;
         let saved = parse_output(&read_artifact(workspace, case.output)?)?;
         observe(case, &saved)?;
-        let trusted = monitor(workspace, tools, case)?;
+        before_deadline(deadline).map_err(Fault::from)?;
+        let trusted = monitor(workspace, tools, case, deadline)?;
         let observation = observe(case, &trusted)?;
         require_same_stream(&saved, &trusted)?;
+        before_deadline(deadline).map_err(Fault::from)?;
         checks.insert(case.input.to_owned(), observation);
     }
     Ok(checks)
@@ -527,12 +568,44 @@ fn assess(workspace: &Path, tools: &Tools) -> Checked<BTreeMap<String, Value>> {
 
 /// Independently monitor all supplied traces with the exact requested rules and preserve finality.
 pub fn grade(workspace: &Path, tools: &Tools) -> ScenarioResult<Assertion> {
-    Ok(match assess(workspace, tools) {
+    grade_with_budget(workspace, tools, ASSERT_BUDGET)
+}
+
+fn grade_with_budget(
+    workspace: &Path,
+    tools: &Tools,
+    budget: Duration,
+) -> ScenarioResult<Assertion> {
+    let deadline = Instant::now() + budget;
+    Ok(match assess(workspace, tools, deadline) {
         Ok(checks) => Assertion {
             ok: true,
             checks,
             failures: Vec::new(),
         },
+        Err(Fault {
+            code: FaultCode::Capture { code, reaped_child },
+            detail,
+        }) => {
+            let label = match code {
+                CaptureCode::AssertionTimeout => "assert budget exceeded",
+                CaptureCode::OutputLimit => "monitor output budget exceeded",
+                CaptureCode::ToolFailure => "monitor process failure",
+            };
+            let mut checks = BTreeMap::from([
+                ("failure_class".into(), json!("harness-error")),
+                ("capture_code".into(), json!(format!("{code:?}"))),
+                ("assert_budget_ms".into(), json!(budget.as_millis())),
+            ]);
+            if let Some(child_id) = reaped_child {
+                checks.insert("terminated_reaped_child".into(), json!(child_id));
+            }
+            Assertion {
+                ok: false,
+                checks,
+                failures: vec![format!("harness-error: {label} ({ID}): {detail}")],
+            }
+        }
         Err(error) => Assertion {
             ok: false,
             checks: BTreeMap::new(),
@@ -545,6 +618,55 @@ pub fn grade(workspace: &Path, tools: &Tools) -> ScenarioResult<Assertion> {
 mod tests {
     use super::*;
     use std::path::PathBuf;
+
+    /// Failure-only OS-child integration; no monitor verdict or real FSL/agent is fabricated.
+    #[test]
+    fn grade_deadline_exhaustion_bounds_validation_and_reaps_monitor_child() {
+        let workspace = tempfile::tempdir().unwrap();
+        let tools = tools(PathBuf::from("/bin/sh"));
+        prepare(workspace.path(), &tools).unwrap();
+        fs::write(
+            workspace.path().join("monitor.fsl"),
+            include_str!("../../fixtures/EV-004/reference/monitor.fsl"),
+        )
+        .unwrap();
+        fs::write(
+            workspace.path().join("result.json"),
+            serde_json::to_vec(&report()).unwrap(),
+        )
+        .unwrap();
+        for &case in CASES {
+            fs::write(workspace.path().join(case.output), render(&synthetic(case))).unwrap();
+        }
+        // /bin/sh consumes this local script as its first argument and execs a
+        // single delayed child; it emits no pretend FSL stream or proof.
+        fs::write(workspace.path().join("monitor"), "exec sleep 30\n").unwrap();
+        let result =
+            grade_with_budget(workspace.path(), &tools, Duration::from_millis(150)).unwrap();
+        assert!(!result.ok);
+        assert_eq!(result.checks["failure_class"], "harness-error");
+        assert_eq!(result.checks["capture_code"], "AssertionTimeout");
+        assert!(result.failures[0].starts_with("harness-error: assert budget exceeded"));
+        let child_id =
+            u32::try_from(result.checks["terminated_reaped_child"].as_u64().unwrap()).unwrap();
+        let alive = Command::new("/bin/kill")
+            .args(["-0", &child_id.to_string()])
+            .stdout(std::process::Stdio::null())
+            .stderr(std::process::Stdio::null())
+            .status()
+            .unwrap();
+        assert!(
+            !alive.success(),
+            "shared capture must reap the timed-out child before grade returns"
+        );
+        let no_inputs = tempfile::tempdir().unwrap();
+        let expired = grade_with_budget(no_inputs.path(), &tools, Duration::ZERO).unwrap();
+        assert_eq!(
+            expired.checks["capture_code"], "AssertionTimeout",
+            "budget starts before input validation"
+        );
+        assert!(!expired.checks.contains_key("terminated_reaped_child"));
+    }
 
     /// New synthetic mutation check; it never executes the accepted public reference or agents.
     #[test]

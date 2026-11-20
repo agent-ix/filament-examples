@@ -58,3 +58,9 @@ including intermediate pending states and every input/closure binding. JSON
 whitespace and object-key order are formatting. The only excluded timing
 annotations are top-level `event.wall_ms` and `summary.elapsed_ms`; nested or
 other fields remain part of semantic evidence.
+
+One 30-second assertion deadline covers input validation, all three monitor
+commands and final semantic checks. Shared capture bounds stdout and stderr to
+512 KiB each and terminates and reaps its child on timeout or excess output.
+Saved artifacts are bounded to 1 MiB each. Capture failures are classified as
+harness errors rather than agent failures.
