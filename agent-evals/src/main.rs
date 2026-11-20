@@ -15,6 +15,13 @@ struct Agents {
     repeats: usize,
 }
 
+struct CredentialHome(PathBuf);
+impl Drop for CredentialHome {
+    fn drop(&mut self) {
+        let _ = fs::remove_dir_all(&self.0);
+    }
+}
+
 fn copy_auth(source: &Path, destination: &Path) -> ScenarioResult<()> {
     let parent = destination
         .parent()
@@ -93,6 +100,7 @@ fn run(scenario: &str, agent: &str) -> ScenarioResult<()> {
         let _ = fs::remove_dir_all(&root);
         return Err(error);
     }
+    let auth_cleanup = CredentialHome(home.clone());
     let work = root.join("work");
     fs::create_dir_all(&work)?;
     let raw = root.join("raw-report.json");
@@ -135,9 +143,8 @@ fn run(scenario: &str, agent: &str) -> ScenarioResult<()> {
         command.env(format!("XDG_{kind}_HOME"), home.join(kind.to_lowercase()));
     }
     let status = command.status();
-    let cleanup = fs::remove_dir_all(&home);
+    drop(auth_cleanup);
     let status = status?;
-    cleanup?;
     if !matches!(status.code(), Some(0 | 1)) || !raw.is_file() {
         return Err(format!(
             "harness-error: SDK did not complete a report; exit {:?}; private run {}",

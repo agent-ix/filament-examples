@@ -5,6 +5,23 @@ use serde_json::{Value, json};
 use std::fs;
 use std::path::{Path, PathBuf};
 
+struct Entry {
+    id: &'static str,
+    title: &'static str,
+    use_case: &'static str,
+    prepare: fn(&Path, &Tools) -> ScenarioResult<String>,
+    grade: fn(&Path, &Tools) -> ScenarioResult<Assertion>,
+    commands: &'static [(&'static str, &'static str)],
+}
+const ENTRIES: &[Entry] = &[Entry {
+    id: author_model::ID,
+    title: author_model::TITLE,
+    use_case: "source-owned-model-authoring",
+    prepare: author_model::prepare,
+    grade: author_model::grade,
+    commands: &[("check", "model.fsl")],
+}];
+
 #[derive(Deserialize)]
 #[serde(deny_unknown_fields)]
 struct Metadata {
@@ -41,9 +58,36 @@ struct Request {
     protocol: String,
     operation: Operation,
     context: Context,
-    // Opaque SDK-owned process result; it never supplies the model grader's verdict.
     #[serde(default, rename = "run")]
-    _run: Option<Value>,
+    _run: Option<RunnerResult>,
+}
+
+#[derive(Deserialize)]
+#[serde(rename_all = "lowercase")]
+enum ExitReason {
+    Complete,
+    Failed,
+    Timeout,
+    Exit,
+    Error,
+}
+#[derive(Deserialize)]
+#[serde(deny_unknown_fields)]
+struct RunnerResult {
+    #[serde(rename = "ok")]
+    _ok: bool,
+    #[serde(rename = "exitReason")]
+    _exit_reason: ExitReason,
+    #[serde(rename = "wallMs")]
+    _wall_ms: u64,
+    #[serde(rename = "screenTail")]
+    _screen_tail: Option<String>,
+    #[serde(rename = "stdout")]
+    _stdout: Option<String>,
+    #[serde(rename = "stderr")]
+    _stderr: Option<String>,
+    #[serde(rename = "exitCode")]
+    _exit_code: Option<i32>,
 }
 
 fn executable(name: &str) -> ScenarioResult<PathBuf> {
@@ -83,13 +127,23 @@ fn collect_commands(value: &Value, commands: &mut Vec<String>) {
     }
     if let Some(parts) = value.get("command").and_then(Value::as_array) {
         if parts.iter().all(Value::is_string) {
-            commands.push(
-                parts
-                    .iter()
-                    .filter_map(Value::as_str)
-                    .collect::<Vec<_>>()
-                    .join(" "),
-            );
+            let words = parts.iter().filter_map(Value::as_str).collect::<Vec<_>>();
+            if words.first().is_some_and(|p| {
+                ["sh", "bash", "zsh"].contains(
+                    &Path::new(p)
+                        .file_name()
+                        .unwrap_or_default()
+                        .to_string_lossy()
+                        .as_ref(),
+                )
+            }) && words.iter().any(|w| ["-c", "-lc"].contains(w))
+            {
+                if let Some(script) = words.last() {
+                    commands.push((*script).to_owned());
+                }
+            } else {
+                commands.push(words.join(" "));
+            }
         }
     }
     if let Some(action) = value.get("action") {
@@ -143,7 +197,36 @@ pub fn agent_commands(workspace: &Path) -> ScenarioResult<Vec<String>> {
 }
 /// Match a direct public FSL invocation, excluding an echo/comment of that command.
 pub fn invokes_fsl(command: &str, verb: &str, operand: Option<&str>) -> bool {
-    command.split(['\n', ';', '|', '&']).any(|part| {
+    let mut statements = Vec::new();
+    let mut part = String::new();
+    let mut quote = None;
+    let mut escaped = false;
+    for character in command.chars() {
+        if escaped {
+            part.push(character);
+            escaped = false;
+            continue;
+        }
+        if character == '\\' && quote != Some('\'') {
+            part.push(character);
+            escaped = true;
+            continue;
+        }
+        if matches!(character, '\'' | '"') {
+            if quote == Some(character) {
+                quote = None;
+            } else if quote.is_none() {
+                quote = Some(character);
+            }
+        }
+        if quote.is_none() && matches!(character, '\n' | ';' | '|' | '&') {
+            statements.push(std::mem::take(&mut part));
+        } else {
+            part.push(character);
+        }
+    }
+    statements.push(part);
+    statements.iter().any(|part| {
         let words: Vec<&str> = part.split_whitespace().collect();
         let Some(program) = words.first() else {
             return false;
@@ -154,9 +237,11 @@ pub fn invokes_fsl(command: &str, verb: &str, operand: Option<&str>) -> bool {
             .is_some_and(|name| name == "fsl")
             && words.get(1) == Some(&verb)
             && operand.is_none_or(|file| {
-                words
-                    .iter()
-                    .any(|word| word.trim_matches(['\'', '"']).ends_with(file))
+                words.iter().any(|word| {
+                    Path::new(word.trim_matches(['\'', '"']))
+                        .file_name()
+                        .is_some_and(|name| name == file)
+                })
             })
     })
 }
@@ -190,20 +275,20 @@ pub fn respond(input: &[u8]) -> ScenarioResult<Value> {
     }
     let protocol = "cli-agent-evals.external-provider-result/v1";
     if matches!(request.operation, Operation::Describe) {
-        return Ok(
-            json!({"protocol":protocol,"operation":"describe","scenarios":[{"id":author_model::ID,"title":author_model::TITLE,"use_case":"source-owned-model-authoring","canary":false}]}),
-        );
+        let scenarios:Vec<Value>=ENTRIES.iter().map(|entry|json!({"id":entry.id,"title":entry.title,"use_case":entry.use_case,"canary":false})).collect();
+        return Ok(json!({"protocol":protocol,"operation":"describe","scenarios":scenarios}));
     }
-    if request.context.scenario.id != author_model::ID {
-        return Err("undescribed scenario".into());
-    }
+    let entry = ENTRIES
+        .iter()
+        .find(|entry| entry.id == request.context.scenario.id)
+        .ok_or("undescribed scenario")?;
     let tools = Tools::from_environment()?;
     let workspace = fs::canonicalize(request.context.work_dir)?;
     match request.operation {
         Operation::Describe => Err("unreachable describe dispatch".into()),
         Operation::Prepare => {
             references(&workspace, &tools)?;
-            let prompt = author_model::prepare(&workspace, &tools)?;
+            let prompt = (entry.prepare)(&workspace, &tools)?;
             let mut paths = Vec::new();
             for program in [&tools.fsl, &tools.quire, &tools.quoin] {
                 if let Some(parent) = program.parent() {
@@ -225,7 +310,7 @@ pub fn respond(input: &[u8]) -> ScenarioResult<Value> {
             )
         }
         Operation::Assert => {
-            let mut assertion = match author_model::grade(&workspace, &tools) {
+            let mut assertion = match (entry.grade)(&workspace, &tools) {
                 Ok(result) => result,
                 Err(e) => Assertion {
                     ok: false,
@@ -235,21 +320,25 @@ pub fn respond(input: &[u8]) -> ScenarioResult<Value> {
             };
             match agent_commands(&workspace) {
                 Ok(commands) => {
-                    let check = commands
-                        .iter()
-                        .any(|command| invokes_fsl(command, "check", Some("model.fsl")));
                     assertion
                         .checks
                         .insert("agent_command_count".to_owned(), json!(commands.len()));
+                    let mut evidence = serde_json::Map::new();
+                    for &(verb, operand) in entry.commands {
+                        let check = commands
+                            .iter()
+                            .any(|command| invokes_fsl(command, verb, Some(operand)));
+                        evidence.insert(format!("{verb}:{operand}"), json!(check));
+                        if !check {
+                            assertion.ok = false;
+                            assertion.failures.push(format!(
+                                "no recorded direct public fsl {verb} invocation for {operand}"
+                            ));
+                        }
+                    }
                     assertion
                         .checks
-                        .insert("agent_checked_model".to_owned(), json!(check));
-                    if !check {
-                        assertion.ok = false;
-                        assertion.failures.push(
-                            "agent never invoked the public fsl check on model.fsl".to_owned(),
-                        );
-                    }
+                        .insert("command_evidence".to_owned(), json!(evidence));
                 }
                 Err(e) => {
                     assertion.ok = false;
