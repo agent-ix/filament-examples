@@ -1,6 +1,7 @@
 language "ix:native" edition "1-draft";
 profile v = "filament.model.complete/v1";
 profile inf = "filament.temporal.infinite-trace/v1";
+profile tc = "filament.temporal.complete/v1";
 profile t = "filament.temporal.timed/v1";
 model Rover = "example/rover";
 

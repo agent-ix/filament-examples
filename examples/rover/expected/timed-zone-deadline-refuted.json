@@ -166,20 +166,20 @@
         "claim": {
           "node": {
             "ordinal": 0,
-            "package": "example:rover/timed-analyze",
+            "package": "example:rover/mode-machine",
             "path": [
               "temporal",
               "temporal_clause",
               {
                 "ordinal": 0,
-                "package": "example:rover/timed-analyze",
+                "package": "example:rover/mode-machine",
                 "path": [
                   "value",
                   "parameter",
                   "name",
                   {
                     "ordinal": 0,
-                    "package": "example:rover/timed-analyze",
+                    "package": "example:rover/mode-machine",
                     "path": [
                       "scalar_type",
                       "text"
@@ -189,7 +189,7 @@
                   "level",
                   {
                     "ordinal": 0,
-                    "package": "example:rover/timed-analyze",
+                    "package": "example:rover/mode-machine",
                     "path": [
                       "scalar_type",
                       "integer"
@@ -198,7 +198,7 @@
                   "0",
                   {
                     "ordinal": 0,
-                    "package": "example:rover/timed-analyze",
+                    "package": "example:rover/mode-machine",
                     "path": [
                       "composite_type",
                       "reference",
@@ -217,7 +217,7 @@
               },
               {
                 "ordinal": 0,
-                "package": "example:rover/timed-analyze",
+                "package": "example:rover/mode-machine",
                 "path": [
                   "scalar_type",
                   "text"
@@ -227,39 +227,39 @@
               "kind",
               "origin",
               {
-                "ordinal": 1,
-                "package": "example:rover/timed-analyze",
+                "ordinal": 2,
+                "package": "example:rover/mode-machine",
                 "path": [
                   "temporal",
                   "formula",
                   {
                     "ordinal": 0,
-                    "package": "example:rover/timed-analyze",
+                    "package": "example:rover/mode-machine",
                     "path": [
                       "temporal",
                       "formula",
                       {
                         "ordinal": 0,
-                        "package": "example:rover/timed-analyze",
+                        "package": "example:rover/mode-machine",
                         "path": [
                           "expression",
                           "query",
                           {
                             "ordinal": 0,
-                            "package": "example:rover/timed-analyze",
+                            "package": "example:rover/mode-machine",
                             "path": [
                               "expression",
                               "deref",
                               {
                                 "ordinal": 0,
-                                "package": "example:rover/timed-analyze",
+                                "package": "example:rover/mode-machine",
                                 "path": [
                                   "value",
                                   "parameter",
                                   "name",
                                   {
                                     "ordinal": 0,
-                                    "package": "example:rover/timed-analyze",
+                                    "package": "example:rover/mode-machine",
                                     "path": [
                                       "scalar_type",
                                       "text"
@@ -269,7 +269,7 @@
                                   "level",
                                   {
                                     "ordinal": 0,
-                                    "package": "example:rover/timed-analyze",
+                                    "package": "example:rover/mode-machine",
                                     "path": [
                                       "scalar_type",
                                       "integer"
@@ -278,7 +278,7 @@
                                   "0",
                                   {
                                     "ordinal": 0,
-                                    "package": "example:rover/timed-analyze",
+                                    "package": "example:rover/mode-machine",
                                     "path": [
                                       "composite_type",
                                       "reference",
@@ -313,7 +313,7 @@
                           "query",
                           {
                             "ordinal": 0,
-                            "package": "example:rover/timed-analyze",
+                            "package": "example:rover/mode-machine",
                             "path": [
                               "scalar_type",
                               "boolean"
@@ -325,7 +325,7 @@
                       "temporal_formula",
                       {
                         "ordinal": 0,
-                        "package": "example:rover/timed-analyze",
+                        "package": "example:rover/mode-machine",
                         "path": [
                           "scalar_type",
                           "boolean"
@@ -337,7 +337,7 @@
                   "temporal_formula",
                   {
                     "ordinal": 0,
-                    "package": "example:rover/timed-analyze",
+                    "package": "example:rover/mode-machine",
                     "path": [
                       "scalar_type",
                       "boolean"
@@ -350,7 +350,7 @@
               "temporal",
               {
                 "ordinal": 0,
-                "package": "example:rover/timed-analyze",
+                "package": "example:rover/mode-machine",
                 "path": [
                   "scalar_type",
                   "boolean"
