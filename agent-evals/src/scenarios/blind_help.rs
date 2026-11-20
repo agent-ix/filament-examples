@@ -249,10 +249,7 @@ fn monitor_result(bytes: &[u8]) -> Option<Value> {
         && entry["scope"] == "closed"
         && entry["execution"] == "closed"
         && entry["completeness"]["complete"]["through"] == 2)
-        .then(|| {
-            json!({"kind":"violated","evaluation_position":0,"observed_position":2,
-            "disposition":clause["disposition"],"settlement":clause["settlement"],"progress":entry})
-        })
+        .then(|| json!({"events":events,"summary":summary}))
 }
 
 fn semantic_artifact(verb: Verb, bytes: &[u8]) -> Option<Value> {
@@ -371,7 +368,7 @@ mod tests {
         Ok(bytes)
     }
 
-    /// Trace: FR-001-AC-6
+    /// Provenance: QSL-2493
     #[test]
     #[ignore = "EV-009 check grader with the accepted public FSL executable"]
     fn check_reference_rejects_a_refusal_result() -> ScenarioResult<()> {
@@ -381,7 +378,7 @@ mod tests {
         Ok(())
     }
 
-    /// Trace: FR-001-AC-6
+    /// Provenance: QSL-2493
     #[test]
     #[ignore = "EV-009 run grader with the accepted public FSL executable"]
     fn run_reference_rejects_a_different_quote() -> ScenarioResult<()> {
@@ -391,7 +388,7 @@ mod tests {
         Ok(())
     }
 
-    /// Trace: FR-001-AC-6
+    /// Provenance: QSL-2493
     #[test]
     #[ignore = "EV-009 analyze grader with the accepted public FSL executable"]
     fn analyze_reference_rejects_a_different_claim() -> ScenarioResult<()> {
@@ -401,7 +398,7 @@ mod tests {
         Ok(())
     }
 
-    /// Trace: FR-001-AC-6
+    /// Provenance: QSL-2493
     #[test]
     #[ignore = "EV-009 monitor grader with the accepted public FSL executable"]
     fn monitor_reference_rejects_a_different_observed_position() -> ScenarioResult<()> {
@@ -423,7 +420,7 @@ mod tests {
         Ok(())
     }
 
-    /// Trace: FR-001-AC-6
+    /// Provenance: QSL-2493
     #[test]
     fn changed_or_linked_problem_inputs_fail_before_public_execution() -> ScenarioResult<()> {
         let workspace = tempfile::tempdir()?;
@@ -447,6 +444,100 @@ mod tests {
         let result = grade(workspace.path(), &tools)?;
         assert!(!result.ok);
         assert_eq!(result.checks["changed_inputs"], json!(["initial.json"]));
+        Ok(())
+    }
+
+    fn synthetic_monitor_rows() -> Vec<Value> {
+        let settlement = json!({"basis":"decisive-counterexample","horizon":"2","position":"0","trigger":"decided"});
+        let disposition = json!({"category":"violation","stage":"evaluate","truth":false,
+            "temporal":{"kind":"violated","position":0,"counterexample":{
+                "trace":"observed","trace_position":0,"kind":"formula",
+                "interval":{"lower":"0","upper":"2"},
+                "prefix":[{"sample":"0"},{"sample":"1"},{"sample":"2"}],"loop":[]}}});
+        let mut rows: Vec<Value> = (0..3)
+            .map(|position| {
+                json!({
+                    "format":"filament.monitor-event/1","clause":"WithinThree",
+                    "position":position,"record":position,"category":"pending","settled":false,
+                    "disposition":{"category":"pending","temporal":{"kind":"pending"}},
+                    "basis":"unsettled"
+                })
+            })
+            .collect();
+        rows.push(
+            json!({"format":"filament.monitor-event/1","clause":"WithinThree",
+            "position":2,"record":3,"category":"violation","settled":true,
+            "disposition":disposition,"settlement":settlement}),
+        );
+        rows.push(json!({"format":"filament.monitor-summary/1","records":5,"refused":0,
+            "clauses":[{"clause":"WithinThree","category":"violation","settled":true,
+                "basis":"closed-scope","disposition":disposition,"settlement":settlement}],
+            "ledger":{"format":"filament.progress-ledger/1","entries":[{
+                "binding":{"package":"eval:blind-help/monitor","clock":"stock-events",
+                    "profile":"filament.temporal.event-position.false-extension/v1"},
+                "watermark":2,"scope":"closed","execution":"closed",
+                "completeness":{"complete":{"through":2}},
+                "covered":[{"stamp":0,"fingerprint":"sample-0"},{"stamp":1,"fingerprint":"sample-1"},{"stamp":2,"fingerprint":"sample-2"}]}]}}));
+        rows
+    }
+
+    fn encode_rows(rows: &[Value]) -> ScenarioResult<Vec<u8>> {
+        let mut bytes = Vec::new();
+        for row in rows {
+            serde_json::to_writer(&mut bytes, row)?;
+            bytes.push(b'\n');
+        }
+        Ok(bytes)
+    }
+
+    /// Provenance: QSL-2493
+    #[test]
+    fn complete_monitor_stream_ignores_only_json_formatting() -> ScenarioResult<()> {
+        let rows = synthetic_monitor_rows();
+        let original = encode_rows(&rows)?;
+        let expected =
+            monitor_result(&original).ok_or("synthetic wire fixture must be admitted")?;
+        let spaced = String::from_utf8(original)?
+            .lines()
+            .map(|line| format!(" \t{line}  \n"))
+            .collect::<String>();
+        assert_eq!(monitor_result(spaced.as_bytes()), Some(expected));
+        Ok(())
+    }
+
+    /// Provenance: QSL-2493
+    #[test]
+    fn complete_monitor_stream_rejects_missing_added_and_changed_pending_events()
+    -> ScenarioResult<()> {
+        let rows = synthetic_monitor_rows();
+        let expected = monitor_result(&encode_rows(&rows)?)
+            .ok_or("synthetic wire fixture must be admitted")?;
+        let mut omitted = rows.clone();
+        omitted.remove(1);
+        let mut added = rows.clone();
+        added.insert(2, rows[1].clone());
+        let mut wrong_position = rows.clone();
+        wrong_position[1]["position"] = json!(2);
+        let mut wrong_record = rows.clone();
+        wrong_record[1]["record"] = json!(9);
+        let mut wrong_result = rows.clone();
+        wrong_result[1]["disposition"]["temporal"]["kind"] = json!("holds");
+        let mut wrong_binding = rows.clone();
+        wrong_binding[4]["ledger"]["entries"][0]["binding"]["package"] = json!("another-input");
+        for (name, altered) in [
+            ("omitted pending event", omitted),
+            ("additional pending event", added),
+            ("changed pending position", wrong_position),
+            ("changed pending record", wrong_record),
+            ("changed pending result", wrong_result),
+            ("changed current input binding", wrong_binding),
+        ] {
+            assert_ne!(
+                monitor_result(&encode_rows(&altered)?),
+                Some(expected.clone()),
+                "{name} must not match the complete actual stream"
+            );
+        }
         Ok(())
     }
 }

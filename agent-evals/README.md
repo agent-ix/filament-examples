@@ -58,6 +58,8 @@ After independent review, run its single Codex sample with:
 ```
 
 All four semantic contracts and their actual public command evidence must pass.
+The monitor comparison retains every ordered event and the complete summary;
+only JSON whitespace and object-key ordering are ignored.
 Its report keeps separate per-verb results and marks program completion pending:
 the required export workflow is recorded separately as pending its owning mapper
 fix. This task's pass covers four runnable contracts, not every FSL verb.
