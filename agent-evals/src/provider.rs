@@ -352,6 +352,87 @@ fn shell_tokens(script: &str) -> Option<Vec<ShellToken>> {
     }
     Some(tokens)
 }
+
+// Parse shell structure before recognizing literal argv. Here-document bodies
+// are data, never statements. Compound control flow cannot prove unconditional
+// execution, and shell-state modifiers cannot prove trusted program resolution.
+// Nothing here executes or expands the recorded script.
+fn command_evidence_tokens(script: &str) -> Option<Vec<ShellToken>> {
+    if script.len() > 1_048_576 {
+        return None;
+    }
+    let mut parser = tree_sitter::Parser::new();
+    parser
+        .set_language(&tree_sitter_bash::LANGUAGE.into())
+        .ok()?;
+    let tree = parser.parse(script, None)?;
+    let root = tree.root_node();
+    if root.has_error() {
+        return None;
+    }
+    let mut tokens = Vec::new();
+    let mut cursor = root.walk();
+    for statement in root.named_children(&mut cursor) {
+        let command = match statement.kind() {
+            "comment" => continue,
+            "command" => statement,
+            "redirected_statement" => {
+                let mut redirects = statement.walk();
+                if statement
+                    .children_by_field_name("redirect", &mut redirects)
+                    .any(|redirect| {
+                        redirect.child_by_field_name("right").is_some()
+                            || redirect.child_by_field_name("operator").is_some()
+                    })
+                {
+                    return None;
+                }
+                statement.child_by_field_name("body")?
+            }
+            _ => return None,
+        };
+        if command.kind() != "command" {
+            return None;
+        }
+        let mut children = command.walk();
+        if command
+            .named_children(&mut children)
+            .any(|child| child.kind() == "variable_assignment")
+        {
+            return None;
+        }
+        let literal = shell_tokens(command.utf8_text(script.as_bytes()).ok()?)?;
+        if let Some(ShellToken::Word(program)) = literal.first()
+            && matches!(
+                program.as_str(),
+                "." | "source"
+                    | "eval"
+                    | "exec"
+                    | "alias"
+                    | "unalias"
+                    | "hash"
+                    | "builtin"
+                    | "enable"
+                    | "shopt"
+                    | "set"
+                    | "export"
+                    | "unset"
+                    | "declare"
+                    | "typeset"
+                    | "readonly"
+                    | "read"
+                    | "readarray"
+                    | "mapfile"
+                    | "trap"
+            )
+        {
+            return None;
+        }
+        tokens.extend(literal);
+        tokens.push(ShellToken::Separator);
+    }
+    Some(tokens)
+}
 fn changes_tool_resolution(command: &str) -> bool {
     command
         .split_whitespace()
@@ -398,10 +479,7 @@ fn matches_invocation_at(
     workspace: Option<&Path>,
     initial_cwd: &Path,
 ) -> bool {
-    if changes_tool_resolution(command) {
-        return false;
-    }
-    let Some(tokens) = shell_tokens(command) else {
+    let Some(tokens) = command_evidence_tokens(command) else {
         return false;
     };
     let mut cwd = initial_cwd.to_owned();
@@ -1586,5 +1664,87 @@ mod tests {
             );
         }
         Ok(())
+    }
+    #[test]
+    fn heredoc_command_evidence_accepts_real_trailing_public_invocations() -> ScenarioResult<()> {
+        let (_temp, workspace, tools) = reference_policy_fixture()?;
+        let transcript = workspace.join(".cli-agent-evals/transcripts");
+        fs::create_dir_all(&transcript)?;
+        // Recorded shell input only: this editor body is never executed by the test.
+        let script = r#"python - <<'PY'
+with open('postage.fsl', 'r+') as source:
+    repaired = source.read().replace('units >= 0', 'if units >= 0 then 7 + 3 * units else 7')
+    source.seek(0)
+    source.write(repaired)
+    source.truncate()
+PY
+fsl check postage.fsl
+fsl run postage-example.json --format json
+"#;
+        let cwd = url::Url::from_directory_path(&workspace)
+            .map_err(|_| "workspace URL")?
+            .to_string();
+        fs::write(
+            transcript.join("sample.transcript"),
+            json!({
+                "type":"event_msg", "payload":{"type":"item_completed", "item":{
+                    "type":"CommandExecution", "command":["/bin/bash","-lc",script],
+                    "cwd":cwd, "exit_code":0, "status":"completed",
+                    "aggregated_output":"Output is not command evidence."
+                }}
+            })
+            .to_string(),
+        )?;
+        let assertion = retained_evidence(&workspace, &tools, refusal_repair::ID)?;
+        assert!(
+            assertion.ok,
+            "{:?}; literal tokens {:?}",
+            assertion.failures,
+            command_evidence_tokens(script)
+        );
+        assert_eq!(assertion.checks["agent_command_count"], 1);
+        assert_eq!(
+            assertion.checks["command_evidence"]["check:postage.fsl"],
+            true
+        );
+        assert_eq!(
+            assertion.checks["command_evidence"]["run:postage-example.json"],
+            true
+        );
+        assert_eq!(assertion.checks["transcript_boundary"]["ok"], true);
+        Ok(())
+    }
+
+    #[test]
+    fn heredoc_command_evidence_rejects_body_data_and_nonexecuted_claims() {
+        for script in [
+            "python - <<'PY'\nprint('fsl check postage.fsl')\nprint('fsl run postage-example.json')\nPY\n",
+            "cat <<'TEXT'\nfsl check postage.fsl\nfsl run postage-example.json\nTEXT\n",
+            "cat <<TEXT\nfsl check postage.fsl\nfsl run postage-example.json\nTEXT\n",
+            "cat <<'TEXT'\nignored data\nTEXT\necho 'fsl check postage.fsl; fsl run postage-example.json'",
+            "# fsl check postage.fsl\n# fsl run postage-example.json",
+            "echo 'fsl check postage.fsl'\nprintf '%s\\n' 'fsl run postage-example.json'",
+            "if false; then\nfsl check postage.fsl\nfsl run postage-example.json\nfi",
+            "false && fsl check postage.fsl && fsl run postage-example.json",
+            "fake() { fsl check postage.fsl; fsl run postage-example.json; }",
+            "fsl() { echo fake; }\nfsl check postage.fsl\nfsl run postage-example.json",
+            "source ./replacement.sh\nfsl check postage.fsl\nfsl run postage-example.json",
+            ". ./replacement.sh\nfsl check postage.fsl\nfsl run postage-example.json",
+            "PATH=/fake\nfsl check postage.fsl\nfsl run postage-example.json",
+            "PATH=/fake fsl check postage.fsl\nfsl run postage-example.json",
+            "export PATH=/fake\nfsl check postage.fsl\nfsl run postage-example.json",
+            "alias fsl='echo fake'\nfsl check postage.fsl\nfsl run postage-example.json",
+            "hash -p /fake/fsl fsl\nfsl check postage.fsl\nfsl run postage-example.json",
+            "cat <<'TEXT' && fsl check postage.fsl && fsl run postage-example.json\nbody\nTEXT\n",
+        ] {
+            assert!(
+                !matches_invocation(script, "check", Some("postage.fsl"), None),
+                "false check evidence: {script}"
+            );
+            assert!(
+                !matches_invocation(script, "run", Some("postage-example.json"), None),
+                "false run evidence: {script}"
+            );
+        }
     }
 }
