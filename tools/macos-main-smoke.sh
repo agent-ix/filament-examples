@@ -47,7 +47,7 @@ archive="$run_root/$archive_name"
 [[ "$(tar -tvzf "$archive")" == -* ]]
 mkdir "$run_root/bin"
 tar -xzf "$archive" -C "$run_root/bin" fsl
-lipo -verify_arch arm64 "$run_root/bin/fsl"
+lipo "$run_root/bin/fsl" -verify_arch arm64
 
 git init --quiet "$run_root/driver"
 git -C "$run_root/driver" remote add origin https://github.com/agent-ix/filament-driver

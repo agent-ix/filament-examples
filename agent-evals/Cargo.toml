@@ -15,6 +15,7 @@ fsl-cst = { git = "https://github.com/agent-ix/filament-spec-language", rev = "d
 fsl-foundation = { git = "https://github.com/agent-ix/filament-spec-language", rev = "deac8870a05e0b9ae28392f597f829011b44ebb8" }
 tree-sitter = "0.27.2"
 tree-sitter-bash = "0.25.1"
+tree-sitter-javascript = "0.25.0"
 
 [lints.rust]
 unsafe_code = "forbid"

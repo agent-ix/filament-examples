@@ -1,7 +1,7 @@
 //! Thin Rust consumer of the SDK's published external-provider protocol.
 use crate::{
     Assertion, ScenarioResult, Tools,
-    scenarios::{author_model, refusal_repair},
+    scenarios::{author_model, refusal_repair, safety_analyze},
 };
 use serde::Deserialize;
 use serde_json::{Value, json};
@@ -35,6 +35,18 @@ const ENTRIES: &[Entry] = &[
         grade: refusal_repair::grade,
         commands: &[("check", "postage.fsl"), ("run", "postage-example.json")],
         shipped_references: false,
+    },
+    Entry {
+        id: safety_analyze::ID,
+        title: safety_analyze::TITLE,
+        use_case: "finite-safety-proof-and-counterexample",
+        prepare: safety_analyze::prepare,
+        grade: safety_analyze::grade,
+        commands: &[
+            ("analyze", "holding-request.json"),
+            ("analyze", "violating-request.json"),
+        ],
+        shipped_references: true,
     },
 ];
 
@@ -176,6 +188,7 @@ struct RecordedInput {
     value: Value,
     persistent_cwd: bool,
     writes_files: bool,
+    typed_execution: bool,
 }
 fn agent_inputs(workspace: &Path) -> ScenarioResult<Vec<RecordedInput>> {
     let directory = workspace.join(".cli-agent-evals/transcripts");
@@ -203,6 +216,7 @@ fn agent_inputs(workspace: &Path) -> ScenarioResult<Vec<RecordedInput>> {
                         commands.push(RecordedInput {
                             value: input.clone(),
                             persistent_cwd: true,
+                            typed_execution: false,
                             writes_files: matches!(
                                 item["name"].as_str(),
                                 Some("Write" | "Edit" | "NotebookEdit")
@@ -235,12 +249,14 @@ fn agent_inputs(workspace: &Path) -> ScenarioResult<Vec<RecordedInput>> {
                     value: json!({"command":command,"workdir":cwd}),
                     persistent_cwd: false,
                     writes_files: false,
+                    typed_execution: true,
                 });
             } else if payload["type"] == "custom_tool_call" {
                 if let Some(input) = payload["input"].as_str() {
                     commands.push(RecordedInput {
                         value: json!({"code":input}),
                         persistent_cwd: false,
+                        typed_execution: false,
                         writes_files: payload["name"]
                             .as_str()
                             .is_some_and(|name| name.ends_with("apply_patch")),
@@ -253,6 +269,7 @@ fn agent_inputs(workspace: &Path) -> ScenarioResult<Vec<RecordedInput>> {
                     commands.push(RecordedInput {
                         value: args,
                         persistent_cwd: false,
+                        typed_execution: false,
                         writes_files: payload["name"]
                             .as_str()
                             .is_some_and(|name| name.ends_with("apply_patch")),
@@ -263,6 +280,7 @@ fn agent_inputs(workspace: &Path) -> ScenarioResult<Vec<RecordedInput>> {
                     value: payload.clone(),
                     persistent_cwd: false,
                     writes_files: false,
+                    typed_execution: false,
                 });
             }
         }
@@ -375,14 +393,42 @@ fn command_evidence_tokens(script: &str) -> Option<Vec<ShellToken>> {
     for statement in root.named_children(&mut cursor) {
         let command = match statement.kind() {
             "comment" => continue,
+            "variable_assignment" => {
+                let name = statement
+                    .child_by_field_name("name")?
+                    .utf8_text(script.as_bytes())
+                    .ok()?;
+                let value = statement
+                    .child_by_field_name("value")?
+                    .utf8_text(script.as_bytes())
+                    .ok()?;
+                if value == "$?"
+                    && !matches!(
+                        name,
+                        "PATH"
+                            | "CDPATH"
+                            | "BASH_ENV"
+                            | "ENV"
+                            | "SHELLOPTS"
+                            | "BASHOPTS"
+                            | "IFS"
+                            | "fsl"
+                    )
+                {
+                    // Recording an exit code does not change literal command resolution.
+                    continue;
+                }
+                break;
+            }
             "command" => statement,
             "redirected_statement" => {
                 let mut redirects = statement.walk();
                 if statement
                     .children_by_field_name("redirect", &mut redirects)
                     .any(|redirect| {
-                        redirect.child_by_field_name("right").is_some()
-                            || redirect.child_by_field_name("operator").is_some()
+                        (redirect.child_by_field_name("right").is_some()
+                            || redirect.child_by_field_name("operator").is_some())
+                            && !literal_stdout_capture(redirect, script)
                     })
                 {
                     return None;
@@ -401,7 +447,10 @@ fn command_evidence_tokens(script: &str) -> Option<Vec<ShellToken>> {
         {
             return None;
         }
-        let literal = shell_tokens(command.utf8_text(script.as_bytes()).ok()?)?;
+        let Some(literal) = shell_tokens(command.utf8_text(script.as_bytes()).ok()?) else {
+            // Later opaque formatting cannot invalidate an earlier unconditional call.
+            break;
+        };
         if let Some(ShellToken::Word(program)) = literal.first()
             && (matches!(program.as_str(), "exit" | "exec" | "return")
                 || (program == "command"
@@ -440,6 +489,28 @@ fn command_evidence_tokens(script: &str) -> Option<Vec<ShellToken>> {
         tokens.push(ShellToken::Separator);
     }
     Some(tokens)
+}
+
+fn literal_stdout_capture(redirect: tree_sitter::Node<'_>, script: &str) -> bool {
+    if redirect.kind() != "file_redirect" {
+        return false;
+    }
+    let Some(tokens) = redirect
+        .utf8_text(script.as_bytes())
+        .ok()
+        .and_then(shell_tokens)
+    else {
+        return false;
+    };
+    match tokens.as_slice() {
+        [ShellToken::Redirect(true), ShellToken::Word(_)] => true,
+        [
+            ShellToken::Word(fd),
+            ShellToken::Redirect(true),
+            ShellToken::Word(_),
+        ] => fd == "1",
+        _ => false,
+    }
 }
 fn changes_tool_resolution(command: &str) -> bool {
     command
@@ -639,6 +710,121 @@ fn inspect_paths(
         }
     }
 }
+fn rg_path_operands<'a>(words: &[&'a str]) -> Option<Vec<Option<&'a str>>> {
+    #[derive(Clone, Copy)]
+    enum Argument {
+        Pattern,
+        PatternFile,
+        Path,
+        Data,
+    }
+    let mut paths: Vec<Option<&str>> = words.iter().map(|word| Some(*word)).collect();
+    let mut next = None;
+    let mut options = true;
+    let mut files = false;
+    let mut supplied_pattern = false;
+    let mut implicit_pattern = None;
+    for (index, &word) in words.iter().enumerate().skip(1) {
+        if let Some(role) = next.take() {
+            match role {
+                Argument::Pattern | Argument::Data => paths[index] = None,
+                Argument::PatternFile | Argument::Path => {}
+            }
+            continue;
+        }
+        if options && word == "--" {
+            options = false;
+            paths[index] = None;
+            continue;
+        }
+        if options && word == "--files" {
+            files = true;
+            paths[index] = None;
+            if let Some(pattern) = implicit_pattern.take() {
+                paths[pattern] = Some(words[pattern]);
+            }
+            continue;
+        }
+        if options {
+            match word {
+                "-n" | "-L" => {
+                    paths[index] = None;
+                    continue;
+                }
+                "-e" | "--regexp" => {
+                    next = Some(Argument::Pattern);
+                    supplied_pattern = true;
+                    paths[index] = None;
+                    if let Some(pattern) = implicit_pattern.take() {
+                        paths[pattern] = Some(words[pattern]);
+                    }
+                    continue;
+                }
+                "-f" | "--file" => {
+                    next = Some(Argument::PatternFile);
+                    supplied_pattern = true;
+                    paths[index] = None;
+                    if let Some(pattern) = implicit_pattern.take() {
+                        paths[pattern] = Some(words[pattern]);
+                    }
+                    continue;
+                }
+                "--pre" | "--ignore-file" => {
+                    next = Some(Argument::Path);
+                    paths[index] = None;
+                    continue;
+                }
+                "-g" | "--glob" | "--iglob" | "-A" | "-B" | "-C" | "--after-context"
+                | "--before-context" | "--context" => {
+                    next = Some(Argument::Data);
+                    paths[index] = None;
+                    continue;
+                }
+                _ => {}
+            }
+            if let Some(path) = word
+                .strip_prefix("--file=")
+                .or_else(|| word.strip_prefix("-f").filter(|s| !s.is_empty()))
+            {
+                supplied_pattern = true;
+                paths[index] = Some(path);
+                if let Some(pattern) = implicit_pattern.take() {
+                    paths[pattern] = Some(words[pattern]);
+                }
+                continue;
+            }
+            if word.starts_with("--regexp=")
+                || (word.starts_with("-e") && !word.starts_with("--") && word.len() > 2)
+            {
+                supplied_pattern = true;
+                paths[index] = None;
+                if let Some(pattern) = implicit_pattern.take() {
+                    paths[pattern] = Some(words[pattern]);
+                }
+                continue;
+            }
+            if let Some(path) = word
+                .strip_prefix("--pre=")
+                .or_else(|| word.strip_prefix("--ignore-file="))
+            {
+                paths[index] = Some(path);
+                continue;
+            }
+            if word.starts_with('-') {
+                // Unknown or combined options can change which word is a file.
+                // Refuse to infer pattern-data roles without a known arity.
+                return None;
+            }
+        }
+        if !files && !supplied_pattern {
+            supplied_pattern = true;
+            implicit_pattern = Some(index);
+            paths[index] = None;
+        }
+    }
+    if next.is_some() { None } else { Some(paths) }
+}
+
 fn inspect_command(
     command: &str,
     cwd: &mut PathBuf,
@@ -703,10 +889,33 @@ fn inspect_command(
             .first()
             .and_then(|w| Path::new(w).file_name())
             .and_then(|p| p.to_str());
+        let rg_paths = if program == Some("rg") {
+            match rg_path_operands(&words) {
+                Some(paths) => Some(paths),
+                None => {
+                    violations.push(
+                        "harness-error: unsupported rg option arity in boundary evidence"
+                            .to_owned(),
+                    );
+                    continue;
+                }
+            }
+        } else {
+            None
+        };
+        let mut word_index = 0;
         for (index, token) in statement.iter().enumerate() {
             match token {
                 ShellToken::Redirect(writes) => redirect = *writes,
                 ShellToken::Word(word) => {
+                    let path_word = if redirect {
+                        Some(word.as_str())
+                    } else if let Some(paths) = &rg_paths {
+                        paths[word_index]
+                    } else {
+                        Some(word.as_str())
+                    };
+                    word_index += 1;
                     let destination = matches!(program, Some("cp" | "mv" | "ln"))
                         && statement[index + 1..]
                             .iter()
@@ -714,15 +923,17 @@ fn inspect_command(
                     let writes = redirect
                         || destination
                         || (index > 0 && matches!(program, Some("rm" | "mkdir" | "touch" | "tee")));
-                    inspect_paths(
-                        word,
-                        cwd,
-                        workspace,
-                        tools,
-                        shipped_references,
-                        writes,
-                        violations,
-                    );
+                    if let Some(path_word) = path_word {
+                        inspect_paths(
+                            path_word,
+                            cwd,
+                            workspace,
+                            tools,
+                            shipped_references,
+                            writes,
+                            violations,
+                        );
+                    }
                     redirect = false;
                 }
                 ShellToken::Separator => {}
@@ -730,6 +941,109 @@ fn inspect_command(
         }
     }
 }
+// Only duplicate shell-source literals with an actual typed execution record
+// are removed from the generic path scan. The real command is still checked
+// at its recorded cwd; opaque JavaScript never supplies command evidence.
+fn corroborated_cmd_data(code: &str, executed: &[String]) -> Option<String> {
+    if code.len() > 1_048_576 {
+        return None;
+    }
+    let mut parser = tree_sitter::Parser::new();
+    parser
+        .set_language(&tree_sitter_javascript::LANGUAGE.into())
+        .ok()?;
+    let tree = parser.parse(code, None)?;
+    let root = tree.root_node();
+    if root.has_error() {
+        return None;
+    }
+    let mut pending = vec![root];
+    let mut ranges = Vec::new();
+    while let Some(node) = pending.pop() {
+        let mut cursor = node.walk();
+        pending.extend(node.named_children(&mut cursor));
+        if node.kind() != "call_expression" {
+            continue;
+        }
+        let Some(function) = node.child_by_field_name("function") else {
+            continue;
+        };
+        if function.kind() != "member_expression" {
+            continue;
+        }
+        let Some(object) = function.child_by_field_name("object") else {
+            continue;
+        };
+        let Some(property) = function.child_by_field_name("property") else {
+            continue;
+        };
+        if object.kind() != "identifier"
+            || object.utf8_text(code.as_bytes()).ok()? != "tools"
+            || property.kind() != "property_identifier"
+            || property.utf8_text(code.as_bytes()).ok()? != "exec_command"
+        {
+            continue;
+        }
+        let Some(arguments) = node.child_by_field_name("arguments") else {
+            continue;
+        };
+        let mut cursor = arguments.walk();
+        let mut values = arguments
+            .named_children(&mut cursor)
+            .filter(|v| v.kind() != "comment");
+        let Some(argument) = values.next() else {
+            continue;
+        };
+        if argument.kind() != "object" || values.next().is_some() {
+            continue;
+        }
+        let mut cursor = argument.walk();
+        for pair in argument
+            .named_children(&mut cursor)
+            .filter(|pair| pair.kind() == "pair")
+        {
+            let Some(key) = pair.child_by_field_name("key") else {
+                continue;
+            };
+            let key_text = key.utf8_text(code.as_bytes()).ok()?;
+            let cmd_key = (key.kind() == "property_identifier" && key_text == "cmd")
+                || (key.kind() == "string"
+                    && serde_json::from_str::<String>(key_text).is_ok_and(|key| key == "cmd"));
+            if !cmd_key {
+                continue;
+            }
+            let Some(value) = pair.child_by_field_name("value") else {
+                continue;
+            };
+            if value.kind() != "string" {
+                continue;
+            }
+            let Ok(command) =
+                serde_json::from_str::<String>(value.utf8_text(code.as_bytes()).ok()?)
+            else {
+                continue;
+            };
+            if executed.contains(&command) {
+                ranges.push(value.byte_range());
+            }
+        }
+    }
+    if ranges.is_empty() {
+        return None;
+    }
+    ranges.sort_unstable_by_key(|range| range.start);
+    ranges.dedup();
+    let mut masked = String::new();
+    let mut previous = 0;
+    for range in ranges {
+        masked.push_str(code.get(previous..range.start)?);
+        masked.push_str("\"\"");
+        previous = range.end;
+    }
+    masked.push_str(code.get(previous..)?);
+    Some(masked)
+}
+
 fn boundary_violations(
     workspace: &Path,
     tools: &Tools,
@@ -737,6 +1051,10 @@ fn boundary_violations(
     shipped_references: bool,
 ) -> Vec<String> {
     let mut violations = Vec::new();
+    let mut typed_commands = Vec::new();
+    for input in inputs.iter().filter(|input| input.typed_execution) {
+        collect_commands(&input.value, &mut typed_commands);
+    }
     let mut persistent_cwd = workspace.to_owned();
     for input in inputs {
         let mut cwd = if input.persistent_cwd {
@@ -781,8 +1099,14 @@ fn boundary_violations(
                 );
             }
             if !commands.iter().any(|c| c == text) {
+                let cmd_data = input
+                    .value
+                    .get("code")
+                    .and_then(Value::as_str)
+                    .filter(|code| *code == text)
+                    .and_then(|code| corroborated_cmd_data(code, &typed_commands));
                 inspect_paths(
-                    text,
+                    cmd_data.as_deref().unwrap_or(text),
                     &cwd,
                     workspace,
                     tools,
@@ -1072,11 +1396,248 @@ pub fn respond(input: &[u8]) -> ScenarioResult<Value> {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    /// Original two-wrapper/typed-event fixture; never executes JavaScript, shell, or FSL.
+    #[test]
+    fn runtime_safety_opaque_cmd_literals_use_typed_execution_roles() -> ScenarioResult<()> {
+        let (_temp, workspace, tools) = reference_policy_fixture()?;
+        let directory = workspace.join(".cli-agent-evals/transcripts");
+        fs::create_dir_all(&directory)?;
+        let sed = "sed -n '10,47p' docs/shipped/fsl/cli/at-a-glance.md; fsl --help";
+        let rg = r#"rg --files -L docs/shipped | rg '/fsl\\.(md|mdx)$|/fsl/' | tail -8"#;
+        let wrappers = format!(
+            "text(await tools.exec_command({{cmd:{},\"max_output_tokens\":3000}}));\ntext(await tools.exec_command({{cmd:{},\"max_output_tokens\":1000}}));\n",
+            serde_json::to_string(sed)?,
+            serde_json::to_string(rg)?
+        );
+        let cwd = url::Url::from_directory_path(&workspace)
+            .map_err(|_| "workspace URL")?
+            .to_string();
+        let typed = |command: &str| {
+            json!({"type":"event_msg","payload":{"type":"item_completed","item":{
+                "type":"CommandExecution","command":["/bin/bash","-lc",command],"cwd":cwd,"status":"completed","exit_code":0
+            }}})
+        };
+        let analyze = "fsl analyze holding-request.json --format json > holding.json\nfsl analyze violating-request.json --format json > violating.json";
+        for (extra_code, extra_typed, expected) in [
+            ("", None, true),
+            (
+                "text(await tools.view_image({path:\"/outside/evaluator.png\"}));",
+                None,
+                false,
+            ),
+            (
+                "text(await tools.exec_command({cmd:\"cat /outside/source.fsl\"}));",
+                None,
+                false,
+            ),
+            (
+                "text(await tools.exec_command({cmd:\"cat /outside/source.fsl\"}));",
+                Some("cat /outside/source.fsl"),
+                false,
+            ),
+        ] {
+            let mut rows = vec![
+                json!({"type":"response_item","payload":{"type":"custom_tool_call","name":"exec","input":format!("{wrappers}{extra_code}")}}),
+                typed(sed),
+                typed(rg),
+                typed(analyze),
+            ];
+            if let Some(command) = extra_typed {
+                rows.push(typed(command));
+            }
+            fs::write(
+                directory.join("two-wrapper-unit.transcript"),
+                rows.iter()
+                    .map(Value::to_string)
+                    .collect::<Vec<_>>()
+                    .join("\n"),
+            )?;
+            let result = retained_evidence(&workspace, &tools, safety_analyze::ID)?;
+            assert_eq!(
+                result.checks["command_evidence"]["analyze:holding-request.json"],
+                true
+            );
+            assert_eq!(
+                result.checks["command_evidence"]["analyze:violating-request.json"],
+                true
+            );
+            assert_eq!(result.ok, expected, "{extra_code}: {:?}", result.failures);
+            assert_eq!(result.checks["transcript_boundary"]["ok"], expected);
+        }
+        Ok(())
+    }
+
+    #[test]
+    fn runtime_safety_combined_rg_file_option_fails_closed() -> ScenarioResult<()> {
+        let (_temp, workspace, tools) = reference_policy_fixture()?;
+        for command in [
+            "rg -nf /outside/patterns docs",
+            "rg --unknown-option /outside/patterns docs",
+        ] {
+            let violations = boundary_violations(
+                &workspace,
+                &tools,
+                &[recorded(json!({"cmd":command}))],
+                true,
+            );
+            assert!(
+                violations.iter().any(|v| v.starts_with("harness-error:")),
+                "unresolved rg arity must not become pattern data: {command}"
+            );
+        }
+        for command in [
+            r#"rg --files -L docs/shipped | rg '/fsl\.(md|mdx)$|/fsl/' | tail -8"#,
+            "rg -n '/outside/pattern' docs",
+        ] {
+            let violations = boundary_violations(
+                &workspace,
+                &tools,
+                &[recorded(json!({"cmd":command}))],
+                true,
+            );
+            assert!(
+                violations.is_empty(),
+                "known pattern roles remain usable: {command}: {violations:?}"
+            );
+        }
+        Ok(())
+    }
+
+    /// ORIGINAL retained-input reproduction, parsed only; no shell/FSL/model is executed.
+    #[test]
+    fn runtime_safety_actual_script_records_redirected_analyzers() -> ScenarioResult<()> {
+        let (_temp, workspace, tools) = reference_policy_fixture()?;
+        let transcript = workspace.join(".cli-agent-evals/transcripts");
+        fs::create_dir_all(&transcript)?;
+        let script = r#"cat >> counter.fsl <<'EOF'
+temporal WithinLimit using inf over (c: Meter::Counter) clock "model-steps" on origin {
+  always holds(c.level <= 3)
+}
+
+temporal TooSmall using inf over (c: Meter::Counter) clock "model-steps" on origin {
+  always holds(c.level <= 2)
+}
+EOF
+fsl analyze holding-request.json --format json > holding.json
+holding_exit=$?
+fsl analyze violating-request.json --format json > violating.json
+violating_exit=$?
+printf 'holding_exit=%s\nviolating_exit=%s\n' "$holding_exit" "$violating_exit"
+cat holding.json violating.json
+"#;
+        let cwd = url::Url::from_directory_path(&workspace)
+            .map_err(|_| "workspace URL")?
+            .to_string();
+        let records = [script, r#"rg --files -L docs/shipped | rg '/fsl\.(md|mdx)$|/fsl/' | tail -8"#].iter().map(|command| {
+            json!({"type":"event_msg","payload":{"type":"item_completed","item":{
+                "type":"CommandExecution","command":["/bin/bash","-lc",command],"cwd":cwd,"status":"completed","exit_code":0
+            }}}).to_string()
+        }).collect::<Vec<_>>();
+        fs::write(
+            transcript.join("actual-shape-unit.transcript"),
+            records.join("\n"),
+        )?;
+        let assertion = retained_evidence(&workspace, &tools, safety_analyze::ID)?;
+        assert!(
+            assertion.ok,
+            "{:?}; tokens {:?}",
+            assertion.failures,
+            command_evidence_tokens(script)
+        );
+        assert_eq!(
+            assertion.checks["command_evidence"]["analyze:holding-request.json"],
+            true
+        );
+        assert_eq!(
+            assertion.checks["command_evidence"]["analyze:violating-request.json"],
+            true
+        );
+        assert_eq!(assertion.checks["transcript_boundary"]["ok"], true);
+        Ok(())
+    }
+
+    #[test]
+    fn runtime_safety_redirection_targets_and_unreachable_text_are_not_inputs() {
+        for script in [
+            "echo fake > holding-request.json",
+            "fsl analyze other.json > holding-request.json",
+            "cat <<'EOF'\nfsl analyze holding-request.json > holding.json\nEOF\n",
+            "exit 0\nfsl analyze holding-request.json > holding.json",
+            "false && fsl analyze holding-request.json > holding.json",
+            "fsl() { echo fake; }\nfsl analyze holding-request.json > holding.json",
+            "PATH=$?\nfsl analyze holding-request.json > holding.json",
+            "cat < holding-request.json",
+        ] {
+            assert!(
+                !matches_invocation(script, "analyze", Some("holding-request.json"), None),
+                "false evidence: {script}"
+            );
+        }
+        let prefix = "fsl analyze holding-request.json > holding.json\nexit 0\nfsl analyze violating-request.json > violating.json";
+        assert!(matches_invocation(
+            prefix,
+            "analyze",
+            Some("holding-request.json"),
+            None
+        ));
+        assert!(!matches_invocation(
+            prefix,
+            "analyze",
+            Some("violating-request.json"),
+            None
+        ));
+    }
+
+    #[test]
+    fn runtime_safety_rg_patterns_are_data_but_sources_and_evaluators_are_guarded()
+    -> ScenarioResult<()> {
+        let (_temp, workspace, tools) = reference_policy_fixture()?;
+        for command in [
+            r#"rg --files -L docs/shipped | rg '/fsl\.(md|mdx)$|/fsl/' | tail -8"#,
+            "rg '/outside/pattern' docs",
+            "rg -e '/outside/pattern' docs",
+            "rg --regexp='/outside/pattern' docs",
+            "rg -n -A 2 '/outside/pattern' docs",
+        ] {
+            let violations = boundary_violations(
+                &workspace,
+                &tools,
+                &[recorded(json!({"cmd":command}))],
+                true,
+            );
+            assert!(violations.is_empty(), "{command}: {violations:?}");
+        }
+        for command in [
+            "rg --files /outside/tree",
+            "rg --files '/outside/tree'",
+            "rg -f /outside/patterns docs",
+            "rg --file=/outside/patterns docs",
+            "rg -f/outside/patterns docs",
+            "rg --pre /outside/evaluator needle docs",
+            "rg --pre=/outside/evaluator needle docs",
+            "rg '/outside/pattern' /outside/source",
+            "rg /outside/source -e needle",
+            "rg '/outside/pattern' > /outside/output",
+            "cat '/outside/source'",
+            "fsl analyze /outside/request.json",
+        ] {
+            let violations = boundary_violations(
+                &workspace,
+                &tools,
+                &[recorded(json!({"cmd":command}))],
+                true,
+            );
+            assert!(!violations.is_empty(), "unguarded real path: {command}");
+        }
+        Ok(())
+    }
     fn recorded(value: Value) -> RecordedInput {
         RecordedInput {
             value,
             persistent_cwd: false,
             writes_files: false,
+            typed_execution: false,
         }
     }
     /// Trace: FR-001 AC-6

@@ -39,6 +39,8 @@ pub mod scenarios {
     pub mod author_model;
     /// Refusal-only repair with independent public function executions.
     pub mod refusal_repair;
+    /// Finite safety proof and counterexample analysis.
+    pub mod safety_analyze;
 }
 
 /// Published external-provider integration and independent command evidence.

@@ -1,0 +1,216 @@
+{
+  "contractVersion": "2.0.0",
+  "canonicalization": {
+    "algorithm": "rfc8785-v1"
+  },
+  "source": {
+    "identity": "ix://eval/safety-counter/spec",
+    "version": "1.0.0",
+    "dialect": "spec-bundle"
+  },
+  "package": {
+    "identity": "eval/safety-counter",
+    "version": "1.0.0",
+    "mappingVersions": [],
+    "profileVersions": []
+  },
+  "occurrences": [],
+  "extensions": [],
+  "constructs": [
+    {
+      "kind": {
+        "module": "eval/safety-counter",
+        "name": "object_type"
+      },
+      "moduleVersion": "1.0.0",
+      "construct": {
+        "identity": "none",
+        "shape": "record",
+        "members": {},
+        "meaning": "filament.meaning.model.object-type/v1"
+      }
+    },
+    {
+      "kind": {
+        "module": "eval/safety-counter",
+        "name": "population"
+      },
+      "moduleVersion": "1.0.0",
+      "construct": {
+        "identity": "none",
+        "shape": "record",
+        "members": {},
+        "meaning": "filament.meaning.model.population/v1"
+      }
+    },
+    {
+      "kind": {
+        "module": "eval/safety-counter",
+        "name": "value_type"
+      },
+      "moduleVersion": "1.0.0",
+      "construct": {
+        "identity": "none",
+        "shape": "record",
+        "members": {},
+        "meaning": "filament.meaning.model.value-type/v1"
+      }
+    }
+  ],
+  "types": [
+    {
+      "identity": "ix://eval/safety-counter/Level",
+      "displayName": "Level",
+      "kind": {
+        "module": "eval/safety-counter",
+        "name": "value_type"
+      },
+      "roles": [],
+      "origin": {
+        "generated": {
+          "generatorIdentity": "ix://eval/safety-counter/Level",
+          "generatorVersion": "1.0.0",
+          "inputIdentities": [
+            "ix://eval/safety-counter/Level"
+          ]
+        }
+      },
+      "extensions": [],
+      "unknownPolicy": "reject",
+      "scalar": "integer",
+      "constraints": [
+        {
+          "identity": "ix://eval/safety-counter/Level/constraints/min",
+          "keyword": "min",
+          "operands": {
+            "value": "0"
+          },
+          "appliesTo": "ix://filament/native/Integer",
+          "diagnosticCode": "bound.min",
+          "origin": {
+            "generated": {
+              "generatorIdentity": "ix://eval/safety-counter/Level",
+              "generatorVersion": "1.0.0",
+              "inputIdentities": [
+                "ix://eval/safety-counter/Level"
+              ]
+            }
+          }
+        },
+        {
+          "identity": "ix://eval/safety-counter/Level/constraints/max",
+          "keyword": "max",
+          "operands": {
+            "value": "4"
+          },
+          "appliesTo": "ix://filament/native/Integer",
+          "diagnosticCode": "bound.max",
+          "origin": {
+            "generated": {
+              "generatorIdentity": "ix://eval/safety-counter/Level",
+              "generatorVersion": "1.0.0",
+              "inputIdentities": [
+                "ix://eval/safety-counter/Level"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "identity": "ix://eval/safety-counter/Counter",
+      "displayName": "Counter",
+      "kind": {
+        "module": "eval/safety-counter",
+        "name": "object_type"
+      },
+      "roles": [],
+      "origin": {
+        "generated": {
+          "generatorIdentity": "ix://eval/safety-counter/Counter",
+          "generatorVersion": "1.0.0",
+          "inputIdentities": [
+            "ix://eval/safety-counter/Counter"
+          ]
+        }
+      },
+      "constraints": [],
+      "extensions": [],
+      "unknownPolicy": "reject",
+      "supertypes": [],
+      "fields": [
+        {
+          "identity": "ix://eval/safety-counter/Counter/level",
+          "name": "level",
+          "typeRef": "ix://eval/safety-counter/Level",
+          "presence": "required",
+          "nullable": false,
+          "defaultKind": "none",
+          "multiplicity": {
+            "lower": 1,
+            "upper": 1,
+            "ordered": false,
+            "unique": true
+          },
+          "origin": {
+            "generated": {
+              "generatorIdentity": "ix://eval/safety-counter/Counter/level",
+              "generatorVersion": "1.0.0",
+              "inputIdentities": [
+                "ix://eval/safety-counter/Counter/level"
+              ]
+            }
+          }
+        }
+      ],
+      "operations": [
+        {
+          "identity": "ix://eval/safety-counter/Counter/advance",
+          "name": "advance",
+          "params": [],
+          "pre": [],
+          "post": [],
+          "origin": {
+            "generated": {
+              "generatorIdentity": "ix://eval/safety-counter/Counter/advance",
+              "generatorVersion": "1.0.0",
+              "inputIdentities": [
+                "ix://eval/safety-counter/Counter/advance"
+              ]
+            }
+          },
+          "frame": {
+            "modifies": [
+              "ix://eval/safety-counter/Counter/level"
+            ],
+            "creates": [],
+            "deletes": []
+          }
+        }
+      ]
+    }
+  ],
+  "populations": [
+    {
+      "identity": "ix://eval/safety-counter/counters",
+      "displayName": "counters",
+      "kind": {
+        "module": "eval/safety-counter",
+        "name": "population"
+      },
+      "members": [
+        "ix://eval/safety-counter/Counter"
+      ],
+      "extent": "closed",
+      "origin": {
+        "generated": {
+          "generatorIdentity": "ix://eval/safety-counter/counters",
+          "generatorVersion": "1.0.0",
+          "inputIdentities": [
+            "ix://eval/safety-counter/counters"
+          ]
+        }
+      }
+    }
+  ]
+}
