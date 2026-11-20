@@ -1,0 +1,3 @@
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+function example using v(): Boolean pure { let xs: Bag<Integer>[0, 8] = bag[3, 3, 7] in dropFirst(xs) = xs }

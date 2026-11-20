@@ -1,0 +1,4 @@
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+function pair using v(x: Integer): Sequence<Integer>[2, 2] pure { sequence[x, x + 1] }
+function example using v(): Boolean pure { let a: Sequence<Integer>[0, 2] = sequence[2, 5] in let b: Sequence<Integer>[0, 4] = flatMap(x in a: pair(x)) in b = sequence[2, 3, 5, 6] }

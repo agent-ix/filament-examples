@@ -1,0 +1,19 @@
+{
+  "format": "native-run/1",
+  "request": {
+    "models": [],
+    "program": {
+      "source": {
+        "file": "../rules/float-specials-nan.fsl",
+        "authority": "example",
+        "identity": "language-values/float-specials-nan",
+        "document": "float-specials-nan",
+        "formal_revision": 1
+      }
+    },
+    "call": {
+      "function": "example",
+      "arguments": []
+    }
+  }
+}

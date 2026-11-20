@@ -1,0 +1,19 @@
+{
+  "format": "native-run/1",
+  "request": {
+    "models": [],
+    "program": {
+      "source": {
+        "file": "../rules/ordered-set-duplicate.fsl",
+        "authority": "example",
+        "identity": "language-values/ordered-set-duplicate",
+        "document": "ordered-set-duplicate",
+        "formal_revision": 1
+      }
+    },
+    "call": {
+      "function": "example",
+      "arguments": []
+    }
+  }
+}

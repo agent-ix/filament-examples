@@ -1,0 +1,19 @@
+{
+  "format": "native-run/1",
+  "request": {
+    "models": [],
+    "program": {
+      "source": {
+        "file": "../rules/float-specials-negative-zero.fsl",
+        "authority": "example",
+        "identity": "language-values/float-specials-negative-zero",
+        "document": "float-specials-negative-zero",
+        "formal_revision": 1
+      }
+    },
+    "call": {
+      "function": "example",
+      "arguments": []
+    }
+  }
+}

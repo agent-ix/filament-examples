@@ -1,0 +1,4 @@
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+function rounded using v(): Decimal[-100, 100; 2, 2; toward-negative] pure { let r: Rational[-1, 1; 1, 8] = rational(-1, 8) in convert<Decimal[-100, 100; 2, 2; toward-negative]>(r) }
+function example using v(): Boolean pure { rounded() = decimal(-13, 2) }

@@ -1,0 +1,4 @@
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+import "sample-arithmetic" as A;
+function example using v(): Boolean pure { A::triple(14) = 42 }

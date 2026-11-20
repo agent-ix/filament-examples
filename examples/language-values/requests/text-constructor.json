@@ -1,0 +1,19 @@
+{
+  "format": "native-run/1",
+  "request": {
+    "models": [],
+    "program": {
+      "source": {
+        "file": "../rules/text-constructor.fsl",
+        "authority": "example",
+        "identity": "language-values/text-constructor",
+        "document": "text-constructor",
+        "formal_revision": 1
+      }
+    },
+    "call": {
+      "function": "example",
+      "arguments": []
+    }
+  }
+}

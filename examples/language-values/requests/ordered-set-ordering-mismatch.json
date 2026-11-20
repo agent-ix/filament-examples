@@ -1,0 +1,19 @@
+{
+  "format": "native-run/1",
+  "request": {
+    "models": [],
+    "program": {
+      "source": {
+        "file": "../rules/ordered-set-ordering-mismatch.fsl",
+        "authority": "example",
+        "identity": "language-values/ordered-set-ordering-mismatch",
+        "document": "ordered-set-ordering-mismatch",
+        "formal_revision": 1
+      }
+    },
+    "call": {
+      "function": "example",
+      "arguments": []
+    }
+  }
+}
