@@ -23,6 +23,29 @@ fsl-examples record shop --case paid-short
 
 [`fr865-text.test.mjs`](fr865-text.test.mjs) runs three direct CLI commands without `--format` and compares their FR-865 stdout and exit status with the transcript fixtures under `verification/fr865-text/expected/`. Run it with `FSL=/path/to/fsl node --test tools/fr865-text.test.mjs`.
 
+### Native Mac source smoke
+
+The manual [Install test workflow](../.github/workflows/install-test.yml) has a
+`macos-main` lane. It builds one native FSL binary on `macos-15`, then runs the
+existing `platform_smoke` test against that binary and the selected driver's
+README. The test requires actual Darwin arm64, executes the README quickstart,
+and checks its completed Boolean result and empty diagnostics. No release asset
+is needed, and a Linux run supplies no Mac pass evidence.
+
+Dispatch the reviewed examples revision with the coherent driver, language,
+codegen and contract IR inputs. The defaults identify the accepted main cohort;
+use `main` or another revision explicitly when selecting a later coherent graph.
+
+```bash
+gh workflow run install-test.yml --ref main -f lane=macos-main
+```
+
+The job retains the four resolved source commits, build log and smoke log as
+the `macos-main-smoke` artifact. Sources and Cargo targets live in one temporary
+runner directory and are removed when the step ends. A failed checkout or build
+fails the job; it cannot count as a platform pass. The `install-matrix` choice
+runs the existing Linux install matrix and Mac release installation.
+
 ## Steps runner
 
 [steps.mjs](steps.mjs) reads a Markdown file such as [install-test/steps.md](../install-test/steps.md), takes every fenced block marked `step=<id>`, and runs the blocks in order in one shell, in a bare container or on the host, in bash or zsh. A block can add `expect-exit=N` for a step that must fail. The runner reports the duration of each step, names the step that failed, and can compare each step's output with recorded files (`--expected`, `--record`). `make install-test` calls it, and [steps.test.mjs](steps.test.mjs) holds its unit tests. The project template uses an unmodified copy of this file for its tutorial.

@@ -2,15 +2,39 @@ name: Install test
 
 # Manual only. Runs the commands in install-test/steps.md on a bare
 # ubuntu:22.04 container on an x86_64 and an arm64 runner: the release path in
-# bash and zsh, the source path in bash. A macOS job runs the release path in zsh.
+# bash and zsh, the source path in bash. The Mac main lane builds one native
+# current-main cohort and runs the README platform smoke without release assets.
 on:
   workflow_dispatch:
+    inputs:
+      lane:
+        description: Native Mac main smoke, or the existing full install matrix
+        type: choice
+        options: [macos-main, install-matrix]
+        default: macos-main
+      driver_ref:
+        description: Driver revision (accepted main cohort by default)
+        default: 18d6fb0d84f36df16d77d242897703c6da274c14
+        type: string
+      language_ref:
+        description: FSL revision (must share contract IR with codegen)
+        default: deac8870a05e0b9ae28392f597f829011b44ebb8
+        type: string
+      codegen_ref:
+        description: Codegen revision (must share contract IR with FSL)
+        default: 889e999589c98d3b2dfd96abc1b0c9b233d864de
+        type: string
+      ir_ref:
+        description: Matching contract IR revision
+        default: e576f74916b8624c8301aee5d0e3cf72a0078e4c
+        type: string
 
 permissions:
   contents: read
 
 jobs:
   install:
+    if: inputs.lane == 'install-matrix'
     strategy:
       fail-fast: false
       matrix:
@@ -36,6 +60,7 @@ jobs:
   # The release path in zsh on macOS, without a container: the steps run in the
   # runner's own shell.
   install-macos:
+    if: inputs.lane == 'install-matrix'
     name: install (release, zsh, macos-15)
     runs-on: macos-15
     steps:
@@ -47,3 +72,31 @@ jobs:
         run: command -v jq >/dev/null || brew install jq
       - name: Run the install steps
         run: make install-test-host
+
+  macos-main:
+    if: inputs.lane == 'macos-main'
+    name: README smoke (native macOS arm64, source)
+    runs-on: macos-15
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: dtolnay/rust-toolchain@stable
+      - name: Build one native driver and run its README quickstart
+        env:
+          DRIVER_REF: ${{ inputs.driver_ref }}
+          LANGUAGE_REF: ${{ inputs.language_ref }}
+          CODEGEN_REF: ${{ inputs.codegen_ref }}
+          IR_REF: ${{ inputs.ir_ref }}
+        run: bash tools/macos-main-smoke.sh
+      - name: Retain build and native smoke receipts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: macos-main-smoke
+          path: |
+            ${{ runner.temp }}/fsl-macos-build.log
+            ${{ runner.temp }}/fsl-macos-smoke.log
+            ${{ runner.temp }}/fsl-macos-cohort.txt
+          if-no-files-found: ignore
