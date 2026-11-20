@@ -493,6 +493,7 @@ fn inspect_paths(
     cwd: &Path,
     workspace: &Path,
     tools: &Tools,
+    shipped_references: bool,
     writes: bool,
     violations: &mut Vec<String>,
 ) {
@@ -521,9 +522,17 @@ fn inspect_paths(
             continue;
         }
         let path = resolve_path(cwd, word);
+        let published_reference =
+            path.starts_with(&tools.docs) || grammar.as_ref().is_some_and(|g| &path == g);
+        if published_reference && !shipped_references {
+            violations.push(
+                "sandbox-breach: this scenario permits no shipped documentation or grammar access"
+                    .to_owned(),
+            );
+            continue;
+        }
         let in_workspace = path.starts_with(workspace);
-        let read_only = path.starts_with(&tools.docs)
-            || grammar.as_ref().is_some_and(|g| &path == g)
+        let read_only = published_reference
             || [&tools.fsl, &tools.quire, &tools.quoin].contains(&&path)
             || ["/usr", "/bin", "/sbin", "/etc", "/dev"]
                 .iter()
@@ -539,6 +548,7 @@ fn inspect_command(
     cwd: &mut PathBuf,
     workspace: &Path,
     tools: &Tools,
+    shipped_references: bool,
     violations: &mut Vec<String>,
 ) {
     if changes_tool_resolution(command) {
@@ -547,7 +557,15 @@ fn inspect_command(
     let Some(tokens) = shell_tokens(command) else {
         // Opaque code cannot establish command evidence. Still inspect literal
         // path accesses in code/heredocs, without pretending to execute a shell.
-        inspect_paths(command, cwd, workspace, tools, false, violations);
+        inspect_paths(
+            command,
+            cwd,
+            workspace,
+            tools,
+            shipped_references,
+            false,
+            violations,
+        );
         if command.split_whitespace().any(|w| w == "cd") {
             violations
                 .push("harness-error: cannot resolve shell working-directory change".to_owned());
@@ -571,7 +589,15 @@ fn inspect_command(
                     "harness-error: cannot resolve shell working-directory change".to_owned(),
                 );
             } else {
-                inspect_paths(words[1], cwd, workspace, tools, false, violations);
+                inspect_paths(
+                    words[1],
+                    cwd,
+                    workspace,
+                    tools,
+                    shipped_references,
+                    false,
+                    violations,
+                );
                 *cwd = resolve_path(cwd, words[1]);
             }
             continue;
@@ -592,7 +618,15 @@ fn inspect_command(
                     let writes = redirect
                         || destination
                         || (index > 0 && matches!(program, Some("rm" | "mkdir" | "touch" | "tee")));
-                    inspect_paths(word, cwd, workspace, tools, writes, violations);
+                    inspect_paths(
+                        word,
+                        cwd,
+                        workspace,
+                        tools,
+                        shipped_references,
+                        writes,
+                        violations,
+                    );
                     redirect = false;
                 }
                 ShellToken::Separator => {}
@@ -600,7 +634,12 @@ fn inspect_command(
         }
     }
 }
-fn boundary_violations(workspace: &Path, tools: &Tools, inputs: &[RecordedInput]) -> Vec<String> {
+fn boundary_violations(
+    workspace: &Path,
+    tools: &Tools,
+    inputs: &[RecordedInput],
+    shipped_references: bool,
+) -> Vec<String> {
     let mut violations = Vec::new();
     let mut persistent_cwd = workspace.to_owned();
     for input in inputs {
@@ -610,7 +649,15 @@ fn boundary_violations(workspace: &Path, tools: &Tools, inputs: &[RecordedInput]
             workspace.to_owned()
         };
         if let Some(workdir) = input.value.get("workdir").and_then(Value::as_str) {
-            inspect_paths(workdir, workspace, workspace, tools, false, &mut violations);
+            inspect_paths(
+                workdir,
+                workspace,
+                workspace,
+                tools,
+                shipped_references,
+                false,
+                &mut violations,
+            );
             cwd = resolve_path(workspace, workdir);
         }
         let mut commands = Vec::new();
@@ -643,13 +690,21 @@ fn boundary_violations(workspace: &Path, tools: &Tools, inputs: &[RecordedInput]
                     &cwd,
                     workspace,
                     tools,
+                    shipped_references,
                     input.writes_files,
                     &mut violations,
                 );
             }
         }
         for command in commands {
-            inspect_command(&command, &mut cwd, workspace, tools, &mut violations);
+            inspect_command(
+                &command,
+                &mut cwd,
+                workspace,
+                tools,
+                shipped_references,
+                &mut violations,
+            );
         }
         if input.persistent_cwd {
             persistent_cwd = cwd;
@@ -663,10 +718,11 @@ fn boundary_violations(workspace: &Path, tools: &Tools, inputs: &[RecordedInput]
 fn enforce_transcript_boundary(
     workspace: &Path,
     tools: &Tools,
+    shipped_references: bool,
     assertion: &mut Assertion,
 ) -> ScenarioResult<()> {
     let inputs = agent_inputs(workspace)?;
-    let violations = boundary_violations(workspace, tools, &inputs);
+    let violations = boundary_violations(workspace, tools, &inputs, shipped_references);
     assertion.checks.insert(
         "transcript_boundary".to_owned(),
         json!({"ok":violations.is_empty(),"violations":violations}),
@@ -684,6 +740,7 @@ fn recorded_command_evidence(
     inputs: &[RecordedInput],
     verb: &str,
     operand: &str,
+    shipped_references: bool,
 ) -> bool {
     let mut persistent_cwd = workspace.to_owned();
     let mut found = false;
@@ -710,7 +767,14 @@ fn recorded_command_evidence(
             // Reuse the boundary scan's exact shell/cd handling. Boundary
             // violations were already applied; here its cwd is the evidence
             // context for subsequent calls, never a fresh workspace default.
-            inspect_command(&command, &mut cwd, workspace, tools, &mut Vec::new());
+            inspect_command(
+                &command,
+                &mut cwd,
+                workspace,
+                tools,
+                shipped_references,
+                &mut Vec::new(),
+            );
         }
         if input.persistent_cwd {
             persistent_cwd = cwd;
@@ -786,7 +850,7 @@ fn apply_evidence(
     entry: &Entry,
     assertion: &mut Assertion,
 ) -> ScenarioResult<()> {
-    enforce_transcript_boundary(workspace, tools, assertion)?;
+    enforce_transcript_boundary(workspace, tools, entry.shipped_references, assertion)?;
     match agent_inputs(workspace) {
         Ok(inputs) => {
             let mut commands = Vec::new();
@@ -798,7 +862,14 @@ fn apply_evidence(
                 .insert("agent_command_count".to_owned(), json!(commands.len()));
             let mut evidence = serde_json::Map::new();
             for &(verb, operand) in entry.commands {
-                let check = recorded_command_evidence(workspace, tools, &inputs, verb, operand);
+                let check = recorded_command_evidence(
+                    workspace,
+                    tools,
+                    &inputs,
+                    verb,
+                    operand,
+                    entry.shipped_references,
+                );
                 evidence.insert(format!("{verb}:{operand}"), json!(check));
                 if !check {
                     assertion.ok = false;
@@ -950,10 +1021,10 @@ mod tests {
             let inputs = agent_inputs(&workspace)?;
             assert_eq!(agent_commands(&workspace)?.len(), 1);
             assert_eq!(
-                recorded_command_evidence(&workspace, &tools, &inputs, "check", "model.fsl"),
+                recorded_command_evidence(&workspace, &tools, &inputs, "check", "model.fsl", true),
                 expected
             );
-            assert!(boundary_violations(&workspace, &tools, &inputs).is_empty());
+            assert!(boundary_violations(&workspace, &tools, &inputs, true).is_empty());
         }
         fs::write(transcript.join("sample.transcript"),json!({"type":"event_msg","payload":{"type":"item_completed","item":{"type":"CommandExecution","command":["echo","hello"],"cwd":"https://example.test/work"}}}).to_string())?;
         assert!(agent_inputs(&workspace).is_err());
@@ -1027,7 +1098,7 @@ mod tests {
             )?;
             let inputs = agent_inputs(&workspace)?;
             assert_eq!(
-                recorded_command_evidence(&workspace, &tools, &inputs, "check", "model.fsl"),
+                recorded_command_evidence(&workspace, &tools, &inputs, "check", "model.fsl", true),
                 expected,
                 "persistent={persistent}, operand={operand}"
             );
@@ -1043,7 +1114,8 @@ mod tests {
             &tools,
             &inputs,
             "check",
-            "model.fsl"
+            "model.fsl",
+            true
         ));
         Ok(())
     }
@@ -1073,6 +1145,7 @@ mod tests {
                 &mut workspace.to_owned(),
                 workspace,
                 &tools,
+                true,
                 &mut violations,
             );
             assert!(violations.iter().any(|v| v.starts_with("harness-error:")));
@@ -1098,7 +1171,8 @@ mod tests {
             json!({"command":"cat < docs/readme.md"}),
         ] {
             assert!(
-                boundary_violations(&workspace, &tools, &[recorded(value.clone())]).is_empty(),
+                boundary_violations(&workspace, &tools, &[recorded(value.clone())], true)
+                    .is_empty(),
                 "{value}"
             );
         }
@@ -1110,7 +1184,8 @@ mod tests {
             json!({"command":"gh api repos/agent-ix/filament-examples/contents"}),
         ] {
             assert!(
-                !boundary_violations(&workspace, &tools, &[recorded(value.clone())]).is_empty(),
+                !boundary_violations(&workspace, &tools, &[recorded(value.clone())], true)
+                    .is_empty(),
                 "{value}"
             );
         }
@@ -1129,11 +1204,14 @@ mod tests {
                 .collect::<Vec<_>>()
                 .join("\n"),
         )?;
-        assert!(boundary_violations(&workspace, &tools, &agent_inputs(&workspace)?).is_empty());
+        assert!(
+            boundary_violations(&workspace, &tools, &agent_inputs(&workspace)?, true).is_empty()
+        );
         let unknown = boundary_violations(
             &workspace,
             &tools,
             &[recorded(json!({"cmd":"cd \"$(pwd)/docs\""}))],
+            true,
         );
         assert!(unknown.iter().any(|s| s.starts_with("harness-error:")));
         // Bind an absolute source operand to this workspace, and reject the
@@ -1236,7 +1314,8 @@ mod tests {
             json!({"cmd":"curl https://raw.githubusercontent.com/agent-ix/filament-examples/main/agent-evals/fixtures/EV-001/reference.fsl"}),
         ] {
             assert!(
-                !boundary_violations(&workspace, &tools, &[recorded(input.clone())]).is_empty(),
+                !boundary_violations(&workspace, &tools, &[recorded(input.clone())], true)
+                    .is_empty(),
                 "{input}"
             );
         }
@@ -1248,7 +1327,8 @@ mod tests {
                     recorded(json!({"command":"cat docs/shipped/guide.md"})),
                     recorded(json!({"file_path":docs.join("guide.md")})),
                     recorded(json!({"command":"fsl check model.fsl --format json > check.json"})),
-                ]
+                ],
+                true
             )
             .is_empty()
         );
@@ -1262,7 +1342,7 @@ mod tests {
             checks: Default::default(),
             failures: Vec::new(),
         };
-        enforce_transcript_boundary(&workspace, &tools, &mut assertion)?;
+        enforce_transcript_boundary(&workspace, &tools, true, &mut assertion)?;
         assert!(!assertion.ok);
         assert_eq!(assertion.checks["transcript_boundary"]["ok"], false);
         Ok(())
@@ -1335,5 +1415,121 @@ mod tests {
         scenario["operation"] = json!("prepare");
         scenario["context"]["scenario"]["id"] = json!("EV-101");
         assert!(respond(scenario.to_string().as_bytes()).is_err());
+    }
+    fn reference_policy_fixture() -> ScenarioResult<(tempfile::TempDir, PathBuf, Tools)> {
+        let temp = tempfile::tempdir()?;
+        let workspace = temp.path().join("work");
+        let docs = temp.path().join("published");
+        fs::create_dir_all(workspace.join("docs"))?;
+        fs::create_dir_all(&docs)?;
+        fs::write(
+            docs.join("guide.md"),
+            "Original public guide used by this access-policy test",
+        )?;
+        fs::write(temp.path().join("grammar.md"), "Original grammar marker")?;
+        fs::write(workspace.join("postage.fsl"), "owned source")?;
+        fs::write(workspace.join("postage-example.json"), "owned request")?;
+        fs::write(workspace.join("model.fsl"), "owned model")?;
+        std::os::unix::fs::symlink(&docs, workspace.join("docs/shipped"))?;
+        std::os::unix::fs::symlink(
+            temp.path().join("grammar.md"),
+            workspace.join("docs/native-grammar.md"),
+        )?;
+        let tools = Tools {
+            fsl: temp.path().join("fsl"),
+            docs,
+            quire: temp.path().join("quire"),
+            quoin: temp.path().join("quoin"),
+        };
+        Ok((temp, workspace, tools))
+    }
+
+    fn write_policy_transcript(workspace: &Path, access: Value) -> ScenarioResult<()> {
+        let transcript = workspace.join(".cli-agent-evals/transcripts");
+        fs::create_dir_all(&transcript)?;
+        let records = [
+            access,
+            json!({"command":"fsl check postage.fsl --format json"}),
+            json!({"command":"fsl run postage-example.json --format json"}),
+            json!({"command":"fsl check model.fsl --format json"}),
+        ];
+        let records = records
+            .iter()
+            .map(|input| {
+                json!({"message":{"content":[{"type":"tool_use","name":"Bash","input":input}]}})
+                    .to_string()
+            })
+            .collect::<Vec<_>>()
+            .join("\n");
+        fs::write(transcript.join("sample.transcript"), records)?;
+        Ok(())
+    }
+
+    #[test]
+    fn scenario_reference_policy_refusal_only_rejects_docs_but_allows_task_source()
+    -> ScenarioResult<()> {
+        let (_temp, workspace, tools) = reference_policy_fixture()?;
+        for access in [
+            json!({"file_path":tools.docs.join("guide.md")}),
+            json!({"command":"cat docs/shipped/guide.md"}),
+            json!({"command":"cat docs/native-grammar.md"}),
+        ] {
+            write_policy_transcript(&workspace, access.clone())?;
+            let assertion = retained_evidence(&workspace, &tools, refusal_repair::ID)?;
+            assert!(!assertion.ok, "forbidden access was accepted: {access}");
+            assert_eq!(assertion.checks["transcript_boundary"]["ok"], false);
+            assert!(
+                assertion
+                    .failures
+                    .iter()
+                    .any(|failure| failure.contains("this scenario permits no shipped")),
+                "{:?}",
+                assertion.failures
+            );
+            assert_eq!(
+                assertion.checks["command_evidence"]["check:postage.fsl"],
+                true
+            );
+            assert_eq!(
+                assertion.checks["command_evidence"]["run:postage-example.json"],
+                true
+            );
+        }
+        write_policy_transcript(
+            &workspace,
+            json!({"file_path":workspace.join("postage.fsl")}),
+        )?;
+        let assertion = retained_evidence(&workspace, &tools, refusal_repair::ID)?;
+        assert!(
+            assertion.ok,
+            "task-source access must remain allowed: {:?}",
+            assertion.failures
+        );
+        Ok(())
+    }
+
+    #[test]
+    fn scenario_reference_policy_model_authoring_keeps_published_reads_allowed()
+    -> ScenarioResult<()> {
+        let (_temp, workspace, tools) = reference_policy_fixture()?;
+        for access in [
+            json!({"file_path":tools.docs.join("guide.md")}),
+            json!({"command":"cat docs/shipped/guide.md"}),
+            json!({"command":"cat docs/native-grammar.md"}),
+        ] {
+            write_policy_transcript(&workspace, access.clone())?;
+            let assertion = retained_evidence(&workspace, &tools, author_model::ID)?;
+            assert!(
+                assertion.ok,
+                "published access rejected: {access}; {:?}",
+                assertion.failures
+            );
+            assert_eq!(assertion.checks["transcript_boundary"]["ok"], true);
+            assert_eq!(
+                assertion.checks["command_evidence"]["check:model.fsl"],
+                true
+            );
+        }
+        Ok(())
     }
 }
