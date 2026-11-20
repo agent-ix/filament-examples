@@ -25,6 +25,14 @@ FSL=/absolute/path/to/fsl cargo test --manifest-path agent-evals/Cargo.toml --ta
 
 The tests accept an original correct repair and reject the unchanged Boolean
 body, a constant 7 with a completion marker, and a charge with the wrong rate.
-Live runs select `EV-002` through the shared cli-evals suite. Actual Codex and
-Claude scorecard rows are recorded after independent review; deterministic grader
-tests are not live-agent results.
+After independent review, select this scenario through the shared provider:
+
+```sh
+./target/debug/agent-evals run EV-002 codex
+./target/debug/agent-evals run EV-002 claude
+```
+
+The shared [suite instructions](../../README.md) describe the authoritative tool
+paths and configured models. Run the two providers sequentially. Actual scorecard
+rows are recorded from their reports; deterministic grader tests are not
+live-agent results.

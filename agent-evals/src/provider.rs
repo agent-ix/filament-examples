@@ -15,6 +15,7 @@ struct Entry {
     prepare: fn(&Path, &Tools) -> ScenarioResult<String>,
     grade: fn(&Path, &Tools) -> ScenarioResult<Assertion>,
     commands: &'static [(&'static str, &'static str)],
+    shipped_references: bool,
 }
 const ENTRIES: &[Entry] = &[
     Entry {
@@ -24,6 +25,7 @@ const ENTRIES: &[Entry] = &[
         prepare: author_model::prepare,
         grade: author_model::grade,
         commands: &[("check", "model.fsl")],
+        shipped_references: true,
     },
     Entry {
         id: refusal_repair::ID,
@@ -32,6 +34,7 @@ const ENTRIES: &[Entry] = &[
         prepare: refusal_repair::prepare,
         grade: refusal_repair::grade,
         commands: &[("check", "postage.fsl"), ("run", "postage-example.json")],
+        shipped_references: false,
     },
 ];
 
@@ -859,7 +862,9 @@ pub fn respond(input: &[u8]) -> ScenarioResult<Value> {
     match request.operation {
         Operation::Describe => Err("unreachable describe dispatch".into()),
         Operation::Prepare => {
-            references(&workspace, &tools)?;
+            if entry.shipped_references {
+                references(&workspace, &tools)?;
+            }
             prepare_private_home(&workspace)?;
             let prompt = (entry.prepare)(&workspace, &tools)?;
             let mut paths = Vec::new();
