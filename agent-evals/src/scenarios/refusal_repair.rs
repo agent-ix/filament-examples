@@ -7,7 +7,9 @@ use std::fs;
 use std::path::Path;
 use std::process::{Command, Output};
 
+/// Stable scenario ID in the shared external-provider catalogue.
 pub const ID: &str = "EV-002";
+/// Human-readable task title.
 pub const TITLE: &str = "Repair an Integer postage function using only its refusal text";
 const BROKEN: &str = include_str!("../../fixtures/EV-002/postage.fsl");
 const TASK: &str = include_str!("../../fixtures/EV-002/task.md");
@@ -23,6 +25,7 @@ const BOUNDARIES: [(&str, &str); 8] = [
     ("10000", "30007"),
 ];
 
+/// Write the original refused source and expose only its public refusal and task.
 pub fn prepare(workspace: &Path, tools: &Tools) -> ScenarioResult<String> {
     prepare_with_fsl(workspace, &tools.fsl)
 }
@@ -54,6 +57,7 @@ fn prepare_with_fsl(workspace: &Path, fsl: &Path) -> ScenarioResult<String> {
     ))
 }
 
+/// Check the repaired artifact and execute independent public boundary requests.
 pub fn grade(workspace: &Path, tools: &Tools) -> ScenarioResult<Assertion> {
     grade_with_fsl(workspace, &tools.fsl)
 }
@@ -121,7 +125,7 @@ fn grade_with_fsl(workspace: &Path, fsl: &Path) -> ScenarioResult<Assertion> {
                     "document": "PostageRepair",
                     "formal_revision": 1
                 }},
-                "call": {"function": "postage", "arguments": [{"integer": units}]}
+                "call": {"function": "postage", "arguments": [{"parameter": "units", "value": {"integer": units}}]}
             }
         });
         fs::write(&request_path, serde_json::to_vec(&request)?)?;
@@ -171,11 +175,17 @@ fn read_outcome(output: &Output) -> ScenarioResult<Value> {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use std::fs;
     use std::path::PathBuf;
 
-    fn binary() -> ScenarioResult<PathBuf> {
+    fn tools() -> ScenarioResult<Tools> {
         let path = std::env::var_os("FSL").ok_or("set FSL for the new repair-grader lane")?;
-        Ok(PathBuf::from(path))
+        Ok(Tools {
+            fsl: PathBuf::from(path),
+            docs: PathBuf::new(),
+            quire: PathBuf::new(),
+            quoin: PathBuf::new(),
+        })
     }
 
     fn candidate(body: &str) -> String {
@@ -192,9 +202,16 @@ mod tests {
             workspace.path().join("postage.fsl"),
             candidate("if units > 0 then 7 + 3 * units else 7"),
         )?;
-        let result = grade_with_fsl(workspace.path(), &binary()?)?;
-        assert!(result.ok, "{:?}", result.failures);
-        for (units, _) in BOUNDARIES {
+        let result = super::grade(workspace.path(), &tools()?)?;
+        assert!(
+            result.ok,
+            "{} {}: {:?}; checks {:?}",
+            super::ID,
+            super::TITLE,
+            result.failures,
+            result.checks
+        );
+        for units in ["-10000", "-1", "0", "1", "2", "4", "29", "10000"] {
             assert_eq!(result.checks[&format!("postage({units})")]["ok"], true);
         }
         Ok(())
@@ -204,11 +221,11 @@ mod tests {
     #[ignore = "QSL-2486 new repair-grader lane requires the accepted current-main FSL"]
     fn unchanged_boolean_source_is_not_a_repair() -> ScenarioResult<()> {
         let workspace = tempfile::tempdir()?;
-        let fsl = binary()?;
-        let prompt = prepare_with_fsl(workspace.path(), &fsl)?;
+        let tools = tools()?;
+        let prompt = super::prepare(workspace.path(), &tools)?;
         assert!(prompt.contains("type-mismatch") && prompt.contains("postage.fsl"));
         assert!(!workspace.path().join("docs").exists());
-        let result = grade_with_fsl(workspace.path(), &fsl)?;
+        let result = super::grade(workspace.path(), &tools)?;
         assert!(!result.ok);
         assert_eq!(result.checks["public_check"]["ok"], false);
         Ok(())
@@ -220,7 +237,7 @@ mod tests {
         let workspace = tempfile::tempdir()?;
         fs::write(workspace.path().join("postage.fsl"), candidate("7"))?;
         fs::write(workspace.path().join("answer.txt"), "<<<EVAL-COMPLETE>>>")?;
-        let result = grade_with_fsl(workspace.path(), &binary()?)?;
+        let result = super::grade(workspace.path(), &tools()?)?;
         assert!(!result.ok);
         assert_eq!(result.checks["public_check"]["ok"], true);
         assert_eq!(result.checks["postage(0)"]["ok"], true);
@@ -236,7 +253,7 @@ mod tests {
             workspace.path().join("postage.fsl"),
             candidate("if units > 0 then 7 + 2 * units else 7"),
         )?;
-        let result = grade_with_fsl(workspace.path(), &binary()?)?;
+        let result = super::grade(workspace.path(), &tools()?)?;
         assert!(!result.ok);
         assert_eq!(result.checks["public_check"]["ok"], true);
         assert_eq!(result.checks["postage(-1)"]["ok"], true);

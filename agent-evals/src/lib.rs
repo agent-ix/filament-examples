@@ -32,3 +32,8 @@ pub struct Assertion {
     /// Concrete failures; an agent's success marker cannot override them.
     pub failures: Vec<String>,
 }
+
+/// FSL-specific tasks registered through the shared external provider.
+pub mod scenarios {
+    pub mod refusal_repair;
+}
