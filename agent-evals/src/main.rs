@@ -132,6 +132,8 @@ fn run(scenario: &str, agent: &str) -> ScenarioResult<()> {
         ])
         .arg(&raw)
         .env("HOME", &home)
+        .env("FSL_EVAL_HOME", &home)
+        .env("FSL_EVAL_AGENT", agent)
         .env("TMPDIR", &work)
         .env("PATH", std::env::join_paths(paths)?)
         .env_remove("CLAUDE_CONFIG_DIR")
@@ -187,7 +189,11 @@ fn execute() -> ScenarioResult<()> {
         },
         [operation,scenario,agent] if operation=="run"=>run(scenario,agent),
         [operation,file] if operation=="summarize"=>summarize(Path::new(file)),
-        _=>Err("usage: agent-evals provider | run <EV-ID> <codex|claude> | summarize <private-report.json>".into()),
+        [operation,scenario,workspace] if operation=="evidence"=>{
+            let result=provider::retained_evidence(Path::new(workspace),&agent_evals::Tools::from_environment()?,scenario)?;
+            println!("{}",serde_json::to_string_pretty(&result)?);Ok(())
+        },
+        _=>Err("usage: agent-evals provider | run <EV-ID> <codex|claude> | summarize <private-report.json> | evidence <EV-ID> <retained-workspace>".into()),
     }
 }
 fn main() -> ExitCode {

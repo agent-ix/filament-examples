@@ -196,7 +196,41 @@ fn agent_inputs(workspace: &Path) -> ScenarioResult<Vec<RecordedInput>> {
                 }
             }
             let payload = record.get("payload").unwrap_or(&record);
-            if payload["type"] == "function_call" {
+            // The current published SDK derives Codex command metrics from
+            // these typed execution events. Consume argv/cwd, never stdout or
+            // by evaluating opaque custom-tool JavaScript.
+            if record["type"] == "event_msg"
+                && payload["type"] == "item_completed"
+                && payload["item"]["type"] == "CommandExecution"
+            {
+                let item = &payload["item"];
+                let command = item
+                    .get("command")
+                    .and_then(Value::as_array)
+                    .filter(|args| args.iter().all(Value::is_string))
+                    .ok_or("harness-error: invalid command execution argv")?;
+                let cwd = item["cwd"]
+                    .as_str()
+                    .ok_or("harness-error: execution cwd missing")?;
+                let cwd = url::Url::parse(cwd)?
+                    .to_file_path()
+                    .map_err(|_| "harness-error: execution cwd is not a local file URI")?;
+                commands.push(RecordedInput {
+                    value: json!({"command":command,"workdir":cwd}),
+                    persistent_cwd: false,
+                    writes_files: false,
+                });
+            } else if payload["type"] == "custom_tool_call" {
+                if let Some(input) = payload["input"].as_str() {
+                    commands.push(RecordedInput {
+                        value: json!({"code":input}),
+                        persistent_cwd: false,
+                        writes_files: payload["name"]
+                            .as_str()
+                            .is_some_and(|name| name.ends_with("apply_patch")),
+                    });
+                }
+            } else if payload["type"] == "function_call" {
                 if let Some(args) = payload["arguments"].as_str() {
                     let args: Value = serde_json::from_str(args)
                         .map_err(|e| format!("harness-error: invalid tool arguments: {e}"))?;
@@ -450,7 +484,18 @@ fn inspect_paths(
     if text.contains("${HOME}") || text.contains("$HOME") {
         violations.push("sandbox-breach: home-directory access in tool input".to_owned());
     }
-    for word in text.split(|c: char| c.is_whitespace() || "\"'`;(){}[],<>=".contains(c)) {
+    let words = if (Path::new(text).is_absolute()
+        || text.starts_with("../")
+        || text.starts_with("./")
+        || text.starts_with("~/"))
+        && !text.contains('\n')
+    {
+        vec![text]
+    } else {
+        text.split(|c: char| c.is_whitespace() || "\"'`;(){}[],<>=".contains(c))
+            .collect()
+    };
+    for word in words {
         let word = word.trim_end_matches(':');
         if word.starts_with('~') || word.starts_with("$HOME") || word.starts_with("${HOME}") {
             violations.push("sandbox-breach: home-directory access in tool input".to_owned());
@@ -658,6 +703,49 @@ fn recorded_command_evidence(
     found
 }
 
+// Claude's native per-home project trust setting. The caller must prove this is
+// the isolated run home, and only the fresh SDK workspace is trusted.
+fn trust_run_workspace(home: &Path, workspace: &Path) -> ScenarioResult<()> {
+    let root = home.parent().ok_or("private run home has no root")?;
+    let allowed = fs::canonicalize(root.join("work"))?;
+    let workspace = fs::canonicalize(workspace)?;
+    if !workspace.starts_with(&allowed) || workspace == allowed {
+        return Err("refusing project trust outside the fresh run workspace".into());
+    }
+    let config = home.join(".claude.json");
+    let mut value: Value = serde_json::from_slice(&fs::read(&config)?)?;
+    let object = value
+        .as_object_mut()
+        .ok_or("private Claude config is not an object")?;
+    let projects = object
+        .entry("projects")
+        .or_insert_with(|| json!({}))
+        .as_object_mut()
+        .ok_or("private Claude projects is not an object")?;
+    projects.insert(
+        workspace
+            .to_str()
+            .ok_or("nonUTF8 Claude workspace")?
+            .to_owned(),
+        json!({"hasTrustDialogAccepted":true}),
+    );
+    fs::write(&config, serde_json::to_vec(&value)?)?;
+    use std::os::unix::fs::PermissionsExt;
+    fs::set_permissions(config, fs::Permissions::from_mode(0o600))?;
+    Ok(())
+}
+fn prepare_private_home(workspace: &Path) -> ScenarioResult<()> {
+    if std::env::var("FSL_EVAL_AGENT").ok().as_deref() != Some("claude") {
+        return Ok(());
+    }
+    let home =
+        fs::canonicalize(std::env::var_os("FSL_EVAL_HOME").ok_or("private eval home missing")?)?;
+    if home != fs::canonicalize(std::env::var_os("HOME").ok_or("HOME missing")?)? {
+        return Err("refusing to configure a different or global Claude home".into());
+    }
+    trust_run_workspace(&home, workspace)
+}
+
 fn references(workspace: &Path, tools: &Tools) -> ScenarioResult<()> {
     let docs = workspace.join("docs");
     fs::create_dir_all(&docs)?;
@@ -674,6 +762,65 @@ fn references(workspace: &Path, tools: &Tools) -> ScenarioResult<()> {
         std::os::unix::fs::symlink(grammar, &grammar_link)?;
     }
     Ok(())
+}
+
+fn apply_evidence(
+    workspace: &Path,
+    tools: &Tools,
+    entry: &Entry,
+    assertion: &mut Assertion,
+) -> ScenarioResult<()> {
+    enforce_transcript_boundary(workspace, tools, assertion)?;
+    match agent_inputs(workspace) {
+        Ok(inputs) => {
+            let mut commands = Vec::new();
+            for input in &inputs {
+                collect_commands(&input.value, &mut commands);
+            }
+            assertion
+                .checks
+                .insert("agent_command_count".to_owned(), json!(commands.len()));
+            let mut evidence = serde_json::Map::new();
+            for &(verb, operand) in entry.commands {
+                let check = recorded_command_evidence(workspace, tools, &inputs, verb, operand);
+                evidence.insert(format!("{verb}:{operand}"), json!(check));
+                if !check {
+                    assertion.ok = false;
+                    assertion.failures.push(format!(
+                        "no recorded direct public fsl {verb} invocation for {operand}"
+                    ));
+                }
+            }
+            assertion
+                .checks
+                .insert("command_evidence".to_owned(), json!(evidence));
+        }
+        Err(e) => {
+            assertion.ok = false;
+            assertion.failures.push(e.to_string());
+        }
+    }
+    Ok(())
+}
+/// Regrade only retained transcript integrity and command evidence, without
+/// rerunning model checking, semantic probes, or a live agent.
+pub fn retained_evidence(
+    workspace: &Path,
+    tools: &Tools,
+    scenario: &str,
+) -> ScenarioResult<Assertion> {
+    let entry = ENTRIES
+        .iter()
+        .find(|entry| entry.id == scenario)
+        .ok_or("undescribed scenario")?;
+    let workspace = fs::canonicalize(workspace)?;
+    let mut assertion = Assertion {
+        ok: true,
+        checks: Default::default(),
+        failures: Vec::new(),
+    };
+    apply_evidence(&workspace, tools, entry, &mut assertion)?;
+    Ok(assertion)
 }
 
 /// Answer one bounded request from cli-evals; scenario execution and metrics stay in the SDK.
@@ -700,6 +847,7 @@ pub fn respond(input: &[u8]) -> ScenarioResult<Value> {
         Operation::Describe => Err("unreachable describe dispatch".into()),
         Operation::Prepare => {
             references(&workspace, &tools)?;
+            prepare_private_home(&workspace)?;
             let prompt = (entry.prepare)(&workspace, &tools)?;
             let mut paths = Vec::new();
             for program in [&tools.fsl, &tools.quire, &tools.quoin] {
@@ -730,37 +878,7 @@ pub fn respond(input: &[u8]) -> ScenarioResult<Value> {
                     failures: vec![format!("harness-error: grader failed: {e}")],
                 },
             };
-            enforce_transcript_boundary(&workspace, &tools, &mut assertion)?;
-            match agent_inputs(&workspace) {
-                Ok(inputs) => {
-                    let mut commands = Vec::new();
-                    for input in &inputs {
-                        collect_commands(&input.value, &mut commands);
-                    }
-                    assertion
-                        .checks
-                        .insert("agent_command_count".to_owned(), json!(commands.len()));
-                    let mut evidence = serde_json::Map::new();
-                    for &(verb, operand) in entry.commands {
-                        let check =
-                            recorded_command_evidence(&workspace, &tools, &inputs, verb, operand);
-                        evidence.insert(format!("{verb}:{operand}"), json!(check));
-                        if !check {
-                            assertion.ok = false;
-                            assertion.failures.push(format!(
-                                "no recorded direct public fsl {verb} invocation for {operand}"
-                            ));
-                        }
-                    }
-                    assertion
-                        .checks
-                        .insert("command_evidence".to_owned(), json!(evidence));
-                }
-                Err(e) => {
-                    assertion.ok = false;
-                    assertion.failures.push(e.to_string());
-                }
-            }
+            apply_evidence(&workspace, &tools, entry, &mut assertion)?;
             Ok(json!({"protocol":protocol,"operation":"assert","assertion":assertion}))
         }
     }
@@ -775,6 +893,78 @@ mod tests {
             persistent_cwd: false,
             writes_files: false,
         }
+    }
+    /// Trace: FR-001 AC-6
+    #[test]
+    fn runtime_codex_execution_events_supply_context_but_code_and_output_do_not()
+    -> ScenarioResult<()> {
+        let temp = tempfile::tempdir()?;
+        let workspace = temp.path().join("work with space");
+        fs::create_dir_all(workspace.join("docs"))?;
+        fs::write(workspace.join("model.fsl"), "owned")?;
+        let transcript = workspace.join(".cli-agent-evals/transcripts");
+        fs::create_dir_all(&transcript)?;
+        let tools = Tools {
+            fsl: temp.path().join("fsl"),
+            docs: temp.path().join("published"),
+            quire: temp.path().join("quire"),
+            quoin: temp.path().join("quoin"),
+        };
+        let cwd = url::Url::from_directory_path(workspace.join("docs"))
+            .map_err(|_| "test URL")?
+            .to_string();
+        for (command, expected) in [
+            ("fsl check eval own ../model.fsl --format json", true),
+            ("fsl check eval other other.fsl # model.fsl", false),
+        ] {
+            let records = [
+                json!({"type":"response_item","payload":{"type":"custom_tool_call","name":"exec","input":"text(await tools.exec_command({cmd:\"fsl check eval own model.fsl\"}));"}}),
+                json!({"type":"event_msg","payload":{"type":"item_completed","item":{"type":"CommandExecution","command":["/bin/bash","-lc",command],"cwd":cwd,"aggregated_output":"fsl check eval own model.fsl"}}}),
+            ];
+            fs::write(
+                transcript.join("sample.transcript"),
+                records
+                    .iter()
+                    .map(Value::to_string)
+                    .collect::<Vec<_>>()
+                    .join("\n"),
+            )?;
+            let inputs = agent_inputs(&workspace)?;
+            assert_eq!(agent_commands(&workspace)?.len(), 1);
+            assert_eq!(
+                recorded_command_evidence(&workspace, &tools, &inputs, "check", "model.fsl"),
+                expected
+            );
+            assert!(boundary_violations(&workspace, &tools, &inputs).is_empty());
+        }
+        fs::write(transcript.join("sample.transcript"),json!({"type":"event_msg","payload":{"type":"item_completed","item":{"type":"CommandExecution","command":["echo","hello"],"cwd":"https://example.test/work"}}}).to_string())?;
+        assert!(agent_inputs(&workspace).is_err());
+        Ok(())
+    }
+    /// Trace: FR-001 AC-6
+    #[test]
+    fn runtime_claude_trust_is_scoped_to_one_private_fresh_workspace() -> ScenarioResult<()> {
+        let temp = tempfile::tempdir()?;
+        let home = temp.path().join("home");
+        let workspace = temp.path().join("work/fresh-scenario");
+        fs::create_dir_all(&home)?;
+        fs::create_dir_all(&workspace)?;
+        fs::write(
+            home.join(".claude.json"),
+            "{\"hasCompletedOnboarding\":true}",
+        )?;
+        trust_run_workspace(&home, &workspace)?;
+        let config: Value = serde_json::from_slice(&fs::read(home.join(".claude.json"))?)?;
+        assert_eq!(config["hasCompletedOnboarding"], true);
+        assert_eq!(config["projects"].as_object().ok_or("projects")?.len(), 1);
+        assert_eq!(
+            config["projects"][workspace.to_str().ok_or("UTF8")?]["hasTrustDialogAccepted"],
+            true
+        );
+        let before = fs::read(home.join(".claude.json"))?;
+        assert!(trust_run_workspace(&home, temp.path()).is_err());
+        assert_eq!(fs::read(home.join(".claude.json"))?, before);
+        Ok(())
     }
     /// Trace: FR-001 AC-6
     #[test]
