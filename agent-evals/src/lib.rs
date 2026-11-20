@@ -32,3 +32,9 @@ pub struct Assertion {
     /// Concrete failures; an agent's success marker cannot override them.
     pub failures: Vec<String>,
 }
+
+/// Original FSL scenarios, selected by the SDK provider catalogue.
+pub mod scenarios {
+    /// Source-owned object model authoring and independent model checks.
+    pub mod author_model;
+}

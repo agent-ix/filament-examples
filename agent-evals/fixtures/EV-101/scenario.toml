@@ -1,0 +1,5 @@
+id = "EV-101"
+status = "pending"
+waits_on = "QSL-1980"
+requirement = "Author a complete newcomer native model/domain package from the English StorageBin description, then check/import that model through the public workflow."
+reason = "The full native model-package route is not implemented. The prototype model.mjs generator does not satisfy this variant. No live-agent sample or passing refusal is recorded."
