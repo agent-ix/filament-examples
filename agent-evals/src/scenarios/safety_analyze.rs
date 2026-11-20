@@ -526,6 +526,93 @@ mod tests {
                     "basis":{"type":"exhaustive"}, "certification":"certified"}}]})
     }
 
+    fn bound_proof() -> Value {
+        let mut doc = proof();
+        let node = json!({"ordinal":0,"package":"eval:safety-counter/program","path":["current-within-limit"]});
+        doc["operation"] = json!("analyze");
+        doc["last_stage"] = json!("S6c");
+        let item = &mut doc["items"][0];
+        item["record"]["backend"] = json!("en-1");
+        item["request_index"] = json!(0);
+        item["request"] = json!({"claim":{"node":node,"occurrence":{"ordinal":0,"role":"claim"}}});
+        item["certificate"] = json!({"accepted":true,"checker":"en-1-closure",
+            "identity":{"model":"eval/safety-counter","node_id":node,"ordinal":0}});
+        item["axes"] = json!({"activation":"active","execution":"completed","truth":"true","settlement":"closed-scope"});
+        doc
+    }
+
+    /// Deterministic evidence fixture, not a live-agent or live-analyzer receipt.
+    #[test]
+    fn evidence_matches_semantics_and_current_claim_certificate() {
+        let trusted = bound_proof();
+        let mut artifact = trusted.clone();
+        artifact["wall_ms"] = json!(321);
+        artifact["items"][0]["exploration"] = json!({"elapsed_ms":90});
+        artifact["items"][0]["record"]["elapsed_ms"] = json!(27);
+        assert!(semantic_outcome_matches(&artifact, &trusted, "WithinLimit", "proved").is_ok());
+        artifact["items"][0]["certificate"]["identity"]["node_id"] =
+            json!({"path":["an-old-property"]});
+        assert!(semantic_outcome_matches(&artifact, &trusted, "WithinLimit", "proved").is_err());
+        artifact = trusted.clone();
+        artifact["items"][0]["record"]["result"] = json!("incomplete");
+        assert!(semantic_outcome_matches(&artifact, &trusted, "WithinLimit", "proved").is_err());
+    }
+
+    /// ORIGINAL synthetic SDK transcript fixture; this is not live-agent command evidence.
+    #[test]
+    fn evidence_requires_both_observed_analyze_commands() {
+        let workspace = tempfile::tempdir().unwrap();
+        let directory = workspace.path().join(".cli-agent-evals/transcripts");
+        fs::create_dir_all(&directory).unwrap();
+        let file = directory.join("deterministic-unit.transcript");
+        let otherwise_valid =
+            semantic_outcome_matches(&bound_proof(), &bound_proof(), "WithinLimit", "proved")
+                .is_ok();
+        assert!(otherwise_valid);
+        let holding = "fsl analyze holding-request.json --format json > holding.json";
+        let violating = "fsl analyze violating-request.json --format json > violating.json";
+        for (commands, expected) in [
+            (vec![holding, violating], true),
+            (vec![holding], false),
+            (
+                vec![holding, "fsl check violating-request.json --format json"],
+                false,
+            ),
+            (
+                vec![holding, "fsl analyze another-request.json --format json"],
+                false,
+            ),
+            (
+                vec![
+                    holding,
+                    "echo 'fsl analyze violating-request.json --format json'",
+                ],
+                false,
+            ),
+        ] {
+            let mut records = vec![json!({"type":"response_item","payload":{"type":"message","role":"assistant",
+                "content":[{"type":"output_text","text":"I ran fsl analyze holding-request.json and fsl analyze violating-request.json successfully."}]}}).to_string()];
+            for command in commands {
+                records.push(json!({"type":"response_item","payload":{"type":"function_call","name":"exec_command",
+                    "arguments":json!({"cmd":command,"workdir":"."}).to_string()}}).to_string());
+            }
+            fs::write(&file, records.join("\n")).unwrap();
+            let observed = crate::agent_commands(workspace.path()).unwrap();
+            let evidence = ["holding-request.json", "violating-request.json"]
+                .iter()
+                .all(|operand| {
+                    observed
+                        .iter()
+                        .any(|command| crate::invokes_fsl(command, "analyze", Some(operand)))
+                });
+            assert_eq!(
+                otherwise_valid && evidence,
+                expected,
+                "observed: {observed:?}"
+            );
+        }
+    }
+
     /// Provenance: QSL-2487. Explicit public-CLI reference lane; no live agent is invoked.
     #[test]
     #[ignore = "public FSL reference lane: set FSL to the accepted shared binary"]

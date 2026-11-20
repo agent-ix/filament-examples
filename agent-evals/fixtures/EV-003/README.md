@@ -46,4 +46,12 @@ A passing artifact set preserves the fixed inputs, adds the two requested
 properties, saves both complete analyzer outputs, and reports the independently
 verified verdicts and counterexample in `result.json`. The grader requires a
 certified exhaustive `proved` record and a `refuted` record with levels
-`[0, 1, 2, 3]`. The final success sentinel alone cannot satisfy those checks.
+`[0, 1, 2, 3]`. It compares semantic result fields and binds the proof certificate
+to the current submitted claim, independently of timing metadata. The shared
+provider also requires observed public analyze commands for both requests.
+
+The command-evidence unit uses an original synthetic SDK transcript. It exercises
+both required commands and rejects a missing command, another verb or request,
+and an echoed command. This fixture is deterministic assertion coverage and
+does not represent a live agent run. The final success sentinel alone cannot
+satisfy the artifact and command checks.
