@@ -211,6 +211,16 @@ fn execute() -> ScenarioResult<()> {
         _=>Err("usage: agent-evals provider | run <EV-ID> <codex|claude> | summarize <private-report.json> | evidence <EV-ID> <retained-workspace>".into()),
     }
 }
+fn main() -> ExitCode {
+    match execute() {
+        Ok(()) => ExitCode::SUCCESS,
+        Err(error) => {
+            eprintln!("{error}");
+            ExitCode::from(2)
+        }
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -228,14 +238,5 @@ mod tests {
             private_claude_config(&json!({"projects":{}})),
             json!({"hasCompletedOnboarding":true})
         );
-    }
-}
-fn main() -> ExitCode {
-    match execute() {
-        Ok(()) => ExitCode::SUCCESS,
-        Err(error) => {
-            eprintln!("{error}");
-            ExitCode::from(2)
-        }
     }
 }
