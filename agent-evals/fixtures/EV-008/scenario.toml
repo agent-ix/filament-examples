@@ -1,0 +1,5 @@
+id = "EV-008"
+status = "pending"
+waits_on = "QSL-1979"
+requirement = "Export the supplied source-owned Battery model and HasReserve invariant through public fsl export, then hand the actual target to an independent consumer without changing the model or replacing the invariant. The literal Quire inspect/render part remains pending within QSL-2492 until its public contract exists."
+reason = "The original request reaches S4 but the export mapper reports that representable model/object_type is not lowered and no selected model is available. No fake target, private checked-package substitute, successful-refusal oracle, or live-agent sample is recorded."

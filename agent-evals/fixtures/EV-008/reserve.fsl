@@ -1,0 +1,13 @@
+language "ix:native" edition "1-draft";
+profile m = "filament.model.complete/v1";
+
+object Battery identity (key) {
+    key: Int[1, 1];
+    charge: Int[0, 6];
+    population packs;
+    operation discharge(): Boolean modifies self.charge;
+}
+
+invariant HasReserve using m on Battery at current {
+    self.charge >= 2
+}
