@@ -172,7 +172,7 @@ fn terminal_item<'a>(doc: &'a Value, claim: &str, result: &str) -> Checked<&'a V
             return Err(Failure::new(
                 FailureCode::NonterminalAnalysis,
                 "unsupported grading verdict",
-            ))
+            ));
         }
     };
     if doc["format"] != "filament-outcome/1"
@@ -558,5 +558,55 @@ mod tests {
         assert!(check_summary(workspace.path()).is_err());
         fs::write(&path, "not JSON").unwrap();
         assert!(check_summary(workspace.path()).is_err());
+    }
+
+    /// Provenance: QSL-2487. The public grader must reject artifacts for their actual fault.
+    #[test]
+    fn public_grade_rejects_wrong_properties_and_nonproof_success_artifacts() {
+        let tools = tools(PathBuf::from("/not-an-executable"));
+        let workspace = tempfile::tempdir().unwrap();
+        prepare(workspace.path(), &tools).unwrap();
+        fs::write(
+            workspace.path().join("counter.fsl"),
+            format!("{GIVEN}{}{}", WITHIN.replace("c.level <= 3", "true"), SMALL),
+        )
+        .unwrap();
+        let rejected = grade(workspace.path(), &tools).unwrap();
+        assert!(!rejected.ok);
+        assert_eq!(rejected.failures.len(), 1);
+        assert!(
+            rejected.failures[0].contains("WrongProperty"),
+            "{:?}",
+            rejected.failures
+        );
+
+        fs::write(
+            workspace.path().join("counter.fsl"),
+            format!("{GIVEN}{WITHIN}{SMALL}"),
+        )
+        .unwrap();
+        fs::write(
+            workspace.path().join("result.json"),
+            serde_json::to_vec(&reference_summary()).unwrap(),
+        )
+        .unwrap();
+        fs::write(workspace.path().join("violating.json"), "null").unwrap();
+        for outcome in ["incomplete", "unsupported"] {
+            let mut artifact = proof();
+            artifact["items"][0]["record"]["result"] = json!(outcome);
+            fs::write(
+                workspace.path().join("holding.json"),
+                serde_json::to_vec(&artifact).unwrap(),
+            )
+            .unwrap();
+            let rejected = grade(workspace.path(), &tools).unwrap();
+            assert!(!rejected.ok, "{outcome}");
+            assert_eq!(rejected.failures.len(), 1);
+            assert!(
+                rejected.failures[0].contains("NonterminalAnalysis"),
+                "{:?}",
+                rejected.failures
+            );
+        }
     }
 }
