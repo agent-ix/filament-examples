@@ -1,0 +1,59 @@
+{
+  "format": "filament.state.snapshot/v1",
+  "identity": {
+    "authority": "example",
+    "identity": "ix://example/rover/data/timed-stopped-start"
+  },
+  "model": {
+    "identity": "example/rover"
+  },
+  "observation": "current",
+  "anchor": {
+    "kind": "initialization",
+    "name": "timed-stopped-start"
+  },
+  "populations": [
+    {
+      "population": "ix://example/rover/rovers",
+      "complete": true,
+      "objects": [
+        {
+          "key": "r1",
+          "type": "ix://example/rover/Rover",
+          "fields": {
+            "mode": {
+              "variant": {
+                "type": "ix://example/rover/Mode",
+                "case": "SafeStop"
+              }
+            },
+            "speed": {
+              "integer": "0"
+            },
+            "stopped": {
+              "boolean": true
+            },
+            "lidarOk": {
+              "boolean": false
+            },
+            "rangeA": {
+              "integer": "5000"
+            },
+            "rangeB": {
+              "integer": "5000"
+            },
+            "rangeC": {
+              "integer": "5000"
+            },
+            "clock": {
+              "integer": "150"
+            },
+            "voteWrong": {
+              "boolean": false
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

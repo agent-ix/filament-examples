@@ -1,0 +1,30 @@
+{
+  "format": "native-analyze/1",
+  "request": {
+    "models": [{
+      "format": "semantic-ir/2.0.0",
+      "source": {
+        "file": "../../model/rover.semantic-ir.json",
+        "authority": "example",
+        "identity": "example:rover/model",
+        "document": "model",
+        "formal_revision": 1
+      }
+    }],
+    "program": {
+      "source": {
+        "file": "../../rules/model-checking/mode-machine.fsl",
+        "authority": "example",
+        "identity": "example:rover/mode-machine",
+        "document": "modemachine",
+        "formal_revision": 1
+      }
+    },
+    "documents": [{"file": "../../data/timed-stopped-start.json"}],
+    "subject": {
+      "initial_states": [{"authority": "example", "identity": "ix://example/rover/data/timed-stopped-start"}],
+      "universes": [{"authority": "example", "identity": "ix://example/rover/data/timed-stopped-start"}]
+    },
+    "items": [{"claim": "StoppedRoverRemainsStoppedInModelTime"}]
+  }
+}
