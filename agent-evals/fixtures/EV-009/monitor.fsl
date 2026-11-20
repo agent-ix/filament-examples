@@ -1,6 +1,6 @@
 language "ix:native" edition "1-draft";
 profile window = "filament.temporal.event-position.false-extension/v1";
-record StockReading { count: Int[0, 4]; }
+record StockReading { units: Int[0, 4]; }
 temporal WithinThree using window over (reading: StockReading) clock "stock-events" on origin {
-  always[0,2] holds(reading.count <= 3)
+  always[0,2] holds(reading.units <= 3)
 }

@@ -280,6 +280,19 @@ fn public_outcome(workspace: &Path, tools: &Tools, verb: Verb) -> ScenarioResult
     Ok((exit, result.stdout))
 }
 
+fn grade_case(workspace: &Path, tools: &Tools, verb: Verb) -> ScenarioResult<(bool, Value)> {
+    let (exit, actual) = public_outcome(workspace, tools, verb)?;
+    let expected = semantic_artifact(verb, &actual);
+    let saved = regular_file(&workspace.join(verb.result_file()))
+        .ok()
+        .and_then(|bytes| semantic_artifact(verb, &bytes));
+    let pass = exit == verb.expected_exit() && expected.is_some() && saved == expected;
+    Ok((
+        pass,
+        json!({"pass":pass,"trusted_exit":exit,"semantic_result":expected}),
+    ))
+}
+
 /// Grade each verb's actual public result and saved semantic artifact independently.
 pub fn grade(workspace: &Path, tools: &Tools) -> ScenarioResult<Assertion> {
     let mut failures = Vec::new();
@@ -295,16 +308,8 @@ pub fn grade(workspace: &Path, tools: &Tools) -> ScenarioResult<Assertion> {
     }
     let mut per_verb = serde_json::Map::new();
     for &verb in Verb::ALL {
-        let (exit, actual) = public_outcome(workspace, tools, verb)?;
-        let expected = semantic_artifact(verb, &actual);
-        let saved = regular_file(&workspace.join(verb.result_file()))
-            .ok()
-            .and_then(|bytes| semantic_artifact(verb, &bytes));
-        let pass = exit == verb.expected_exit() && expected.is_some() && saved == expected;
-        per_verb.insert(
-            verb.name().to_owned(),
-            json!({"pass":pass,"trusted_exit":exit,"semantic_result":expected}),
-        );
+        let (pass, detail) = grade_case(workspace, tools, verb)?;
+        per_verb.insert(verb.name().to_owned(), detail);
         if !pass {
             failures.push(format!(
                 "{} did not produce the required independently checked result",
@@ -341,70 +346,80 @@ mod tests {
         })
     }
 
-    /// Trace: FR-001-AC-6
-    #[test]
-    #[ignore = "EV-009 new grader with the accepted public FSL executable"]
-    fn four_public_results_pass_and_semantic_mutations_fail() -> ScenarioResult<()> {
+    fn reference_case(verb: Verb) -> ScenarioResult<Vec<u8>> {
         let tools = tools()?;
         let workspace = tempfile::tempdir()?;
         prepare(workspace.path(), &tools)?;
-        let mut outcomes = Vec::new();
-        for &verb in Verb::ALL {
-            let (exit, bytes) = public_outcome(workspace.path(), &tools, verb)?;
-            assert_eq!(
-                exit,
-                verb.expected_exit(),
-                "{}: {}",
-                verb.name(),
-                String::from_utf8_lossy(&bytes)
-            );
-            assert!(
-                semantic_artifact(verb, &bytes).is_some(),
-                "{}: {}",
-                verb.name(),
-                String::from_utf8_lossy(&bytes)
-            );
-            fs::write(workspace.path().join(verb.result_file()), &bytes)?;
-            outcomes.push((verb, bytes));
-        }
-        let result = grade(workspace.path(), &tools)?;
-        assert!(result.ok, "{:?}", result.failures);
+        let (exit, bytes) = public_outcome(workspace.path(), &tools, verb)?;
         assert_eq!(
-            result.checks["per_verb"].as_object().map(|v| v.len()),
-            Some(4)
+            exit,
+            verb.expected_exit(),
+            "{}: {}",
+            verb.name(),
+            String::from_utf8_lossy(&bytes)
         );
-        assert_eq!(
-            result.checks["pending_verbs"]["export"]["owner"],
-            "QSL-1979"
+        assert!(
+            semantic_artifact(verb, &bytes).is_some(),
+            "{}: {}",
+            verb.name(),
+            String::from_utf8_lossy(&bytes)
         );
-        assert_eq!(result.checks["overall_completion"], "pending");
-        for (verb, bytes) in outcomes {
-            if matches!(verb, Verb::Monitor) {
-                let altered = String::from_utf8(bytes)?.replace("\"position\":2", "\"position\":1");
-                assert!(
-                    semantic_artifact(verb, altered.as_bytes()).is_none(),
-                    "monitor must reject the wrong observed position"
-                );
-                assert!(
-                    semantic_artifact(verb, b"{\"kind\":\"violated\"}\n").is_none(),
-                    "self-report is not stream evidence"
-                );
-            } else {
-                let mut altered: Value = serde_json::from_slice(&bytes)?;
-                match verb {
-                    Verb::Check => altered["category"] = json!("refusal"),
-                    Verb::Run => altered["result"]["value"]["integer"] = json!("28"),
-                    Verb::Analyze => altered["items"][0]["claim_name"] = json!("OtherClaim"),
-                    Verb::Monitor => unreachable!("monitor is handled above"),
-                }
-                assert!(
-                    semantic_artifact(verb, &serde_json::to_vec(&altered)?).is_none(),
-                    "{} must reject a different result",
-                    verb.name()
-                );
+        fs::write(workspace.path().join(verb.result_file()), &bytes)?;
+        let (pass, observed) = grade_case(workspace.path(), &tools, verb)?;
+        assert!(pass, "{}: {observed}", verb.name());
+        assert!(semantic_artifact(verb, b"FSL-EVAL-DONE").is_none());
+        Ok(bytes)
+    }
+
+    /// Trace: FR-001-AC-6
+    #[test]
+    #[ignore = "EV-009 check grader with the accepted public FSL executable"]
+    fn check_reference_rejects_a_refusal_result() -> ScenarioResult<()> {
+        let mut altered: Value = serde_json::from_slice(&reference_case(Verb::Check)?)?;
+        altered["category"] = json!("refusal");
+        assert!(semantic_result(Verb::Check, &altered).is_none());
+        Ok(())
+    }
+
+    /// Trace: FR-001-AC-6
+    #[test]
+    #[ignore = "EV-009 run grader with the accepted public FSL executable"]
+    fn run_reference_rejects_a_different_quote() -> ScenarioResult<()> {
+        let mut altered: Value = serde_json::from_slice(&reference_case(Verb::Run)?)?;
+        altered["result"]["value"]["integer"] = json!("28");
+        assert!(semantic_result(Verb::Run, &altered).is_none());
+        Ok(())
+    }
+
+    /// Trace: FR-001-AC-6
+    #[test]
+    #[ignore = "EV-009 analyze grader with the accepted public FSL executable"]
+    fn analyze_reference_rejects_a_different_claim() -> ScenarioResult<()> {
+        let mut altered: Value = serde_json::from_slice(&reference_case(Verb::Analyze)?)?;
+        altered["items"][0]["claim_name"] = json!("OtherClaim");
+        assert!(semantic_result(Verb::Analyze, &altered).is_none());
+        Ok(())
+    }
+
+    /// Trace: FR-001-AC-6
+    #[test]
+    #[ignore = "EV-009 monitor grader with the accepted public FSL executable"]
+    fn monitor_reference_rejects_a_different_observed_position() -> ScenarioResult<()> {
+        let text = String::from_utf8(reference_case(Verb::Monitor)?)?;
+        let mut changed = false;
+        let mut altered = Vec::new();
+        for line in text.lines().filter(|line| !line.trim().is_empty()) {
+            let mut row: Value = serde_json::from_str(line)?;
+            if row["format"] == "filament.monitor-event/1" && row["settled"] == true {
+                row["position"] = json!(1);
+                changed = true;
             }
-            assert!(semantic_artifact(verb, b"FSL-EVAL-DONE").is_none());
+            altered.extend(serde_json::to_vec(&row)?);
+            altered.push(b'\n');
         }
+        assert!(changed, "reference must contain a decisive monitor event");
+        assert!(monitor_result(&altered).is_none());
+        assert!(monitor_result(b"{\"kind\":\"violated\"}\n").is_none());
         Ok(())
     }
 

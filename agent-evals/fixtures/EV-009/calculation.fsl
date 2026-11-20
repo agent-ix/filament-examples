@@ -1,5 +1,5 @@
 language "ix:native" edition "1-draft";
 profile m = "filament.model.complete/v1";
-function quote(pallets: Int[0, 12]): Int[0, 100] {
+function quote(pallets: Int[0, 12]): Int[0, 100] pure {
   9 + 4 * pallets
 }

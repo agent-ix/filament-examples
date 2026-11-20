@@ -1,5 +1,5 @@
-{"observation":{"sample":{"count":{"integer":"0"}}}}
-{"observation":{"sample":{"count":{"integer":"2"}}}}
-{"observation":{"sample":{"count":{"integer":"4"}}}}
+{"observation":{"sample":{"units":{"integer":"0"}}}}
+{"observation":{"sample":{"units":{"integer":"2"}}}}
+{"observation":{"sample":{"units":{"integer":"4"}}}}
 {"progress":{"watermark":2,"completeness":{"complete":{"through":2}},"scope":"closed","execution":"closed"}}
 {"end":true}
