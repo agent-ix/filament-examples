@@ -16,7 +16,7 @@ Ticket: QSL-2486. Performed a manual acceptance-to-code-and-tests comparison for
 
 ## Verdict
 
-CONDITIONAL only on actual live acceptance. SR-1439 FND-001 is fixed at disposition round 1, head 9a263ba6760d25b6731b1bd77f41290197903ad7; no additional defects were found. The real public check and eight independent executions reject a refused Boolean body, a constant plus completion marker, and a wrong rate. Live Codex and its scorecard remain pending. Claude authentication is a known prerequisite with three startup attempts and zero tasks; no further Claude retry is approved by this review.
+CONDITIONAL only on retained live acceptance. Both SR-1439 findings are fixed at 5addd7283ee6e1a14954644ad06e776ff8ec3bd0. The actual Codex sample passed the public check, all eight semantic checks and access policy, but its original SDK report remains 0/1 because command matching missed the editor heredoc followed by public invocations. The runtime parser and termination fix are approved for one retained command/boundary grade; no successful regrade is claimed here. Claude authentication is a known prerequisite with three startup attempts and zero tasks; no further Claude retry is approved by this review.
 
 ## Findings
 
@@ -37,3 +37,7 @@ Plan completion: not assessed
 ## Disposition Context
 
 Round 1 inspected only the existing documentation-policy finding's fix. The Entry policy now reaches transcript/path inspection, including canonicalized workspace symlinks, while preserving the author-model entry's permitted reference access. Accepted the supplied two passing new policy regressions without rerunning them. Shared runtime fixes and the later mechanical main integration were outside this disposition. No additional gap finding was opened.
+
+The subsequent runtime review was limited to ff7f82fc..6dc18a9 and accepted the supplied actual sample and two new regression-test receipts. No additional gap finding beyond SR-1439 FND-002 was opened. There was no new live sample, retained-evidence grade, eight-input semantic rerun or repository matrix measurement.
+
+The final runtime disposition was limited to 6dc18a9..5addd728 and the termination fix. FND-002 is fixed; accepted one new focused termination test pass without rerunning any check. No additional gap finding was opened and no live or semantic result was remeasured.
