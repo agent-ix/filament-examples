@@ -15,7 +15,7 @@ Diff-scoped independent review of QSL-2485, filament-examples PR 62. Code review
 
 ## Verdict
 
-**CONDITIONAL** — Both original findings remain fixed. The scoped runtime integration correction is approved for retained Codex command/boundary evidence grading and one affected Claude retry when directed by the code lead. Live scenario acceptance and the honest final scorecard remain pending.
+**CONDITIONAL** — Both original findings remain fixed. The bounded sed path-classification correction is approved for one retained Codex command/boundary evidence grade only. Claude acceptance remains pending authentication; no further live runs or auth probes are authorized by this review.
 
 ## Findings
 
@@ -163,3 +163,9 @@ The fix reads published typed event_msg/item_completed/CommandExecution argv and
 Claude trust preparation changes only the isolated per-run home config, guards the configured home against the actual HOME, canonicalizes the SDK workspace and constrains it beneath the sibling private work root. It trusts that one workspace without changing operator settings.
 
 No additional findings in this scoped runtime diff. Accepted reported typed-execution/context/space-URI/comment-output/invalid-URI tests, private trust positive/outside-rejection tests, and scoped all-target Clippy. No tests, builds, probes, live agents or original findings were rerun or re-reviewed. Ready for code-lead-directed offline retained Codex evidence grading and one affected Claude retry; no broader live rerun is warranted.
+
+## Retained sed classification correction
+
+Inspected only the actual sed-classification change in agent-evals/src/provider.rs through 72e949dde7089e06b718971d6983ec44854e2ffd. Generic equals-sign splitting no longer invents an absolute path from quoted sed replacement data. Nonempty shell-assignment and long-option prefixes still expose their path values for boundary inspection. The exact retained sed command and opaque custom-tool input are represented in the new focused test, alongside forbidden quoted absolute evaluator operands and SOURCE assignments. No additional findings in this bounded correction; prior findings remain closed and were not re-reviewed.
+
+Accepted the reported new exact-input test without rerun. Existing retained Codex model correctness, all 156 probes, typed command count 11 and check evidence true remain accepted; this correction only addresses the boundary false positive. One retained Codex evidence grade may proceed. Claude retry reached the task trust boundary successfully but stopped at Not logged in before performing task work: authentication acceptance is pending, not an agent-task error. No more live runs or authentication probes are authorized here. Original reports and failure classifications must remain honest.
