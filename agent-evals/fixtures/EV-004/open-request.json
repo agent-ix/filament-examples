@@ -1,0 +1,29 @@
+{
+  "format": "native-monitor/1",
+  "request": {
+    "models": [],
+    "program": {
+      "source": {
+        "file": "monitor.fsl",
+        "authority": "eval",
+        "identity": "eval:trace-meter/rules",
+        "document": "meter-monitor",
+        "formal_revision": 1
+      }
+    },
+    "clauses": [
+      {
+        "name": "ForeverBelowThree"
+      }
+    ],
+    "trace": {
+      "kind": "finite"
+    },
+    "clocks": {
+      "ticks": {
+        "kind": "event_position",
+        "sequence_authority": "meter-samples"
+      }
+    }
+  }
+}

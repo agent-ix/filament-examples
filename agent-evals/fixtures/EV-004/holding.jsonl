@@ -1,0 +1,5 @@
+{"observation":{"sample":{"level":{"integer":"0"}}}}
+{"observation":{"sample":{"level":{"integer":"1"}}}}
+{"observation":{"sample":{"level":{"integer":"2"}}}}
+{"progress":{"watermark":2,"completeness":{"complete":{"through":2}},"scope":"closed","execution":"closed"}}
+{"end":true}
