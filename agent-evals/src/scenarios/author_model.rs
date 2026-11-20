@@ -46,7 +46,8 @@ fn direct<'a>(parsed: &'a ParsedSource, node: &CstNode, kind: Production) -> Vec
         .collect()
 }
 fn identifiers(parsed: &ParsedSource, node: &CstNode) -> Vec<String> {
-    node.children()
+    let mut names: Vec<String> = node
+        .children()
         .iter()
         .filter_map(|c| match c {
             CstElement::Token(i) => Some(&parsed.cst().tokens()[*i]),
@@ -54,7 +55,17 @@ fn identifiers(parsed: &ParsedSource, node: &CstNode) -> Vec<String> {
         })
         .filter(|t| t.kind() == TokenKind::Identifier)
         .map(|t| String::from_utf8_lossy(t.spelling()).into_owned())
-        .collect()
+        .collect();
+    let contextual_head = match node.production() {
+        Production::ObjectDeclaration => Some("object"),
+        Production::ObjectOperation => Some("operation"),
+        Production::ObjectPopulation => Some("population"),
+        _ => None,
+    };
+    if names.first().map(String::as_str) == contextual_head && contextual_head.is_some() {
+        names.remove(0);
+    }
+    names
 }
 fn nodes(parsed: &ParsedSource, kind: Production) -> Vec<&CstNode> {
     parsed
@@ -264,8 +275,13 @@ pub fn grade(workspace: &Path, tools: &Tools) -> ScenarioResult<Assertion> {
             &mut failures,
             params.len() == 1
                 && identifiers(&parsed, params[0]) == ["amount"]
-                && direct(&parsed, params[0], Production::TypeReference)
+                && direct(&parsed, params[0], Production::ParameterType)
                     .first()
+                    .and_then(|p| {
+                        direct(&parsed, p, Production::TypeReference)
+                            .first()
+                            .copied()
+                    })
                     .is_some_and(|t| resolved_type(&parsed, t, &aliases) == "Int[1,12]"),
             "reserve requires amount in1..12",
         );
@@ -422,12 +438,8 @@ mod tests {
             .replace("limit: Int[1, 12]", "limit: Slots")
             .replace(
                 "self.occupied <= self.limit",
-                "not (self.occupied /* not a supported block comment */ > self.limit)",
+                "not (self.occupied // comment is not an assertion\n > self.limit)",
             );
-        let source = source.replace(
-            " /* not a supported block comment */",
-            " // comment is not an assertion\n",
-        );
         let result = grade_source(&source)?;
         assert!(result.ok, "{:?}", result.failures);
         assert_eq!(result.checks["independent_invariant_bindings"], 156);
@@ -452,17 +464,39 @@ mod tests {
     #[test]
     #[ignore = "new EV-001 grader validation with the accepted public FSL executable"]
     fn altered_field_bounds_identity_population_and_frame_are_rejected() -> ScenarioResult<()> {
-        for source in [
-            REFERENCE.replace("key: Int[1, 16]", "key: Int[0,16]"),
-            REFERENCE.replace("locked: Boolean", "locked: Integer"),
-            REFERENCE.replace("identity (key)", "identity (limit)"),
-            REFERENCE.replace("population bins", "population others"),
-            REFERENCE.replace("modifies self.occupied", "modifies self.locked"),
-            REFERENCE.replace("amount: Int[1, 12]", "amount: Int[0,12]"),
+        for (source, failure) in [
+            (
+                REFERENCE.replace("key: Int[1, 16]", "key: Int[0,16]"),
+                "field names",
+            ),
+            (
+                REFERENCE.replace("locked: Boolean", "locked: Integer"),
+                "field names",
+            ),
+            (
+                REFERENCE.replace("identity (key)", "identity (limit)"),
+                "identified only",
+            ),
+            (
+                REFERENCE.replace("population bins", "population others"),
+                "bins population",
+            ),
+            (
+                REFERENCE.replace("modifies self.occupied", "modifies self.locked"),
+                "modify only",
+            ),
+            (
+                REFERENCE.replace("amount: Int[1, 12]", "amount: Int[0,12]"),
+                "amount in1..12",
+            ),
         ] {
             let result = grade_source(&source)?;
             assert!(!result.ok, "changed English model passed: {source}");
-            assert!(!result.failures.is_empty());
+            assert!(
+                result.failures.iter().any(|f| f.contains(failure)),
+                "expected {failure}: {:?}",
+                result.failures
+            );
         }
         Ok(())
     }
