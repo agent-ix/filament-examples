@@ -52,3 +52,9 @@ invokes public `fsl monitor`, checks decisive window evidence, and compares the
 current closure binding and covered sample fingerprints. Timing metadata does
 not affect those semantic checks. The unbounded prefix must remain unsettled.
 The shared provider requires actual monitor tool calls for all three input files.
+
+The comparison preserves the complete ordered event stream and final summary,
+including intermediate pending states and every input/closure binding. JSON
+whitespace and object-key order are formatting. The only excluded timing
+annotations are top-level `event.wall_ms` and `summary.elapsed_ms`; nested or
+other fields remain part of semantic evidence.

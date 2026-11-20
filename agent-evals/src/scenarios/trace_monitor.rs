@@ -7,7 +7,7 @@ use std::path::Path;
 use std::process::Command;
 
 use serde::Deserialize;
-use serde_json::{json, Value};
+use serde_json::{Value, json};
 
 use crate::{Assertion, ScenarioResult, Tools};
 
@@ -243,7 +243,7 @@ fn parse_output(text: &str) -> Checked<MonitorOutput> {
                     detail:
                         "expected real monitor events and a summary, not a refusal or self-report"
                             .into(),
-                })
+                });
             }
         }
     }
@@ -340,11 +340,17 @@ fn observe(case: Case, output: &MonitorOutput) -> Checked<Value> {
     } else {
         "decisive-counterexample"
     };
-    need(clause["basis"] == "closed-scope" && clause["disposition"]["truth"] == (case.kind == "holds")
-        && clause["settlement"]["basis"] == basis && clause["settlement"]["horizon"] == "2"
-        && clause["settlement"]["position"] == "0" && clause["settlement"]["trigger"] == "decided"
-        && event["settlement"] == clause["settlement"],
-        FaultCode::WrongPosition, "the bounded origin window and its settlement must remain distinct from the observed position")?;
+    need(
+        clause["basis"] == "closed-scope"
+            && clause["disposition"]["truth"] == (case.kind == "holds")
+            && clause["settlement"]["basis"] == basis
+            && clause["settlement"]["horizon"] == "2"
+            && clause["settlement"]["position"] == "0"
+            && clause["settlement"]["trigger"] == "decided"
+            && event["settlement"] == clause["settlement"],
+        FaultCode::WrongPosition,
+        "the bounded origin window and its settlement must remain distinct from the observed position",
+    )?;
     let entries = summary["ledger"]["entries"]
         .as_array()
         .filter(|e| e.len() == 1)
@@ -442,7 +448,11 @@ fn check_report(workspace: &Path) -> Checked<()> {
             unbounded_proof: false,
         },
     };
-    need(actual == expected, FaultCode::SummaryMismatch, "report the bounded result, actual positions and open-prefix unknown without claiming an unbounded proof")
+    need(
+        actual == expected,
+        FaultCode::SummaryMismatch,
+        "report the bounded result, actual positions and open-prefix unknown without claiming an unbounded proof",
+    )
 }
 
 fn monitor(workspace: &Path, tools: &Tools, case: Case) -> Checked<MonitorOutput> {
@@ -473,16 +483,44 @@ fn monitor(workspace: &Path, tools: &Tools, case: Case) -> Checked<MonitorOutput
     parse_output(stdout)
 }
 
+fn semantic_stream(output: &MonitorOutput) -> Value {
+    let events: Vec<Value> = output
+        .events
+        .iter()
+        .map(|event| {
+            let mut semantic = event.clone();
+            if let Some(object) = semantic.as_object_mut() {
+                object.remove("wall_ms");
+            }
+            semantic
+        })
+        .collect();
+    let mut summary = output.summary.clone();
+    if let Some(object) = summary.as_object_mut() {
+        object.remove("elapsed_ms");
+    }
+    json!({"events":events,"summary":summary})
+}
+
+fn require_same_stream(saved: &MonitorOutput, trusted: &MonitorOutput) -> Checked<()> {
+    need(
+        semantic_stream(saved) == semantic_stream(trusted),
+        FaultCode::EvidenceMismatch,
+        "saved complete ordered semantic stream and input binding differ from independent public monitor",
+    )
+}
+
 fn assess(workspace: &Path, tools: &Tools) -> Checked<BTreeMap<String, Value>> {
     check_inputs(workspace)?;
     check_report(workspace)?;
     let mut checks = BTreeMap::new();
     for &case in CASES {
         let saved = parse_output(&read_artifact(workspace, case.output)?)?;
-        let observed = observe(case, &saved)?;
-        let trusted = observe(case, &monitor(workspace, tools, case)?)?;
-        need(observed == trusted, FaultCode::EvidenceMismatch, "saved semantic result/closure binding differs from independent public monitor on the current artifacts")?;
-        checks.insert(case.input.to_owned(), trusted);
+        observe(case, &saved)?;
+        let trusted = monitor(workspace, tools, case)?;
+        let observation = observe(case, &trusted)?;
+        require_same_stream(&saved, &trusted)?;
+        checks.insert(case.input.to_owned(), observation);
     }
     Ok(checks)
 }
@@ -507,6 +545,67 @@ pub fn grade(workspace: &Path, tools: &Tools) -> ScenarioResult<Assertion> {
 mod tests {
     use super::*;
     use std::path::PathBuf;
+
+    /// New synthetic mutation check; it never executes the accepted public reference or agents.
+    #[test]
+    fn complete_stream_rejects_intermediate_and_summary_mutations() {
+        let case = CASES[0];
+        let mut original = synthetic(case);
+        for position in [1, 2] {
+            original.events.insert(position, json!({"format":"filament.monitor-event/1","clause":case.clause,
+                "basis":"unsettled","category":"pending","settled":false,"position":position,"record":position,
+                "disposition":{"category":"pending","stage":"evaluate","temporal":{"kind":"pending"}}}));
+        }
+        assert!(observe(case, &original).is_ok());
+        let original_text = render(&original);
+        let mut formatted = parse_output(&original_text).unwrap();
+        formatted.events[1]["wall_ms"] = json!(37);
+        formatted.summary["elapsed_ms"] = json!(91);
+        assert!(require_same_stream(&formatted, &original).is_ok());
+        for mutation in [
+            "added",
+            "omitted",
+            "altered",
+            "reordered",
+            "summary-step",
+            "input-binding",
+            "nested-timing",
+        ] {
+            let mut saved = parse_output(&original_text).unwrap();
+            match mutation {
+                "added" => saved.events.insert(1, saved.events[1].clone()),
+                "omitted" => {
+                    saved.events.remove(1);
+                }
+                "altered" => saved.events[1]["disposition"]["temporal"]["kind"] = json!("violated"),
+                "reordered" => saved.events.swap(1, 2),
+                "summary-step" => {
+                    saved.summary["clauses"][0]["settlement"]["step"] = json!("999");
+                    saved.events.last_mut().unwrap()["settlement"]["step"] = json!("999");
+                }
+                "input-binding" => {
+                    saved.summary["ledger"]["entries"][0]["binding"]["clause"] =
+                        json!("another-rule")
+                }
+                "nested-timing" => saved.events[1]["disposition"]["wall_ms"] = json!(1),
+                _ => unreachable!("closed mutation set"),
+            }
+            assert!(
+                observe(case, &saved).is_ok(),
+                "the old selected-field oracle permits {mutation}"
+            );
+            assert!(
+                matches!(
+                    require_same_stream(&saved, &original),
+                    Err(Fault {
+                        code: FaultCode::EvidenceMismatch,
+                        ..
+                    })
+                ),
+                "complete stream must reject {mutation}"
+            );
+        }
+    }
 
     fn tools(fsl: PathBuf) -> Tools {
         Tools {
@@ -754,10 +853,12 @@ mod tests {
         ] {
             assert!(parse_output(text).is_err(), "{text}");
         }
-        assert!(parse_output(&format!(
-            "{correct}\n{{\"format\":\"filament.monitor-event/1\"}}"
-        ))
-        .is_err());
+        assert!(
+            parse_output(&format!(
+                "{correct}\n{{\"format\":\"filament.monitor-event/1\"}}"
+            ))
+            .is_err()
+        );
     }
 
     /// ORIGINAL synthetic SDK transcript, not a live-agent command receipt.
