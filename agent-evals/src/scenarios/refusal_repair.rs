@@ -34,6 +34,10 @@ fn prepare_with_fsl(workspace: &Path, fsl: &Path) -> ScenarioResult<String> {
     require_trusted_path(fsl)?;
     fs::create_dir_all(workspace)?;
     fs::write(workspace.join("postage.fsl"), BROKEN)?;
+    fs::write(
+        workspace.join("postage-example.json"),
+        serde_json::to_vec(&postage_request(Path::new("postage.fsl"), "2"))?,
+    )?;
     let refusal = Command::new(fsl)
         .args(["check", "postage.fsl"])
         .current_dir(workspace)
@@ -114,20 +118,7 @@ fn grade_with_fsl(workspace: &Path, fsl: &Path) -> ScenarioResult<Assertion> {
     let source = fs::canonicalize(source)?;
     for (index, (units, expected)) in BOUNDARIES.iter().enumerate() {
         let request_path = requests.path().join(format!("boundary-{index}.json"));
-        let request = json!({
-            "format": "native-run/1",
-            "request": {
-                "models": [],
-                "program": {"source": {
-                    "file": source,
-                    "authority": "agent-evals",
-                    "identity": "EV-002-postage",
-                    "document": "PostageRepair",
-                    "formal_revision": 1
-                }},
-                "call": {"function": "postage", "arguments": [{"parameter": "units", "value": {"integer": units}}]}
-            }
-        });
+        let request = postage_request(&source, units);
         fs::write(&request_path, serde_json::to_vec(&request)?)?;
         let output = Command::new(fsl)
             .arg("run")
@@ -159,6 +150,23 @@ fn grade_with_fsl(workspace: &Path, fsl: &Path) -> ScenarioResult<Assertion> {
         ok: failures.is_empty(),
         checks,
         failures,
+    })
+}
+
+fn postage_request(source: &Path, units: &str) -> Value {
+    json!({
+        "format": "native-run/1",
+        "request": {
+            "models": [],
+            "program": {"source": {
+                "file": source,
+                "authority": "agent-evals",
+                "identity": "EV-002-postage",
+                "document": "PostageRepair",
+                "formal_revision": 1
+            }},
+            "call": {"function": "postage", "arguments": [{"parameter": "units", "value": {"integer": units}}]}
+        }
     })
 }
 

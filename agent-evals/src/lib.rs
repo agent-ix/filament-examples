@@ -33,7 +33,14 @@ pub struct Assertion {
     pub failures: Vec<String>,
 }
 
-/// FSL-specific tasks registered through the shared external provider.
+/// Original FSL scenarios, selected by the SDK provider catalogue.
 pub mod scenarios {
+    /// Source-owned object model authoring and independent model checks.
+    pub mod author_model;
+    /// Refusal-only repair with independent public function executions.
     pub mod refusal_repair;
 }
+
+/// Published external-provider integration and independent command evidence.
+pub mod provider;
+pub use provider::{agent_commands, invokes_fsl};

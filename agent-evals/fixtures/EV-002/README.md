@@ -6,7 +6,9 @@ type: reference
 The agent repairs an Integer postage function using its source contract, the
 public refusal and `fsl`. The charge is 7 plus 3 per positive unit; zero and
 negative counts cost 7. Preparation captures the actual text refusal from the
-configured trusted FSL binary. Documentation and reference solutions are not
+configured trusted FSL binary. An original two-unit run request lets the agent
+validate its repair with the public CLI; the grader creates independent requests.
+Documentation and reference solutions are not
 provided to the agent.
 
 The grader checks the submitted `postage.fsl`, then invokes the trusted absolute
