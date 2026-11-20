@@ -13,7 +13,7 @@ Reviewed the frozen EV-009 feature at 1494e6b86fd9191325e4e61d74ffb77e5afd70b9. 
 
 ## Verdict
 
-**CONDITIONAL** — resolve FND-001 and FND-002. The authorized Codex sample and Claude authentication prerequisite remain pending; no live result is claimed.
+**PASS** — both original findings are fixed at c716e73489d6a3e5ced43d2e47687a1a7b4c558c. The approved shared capture helper was accepted as a peer fact; only EV-009's integration was inspected. Live acceptance and the Claude authentication prerequisite remain pending.
 
 ## Findings
 
@@ -33,3 +33,14 @@ Five distinct new grader checks and integrated scoped Clippy are accepted from t
 ## Review context
 
 Ticket: QSL-2493. Repository: agent-ix/filament-examples, public. PR: pending. Reviewer run: f58865ae-df7e-4046-877b-64e6c29a586b. Exact model identifier is unavailable to this reviewer. Native full-domain authoring and a successful export are not claimed by this feature.
+
+## Dispositions
+
+### Round 1
+
+| FND | Outcome | Reason |
+| --- | --- | --- |
+| FND-001 | fixed | The manifest declares 120000 ms. `grade_with_budget` creates one absolute deadline before `assess`; validation, domain regeneration, all four public commands and final checks share that deadline. Calls use the independently approved bounded capture API, and capture failures become structured harness errors with timeout and reaped-child evidence. Artifact reads are bounded to one MiB plus one byte. |
+| FND-002 | fixed | All five inaccurate `Trace: FR-001-AC-6` annotations were replaced with ticket provenance, preserving the tests without claiming sandbox-criterion evidence. |
+
+Disposition scope was only EV-009's caller, manifest and trace changes from 1494e6b8 to c716e734. The shared helper's approval and API contract were accepted without reopening its implementation, registration or EV-003 wrapper review. The reported new own-grade deadline test, quota edge evidence and current all-target Clippy pass were accepted; no old grader, helper, public CLI, build or live checks were repeated. Merge of the approved shared helper first is delivery ordering, not an additional review gate for this caller.

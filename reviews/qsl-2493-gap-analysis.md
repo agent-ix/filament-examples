@@ -13,7 +13,7 @@ Mapped the four runnable EV-009 tasks to their immutable inputs, independent pub
 
 ## Verdict
 
-**CONDITIONAL** — resolve FND-001 and complete the authorized live acceptance. No full-program completion or Claude task result is claimed.
+**CONDITIONAL** — FND-001 is fixed at c716e73489d6a3e5ced43d2e47687a1a7b4c558c; only authorized live acceptance and the known provider prerequisites remain pending. No full-program completion or Claude task result is claimed.
 
 Plan completion: not assessed
 
@@ -34,3 +34,13 @@ The author reports five new grader checks and integrated all-target Clippy passi
 ## Review context
 
 Ticket: QSL-2493. Repository: agent-ix/filament-examples, public. PR: pending. Frozen feature: 1494e6b86fd9191325e4e61d74ffb77e5afd70b9. Reviewer run: f58865ae-df7e-4046-877b-64e6c29a586b. Exact model identifier is unavailable. Scope is this feature's acceptance, not a repository-wide coverage or plan-completion claim.
+
+## Dispositions
+
+### Round 1
+
+| FND | Outcome | Reason |
+| --- | --- | --- |
+| FND-001 | fixed | `monitor_result` now returns the entire ordered event array and summary as parsed JSON after its semantic checks. `grade_case` therefore compares every event and summary field between the saved artifact and the independent public result, ignoring JSON whitespace/key order rather than discarding intermediate stream data. New adversarial checks cover omitted, inserted and altered pending events. |
+
+The two reported new complete-stream tests are accepted without rerunning them. Four active verb contracts still must all pass; the required export oracle remains pending QSL-1979 with program completion explicitly pending. No shared-helper re-audit, new matrix, public CLI probe, live run or broader acceptance sweep was performed during disposition.
