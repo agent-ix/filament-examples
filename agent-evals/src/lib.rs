@@ -5,12 +5,6 @@ use serde_json::Value;
 use std::collections::BTreeMap;
 use std::path::PathBuf;
 
-/// FSL-specific agent journey implementations.
-pub mod scenarios {
-    /// Finite safety proof and counterexample analysis.
-    pub mod safety_analyze;
-}
-
 /// A scenario preparation or independent artifact grading failure.
 pub type ScenarioResult<T> = Result<T, Box<dyn std::error::Error + Send + Sync>>;
 
@@ -38,3 +32,15 @@ pub struct Assertion {
     /// Concrete failures; an agent's success marker cannot override them.
     pub failures: Vec<String>,
 }
+
+/// Original FSL scenarios, selected by the SDK provider catalogue.
+pub mod scenarios {
+    /// Source-owned object model authoring and independent model checks.
+    pub mod author_model;
+    /// Finite safety proof and counterexample analysis.
+    pub mod safety_analyze;
+}
+
+/// Published external-provider integration and independent command evidence.
+pub mod provider;
+pub use provider::{agent_commands, invokes_fsl};

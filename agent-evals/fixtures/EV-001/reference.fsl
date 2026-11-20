@@ -1,0 +1,13 @@
+language "ix:native" edition "1-draft";
+profile m = "filament.model.complete/v1";
+object StorageBin identity (key) {
+  key: Int[1, 16];
+  limit: Int[1, 12];
+  occupied: Int[0, 12];
+  locked: Boolean;
+  population bins;
+  operation reserve(amount: Int[1, 12]): Boolean modifies self.occupied;
+}
+invariant WithinCapacity using m on StorageBin at current {
+  self.occupied <= self.limit
+}

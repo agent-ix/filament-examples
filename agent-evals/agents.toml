@@ -1,0 +1,4 @@
+codex = "gpt-6.1-sol"
+claude = "claude-opus-5-5"
+# This phase runs each reviewed new scenario once per provider.
+repeats = 1
