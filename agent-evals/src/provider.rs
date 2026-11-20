@@ -704,7 +704,7 @@ fn inspect_paths(
         }
     }
 }
-fn rg_path_operands<'a>(words: &[&'a str]) -> Vec<Option<&'a str>> {
+fn rg_path_operands<'a>(words: &[&'a str]) -> Option<Vec<Option<&'a str>>> {
     #[derive(Clone, Copy)]
     enum Argument {
         Pattern,
@@ -741,6 +741,10 @@ fn rg_path_operands<'a>(words: &[&'a str]) -> Vec<Option<&'a str>> {
         }
         if options {
             match word {
+                "-n" | "-L" => {
+                    paths[index] = None;
+                    continue;
+                }
                 "-e" | "--regexp" => {
                     next = Some(Argument::Pattern);
                     supplied_pattern = true;
@@ -793,8 +797,17 @@ fn rg_path_operands<'a>(words: &[&'a str]) -> Vec<Option<&'a str>> {
                 }
                 continue;
             }
-            if word.starts_with('-') {
+            if let Some(path) = word
+                .strip_prefix("--pre=")
+                .or_else(|| word.strip_prefix("--ignore-file="))
+            {
+                paths[index] = Some(path);
                 continue;
+            }
+            if word.starts_with('-') {
+                // Unknown or combined options can change which word is a file.
+                // Refuse to infer pattern-data roles without a known arity.
+                return None;
             }
         }
         if !files && !supplied_pattern {
@@ -803,7 +816,7 @@ fn rg_path_operands<'a>(words: &[&'a str]) -> Vec<Option<&'a str>> {
             paths[index] = None;
         }
     }
-    paths
+    if next.is_some() { None } else { Some(paths) }
 }
 
 fn inspect_command(
@@ -870,7 +883,20 @@ fn inspect_command(
             .first()
             .and_then(|w| Path::new(w).file_name())
             .and_then(|p| p.to_str());
-        let rg_paths = (program == Some("rg")).then(|| rg_path_operands(&words));
+        let rg_paths = if program == Some("rg") {
+            match rg_path_operands(&words) {
+                Some(paths) => Some(paths),
+                None => {
+                    violations.push(
+                        "harness-error: unsupported rg option arity in boundary evidence"
+                            .to_owned(),
+                    );
+                    continue;
+                }
+            }
+        } else {
+            None
+        };
         let mut word_index = 0;
         for (index, token) in statement.iter().enumerate() {
             match token {
@@ -1251,6 +1277,42 @@ pub fn respond(input: &[u8]) -> ScenarioResult<Value> {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn runtime_safety_combined_rg_file_option_fails_closed() -> ScenarioResult<()> {
+        let (_temp, workspace, tools) = reference_policy_fixture()?;
+        for command in [
+            "rg -nf /outside/patterns docs",
+            "rg --unknown-option /outside/patterns docs",
+        ] {
+            let violations = boundary_violations(
+                &workspace,
+                &tools,
+                &[recorded(json!({"cmd":command}))],
+                true,
+            );
+            assert!(
+                violations.iter().any(|v| v.starts_with("harness-error:")),
+                "unresolved rg arity must not become pattern data: {command}"
+            );
+        }
+        for command in [
+            r#"rg --files -L docs/shipped | rg '/fsl\.(md|mdx)$|/fsl/' | tail -8"#,
+            "rg -n '/outside/pattern' docs",
+        ] {
+            let violations = boundary_violations(
+                &workspace,
+                &tools,
+                &[recorded(json!({"cmd":command}))],
+                true,
+            );
+            assert!(
+                violations.is_empty(),
+                "known pattern roles remain usable: {command}: {violations:?}"
+            );
+        }
+        Ok(())
+    }
 
     /// ORIGINAL retained-input reproduction, parsed only; no shell/FSL/model is executed.
     #[test]
