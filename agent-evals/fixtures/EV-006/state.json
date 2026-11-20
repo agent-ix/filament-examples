@@ -1,0 +1,18 @@
+{
+  "format": "filament.state.snapshot/v1",
+  "identity": {"authority": "eval", "identity": "ix://eval/handshake/start"},
+  "model": {"identity": "eval/handshake"},
+  "observation": "current",
+  "anchor": {"kind": "initialization", "name": "start"},
+  "populations": [
+    {"population": "ix://eval/handshake/jobs", "complete": true, "objects": [
+      {"key": "job", "type": "ix://eval/handshake/Job", "fields": {"ticket": {"integer": "1"}}}
+    ]},
+    {"population": "ix://eval/handshake/clients", "complete": true, "objects": [
+      {"key": "caller", "type": "ix://eval/handshake/Client", "fields": {"ready": {"boolean": true}}}
+    ]},
+    {"population": "ix://eval/handshake/servers", "complete": true, "objects": [
+      {"key": "worker", "type": "ix://eval/handshake/Server", "fields": {"ready": {"boolean": true}}}
+    ]}
+  ]
+}

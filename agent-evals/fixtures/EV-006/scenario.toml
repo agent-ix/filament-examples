@@ -1,0 +1,4 @@
+id = "EV-006"
+active = false
+pending = "QSL-2224"
+reason = "Public protocol deadlock analysis returns inconclusive/stale_dependency replay-refused before the original request/reply protocol explores any transition. Required certified safe result remains pending."

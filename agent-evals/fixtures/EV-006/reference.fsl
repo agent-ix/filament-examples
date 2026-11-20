@@ -1,0 +1,21 @@
+language "ix:native" edition "1-draft";
+profile v = "filament.model.complete/v1";
+profile p = "filament.protocol.finite-global/v1";
+model H = "eval/handshake";
+
+protocol Handshake using p over (job: H::Job) on origin {
+  capture ticket: H::Ticket = job.ticket;
+  role Caller on H::Client;
+  role Worker on H::Server;
+  channel Requests from Caller to Worker carries H::Message
+    ordering unordered delivery exactly-once-premise capacity 1 overflow block;
+  channel Replies from Worker to Caller carries H::Message
+    ordering unordered delivery exactly-once-premise capacity 1 overflow block;
+  run sequence Exchange {
+    send RequestSent via Requests as (request: H::Message) { request.ticket = ticket };
+    receive RequestReceived via Requests of RequestSent as (received: H::Message) { received.ticket = ticket };
+    send ReplySent via Replies as (reply: H::Message) { reply.ticket = ticket };
+    receive ReplyReceived via Replies of ReplySent as (answer: H::Message) { answer.ticket = ticket };
+  }
+  finish Complete as (closed: H::Closure) { closed.complete };
+}
