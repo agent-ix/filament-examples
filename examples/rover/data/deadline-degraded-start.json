@@ -1,0 +1,19 @@
+{
+  "format": "filament.state.snapshot/v1",
+  "identity": {"authority": "example", "identity": "ix://example/rover-deadline/data/deadline-degraded-start"},
+  "model": {"identity": "example/rover-deadline"},
+  "observation": "current",
+  "anchor": {"kind": "initialization", "name": "deadline-degraded-start"},
+  "populations": [{
+    "population": "ix://example/rover-deadline/rovers",
+    "complete": true,
+    "objects": [{
+      "key": "r1",
+      "type": "ix://example/rover-deadline/Rover",
+      "fields": {
+        "mode": {"variant": {"type": "ix://example/rover-deadline/Mode", "case": "Degraded"}},
+        "stopped": {"boolean": false}
+      }
+    }]
+  }]
+}

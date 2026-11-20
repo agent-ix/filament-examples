@@ -1,0 +1,61 @@
+// Repeats the operation contracts of mode-machine.fsl because of QSL-2654 (declaring time in that file slows its untimed claims); merge back when that is fixed.
+language "ix:native" edition "1-draft";
+profile v = "filament.model.complete/v1";
+// The time declaration below needs the complete temporal layer.
+profile tc = "filament.temporal.complete/v1";
+profile t = "filament.temporal.timed/v1";
+model Rover = "example/rover";
+
+dimension Time;
+unit s : Time = rational(1, 1);
+unit ms : Time = rational(1, 1000) * s;
+time Rover tick Rover::Rover::sample period 50 ms unit ms;
+
+// The lidar is lost while driving. The rover drops to degraded mode and slows.
+pre LidarLossWhileDriving using v on Rover::Rover::loseLidar {
+  self.mode = Rover::Mode::Driving and self.lidarOk
+}
+post LidarLossDegrades using v on Rover::Rover::loseLidar {
+  self.mode = Rover::Mode::Degraded and not self.lidarOk
+    and self.speed <= 300 and self.speed <= pre(self.speed)
+}
+
+// A degraded rover brakes into safe-stop mode.
+pre BrakeWhenDegraded using v on Rover::Rover::brake {
+  self.mode = Rover::Mode::Degraded
+}
+post BrakeEntersSafeStop using v on Rover::Rover::brake {
+  self.mode = Rover::Mode::SafeStop and self.speed <= 100 and self.speed <= pre(self.speed)
+}
+
+// In safe-stop mode the rover comes to a halt.
+pre HaltInSafeStop using v on Rover::Rover::halt {
+  self.mode = Rover::Mode::SafeStop and not self.stopped
+}
+post HaltStops using v on Rover::Rover::halt {
+  self.speed = 0 and self.stopped
+}
+
+// A rover that has halted enters failsafe mode and stays there.
+pre FailsafeAfterHalt using v on Rover::Rover::enterFailsafe {
+  self.mode = Rover::Mode::SafeStop and self.stopped
+}
+post FailsafeEntered using v on Rover::Rover::enterFailsafe {
+  self.mode = Rover::Mode::Failsafe
+}
+
+// The sensors are sampled in every mode but failsafe. The vote is wrong when
+// two of the three sensors are faulty.
+pre SampleUntilFailsafe using v on Rover::Rover::sample {
+  self.mode != Rover::Mode::Failsafe
+}
+post SampleRecordsVote using v on Rover::Rover::sample {
+  self.voteWrong = ((faultA and faultB) or (faultA and faultC) or (faultB and faultC))
+}
+
+// A rover that has lost its lidar is eventually stopped, if braking and halting are never postponed for ever.
+temporal LidarLossEventuallyStopsInModelTime using t over (r: Rover::Rover) clock "model-time" on origin {
+  fair weak Rover::Rover::brake;
+  fair weak Rover::Rover::halt;
+  always (holds(not r.lidarOk) implies eventually holds(r.stopped))
+}

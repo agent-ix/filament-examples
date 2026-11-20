@@ -84,3 +84,24 @@ findings:
       statement = "A stopped rover remains stopped in model time."
     finding: "Both hold-case descriptions promise that the rover remains stopped. StopsWithin200ms is only eventually[0 ms, 200 ms] holds(r.stopped), and StoppedRoverRemainsStoppedInModelTime is only always (holds(r.stopped) implies eventually holds(r.stopped)); neither formula asserts continuous persistence. State what these formulas prove or strengthen the predicates to match the descriptions."
 ```
+
+## Dispositions
+
+Round 1 (posted to QSL-2467 by the earlier disposition pass at head ea39bc4d70aeecb2243111cbc06477622e7962eb).
+
+| FND | Outcome | Reason |
+| --- | --- | --- |
+| FND-001 | fixed | timed-analyze.fsl is gone; the timed claims and the time declaration now live in examples/rover/rules/model-checking/mode-machine.fsl:4-11,78-88 next to the one copy of the operation contracts. |
+| FND-002 | fixed | example.toml statements now say "is stopped at some point within the next 200 ms" and "Whenever the rover is stopped, it is stopped at some point", which is what the formulas state. |
+
+## New findings (disposition pass 2)
+
+Round 2, at head ea39bc4d70aeecb2243111cbc06477622e7962eb (merged as 7d2c190 while this round ran).
+
+| ID | Severity | Summary | Refs |
+| --- | --- | --- | --- |
+| FND-003 | high | Adding the `time Rover tick ... period 50 ms` declaration to the shared mode-machine.fsl makes the existing running case rover/mode-machine (StopsAfterLidarLoss, model-steps, en-1) at least 5x slower: 225 s before the PR, not finished after 32 min CPU at the PR head; the coder ran only the three new cases. | examples/rover/rules/model-checking/mode-machine.fsl:4-11 |
+| FND-004 | medium | timed-liveness-holds checks `always (holds(r.stopped) implies eventually holds(r.stopped))`, a tautology (p implies F p holds at the current position on every trace), so the case passes for any model and any timed semantics; it can only fail on routing, refusal or record-shape bugs. | examples/rover/rules/model-checking/mode-machine.fsl:86-88 |
+| FND-005 | medium | timed-zone-deadline-holds starts in an already-stopped state, so `eventually[0 ms, 200 ms]` is met at time 0; with the refuted case (which a loop of `sample` would also refute for any bound) no case depends on the deadline value, so an engine that ignored the interval would pass all three. | examples/rover/rules/model-checking/mode-machine.fsl:78-84 |
+| FND-006 | low | The claim name StoppedRoverRemainsStoppedInModelTime still promises persistence that the formula does not state (FND-002 fixed the statement text only). | examples/rover/rules/model-checking/mode-machine.fsl:86 |
+| FND-007 | low | `profile tc = "filament.temporal.complete/v1"` is declared but no clause uses it. | examples/rover/rules/model-checking/mode-machine.fsl:4 |
