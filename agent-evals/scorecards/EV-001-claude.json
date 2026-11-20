@@ -1,0 +1,66 @@
+{
+  "format": "fsl-agent-scorecard/v1",
+  "scenario": "EV-001",
+  "scope": "source-owned native object model authoring and checking",
+  "cohort": {
+    "driver": "18d6fb0d84f36df16d77d242897703c6da274c14",
+    "fsl": "deac8870a05e0b9ae28392f597f829011b44ebb8",
+    "codegen": "889e999589c98d3b2dfd96abc1b0c9b233d864de",
+    "ir": "e576f74916b8624c8301aee5d0e3cf72a0078e4c",
+    "cli_agent_evals": "0.3.0"
+  },
+  "agent": "claude",
+  "model": "claude-opus-5-5",
+  "status": "pending",
+  "pending_prerequisite": "Usable existing Claude authentication in the isolated run home.",
+  "startup_attempts": 3,
+  "task_samples": 0,
+  "model_artifacts": 0,
+  "attempts": [
+    {
+      "attempt": 1,
+      "status": "startup-failed",
+      "classification": "harness-error",
+      "cause": "Fresh workspace trust prompt was not handled by the host.",
+      "runner_exit": 1,
+      "live_sdk_pass_rate": "0/1",
+      "exit_reason": "error",
+      "wall_ms": 45136,
+      "tool_calls": null,
+      "turns": null,
+      "task_started": false
+    },
+    {
+      "attempt": 2,
+      "status": "startup-failed",
+      "classification": "harness-error",
+      "cause": "Workspace trust succeeded; isolated home did not establish usable Claude authentication.",
+      "runner_exit": 1,
+      "live_sdk_pass_rate": "0/1",
+      "exit_reason": "error",
+      "wall_ms": 45434,
+      "tool_calls": null,
+      "turns": null,
+      "task_started": false
+    },
+    {
+      "attempt": 3,
+      "status": "startup-failed",
+      "classification": "harness-error",
+      "cause": "Account metadata was preserved; supplied credentials still did not establish usable Claude authentication.",
+      "runner_exit": 1,
+      "live_sdk_pass_rate": "0/1",
+      "exit_reason": "error",
+      "wall_ms": 45411,
+      "tool_calls": null,
+      "turns": null,
+      "task_started": false
+    }
+  ],
+  "notes": [
+    "No Claude task or FSL acceptance result is claimed.",
+    "No authentication, device or login flow was initiated by this evaluation.",
+    "No further automatic live retry is authorized.",
+    "Raw reports, credentials, transcripts and workstation paths are excluded from this scorecard."
+  ]
+}
