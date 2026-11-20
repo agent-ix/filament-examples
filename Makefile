@@ -35,6 +35,7 @@ models:
 	$(NODE) tools/model.mjs tools/models/cell.mjs examples/cell/model/cell.semantic-ir.json
 	$(NODE) tools/model.mjs tools/models/rover.mjs examples/rover/model/rover.semantic-ir.json
 	$(NODE) tools/model.mjs tools/models/rover-spec.mjs examples/rover/model/rover-spec.semantic-ir.json
+	$(NODE) tools/model.mjs tools/models/rover-deadline.mjs examples/rover/model/rover-deadline.semantic-ir.json
 	$(NODE) tools/model.mjs tools/models/lock.mjs examples/lock/model/lock.semantic-ir.json
 	$(NODE) tools/model.mjs tools/models/two-locks.mjs examples/lock/model/two-locks.semantic-ir.json
 	$(NODE) tools/model.mjs tools/models/library.mjs examples/library/model/library.semantic-ir.json

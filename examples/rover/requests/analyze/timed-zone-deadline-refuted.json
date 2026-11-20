@@ -4,27 +4,27 @@
     "models": [{
       "format": "semantic-ir/2.0.0",
       "source": {
-        "file": "../../model/rover.semantic-ir.json",
+        "file": "../../model/rover-deadline.semantic-ir.json",
         "authority": "example",
-        "identity": "example:rover/model",
+        "identity": "example:rover/deadline-model",
         "document": "model",
         "formal_revision": 1
       }
     }],
     "program": {
       "source": {
-        "file": "../../rules/model-checking/mode-machine.fsl",
+        "file": "../../rules/model-checking/stop-deadline.fsl",
         "authority": "example",
-        "identity": "example:rover/mode-machine",
-        "document": "modemachine",
+        "identity": "example:rover/stop-deadline",
+        "document": "stopdeadline",
         "formal_revision": 1
       }
     },
-    "documents": [{"file": "../../data/timed-lidar-lost-start.json"}],
+    "documents": [{"file": "../../data/deadline-degraded-start.json"}],
     "subject": {
-      "initial_states": [{"authority": "example", "identity": "ix://example/rover/data/timed-lidar-lost-start"}],
-      "universes": [{"authority": "example", "identity": "ix://example/rover/data/timed-lidar-lost-start"}]
+      "initial_states": [{"authority": "example", "identity": "ix://example/rover-deadline/data/deadline-degraded-start"}],
+      "universes": [{"authority": "example", "identity": "ix://example/rover-deadline/data/deadline-degraded-start"}]
     },
-    "items": [{"claim": "StopsWithin50ms"}]
+    "items": [{"claim": "StopsWithin150ms"}]
   }
 }

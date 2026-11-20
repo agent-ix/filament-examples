@@ -12,7 +12,7 @@
         "truth": "false"
       },
       "category": "violation",
-      "claim_name": "StopsWithin50ms",
+      "claim_name": "StopsWithin150ms",
       "counterexample": {
         "fairness": [],
         "initial_state": 0,
@@ -23,19 +23,19 @@
           "identity": "r1",
           "object_type": {
             "original": {
-              "node": "ix://example/rover/Rover",
-              "package": "example/rover"
+              "node": "ix://example/rover-deadline/Rover",
+              "package": "example/rover-deadline"
             },
             "owner_effective_type": null
           },
           "type": "reference",
           "universe": {
             "ordinal": 0,
-            "package": "example/rover",
+            "package": "example/rover-deadline",
             "path": [
               "model",
               "object_type",
-              "ix://example/rover/Rover"
+              "ix://example/rover-deadline/Rover"
             ]
           }
         },
@@ -43,47 +43,34 @@
           {
             "delay": {
               "denominator": "1",
-              "numerator": "0"
+              "numerator": "75"
             },
             "post_state": {
-              "key": "eyJjbG9ja3MiOltdLCJzdGF0ZSI6eyJib3VuZHMiOnsiZW50cmllcyI6W10sInR5cGUiOiJtYXAifSwiY29udHJvbCI6eyJlbnRyaWVzIjpbXSwidHlwZSI6Im1hcCJ9LCJtZW1vcnkiOnsiZW50cmllcyI6W10sInR5cGUiOiJtYXAifSwib2JzZXJ2YXRpb25zIjp7ImVudHJpZXMiOltdLCJ0eXBlIjoibWFwIn0sInF1ZXVlcyI6eyJlbnRyaWVzIjpbXSwidHlwZSI6Im1hcCJ9LCJyb2xlcyI6eyJlbnRyaWVzIjpbXSwidHlwZSI6Im1hcCJ9LCJzZW1hbnRpYyI6eyJlbnRyaWVzIjpbeyJrZXkiOnsidHlwZSI6InRleHQiLCJ2YWx1ZSI6IntcIm5vZGVcIjpcIml4Oi8vZXhhbXBsZS9yb3Zlci9yb3ZlcnNcIixcInBhY2thZ2VcIjpcImV4YW1wbGUvcm92ZXJcIn0ifSwidmFsdWUiOnsiZW50cmllcyI6W3sia2V5Ijp7ImlkZW50aXR5IjoicjEiLCJvYmplY3RfdHlwZSI6eyJvcmlnaW5hbCI6eyJub2RlIjoiaXg6Ly9leGFtcGxlL3JvdmVyL1JvdmVyIiwicGFja2FnZSI6ImV4YW1wbGUvcm92ZXIifSwib3duZXJfZWZmZWN0aXZlX3R5cGUiOm51bGx9LCJ0eXBlIjoicmVmZXJlbmNlIiwidW5pdmVyc2UiOnsib3JkaW5hbCI6MCwicGFja2FnZSI6ImV4YW1wbGUvcm92ZXIiLCJwYXRoIjpbIm1vZGVsIiwib2JqZWN0X3R5cGUiLCJpeDovL2V4YW1wbGUvcm92ZXIvUm92ZXIiXX19LCJ2YWx1ZSI6eyJmaWVsZHMiOlt7Im5hbWUiOiJtb2RlIiwidmFsdWUiOnsibWVtYmVyIjoiRGVncmFkZWQiLCJuYW1lIjoie1wibm9kZVwiOlwiaXg6Ly9leGFtcGxlL3JvdmVyL01vZGVcIixcInBhY2thZ2VcIjpcImV4YW1wbGUvcm92ZXJcIn0iLCJ0eXBlIjoiZW51bSJ9fSx7Im5hbWUiOiJzcGVlZCIsInZhbHVlIjp7InR5cGUiOiJpbnRlZ2VyIiwidmFsdWUiOiIzMDAifX0seyJuYW1lIjoic3RvcHBlZCIsInZhbHVlIjp7InR5cGUiOiJib29sZWFuIiwidmFsdWUiOmZhbHNlfX0seyJuYW1lIjoibGlkYXJPayIsInZhbHVlIjp7InR5cGUiOiJib29sZWFuIiwidmFsdWUiOmZhbHNlfX0seyJuYW1lIjoicmFuZ2VBIiwidmFsdWUiOnsidHlwZSI6ImludGVnZXIiLCJ2YWx1ZSI6IjUwMDAifX0seyJuYW1lIjoicmFuZ2VCIiwidmFsdWUiOnsidHlwZSI6ImludGVnZXIiLCJ2YWx1ZSI6IjUwMDAifX0seyJuYW1lIjoicmFuZ2VDIiwidmFsdWUiOnsidHlwZSI6ImludGVnZXIiLCJ2YWx1ZSI6IjUwMDAifX0seyJuYW1lIjoiY2xvY2siLCJ2YWx1ZSI6eyJ0eXBlIjoiaW50ZWdlciIsInZhbHVlIjoiNTAifX0seyJuYW1lIjoidm90ZVdyb25nIiwidmFsdWUiOnsidHlwZSI6ImJvb2xlYW4iLCJ2YWx1ZSI6ZmFsc2V9fV0sIm5hbWUiOiJ7XCJub2RlXCI6XCJpeDovL2V4YW1wbGUvcm92ZXIvUm92ZXJcIixcInBhY2thZ2VcIjpcImV4YW1wbGUvcm92ZXJcIn0iLCJ0eXBlIjoicmVjb3JkIn19XSwidHlwZSI6Im1hcCJ9fV0sInR5cGUiOiJtYXAifSwidHlwZSI6InNpbXVsYXRpb24tc3RhdGUifSwidHlwZSI6InRpbWVkLXN0YXRlIn0"
+              "key": "eyJjbG9ja3MiOlt7ImZpZWxkIjp7Im5vZGUiOiJpeDovL2V4YW1wbGUvcm92ZXItZGVhZGxpbmUvUm92ZXIveCIsInBhY2thZ2UiOiJleGFtcGxlL3JvdmVyLWRlYWRsaW5lIn0sIm9iamVjdCI6eyJpZGVudGl0eSI6InIxIiwib2JqZWN0X3R5cGUiOnsib3JpZ2luYWwiOnsibm9kZSI6Iml4Oi8vZXhhbXBsZS9yb3Zlci1kZWFkbGluZS9Sb3ZlciIsInBhY2thZ2UiOiJleGFtcGxlL3JvdmVyLWRlYWRsaW5lIn0sIm93bmVyX2VmZmVjdGl2ZV90eXBlIjpudWxsfSwidHlwZSI6InJlZmVyZW5jZSIsInVuaXZlcnNlIjp7Im9yZGluYWwiOjAsInBhY2thZ2UiOiJleGFtcGxlL3JvdmVyLWRlYWRsaW5lIiwicGF0aCI6WyJtb2RlbCIsIm9iamVjdF90eXBlIiwiaXg6Ly9leGFtcGxlL3JvdmVyLWRlYWRsaW5lL1JvdmVyIl19fSwicGF0aCI6W3sibmFtZSI6IngiLCJ0eXBlIjoiZmllbGQifV0sInR5cGUiOiJjbG9jayIsInZhbHVlIjp7ImRlbm9taW5hdG9yIjoiMSIsIm51bWVyYXRvciI6IjAiLCJ0eXBlIjoicmF0aW9uYWwifX1dLCJzdGF0ZSI6eyJib3VuZHMiOnsiZW50cmllcyI6W10sInR5cGUiOiJtYXAifSwiY29udHJvbCI6eyJlbnRyaWVzIjpbXSwidHlwZSI6Im1hcCJ9LCJtZW1vcnkiOnsiZW50cmllcyI6W10sInR5cGUiOiJtYXAifSwib2JzZXJ2YXRpb25zIjp7ImVudHJpZXMiOltdLCJ0eXBlIjoibWFwIn0sInF1ZXVlcyI6eyJlbnRyaWVzIjpbXSwidHlwZSI6Im1hcCJ9LCJyb2xlcyI6eyJlbnRyaWVzIjpbXSwidHlwZSI6Im1hcCJ9LCJzZW1hbnRpYyI6eyJlbnRyaWVzIjpbeyJrZXkiOnsidHlwZSI6InRleHQiLCJ2YWx1ZSI6IntcIm5vZGVcIjpcIml4Oi8vZXhhbXBsZS9yb3Zlci1kZWFkbGluZS9yb3ZlcnNcIixcInBhY2thZ2VcIjpcImV4YW1wbGUvcm92ZXItZGVhZGxpbmVcIn0ifSwidmFsdWUiOnsiZW50cmllcyI6W3sia2V5Ijp7ImlkZW50aXR5IjoicjEiLCJvYmplY3RfdHlwZSI6eyJvcmlnaW5hbCI6eyJub2RlIjoiaXg6Ly9leGFtcGxlL3JvdmVyLWRlYWRsaW5lL1JvdmVyIiwicGFja2FnZSI6ImV4YW1wbGUvcm92ZXItZGVhZGxpbmUifSwib3duZXJfZWZmZWN0aXZlX3R5cGUiOm51bGx9LCJ0eXBlIjoicmVmZXJlbmNlIiwidW5pdmVyc2UiOnsib3JkaW5hbCI6MCwicGFja2FnZSI6ImV4YW1wbGUvcm92ZXItZGVhZGxpbmUiLCJwYXRoIjpbIm1vZGVsIiwib2JqZWN0X3R5cGUiLCJpeDovL2V4YW1wbGUvcm92ZXItZGVhZGxpbmUvUm92ZXIiXX19LCJ2YWx1ZSI6eyJmaWVsZHMiOlt7Im5hbWUiOiJtb2RlIiwidmFsdWUiOnsibWVtYmVyIjoiU2FmZVN0b3AiLCJuYW1lIjoie1wibm9kZVwiOlwiaXg6Ly9leGFtcGxlL3JvdmVyLWRlYWRsaW5lL01vZGVcIixcInBhY2thZ2VcIjpcImV4YW1wbGUvcm92ZXItZGVhZGxpbmVcIn0iLCJ0eXBlIjoiZW51bSJ9fSx7Im5hbWUiOiJzdG9wcGVkIiwidmFsdWUiOnsidHlwZSI6ImJvb2xlYW4iLCJ2YWx1ZSI6ZmFsc2V9fV0sIm5hbWUiOiJ7XCJub2RlXCI6XCJpeDovL2V4YW1wbGUvcm92ZXItZGVhZGxpbmUvUm92ZXJcIixcInBhY2thZ2VcIjpcImV4YW1wbGUvcm92ZXItZGVhZGxpbmVcIn0iLCJ0eXBlIjoicmVjb3JkIn19XSwidHlwZSI6Im1hcCJ9fV0sInR5cGUiOiJtYXAifSwidHlwZSI6InNpbXVsYXRpb24tc3RhdGUifSwidHlwZSI6InRpbWVkLXN0YXRlIn0"
             },
             "transition": {
-              "arguments": [
-                {
-                  "type": "boolean",
-                  "value": false
-                },
-                {
-                  "type": "boolean",
-                  "value": false
-                },
-                {
-                  "type": "boolean",
-                  "value": false
-                }
-              ],
+              "arguments": [],
               "operation": {
-                "node": "ix://example/rover/Rover/sample",
-                "package": "example/rover"
+                "node": "ix://example/rover-deadline/Rover/brake",
+                "package": "example/rover-deadline"
               },
               "receiver": {
                 "identity": "r1",
                 "object_type": {
                   "original": {
-                    "node": "ix://example/rover/Rover",
-                    "package": "example/rover"
+                    "node": "ix://example/rover-deadline/Rover",
+                    "package": "example/rover-deadline"
                   },
                   "owner_effective_type": null
                 },
                 "type": "reference",
                 "universe": {
                   "ordinal": 0,
-                  "package": "example/rover",
+                  "package": "example/rover-deadline",
                   "path": [
                     "model",
                     "object_type",
-                    "ix://example/rover/Rover"
+                    "ix://example/rover-deadline/Rover"
                   ]
                 }
               },
@@ -92,48 +79,35 @@
           },
           {
             "delay": {
-              "denominator": "1",
-              "numerator": "0"
+              "denominator": "2",
+              "numerator": "175"
             },
             "post_state": {
-              "key": "eyJjbG9ja3MiOltdLCJzdGF0ZSI6eyJib3VuZHMiOnsiZW50cmllcyI6W10sInR5cGUiOiJtYXAifSwiY29udHJvbCI6eyJlbnRyaWVzIjpbXSwidHlwZSI6Im1hcCJ9LCJtZW1vcnkiOnsiZW50cmllcyI6W10sInR5cGUiOiJtYXAifSwib2JzZXJ2YXRpb25zIjp7ImVudHJpZXMiOltdLCJ0eXBlIjoibWFwIn0sInF1ZXVlcyI6eyJlbnRyaWVzIjpbXSwidHlwZSI6Im1hcCJ9LCJyb2xlcyI6eyJlbnRyaWVzIjpbXSwidHlwZSI6Im1hcCJ9LCJzZW1hbnRpYyI6eyJlbnRyaWVzIjpbeyJrZXkiOnsidHlwZSI6InRleHQiLCJ2YWx1ZSI6IntcIm5vZGVcIjpcIml4Oi8vZXhhbXBsZS9yb3Zlci9yb3ZlcnNcIixcInBhY2thZ2VcIjpcImV4YW1wbGUvcm92ZXJcIn0ifSwidmFsdWUiOnsiZW50cmllcyI6W3sia2V5Ijp7ImlkZW50aXR5IjoicjEiLCJvYmplY3RfdHlwZSI6eyJvcmlnaW5hbCI6eyJub2RlIjoiaXg6Ly9leGFtcGxlL3JvdmVyL1JvdmVyIiwicGFja2FnZSI6ImV4YW1wbGUvcm92ZXIifSwib3duZXJfZWZmZWN0aXZlX3R5cGUiOm51bGx9LCJ0eXBlIjoicmVmZXJlbmNlIiwidW5pdmVyc2UiOnsib3JkaW5hbCI6MCwicGFja2FnZSI6ImV4YW1wbGUvcm92ZXIiLCJwYXRoIjpbIm1vZGVsIiwib2JqZWN0X3R5cGUiLCJpeDovL2V4YW1wbGUvcm92ZXIvUm92ZXIiXX19LCJ2YWx1ZSI6eyJmaWVsZHMiOlt7Im5hbWUiOiJtb2RlIiwidmFsdWUiOnsibWVtYmVyIjoiRGVncmFkZWQiLCJuYW1lIjoie1wibm9kZVwiOlwiaXg6Ly9leGFtcGxlL3JvdmVyL01vZGVcIixcInBhY2thZ2VcIjpcImV4YW1wbGUvcm92ZXJcIn0iLCJ0eXBlIjoiZW51bSJ9fSx7Im5hbWUiOiJzcGVlZCIsInZhbHVlIjp7InR5cGUiOiJpbnRlZ2VyIiwidmFsdWUiOiIzMDAifX0seyJuYW1lIjoic3RvcHBlZCIsInZhbHVlIjp7InR5cGUiOiJib29sZWFuIiwidmFsdWUiOmZhbHNlfX0seyJuYW1lIjoibGlkYXJPayIsInZhbHVlIjp7InR5cGUiOiJib29sZWFuIiwidmFsdWUiOmZhbHNlfX0seyJuYW1lIjoicmFuZ2VBIiwidmFsdWUiOnsidHlwZSI6ImludGVnZXIiLCJ2YWx1ZSI6IjUwMDAifX0seyJuYW1lIjoicmFuZ2VCIiwidmFsdWUiOnsidHlwZSI6ImludGVnZXIiLCJ2YWx1ZSI6IjUwMDAifX0seyJuYW1lIjoicmFuZ2VDIiwidmFsdWUiOnsidHlwZSI6ImludGVnZXIiLCJ2YWx1ZSI6IjUwMDAifX0seyJuYW1lIjoiY2xvY2siLCJ2YWx1ZSI6eyJ0eXBlIjoiaW50ZWdlciIsInZhbHVlIjoiNTAifX0seyJuYW1lIjoidm90ZVdyb25nIiwidmFsdWUiOnsidHlwZSI6ImJvb2xlYW4iLCJ2YWx1ZSI6ZmFsc2V9fV0sIm5hbWUiOiJ7XCJub2RlXCI6XCJpeDovL2V4YW1wbGUvcm92ZXIvUm92ZXJcIixcInBhY2thZ2VcIjpcImV4YW1wbGUvcm92ZXJcIn0iLCJ0eXBlIjoicmVjb3JkIn19XSwidHlwZSI6Im1hcCJ9fV0sInR5cGUiOiJtYXAifSwidHlwZSI6InNpbXVsYXRpb24tc3RhdGUifSwidHlwZSI6InRpbWVkLXN0YXRlIn0"
+              "key": "eyJjbG9ja3MiOlt7ImZpZWxkIjp7Im5vZGUiOiJpeDovL2V4YW1wbGUvcm92ZXItZGVhZGxpbmUvUm92ZXIveCIsInBhY2thZ2UiOiJleGFtcGxlL3JvdmVyLWRlYWRsaW5lIn0sIm9iamVjdCI6eyJpZGVudGl0eSI6InIxIiwib2JqZWN0X3R5cGUiOnsib3JpZ2luYWwiOnsibm9kZSI6Iml4Oi8vZXhhbXBsZS9yb3Zlci1kZWFkbGluZS9Sb3ZlciIsInBhY2thZ2UiOiJleGFtcGxlL3JvdmVyLWRlYWRsaW5lIn0sIm93bmVyX2VmZmVjdGl2ZV90eXBlIjpudWxsfSwidHlwZSI6InJlZmVyZW5jZSIsInVuaXZlcnNlIjp7Im9yZGluYWwiOjAsInBhY2thZ2UiOiJleGFtcGxlL3JvdmVyLWRlYWRsaW5lIiwicGF0aCI6WyJtb2RlbCIsIm9iamVjdF90eXBlIiwiaXg6Ly9leGFtcGxlL3JvdmVyLWRlYWRsaW5lL1JvdmVyIl19fSwicGF0aCI6W3sibmFtZSI6IngiLCJ0eXBlIjoiZmllbGQifV0sInR5cGUiOiJjbG9jayIsInZhbHVlIjp7ImRlbm9taW5hdG9yIjoiMiIsIm51bWVyYXRvciI6IjE3NSIsInR5cGUiOiJyYXRpb25hbCJ9fV0sInN0YXRlIjp7ImJvdW5kcyI6eyJlbnRyaWVzIjpbXSwidHlwZSI6Im1hcCJ9LCJjb250cm9sIjp7ImVudHJpZXMiOltdLCJ0eXBlIjoibWFwIn0sIm1lbW9yeSI6eyJlbnRyaWVzIjpbXSwidHlwZSI6Im1hcCJ9LCJvYnNlcnZhdGlvbnMiOnsiZW50cmllcyI6W10sInR5cGUiOiJtYXAifSwicXVldWVzIjp7ImVudHJpZXMiOltdLCJ0eXBlIjoibWFwIn0sInJvbGVzIjp7ImVudHJpZXMiOltdLCJ0eXBlIjoibWFwIn0sInNlbWFudGljIjp7ImVudHJpZXMiOlt7ImtleSI6eyJ0eXBlIjoidGV4dCIsInZhbHVlIjoie1wibm9kZVwiOlwiaXg6Ly9leGFtcGxlL3JvdmVyLWRlYWRsaW5lL3JvdmVyc1wiLFwicGFja2FnZVwiOlwiZXhhbXBsZS9yb3Zlci1kZWFkbGluZVwifSJ9LCJ2YWx1ZSI6eyJlbnRyaWVzIjpbeyJrZXkiOnsiaWRlbnRpdHkiOiJyMSIsIm9iamVjdF90eXBlIjp7Im9yaWdpbmFsIjp7Im5vZGUiOiJpeDovL2V4YW1wbGUvcm92ZXItZGVhZGxpbmUvUm92ZXIiLCJwYWNrYWdlIjoiZXhhbXBsZS9yb3Zlci1kZWFkbGluZSJ9LCJvd25lcl9lZmZlY3RpdmVfdHlwZSI6bnVsbH0sInR5cGUiOiJyZWZlcmVuY2UiLCJ1bml2ZXJzZSI6eyJvcmRpbmFsIjowLCJwYWNrYWdlIjoiZXhhbXBsZS9yb3Zlci1kZWFkbGluZSIsInBhdGgiOlsibW9kZWwiLCJvYmplY3RfdHlwZSIsIml4Oi8vZXhhbXBsZS9yb3Zlci1kZWFkbGluZS9Sb3ZlciJdfX0sInZhbHVlIjp7ImZpZWxkcyI6W3sibmFtZSI6Im1vZGUiLCJ2YWx1ZSI6eyJtZW1iZXIiOiJTYWZlU3RvcCIsIm5hbWUiOiJ7XCJub2RlXCI6XCJpeDovL2V4YW1wbGUvcm92ZXItZGVhZGxpbmUvTW9kZVwiLFwicGFja2FnZVwiOlwiZXhhbXBsZS9yb3Zlci1kZWFkbGluZVwifSIsInR5cGUiOiJlbnVtIn19LHsibmFtZSI6InN0b3BwZWQiLCJ2YWx1ZSI6eyJ0eXBlIjoiYm9vbGVhbiIsInZhbHVlIjp0cnVlfX1dLCJuYW1lIjoie1wibm9kZVwiOlwiaXg6Ly9leGFtcGxlL3JvdmVyLWRlYWRsaW5lL1JvdmVyXCIsXCJwYWNrYWdlXCI6XCJleGFtcGxlL3JvdmVyLWRlYWRsaW5lXCJ9IiwidHlwZSI6InJlY29yZCJ9fV0sInR5cGUiOiJtYXAifX1dLCJ0eXBlIjoibWFwIn0sInR5cGUiOiJzaW11bGF0aW9uLXN0YXRlIn0sInR5cGUiOiJ0aW1lZC1zdGF0ZSJ9"
             },
             "transition": {
-              "arguments": [
-                {
-                  "type": "boolean",
-                  "value": false
-                },
-                {
-                  "type": "boolean",
-                  "value": false
-                },
-                {
-                  "type": "boolean",
-                  "value": false
-                }
-              ],
+              "arguments": [],
               "operation": {
-                "node": "ix://example/rover/Rover/sample",
-                "package": "example/rover"
+                "node": "ix://example/rover-deadline/Rover/halt",
+                "package": "example/rover-deadline"
               },
               "receiver": {
                 "identity": "r1",
                 "object_type": {
                   "original": {
-                    "node": "ix://example/rover/Rover",
-                    "package": "example/rover"
+                    "node": "ix://example/rover-deadline/Rover",
+                    "package": "example/rover-deadline"
                   },
                   "owner_effective_type": null
                 },
                 "type": "reference",
                 "universe": {
                   "ordinal": 0,
-                  "package": "example/rover",
+                  "package": "example/rover-deadline",
                   "path": [
                     "model",
                     "object_type",
-                    "ix://example/rover/Rover"
+                    "ix://example/rover-deadline/Rover"
                   ]
                 }
               },
@@ -153,7 +127,7 @@
       "replay": {
         "reproduced": true,
         "target": {
-          "state_clause": "StopsWithin50ms"
+          "state_clause": "StopsWithin150ms"
         }
       },
       "request": {
@@ -166,20 +140,20 @@
         "claim": {
           "node": {
             "ordinal": 0,
-            "package": "example:rover/mode-machine",
+            "package": "example:rover/stop-deadline",
             "path": [
               "temporal",
               "temporal_clause",
               {
                 "ordinal": 0,
-                "package": "example:rover/mode-machine",
+                "package": "example:rover/stop-deadline",
                 "path": [
                   "value",
                   "parameter",
                   "name",
                   {
                     "ordinal": 0,
-                    "package": "example:rover/mode-machine",
+                    "package": "example:rover/stop-deadline",
                     "path": [
                       "scalar_type",
                       "text"
@@ -189,7 +163,7 @@
                   "level",
                   {
                     "ordinal": 0,
-                    "package": "example:rover/mode-machine",
+                    "package": "example:rover/stop-deadline",
                     "path": [
                       "scalar_type",
                       "integer"
@@ -198,17 +172,17 @@
                   "0",
                   {
                     "ordinal": 0,
-                    "package": "example:rover/mode-machine",
+                    "package": "example:rover/stop-deadline",
                     "path": [
                       "composite_type",
                       "reference",
                       {
                         "ordinal": 0,
-                        "package": "example/rover",
+                        "package": "example/rover-deadline",
                         "path": [
                           "model",
                           "object_type",
-                          "ix://example/rover/Rover"
+                          "ix://example/rover-deadline/Rover"
                         ]
                       }
                     ]
@@ -217,7 +191,7 @@
               },
               {
                 "ordinal": 0,
-                "package": "example:rover/mode-machine",
+                "package": "example:rover/stop-deadline",
                 "path": [
                   "scalar_type",
                   "text"
@@ -227,39 +201,39 @@
               "kind",
               "origin",
               {
-                "ordinal": 2,
-                "package": "example:rover/mode-machine",
+                "ordinal": 1,
+                "package": "example:rover/stop-deadline",
                 "path": [
                   "temporal",
                   "formula",
                   {
                     "ordinal": 0,
-                    "package": "example:rover/mode-machine",
+                    "package": "example:rover/stop-deadline",
                     "path": [
                       "temporal",
                       "formula",
                       {
                         "ordinal": 0,
-                        "package": "example:rover/mode-machine",
+                        "package": "example:rover/stop-deadline",
                         "path": [
                           "expression",
                           "query",
                           {
                             "ordinal": 0,
-                            "package": "example:rover/mode-machine",
+                            "package": "example:rover/stop-deadline",
                             "path": [
                               "expression",
                               "deref",
                               {
                                 "ordinal": 0,
-                                "package": "example:rover/mode-machine",
+                                "package": "example:rover/stop-deadline",
                                 "path": [
                                   "value",
                                   "parameter",
                                   "name",
                                   {
                                     "ordinal": 0,
-                                    "package": "example:rover/mode-machine",
+                                    "package": "example:rover/stop-deadline",
                                     "path": [
                                       "scalar_type",
                                       "text"
@@ -269,7 +243,7 @@
                                   "level",
                                   {
                                     "ordinal": 0,
-                                    "package": "example:rover/mode-machine",
+                                    "package": "example:rover/stop-deadline",
                                     "path": [
                                       "scalar_type",
                                       "integer"
@@ -278,17 +252,17 @@
                                   "0",
                                   {
                                     "ordinal": 0,
-                                    "package": "example:rover/mode-machine",
+                                    "package": "example:rover/stop-deadline",
                                     "path": [
                                       "composite_type",
                                       "reference",
                                       {
                                         "ordinal": 0,
-                                        "package": "example/rover",
+                                        "package": "example/rover-deadline",
                                         "path": [
                                           "model",
                                           "object_type",
-                                          "ix://example/rover/Rover"
+                                          "ix://example/rover-deadline/Rover"
                                         ]
                                       }
                                     ]
@@ -299,11 +273,11 @@
                               "deref",
                               {
                                 "ordinal": 0,
-                                "package": "example/rover",
+                                "package": "example/rover-deadline",
                                 "path": [
                                   "model",
                                   "object_type",
-                                  "ix://example/rover/Rover"
+                                  "ix://example/rover-deadline/Rover"
                                 ]
                               }
                             ]
@@ -313,7 +287,7 @@
                           "query",
                           {
                             "ordinal": 0,
-                            "package": "example:rover/mode-machine",
+                            "package": "example:rover/stop-deadline",
                             "path": [
                               "scalar_type",
                               "boolean"
@@ -325,7 +299,7 @@
                       "temporal_formula",
                       {
                         "ordinal": 0,
-                        "package": "example:rover/mode-machine",
+                        "package": "example:rover/stop-deadline",
                         "path": [
                           "scalar_type",
                           "boolean"
@@ -337,7 +311,7 @@
                   "temporal_formula",
                   {
                     "ordinal": 0,
-                    "package": "example:rover/mode-machine",
+                    "package": "example:rover/stop-deadline",
                     "path": [
                       "scalar_type",
                       "boolean"
@@ -350,7 +324,7 @@
               "temporal",
               {
                 "ordinal": 0,
-                "package": "example:rover/mode-machine",
+                "package": "example:rover/stop-deadline",
                 "path": [
                   "scalar_type",
                   "boolean"
@@ -384,14 +358,14 @@
             "initial_states": [
               {
                 "authority": "example",
-                "identity": "ix://example/rover/data/timed-lidar-lost-start"
+                "identity": "ix://example/rover-deadline/data/deadline-degraded-start"
               }
             ],
             "proof_bounds": [],
             "universes": [
               {
                 "authority": "example",
-                "identity": "ix://example/rover/data/timed-lidar-lost-start"
+                "identity": "ix://example/rover-deadline/data/deadline-degraded-start"
               }
             ]
           }
