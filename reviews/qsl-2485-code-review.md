@@ -15,7 +15,7 @@ Diff-scoped independent review of QSL-2485, filament-examples PR 62. Code review
 
 ## Verdict
 
-**CONDITIONAL** — Both original findings are fixed. The reviewed integration is ready for the authorized single Codex sample followed by the single Claude sample. Live scenario acceptance remains pending; deterministic checks are not agent success rates.
+**CONDITIONAL** — Both original findings remain fixed. The scoped runtime integration correction is approved for retained Codex command/boundary evidence grading and one affected Claude retry when directed by the code lead. Live scenario acceptance and the honest final scorecard remain pending.
 
 ## Findings
 
@@ -151,3 +151,15 @@ Inspected only the FND-002 fix in 253fd2d5883a0e559902d9bd0ab1a627f998b5d4..5f85
 | FND | outcome | reason |
 | --- | --- | --- |
 | FND-002 | fixed | Assert now retains ordered RecordedInput contexts. Evidence uses per-call Codex workdir and Claude persistent cwd while binding the expected operand to the exact workspace file. The targeted fixture rejects docs/model.fsl, accepts ../model.fsl from docs, and verifies that a Codex workdir override does not leak into the next call. |
+
+## Runtime integration correction
+
+Inspected only ae74cf2..fa959c7712134b68b08a10eed3d79cd5e82d7c65. This addresses actual observed runtime failures, not another sweep or a reopening of either original finding.
+
+The original Codex sample authored a correct model and passed all 156 public semantic probes, but its command evidence was zero because the parser missed the actual SDK typed CommandExecution events. The original Claude sample performed no task work because it timed out at the project-trust dialog. These original outcomes must remain in the scorecard.
+
+The fix reads published typed event_msg/item_completed/CommandExecution argv and file-URI cwd via the declared url dependency. It ignores aggregated output and assistant prose for positive command evidence, does not evaluate opaque JavaScript, and retains custom tool inputs for boundary inspection. The retained-evidence subcommand reuses command/boundary checks without invoking model checking, the 156 semantic probes, or an agent.
+
+Claude trust preparation changes only the isolated per-run home config, guards the configured home against the actual HOME, canonicalizes the SDK workspace and constrains it beneath the sibling private work root. It trusts that one workspace without changing operator settings.
+
+No additional findings in this scoped runtime diff. Accepted reported typed-execution/context/space-URI/comment-output/invalid-URI tests, private trust positive/outside-rejection tests, and scoped all-target Clippy. No tests, builds, probes, live agents or original findings were rerun or re-reviewed. Ready for code-lead-directed offline retained Codex evidence grading and one affected Claude retry; no broader live rerun is warranted.
