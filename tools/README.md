@@ -26,25 +26,30 @@ fsl-examples record shop --case paid-short
 ### Native Mac source smoke
 
 The manual [Install test workflow](../.github/workflows/install-test.yml) has a
-`macos-main` lane. It builds one native FSL binary on `macos-15`, then runs the
-existing `platform_smoke` test against that binary and the selected driver's
-README. The test requires actual Darwin arm64, executes the README quickstart,
-and checks its completed Boolean result and empty diagnostics. No release asset
-is needed, and a Linux run supplies no Mac pass evidence.
+`macos-main` lane. It downloads the native arm64 FSL artifact from one successful
+driver main build, checks its digest, and runs the driver's README quickstart on
+`macos-15`. The existing smoke test requires actual Darwin arm64 and checks the
+completed Boolean result and empty diagnostics.
 
-Dispatch the reviewed examples revision with the coherent driver, language,
-codegen and contract IR inputs. The defaults identify the accepted main cohort;
-use `main` or another revision explicitly when selecting a later coherent graph.
+First run the driver's existing `release.yml` manually on `main` with
+`publish=false`. That builds workflow artifacts without publishing a release.
+Use the successful run ID, its exact driver commit, and the SHA-256 digest of
+its `fsl-aarch64-apple-darwin` artifact to dispatch the reviewed examples revision.
 
 ```bash
-gh workflow run install-test.yml --ref main -f lane=macos-main
+gh workflow run install-test.yml --ref main -f lane=macos-main \
+  -f driver_run_id="$DRIVER_RUN_ID" -f driver_sha="$DRIVER_SHA" \
+  -f artifact_digest="$ARTIFACT_DIGEST"
 ```
 
-The job retains the four resolved source commits, build log and smoke log as
-the `macos-main-smoke` artifact. Sources and Cargo targets live in one temporary
-runner directory and are removed when the step ends. A failed checkout or build
-fails the job; it cannot count as a platform pass. The `install-matrix` choice
-runs the existing Linux install matrix and Mac release installation.
+The job requires a successful manual build on main, the exact driver commit,
+an unexpired artifact with the selected name and digest, and matching downloaded
+bytes. It checks the executable's arm64 architecture and reads the README from
+that same driver commit. It retains those identities and the native smoke log
+as `macos-main-smoke`. Temporary artifacts, sources and the small test harness
+target are removed when the step ends. This consumer performs no FSL build.
+The `install-matrix` choice runs the existing Linux install matrix and Mac
+release installation.
 
 ## Steps runner
 
