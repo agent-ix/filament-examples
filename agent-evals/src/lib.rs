@@ -39,6 +39,8 @@ pub mod scenarios {
     pub mod author_model;
     /// Four public CLI tasks learned from help without shipped references.
     pub mod blind_help;
+    /// Refusal-only repair with independent public function executions.
+    pub mod refusal_repair;
 }
 
 /// Published external-provider integration and independent command evidence.

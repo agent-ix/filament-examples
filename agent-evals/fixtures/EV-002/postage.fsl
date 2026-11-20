@@ -1,0 +1,10 @@
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+
+// postage(units) returns an Integer charge, in whole credits.
+// The base charge is 7. Each unit adds 3 credits.
+// Negative unit counts are treated as zero, so their charge is also 7.
+// Keep this function's name, Integer parameter and Integer result.
+function postage using v(units: Integer): Integer pure {
+    units >= 0
+}

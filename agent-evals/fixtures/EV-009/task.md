@@ -2,6 +2,8 @@ Use only the shipped `fsl` executable, its own help and errors, and these origin
 problem inputs. Work inside this directory. Do not read documentation, grammar,
 source repositories, evaluator code or reference answers. Keep every supplied
 source, request, domain and trace file unchanged.
+Select the recording with the CLI's named input-file option rather than piping
+or redirecting standard input.
 
 Discover how to perform these four supported CLI tasks. Save the actual machine
 readable command outputs, including the monitor's complete output stream:

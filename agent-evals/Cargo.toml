@@ -13,6 +13,8 @@ toml = "1"
 url = "2"
 fsl-cst = { git = "https://github.com/agent-ix/filament-spec-language", rev = "deac8870a05e0b9ae28392f597f829011b44ebb8" }
 fsl-foundation = { git = "https://github.com/agent-ix/filament-spec-language", rev = "deac8870a05e0b9ae28392f597f829011b44ebb8" }
+tree-sitter = "0.27.2"
+tree-sitter-bash = "0.25.1"
 
 [lints.rust]
 unsafe_code = "forbid"
