@@ -1,0 +1,5 @@
+// FSpec FR-005
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+function pick using v(o: Option<Int[0, 9]>): Int[0, 9] pure { if present(o) then value(o) else 0 }
+function example using v(): Boolean pure { pick(Some(3)) = 3 and pick(absent) = 0 }

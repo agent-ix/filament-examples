@@ -1,0 +1,4 @@
+// FSpec FR-140-AC-5 (range boundary)
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+function example using v(): Boolean pure { let a: Decimal[0, 10000; 2, 2; exact] = decimal(9900, 2) in let b: Decimal[0, 10000; 2, 2; exact] = decimal(100, 2) in a + b = decimal(10000, 2) }

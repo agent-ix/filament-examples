@@ -1,0 +1,5 @@
+// FSpec FR-146-AC-17
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+object Account identity (id) { id: Int[0, 9]; balance: Int[0, 100]; population accounts; operation withdraw(amount: Int[0, 100]): Boolean modifies self.balance; }
+post Debited using v on Account::withdraw { self.balance = pre(self.balance) - amount }

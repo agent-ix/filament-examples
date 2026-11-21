@@ -1,0 +1,5 @@
+// FSpec FR-147 (/ never denotes integer division)
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+profile law = "filament.value.integer-division.floor/v1";
+function f using v(a: Integer, b: Integer): Integer pure { a / b }

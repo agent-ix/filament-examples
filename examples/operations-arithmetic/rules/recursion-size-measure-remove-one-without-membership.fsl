@@ -1,0 +1,4 @@
+// FSpec FR-146-AC-16
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+function drain using v(s: Set<Int[0, 9]>, e: Int[0, 9]): Integer pure decreases(size(s)) { 1 + drain(removeOne(s, e), e) }

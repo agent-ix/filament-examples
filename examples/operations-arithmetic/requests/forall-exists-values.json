@@ -1,0 +1,19 @@
+{
+  "format": "native-run/1",
+  "request": {
+    "call": {
+      "arguments": [],
+      "function": "example"
+    },
+    "models": [],
+    "program": {
+      "source": {
+        "authority": "example",
+        "document": "forall-exists-values",
+        "file": "../rules/forall-exists-values.fsl",
+        "formal_revision": 1,
+        "identity": "operations-arithmetic/forall-exists-values"
+      }
+    }
+  }
+}

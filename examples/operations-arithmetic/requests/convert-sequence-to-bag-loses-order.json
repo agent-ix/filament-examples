@@ -1,0 +1,19 @@
+{
+  "format": "native-run/1",
+  "request": {
+    "call": {
+      "arguments": [],
+      "function": "example"
+    },
+    "models": [],
+    "program": {
+      "source": {
+        "authority": "example",
+        "document": "convert-sequence-to-bag-loses-order",
+        "file": "../rules/convert-sequence-to-bag-loses-order.fsl",
+        "formal_revision": 1,
+        "identity": "operations-arithmetic/convert-sequence-to-bag-loses-order"
+      }
+    }
+  }
+}

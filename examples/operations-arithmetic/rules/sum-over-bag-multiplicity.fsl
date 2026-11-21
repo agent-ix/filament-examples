@@ -1,0 +1,5 @@
+// FSpec FR-145-AC-4
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+type Tot = Integer;
+function example using v(): Boolean pure { let q: Bag<Integer>[0, 3] = bag[2, 2, 3] in sum<Tot>(x in q: x) = 7 }

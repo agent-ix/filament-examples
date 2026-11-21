@@ -1,0 +1,4 @@
+// FSpec FR-145 (forall and exists)
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+function example using v(): Boolean pure { let q: Sequence<Integer>[0, 5] = sequence[1, 2, 3] in forall(x in q: x > 0) and not forall(x in q: x > 1) and exists(x in q: x = 3) and not exists(x in q: x = 4) }

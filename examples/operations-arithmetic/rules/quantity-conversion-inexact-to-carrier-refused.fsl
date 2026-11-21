@@ -1,0 +1,10 @@
+// FSpec FR-142-AC-28, FR-142-AC-3
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+dimension L;
+unit m: L = rational(1, 1);
+unit inch: L = rational(127, 5000) * m;
+type Cd = Quantity<m, Decimal[-100, 100; 2, 2; exact]>;
+function ci using v(q: Quantity<inch>): Cd pure { convert<Cd>(q) }
+function back using v(q: Cd): Quantity<m> pure { convert<Quantity<m>>(q) }
+function example using v(): Boolean pure { back(ci(1 inch)) = 0.25 m }

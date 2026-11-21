@@ -1,0 +1,5 @@
+// FSpec FR-146-AC-14
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+union Shape { Circle(Int[0, 9]), Empty }
+function area using v(n: Integer): Integer pure { case n { Circle(r): r; Empty: 0; } }

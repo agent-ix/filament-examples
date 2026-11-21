@@ -1,0 +1,19 @@
+{
+  "format": "native-run/1",
+  "request": {
+    "call": {
+      "arguments": [],
+      "function": "example"
+    },
+    "models": [],
+    "program": {
+      "source": {
+        "authority": "example",
+        "document": "float64-strict-exact-admits-exact-result",
+        "file": "../rules/float64-strict-exact-admits-exact-result.fsl",
+        "formal_revision": 1,
+        "identity": "operations-arithmetic/float64-strict-exact-admits-exact-result"
+      }
+    }
+  }
+}

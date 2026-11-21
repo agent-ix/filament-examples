@@ -1,0 +1,19 @@
+{
+  "format": "native-run/1",
+  "request": {
+    "call": {
+      "arguments": [],
+      "function": "example"
+    },
+    "models": [],
+    "program": {
+      "source": {
+        "authority": "example",
+        "document": "contains-stops-and-empty-false",
+        "file": "../rules/contains-stops-and-empty-false.fsl",
+        "formal_revision": 1,
+        "identity": "operations-arithmetic/contains-stops-and-empty-false"
+      }
+    }
+  }
+}

@@ -1,0 +1,4 @@
+// FSpec FR-145-AC-3, FR-144-AC-7
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+function example using v(): Boolean pure { let q: Set<Integer>[0, 5] = set[3, 1, 2] in convert<Sequence<Integer>[0, 5]>(q) = sequence[1, 2, 3] }

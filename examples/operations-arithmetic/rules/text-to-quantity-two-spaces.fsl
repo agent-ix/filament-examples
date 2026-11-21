@@ -1,0 +1,8 @@
+// FSpec FR-478-AC-10
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+dimension Time;
+unit s: Time = rational(1, 1);
+unit ms: Time = rational(1, 1000) * s;
+function conv using v(t: Text[0, 16; unicode-scalars]): Quantity<ms> pure { convert<Quantity<ms>>(t) }
+function example using v(): Boolean pure { conv(Text("3  ms")) = 3 ms }

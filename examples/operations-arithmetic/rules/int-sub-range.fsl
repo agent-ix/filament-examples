@@ -1,0 +1,5 @@
+// FSpec FR-007, FR-044
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+function ok using v(a: Int[0, 9], b: Int[0, 9]): Int[-9, 9] pure { a - b }
+function bad using v(a: Int[0, 9], b: Int[0, 9]): Int[0, 9] pure { a - b }

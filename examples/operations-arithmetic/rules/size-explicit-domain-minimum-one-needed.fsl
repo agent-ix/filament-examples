@@ -1,0 +1,5 @@
+// FSpec FR-783-AC-1
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+function ok using v(q: Sequence<Integer>[1, 5]): Int[1, 5] pure { size<Int[1, 5]>(q) }
+function bad using v(q: Sequence<Integer>[0, 5]): Int[1, 5] pure { size<Int[1, 5]>(q) }

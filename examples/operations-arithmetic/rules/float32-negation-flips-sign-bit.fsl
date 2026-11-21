@@ -1,0 +1,9 @@
+// FSpec FR-148-AC-11
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+function example using v(): Boolean pure {
+  filament::value::ieee::bitIdentical(-float32(bits: 0x3f800000), float32(bits: 0xbf800000)) and
+  filament::value::ieee::bitIdentical(-float32(bits: 0x00000000), float32(bits: 0x80000000)) and
+  filament::value::ieee::bitIdentical(-float32(bits: 0x7f800001), float32(bits: 0xff800001)) and
+  filament::value::ieee::bitIdentical(-float32(bits: 0xffc00005), float32(bits: 0x7fc00005))
+}

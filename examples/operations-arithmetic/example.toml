@@ -1,0 +1,2828 @@
+name = "operations-arithmetic"
+summary = "Operations and arithmetic: integer division and range proofs, decimal, rational and float operations, conversions, collection operations and quantity arithmetic, with the Undefined outcomes and refusals the standard requires."
+
+[[case]]
+id = "mod-euclidean-whatever-the-law"
+statement = "Under the truncating law mod is still the Euclidean remainder, so -7 mod 3 is 2, 7 mod -3 is 1 and -7 mod -3 is 2."
+file = "rules/mod-euclidean-whatever-the-law.fsl"
+command = "run requests/mod-euclidean-whatever-the-law.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "div-without-law-refused"
+statement = "A unit that evaluates div and names no division law is refused as a missing selection, because no law is chosen by default."
+file = "rules/div-without-law-refused.fsl"
+command = "check rules/div-without-law-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: missing_declaration missing-selection"
+
+[[case]]
+id = "rem-without-law-refused"
+statement = "A unit that evaluates rem and names no division law is refused as a missing selection."
+file = "rules/rem-without-law-refused.fsl"
+command = "check rules/rem-without-law-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: missing_declaration missing-selection"
+
+[[case]]
+id = "law-headers-conflict-refused"
+statement = "Two law headers that name floor and truncating are refused as conflicting definitions at the second."
+file = "rules/law-headers-conflict-refused.fsl"
+command = "check rules/law-headers-conflict-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: invalid_package conflicting-definition"
+
+[[case]]
+id = "law-headers-repeated-select-once"
+statement = "Two law headers that both name floor select floor once and the unit checks."
+file = "rules/law-headers-repeated-select-once.fsl"
+command = "check rules/law-headers-repeated-select-once.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "law-header-alias-used-refused"
+statement = "A function declared using the alias of a law header is refused as a wrong selection role at the alias."
+file = "rules/law-header-alias-used-refused.fsl"
+command = "check rules/law-header-alias-used-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: unknown_profile wrong-selection-role"
+
+[[case]]
+id = "law-header-without-division-admitted"
+statement = "A unit with a floor law header and no div or rem is admitted."
+file = "rules/law-header-without-division-admitted.fsl"
+command = "check rules/law-header-without-division-admitted.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "div-zero-divisor-range-refused"
+statement = "A divisor of Int[0, 12] contains zero and has no nonzero guard, so a div b is refused as an unproved nonzero at the operator."
+file = "rules/div-zero-divisor-range-refused.fsl"
+command = "check rules/div-zero-divisor-range-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: undefined_expression unproved-nonzero"
+
+[[case]]
+id = "rem-zero-divisor-range-refused"
+statement = "A divisor of Int[0, 12] contains zero and has no nonzero guard, so a rem b is refused as an unproved nonzero."
+file = "rules/rem-zero-divisor-range-refused.fsl"
+command = "check rules/rem-zero-divisor-range-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: undefined_expression unproved-nonzero"
+
+[[case]]
+id = "mod-zero-divisor-range-refused"
+statement = "A divisor of Int[0, 12] contains zero and has no nonzero guard, so a mod b is refused as an unproved nonzero even though mod needs no law."
+file = "rules/mod-zero-divisor-range-refused.fsl"
+command = "check rules/mod-zero-divisor-range-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: undefined_expression unproved-nonzero"
+
+[[case]]
+id = "div-literal-zero-refused"
+statement = "A literal zero divisor is refused as an unproved nonzero."
+file = "rules/div-literal-zero-refused.fsl"
+command = "check rules/div-literal-zero-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: undefined_expression unproved-nonzero"
+
+[[case]]
+id = "div-guard-proves-nonzero"
+statement = "Under the guard b != 0 the divisor is proved nonzero and a div b checks."
+file = "rules/div-guard-proves-nonzero.fsl"
+command = "check rules/div-guard-proves-nonzero.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "mod-result-type-bounded"
+statement = "For a in Int[0, 100] and b in Int[1, 12], a mod b has type Int[0, 11] and is admitted into an Int[0, 11] result."
+file = "rules/mod-result-type-bounded.fsl"
+command = "check rules/mod-result-type-bounded.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "mod-result-type-too-narrow"
+statement = "The same a mod b has type Int[0, 11], so an Int[0, 10] result is refused as an unproved range."
+file = "rules/mod-result-type-too-narrow.fsl"
+command = "check rules/mod-result-type-too-narrow.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: undefined_expression unproved-range"
+
+[[case]]
+id = "mod-small-dividend-type"
+statement = "For a in Int[0, 2] and b in Int[5, 6], a mod b is a itself and has type Int[0, 2]."
+file = "rules/mod-small-dividend-type.fsl"
+command = "check rules/mod-small-dividend-type.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "mod-singleton-dividend-type"
+statement = "For a fixed at 91 and b in Int[2, 12], a mod b has type Int[0, 7]."
+file = "rules/mod-singleton-dividend-type.fsl"
+command = "check rules/mod-singleton-dividend-type.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "mod-singleton-dividend-type-too-narrow"
+statement = "For a fixed at 91 and b in Int[2, 12], a mod b reaches 7, so an Int[0, 6] result is refused as an unproved range."
+file = "rules/mod-singleton-dividend-type-too-narrow.fsl"
+command = "check rules/mod-singleton-dividend-type-too-narrow.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: undefined_expression unproved-range"
+
+[[case]]
+id = "div-quotient-outside-domain"
+statement = "For a in Int[0, 100] and b in Int[1, 12], a div b reaches 100 under the floor law, so an Int[0, 10] result is refused as an unproved range before evaluation."
+file = "rules/div-quotient-outside-domain.fsl"
+command = "check rules/div-quotient-outside-domain.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: undefined_expression unproved-range"
+
+[[case]]
+id = "div-slash-is-not-integer-division"
+statement = "The operator / over two Integers does not denote integer division and is refused for an Integer operand."
+file = "rules/div-slash-is-not-integer-division.fsl"
+command = "check rules/div-slash-is-not-integer-division.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed type-mismatch"
+
+[[case]]
+id = "int-add-range-widening"
+statement = "The sum of two Int[0, 9] values has type Int[0, 18] and is admitted into an Int[0, 18] result."
+file = "rules/int-add-range-widening.fsl"
+command = "check rules/int-add-range-widening.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "int-add-range-too-narrow"
+statement = "The sum of two Int[0, 9] values reaches 18, so an Int[0, 17] result is refused as an unproved range."
+file = "rules/int-add-range-too-narrow.fsl"
+command = "check rules/int-add-range-too-narrow.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: undefined_expression unproved-range"
+
+[[case]]
+id = "int-sub-range"
+statement = "The difference of two Int[0, 9] values lies in Int[-9, 9], so it is admitted there and refused in Int[0, 9]."
+file = "rules/int-sub-range.fsl"
+command = "check rules/int-sub-range.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: undefined_expression unproved-range"
+
+[[case]]
+id = "int-mul-range"
+statement = "The product of Int[-3, 4] and Int[-2, 5] lies in Int[-15, 20] and is admitted into exactly that range."
+file = "rules/int-mul-range.fsl"
+command = "check rules/int-mul-range.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "int-mul-range-too-narrow"
+statement = "The product of Int[-3, 4] and Int[-2, 5] reaches 20, so an Int[-15, 19] result is refused as an unproved range."
+file = "rules/int-mul-range-too-narrow.fsl"
+command = "check rules/int-mul-range-too-narrow.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: undefined_expression unproved-range"
+
+[[case]]
+id = "int-unary-minus-range"
+statement = "The negation of an Int[0, 9] value lies in Int[-9, 0]."
+file = "rules/int-unary-minus-range.fsl"
+command = "check rules/int-unary-minus-range.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "int-composed-range-proved"
+statement = "The composed expression a + b - c over Int[0, 9] operands lies in Int[-9, 18] and is admitted there."
+file = "rules/int-composed-range-proved.fsl"
+command = "check rules/int-composed-range-proved.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "int-large-arithmetic-no-overflow"
+statement = "Mathematical integers have no overflow, so a product of two 20-digit literals evaluates exactly."
+file = "rules/int-large-arithmetic-no-overflow.fsl"
+command = "run requests/int-large-arithmetic-no-overflow.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "decimal-add-aligns-scales"
+statement = "Decimal addition aligns to the greater scale exactly, so 1.5 plus 2.25 held at scale 2 is 3.75."
+file = "rules/decimal-add-aligns-scales.fsl"
+command = "run requests/decimal-add-aligns-scales.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "decimal-multiply-adds-scales"
+statement = "Decimal multiplication multiplies coefficients and adds scales exactly, so 1.5 times 2.5 is 3.75 when the result type has scale 2."
+file = "rules/decimal-multiply-adds-scales.fsl"
+command = "run requests/decimal-multiply-adds-scales.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "decimal-negate"
+statement = "Unary negation of a decimal negates its coefficient, so -(1.25) is -1.25."
+file = "rules/decimal-negate.fsl"
+command = "run requests/decimal-negate.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "decimal-exact-division-exact"
+statement = "Dividing 7.50 by 2.50 into scale 2 under exact is 3.00 because the quotient is an integer multiple of 10^-2."
+file = "rules/decimal-exact-division-exact.fsl"
+command = "run requests/decimal-exact-division-exact.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "decimal-exact-division-inexact-refused"
+statement = "Dividing 1.00 by 3.00 into scale 2 under exact leaves a nonzero discarded digit, so it is refused as an inexact decimal."
+file = "rules/decimal-exact-division-inexact-refused.fsl"
+command = "run requests/decimal-exact-division-inexact-refused.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: inexact_decimal nonzero-discarded-digit"
+
+[[case]]
+id = "decimal-rounded-division-nearest-even"
+statement = "Dividing 1.00 by 3.00 into scale 2 under nearest-even gives 0.33."
+file = "rules/decimal-rounded-division-nearest-even.fsl"
+command = "run requests/decimal-rounded-division-nearest-even.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "decimal-division-by-zero-refused"
+statement = "Dividing by a decimal parameter that may be zero is refused as an unproved nonzero before evaluation."
+file = "rules/decimal-division-by-zero-refused.fsl"
+command = "check rules/decimal-division-by-zero-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: undefined_expression unproved-nonzero"
+
+[[case]]
+id = "decimal-result-outside-range-refused"
+statement = "The sum 99.00 plus 2.00 is 101.00, outside Decimal[0, 10000; 2, 2; exact], and is refused as outside the decimal domain whatever the rounding mode."
+file = "rules/decimal-result-outside-range-refused.fsl"
+command = "run requests/decimal-result-outside-range-refused.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: decimal_out_of_domain outside-domain"
+
+[[case]]
+id = "decimal-result-at-range-bound"
+statement = "The sum 99.00 plus 1.00 is 100.00, exactly the upper bound of Decimal[0, 10000; 2, 2; exact], and is admitted."
+file = "rules/decimal-result-at-range-bound.fsl"
+command = "run requests/decimal-result-at-range-bound.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "rounding-nearest-even-tie-down"
+statement = "Converting the rational 5/2 to scale 0 under nearest-even rounds the tie to the even neighbor 2."
+file = "rules/rounding-nearest-even-tie-down.fsl"
+command = "run requests/rounding-nearest-even-tie-down.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "rounding-nearest-even-tie-up"
+statement = "Converting the rational 7/2 to scale 0 under nearest-even rounds the tie to the even neighbor 4."
+file = "rules/rounding-nearest-even-tie-up.fsl"
+command = "run requests/rounding-nearest-even-tie-up.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "rounding-nearest-away-positive-tie"
+statement = "Converting the rational 5/2 to scale 0 under nearest-away rounds the tie away from zero to 3."
+file = "rules/rounding-nearest-away-positive-tie.fsl"
+command = "run requests/rounding-nearest-away-positive-tie.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "rounding-nearest-away-negative-tie"
+statement = "Converting the rational -5/2 to scale 0 under nearest-away rounds the tie away from zero to -3."
+file = "rules/rounding-nearest-away-negative-tie.fsl"
+command = "run requests/rounding-nearest-away-negative-tie.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "rounding-toward-zero-positive"
+statement = "Converting 5/2 to scale 0 under toward-zero gives 2."
+file = "rules/rounding-toward-zero-positive.fsl"
+command = "run requests/rounding-toward-zero-positive.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "rounding-toward-zero-negative"
+statement = "Converting -5/2 to scale 0 under toward-zero gives -2."
+file = "rules/rounding-toward-zero-negative.fsl"
+command = "run requests/rounding-toward-zero-negative.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "rounding-toward-positive-positive"
+statement = "Converting 5/2 to scale 0 under toward-positive gives 3."
+file = "rules/rounding-toward-positive-positive.fsl"
+command = "run requests/rounding-toward-positive-positive.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "rounding-toward-positive-negative"
+statement = "Converting -5/2 to scale 0 under toward-positive gives -2."
+file = "rules/rounding-toward-positive-negative.fsl"
+command = "run requests/rounding-toward-positive-negative.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "rounding-toward-negative-positive"
+statement = "Converting 5/2 to scale 0 under toward-negative gives 2."
+file = "rules/rounding-toward-negative-positive.fsl"
+command = "run requests/rounding-toward-negative-positive.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "rounding-toward-negative-negative"
+statement = "Converting -5/2 to scale 0 under toward-negative gives -3."
+file = "rules/rounding-toward-negative-negative.fsl"
+command = "run requests/rounding-toward-negative-negative.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "rounding-exact-tie-refused"
+statement = "Converting 5/2 to scale 0 under exact has a nonzero discarded digit and is refused as an inexact decimal."
+file = "rules/rounding-exact-tie-refused.fsl"
+command = "run requests/rounding-exact-tie-refused.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: inexact_decimal nonzero-discarded-digit"
+
+[[case]]
+id = "rounding-exact-integer-multiple-admitted"
+statement = "Converting 4/2, which is the integer 2, to scale 0 under exact has no discarded digit and is admitted."
+file = "rules/rounding-exact-integer-multiple-admitted.fsl"
+command = "run requests/rounding-exact-integer-multiple-admitted.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "rounding-non-tie-nearest-even"
+statement = "Converting 13/10 to scale 0 under nearest-even gives 1 because the discarded part is below one half."
+file = "rules/rounding-non-tie-nearest-even.fsl"
+command = "run requests/rounding-non-tie-nearest-even.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "rounding-result-outside-range-refused"
+statement = "Converting 5/2 under nearest-away gives 3, which is outside Decimal[0, 2; 0, 0; nearest-away], so it is refused as outside the decimal domain; the mode never widens the range."
+file = "rules/rounding-result-outside-range-refused.fsl"
+command = "run requests/rounding-result-outside-range-refused.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: decimal_out_of_domain outside-domain"
+
+[[case]]
+id = "rational-add-reduced"
+statement = "Rational addition keeps exact reduced values, so 1/4 plus 1/3 is 7/12."
+file = "rules/rational-add-reduced.fsl"
+command = "run requests/rational-add-reduced.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "rational-equal-values-different-spelling"
+statement = "The rationals 2/4 and 1/2 are the same value after reduction."
+file = "rules/rational-equal-values-different-spelling.fsl"
+command = "run requests/rational-equal-values-different-spelling.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "rational-sum-range-unproved"
+statement = "The sum of two Rational[0, 7; 1, 12] values can exceed the numerator bound, so a result of the same type is refused as an unproved range."
+file = "rules/rational-sum-range-unproved.fsl"
+command = "check rules/rational-sum-range-unproved.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: undefined_expression unproved-range"
+
+[[case]]
+id = "rational-divisor-may-be-zero"
+statement = "A rational divisor whose numerator range contains zero is refused as an unproved nonzero."
+file = "rules/rational-divisor-may-be-zero.fsl"
+command = "check rules/rational-divisor-may-be-zero.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: undefined_expression unproved-nonzero"
+
+[[case]]
+id = "rational-divisor-positive-admitted"
+statement = "A rational divisor whose numerator range excludes zero is proved nonzero, so a / b over Rational[1, 7; 1, 12] divisors checks into a wide enough result."
+file = "rules/rational-divisor-positive-admitted.fsl"
+command = "check rules/rational-divisor-positive-admitted.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "float64-comparison-true-vectors"
+statement = "Over binary64 values, -0 = +0, -0 <= +0, +0 >= -0, 1 < +inf, +inf <= +inf, NaN != NaN and NaN != 1 are all true."
+file = "rules/float64-comparison-true-vectors.fsl"
+command = "run requests/float64-comparison-true-vectors.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "float64-comparison-false-vectors"
+statement = "Over binary64 values, -0 < +0, +0 > -0, NaN = NaN, NaN < 1, NaN <= 1, 1 > NaN, 1 >= NaN, a signaling NaN < 1 and a signaling NaN = itself are all false, so the program asserts the negation of each."
+file = "rules/float64-comparison-false-vectors.fsl"
+command = "run requests/float64-comparison-false-vectors.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "float32-comparison-vectors"
+statement = "Over binary32 values the same results hold: -0 = +0, 1 < +inf, NaN != NaN, and NaN < 1 is false."
+file = "rules/float32-comparison-vectors.fsl"
+command = "run requests/float32-comparison-vectors.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "float64-negation-flips-sign-bit"
+statement = "Negating binary64 values flips the sign bit and nothing else: 1 becomes -1, +0 becomes -0, -0 becomes +0, +inf becomes -inf and the signaling NaN with payload 1 becomes the NaN with the sign bit set and payload 1; each bit pattern is checked with bitIdentical."
+file = "rules/float64-negation-flips-sign-bit.fsl"
+command = "run requests/float64-negation-flips-sign-bit.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "float32-negation-flips-sign-bit"
+statement = "Negating binary32 values flips the sign bit: 1 becomes -1, +0 becomes -0, the signaling NaN 0x7f800001 becomes 0xff800001 and the quiet NaN 0xffc00005 becomes 0x7fc00005."
+file = "rules/float32-negation-flips-sign-bit.fsl"
+command = "run requests/float32-negation-flips-sign-bit.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "float64-double-negation-identity"
+statement = "Negating twice returns the original bit pattern, including for a NaN payload."
+file = "rules/float64-double-negation-identity.fsl"
+command = "run requests/float64-double-negation-identity.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "float64-bit-identity-distinguishes-signed-zero"
+statement = "bitIdentical separates +0 from -0 although numeric equality treats them as equal."
+file = "rules/float64-bit-identity-distinguishes-signed-zero.fsl"
+command = "run requests/float64-bit-identity-distinguishes-signed-zero.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "float64-bit-identity-same-nan-bits"
+statement = "bitIdentical holds for one NaN pattern with itself and fails for two NaNs with different payloads, while numeric equality is false for both."
+file = "rules/float64-bit-identity-same-nan-bits.fsl"
+command = "run requests/float64-bit-identity-same-nan-bits.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "float64-total-order-signed-zero"
+statement = "totalOrder places -0 before +0 although they are numerically equal."
+file = "rules/float64-total-order-signed-zero.fsl"
+command = "run requests/float64-total-order-signed-zero.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "float64-addition-exact"
+statement = "Adding 1 and 1 under nearest-even gives 2 exactly."
+file = "rules/float64-addition-exact.fsl"
+command = "run requests/float64-addition-exact.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "float64-division-rounds-to-nearest-even"
+statement = "1 divided by 3 under nearest-even is the binary64 value 0x3fd5555555555555."
+file = "rules/float64-division-rounds-to-nearest-even.fsl"
+command = "run requests/float64-division-rounds-to-nearest-even.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "float64-division-rounding-mode-changes-bits"
+statement = "2 divided by 3 is 0x3fe5555555555555 under toward-zero and 0x3fe5555555555556 under toward-positive, so the rounding mode changes the result bits."
+file = "rules/float64-division-rounding-mode-changes-bits.fsl"
+command = "run requests/float64-division-rounding-mode-changes-bits.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "float64-overflow-gives-infinity"
+statement = "Adding the largest finite binary64 value to itself overflows under nearest-even to positive infinity."
+file = "rules/float64-overflow-gives-infinity.fsl"
+command = "run requests/float64-overflow-gives-infinity.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "float64-nan-propagates"
+statement = "Adding a quiet NaN to 1 gives a NaN, so the sum is unequal to itself."
+file = "rules/float64-nan-propagates.fsl"
+command = "run requests/float64-nan-propagates.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "float64-zero-minus-zero-sign"
+statement = "Adding -0 and -0 under nearest-even gives -0, and adding +0 and -0 gives +0."
+file = "rules/float64-zero-minus-zero-sign.fsl"
+command = "run requests/float64-zero-minus-zero-sign.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "float64-fused-multiply-add-single-rounding"
+statement = "With x = 1 + 2^-30 and z = -(1 + 2^-29), fma(x, x, z) is 2^-60 because it rounds once, while x * x + z is +0 because the product rounds first."
+file = "rules/float64-fused-multiply-add-single-rounding.fsl"
+command = "run requests/float64-fused-multiply-add-single-rounding.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "float64-strict-exact-refuses-rounding"
+statement = "Under strict exact, 1 / 3 needs rounding, so it is refused as ieee_not_exact with cause rounding-required."
+file = "rules/float64-strict-exact-refuses-rounding.fsl"
+command = "run requests/float64-strict-exact-refuses-rounding.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ieee_not_exact rounding-required"
+
+[[case]]
+id = "float64-strict-exact-admits-exact-result"
+statement = "Under strict exact, 1 + 1 is exactly representable and is admitted."
+file = "rules/float64-strict-exact-admits-exact-result.fsl"
+command = "run requests/float64-strict-exact-admits-exact-result.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "float-width-mix-addition-refused"
+statement = "Adding a Float32 and a Float64 is refused as ill typed before any evaluation."
+file = "rules/float-width-mix-addition-refused.fsl"
+command = "check rules/float-width-mix-addition-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed type-mismatch"
+
+[[case]]
+id = "float-comparison-width-mix-refused"
+statement = "Comparing a Float32 with a Float64 using < is refused as ill typed."
+file = "rules/float-comparison-width-mix-refused.fsl"
+command = "check rules/float-comparison-width-mix-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed type-mismatch"
+
+[[case]]
+id = "float-ieee-with-integer-refused"
+statement = "Adding an Integer to a Float64 is refused as ill typed because IEEE and exact values never mix."
+file = "rules/float-ieee-with-integer-refused.fsl"
+command = "check rules/float-ieee-with-integer-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed type-mismatch"
+
+[[case]]
+id = "float64-less-equal-same-operand"
+statement = "A binary64 value is less than or equal to itself, so one <= one is true when the same bound name is written on both sides."
+file = "rules/float64-less-equal-same-operand.fsl"
+command = "run requests/float64-less-equal-same-operand.json"
+status = "staged"
+expect_exit = 30
+ready_exit = 0
+waits_on = "QSL-2753"
+why = "The driver build embedding FSL 529282e9 stops with exit 30 (internal failure, runtime_invariant: protocol slot term has no complete emitted location context) when an IEEE ordering comparison has the same operand on both sides; a second name bound to the same bits evaluates."
+needs = "IEEE ordering of a value with itself"
+
+[[case]]
+id = "float64-less-than-same-operand"
+statement = "A binary64 value is not less than itself, so not (one < one) is true when the same bound name is written on both sides."
+file = "rules/float64-less-than-same-operand.fsl"
+command = "run requests/float64-less-than-same-operand.json"
+status = "staged"
+expect_exit = 30
+ready_exit = 0
+waits_on = "QSL-2753"
+why = "The driver build embedding FSL 529282e9 stops with exit 30 (internal failure, runtime_invariant) when an IEEE ordering comparison has the same operand on both sides."
+needs = "IEEE ordering of a value with itself"
+
+[[case]]
+id = "float32-greater-equal-same-operand"
+statement = "A binary32 value is greater than or equal to itself, so one >= one is true when the same bound name is written on both sides."
+file = "rules/float32-greater-equal-same-operand.fsl"
+command = "run requests/float32-greater-equal-same-operand.json"
+status = "staged"
+expect_exit = 30
+ready_exit = 0
+waits_on = "QSL-2753"
+why = "The driver build embedding FSL 529282e9 stops with exit 30 (internal failure, runtime_invariant) when an IEEE ordering comparison has the same operand on both sides."
+needs = "IEEE ordering of a value with itself"
+
+[[case]]
+id = "float64-infinity-less-equal-same-operand"
+statement = "Positive infinity is less than or equal to itself, so pinf <= pinf is true when the same bound name is written on both sides."
+file = "rules/float64-infinity-less-equal-same-operand.fsl"
+command = "run requests/float64-infinity-less-equal-same-operand.json"
+status = "staged"
+expect_exit = 30
+ready_exit = 0
+waits_on = "QSL-2753"
+why = "The driver build embedding FSL 529282e9 stops with exit 30 (internal failure, runtime_invariant) when an IEEE ordering comparison has the same operand on both sides."
+needs = "IEEE ordering of a value with itself"
+
+[[case]]
+id = "text-to-integer-empty"
+statement = "Converting the empty text to an Integer is undefined with the reason malformed-number."
+file = "rules/text-to-integer-empty.fsl"
+command = "run requests/text-to-integer-empty.json"
+status = "running"
+expect_exit = 10
+expect_verdict = "undefined"
+
+[[case]]
+id = "text-to-integer-plus-sign"
+statement = "Converting \"+5\" to an Integer is undefined because a plus sign is not part of the number syntax."
+file = "rules/text-to-integer-plus-sign.fsl"
+command = "run requests/text-to-integer-plus-sign.json"
+status = "running"
+expect_exit = 10
+expect_verdict = "undefined"
+
+[[case]]
+id = "text-to-integer-leading-zero"
+statement = "Converting \"05\" to an Integer is undefined because a leading zero is not allowed."
+file = "rules/text-to-integer-leading-zero.fsl"
+command = "run requests/text-to-integer-leading-zero.json"
+status = "running"
+expect_exit = 10
+expect_verdict = "undefined"
+
+[[case]]
+id = "text-to-integer-negative-zero"
+statement = "Converting \"-0\" to an Integer is undefined because negative zero has no spelling."
+file = "rules/text-to-integer-negative-zero.fsl"
+command = "run requests/text-to-integer-negative-zero.json"
+status = "running"
+expect_exit = 10
+expect_verdict = "undefined"
+
+[[case]]
+id = "text-to-integer-leading-space"
+statement = "Converting \" 5\" to an Integer is undefined because the text may not be padded."
+file = "rules/text-to-integer-leading-space.fsl"
+command = "run requests/text-to-integer-leading-space.json"
+status = "running"
+expect_exit = 10
+expect_verdict = "undefined"
+
+[[case]]
+id = "text-to-integer-trailing-space"
+statement = "Converting \"5 \" to an Integer is undefined because the text may not be padded."
+file = "rules/text-to-integer-trailing-space.fsl"
+command = "run requests/text-to-integer-trailing-space.json"
+status = "running"
+expect_exit = 10
+expect_verdict = "undefined"
+
+[[case]]
+id = "text-to-integer-thousands-separator"
+statement = "Converting \"1,000\" to an Integer is undefined because a separator is not allowed."
+file = "rules/text-to-integer-thousands-separator.fsl"
+command = "run requests/text-to-integer-thousands-separator.json"
+status = "running"
+expect_exit = 10
+expect_verdict = "undefined"
+
+[[case]]
+id = "text-to-integer-exponent"
+statement = "Converting \"1e3\" to an Integer is undefined because an exponent is not allowed."
+file = "rules/text-to-integer-exponent.fsl"
+command = "run requests/text-to-integer-exponent.json"
+status = "running"
+expect_exit = 10
+expect_verdict = "undefined"
+
+[[case]]
+id = "text-to-integer-fraction"
+statement = "Converting \"1.0\" to an Integer is undefined because a fraction is not allowed."
+file = "rules/text-to-integer-fraction.fsl"
+command = "run requests/text-to-integer-fraction.json"
+status = "running"
+expect_exit = 10
+expect_verdict = "undefined"
+
+[[case]]
+id = "text-to-integer-ratio"
+statement = "Converting \"2/1\" to an Integer is undefined because a ratio is not allowed."
+file = "rules/text-to-integer-ratio.fsl"
+command = "run requests/text-to-integer-ratio.json"
+status = "running"
+expect_exit = 10
+expect_verdict = "undefined"
+
+[[case]]
+id = "text-to-integer-arabic-indic-digit"
+statement = "Converting the Arabic-Indic digit three (U+0663) to an Integer is undefined because only ASCII digits are allowed."
+file = "rules/text-to-integer-arabic-indic-digit.fsl"
+command = "run requests/text-to-integer-arabic-indic-digit.json"
+status = "running"
+expect_exit = 10
+expect_verdict = "undefined"
+
+[[case]]
+id = "text-to-integer-fullwidth-digit"
+statement = "Converting the fullwidth digit five (U+FF15) to an Integer under unicode-scalars is undefined because no normalization is applied."
+file = "rules/text-to-integer-fullwidth-digit.fsl"
+command = "run requests/text-to-integer-fullwidth-digit.json"
+status = "running"
+expect_exit = 10
+expect_verdict = "undefined"
+
+[[case]]
+id = "text-to-integer-not-a-number"
+statement = "Converting \"abc\" to an Integer is undefined."
+file = "rules/text-to-integer-not-a-number.fsl"
+command = "run requests/text-to-integer-not-a-number.json"
+status = "running"
+expect_exit = 10
+expect_verdict = "undefined"
+
+[[case]]
+id = "text-to-integer-valid-spellings"
+statement = "Converting \"0\", \"42\" and \"-7\" to an Integer gives 0, 42 and -7."
+file = "rules/text-to-integer-valid-spellings.fsl"
+command = "run requests/text-to-integer-valid-spellings.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "text-to-integer-beyond-128-bits"
+statement = "Converting the 39-digit text 170141183460469231731687303715884105728, one more than the largest signed 128-bit integer, gives an Integer exactly one greater than the conversion of the text one less, with no overflow."
+file = "rules/text-to-integer-beyond-128-bits.fsl"
+command = "run requests/text-to-integer-beyond-128-bits.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "text-to-bounded-integer-in-range"
+statement = "Converting \"42\" to Int[0, 99] gives 42."
+file = "rules/text-to-bounded-integer-in-range.fsl"
+command = "run requests/text-to-bounded-integer-in-range.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "text-to-bounded-integer-above-range"
+statement = "Converting \"100\" to Int[0, 99] is refused as outside the integer domain."
+file = "rules/text-to-bounded-integer-above-range.fsl"
+command = "run requests/text-to-bounded-integer-above-range.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: integer_out_of_domain outside-domain"
+
+[[case]]
+id = "text-to-bounded-integer-below-range"
+statement = "Converting \"-1\" to Int[0, 99] is refused as outside the integer domain."
+file = "rules/text-to-bounded-integer-below-range.fsl"
+command = "run requests/text-to-bounded-integer-below-range.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: integer_out_of_domain outside-domain"
+
+[[case]]
+id = "text-to-bounded-integer-at-upper-bound"
+statement = "Converting \"99\", the upper bound, to Int[0, 99] gives 99."
+file = "rules/text-to-bounded-integer-at-upper-bound.fsl"
+command = "run requests/text-to-bounded-integer-at-upper-bound.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "text-to-integer-nfkc-normalizes-fullwidth"
+statement = "Under the nfkc profile the fullwidth digit five normalizes to 5 and converts to 5."
+file = "rules/text-to-integer-nfkc-normalizes-fullwidth.fsl"
+command = "run requests/text-to-integer-nfkc-normalizes-fullwidth.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "text-to-integer-nfc-keeps-fullwidth"
+statement = "Under the nfc profile the fullwidth digit five does not normalize to an ASCII digit, so converting it is undefined."
+file = "rules/text-to-integer-nfc-keeps-fullwidth.fsl"
+command = "run requests/text-to-integer-nfc-keeps-fullwidth.json"
+status = "running"
+expect_exit = 10
+expect_verdict = "undefined"
+
+[[case]]
+id = "text-to-decimal-exact-inexact-refused"
+statement = "Converting \"1.555\" to Decimal[0, 1000; 0, 2; exact] leaves a nonzero discarded digit and is refused as an inexact decimal."
+file = "rules/text-to-decimal-exact-inexact-refused.fsl"
+command = "run requests/text-to-decimal-exact-inexact-refused.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: inexact_decimal nonzero-discarded-digit"
+
+[[case]]
+id = "text-to-decimal-exact-trailing-zero"
+statement = "Converting \"1.500\" to Decimal[0, 1000; 0, 2; exact] gives 1.50, because the discarded digit is zero."
+file = "rules/text-to-decimal-exact-trailing-zero.fsl"
+command = "run requests/text-to-decimal-exact-trailing-zero.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "text-to-decimal-short-spelling"
+statement = "Converting \"1.5\" to Decimal[0, 1000; 0, 2; exact] gives the value 1.5, equal to 1.50."
+file = "rules/text-to-decimal-short-spelling.fsl"
+command = "run requests/text-to-decimal-short-spelling.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "text-to-decimal-out-of-domain"
+statement = "Converting \"10.01\" to Decimal[0, 1000; 0, 2; exact] gives 1001 at scale 2, above the coefficient bound 1000, so it is refused as outside the decimal domain."
+file = "rules/text-to-decimal-out-of-domain.fsl"
+command = "run requests/text-to-decimal-out-of-domain.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: decimal_out_of_domain outside-domain"
+
+[[case]]
+id = "text-to-decimal-nearest-even-rounds"
+statement = "Converting \"1.555\" to Decimal[0, 1000; 0, 2; nearest-even] gives 1.56."
+file = "rules/text-to-decimal-nearest-even-rounds.fsl"
+command = "run requests/text-to-decimal-nearest-even-rounds.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "text-to-decimal-nearest-even-tie"
+statement = "Converting \"1.565\" to Decimal[0, 1000; 0, 2; nearest-even] is a tie that goes to the even coefficient 156."
+file = "rules/text-to-decimal-nearest-even-tie.fsl"
+command = "run requests/text-to-decimal-nearest-even-tie.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "text-to-decimal-leading-dot"
+statement = "Converting \".5\" to a decimal is undefined because a digit must precede the point."
+file = "rules/text-to-decimal-leading-dot.fsl"
+command = "run requests/text-to-decimal-leading-dot.json"
+status = "running"
+expect_exit = 10
+expect_verdict = "undefined"
+
+[[case]]
+id = "text-to-decimal-trailing-dot"
+statement = "Converting \"5.\" to a decimal is undefined because a digit must follow the point."
+file = "rules/text-to-decimal-trailing-dot.fsl"
+command = "run requests/text-to-decimal-trailing-dot.json"
+status = "running"
+expect_exit = 10
+expect_verdict = "undefined"
+
+[[case]]
+id = "text-to-decimal-exponent"
+statement = "Converting \"1e3\" to a decimal is undefined because an exponent is not allowed."
+file = "rules/text-to-decimal-exponent.fsl"
+command = "run requests/text-to-decimal-exponent.json"
+status = "running"
+expect_exit = 10
+expect_verdict = "undefined"
+
+[[case]]
+id = "text-to-decimal-two-points"
+statement = "Converting \"1.2.3\" to a decimal is undefined."
+file = "rules/text-to-decimal-two-points.fsl"
+command = "run requests/text-to-decimal-two-points.json"
+status = "running"
+expect_exit = 10
+expect_verdict = "undefined"
+
+[[case]]
+id = "text-to-rational-reduces"
+statement = "Converting \"2/4\" to Rational[-9, 9; 1, 9] gives the reduced value 1/2."
+file = "rules/text-to-rational-reduces.fsl"
+command = "run requests/text-to-rational-reduces.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "text-to-rational-integer-spelling"
+statement = "Converting \"-3\" to Rational[-9, 9; 1, 9] gives -3/1."
+file = "rules/text-to-rational-integer-spelling.fsl"
+command = "run requests/text-to-rational-integer-spelling.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "text-to-rational-decimal-spelling"
+statement = "Converting \"0.25\" to Rational[-9, 9; 1, 9] gives 1/4."
+file = "rules/text-to-rational-decimal-spelling.fsl"
+command = "run requests/text-to-rational-decimal-spelling.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "text-to-rational-denominator-out-of-domain"
+statement = "Converting \"1/10\" to Rational[-9, 9; 1, 9] has the denominator 10 above 9 and is refused as outside the rational domain."
+file = "rules/text-to-rational-denominator-out-of-domain.fsl"
+command = "run requests/text-to-rational-denominator-out-of-domain.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: rational_out_of_domain outside-domain"
+
+[[case]]
+id = "text-to-rational-numerator-out-of-domain"
+statement = "Converting \"10\" to Rational[-9, 9; 1, 9] has the numerator 10 above 9 and is refused as outside the rational domain."
+file = "rules/text-to-rational-numerator-out-of-domain.fsl"
+command = "run requests/text-to-rational-numerator-out-of-domain.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: rational_out_of_domain outside-domain"
+
+[[case]]
+id = "text-to-rational-zero-denominator"
+statement = "Converting \"1/0\" to a rational is undefined."
+file = "rules/text-to-rational-zero-denominator.fsl"
+command = "run requests/text-to-rational-zero-denominator.json"
+status = "running"
+expect_exit = 10
+expect_verdict = "undefined"
+
+[[case]]
+id = "text-to-rational-negative-denominator"
+statement = "Converting \"1/-2\" to a rational is undefined because the denominator carries no sign."
+file = "rules/text-to-rational-negative-denominator.fsl"
+command = "run requests/text-to-rational-negative-denominator.json"
+status = "running"
+expect_exit = 10
+expect_verdict = "undefined"
+
+[[case]]
+id = "text-to-rational-spaced-slash"
+statement = "Converting \"1 / 2\" to a rational is undefined because the spelling allows no spaces."
+file = "rules/text-to-rational-spaced-slash.fsl"
+command = "run requests/text-to-rational-spaced-slash.json"
+status = "running"
+expect_exit = 10
+expect_verdict = "undefined"
+
+[[case]]
+id = "text-to-float64-nearest-even"
+statement = "Converting \"0.1\" to Float64 under nearest-even gives the bits 0x3fb999999999999a."
+file = "rules/text-to-float64-nearest-even.fsl"
+command = "run requests/text-to-float64-nearest-even.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "text-to-float64-toward-zero"
+statement = "Converting \"0.1\" to Float64 under toward-zero gives the bits 0x3fb9999999999999."
+file = "rules/text-to-float64-toward-zero.fsl"
+command = "run requests/text-to-float64-toward-zero.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "text-to-float64-exactly-representable"
+statement = "Converting \"0.25\" to Float64 under nearest-even gives the bits 0x3fd0000000000000."
+file = "rules/text-to-float64-exactly-representable.fsl"
+command = "run requests/text-to-float64-exactly-representable.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "text-to-float64-exponent-spelling"
+statement = "Converting \"2.5e-1\" to Float64 under nearest-even gives the same bits as \"0.25\"."
+file = "rules/text-to-float64-exponent-spelling.fsl"
+command = "run requests/text-to-float64-exponent-spelling.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "text-to-float64-negative-zero"
+statement = "Converting \"-0\" to Float64 gives negative zero, the bits 0x8000000000000000."
+file = "rules/text-to-float64-negative-zero.fsl"
+command = "run requests/text-to-float64-negative-zero.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "text-to-float64-overflow-infinity"
+statement = "Converting \"1e309\" to Float64 under nearest-even overflows to positive infinity, the bits 0x7ff0000000000000."
+file = "rules/text-to-float64-overflow-infinity.fsl"
+command = "run requests/text-to-float64-overflow-infinity.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "text-to-float64-overflow-toward-zero"
+statement = "Converting \"1e309\" to Float64 under toward-zero gives the largest finite value, the bits 0x7fefffffffffffff."
+file = "rules/text-to-float64-overflow-toward-zero.fsl"
+command = "run requests/text-to-float64-overflow-toward-zero.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "text-to-float64-underflow-zero"
+statement = "Converting \"1e-400\" to Float64 under nearest-even underflows to positive zero."
+file = "rules/text-to-float64-underflow-zero.fsl"
+command = "run requests/text-to-float64-underflow-zero.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "text-to-float64-underflow-toward-positive"
+statement = "Converting \"1e-400\" to Float64 under toward-positive gives the smallest subnormal, the bits 0x0000000000000001."
+file = "rules/text-to-float64-underflow-toward-positive.fsl"
+command = "run requests/text-to-float64-underflow-toward-positive.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "text-to-float64-infinity-spellings"
+statement = "Converting \"inf\" and \"-inf\" to Float64 gives positive and negative infinity."
+file = "rules/text-to-float64-infinity-spellings.fsl"
+command = "run requests/text-to-float64-infinity-spellings.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "text-to-float64-nan-spelling"
+statement = "Converting \"nan\" to Float64 gives the canonical quiet NaN, the bits 0x7ff8000000000000."
+file = "rules/text-to-float64-nan-spelling.fsl"
+command = "run requests/text-to-float64-nan-spelling.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "text-to-float32-nearest-even"
+statement = "Converting \"0.1\" to Float32 under nearest-even gives the bits 0x3dcccccd, and under toward-zero the bits 0x3dcccccc."
+file = "rules/text-to-float32-nearest-even.fsl"
+command = "run requests/text-to-float32-nearest-even.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "text-to-float64-strict-exact-representable"
+statement = "Converting \"0.25\" to strict exact Float64 gives the bits 0x3fd0000000000000 because it is exactly representable."
+file = "rules/text-to-float64-strict-exact-representable.fsl"
+command = "run requests/text-to-float64-strict-exact-representable.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "text-to-float64-strict-exact-inexact-refused"
+statement = "Converting \"0.1\" to strict exact Float64 needs rounding and is refused as ieee_not_exact with cause rounding-required."
+file = "rules/text-to-float64-strict-exact-inexact-refused.fsl"
+command = "run requests/text-to-float64-strict-exact-inexact-refused.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ieee_not_exact rounding-required"
+
+[[case]]
+id = "text-to-float64-uppercase-exponent"
+statement = "Converting \"1E3\" to Float64 is undefined because the exponent marker must be lower case."
+file = "rules/text-to-float64-uppercase-exponent.fsl"
+command = "run requests/text-to-float64-uppercase-exponent.json"
+status = "running"
+expect_exit = 10
+expect_verdict = "undefined"
+
+[[case]]
+id = "text-to-float64-explicit-plus-exponent"
+statement = "Converting \"1e+3\" to Float64 is undefined because the exponent carries no plus sign."
+file = "rules/text-to-float64-explicit-plus-exponent.fsl"
+command = "run requests/text-to-float64-explicit-plus-exponent.json"
+status = "running"
+expect_exit = 10
+expect_verdict = "undefined"
+
+[[case]]
+id = "text-to-float64-infinity-word"
+statement = "Converting \"Infinity\" to Float64 is undefined because only the lower-case inf spelling is read."
+file = "rules/text-to-float64-infinity-word.fsl"
+command = "run requests/text-to-float64-infinity-word.json"
+status = "running"
+expect_exit = 10
+expect_verdict = "undefined"
+
+[[case]]
+id = "text-to-float64-hex-float"
+statement = "Converting \"0x1p3\" to Float64 is undefined because hexadecimal floating spellings are not read."
+file = "rules/text-to-float64-hex-float.fsl"
+command = "run requests/text-to-float64-hex-float.json"
+status = "running"
+expect_exit = 10
+expect_verdict = "undefined"
+
+[[case]]
+id = "text-to-quantity-bare-number"
+statement = "Converting \"3\" to Quantity<ms> gives 3 ms."
+file = "rules/text-to-quantity-bare-number.fsl"
+command = "run requests/text-to-quantity-bare-number.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "text-to-quantity-with-unit"
+statement = "Converting \"3 ms\" to Quantity<ms> gives 3 ms."
+file = "rules/text-to-quantity-with-unit.fsl"
+command = "run requests/text-to-quantity-with-unit.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "text-to-quantity-fractional"
+statement = "Converting \"0.5\" to Quantity<ms> gives 1/2 ms."
+file = "rules/text-to-quantity-fractional.fsl"
+command = "run requests/text-to-quantity-fractional.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "text-to-quantity-other-unit"
+statement = "Converting \"3 s\" to Quantity<ms> is undefined because the text names a different unit and the conversion reads no unit conversions."
+file = "rules/text-to-quantity-other-unit.fsl"
+command = "run requests/text-to-quantity-other-unit.json"
+status = "running"
+expect_exit = 10
+expect_verdict = "undefined"
+
+[[case]]
+id = "text-to-quantity-no-space"
+statement = "Converting \"3ms\" to Quantity<ms> is undefined because exactly one space must separate the number and the unit."
+file = "rules/text-to-quantity-no-space.fsl"
+command = "run requests/text-to-quantity-no-space.json"
+status = "running"
+expect_exit = 10
+expect_verdict = "undefined"
+
+[[case]]
+id = "text-to-quantity-two-spaces"
+statement = "Converting \"3  ms\" with two spaces to Quantity<ms> is undefined."
+file = "rules/text-to-quantity-two-spaces.fsl"
+command = "run requests/text-to-quantity-two-spaces.json"
+status = "running"
+expect_exit = 10
+expect_verdict = "undefined"
+
+[[case]]
+id = "text-to-quantity-upper-case-unit"
+statement = "Converting \"3 MS\" to Quantity<ms> is undefined because unit names are case sensitive."
+file = "rules/text-to-quantity-upper-case-unit.fsl"
+command = "run requests/text-to-quantity-upper-case-unit.json"
+status = "running"
+expect_exit = 10
+expect_verdict = "undefined"
+
+[[case]]
+id = "text-to-number-from-string-operand"
+statement = "A String operand converts to an Integer with the same spelling rules, so \"42\" gives 42 and a full-width digit stays undefined."
+file = "rules/text-to-number-from-string-operand.fsl"
+command = "run requests/text-to-number-from-string-operand.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "text-to-number-from-string-fullwidth-undefined"
+statement = "A String is never normalized, so converting the fullwidth digit five from a String is undefined."
+file = "rules/text-to-number-from-string-fullwidth-undefined.fsl"
+command = "run requests/text-to-number-from-string-fullwidth-undefined.json"
+status = "running"
+expect_exit = 10
+expect_verdict = "undefined"
+
+[[case]]
+id = "text-to-number-targets-admitted"
+statement = "convert of a Text operand and of a String operand to Integer, a bounded Decimal, a bounded Rational and Float64 type checks."
+file = "rules/text-to-number-targets-admitted.fsl"
+command = "check rules/text-to-number-targets-admitted.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "text-to-boolean-refused"
+statement = "convert of a Text operand to Boolean is refused as an ineligible operator."
+file = "rules/text-to-boolean-refused.fsl"
+command = "check rules/text-to-boolean-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed operator-ineligible"
+
+[[case]]
+id = "text-to-enum-refused"
+statement = "convert of a Text operand to an enumeration is refused as an ineligible operator."
+file = "rules/text-to-enum-refused.fsl"
+command = "check rules/text-to-enum-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed operator-ineligible"
+
+[[case]]
+id = "text-to-text-refused"
+statement = "convert of a Text operand to a Text type is refused as an ineligible operator."
+file = "rules/text-to-text-refused.fsl"
+command = "check rules/text-to-text-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed operator-ineligible"
+
+[[case]]
+id = "text-to-uuid-refused"
+statement = "convert of a Text operand to UUID is refused as an ineligible operator."
+file = "rules/text-to-uuid-refused.fsl"
+command = "check rules/text-to-uuid-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed operator-ineligible"
+
+[[case]]
+id = "text-to-bare-decimal-syntax"
+statement = "convert<Decimal>(t) names no bounds and is refused at parse as invalid syntax."
+file = "rules/text-to-bare-decimal-syntax.fsl"
+command = "check rules/text-to-bare-decimal-syntax.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: invalid_syntax unexpected-token"
+
+[[case]]
+id = "text-to-bare-rational-syntax"
+statement = "convert<Rational>(t) names no bounds and is refused at parse as invalid syntax."
+file = "rules/text-to-bare-rational-syntax.fsl"
+command = "check rules/text-to-bare-rational-syntax.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: invalid_syntax unexpected-token"
+
+[[case]]
+id = "text-to-decimal-without-mode-syntax"
+statement = "convert<Decimal[0, 1000; 0, 2]>(t) names no rounding mode and is refused at parse as invalid syntax."
+file = "rules/text-to-decimal-without-mode-syntax.fsl"
+command = "check rules/text-to-decimal-without-mode-syntax.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: invalid_syntax unexpected-token"
+
+[[case]]
+id = "integer-literal-above-signed-128-bits"
+statement = "The integer literal 170141183460469231731687303715884105728, one more than the largest signed 128-bit integer, is refused as a type mismatch, the integer-outside-i128 refusal of the FSL frontend."
+file = "rules/integer-literal-above-signed-128-bits.fsl"
+command = "run requests/integer-literal-above-signed-128-bits.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed type-mismatch"
+
+[[case]]
+id = "integer-literal-largest-signed-128-bits"
+statement = "The integer literal 170141183460469231731687303715884105727, the largest signed 128-bit integer, is admitted and differs from 1."
+file = "rules/integer-literal-largest-signed-128-bits.fsl"
+command = "run requests/integer-literal-largest-signed-128-bits.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "size-explicit-domain-checks"
+statement = "size<Int[0, 5]>(q) and size<Integer>(q) check for a sequence, bag, set, ordered set and map bounded by 5."
+file = "rules/size-explicit-domain-checks.fsl"
+command = "check rules/size-explicit-domain-checks.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "size-explicit-domain-too-narrow"
+statement = "size<Int[0, 3]>(q) over a sequence that may hold five occurrences is refused as an unproved range."
+file = "rules/size-explicit-domain-too-narrow.fsl"
+command = "check rules/size-explicit-domain-too-narrow.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: undefined_expression unproved-range"
+
+[[case]]
+id = "size-explicit-domain-guarded"
+statement = "Under the guard size(q) <= 3, size<Int[0, 3]>(q) checks."
+file = "rules/size-explicit-domain-guarded.fsl"
+command = "check rules/size-explicit-domain-guarded.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "size-explicit-domain-minimum-one-needed"
+statement = "size<Int[1, 5]>(q) over a sequence whose minimum is 0 is refused as an unproved range, and over a sequence whose minimum is 1 it checks."
+file = "rules/size-explicit-domain-minimum-one-needed.fsl"
+command = "check rules/size-explicit-domain-minimum-one-needed.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: undefined_expression unproved-range"
+
+[[case]]
+id = "size-type-argument-boolean-refused"
+statement = "size<Boolean>(q) names a result domain that is not an integer type and is refused as a type mismatch."
+file = "rules/size-type-argument-boolean-refused.fsl"
+command = "check rules/size-type-argument-boolean-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed type-mismatch"
+
+[[case]]
+id = "size-type-argument-rational-refused"
+statement = "size<Rational>(q) names a result domain that is not an integer type and is refused as a type mismatch."
+file = "rules/size-type-argument-rational-refused.fsl"
+command = "check rules/size-type-argument-rational-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed type-mismatch"
+
+[[case]]
+id = "size-of-non-collection-refused"
+statement = "size<Int[0, 5]>(3) takes an Integer where a collection is required and is refused as a type mismatch."
+file = "rules/size-of-non-collection-refused.fsl"
+command = "check rules/size-of-non-collection-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed type-mismatch"
+
+[[case]]
+id = "size-undeclared-type-refused"
+statement = "size<Undeclared>(q) names a type that is not declared and is refused."
+file = "rules/size-undeclared-type-refused.fsl"
+command = "check rules/size-undeclared-type-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: missing_declaration missing-name"
+
+[[case]]
+id = "size-values-sequence-and-set"
+statement = "A sequence holding 7, 8, 7 has size 3 and a set holding the same literal has size 2."
+file = "rules/size-values-sequence-and-set.fsl"
+command = "run requests/size-values-sequence-and-set.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "size-alias-domain"
+statement = "size<Count>(q) with the alias type Count = Int[0, 10] checks with type Count."
+file = "rules/size-alias-domain.fsl"
+command = "check rules/size-alias-domain.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "count-into-narrow-domain-unproved"
+statement = "count<I03> over a sequence of up to five occurrences is refused as an unproved range, and into Int[0, 5] and Integer it is admitted."
+file = "rules/count-into-narrow-domain-unproved.fsl"
+command = "check rules/count-into-narrow-domain-unproved.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: undefined_expression unproved-range"
+
+[[case]]
+id = "count-into-wide-domain-admitted"
+statement = "count<I05> and count<Tot> over a sequence of up to five occurrences are admitted."
+file = "rules/count-into-wide-domain-admitted.fsl"
+command = "check rules/count-into-wide-domain-admitted.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "count-under-size-guard"
+statement = "Under the guard size(q) <= 3 the count is proved at most 3, so count<I03> checks."
+file = "rules/count-under-size-guard.fsl"
+command = "check rules/count-under-size-guard.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "count-under-weaker-size-guard"
+statement = "Under the guard size(q) <= 4 the count may reach 4, so count<I03> is refused as an unproved range."
+file = "rules/count-under-weaker-size-guard.fsl"
+command = "check rules/count-under-weaker-size-guard.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: undefined_expression unproved-range"
+
+[[case]]
+id = "count-lower-bound-zero-unproved-for-positive-domain"
+statement = "count<I13> has a lower bound of 1 but a count may be 0, so it is refused as an unproved range."
+file = "rules/count-lower-bound-zero-unproved-for-positive-domain.fsl"
+command = "check rules/count-lower-bound-zero-unproved-for-positive-domain.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: undefined_expression unproved-range"
+
+[[case]]
+id = "count-sequence-counts-occurrences"
+statement = "count over a sequence counts each true occurrence, so two of the three occurrences 1, 1, 2 equal to 1 give 2."
+file = "rules/count-sequence-counts-occurrences.fsl"
+command = "run requests/count-sequence-counts-occurrences.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "count-bag-counts-occurrences"
+statement = "count over a bag evaluates the predicate once per occurrence, so bag[1, 1, 2] has two occurrences equal to 1."
+file = "rules/count-bag-counts-occurrences.fsl"
+command = "run requests/count-bag-counts-occurrences.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "count-set-counts-members"
+statement = "count over a set counts members, so set[1, 1, 2] has one member equal to 1."
+file = "rules/count-set-counts-members.fsl"
+command = "run requests/count-set-counts-members.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "count-literal-source-out-of-domain"
+statement = "Five true occurrences of a Sequence<Boolean>[0, 5] are counted into Int[0, 3], and the bound 5 does not prove a count of at most 3, so the program is refused as an unproved range."
+file = "rules/count-literal-source-out-of-domain.fsl"
+command = "run requests/count-literal-source-out-of-domain.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: undefined_expression unproved-range"
+
+[[case]]
+id = "sum-empty-collection-zero"
+statement = "sum<Tot> over an empty sequence is 0 and no addition occurs."
+file = "rules/sum-empty-collection-zero.fsl"
+command = "run requests/sum-empty-collection-zero.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "sum-left-fold-values"
+statement = "sum<Tot> over the sequence 2, 3, 5 is 10."
+file = "rules/sum-left-fold-values.fsl"
+command = "run requests/sum-left-fold-values.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "sum-over-bag-multiplicity"
+statement = "sum over bag[2, 2, 3] counts the member 2 twice and gives 7."
+file = "rules/sum-over-bag-multiplicity.fsl"
+command = "run requests/sum-over-bag-multiplicity.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "sum-over-set-members"
+statement = "sum over set[2, 2, 3] counts the member 2 once and gives 5."
+file = "rules/sum-over-set-members.fsl"
+command = "run requests/sum-over-set-members.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "sum-empty-nonzero-domain-unproved"
+statement = "sum<I15> over a sequence that may be empty is refused as an unproved range because 0 is not in the domain."
+file = "rules/sum-empty-nonzero-domain-unproved.fsl"
+command = "check rules/sum-empty-nonzero-domain-unproved.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: undefined_expression unproved-range"
+
+[[case]]
+id = "sum-nonempty-nonzero-domain-admitted"
+statement = "sum<I15> over a sequence of exactly one Int[1, 5] occurrence is admitted."
+file = "rules/sum-nonempty-nonzero-domain-admitted.fsl"
+command = "check rules/sum-nonempty-nonzero-domain-admitted.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "sum-prefix-leaves-domain"
+statement = "sum<I04> over a sequence of three Int[0, 4] occurrences can leave the domain at a prefix, so it is refused as an unproved range."
+file = "rules/sum-prefix-leaves-domain.fsl"
+command = "check rules/sum-prefix-leaves-domain.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: undefined_expression unproved-range"
+
+[[case]]
+id = "sum-prefix-at-domain-bound"
+statement = "sum<I06> over a sequence of two literal occurrences 3, 3 reaches exactly the bound 6 and evaluates."
+file = "rules/sum-prefix-at-domain-bound.fsl"
+command = "run requests/sum-prefix-at-domain-bound.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "filter-sequence-preserves-order"
+statement = "filter over sequence[3, 1, 4, 1, 5] keeping values above 2 gives sequence[3, 4, 5] in the same order."
+file = "rules/filter-sequence-preserves-order.fsl"
+command = "run requests/filter-sequence-preserves-order.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "filter-bag-preserves-multiplicity"
+statement = "filter over bag[1, 1, 2] keeping values equal to 1 keeps both occurrences."
+file = "rules/filter-bag-preserves-multiplicity.fsl"
+command = "run requests/filter-bag-preserves-multiplicity.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "filter-result-lower-bound-zero"
+statement = "filter returns a collection whose lower bound is 0, so its result cannot be bound to Sequence<Integer>[1, 5]."
+file = "rules/filter-result-lower-bound-zero.fsl"
+command = "check rules/filter-result-lower-bound-zero.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed type-mismatch"
+
+[[case]]
+id = "map-sequence-preserves-multiplicity"
+statement = "map over sequence[1, 1, 2] adding 10 gives sequence[11, 11, 12]."
+file = "rules/map-sequence-preserves-multiplicity.fsl"
+command = "run requests/map-sequence-preserves-multiplicity.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "map-set-coalesces-equal-results"
+statement = "map over set[1, 2, 3] to the quotient x div 2 coalesces equal results, so the set holds 0 and 1 only."
+file = "rules/map-set-coalesces-equal-results.fsl"
+command = "run requests/map-set-coalesces-equal-results.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "map-bag-preserves-multiplicity"
+statement = "map over bag[1, 2, 3] to the quotient x div 2 keeps three occurrences, giving bag[0, 1, 1]."
+file = "rules/map-bag-preserves-multiplicity.fsl"
+command = "run requests/map-bag-preserves-multiplicity.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "map-ordered-set-coalesces-later-results"
+statement = "map over orderedSet[1, 2, 3] to the quotient x div 2 keeps the first result order and coalesces later equal results, giving orderedSet[0, 1]."
+file = "rules/map-ordered-set-coalesces-later-results.fsl"
+command = "run requests/map-ordered-set-coalesces-later-results.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "flatten-sequence-order"
+statement = "flatten of sequence[sequence[1, 2], sequence[3]] concatenates outer then inner order, giving sequence[1, 2, 3]."
+file = "rules/flatten-sequence-order.fsl"
+command = "run requests/flatten-sequence-order.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "flatten-bag-sums-multiplicities"
+statement = "flatten of bag[bag[1, 1], bag[1, 2]] sums multiplicities, giving bag[1, 1, 1, 2]."
+file = "rules/flatten-bag-sums-multiplicities.fsl"
+command = "run requests/flatten-bag-sums-multiplicities.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "flatten-sequence-of-set-refused"
+statement = "flatten of a sequence of sets has no inner occurrence order and is refused as a type mismatch."
+file = "rules/flatten-sequence-of-set-refused.fsl"
+command = "check rules/flatten-sequence-of-set-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed type-mismatch"
+
+[[case]]
+id = "drop-first-sequence-order"
+statement = "dropFirst over sequence[5, 6, 7] gives sequence[6, 7]."
+file = "rules/drop-first-sequence-order.fsl"
+command = "run requests/drop-first-sequence-order.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "drop-first-empty-is-empty"
+statement = "dropFirst over an empty sequence is the empty sequence."
+file = "rules/drop-first-empty-is-empty.fsl"
+command = "run requests/drop-first-empty-is-empty.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "drop-first-ordered-set"
+statement = "dropFirst over orderedSet[5, 6, 7] gives orderedSet[6, 7]."
+file = "rules/drop-first-ordered-set.fsl"
+command = "run requests/drop-first-ordered-set.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "drop-first-set-refused"
+statement = "A set has no first occurrence, so dropFirst over a set is refused as an ineligible operator."
+file = "rules/drop-first-set-refused.fsl"
+command = "check rules/drop-first-set-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed operator-ineligible"
+
+[[case]]
+id = "drop-first-bag-refused"
+statement = "A bag has no first occurrence, so dropFirst over a bag is refused as an ineligible operator."
+file = "rules/drop-first-bag-refused.fsl"
+command = "check rules/drop-first-bag-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed operator-ineligible"
+
+[[case]]
+id = "drop-first-bound-shrinks"
+statement = "dropFirst over a Sequence<Integer>[1, 3] has the static bound [0, 2], so it is admitted as Sequence<Integer>[0, 2]."
+file = "rules/drop-first-bound-shrinks.fsl"
+command = "check rules/drop-first-bound-shrinks.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "drop-first-bound-too-tight"
+statement = "dropFirst over a Sequence<Integer>[1, 3] has the static bound [0, 2], so it cannot be bound to Sequence<Integer>[1, 2]."
+file = "rules/drop-first-bound-too-tight.fsl"
+command = "check rules/drop-first-bound-too-tight.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed type-mismatch"
+
+[[case]]
+id = "remove-one-sequence-first-occurrence"
+statement = "removeOne over sequence[1, 2, 1] with 1 removes only the first occurrence, giving sequence[2, 1]."
+file = "rules/remove-one-sequence-first-occurrence.fsl"
+command = "run requests/remove-one-sequence-first-occurrence.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "remove-one-bag-reduces-multiplicity"
+statement = "removeOne over bag[1, 1, 2] with 1 reduces its multiplicity by one, giving bag[1, 2]."
+file = "rules/remove-one-bag-reduces-multiplicity.fsl"
+command = "run requests/remove-one-bag-reduces-multiplicity.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "remove-one-set-drops-member"
+statement = "removeOne over set[1, 2] with 1 drops the member, giving set[2]."
+file = "rules/remove-one-set-drops-member.fsl"
+command = "run requests/remove-one-set-drops-member.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "remove-one-absent-value-unchanged"
+statement = "removeOne with a value that no member equals returns the collection unchanged."
+file = "rules/remove-one-absent-value-unchanged.fsl"
+command = "run requests/remove-one-absent-value-unchanged.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "remove-one-wrong-type-refused"
+statement = "removeOne with a Boolean value over a sequence of integers is refused as a type mismatch."
+file = "rules/remove-one-wrong-type-refused.fsl"
+command = "check rules/remove-one-wrong-type-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed type-mismatch"
+
+[[case]]
+id = "contains-stops-and-empty-false"
+statement = "contains finds a present value, misses an absent one, and is false over an empty collection."
+file = "rules/contains-stops-and-empty-false.fsl"
+command = "run requests/contains-stops-and-empty-false.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "forall-exists-empty-cases"
+statement = "forall over an empty collection is true and exists over an empty collection is false."
+file = "rules/forall-exists-empty-cases.fsl"
+command = "run requests/forall-exists-empty-cases.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "forall-exists-values"
+statement = "forall holds when every member passes and exists holds when one does."
+file = "rules/forall-exists-values.fsl"
+command = "run requests/forall-exists-values.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "fold-sequence-order-from-identity"
+statement = "fold over a sequence starts from the declared identity and visits occurrences in order, so subtracting 1, 2, 3 from 10 gives 4."
+file = "rules/fold-sequence-order-from-identity.fsl"
+command = "run requests/fold-sequence-order-from-identity.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "fold-empty-returns-identity"
+statement = "fold over an empty collection returns only its declared identity."
+file = "rules/fold-empty-returns-identity.fsl"
+command = "run requests/fold-empty-returns-identity.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "fold-set-commutative-step"
+statement = "fold over a set with the commutative and associative step a + x gives the sum of its members."
+file = "rules/fold-set-commutative-step.fsl"
+command = "run requests/fold-set-commutative-step.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "fold-set-noncommutative-step-refused"
+statement = "fold over a set with the step a - x is not commutative and associative, so it is refused as ill typed."
+file = "rules/fold-set-noncommutative-step-refused.fsl"
+command = "check rules/fold-set-noncommutative-step-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed operator-ineligible"
+
+[[case]]
+id = "fold-bag-noncommutative-step-refused"
+statement = "fold over a bag with the step a - x is not commutative and associative, so it is refused as ill typed."
+file = "rules/fold-bag-noncommutative-step-refused.fsl"
+command = "check rules/fold-bag-noncommutative-step-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed operator-ineligible"
+
+[[case]]
+id = "reduce-sequence-order"
+statement = "reduce over a sequence takes the first occurrence as the seed, so a - x over 10, 2, 3 gives 5."
+file = "rules/reduce-sequence-order.fsl"
+command = "run requests/reduce-sequence-order.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "reduce-empty-source-unproved"
+statement = "reduce over a sequence that may be empty is refused as an unproved presence because an empty reduction has no value."
+file = "rules/reduce-empty-source-unproved.fsl"
+command = "check rules/reduce-empty-source-unproved.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: undefined_expression unproved-range"
+
+[[case]]
+id = "reduce-nonempty-source-admitted"
+statement = "reduce over a sequence of at least one occurrence is admitted."
+file = "rules/reduce-nonempty-source-admitted.fsl"
+command = "check rules/reduce-nonempty-source-admitted.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "convert-sequence-to-set-loses-order-and-multiplicity"
+statement = "convert of sequence[2, 1, 2] to a Set keeps two members regardless of order, so it equals set[1, 2]."
+file = "rules/convert-sequence-to-set-loses-order-and-multiplicity.fsl"
+command = "run requests/convert-sequence-to-set-loses-order-and-multiplicity.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "convert-sequence-to-bag-loses-order"
+statement = "convert of sequence[2, 1, 2] to a Bag keeps the multiplicities, so it equals bag[1, 2, 2]."
+file = "rules/convert-sequence-to-bag-loses-order.fsl"
+command = "run requests/convert-sequence-to-bag-loses-order.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "convert-sequence-to-ordered-set-keeps-order"
+statement = "convert of sequence[2, 1, 2] to an OrderedSet keeps the first occurrence of each value in order, giving orderedSet[2, 1]."
+file = "rules/convert-sequence-to-ordered-set-keeps-order.fsl"
+command = "run requests/convert-sequence-to-ordered-set-keeps-order.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "convert-set-to-sequence-uses-canonical-order"
+statement = "convert of set[3, 1, 2] to a Sequence visits members in ascending canonical order, giving sequence[1, 2, 3]."
+file = "rules/convert-set-to-sequence-uses-canonical-order.fsl"
+command = "run requests/convert-set-to-sequence-uses-canonical-order.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "convert-collection-element-type-refused"
+statement = "convert of a Sequence<Integer> to a Set<Boolean> changes the element type and is refused."
+file = "rules/convert-collection-element-type-refused.fsl"
+command = "check rules/convert-collection-element-type-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed type-mismatch"
+
+[[case]]
+id = "convert-collection-above-bound-refused"
+statement = "convert of a three-element sequence to a Set bounded at 2 is refused at evaluation as a cardinality above the maximum."
+file = "rules/convert-collection-above-bound-refused.fsl"
+command = "run requests/convert-collection-above-bound-refused.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: cardinality_out_of_bound above-maximum"
+
+[[case]]
+id = "quantity-add-same-unit"
+statement = "Adding 3 m and 4 m gives 7 m."
+file = "rules/quantity-add-same-unit.fsl"
+command = "run requests/quantity-add-same-unit.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "quantity-subtract-same-unit"
+statement = "Subtracting 4 m from 3 m gives -1 m."
+file = "rules/quantity-subtract-same-unit.fsl"
+command = "run requests/quantity-subtract-same-unit.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "quantity-add-mixed-units-refused"
+statement = "Adding 2 kg and 500 g, two different units of one dimension, is refused as a type mismatch because addition needs the identical unit; an explicit convert selects one."
+file = "rules/quantity-add-mixed-units-refused.fsl"
+command = "check rules/quantity-add-mixed-units-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed type-mismatch"
+
+[[case]]
+id = "quantity-add-after-convert"
+statement = "Converting 500 g to kg first makes the units identical, so 2 kg plus the converted value equals 2.5 kg."
+file = "rules/quantity-add-after-convert.fsl"
+command = "run requests/quantity-add-after-convert.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "quantity-convert-exact"
+statement = "Converting 3500 g to kg gives exactly 3.5 kg."
+file = "rules/quantity-convert-exact.fsl"
+command = "run requests/quantity-convert-exact.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "quantity-convert-between-dimensions-refused"
+statement = "Converting a Quantity<m> to a unit of a different dimension is refused as ill typed."
+file = "rules/quantity-convert-between-dimensions-refused.fsl"
+command = "check rules/quantity-convert-between-dimensions-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed type-mismatch"
+
+[[case]]
+id = "quantity-ordering-compares-values"
+statement = "Quantities in one unit order by value, so 3 m < 4 m and 4 m > 3 m."
+file = "rules/quantity-ordering-compares-values.fsl"
+command = "run requests/quantity-ordering-compares-values.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "quantity-multiplication-compound-unit"
+statement = "Multiplying 3 m by 2 m gives the same quantity as multiplying 6 m by 1 m, a value of 6 in the compound unit m squared."
+file = "rules/quantity-multiplication-compound-unit.fsl"
+command = "run requests/quantity-multiplication-compound-unit.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "quantity-division-same-unit-dimensionless"
+statement = "Dividing 6 m by 2 m cancels the unit and gives the dimensionless value 3, the same as 9 m divided by 3 m."
+file = "rules/quantity-division-same-unit-dimensionless.fsl"
+command = "run requests/quantity-division-same-unit-dimensionless.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "quantity-division-different-units"
+statement = "Dividing 6 m by 2 s gives a value of 3 in the compound unit m per s, the same as 3 m divided by 1 s."
+file = "rules/quantity-division-different-units.fsl"
+command = "run requests/quantity-division-different-units.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "quantity-affine-addition-refused"
+statement = "Adding two quantities in the affine unit degC is refused as ill typed because an offset unit has no sum."
+file = "rules/quantity-affine-addition-refused.fsl"
+command = "check rules/quantity-affine-addition-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed type-mismatch"
+
+[[case]]
+id = "quantity-affine-conversion-composes"
+statement = "Converting 0 degC to K adds the offset and gives 273.15 K."
+file = "rules/quantity-affine-conversion-composes.fsl"
+command = "run requests/quantity-affine-conversion-composes.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "quantity-affine-ordering-compares-root-values"
+statement = "Ordering affine quantities compares their root values, so 10 degC is greater than 5 degC and 0 degC is below 300 K."
+file = "rules/quantity-affine-ordering-compares-root-values.fsl"
+command = "run requests/quantity-affine-ordering-compares-root-values.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "quantity-negation-keeps-unit"
+statement = "Unary minus over a non-affine quantity negates its value in its own unit, so -(2 m) is -2 m and -(0 m) is 0 m."
+file = "rules/quantity-negation-keeps-unit.fsl"
+command = "run requests/quantity-negation-keeps-unit.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "quantity-scale-by-integer-values"
+statement = "Scaling 3 ms by 2 on either side gives 6 ms and scaling by a rational 1/2 gives 3/2 ms."
+file = "rules/quantity-scale-by-integer-values.fsl"
+command = "run requests/quantity-scale-by-integer-values.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "quantity-power-zero-base-negative-exponent"
+statement = "Raising 0 m to the power -1 has no value, so the program is refused as an unproved nonzero base; only direct kernel evaluation meets the undefined outcome."
+file = "rules/quantity-power-zero-base-negative-exponent.fsl"
+command = "check rules/quantity-power-zero-base-negative-exponent.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: undefined_expression unproved-nonzero"
+
+[[case]]
+id = "quantity-power-zero-base-zero-exponent"
+statement = "Raising 0 m to the power 0 gives the dimensionless value 1, the same as 2 m divided by 2 m."
+file = "rules/quantity-power-zero-base-zero-exponent.fsl"
+command = "run requests/quantity-power-zero-base-zero-exponent.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "quantity-power-integer"
+statement = "Raising 3 m to the power 2 gives 9 in m squared, the same as 9 m times 1 m."
+file = "rules/quantity-power-integer.fsl"
+command = "run requests/quantity-power-integer.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "quantity-power-zero-exponent"
+statement = "Raising 3 m to the power 0 gives the dimensionless value 1, the same as 2 m divided by 2 m."
+file = "rules/quantity-power-zero-exponent.fsl"
+command = "run requests/quantity-power-zero-exponent.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "case-selects-matching-arm"
+statement = "A case over a union evaluates only the arm whose member is active and binds the payload to the arm's identifier."
+file = "rules/case-selects-matching-arm.fsl"
+command = "run requests/case-selects-matching-arm.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "case-missing-arm-refused"
+statement = "A case that omits the arm for a member is refused as undefined because the arm set is incomplete."
+file = "rules/case-missing-arm-refused.fsl"
+command = "check rules/case-missing-arm-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: undefined_expression unproved-exhaustiveness"
+
+[[case]]
+id = "case-duplicate-arm-refused"
+statement = "A case with two arms for one member is refused as undefined because of the duplicate arm."
+file = "rules/case-duplicate-arm-refused.fsl"
+command = "check rules/case-duplicate-arm-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: undefined_expression unproved-exhaustiveness"
+
+[[case]]
+id = "case-unknown-member-refused"
+statement = "A case with an arm for a member the union does not declare is refused as undefined because of the unknown member."
+file = "rules/case-unknown-member-refused.fsl"
+command = "check rules/case-unknown-member-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: undefined_expression unproved-exhaustiveness"
+
+[[case]]
+id = "case-arm-arity-refused"
+statement = "A case arm that binds two identifiers for a one-payload member is refused as undefined because of the arm arity."
+file = "rules/case-arm-arity-refused.fsl"
+command = "check rules/case-arm-arity-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: undefined_expression unproved-exhaustiveness"
+
+[[case]]
+id = "case-scrutinee-not-union-refused"
+statement = "A case whose scrutinee is an Integer and whose arms name union members is refused as a type mismatch at the scrutinee."
+file = "rules/case-scrutinee-not-union-refused.fsl"
+command = "check rules/case-scrutinee-not-union-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed type-mismatch"
+
+[[case]]
+id = "case-arm-body-checked-against-result"
+statement = "A case arm whose body can exceed the declared result type is refused as an unproved range."
+file = "rules/case-arm-body-checked-against-result.fsl"
+command = "check rules/case-arm-body-checked-against-result.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: undefined_expression unproved-range"
+
+[[case]]
+id = "recursion-decreasing-measure"
+statement = "A recursive function with a decreasing integer measure is admitted and evaluates, so triangular(6) is 21."
+file = "rules/recursion-decreasing-measure.fsl"
+command = "run requests/recursion-decreasing-measure.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "recursion-no-measure-refused"
+statement = "A recursive function with no decreasing measure is refused as undefined because the decrease is unproved."
+file = "rules/recursion-no-measure-refused.fsl"
+command = "check rules/recursion-no-measure-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: undefined_expression unproved-decrease"
+
+[[case]]
+id = "recursion-measure-not-decreasing-refused"
+statement = "A recursive call that passes the same measure value is refused as an unproved decrease."
+file = "rules/recursion-measure-not-decreasing-refused.fsl"
+command = "check rules/recursion-measure-not-decreasing-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: undefined_expression unproved-decrease"
+
+[[case]]
+id = "recursion-mutual-decreasing"
+statement = "Two mutually recursive functions whose calls each decrease the shared measure are admitted."
+file = "rules/recursion-mutual-decreasing.fsl"
+command = "check rules/recursion-mutual-decreasing.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "recursion-mutual-nondecreasing-refused"
+statement = "Two mutually recursive functions where one call does not decrease the measure are refused as an unproved decrease."
+file = "rules/recursion-mutual-nondecreasing-refused.fsl"
+command = "check rules/recursion-mutual-nondecreasing-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: undefined_expression unproved-decrease"
+
+[[case]]
+id = "recursion-size-measure-dropfirst-with-fact"
+statement = "A recursive function measured by decreases(size(s)) is admitted when each call passes dropFirst(s) under the fact size(s) > 0, and it counts the occurrences of 7, 8, 7 as 3."
+file = "rules/recursion-size-measure-dropfirst-with-fact.fsl"
+command = "run requests/recursion-size-measure-dropfirst-with-fact.json"
+status = "staged"
+expect_exit = 20
+ready_exit = 0
+waits_on = "QSL-2754"
+why = "The driver build embedding FSL 529282e9 refuses dropFirst(s) under size(s) > 0 as an unproved decrease; FR-146-AC-16 admits it."
+needs = "dropFirst and removeOne decrease forms"
+
+[[case]]
+id = "recursion-size-measure-dropfirst-without-fact"
+statement = "The same recursion that passes dropFirst(s) with no size fact is refused as an unproved decrease."
+file = "rules/recursion-size-measure-dropfirst-without-fact.fsl"
+command = "check rules/recursion-size-measure-dropfirst-without-fact.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: undefined_expression unproved-decrease"
+
+[[case]]
+id = "recursion-size-measure-remove-one-with-membership"
+statement = "A recursion measured by decreases(size(s)) over a set is admitted when it passes removeOne(s, e) under contains(s, e)."
+file = "rules/recursion-size-measure-remove-one-with-membership.fsl"
+command = "check rules/recursion-size-measure-remove-one-with-membership.fsl"
+status = "staged"
+expect_exit = 20
+ready_exit = 0
+waits_on = "QSL-2754"
+why = "The driver build embedding FSL 529282e9 refuses removeOne(s, e) under contains(s, e) as an unproved decrease; FR-146-AC-16 admits it."
+needs = "dropFirst and removeOne decrease forms"
+
+[[case]]
+id = "recursion-size-measure-remove-one-without-membership"
+statement = "The same recursion without the contains(s, e) fact is refused as an unproved decrease."
+file = "rules/recursion-size-measure-remove-one-without-membership.fsl"
+command = "check rules/recursion-size-measure-remove-one-without-membership.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: undefined_expression unproved-decrease"
+
+[[case]]
+id = "recursion-size-measure-unchanged-argument"
+statement = "A recursion measured by decreases(size(s)) that passes s unchanged is refused as an unproved decrease."
+file = "rules/recursion-size-measure-unchanged-argument.fsl"
+command = "check rules/recursion-size-measure-unchanged-argument.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: undefined_expression unproved-decrease"
+
+[[case]]
+id = "recursion-size-measure-removal-filter"
+statement = "A recursion measured by decreases(size(s)) is admitted when it passes the removal filter filter(x in s: x != e) under contains(s, e)."
+file = "rules/recursion-size-measure-removal-filter.fsl"
+command = "check rules/recursion-size-measure-removal-filter.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "function-wrong-argument-type-refused"
+statement = "A call whose argument has the wrong type is refused as a type mismatch even in a branch that never runs."
+file = "rules/function-wrong-argument-type-refused.fsl"
+command = "check rules/function-wrong-argument-type-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed type-mismatch"
+
+[[case]]
+id = "function-wrong-result-type-refused"
+statement = "A function whose body has a Boolean value where an Integer result is declared is refused as a type mismatch."
+file = "rules/function-wrong-result-type-refused.fsl"
+command = "check rules/function-wrong-result-type-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed type-mismatch"
+
+[[case]]
+id = "option-present-and-value-guarded"
+statement = "present(o) is true for Some(3) and value(o) under that guard is 3, while present is false for absent."
+file = "rules/option-present-and-value-guarded.fsl"
+command = "run requests/option-present-and-value-guarded.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "boolean-connectives-short-circuit-truth"
+statement = "and, or and not follow their truth tables and implies is false only when the premise holds and the conclusion fails."
+file = "rules/boolean-connectives-short-circuit-truth.fsl"
+command = "run requests/boolean-connectives-short-circuit-truth.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "boolean-or-short-circuits-guarded-division"
+statement = "In a or b, the right operand is evaluated only when the left is false, so a divisor guard on the left protects the division on the right."
+file = "rules/boolean-or-short-circuits-guarded-division.fsl"
+command = "check rules/boolean-or-short-circuits-guarded-division.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "boolean-and-short-circuits-guarded-division"
+statement = "In a and b, the right operand is evaluated only when the left is true, so b != 0 on the left protects the division on the right."
+file = "rules/boolean-and-short-circuits-guarded-division.fsl"
+command = "check rules/boolean-and-short-circuits-guarded-division.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "conditional-branches-checked-with-guard"
+statement = "The else branch of if b = 0 knows b is not zero, so a div b checks there."
+file = "rules/conditional-branches-checked-with-guard.fsl"
+command = "check rules/conditional-branches-checked-with-guard.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "let-binding-scope"
+statement = "A let binding is visible only in its body, so a name bound by let and used after the let ends is refused as undeclared."
+file = "rules/let-binding-scope.fsl"
+command = "check rules/let-binding-scope.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: missing_declaration missing-name"
+
+[[case]]
+id = "float32-to-float64-widening-exact"
+statement = "Widening the binary32 value 1 to binary64 gives exactly the binary64 value 1."
+file = "rules/float32-to-float64-widening-exact.fsl"
+command = "run requests/float32-to-float64-widening-exact.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "float64-to-float32-narrowing-rounds"
+statement = "Narrowing the binary64 value nearest to 0.1 to binary32 under nearest-even gives the bits 0x3dcccccd."
+file = "rules/float64-to-float32-narrowing-rounds.fsl"
+command = "run requests/float64-to-float32-narrowing-rounds.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "float32-nan-widening-keeps-sign-and-payload"
+statement = "Widening the binary32 NaN 0xffc00005 to binary64 keeps its sign and its integer payload 5, giving 0xfff8000000000005."
+file = "rules/float32-nan-widening-keeps-sign-and-payload.fsl"
+command = "run requests/float32-nan-widening-keeps-sign-and-payload.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "rational-to-float64-exact"
+statement = "Converting the rational 1/4 to binary64 under nearest-even gives the bits 0x3fd0000000000000."
+file = "rules/rational-to-float64-exact.fsl"
+command = "run requests/rational-to-float64-exact.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "float64-to-rational-exact"
+statement = "Converting the binary64 value 0.25 to Rational[0, 9; 1, 4] gives exactly 1/4."
+file = "rules/float64-to-rational-exact.fsl"
+command = "run requests/float64-to-rational-exact.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "float64-square-root-exact"
+statement = "The square root of 4 under nearest-even is exactly 2, the bits 0x4000000000000000."
+file = "rules/float64-square-root-exact.fsl"
+command = "run requests/float64-square-root-exact.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "div-rem-truncating-all-sign-combinations"
+statement = "Under the truncating law -7 div 3 is -2 with remainder -1, 7 div -3 is -2 with remainder 1, -7 div -3 is 2 with remainder -1 and 7 div 3 is 2 with remainder 1, and each pair satisfies a = b * q + r."
+file = "rules/div-rem-truncating-all-sign-combinations.fsl"
+command = "run requests/div-rem-truncating-all-sign-combinations.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "div-rem-floor-all-sign-combinations"
+statement = "Under the floor law -7 div 3 is -3 with remainder 2, 7 div -3 is -3 with remainder -2, -7 div -3 is 2 with remainder -1 and 7 div 3 is 2 with remainder 1, and each pair satisfies a = b * q + r."
+file = "rules/div-rem-floor-all-sign-combinations.fsl"
+command = "run requests/div-rem-floor-all-sign-combinations.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "div-rem-euclidean-all-sign-combinations"
+statement = "Under the Euclidean law -7 div 3 is -3 with remainder 2, 7 div -3 is -2 with remainder 1, -7 div -3 is 3 with remainder 2 and 7 div 3 is 2 with remainder 1, and every remainder is nonnegative."
+file = "rules/div-rem-euclidean-all-sign-combinations.fsl"
+command = "run requests/div-rem-euclidean-all-sign-combinations.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "div-unexposed-member-never-refuses-quotient"
+statement = "Over a consumer domain Int[1, 10], 10 div y at y = 5 returns 2 although the remainder 0 is outside the domain, because only the exposed member is checked."
+file = "rules/div-unexposed-member-never-refuses-quotient.fsl"
+command = "run requests/div-unexposed-member-never-refuses-quotient.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "rem-unexposed-member-never-refuses-remainder"
+statement = "Over a consumer domain Int[-10, 5], x rem -1 at x = -10 returns 0 although the quotient 10 is outside the domain, because only the exposed member is checked."
+file = "rules/rem-unexposed-member-never-refuses-remainder.fsl"
+command = "run requests/rem-unexposed-member-never-refuses-remainder.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "div-without-complete-value-unsupported"
+statement = "A unit that does not select filament.value.complete/v1 and uses div is refused as an unsupported construct, even in a branch that never runs."
+file = "rules/div-without-complete-value-unsupported.fsl"
+command = "check rules/div-without-complete-value-unsupported.fsl"
+status = "running"
+expect_exit = 21
+expect_verdict = "unsupported"
+
+[[case]]
+id = "float-user-function-reserved-name-refused"
+statement = "A declaration named with the reserved qualified identity filament::value::ieee::sqrt is refused; the shared grammar admits only simple function names, so the refusal here is invalid syntax at the qualified name rather than the package refusal the standard names for a bound intrinsic identity."
+file = "rules/float-user-function-reserved-name-refused.fsl"
+command = "check rules/float-user-function-reserved-name-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: invalid_syntax unexpected-token"
+
+[[case]]
+id = "case-result-type-from-declared-result"
+statement = "A case that is the body of a function declared Int[0, 100] with arms 0 and a parameter w of Int[0, 9] checks with the declared result type."
+file = "rules/case-result-type-from-declared-result.fsl"
+command = "check rules/case-result-type-from-declared-result.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "case-arms-of-different-kinds-refused"
+statement = "A case with arms 0 and \"none\" is refused as a type mismatch at the second arm body."
+file = "rules/case-arms-of-different-kinds-refused.fsl"
+command = "check rules/case-arms-of-different-kinds-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed type-mismatch"
+
+[[case]]
+id = "case-empty-sequence-arm-ambiguous"
+statement = "A case arm whose body is the empty sequence literal with no expected type is refused as an ambiguous literal."
+file = "rules/case-empty-sequence-arm-ambiguous.fsl"
+command = "check rules/case-empty-sequence-arm-ambiguous.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed ambiguous-literal"
+
+[[case]]
+id = "postcondition-discharged-by-precondition"
+statement = "With the precondition amount <= self.balance, the postcondition self.balance = pre(self.balance) - amount checks."
+file = "rules/postcondition-discharged-by-precondition.fsl"
+command = "check rules/postcondition-discharged-by-precondition.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "postcondition-without-precondition-unproved"
+statement = "Without a precondition, pre(self.balance) - amount can leave Int[0, 100], so the postcondition is refused as an unproved range."
+file = "rules/postcondition-without-precondition-unproved.fsl"
+command = "check rules/postcondition-without-precondition-unproved.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: undefined_expression unproved-range"
+
+[[case]]
+id = "postcondition-precondition-strict-less-than"
+statement = "The precondition amount < self.balance discharges the postcondition self.balance = (pre(self.balance) - amount) - 1."
+file = "rules/postcondition-precondition-strict-less-than.fsl"
+command = "check rules/postcondition-precondition-strict-less-than.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "postcondition-precondition-equality-not-enough"
+statement = "The precondition amount = self.balance does not discharge the postcondition range obligation and is refused as an unproved range."
+file = "rules/postcondition-precondition-equality-not-enough.fsl"
+command = "check rules/postcondition-precondition-equality-not-enough.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: undefined_expression unproved-range"
+
+[[case]]
+id = "postcondition-precondition-disjunction-not-enough"
+statement = "The precondition amount <= self.balance or amount <= 5 does not discharge the postcondition and is refused as an unproved range."
+file = "rules/postcondition-precondition-disjunction-not-enough.fsl"
+command = "check rules/postcondition-precondition-disjunction-not-enough.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: undefined_expression unproved-range"
+
+[[case]]
+id = "implication-guard-discharges-subtraction"
+statement = "In a function body, a <= b implies r = b - a over a, b and r of Int[0, 100] checks."
+file = "rules/implication-guard-discharges-subtraction.fsl"
+command = "check rules/implication-guard-discharges-subtraction.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "rational-product-interval-exact"
+statement = "For a and b of Rational[1, 9; 1, 9], a * b has numerator [1, 81] over denominator [1, 81] and is admitted into Rational[1, 81; 1, 81]."
+file = "rules/rational-product-interval-exact.fsl"
+command = "check rules/rational-product-interval-exact.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "rational-product-interval-too-narrow"
+statement = "The same product into Rational[1, 80; 1, 81] is refused as an unproved range."
+file = "rules/rational-product-interval-too-narrow.fsl"
+command = "check rules/rational-product-interval-too-narrow.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: undefined_expression unproved-range"
+
+[[case]]
+id = "rational-sum-interval-exact"
+statement = "For a and b of Rational[1, 9; 1, 9], a + b is admitted into Rational[1, 162; 1, 81] and refused into Rational[1, 161; 1, 81]."
+file = "rules/rational-sum-interval-exact.fsl"
+command = "check rules/rational-sum-interval-exact.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: undefined_expression unproved-range"
+
+[[case]]
+id = "map-lookup-guard-forms-admitted"
+statement = "m[1] under contains(m, 1), in the else branch of not contains(m, 1), and m[k] under contains(m, k) are admitted."
+file = "rules/map-lookup-guard-forms-admitted.fsl"
+command = "check rules/map-lookup-guard-forms-admitted.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "map-lookup-guard-mismatched-key-refused"
+statement = "m[2] under contains(m, 1) is refused as an unproved presence at the index."
+file = "rules/map-lookup-guard-mismatched-key-refused.fsl"
+command = "check rules/map-lookup-guard-mismatched-key-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: undefined_expression unproved-presence"
+
+[[case]]
+id = "map-lookup-guard-wrong-branch-refused"
+statement = "m[1] in the else branch of contains(m, 1) is refused as an unproved presence at the index."
+file = "rules/map-lookup-guard-wrong-branch-refused.fsl"
+command = "check rules/map-lookup-guard-wrong-branch-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: undefined_expression unproved-presence"
+
+[[case]]
+id = "argument-narrowing-guard-forms-admitted"
+statement = "narrow(x + y) is admitted under x + y <= 9, 9 >= y + x, x + y < 10, the negated x + y > 9 and x - y >= 0 for x, y of Int[0, 9]."
+file = "rules/argument-narrowing-guard-forms-admitted.fsl"
+command = "check rules/argument-narrowing-guard-forms-admitted.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "argument-narrowing-guard-too-weak-refused"
+statement = "narrow(x + y) under x + y <= 10 is refused as an unproved range at the argument."
+file = "rules/argument-narrowing-guard-too-weak-refused.fsl"
+command = "check rules/argument-narrowing-guard-too-weak-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: undefined_expression unproved-range"
+
+[[case]]
+id = "argument-narrowing-guard-different-sum-refused"
+statement = "narrow(x + y + 1) under x + y <= 9 is refused as an unproved range at the argument, because the guard names a different sum."
+file = "rules/argument-narrowing-guard-different-sum-refused.fsl"
+command = "check rules/argument-narrowing-guard-different-sum-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: undefined_expression unproved-range"
+
+[[case]]
+id = "argument-narrowing-guard-not-equal-refused"
+statement = "narrow(x + y) under x + y != 10 is refused as an unproved range at the argument."
+file = "rules/argument-narrowing-guard-not-equal-refused.fsl"
+command = "check rules/argument-narrowing-guard-not-equal-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: undefined_expression unproved-range"
+
+[[case]]
+id = "carried-sum-admitted-over-carried-type"
+statement = "With Li = Quantity<m, Int[-5, 5]>, sum<Li> over a Sequence<Li>[0, 1] is admitted with result type Li."
+file = "rules/carried-sum-admitted-over-carried-type.fsl"
+command = "check rules/carried-sum-admitted-over-carried-type.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "carried-sum-over-other-carrier-refused"
+statement = "sum<Li> over a Sequence of Quantity<m, Int[-4, 4]> is refused as a type mismatch at the summand."
+file = "rules/carried-sum-over-other-carrier-refused.fsl"
+command = "check rules/carried-sum-over-other-carrier-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed type-mismatch"
+
+[[case]]
+id = "carried-sum-over-plain-quantity-refused"
+statement = "sum<Li> over a Sequence of plain Quantity<m> is refused as a type mismatch at the summand."
+file = "rules/carried-sum-over-plain-quantity-refused.fsl"
+command = "check rules/carried-sum-over-plain-quantity-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed type-mismatch"
+
+[[case]]
+id = "carried-sum-linked-prefix-unproved"
+statement = "A sum over Sequence<Li>[0, 3] with Li = Quantity<m, Int[-5, 5]> can leave the carrier at a prefix and is refused as an unproved range, while one over Sequence<Li>[0, 1] is admitted."
+file = "rules/carried-sum-linked-prefix-unproved.fsl"
+command = "check rules/carried-sum-linked-prefix-unproved.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: undefined_expression unproved-range"
+
+[[case]]
+id = "carried-sum-empty-nonzero-carrier-unproved"
+statement = "A sum over Quantity<m, Int[1, 5]> that may be empty is refused as an unproved range because zero is not in the carrier."
+file = "rules/carried-sum-empty-nonzero-carrier-unproved.fsl"
+command = "check rules/carried-sum-empty-nonzero-carrier-unproved.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: undefined_expression unproved-range"
+
+[[case]]
+id = "carried-sum-nonempty-nonzero-carrier-admitted"
+statement = "The same sum over a source of exactly one occurrence is admitted."
+file = "rules/carried-sum-nonempty-nonzero-carrier-admitted.fsl"
+command = "check rules/carried-sum-nonempty-nonzero-carrier-admitted.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "quantity-conversion-exact-to-carrier-grid"
+statement = "Converting 25 cm into Quantity<m, Decimal[-100, 100; 2, 2; exact]> gives 0.25 m, which the carrier holds exactly; converting back to Quantity<m> gives 0.25 m."
+file = "rules/quantity-conversion-exact-to-carrier-grid.fsl"
+command = "run requests/quantity-conversion-exact-to-carrier-grid.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "quantity-conversion-inexact-to-carrier-refused"
+statement = "Converting 1 inch (127/5000 m) into a Decimal carrier of scale two under exact is not on the carrier's grid and is refused as an inexact conversion."
+file = "rules/quantity-conversion-inexact-to-carrier-refused.fsl"
+command = "run requests/quantity-conversion-inexact-to-carrier-refused.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: inexact_conversion inexact-conversion"
+
+[[case]]
+id = "quantity-conversion-nearest-even-rounds"
+statement = "Converting 1 inch (0.0254 m) into a Decimal carrier of scale two under nearest-even gives 0.03 m, the rounded value."
+file = "rules/quantity-conversion-nearest-even-rounds.fsl"
+command = "run requests/quantity-conversion-nearest-even-rounds.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "quantity-conversion-above-carrier-bound-refused"
+statement = "Converting 3 m into Quantity<m, Decimal[-2, 2; 0, 0; exact]> is on the carrier's grid but above its bound, so it is refused as outside the decimal domain."
+file = "rules/quantity-conversion-above-carrier-bound-refused.fsl"
+command = "run requests/quantity-conversion-above-carrier-bound-refused.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: decimal_out_of_domain outside-domain"
+
+[[case]]
+id = "quantity-conversion-at-carrier-bounds"
+statement = "Converting -2 m and 2 m into Quantity<m, Decimal[-2, 2; 0, 0; exact]> succeeds and converts back to the same values."
+file = "rules/quantity-conversion-at-carrier-bounds.fsl"
+command = "run requests/quantity-conversion-at-carrier-bounds.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "quantity-conversion-above-int-carrier-bound-refused"
+statement = "Converting 3 m into Quantity<m, Int[-2, 2]> is on the carrier's grid but above its bound, so it is refused as outside the integer domain."
+file = "rules/quantity-conversion-above-int-carrier-bound-refused.fsl"
+command = "run requests/quantity-conversion-above-int-carrier-bound-refused.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: integer_out_of_domain outside-domain"
+
+[[case]]
+id = "quantity-dimension-normalization-inverse"
+statement = "Multiplying by a quantity and dividing by it again cancels the time dimension, so 6 m * 2 s / 2 s equals 3 m * 4 s / 2 s, both of value 6 in the normalized unit m."
+file = "rules/quantity-dimension-normalization-inverse.fsl"
+command = "run requests/quantity-dimension-normalization-inverse.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"

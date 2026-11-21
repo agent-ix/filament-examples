@@ -1,0 +1,10 @@
+{
+  "category": "undefined",
+  "last_stage": "S6a",
+  "result": {
+    "kind": "undefined",
+    "reason": "malformed-number"
+  },
+  "first_diagnostic": null,
+  "items": []
+}

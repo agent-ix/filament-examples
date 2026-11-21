@@ -1,0 +1,8 @@
+// FSpec FR-142-AC-6
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+dimension Length;
+dimension Time;
+unit m: Length = rational(1, 1);
+unit s: Time = rational(1, 1);
+function example using v(): Boolean pure { 6 m / 2 s = 3 m / 1 s }

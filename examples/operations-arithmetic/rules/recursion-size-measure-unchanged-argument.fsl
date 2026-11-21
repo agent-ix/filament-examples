@@ -1,0 +1,4 @@
+// FSpec FR-146-AC-15
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+function spin using v(s: Set<Int[0, 9]>): Integer pure decreases(size(s)) { if size(s) > 0 then spin(s) else 0 }

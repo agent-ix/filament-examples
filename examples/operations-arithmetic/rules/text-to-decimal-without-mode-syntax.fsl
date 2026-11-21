@@ -1,0 +1,4 @@
+// FSpec FR-478-AC-12
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+function a using v(t: Text[0, 64; unicode-scalars]): Boolean pure { let d = convert<Decimal[0, 1000; 0, 2]>(t) in true }

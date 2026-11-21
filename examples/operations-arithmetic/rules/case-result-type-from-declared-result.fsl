@@ -1,0 +1,5 @@
+// FSpec FR-146-AC-12
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+union U { A, B(Int[0, 9]) }
+function f using v(u: U): Int[0, 100] pure { case u { A: 0; B(w): w; } }

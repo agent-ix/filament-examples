@@ -1,0 +1,1 @@
+undefined_expression (unproved-range): `pre(self.balance) - amount` must lie in [0, 100] but is proved only in [-100, 100]

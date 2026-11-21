@@ -1,0 +1,5 @@
+// FSpec FR-145-AC-5, FR-145-AC-9
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+type Acc = Integer;
+function f using v(q: Bag<Integer>[0, 5]): Acc pure { fold<Acc>(a, x in q: a - x, identity: 0) }

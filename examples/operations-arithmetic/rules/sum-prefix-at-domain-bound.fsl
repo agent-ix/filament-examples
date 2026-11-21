@@ -1,0 +1,5 @@
+// FSpec FR-145 (sum prefix, bound boundary)
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+type I06 = Int[0, 6];
+function example using v(): Boolean pure { let q: Sequence<Int[0, 3]>[0, 2] = sequence[3, 3] in sum<I06>(x in q: x) = 6 }

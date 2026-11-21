@@ -1,0 +1,19 @@
+{
+  "format": "native-run/1",
+  "request": {
+    "call": {
+      "arguments": [],
+      "function": "example"
+    },
+    "models": [],
+    "program": {
+      "source": {
+        "authority": "example",
+        "document": "quantity-affine-ordering-compares-root-values",
+        "file": "../rules/quantity-affine-ordering-compares-root-values.fsl",
+        "formal_revision": 1,
+        "identity": "operations-arithmetic/quantity-affine-ordering-compares-root-values"
+      }
+    }
+  }
+}

@@ -1,0 +1,5 @@
+// FSpec FR-145-AC-12
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+type I15 = Int[1, 5];
+function f using v(q: Sequence<Int[1, 5]>[1, 1]): Int[1, 5] pure { sum<I15>(x in q: x) }

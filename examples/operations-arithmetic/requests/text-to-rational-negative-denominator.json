@@ -1,0 +1,19 @@
+{
+  "format": "native-run/1",
+  "request": {
+    "call": {
+      "arguments": [],
+      "function": "example"
+    },
+    "models": [],
+    "program": {
+      "source": {
+        "authority": "example",
+        "document": "text-to-rational-negative-denominator",
+        "file": "../rules/text-to-rational-negative-denominator.fsl",
+        "formal_revision": 1,
+        "identity": "operations-arithmetic/text-to-rational-negative-denominator"
+      }
+    }
+  }
+}

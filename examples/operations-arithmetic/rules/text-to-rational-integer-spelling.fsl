@@ -1,0 +1,5 @@
+// FSpec FR-478-AC-7
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+function conv using v(t: Text[0, 16; unicode-scalars]): Rational[-9, 9; 1, 9] pure { convert<Rational[-9, 9; 1, 9]>(t) }
+function example using v(): Boolean pure { conv(Text("-3")) = rational(-3, 1) }

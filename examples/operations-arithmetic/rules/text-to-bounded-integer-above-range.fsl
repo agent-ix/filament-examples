@@ -1,0 +1,5 @@
+// FSpec FR-478-AC-1, FR-478-AC-4
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+function conv using v(t: Text[0, 8; unicode-scalars]): Int[0, 99] pure { convert<Int[0, 99]>(t) }
+function example using v(): Boolean pure { conv(Text("100")) = 0 }

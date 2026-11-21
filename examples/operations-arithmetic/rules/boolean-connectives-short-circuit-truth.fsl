@@ -1,0 +1,4 @@
+// FSpec FR-006
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+function example using v(): Boolean pure { (true and true) and not (true and false) and (true or false) and not (false or false) and (false implies false) and (false implies true) and (true implies true) and not (true implies false) }

@@ -1,0 +1,5 @@
+// FSpec FR-145-AC-4
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+profile law = "filament.value.integer-division.floor/v1";
+function example using v(): Boolean pure { let q: Set<Integer>[0, 5] = set[1, 2, 3] in let r: Set<Integer>[0, 5] = map(x in q: x div 2) in r = set[0, 1] }

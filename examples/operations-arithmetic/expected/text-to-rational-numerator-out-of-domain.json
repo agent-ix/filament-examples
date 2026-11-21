@@ -1,0 +1,10 @@
+{
+  "category": "refusal",
+  "last_stage": "S6a",
+  "result": null,
+  "first_diagnostic": {
+    "code": "rational_out_of_domain",
+    "cause": "outside-domain"
+  },
+  "items": []
+}

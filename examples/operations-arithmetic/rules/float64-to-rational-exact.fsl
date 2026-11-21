@@ -1,0 +1,5 @@
+// FSpec FR-148-AC-9
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+function e using v(x: Float64[nearest-even]): Rational[0, 9; 1, 4] pure { convert<Rational[0, 9; 1, 4]>(x) }
+function example using v(): Boolean pure { e(float64(bits: 0x3fd0000000000000)) = rational(1, 4) }

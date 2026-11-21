@@ -1,0 +1,5 @@
+// FSpec FR-478-AC-8
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+function conv using v(t: Text[0, 16; unicode-scalars]): Float64[toward-zero] pure { convert<Float64[toward-zero]>(t) }
+function example using v(): Boolean pure { filament::value::ieee::bitIdentical(conv(Text("0.1")), float64(bits: 0x3fb9999999999999)) }

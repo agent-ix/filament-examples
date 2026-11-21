@@ -1,0 +1,19 @@
+{
+  "format": "native-run/1",
+  "request": {
+    "call": {
+      "arguments": [],
+      "function": "example"
+    },
+    "models": [],
+    "program": {
+      "source": {
+        "authority": "example",
+        "document": "fold-sequence-order-from-identity",
+        "file": "../rules/fold-sequence-order-from-identity.fsl",
+        "formal_revision": 1,
+        "identity": "operations-arithmetic/fold-sequence-order-from-identity"
+      }
+    }
+  }
+}

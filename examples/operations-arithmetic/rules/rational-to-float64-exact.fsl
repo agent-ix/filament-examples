@@ -1,0 +1,5 @@
+// FSpec FR-148-AC-9
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+function e using v(r: Rational[0, 9; 1, 4]): Float64[nearest-even] pure { convert<Float64[nearest-even]>(r) }
+function example using v(): Boolean pure { filament::value::ieee::bitIdentical(e(rational(1, 4)), float64(bits: 0x3fd0000000000000)) }

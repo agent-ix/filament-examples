@@ -1,0 +1,5 @@
+// FSpec FR-478-AC-2
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+function conv using v(t: Text[0, 16; unicode-scalars]): Decimal[0, 1000; 0, 2; exact] pure { convert<Decimal[0, 1000; 0, 2; exact]>(t) }
+function example using v(): Boolean pure { conv(Text("5.")) = decimal(0, 2) }

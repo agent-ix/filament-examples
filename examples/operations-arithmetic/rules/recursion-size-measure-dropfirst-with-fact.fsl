@@ -1,0 +1,5 @@
+// FSpec FR-146-AC-16
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+function tally using v(s: Sequence<Int[0, 9]>): Integer pure decreases(size(s)) { if size(s) > 0 then 1 + tally(dropFirst(s)) else 0 }
+function example using v(): Boolean pure { let q: Sequence<Int[0, 9]> = sequence[7, 8, 7] in tally(q) = 3 }

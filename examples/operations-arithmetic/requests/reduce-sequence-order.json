@@ -1,0 +1,19 @@
+{
+  "format": "native-run/1",
+  "request": {
+    "call": {
+      "arguments": [],
+      "function": "example"
+    },
+    "models": [],
+    "program": {
+      "source": {
+        "authority": "example",
+        "document": "reduce-sequence-order",
+        "file": "../rules/reduce-sequence-order.fsl",
+        "formal_revision": 1,
+        "identity": "operations-arithmetic/reduce-sequence-order"
+      }
+    }
+  }
+}

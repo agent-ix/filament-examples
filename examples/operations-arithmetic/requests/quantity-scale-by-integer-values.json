@@ -1,0 +1,19 @@
+{
+  "format": "native-run/1",
+  "request": {
+    "call": {
+      "arguments": [],
+      "function": "example"
+    },
+    "models": [],
+    "program": {
+      "source": {
+        "authority": "example",
+        "document": "quantity-scale-by-integer-values",
+        "file": "../rules/quantity-scale-by-integer-values.fsl",
+        "formal_revision": 1,
+        "identity": "operations-arithmetic/quantity-scale-by-integer-values"
+      }
+    }
+  }
+}

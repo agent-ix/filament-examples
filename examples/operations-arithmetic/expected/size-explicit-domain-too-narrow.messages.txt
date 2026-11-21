@@ -1,0 +1,1 @@
+undefined_expression (unproved-range): `size<Int[0, 3]>(q)` must lie in [0, 3] but is proved only in [0, 5]

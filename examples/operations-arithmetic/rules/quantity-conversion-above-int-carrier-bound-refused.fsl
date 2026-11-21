@@ -1,0 +1,9 @@
+// FSpec FR-142-AC-29
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+dimension L;
+unit m: L = rational(1, 1);
+type Ci = Quantity<m, Int[-2, 2]>;
+function c using v(q: Quantity<m>): Ci pure { convert<Ci>(q) }
+function back using v(q: Ci): Quantity<m> pure { convert<Quantity<m>>(q) }
+function example using v(): Boolean pure { back(c(3 m)) = 3 m }

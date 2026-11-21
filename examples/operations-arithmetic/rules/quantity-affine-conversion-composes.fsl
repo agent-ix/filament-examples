@@ -1,0 +1,7 @@
+// FSpec FR-142-AC-5
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+dimension Temperature;
+unit K: Temperature = rational(1, 1);
+unit degC: Temperature = rational(1, 1) * K + decimal(27315, 2);
+function example using v(): Boolean pure { convert<Quantity<K>>(0 degC) = 273.15 K }

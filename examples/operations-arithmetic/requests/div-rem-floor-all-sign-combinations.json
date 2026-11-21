@@ -1,0 +1,19 @@
+{
+  "format": "native-run/1",
+  "request": {
+    "call": {
+      "arguments": [],
+      "function": "example"
+    },
+    "models": [],
+    "program": {
+      "source": {
+        "authority": "example",
+        "document": "div-rem-floor-all-sign-combinations",
+        "file": "../rules/div-rem-floor-all-sign-combinations.fsl",
+        "formal_revision": 1,
+        "identity": "operations-arithmetic/div-rem-floor-all-sign-combinations"
+      }
+    }
+  }
+}

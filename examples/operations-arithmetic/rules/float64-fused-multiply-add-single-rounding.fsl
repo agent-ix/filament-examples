@@ -1,0 +1,8 @@
+// FSpec FR-148-AC-4
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+function example using v(): Boolean pure {
+  let x: Float64[nearest-even] = float64(bits: 0x3ff0000000400000) in
+  let z: Float64[nearest-even] = float64(bits: 0xbff0000000800000) in
+  filament::value::ieee::bitIdentical(filament::value::ieee::fma(x, x, z), float64(bits: 0x3c30000000000000)) and filament::value::ieee::bitIdentical(x * x + z, float64(bits: 0x0000000000000000))
+}

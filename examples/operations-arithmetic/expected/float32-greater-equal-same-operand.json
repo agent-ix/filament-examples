@@ -1,0 +1,10 @@
+{
+  "category": "internal-failure",
+  "last_stage": "S4",
+  "result": null,
+  "first_diagnostic": {
+    "code": "runtime_invariant",
+    "cause": null
+  },
+  "items": []
+}

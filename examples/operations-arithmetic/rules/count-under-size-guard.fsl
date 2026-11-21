@@ -1,0 +1,5 @@
+// FSpec FR-145-AC-16
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+type I03 = Int[0, 3];
+function a using v(q: Bag<Integer>[0, 5]): Int[0, 3] pure { if size(q) <= 3 then count<I03>(x in q: x > 0) else 0 }

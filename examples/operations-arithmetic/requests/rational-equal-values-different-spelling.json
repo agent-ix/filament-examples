@@ -1,0 +1,19 @@
+{
+  "format": "native-run/1",
+  "request": {
+    "call": {
+      "arguments": [],
+      "function": "example"
+    },
+    "models": [],
+    "program": {
+      "source": {
+        "authority": "example",
+        "document": "rational-equal-values-different-spelling",
+        "file": "../rules/rational-equal-values-different-spelling.fsl",
+        "formal_revision": 1,
+        "identity": "operations-arithmetic/rational-equal-values-different-spelling"
+      }
+    }
+  }
+}

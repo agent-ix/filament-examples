@@ -1,0 +1,4 @@
+// FSpec FR-145-AC-1, FR-145-AC-4
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+function example using v(): Boolean pure { let q: Sequence<Sequence<Integer>[0, 3]>[0, 3] = sequence[sequence[1, 2], sequence[3]] in let r: Sequence<Integer>[0, 9] = flatten(q) in r = sequence[1, 2, 3] }

@@ -1,0 +1,5 @@
+// FSpec FR-146-AC-19
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+function ok using v(a: Rational[1, 9; 1, 9], b: Rational[1, 9; 1, 9]): Rational[1, 162; 1, 81] pure { a + b }
+function bad using v(a: Rational[1, 9; 1, 9], b: Rational[1, 9; 1, 9]): Rational[1, 161; 1, 81] pure { a + b }

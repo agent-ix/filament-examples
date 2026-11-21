@@ -1,0 +1,4 @@
+// FSpec FR-146-AC-9
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+function f using v(a: Rational[0, 7; 1, 12], b: Rational[0, 7; 1, 12]): Rational[0, 7; 1, 12] pure { a + b }

@@ -1,0 +1,8 @@
+// FSpec FR-142-AC-1
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+dimension Mass;
+unit kg: Mass = rational(1, 1);
+unit g: Mass = rational(1, 1000) * kg;
+function half using v(): Quantity<kg> pure { convert<Quantity<kg>>(500 g) }
+function example using v(): Boolean pure { 2 kg + half() = 2.5 kg }

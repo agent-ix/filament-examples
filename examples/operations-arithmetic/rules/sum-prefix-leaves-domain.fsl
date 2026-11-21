@@ -1,0 +1,5 @@
+// FSpec FR-145 (sum prefix obligation)
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+type I04 = Int[0, 4];
+function f using v(q: Sequence<Int[0, 4]>[0, 3]): Int[0, 4] pure { sum<I04>(x in q: x) }

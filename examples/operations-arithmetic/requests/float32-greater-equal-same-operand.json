@@ -1,0 +1,19 @@
+{
+  "format": "native-run/1",
+  "request": {
+    "call": {
+      "arguments": [],
+      "function": "example"
+    },
+    "models": [],
+    "program": {
+      "source": {
+        "authority": "example",
+        "document": "float32-greater-equal-same-operand",
+        "file": "../rules/float32-greater-equal-same-operand.fsl",
+        "formal_revision": 1,
+        "identity": "operations-arithmetic/float32-greater-equal-same-operand"
+      }
+    }
+  }
+}

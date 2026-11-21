@@ -1,0 +1,5 @@
+// FSpec FR-478-AC-2
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+function conv using v(t: Text[0, 8; nfc]): Integer pure { convert<Integer>(t) }
+function example using v(): Boolean pure { conv(Text("５")) = 5 }

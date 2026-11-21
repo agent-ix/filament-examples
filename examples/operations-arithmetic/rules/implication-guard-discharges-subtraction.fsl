@@ -1,0 +1,4 @@
+// FSpec FR-146-AC-18
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+function f using v(a: Int[0, 100], b: Int[0, 100], r: Int[0, 100]): Boolean pure { a <= b implies r = b - a }

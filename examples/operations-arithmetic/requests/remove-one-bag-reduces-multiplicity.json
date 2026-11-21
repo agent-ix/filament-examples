@@ -1,0 +1,19 @@
+{
+  "format": "native-run/1",
+  "request": {
+    "call": {
+      "arguments": [],
+      "function": "example"
+    },
+    "models": [],
+    "program": {
+      "source": {
+        "authority": "example",
+        "document": "remove-one-bag-reduces-multiplicity",
+        "file": "../rules/remove-one-bag-reduces-multiplicity.fsl",
+        "formal_revision": 1,
+        "identity": "operations-arithmetic/remove-one-bag-reduces-multiplicity"
+      }
+    }
+  }
+}
