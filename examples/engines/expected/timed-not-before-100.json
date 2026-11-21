@@ -1,0 +1,346 @@
+{
+  "category": "success",
+  "last_stage": "S6c",
+  "result": null,
+  "first_diagnostic": null,
+  "items": [
+    {
+      "axes": {
+        "activation": "active",
+        "execution": "completed",
+        "settlement": "closed-scope",
+        "truth": "true"
+      },
+      "category": "success",
+      "claim_name": "NotStoppedBefore100ms",
+      "record": {
+        "backend": "en-6",
+        "basis": {
+          "type": "zone-certified"
+        },
+        "cause": null,
+        "certification": "certified",
+        "result": "proved",
+        "settled_by": "result"
+      },
+      "request": {
+        "candidates": {
+          "backends": [
+            "en-6"
+          ],
+          "type": "set"
+        },
+        "claim": {
+          "node": {
+            "ordinal": 0,
+            "package": "example:engines/deadline",
+            "path": [
+              "temporal",
+              "temporal_clause",
+              {
+                "ordinal": 0,
+                "package": "example:engines/deadline",
+                "path": [
+                  "value",
+                  "parameter",
+                  "name",
+                  {
+                    "ordinal": 0,
+                    "package": "example:engines/deadline",
+                    "path": [
+                      "scalar_type",
+                      "text"
+                    ]
+                  },
+                  "r",
+                  "level",
+                  {
+                    "ordinal": 0,
+                    "package": "example:engines/deadline",
+                    "path": [
+                      "scalar_type",
+                      "integer"
+                    ]
+                  },
+                  "0",
+                  {
+                    "ordinal": 0,
+                    "package": "example:engines/deadline",
+                    "path": [
+                      "composite_type",
+                      "reference",
+                      {
+                        "ordinal": 0,
+                        "package": "example/rover-deadline",
+                        "path": [
+                          "model",
+                          "object_type",
+                          "ix://example/rover-deadline/Rover"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "ordinal": 0,
+                "package": "example:engines/deadline",
+                "path": [
+                  "scalar_type",
+                  "text"
+                ]
+              },
+              "model-time",
+              "kind",
+              {
+                "ordinal": 0,
+                "package": "example:engines/deadline",
+                "path": [
+                  "scalar_type",
+                  "text"
+                ]
+              },
+              "origin",
+              {
+                "ordinal": 0,
+                "package": "example:engines/deadline",
+                "path": [
+                  "temporal",
+                  "formula",
+                  {
+                    "ordinal": 0,
+                    "package": "example:engines/deadline",
+                    "path": [
+                      "temporal",
+                      "formula",
+                      {
+                        "ordinal": 0,
+                        "package": "example:engines/deadline",
+                        "path": [
+                          "expression",
+                          "unary",
+                          {
+                            "ordinal": 0,
+                            "package": "example:engines/deadline",
+                            "path": [
+                              "expression",
+                              "query",
+                              {
+                                "ordinal": 0,
+                                "package": "example:engines/deadline",
+                                "path": [
+                                  "expression",
+                                  "deref",
+                                  {
+                                    "ordinal": 0,
+                                    "package": "example:engines/deadline",
+                                    "path": [
+                                      "value",
+                                      "parameter",
+                                      "name",
+                                      {
+                                        "ordinal": 0,
+                                        "package": "example:engines/deadline",
+                                        "path": [
+                                          "scalar_type",
+                                          "text"
+                                        ]
+                                      },
+                                      "r",
+                                      "level",
+                                      {
+                                        "ordinal": 0,
+                                        "package": "example:engines/deadline",
+                                        "path": [
+                                          "scalar_type",
+                                          "integer"
+                                        ]
+                                      },
+                                      "0",
+                                      {
+                                        "ordinal": 0,
+                                        "package": "example:engines/deadline",
+                                        "path": [
+                                          "composite_type",
+                                          "reference",
+                                          {
+                                            "ordinal": 0,
+                                            "package": "example/rover-deadline",
+                                            "path": [
+                                              "model",
+                                              "object_type",
+                                              "ix://example/rover-deadline/Rover"
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  },
+                                  "filament.op.model.deref",
+                                  "deref",
+                                  {
+                                    "ordinal": 0,
+                                    "package": "example/rover-deadline",
+                                    "path": [
+                                      "model",
+                                      "object_type",
+                                      "ix://example/rover-deadline/Rover"
+                                    ]
+                                  },
+                                  {
+                                    "ordinal": 0,
+                                    "package": "example/rover-deadline",
+                                    "path": [
+                                      "model",
+                                      "object_type",
+                                      "ix://example/rover-deadline/Rover"
+                                    ]
+                                  }
+                                ]
+                              },
+                              "filament.op.record.project",
+                              "false",
+                              "query",
+                              {
+                                "ordinal": 0,
+                                "package": "example:engines/deadline",
+                                "path": [
+                                  "scalar_type",
+                                  "boolean"
+                                ]
+                              },
+                              {
+                                "ordinal": 0,
+                                "package": "example:engines/deadline",
+                                "path": [
+                                  "scalar_type",
+                                  "boolean"
+                                ]
+                              }
+                            ]
+                          },
+                          "filament.op.boolean.not",
+                          "unary",
+                          {
+                            "ordinal": 0,
+                            "package": "example:engines/deadline",
+                            "path": [
+                              "scalar_type",
+                              "boolean"
+                            ]
+                          },
+                          {
+                            "ordinal": 0,
+                            "package": "example:engines/deadline",
+                            "path": [
+                              "scalar_type",
+                              "boolean"
+                            ]
+                          }
+                        ]
+                      },
+                      "filament.op.temporal.holds",
+                      "temporal_formula",
+                      {
+                        "ordinal": 0,
+                        "package": "example:engines/deadline",
+                        "path": [
+                          "scalar_type",
+                          "boolean"
+                        ]
+                      },
+                      {
+                        "ordinal": 0,
+                        "package": "example:engines/deadline",
+                        "path": [
+                          "scalar_type",
+                          "boolean"
+                        ]
+                      }
+                    ]
+                  },
+                  "filament.op.temporal.always",
+                  "time:[0..99]",
+                  "temporal_formula",
+                  {
+                    "ordinal": 0,
+                    "package": "example:engines/deadline",
+                    "path": [
+                      "scalar_type",
+                      "boolean"
+                    ]
+                  },
+                  {
+                    "ordinal": 0,
+                    "package": "example:engines/deadline",
+                    "path": [
+                      "scalar_type",
+                      "boolean"
+                    ]
+                  }
+                ]
+              },
+              "filament.op.temporal.clause",
+              "filament.temporal.timed/v1",
+              "temporal",
+              {
+                "ordinal": 0,
+                "package": "example:engines/deadline",
+                "path": [
+                  "scalar_type",
+                  "boolean"
+                ]
+              },
+              {
+                "ordinal": 0,
+                "package": "example:engines/deadline",
+                "path": [
+                  "scalar_type",
+                  "boolean"
+                ]
+              }
+            ]
+          },
+          "occurrence": {
+            "ordinal": 0,
+            "role": "claim"
+          }
+        },
+        "extent": {
+          "classification": "unbounded",
+          "finite_bound_available": false
+        },
+        "kind": "temporal-satisfaction",
+        "request_index": 0,
+        "temporal": {
+          "fairness": [],
+          "item_kind": "formula",
+          "limits": {
+            "max_automaton_states": 1048576,
+            "max_relation_tuples": 16777216,
+            "max_states": 10000000,
+            "max_transitions": 100000000,
+            "max_walk_steps": 4096,
+            "max_witness_set": 65536
+          },
+          "subject": {
+            "initial_states": [
+              {
+                "authority": "example",
+                "identity": "ix://example/rover-deadline/data/deadline-degraded-start"
+              }
+            ],
+            "proof_bounds": [],
+            "universes": [
+              {
+                "authority": "example",
+                "identity": "ix://example/rover-deadline/data/deadline-degraded-start"
+              }
+            ]
+          }
+        }
+      },
+      "request_index": 0
+    }
+  ]
+}

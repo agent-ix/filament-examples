@@ -1,0 +1,12 @@
+language "ix:native" edition "1-draft";
+profile v = "filament.model.complete/v1";
+profile inf = "filament.temporal.infinite-trace/v1";
+model K = "example/tank";
+
+pre FillBelowTop using v on K::Tank::fill { self.level < 3 }
+post FillAddsOne using v on K::Tank::fill { self.level = pre(self.level) + 1 }
+pre DrainAboveZero using v on K::Tank::drain { self.level > 0 }
+post DrainSubtractsOne using v on K::Tank::drain { self.level = pre(self.level) - 1 }
+
+// The goal of a plan from the empty tank: a full tank.
+temporal TankFull using inf over (t: K::Tank) clock "model-steps" on origin { eventually holds(t.level = 3) }

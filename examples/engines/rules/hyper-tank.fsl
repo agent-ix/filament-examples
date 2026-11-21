@@ -1,0 +1,18 @@
+language "ix:native" edition "1-draft";
+profile v = "filament.model.complete/v1";
+profile inf = "filament.temporal.infinite-trace/v1";
+model K = "example/tank";
+
+pre FillBelowTop using v on K::Tank::fill { self.level < 3 }
+post FillAddsOne using v on K::Tank::fill { self.level = pre(self.level) + 1 }
+pre DrainAboveZero using v on K::Tank::drain { self.level > 0 }
+post DrainSubtractsOne using v on K::Tank::drain { self.level = pre(self.level) - 1 }
+
+// Two runs that take the same steps are at the same level.
+hyper SameStepsSameLevel using inf over behaviours (r: K::Tank)
+  forall trace a of K
+  forall trace b of K
+  match { a.step.op = b.step.op }
+{
+  always holds(r.level @ a = r.level @ b)
+}

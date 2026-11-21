@@ -1,0 +1,26 @@
+language "ix:native" edition "1-draft";
+profile energy = "filament.temporal.infinite-trace/v1";
+
+// A solar-powered radio repeats a six-second energy cycle. Harvesting adds three units per second from 2 to 8,
+// transmission consumes two per second from 8 to 4, and standby consumes one per second from 4 back to 2.
+hybrid RadioEnergyCycle using energy {
+  initial { mode Harvest when { charge = 2 }; }
+  mode Harvest invariant { charge >= 2 and charge <= 8 }
+    flow { charge' = 3; }
+    transition to Transmit when { charge = 8 } reset { charge = 8 };
+  mode Transmit invariant { charge >= 4 and charge <= 8 }
+    flow { charge' = -2; }
+    transition to Standby when { charge = 4 } reset { charge = 4 };
+  mode Standby invariant { charge >= 2 and charge <= 4 }
+    flow { charge' = -1; }
+    transition to Harvest when { charge = 2 } reset { charge = 2 };
+}
+
+// The charge reaches 8 and no more, so the bound 8 holds and the bound below 8 does not.
+temporal AtMostEight using energy over (r: RadioEnergyCycle) clock "model-time" on origin { always [0, 12] holds(r.charge <= 8) }
+temporal BelowEight using energy over (r: RadioEnergyCycle) clock "model-time" on origin { always [0, 12] holds(r.charge < 8) }
+// The charge starts at 2 and never drops below it, so the bound 2 holds and the bound above 2 does not.
+temporal AtLeastTwo using energy over (r: RadioEnergyCycle) clock "model-time" on origin { always [0, 12] holds(r.charge >= 2) }
+temporal AboveTwo using energy over (r: RadioEnergyCycle) clock "model-time" on origin { always [0, 12] holds(r.charge > 2) }
+// The charge is exactly 8 at time 2, but an equality is a point the flowpipe cannot prove it reaches.
+temporal ReachesEight using energy over (r: RadioEnergyCycle) clock "model-time" on origin { eventually [0, 3] holds(r.charge = 8) }

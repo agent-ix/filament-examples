@@ -1,0 +1,60 @@
+{
+  "format": "native-analyze/1",
+  "request": {
+    "models": [
+      {
+        "format": "semantic-ir/2.0.0",
+        "source": {
+          "file": "../model/tank.semantic-ir.json",
+          "authority": "example",
+          "identity": "example:engines/tank",
+          "document": "model",
+          "formal_revision": 1
+        }
+      }
+    ],
+    "program": {
+      "source": {
+        "file": "../rules/compose-tank.fsl",
+        "authority": "example",
+        "identity": "example:engines/compose-tank",
+        "document": "composetank",
+        "formal_revision": 1
+      }
+    },
+    "documents": [
+      {
+        "file": "../data/tank-0.json"
+      }
+    ],
+    "items": [
+      {
+        "claim": "TankBounds",
+        "kind": "composition"
+      }
+    ],
+    "deadline_ms": 20000,
+    "libraries": [
+      {
+        "identity": "example/tank-low",
+        "source": {
+          "file": "../rules/tank-low.fsl",
+          "authority": "example",
+          "identity": "example/tank-low",
+          "document": "tanklow",
+          "formal_revision": 1
+        }
+      },
+      {
+        "identity": "example/tank-high",
+        "source": {
+          "file": "../rules/tank-high.fsl",
+          "authority": "example",
+          "identity": "example/tank-high",
+          "document": "tankhigh",
+          "formal_revision": 1
+        }
+      }
+    ]
+  }
+}

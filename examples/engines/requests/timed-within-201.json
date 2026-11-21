@@ -1,0 +1,36 @@
+{
+  "format": "native-analyze/1",
+  "request": {
+    "models": [
+      {
+        "format": "semantic-ir/2.0.0",
+        "source": {
+          "file": "../model/rover-deadline.semantic-ir.json",
+          "authority": "example",
+          "identity": "example:engines/rover-deadline",
+          "document": "model",
+          "formal_revision": 1
+        }
+      }
+    ],
+    "program": {
+      "source": {
+        "file": "../rules/deadline.fsl",
+        "authority": "example",
+        "identity": "example:engines/deadline",
+        "document": "deadline",
+        "formal_revision": 1
+      }
+    },
+    "documents": [
+      {
+        "file": "../data/deadline-degraded-start.json"
+      }
+    ],
+    "items": [
+      {
+        "claim": "StopsWithin201ms"
+      }
+    ]
+  }
+}

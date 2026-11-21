@@ -1,0 +1,14 @@
+language "ix:native" edition "1-draft";
+profile m = "filament.model.complete/v1";
+import "example/tank-low" as Low;
+import "example/tank-high" as High;
+model K = "example/tank";
+
+// Two guarantees over the one tank: the level never goes below zero, and never above three.
+compose TankBounds rule assume-guarantee {
+  component A from Low using K;
+  component B from High using K;
+  guarantee A::NotBelowZero;
+  guarantee B::NotAboveThree;
+  rely B::NotAboveThree on A::NotBelowZero;
+}

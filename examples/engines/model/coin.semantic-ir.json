@@ -1,0 +1,168 @@
+{
+  "contractVersion": "2.0.0",
+  "canonicalization": {
+    "algorithm": "rfc8785-v1"
+  },
+  "source": {
+    "identity": "ix://example/coin/spec",
+    "version": "1.0.0",
+    "dialect": "spec-bundle"
+  },
+  "package": {
+    "identity": "example/coin",
+    "version": "1.0.0",
+    "mappingVersions": [],
+    "profileVersions": []
+  },
+  "occurrences": [],
+  "extensions": [],
+  "constructs": [
+    {
+      "kind": {
+        "module": "example/coin",
+        "name": "object_type"
+      },
+      "moduleVersion": "1.0.0",
+      "construct": {
+        "identity": "none",
+        "shape": "record",
+        "members": {},
+        "meaning": "filament.meaning.model.object-type/v1"
+      }
+    },
+    {
+      "kind": {
+        "module": "example/coin",
+        "name": "population"
+      },
+      "moduleVersion": "1.0.0",
+      "construct": {
+        "identity": "none",
+        "shape": "record",
+        "members": {},
+        "meaning": "filament.meaning.model.population/v1"
+      }
+    }
+  ],
+  "types": [
+    {
+      "identity": "ix://example/coin/Coin",
+      "displayName": "Coin",
+      "kind": {
+        "module": "example/coin",
+        "name": "object_type"
+      },
+      "roles": [],
+      "origin": {
+        "generated": {
+          "generatorIdentity": "ix://example/coin/Coin",
+          "generatorVersion": "1.0.0",
+          "inputIdentities": [
+            "ix://example/coin/Coin"
+          ]
+        }
+      },
+      "constraints": [],
+      "extensions": [],
+      "unknownPolicy": "reject",
+      "supertypes": [],
+      "fields": [
+        {
+          "identity": "ix://example/coin/Coin/heads",
+          "name": "heads",
+          "typeRef": "ix://filament/native/Boolean",
+          "presence": "required",
+          "nullable": false,
+          "defaultKind": "none",
+          "multiplicity": {
+            "lower": 1,
+            "upper": 1,
+            "ordered": false,
+            "unique": true
+          },
+          "origin": {
+            "generated": {
+              "generatorIdentity": "ix://example/coin/Coin/heads",
+              "generatorVersion": "1.0.0",
+              "inputIdentities": [
+                "ix://example/coin/Coin/heads"
+              ]
+            }
+          }
+        }
+      ],
+      "operations": [
+        {
+          "identity": "ix://example/coin/Coin/flip",
+          "name": "flip",
+          "params": [
+            {
+              "identity": "ix://example/coin/Coin/flip/ok",
+              "name": "ok",
+              "typeRef": "ix://filament/native/Boolean",
+              "presence": "required",
+              "nullable": false,
+              "defaultKind": "none",
+              "multiplicity": {
+                "lower": 1,
+                "upper": 1,
+                "ordered": false,
+                "unique": true
+              },
+              "origin": {
+                "generated": {
+                  "generatorIdentity": "ix://example/coin/Coin/flip/ok",
+                  "generatorVersion": "1.0.0",
+                  "inputIdentities": [
+                    "ix://example/coin/Coin/flip/ok"
+                  ]
+                }
+              }
+            }
+          ],
+          "pre": [],
+          "post": [],
+          "origin": {
+            "generated": {
+              "generatorIdentity": "ix://example/coin/Coin/flip",
+              "generatorVersion": "1.0.0",
+              "inputIdentities": [
+                "ix://example/coin/Coin/flip"
+              ]
+            }
+          },
+          "frame": {
+            "modifies": [
+              "ix://example/coin/Coin/heads"
+            ],
+            "creates": [],
+            "deletes": []
+          }
+        }
+      ]
+    }
+  ],
+  "populations": [
+    {
+      "identity": "ix://example/coin/coins",
+      "displayName": "coins",
+      "kind": {
+        "module": "example/coin",
+        "name": "population"
+      },
+      "members": [
+        "ix://example/coin/Coin"
+      ],
+      "extent": "closed",
+      "origin": {
+        "generated": {
+          "generatorIdentity": "ix://example/coin/coins",
+          "generatorVersion": "1.0.0",
+          "inputIdentities": [
+            "ix://example/coin/coins"
+          ]
+        }
+      }
+    }
+  ]
+}

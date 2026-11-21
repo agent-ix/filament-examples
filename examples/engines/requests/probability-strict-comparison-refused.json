@@ -1,0 +1,26 @@
+{
+  "format": "native-compile/1",
+  "request": {
+    "models": [
+      {
+        "format": "semantic-ir/2.0.0",
+        "source": {
+          "file": "../model/coin.semantic-ir.json",
+          "authority": "example",
+          "identity": "example:engines/coin",
+          "document": "model",
+          "formal_revision": 1
+        }
+      }
+    ],
+    "program": {
+      "source": {
+        "file": "../rules/coin-strict.fsl",
+        "authority": "example",
+        "identity": "example:engines/coin-strict",
+        "document": "coinstrict",
+        "formal_revision": 1
+      }
+    }
+  }
+}

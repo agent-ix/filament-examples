@@ -1,0 +1,16 @@
+{
+  "format": "filament.state.snapshot/v1",
+  "identity": {"authority": "example", "identity": "example:engines/tank-0"},
+  "observation": "current",
+  "model": {"identity": "example/tank"},
+  "anchor": {"kind": "initialization", "name": "start"},
+  "populations": [
+    {
+      "population": "ix://example/tank/tanks",
+      "complete": true,
+      "objects": [
+        {"key": "t", "type": "ix://example/tank/Tank", "fields": {"level": {"integer": "0"}}}
+      ]
+    }
+  ]
+}

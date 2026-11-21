@@ -1,0 +1,20 @@
+{
+  "format": "native-analyze/1",
+  "request": {
+    "models": [],
+    "program": {
+      "source": {
+        "file": "../rules/hybrid-rate-expression.fsl",
+        "authority": "example",
+        "identity": "example:engines/hybrid-rate-expression",
+        "document": "hybridrateexpression",
+        "formal_revision": 1
+      }
+    },
+    "items": [
+      {
+        "claim": "Bounded"
+      }
+    ]
+  }
+}

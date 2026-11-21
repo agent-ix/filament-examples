@@ -1,0 +1,51 @@
+{
+  "format": "native-analyze/1",
+  "request": {
+    "models": [
+      {
+        "format": "semantic-ir/2.0.0",
+        "source": {
+          "file": "../model/tank-spec.semantic-ir.json",
+          "authority": "example",
+          "identity": "example:engines/tank-spec",
+          "document": "model",
+          "formal_revision": 1
+        }
+      },
+      {
+        "format": "semantic-ir/2.0.0",
+        "source": {
+          "file": "../model/tank.semantic-ir.json",
+          "authority": "example",
+          "identity": "example:engines/tank",
+          "document": "model",
+          "formal_revision": 1
+        }
+      }
+    ],
+    "program": {
+      "source": {
+        "file": "../rules/refine-strong.fsl",
+        "authority": "example",
+        "identity": "example:engines/refine-strong",
+        "document": "refinestrong",
+        "formal_revision": 1
+      }
+    },
+    "documents": [
+      {
+        "file": "../data/tank-0.json"
+      }
+    ],
+    "items": [
+      {
+        "claim": "TankRefinesSpec",
+        "kind": "refinement",
+        "temporal": {
+          "item_kind": "refinement"
+        }
+      }
+    ],
+    "deadline_ms": 20000
+  }
+}

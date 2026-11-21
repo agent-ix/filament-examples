@@ -1,0 +1,41 @@
+{
+  "format": "native-analyze/1",
+  "request": {
+    "models": [
+      {
+        "format": "semantic-ir/2.0.0",
+        "source": {
+          "file": "../model/tank.semantic-ir.json",
+          "authority": "example",
+          "identity": "example:engines/tank",
+          "document": "model",
+          "formal_revision": 1
+        }
+      }
+    ],
+    "program": {
+      "source": {
+        "file": "../rules/plan-tank.fsl",
+        "authority": "example",
+        "identity": "example:engines/plan-tank",
+        "document": "plantank",
+        "formal_revision": 1
+      }
+    },
+    "documents": [
+      {
+        "file": "../data/tank-0.json"
+      }
+    ],
+    "items": [
+      {
+        "claim": "TankFull",
+        "kind": "planning",
+        "temporal": {
+          "item_kind": "planning"
+        }
+      }
+    ],
+    "deadline_ms": 20000
+  }
+}

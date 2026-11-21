@@ -1,0 +1,7 @@
+language "ix:native" edition "1-draft";
+profile v = "filament.model.complete/v1";
+profile ev = "filament.temporal.event-position.false-extension/v1";
+model C = "example/coin";
+
+// A probability bound is written with <= or >=: a strict comparison has no spelling.
+probabilistic Strict using ev on C over (c: C::Coin) under every scheduler on origin { probability > 0.5 [ eventually[0,1] holds(c.heads) ] }

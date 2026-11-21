@@ -1,0 +1,10 @@
+{
+  "category": "unsupported",
+  "last_stage": null,
+  "result": null,
+  "first_diagnostic": {
+    "code": "unsupported_operation",
+    "cause": "operation-not-routed"
+  },
+  "items": []
+}

@@ -1,0 +1,16 @@
+{
+  "format": "filament.state.snapshot/v1",
+  "identity": {"authority": "example", "identity": "example:engines/coin-tails"},
+  "observation": "current",
+  "model": {"identity": "example/coin"},
+  "anchor": {"kind": "initialization", "name": "start"},
+  "populations": [
+    {
+      "population": "ix://example/coin/coins",
+      "complete": true,
+      "objects": [
+        {"key": "c", "type": "ix://example/coin/Coin", "fields": {"heads": {"boolean": false}}}
+      ]
+    }
+  ]
+}

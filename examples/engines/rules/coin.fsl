@@ -1,0 +1,21 @@
+language "ix:native" edition "1-draft";
+profile v = "filament.model.complete/v1";
+profile ev = "filament.temporal.event-position.false-extension/v1";
+model C = "example/coin";
+
+// A fair coin: each flip picks heads or tails with equal weight, and a flip sets the coin to what it picked.
+random C::Coin::flip(ok) ~ { true: 1, false: 1 };
+post FlipSetsHeads using v on C::Coin::flip { self.heads = ok }
+
+// The coin starts as tails. After at most one flip it is heads with probability 1/2, after at most two with 3/4.
+probabilistic HeadsWithinOne using ev on C over (c: C::Coin) under every scheduler on origin { probability >= 0.5 [ eventually[0,1] holds(c.heads) ] }
+probabilistic HeadsWithinOneAbove using ev on C over (c: C::Coin) under every scheduler on origin { probability >= 0.51 [ eventually[0,1] holds(c.heads) ] }
+probabilistic HeadsWithinOneAtMost using ev on C over (c: C::Coin) under every scheduler on origin { probability <= 0.5 [ eventually[0,1] holds(c.heads) ] }
+probabilistic HeadsWithinOneBelow using ev on C over (c: C::Coin) under every scheduler on origin { probability <= 0.49 [ eventually[0,1] holds(c.heads) ] }
+probabilistic HeadsWithinTwo using ev on C over (c: C::Coin) under every scheduler on origin { probability >= 0.75 [ eventually[0,2] holds(c.heads) ] }
+probabilistic HeadsWithinTwoAbove using ev on C over (c: C::Coin) under every scheduler on origin { probability >= 0.76 [ eventually[0,2] holds(c.heads) ] }
+
+// The coin is tails now, so the probability that it is heads now is 0, and the probability that it is tails for the next step is 1/2.
+probabilistic HeadsNow using ev on C over (c: C::Coin) under every scheduler on origin { probability >= 0.5 [ holds(c.heads) ] }
+probabilistic HeadsNowAtMost using ev on C over (c: C::Coin) under every scheduler on origin { probability <= 0.5 [ holds(c.heads) ] }
+probabilistic TailsThroughOne using ev on C over (c: C::Coin) under every scheduler on origin { probability >= 0.5 [ always[0,1] holds(not c.heads) ] }

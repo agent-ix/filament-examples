@@ -1,0 +1,9 @@
+language "ix:native" edition "1-draft";
+profile energy = "filament.temporal.infinite-trace/v1";
+
+// The rate 2 - 1 is not the literal 1, so the variable is hybrid dynamics and the model is admitted.
+hybrid Ramp using energy {
+  initial { mode Run when { t = 0 }; }
+  mode Run invariant { t >= 0 and t <= 10 } flow { t' = 2 - 1; }
+}
+temporal Bounded using energy over (r: Ramp) clock "model-time" on origin { always [0, 2] holds(r.t <= 10) }

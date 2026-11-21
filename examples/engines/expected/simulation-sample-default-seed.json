@@ -1,0 +1,1602 @@
+{
+  "category": "success",
+  "last_stage": "S4",
+  "result": null,
+  "first_diagnostic": null,
+  "items": [
+    {
+      "category": "success",
+      "coverage": {
+        "choices": "2",
+        "states": "4",
+        "transitions": "5"
+      },
+      "findings": [
+        {
+          "invariant": "AtMostTwo",
+          "kind": "invariant-violated",
+          "position": "3",
+          "self": {
+            "identity": "t",
+            "object_type": {
+              "original": {
+                "node": "ix://example/tank/Tank",
+                "package": "example/tank"
+              },
+              "owner_effective_type": null
+            },
+            "type": "reference",
+            "universe": {
+              "ordinal": 0,
+              "package": "example/tank",
+              "path": [
+                "model",
+                "object_type",
+                "ix://example/tank/Tank"
+              ]
+            }
+          },
+          "trace": "1"
+        },
+        {
+          "invariant": "AtMostTwo",
+          "kind": "invariant-violated",
+          "position": "3",
+          "self": {
+            "identity": "t",
+            "object_type": {
+              "original": {
+                "node": "ix://example/tank/Tank",
+                "package": "example/tank"
+              },
+              "owner_effective_type": null
+            },
+            "type": "reference",
+            "universe": {
+              "ordinal": 0,
+              "package": "example/tank",
+              "path": [
+                "model",
+                "object_type",
+                "ix://example/tank/Tank"
+              ]
+            }
+          },
+          "trace": "2"
+        }
+      ],
+      "frontier": [],
+      "kind": "simulation",
+      "request_index": 0,
+      "seed": "0",
+      "simulation": {
+        "max_state_key_bytes": 16777216,
+        "max_states": 10000000,
+        "max_steps": 4,
+        "mode": "sample",
+        "samples": 3,
+        "seed": "0"
+      },
+      "traces": [
+        {
+          "seed": "0",
+          "states": [
+            {
+              "bounds": {
+                "entries": [],
+                "type": "map"
+              },
+              "control": {
+                "entries": [],
+                "type": "map"
+              },
+              "memory": {
+                "entries": [],
+                "type": "map"
+              },
+              "observations": {
+                "entries": [],
+                "type": "map"
+              },
+              "queues": {
+                "entries": [],
+                "type": "map"
+              },
+              "roles": {
+                "entries": [],
+                "type": "map"
+              },
+              "semantic": {
+                "entries": [
+                  {
+                    "key": {
+                      "type": "text",
+                      "value": "{\"node\":\"ix://example/tank/tanks\",\"package\":\"example/tank\"}"
+                    },
+                    "value": {
+                      "entries": [
+                        {
+                          "key": {
+                            "identity": "t",
+                            "object_type": {
+                              "original": {
+                                "node": "ix://example/tank/Tank",
+                                "package": "example/tank"
+                              },
+                              "owner_effective_type": null
+                            },
+                            "type": "reference",
+                            "universe": {
+                              "ordinal": 0,
+                              "package": "example/tank",
+                              "path": [
+                                "model",
+                                "object_type",
+                                "ix://example/tank/Tank"
+                              ]
+                            }
+                          },
+                          "value": {
+                            "fields": [
+                              {
+                                "name": "level",
+                                "value": {
+                                  "type": "integer",
+                                  "value": "0"
+                                }
+                              }
+                            ],
+                            "name": "{\"node\":\"ix://example/tank/Tank\",\"package\":\"example/tank\"}",
+                            "type": "record"
+                          }
+                        }
+                      ],
+                      "type": "map"
+                    }
+                  }
+                ],
+                "type": "map"
+              },
+              "type": "simulation-state"
+            },
+            {
+              "bounds": {
+                "entries": [],
+                "type": "map"
+              },
+              "control": {
+                "entries": [],
+                "type": "map"
+              },
+              "memory": {
+                "entries": [],
+                "type": "map"
+              },
+              "observations": {
+                "entries": [],
+                "type": "map"
+              },
+              "queues": {
+                "entries": [],
+                "type": "map"
+              },
+              "roles": {
+                "entries": [],
+                "type": "map"
+              },
+              "semantic": {
+                "entries": [
+                  {
+                    "key": {
+                      "type": "text",
+                      "value": "{\"node\":\"ix://example/tank/tanks\",\"package\":\"example/tank\"}"
+                    },
+                    "value": {
+                      "entries": [
+                        {
+                          "key": {
+                            "identity": "t",
+                            "object_type": {
+                              "original": {
+                                "node": "ix://example/tank/Tank",
+                                "package": "example/tank"
+                              },
+                              "owner_effective_type": null
+                            },
+                            "type": "reference",
+                            "universe": {
+                              "ordinal": 0,
+                              "package": "example/tank",
+                              "path": [
+                                "model",
+                                "object_type",
+                                "ix://example/tank/Tank"
+                              ]
+                            }
+                          },
+                          "value": {
+                            "fields": [
+                              {
+                                "name": "level",
+                                "value": {
+                                  "type": "integer",
+                                  "value": "1"
+                                }
+                              }
+                            ],
+                            "name": "{\"node\":\"ix://example/tank/Tank\",\"package\":\"example/tank\"}",
+                            "type": "record"
+                          }
+                        }
+                      ],
+                      "type": "map"
+                    }
+                  }
+                ],
+                "type": "map"
+              },
+              "type": "simulation-state"
+            },
+            {
+              "bounds": {
+                "entries": [],
+                "type": "map"
+              },
+              "control": {
+                "entries": [],
+                "type": "map"
+              },
+              "memory": {
+                "entries": [],
+                "type": "map"
+              },
+              "observations": {
+                "entries": [],
+                "type": "map"
+              },
+              "queues": {
+                "entries": [],
+                "type": "map"
+              },
+              "roles": {
+                "entries": [],
+                "type": "map"
+              },
+              "semantic": {
+                "entries": [
+                  {
+                    "key": {
+                      "type": "text",
+                      "value": "{\"node\":\"ix://example/tank/tanks\",\"package\":\"example/tank\"}"
+                    },
+                    "value": {
+                      "entries": [
+                        {
+                          "key": {
+                            "identity": "t",
+                            "object_type": {
+                              "original": {
+                                "node": "ix://example/tank/Tank",
+                                "package": "example/tank"
+                              },
+                              "owner_effective_type": null
+                            },
+                            "type": "reference",
+                            "universe": {
+                              "ordinal": 0,
+                              "package": "example/tank",
+                              "path": [
+                                "model",
+                                "object_type",
+                                "ix://example/tank/Tank"
+                              ]
+                            }
+                          },
+                          "value": {
+                            "fields": [
+                              {
+                                "name": "level",
+                                "value": {
+                                  "type": "integer",
+                                  "value": "2"
+                                }
+                              }
+                            ],
+                            "name": "{\"node\":\"ix://example/tank/Tank\",\"package\":\"example/tank\"}",
+                            "type": "record"
+                          }
+                        }
+                      ],
+                      "type": "map"
+                    }
+                  }
+                ],
+                "type": "map"
+              },
+              "type": "simulation-state"
+            },
+            {
+              "bounds": {
+                "entries": [],
+                "type": "map"
+              },
+              "control": {
+                "entries": [],
+                "type": "map"
+              },
+              "memory": {
+                "entries": [],
+                "type": "map"
+              },
+              "observations": {
+                "entries": [],
+                "type": "map"
+              },
+              "queues": {
+                "entries": [],
+                "type": "map"
+              },
+              "roles": {
+                "entries": [],
+                "type": "map"
+              },
+              "semantic": {
+                "entries": [
+                  {
+                    "key": {
+                      "type": "text",
+                      "value": "{\"node\":\"ix://example/tank/tanks\",\"package\":\"example/tank\"}"
+                    },
+                    "value": {
+                      "entries": [
+                        {
+                          "key": {
+                            "identity": "t",
+                            "object_type": {
+                              "original": {
+                                "node": "ix://example/tank/Tank",
+                                "package": "example/tank"
+                              },
+                              "owner_effective_type": null
+                            },
+                            "type": "reference",
+                            "universe": {
+                              "ordinal": 0,
+                              "package": "example/tank",
+                              "path": [
+                                "model",
+                                "object_type",
+                                "ix://example/tank/Tank"
+                              ]
+                            }
+                          },
+                          "value": {
+                            "fields": [
+                              {
+                                "name": "level",
+                                "value": {
+                                  "type": "integer",
+                                  "value": "1"
+                                }
+                              }
+                            ],
+                            "name": "{\"node\":\"ix://example/tank/Tank\",\"package\":\"example/tank\"}",
+                            "type": "record"
+                          }
+                        }
+                      ],
+                      "type": "map"
+                    }
+                  }
+                ],
+                "type": "map"
+              },
+              "type": "simulation-state"
+            },
+            {
+              "bounds": {
+                "entries": [],
+                "type": "map"
+              },
+              "control": {
+                "entries": [],
+                "type": "map"
+              },
+              "memory": {
+                "entries": [],
+                "type": "map"
+              },
+              "observations": {
+                "entries": [],
+                "type": "map"
+              },
+              "queues": {
+                "entries": [],
+                "type": "map"
+              },
+              "roles": {
+                "entries": [],
+                "type": "map"
+              },
+              "semantic": {
+                "entries": [
+                  {
+                    "key": {
+                      "type": "text",
+                      "value": "{\"node\":\"ix://example/tank/tanks\",\"package\":\"example/tank\"}"
+                    },
+                    "value": {
+                      "entries": [
+                        {
+                          "key": {
+                            "identity": "t",
+                            "object_type": {
+                              "original": {
+                                "node": "ix://example/tank/Tank",
+                                "package": "example/tank"
+                              },
+                              "owner_effective_type": null
+                            },
+                            "type": "reference",
+                            "universe": {
+                              "ordinal": 0,
+                              "package": "example/tank",
+                              "path": [
+                                "model",
+                                "object_type",
+                                "ix://example/tank/Tank"
+                              ]
+                            }
+                          },
+                          "value": {
+                            "fields": [
+                              {
+                                "name": "level",
+                                "value": {
+                                  "type": "integer",
+                                  "value": "2"
+                                }
+                              }
+                            ],
+                            "name": "{\"node\":\"ix://example/tank/Tank\",\"package\":\"example/tank\"}",
+                            "type": "record"
+                          }
+                        }
+                      ],
+                      "type": "map"
+                    }
+                  }
+                ],
+                "type": "map"
+              },
+              "type": "simulation-state"
+            }
+          ],
+          "steps": [
+            {
+              "transition": {
+                "arguments": [],
+                "operation": "{\"node\":\"ix://example/tank/Tank/fill\",\"package\":\"example/tank\"}",
+                "receiver": {
+                  "identity": "t",
+                  "object_type": {
+                    "original": {
+                      "node": "ix://example/tank/Tank",
+                      "package": "example/tank"
+                    },
+                    "owner_effective_type": null
+                  },
+                  "type": "reference",
+                  "universe": {
+                    "ordinal": 0,
+                    "package": "example/tank",
+                    "path": [
+                      "model",
+                      "object_type",
+                      "ix://example/tank/Tank"
+                    ]
+                  }
+                },
+                "type": "transition"
+              }
+            },
+            {
+              "transition": {
+                "arguments": [],
+                "operation": "{\"node\":\"ix://example/tank/Tank/fill\",\"package\":\"example/tank\"}",
+                "receiver": {
+                  "identity": "t",
+                  "object_type": {
+                    "original": {
+                      "node": "ix://example/tank/Tank",
+                      "package": "example/tank"
+                    },
+                    "owner_effective_type": null
+                  },
+                  "type": "reference",
+                  "universe": {
+                    "ordinal": 0,
+                    "package": "example/tank",
+                    "path": [
+                      "model",
+                      "object_type",
+                      "ix://example/tank/Tank"
+                    ]
+                  }
+                },
+                "type": "transition"
+              }
+            },
+            {
+              "transition": {
+                "arguments": [],
+                "operation": "{\"node\":\"ix://example/tank/Tank/drain\",\"package\":\"example/tank\"}",
+                "receiver": {
+                  "identity": "t",
+                  "object_type": {
+                    "original": {
+                      "node": "ix://example/tank/Tank",
+                      "package": "example/tank"
+                    },
+                    "owner_effective_type": null
+                  },
+                  "type": "reference",
+                  "universe": {
+                    "ordinal": 0,
+                    "package": "example/tank",
+                    "path": [
+                      "model",
+                      "object_type",
+                      "ix://example/tank/Tank"
+                    ]
+                  }
+                },
+                "type": "transition"
+              }
+            },
+            {
+              "transition": {
+                "arguments": [],
+                "operation": "{\"node\":\"ix://example/tank/Tank/fill\",\"package\":\"example/tank\"}",
+                "receiver": {
+                  "identity": "t",
+                  "object_type": {
+                    "original": {
+                      "node": "ix://example/tank/Tank",
+                      "package": "example/tank"
+                    },
+                    "owner_effective_type": null
+                  },
+                  "type": "reference",
+                  "universe": {
+                    "ordinal": 0,
+                    "package": "example/tank",
+                    "path": [
+                      "model",
+                      "object_type",
+                      "ix://example/tank/Tank"
+                    ]
+                  }
+                },
+                "type": "transition"
+              }
+            }
+          ],
+          "trace_index": "0"
+        },
+        {
+          "seed": "0",
+          "states": [
+            {
+              "bounds": {
+                "entries": [],
+                "type": "map"
+              },
+              "control": {
+                "entries": [],
+                "type": "map"
+              },
+              "memory": {
+                "entries": [],
+                "type": "map"
+              },
+              "observations": {
+                "entries": [],
+                "type": "map"
+              },
+              "queues": {
+                "entries": [],
+                "type": "map"
+              },
+              "roles": {
+                "entries": [],
+                "type": "map"
+              },
+              "semantic": {
+                "entries": [
+                  {
+                    "key": {
+                      "type": "text",
+                      "value": "{\"node\":\"ix://example/tank/tanks\",\"package\":\"example/tank\"}"
+                    },
+                    "value": {
+                      "entries": [
+                        {
+                          "key": {
+                            "identity": "t",
+                            "object_type": {
+                              "original": {
+                                "node": "ix://example/tank/Tank",
+                                "package": "example/tank"
+                              },
+                              "owner_effective_type": null
+                            },
+                            "type": "reference",
+                            "universe": {
+                              "ordinal": 0,
+                              "package": "example/tank",
+                              "path": [
+                                "model",
+                                "object_type",
+                                "ix://example/tank/Tank"
+                              ]
+                            }
+                          },
+                          "value": {
+                            "fields": [
+                              {
+                                "name": "level",
+                                "value": {
+                                  "type": "integer",
+                                  "value": "0"
+                                }
+                              }
+                            ],
+                            "name": "{\"node\":\"ix://example/tank/Tank\",\"package\":\"example/tank\"}",
+                            "type": "record"
+                          }
+                        }
+                      ],
+                      "type": "map"
+                    }
+                  }
+                ],
+                "type": "map"
+              },
+              "type": "simulation-state"
+            },
+            {
+              "bounds": {
+                "entries": [],
+                "type": "map"
+              },
+              "control": {
+                "entries": [],
+                "type": "map"
+              },
+              "memory": {
+                "entries": [],
+                "type": "map"
+              },
+              "observations": {
+                "entries": [],
+                "type": "map"
+              },
+              "queues": {
+                "entries": [],
+                "type": "map"
+              },
+              "roles": {
+                "entries": [],
+                "type": "map"
+              },
+              "semantic": {
+                "entries": [
+                  {
+                    "key": {
+                      "type": "text",
+                      "value": "{\"node\":\"ix://example/tank/tanks\",\"package\":\"example/tank\"}"
+                    },
+                    "value": {
+                      "entries": [
+                        {
+                          "key": {
+                            "identity": "t",
+                            "object_type": {
+                              "original": {
+                                "node": "ix://example/tank/Tank",
+                                "package": "example/tank"
+                              },
+                              "owner_effective_type": null
+                            },
+                            "type": "reference",
+                            "universe": {
+                              "ordinal": 0,
+                              "package": "example/tank",
+                              "path": [
+                                "model",
+                                "object_type",
+                                "ix://example/tank/Tank"
+                              ]
+                            }
+                          },
+                          "value": {
+                            "fields": [
+                              {
+                                "name": "level",
+                                "value": {
+                                  "type": "integer",
+                                  "value": "1"
+                                }
+                              }
+                            ],
+                            "name": "{\"node\":\"ix://example/tank/Tank\",\"package\":\"example/tank\"}",
+                            "type": "record"
+                          }
+                        }
+                      ],
+                      "type": "map"
+                    }
+                  }
+                ],
+                "type": "map"
+              },
+              "type": "simulation-state"
+            },
+            {
+              "bounds": {
+                "entries": [],
+                "type": "map"
+              },
+              "control": {
+                "entries": [],
+                "type": "map"
+              },
+              "memory": {
+                "entries": [],
+                "type": "map"
+              },
+              "observations": {
+                "entries": [],
+                "type": "map"
+              },
+              "queues": {
+                "entries": [],
+                "type": "map"
+              },
+              "roles": {
+                "entries": [],
+                "type": "map"
+              },
+              "semantic": {
+                "entries": [
+                  {
+                    "key": {
+                      "type": "text",
+                      "value": "{\"node\":\"ix://example/tank/tanks\",\"package\":\"example/tank\"}"
+                    },
+                    "value": {
+                      "entries": [
+                        {
+                          "key": {
+                            "identity": "t",
+                            "object_type": {
+                              "original": {
+                                "node": "ix://example/tank/Tank",
+                                "package": "example/tank"
+                              },
+                              "owner_effective_type": null
+                            },
+                            "type": "reference",
+                            "universe": {
+                              "ordinal": 0,
+                              "package": "example/tank",
+                              "path": [
+                                "model",
+                                "object_type",
+                                "ix://example/tank/Tank"
+                              ]
+                            }
+                          },
+                          "value": {
+                            "fields": [
+                              {
+                                "name": "level",
+                                "value": {
+                                  "type": "integer",
+                                  "value": "2"
+                                }
+                              }
+                            ],
+                            "name": "{\"node\":\"ix://example/tank/Tank\",\"package\":\"example/tank\"}",
+                            "type": "record"
+                          }
+                        }
+                      ],
+                      "type": "map"
+                    }
+                  }
+                ],
+                "type": "map"
+              },
+              "type": "simulation-state"
+            },
+            {
+              "bounds": {
+                "entries": [],
+                "type": "map"
+              },
+              "control": {
+                "entries": [],
+                "type": "map"
+              },
+              "memory": {
+                "entries": [],
+                "type": "map"
+              },
+              "observations": {
+                "entries": [],
+                "type": "map"
+              },
+              "queues": {
+                "entries": [],
+                "type": "map"
+              },
+              "roles": {
+                "entries": [],
+                "type": "map"
+              },
+              "semantic": {
+                "entries": [
+                  {
+                    "key": {
+                      "type": "text",
+                      "value": "{\"node\":\"ix://example/tank/tanks\",\"package\":\"example/tank\"}"
+                    },
+                    "value": {
+                      "entries": [
+                        {
+                          "key": {
+                            "identity": "t",
+                            "object_type": {
+                              "original": {
+                                "node": "ix://example/tank/Tank",
+                                "package": "example/tank"
+                              },
+                              "owner_effective_type": null
+                            },
+                            "type": "reference",
+                            "universe": {
+                              "ordinal": 0,
+                              "package": "example/tank",
+                              "path": [
+                                "model",
+                                "object_type",
+                                "ix://example/tank/Tank"
+                              ]
+                            }
+                          },
+                          "value": {
+                            "fields": [
+                              {
+                                "name": "level",
+                                "value": {
+                                  "type": "integer",
+                                  "value": "3"
+                                }
+                              }
+                            ],
+                            "name": "{\"node\":\"ix://example/tank/Tank\",\"package\":\"example/tank\"}",
+                            "type": "record"
+                          }
+                        }
+                      ],
+                      "type": "map"
+                    }
+                  }
+                ],
+                "type": "map"
+              },
+              "type": "simulation-state"
+            },
+            {
+              "bounds": {
+                "entries": [],
+                "type": "map"
+              },
+              "control": {
+                "entries": [],
+                "type": "map"
+              },
+              "memory": {
+                "entries": [],
+                "type": "map"
+              },
+              "observations": {
+                "entries": [],
+                "type": "map"
+              },
+              "queues": {
+                "entries": [],
+                "type": "map"
+              },
+              "roles": {
+                "entries": [],
+                "type": "map"
+              },
+              "semantic": {
+                "entries": [
+                  {
+                    "key": {
+                      "type": "text",
+                      "value": "{\"node\":\"ix://example/tank/tanks\",\"package\":\"example/tank\"}"
+                    },
+                    "value": {
+                      "entries": [
+                        {
+                          "key": {
+                            "identity": "t",
+                            "object_type": {
+                              "original": {
+                                "node": "ix://example/tank/Tank",
+                                "package": "example/tank"
+                              },
+                              "owner_effective_type": null
+                            },
+                            "type": "reference",
+                            "universe": {
+                              "ordinal": 0,
+                              "package": "example/tank",
+                              "path": [
+                                "model",
+                                "object_type",
+                                "ix://example/tank/Tank"
+                              ]
+                            }
+                          },
+                          "value": {
+                            "fields": [
+                              {
+                                "name": "level",
+                                "value": {
+                                  "type": "integer",
+                                  "value": "2"
+                                }
+                              }
+                            ],
+                            "name": "{\"node\":\"ix://example/tank/Tank\",\"package\":\"example/tank\"}",
+                            "type": "record"
+                          }
+                        }
+                      ],
+                      "type": "map"
+                    }
+                  }
+                ],
+                "type": "map"
+              },
+              "type": "simulation-state"
+            }
+          ],
+          "steps": [
+            {
+              "transition": {
+                "arguments": [],
+                "operation": "{\"node\":\"ix://example/tank/Tank/fill\",\"package\":\"example/tank\"}",
+                "receiver": {
+                  "identity": "t",
+                  "object_type": {
+                    "original": {
+                      "node": "ix://example/tank/Tank",
+                      "package": "example/tank"
+                    },
+                    "owner_effective_type": null
+                  },
+                  "type": "reference",
+                  "universe": {
+                    "ordinal": 0,
+                    "package": "example/tank",
+                    "path": [
+                      "model",
+                      "object_type",
+                      "ix://example/tank/Tank"
+                    ]
+                  }
+                },
+                "type": "transition"
+              }
+            },
+            {
+              "transition": {
+                "arguments": [],
+                "operation": "{\"node\":\"ix://example/tank/Tank/fill\",\"package\":\"example/tank\"}",
+                "receiver": {
+                  "identity": "t",
+                  "object_type": {
+                    "original": {
+                      "node": "ix://example/tank/Tank",
+                      "package": "example/tank"
+                    },
+                    "owner_effective_type": null
+                  },
+                  "type": "reference",
+                  "universe": {
+                    "ordinal": 0,
+                    "package": "example/tank",
+                    "path": [
+                      "model",
+                      "object_type",
+                      "ix://example/tank/Tank"
+                    ]
+                  }
+                },
+                "type": "transition"
+              }
+            },
+            {
+              "transition": {
+                "arguments": [],
+                "operation": "{\"node\":\"ix://example/tank/Tank/fill\",\"package\":\"example/tank\"}",
+                "receiver": {
+                  "identity": "t",
+                  "object_type": {
+                    "original": {
+                      "node": "ix://example/tank/Tank",
+                      "package": "example/tank"
+                    },
+                    "owner_effective_type": null
+                  },
+                  "type": "reference",
+                  "universe": {
+                    "ordinal": 0,
+                    "package": "example/tank",
+                    "path": [
+                      "model",
+                      "object_type",
+                      "ix://example/tank/Tank"
+                    ]
+                  }
+                },
+                "type": "transition"
+              }
+            },
+            {
+              "transition": {
+                "arguments": [],
+                "operation": "{\"node\":\"ix://example/tank/Tank/drain\",\"package\":\"example/tank\"}",
+                "receiver": {
+                  "identity": "t",
+                  "object_type": {
+                    "original": {
+                      "node": "ix://example/tank/Tank",
+                      "package": "example/tank"
+                    },
+                    "owner_effective_type": null
+                  },
+                  "type": "reference",
+                  "universe": {
+                    "ordinal": 0,
+                    "package": "example/tank",
+                    "path": [
+                      "model",
+                      "object_type",
+                      "ix://example/tank/Tank"
+                    ]
+                  }
+                },
+                "type": "transition"
+              }
+            }
+          ],
+          "trace_index": "1"
+        },
+        {
+          "seed": "0",
+          "states": [
+            {
+              "bounds": {
+                "entries": [],
+                "type": "map"
+              },
+              "control": {
+                "entries": [],
+                "type": "map"
+              },
+              "memory": {
+                "entries": [],
+                "type": "map"
+              },
+              "observations": {
+                "entries": [],
+                "type": "map"
+              },
+              "queues": {
+                "entries": [],
+                "type": "map"
+              },
+              "roles": {
+                "entries": [],
+                "type": "map"
+              },
+              "semantic": {
+                "entries": [
+                  {
+                    "key": {
+                      "type": "text",
+                      "value": "{\"node\":\"ix://example/tank/tanks\",\"package\":\"example/tank\"}"
+                    },
+                    "value": {
+                      "entries": [
+                        {
+                          "key": {
+                            "identity": "t",
+                            "object_type": {
+                              "original": {
+                                "node": "ix://example/tank/Tank",
+                                "package": "example/tank"
+                              },
+                              "owner_effective_type": null
+                            },
+                            "type": "reference",
+                            "universe": {
+                              "ordinal": 0,
+                              "package": "example/tank",
+                              "path": [
+                                "model",
+                                "object_type",
+                                "ix://example/tank/Tank"
+                              ]
+                            }
+                          },
+                          "value": {
+                            "fields": [
+                              {
+                                "name": "level",
+                                "value": {
+                                  "type": "integer",
+                                  "value": "0"
+                                }
+                              }
+                            ],
+                            "name": "{\"node\":\"ix://example/tank/Tank\",\"package\":\"example/tank\"}",
+                            "type": "record"
+                          }
+                        }
+                      ],
+                      "type": "map"
+                    }
+                  }
+                ],
+                "type": "map"
+              },
+              "type": "simulation-state"
+            },
+            {
+              "bounds": {
+                "entries": [],
+                "type": "map"
+              },
+              "control": {
+                "entries": [],
+                "type": "map"
+              },
+              "memory": {
+                "entries": [],
+                "type": "map"
+              },
+              "observations": {
+                "entries": [],
+                "type": "map"
+              },
+              "queues": {
+                "entries": [],
+                "type": "map"
+              },
+              "roles": {
+                "entries": [],
+                "type": "map"
+              },
+              "semantic": {
+                "entries": [
+                  {
+                    "key": {
+                      "type": "text",
+                      "value": "{\"node\":\"ix://example/tank/tanks\",\"package\":\"example/tank\"}"
+                    },
+                    "value": {
+                      "entries": [
+                        {
+                          "key": {
+                            "identity": "t",
+                            "object_type": {
+                              "original": {
+                                "node": "ix://example/tank/Tank",
+                                "package": "example/tank"
+                              },
+                              "owner_effective_type": null
+                            },
+                            "type": "reference",
+                            "universe": {
+                              "ordinal": 0,
+                              "package": "example/tank",
+                              "path": [
+                                "model",
+                                "object_type",
+                                "ix://example/tank/Tank"
+                              ]
+                            }
+                          },
+                          "value": {
+                            "fields": [
+                              {
+                                "name": "level",
+                                "value": {
+                                  "type": "integer",
+                                  "value": "1"
+                                }
+                              }
+                            ],
+                            "name": "{\"node\":\"ix://example/tank/Tank\",\"package\":\"example/tank\"}",
+                            "type": "record"
+                          }
+                        }
+                      ],
+                      "type": "map"
+                    }
+                  }
+                ],
+                "type": "map"
+              },
+              "type": "simulation-state"
+            },
+            {
+              "bounds": {
+                "entries": [],
+                "type": "map"
+              },
+              "control": {
+                "entries": [],
+                "type": "map"
+              },
+              "memory": {
+                "entries": [],
+                "type": "map"
+              },
+              "observations": {
+                "entries": [],
+                "type": "map"
+              },
+              "queues": {
+                "entries": [],
+                "type": "map"
+              },
+              "roles": {
+                "entries": [],
+                "type": "map"
+              },
+              "semantic": {
+                "entries": [
+                  {
+                    "key": {
+                      "type": "text",
+                      "value": "{\"node\":\"ix://example/tank/tanks\",\"package\":\"example/tank\"}"
+                    },
+                    "value": {
+                      "entries": [
+                        {
+                          "key": {
+                            "identity": "t",
+                            "object_type": {
+                              "original": {
+                                "node": "ix://example/tank/Tank",
+                                "package": "example/tank"
+                              },
+                              "owner_effective_type": null
+                            },
+                            "type": "reference",
+                            "universe": {
+                              "ordinal": 0,
+                              "package": "example/tank",
+                              "path": [
+                                "model",
+                                "object_type",
+                                "ix://example/tank/Tank"
+                              ]
+                            }
+                          },
+                          "value": {
+                            "fields": [
+                              {
+                                "name": "level",
+                                "value": {
+                                  "type": "integer",
+                                  "value": "2"
+                                }
+                              }
+                            ],
+                            "name": "{\"node\":\"ix://example/tank/Tank\",\"package\":\"example/tank\"}",
+                            "type": "record"
+                          }
+                        }
+                      ],
+                      "type": "map"
+                    }
+                  }
+                ],
+                "type": "map"
+              },
+              "type": "simulation-state"
+            },
+            {
+              "bounds": {
+                "entries": [],
+                "type": "map"
+              },
+              "control": {
+                "entries": [],
+                "type": "map"
+              },
+              "memory": {
+                "entries": [],
+                "type": "map"
+              },
+              "observations": {
+                "entries": [],
+                "type": "map"
+              },
+              "queues": {
+                "entries": [],
+                "type": "map"
+              },
+              "roles": {
+                "entries": [],
+                "type": "map"
+              },
+              "semantic": {
+                "entries": [
+                  {
+                    "key": {
+                      "type": "text",
+                      "value": "{\"node\":\"ix://example/tank/tanks\",\"package\":\"example/tank\"}"
+                    },
+                    "value": {
+                      "entries": [
+                        {
+                          "key": {
+                            "identity": "t",
+                            "object_type": {
+                              "original": {
+                                "node": "ix://example/tank/Tank",
+                                "package": "example/tank"
+                              },
+                              "owner_effective_type": null
+                            },
+                            "type": "reference",
+                            "universe": {
+                              "ordinal": 0,
+                              "package": "example/tank",
+                              "path": [
+                                "model",
+                                "object_type",
+                                "ix://example/tank/Tank"
+                              ]
+                            }
+                          },
+                          "value": {
+                            "fields": [
+                              {
+                                "name": "level",
+                                "value": {
+                                  "type": "integer",
+                                  "value": "3"
+                                }
+                              }
+                            ],
+                            "name": "{\"node\":\"ix://example/tank/Tank\",\"package\":\"example/tank\"}",
+                            "type": "record"
+                          }
+                        }
+                      ],
+                      "type": "map"
+                    }
+                  }
+                ],
+                "type": "map"
+              },
+              "type": "simulation-state"
+            },
+            {
+              "bounds": {
+                "entries": [],
+                "type": "map"
+              },
+              "control": {
+                "entries": [],
+                "type": "map"
+              },
+              "memory": {
+                "entries": [],
+                "type": "map"
+              },
+              "observations": {
+                "entries": [],
+                "type": "map"
+              },
+              "queues": {
+                "entries": [],
+                "type": "map"
+              },
+              "roles": {
+                "entries": [],
+                "type": "map"
+              },
+              "semantic": {
+                "entries": [
+                  {
+                    "key": {
+                      "type": "text",
+                      "value": "{\"node\":\"ix://example/tank/tanks\",\"package\":\"example/tank\"}"
+                    },
+                    "value": {
+                      "entries": [
+                        {
+                          "key": {
+                            "identity": "t",
+                            "object_type": {
+                              "original": {
+                                "node": "ix://example/tank/Tank",
+                                "package": "example/tank"
+                              },
+                              "owner_effective_type": null
+                            },
+                            "type": "reference",
+                            "universe": {
+                              "ordinal": 0,
+                              "package": "example/tank",
+                              "path": [
+                                "model",
+                                "object_type",
+                                "ix://example/tank/Tank"
+                              ]
+                            }
+                          },
+                          "value": {
+                            "fields": [
+                              {
+                                "name": "level",
+                                "value": {
+                                  "type": "integer",
+                                  "value": "2"
+                                }
+                              }
+                            ],
+                            "name": "{\"node\":\"ix://example/tank/Tank\",\"package\":\"example/tank\"}",
+                            "type": "record"
+                          }
+                        }
+                      ],
+                      "type": "map"
+                    }
+                  }
+                ],
+                "type": "map"
+              },
+              "type": "simulation-state"
+            }
+          ],
+          "steps": [
+            {
+              "transition": {
+                "arguments": [],
+                "operation": "{\"node\":\"ix://example/tank/Tank/fill\",\"package\":\"example/tank\"}",
+                "receiver": {
+                  "identity": "t",
+                  "object_type": {
+                    "original": {
+                      "node": "ix://example/tank/Tank",
+                      "package": "example/tank"
+                    },
+                    "owner_effective_type": null
+                  },
+                  "type": "reference",
+                  "universe": {
+                    "ordinal": 0,
+                    "package": "example/tank",
+                    "path": [
+                      "model",
+                      "object_type",
+                      "ix://example/tank/Tank"
+                    ]
+                  }
+                },
+                "type": "transition"
+              }
+            },
+            {
+              "transition": {
+                "arguments": [],
+                "operation": "{\"node\":\"ix://example/tank/Tank/fill\",\"package\":\"example/tank\"}",
+                "receiver": {
+                  "identity": "t",
+                  "object_type": {
+                    "original": {
+                      "node": "ix://example/tank/Tank",
+                      "package": "example/tank"
+                    },
+                    "owner_effective_type": null
+                  },
+                  "type": "reference",
+                  "universe": {
+                    "ordinal": 0,
+                    "package": "example/tank",
+                    "path": [
+                      "model",
+                      "object_type",
+                      "ix://example/tank/Tank"
+                    ]
+                  }
+                },
+                "type": "transition"
+              }
+            },
+            {
+              "transition": {
+                "arguments": [],
+                "operation": "{\"node\":\"ix://example/tank/Tank/fill\",\"package\":\"example/tank\"}",
+                "receiver": {
+                  "identity": "t",
+                  "object_type": {
+                    "original": {
+                      "node": "ix://example/tank/Tank",
+                      "package": "example/tank"
+                    },
+                    "owner_effective_type": null
+                  },
+                  "type": "reference",
+                  "universe": {
+                    "ordinal": 0,
+                    "package": "example/tank",
+                    "path": [
+                      "model",
+                      "object_type",
+                      "ix://example/tank/Tank"
+                    ]
+                  }
+                },
+                "type": "transition"
+              }
+            },
+            {
+              "transition": {
+                "arguments": [],
+                "operation": "{\"node\":\"ix://example/tank/Tank/drain\",\"package\":\"example/tank\"}",
+                "receiver": {
+                  "identity": "t",
+                  "object_type": {
+                    "original": {
+                      "node": "ix://example/tank/Tank",
+                      "package": "example/tank"
+                    },
+                    "owner_effective_type": null
+                  },
+                  "type": "reference",
+                  "universe": {
+                    "ordinal": 0,
+                    "package": "example/tank",
+                    "path": [
+                      "model",
+                      "object_type",
+                      "ix://example/tank/Tank"
+                    ]
+                  }
+                },
+                "type": "transition"
+              }
+            }
+          ],
+          "trace_index": "2"
+        }
+      ]
+    }
+  ]
+}

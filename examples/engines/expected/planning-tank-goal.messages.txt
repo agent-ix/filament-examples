@@ -1,0 +1,1 @@
+invalid analyze request member request: unknown variant `planning`, expected one of `formula`, `deadlock-freedom`, `time-lock-freedom`, `race-freedom`, `refinement`, `loop-invariant`, `loop-termination` at line 33 column 33
