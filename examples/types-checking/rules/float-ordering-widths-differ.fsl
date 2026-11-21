@@ -1,0 +1,4 @@
+// FSpec FR-149-AC-13
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+function f using v(a: Float32[nearest-even], b: Float64[nearest-even]): Boolean pure { a <= b }

@@ -21,7 +21,7 @@ expect_verdict = "refused: ill_typed type-mismatch"
 
 [[case]]
 id = "decimal-literal-coefficient-nonmember"
-statement = "The literal decimal(1234, 3) is 1.234, whose coefficient at scale 1 range exceeds Decimal[-1000, 1000; 0, 1; exact], so it is refused as a type mismatch."
+statement = "The literal decimal(1234, 3) is 1.234, which needs scale 3 while Decimal[-1000, 1000; 0, 1; exact] allows scale at most 1, so it is not a member and is refused as a type mismatch."
 file = "rules/decimal-literal-coefficient-nonmember.fsl"
 command = "check rules/decimal-literal-coefficient-nonmember.fsl"
 status = "running"
@@ -1053,7 +1053,7 @@ command = "check rules/quantity-scale-by-division.fsl"
 status = "staged"
 expect_exit = 20
 ready_exit = 0
-waits_on = "QSL-2103"
+waits_on = "QSL-2752"
 why = "The driver build embedding FSL 529282e9 refuses a quantity divided by a number as a type mismatch on the operator; FR-142 defines q / n as scaling."
 needs = "Quantity scaling by division"
 
@@ -1740,3 +1740,102 @@ command = "check rules/option-value-of-absent-ambiguous.fsl"
 status = "running"
 expect_exit = 20
 expect_verdict = "refused: ill_typed ambiguous-literal"
+
+[[case]]
+id = "reference-upcast-to-supertype-compares"
+statement = "Under the complete model profile a Reference to a source object Sub that extends Order compares with a Reference to Order through the upcast, so the comparison checks."
+file = "rules/reference-upcast-to-supertype-compares.fsl"
+command = "check rules/reference-upcast-to-supertype-compares.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "reference-nonconforming-pair-refused"
+statement = "A Reference to Other and a Reference to Order, where Other does not conform to Order, cannot be compared, so the comparison is refused as a type mismatch."
+file = "rules/reference-nonconforming-pair-refused.fsl"
+command = "check rules/reference-nonconforming-pair-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed type-mismatch"
+
+[[case]]
+id = "reference-downcast-comparison-checks-by-supertype-only"
+statement = "A Reference to Order compared with a Reference to Sub, the subtype, checks in either operand order because the pair conforms."
+file = "rules/reference-downcast-comparison-checks-by-supertype-only.fsl"
+command = "check rules/reference-downcast-comparison-checks-by-supertype-only.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "reference-equality-same-type"
+statement = "Two Reference parameters of one object type compare with =, by object identity."
+file = "rules/reference-equality-same-type.fsl"
+command = "check rules/reference-equality-same-type.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "float-ordering-rounding-modes-differ"
+statement = "Ordering two Float64 operands whose rounding modes differ is refused as a type mismatch before any evaluation."
+file = "rules/float-ordering-rounding-modes-differ.fsl"
+command = "check rules/float-ordering-rounding-modes-differ.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed type-mismatch"
+
+[[case]]
+id = "float-ordering-against-exact-type"
+statement = "Ordering a Float64 operand against an Int[0, 9] operand is refused as a type mismatch before any evaluation."
+file = "rules/float-ordering-against-exact-type.fsl"
+command = "check rules/float-ordering-against-exact-type.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed type-mismatch"
+
+[[case]]
+id = "float-ordering-widths-differ"
+statement = "Ordering a Float32 operand against a Float64 operand is refused as a type mismatch before any evaluation."
+file = "rules/float-ordering-widths-differ.fsl"
+command = "check rules/float-ordering-widths-differ.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed type-mismatch"
+
+[[case]]
+id = "float-total-order-same-type-admitted"
+statement = "totalOrder over two operands of one Float64 type checks."
+file = "rules/float-total-order-same-type-admitted.fsl"
+command = "check rules/float-total-order-same-type-admitted.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "field-sum-equality-unguarded-refused"
+statement = "later.tally = earlier.tally + 1 over fields of Int[0, 3] refuses as an unproved range because the sum lies in [1, 4]."
+file = "rules/field-sum-equality-unguarded-refused.fsl"
+command = "check rules/field-sum-equality-unguarded-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: undefined_expression unproved-range"
+
+[[case]]
+id = "field-sum-equality-same-field-refused"
+statement = "r.tally = r.tally + 1 over a field of Int[0, 3] refuses as an unproved range at its sum."
+file = "rules/field-sum-equality-same-field-refused.fsl"
+command = "check rules/field-sum-equality-same-field-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: undefined_expression unproved-range"
+
+[[case]]
+id = "field-sum-equality-guarded-admitted"
+statement = "With the guard e.tally < 3 the relation l.tally = e.tally + 1 checks because the sum lies in [1, 3]."
+file = "rules/field-sum-equality-guarded-admitted.fsl"
+command = "check rules/field-sum-equality-guarded-admitted.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"

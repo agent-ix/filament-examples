@@ -1,4 +1,0 @@
-// FSpec FR-141-AC-4 (minimum boundary)
-language "ix:native" edition "1-draft";
-profile v = "filament.value.complete/v1";
-function example using v(): Boolean pure { let a: Text[2, 4; nfc] = Text("a") in a = Text("a") }

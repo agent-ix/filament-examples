@@ -1,0 +1,5 @@
+// FSpec FR-149-AC-20
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+record T { tally: Int[0, 3]; }
+function f using v(e: T, l: T): Boolean pure { l.tally = e.tally + 1 }

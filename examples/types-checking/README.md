@@ -27,9 +27,21 @@ Cases that evaluate a value (`run`) all state a Boolean that must be true. A sta
 
 The source files carry requirement references. [example.toml](example.toml) lists each case and its expected exit code. [rules](rules) contains the submitted source, [requests](requests) the run requests, and [expected](expected) the recorded outcomes.
 
+## Not covered here
+
+These criteria of the area have no case in this system, and each belongs elsewhere.
+
+- Accounting and charge-schedule criteria (FR-140-AC-6, FR-141-AC-6, FR-144-AC-8, FR-149-AC-9, FR-149-AC-11): they need evaluator limit vectors, not source cases.
+- FR-141-AC-4's runtime refusal `text_length_out_of_domain`/`outside-domain`: a source cannot reach it, because a literal over the bound is refused at check time as `type-mismatch`. It belongs to the run-input cases (area 7).
+- Supplied-value criteria (FR-144-AC-16 to AC-30, FR-143-AC-15) and the evaluation of `s[-1]`-style undefined outcomes (FR-144-AC-34): area 7.
+- Model-bound criteria (FR-143-AC-6, AC-11, AC-16 on selection identity, FR-144-AC-11, FR-149-AC-17 on record extension, FR-143-AC-5, FR-149-AC-18 on event types, FR-144-AC-15): they need a model with record conformance, event types or reference keys that the model generator cannot write. Area 4 and QSL-2755.
+- FR-144-AC-14 (canonical visiting order of union members): the visiting order is observable only through a traversal that source cannot print; area 3 covers set and bag canonical order with integers.
+- FR-149-AC-1, AC-4, AC-5, AC-7, AC-8: matrix-wide vectors are covered row by row by the equality cases below; FR-149-AC-5 and AC-7 need evaluator state, and AC-8 (accounting of set equality) needs limit vectors.
+- Arithmetic, rounding, division, conversion and collection-operation criteria: area 3. Unit-graph, model and declaration criteria: area 4.
+
 ## Coverage
 
-Each line gives a requirement or acceptance criterion of the FSL specification and the cases that exercise it. A criterion with no case here is exercised in another corpus area (operations, declarations and models, claims, engines, run inputs) or is an accounting or checked-package criterion that source-level cases cannot reach.
+Each line gives a requirement or acceptance criterion of the FSL specification and the cases that exercise it.
 
 - FR-002: type-alias-unknown-name, type-alias-transparent
 - FR-005: option-value-unguarded, option-value-guarded
@@ -85,13 +97,17 @@ Each line gives a requirement or acceptance criterion of the FSL specification a
 - FR-144-AC-32: collection-index-unguarded, collection-index-on-set-refused
 - FR-144-AC-33: collection-map-type, collection-map-lookup-unguarded, collection-map-lookup-guarded
 - FR-148-AC-8: float-types-widths-differ, float-types-rounding-modes-differ, float-ieee-and-exact-mix
+- FR-149-AC-2: reference-equality-same-type
 - FR-149-AC-3: integer-and-text-differ, boolean-and-integer-differ
 - FR-149-AC-6: option-and-payload-compare, option-equality-same-type, option-absent-differs-from-present
 - FR-149-AC-10: int-and-integer-implicit-equality-refused, int-to-integer-equality-conversion, integer-to-int-equality-conversion-refused, int-to-rational-equality-conversion, int-to-rational-equality-conversion-too-narrow, int-to-decimal-equality-conversion, int-to-decimal-equality-conversion-too-narrow, float-and-int-equality-refused
+- FR-149-AC-12: reference-upcast-to-supertype-compares, reference-nonconforming-pair-refused, reference-downcast-comparison-checks-by-supertype-only
+- FR-149-AC-13: float-ordering-rounding-modes-differ, float-ordering-against-exact-type, float-ordering-widths-differ, float-total-order-same-type-admitted
 - FR-149-AC-14: uuid-equality-same-kind
 - FR-149-AC-15: uuid-and-timestamp-differ, uuid-versus-integer, timestamp-versus-boolean
 - FR-149-AC-16: uuid-ordering-operator-ineligible, timestamp-ordering-operator-ineligible
-- FR-149-AC-19: sum-equality-guarded-range-checks
+- FR-149-AC-19: sum-equality-guarded-range-checks, field-sum-equality-guarded-admitted
+- FR-149-AC-20: field-sum-equality-unguarded-refused, field-sum-equality-same-field-refused
 - FR-149-AC-21: ordering-int-and-integer-accepted, equality-integer-path-against-int-refused, equality-unary-minus-against-int-refused
 - FR-149-AC-22: string-and-text-differ, string-equality-checks, string-never-normalized
 - FR-149-AC-23: bytes-equality-same-kind

@@ -1,4 +1,0 @@
-// FSpec FR-149-AC-10
-language "ix:native" edition "1-draft";
-profile v = "filament.value.complete/v1";
-function f using v(a: Int[0, 9], b: Integer): Boolean pure { a = b }
