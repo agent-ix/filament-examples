@@ -20,7 +20,7 @@
     "clause": {
       "selection": {
         "temporal": {
-          "name": "Eventually0To1",
+          "name": "AckWithin3000",
           "trace": {
             "timestamped": {
               "observations": [
@@ -31,24 +31,11 @@
                         "boolean": false
                       },
                       "q": {
-                        "boolean": false
+                        "boolean": true
                       }
                     }
                   },
                   "stamp": 0
-                },
-                {
-                  "position": {
-                    "sample": {
-                      "p": {
-                        "boolean": false
-                      },
-                      "q": {
-                        "boolean": false
-                      }
-                    }
-                  },
-                  "stamp": 1
                 },
                 {
                   "position": {
@@ -61,14 +48,14 @@
                       }
                     }
                   },
-                  "stamp": 1
+                  "stamp": 3000
                 }
               ],
               "progress": {
-                "watermark": 1,
+                "watermark": 3000,
                 "completeness": {
                   "complete": {
-                    "through": 1
+                    "through": 3000
                   }
                 },
                 "scope": "closed",

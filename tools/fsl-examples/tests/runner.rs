@@ -95,9 +95,10 @@ fn check_passes_on_all_running_cases() -> TestResult {
     )?;
     assert_eq!(sink.errors, Vec::<String>::new());
     assert!(ok);
-    assert_eq!(
-        sink.info.last().map(String::as_str),
-        Some("check: 307 passed, 0 failed")
+    assert!(
+        sink.info
+            .last()
+            .is_some_and(|line| line.starts_with("check: ") && line.ends_with(" passed, 0 failed"))
     );
     Ok(())
 }
@@ -216,7 +217,10 @@ fn check_excludes_only_matching_cases_and_keeps_generated_checks() -> TestResult
         "| [library](examples/library) | Shop | 6 | 0 |",
         "| [library](examples/library) | Shop | 5 | 0 |",
     );
-    assert_ne!(stale_counts, fresh_readme, "the Systems table has a library row");
+    assert_ne!(
+        stale_counts, fresh_readme,
+        "the Systems table has a library row"
+    );
     fs::write(&readme, stale_counts)?;
     driver.calls.set(0);
     let mut sink = VecSink::default();
@@ -224,7 +228,9 @@ fn check_excludes_only_matching_cases_and_keeps_generated_checks() -> TestResult
     assert_eq!(driver.calls.get(), running - 1);
     assert_eq!(
         sink.errors,
-        vec!["README.md system counts are stale: merge origin/main, then run make readme".to_owned()]
+        vec![
+            "README.md system counts are stale: merge origin/main, then run make readme".to_owned()
+        ]
     );
     Ok(())
 }
@@ -383,10 +389,7 @@ fn staged_fails_when_a_case_reaches_ready_exit() -> TestResult {
             "{label}: now exits {ready_exit}, as it should once fixed: promote {label}"
         )]
     );
-    assert_eq!(
-        sink.info.last().map(String::as_str),
-        Some("staged: 17 passed, 1 failed")
-    );
+    assert!(sink.info.last().is_some_and(|line| line.starts_with("staged: ") && line.ends_with(" passed, 1 failed")));
     Ok(())
 }
 

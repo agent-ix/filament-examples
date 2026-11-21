@@ -12,7 +12,7 @@ Run the cases from the repository root:
 cargo run --quiet --locked --manifest-path tools/fsl-examples/Cargo.toml -- check claims
 ```
 
-Set `FSL` to the driver binary.
+Set `FSL` to the driver binary. Every record in this system was written by the driver at FSL f5977125 (`fsl-driver-aa71f20dd30bab9ae2ca66580ca407e434164cca`, version string 0.1.4).
 
 ## Cases
 
@@ -26,7 +26,11 @@ Set `FSL` to the driver binary.
 
 ## Staged
 
-`model-possible-trap-cyclic` asks whether the dial can reach n above 3. No state has it, so the claim is refuted. Because the dial can return to 0 the state graph has a cycle, and analyze does not settle the claim: the request's `deadline_ms` of 2000 stops it with `cancelled`/`deadline`, exit 22. FR-391-AC-2 requires `refuted`, closed-scope, exit 10. The same claim over the acyclic dial refutes in a fraction of a second (`model-possible-trap`).
+- `model-possible-trap-cyclic` waits on QSL-2756. The dial can return to 0, so its state graph has a cycle, and a possible claim whose target no state satisfies never settles: the request's `deadline_ms` of 2000 stops it with `cancelled`/`deadline`, exit 22. FR-391-AC-2 requires `refuted`, closed-scope, exit 10. The same claim over the acyclic dial refutes at once (`model-possible-trap`).
+- `window-absent-valuation` waits on QSL-2750: the stepping wire refuses a sample that omits a field (`invalid_runtime_input`/`missing-member`), where FR-091-AC-13 reads the absent atom as a missing valuation and settles indeterminate (exit 11).
+- `window-order-keys-admit-until` waits on QSL-2750: two observations stamped 1 with distinct keys from one authority are read as one instant and give a conflicting valuation (exit 11), where FR-091-AC-16 orders them and until is true (exit 0).
+
+Not assertable: FR-091-AC-12 says a pending result carries its deadline (5) and AC-16 says the refusal is at the third position. The recorded outcome carries neither, and a staged case needs an exit that differs from the required one, so no case can state them.
 
 ## Coverage
 
@@ -37,9 +41,11 @@ Set `FSL` to the driver binary.
 | FR-091-AC-3 until lower-bound convention | `future-until-1to2-p-off-at-anchor`, `false-extension-until-1to2-p-off-at-anchor` |
 | FR-091-AC-6 unbounded interval under a bounded profile | `refusal-unbounded-under-bounded`, `refusal-lower-only-under-bounded` |
 | FR-091-AC-10, AC-11 window truth tables and empty windows | `window-always-*`, `window-eventually-*`, `window-stamp-*`, `window-single-*`, `window-empty-*` |
-| FR-091-AC-12 pending and decisive early settlement | `window-pending-before-deadline`, `window-settled-at-deadline`, `window-open-scope-*` |
-| FR-091-AC-14, AC-15 completeness and the inclusive deadline | `window-incomplete-*`, `window-complete-*`, `window-deadline-instant-participates`, `window-after-deadline-ignored` |
-| FR-091-AC-16 unkeyed ties refuse order-dependent operators | `window-unkeyed-ties-until`, `window-conflicting-same-stamp`, `window-agreeing-same-stamp` |
+| FR-091-AC-12 pending and decisive early settlement (the deadline value is not in the outcome) | `window-pending-before-deadline`, `window-settled-at-deadline`, `window-open-scope-*` |
+| FR-091-AC-14, AC-15 completeness, the inclusive deadline and the half-open watermark | `window-half-open-watermark`, `window-incomplete-*`, `window-complete-*`, `window-deadline-instant-participates`, `window-after-deadline-ignored` |
+| FR-091-AC-13 conflicting valuation; AC-16 unkeyed ties and order keys | `window-unkeyed-ties-until`, `window-conflicting-same-stamp`, `window-agreeing-same-stamp`, `window-order-keys-two-authorities`, `window-order-keys-admit-until` (staged) |
+| FR-091-AC-13 absent valuation | `window-absent-valuation` (staged) |
+| FR-091-AC-18, AC-20, AC-25 counter, exact and default cover | `window-cover-*` |
 | FR-091-AC-17 look-back boundary | `window-once-*` |
 | FR-091-AC-22, AC-23 listing order and an empty trace | `window-listing-order-ignored`, `window-no-observations` |
 | FR-092 bounded past operators; FR-161-AC-12 non-strict since and triggered | `past-*` |
@@ -48,8 +54,8 @@ Set `FSL` to the driver binary.
 | FR-090-AC-2, AC-11, AC-12 profile and clock selection | `refusal-no-clock`, `refusal-*clock*`, `refusal-unknown-profile` |
 | FR-019-AC-6 invariant anchor and Boolean body | `model-invariant-*`, `refusal-invariant-not-boolean` |
 | FR-390, FR-391 state-graph claims (AC-1 to AC-4) | `model-possible-*`, `model-always-possible-*`, `model-unique-path-*` |
-| FR-391-AC-2 trap over a cyclic graph | `model-possible-trap-cyclic` (staged) |
+| FR-391-AC-2 trap over a cyclic graph | `model-possible-trap-cyclic` (staged, QSL-2756) |
 | FR-407 probability threshold strictly between 0 and 1 | `refusal-probability-*` |
 | FR-520 analyze item naming | `model-unknown-claim` |
 
-Not covered here: the absent-valuation cases of FR-091-AC-13 (a sample position cannot omit a field), the counter-cover cases of FR-091-AC-18, AC-20 and AC-25 (needs a cover configuration), the order-key cases of FR-091-AC-16 beyond the unkeyed tie, the progress-ledger criteria of FR-094, FR-160 uncertain time, FR-415 to FR-417 timed models, fairness (the lock system covers it), FR-361 to FR-369 counterexample structure and the probabilistic engines, which the architecture system covers.
+Not covered here: FR-094 progress ledger, FR-160 uncertain time, FR-415 to FR-417 timed models, FR-361 to FR-369 counterexample structure, fairness (the lock system covers it) and the probabilistic engines (the architecture system covers them).

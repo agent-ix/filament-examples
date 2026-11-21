@@ -1060,8 +1060,6 @@ rule = "Always0To5"
 statement = "Completeness is not asserted: always[0,5] p is indeterminate, not true."
 file = "rules/timed-window.fsl"
 command = "run requests/window-incomplete-always.json"
-engine = "timed"
-clock = "plant-ms"
 status = "running"
 expect_exit = 11
 expect_verdict = "indeterminate"
@@ -1086,8 +1084,6 @@ rule = "Eventually2To3"
 statement = "Completeness is not asserted: eventually[2,3] p is indeterminate and not false."
 file = "rules/timed-window.fsl"
 command = "run requests/window-incomplete-eventually-not-false.json"
-engine = "timed"
-clock = "plant-ms"
 status = "running"
 expect_exit = 11
 expect_verdict = "indeterminate"
@@ -1099,8 +1095,6 @@ rule = "Eventually2To3"
 statement = "Completeness through 2 does not reach the window end 3: indeterminate."
 file = "rules/timed-window.fsl"
 command = "run requests/window-complete-short-of-bound.json"
-engine = "timed"
-clock = "plant-ms"
 status = "running"
 expect_exit = 11
 expect_verdict = "indeterminate"
@@ -1151,8 +1145,6 @@ rule = "PUntil0To1Q"
 statement = "Stamps 0, 1, 1 without order keys have no usable order, so until is refused."
 file = "rules/timed-window.fsl"
 command = "run requests/window-unkeyed-ties-until.json"
-engine = "timed"
-clock = "plant-ms"
 status = "running"
 expect_exit = 20
 expect_verdict = "refused: invalid-value"
@@ -1164,12 +1156,10 @@ rule = "Eventually0To1"
 statement = "Two observations stamped 1 disagree on p and carry no order key: the valuation at that instant conflicts, so eventually is indeterminate, never false."
 file = "rules/timed-window.fsl"
 command = "run requests/window-conflicting-same-stamp.json"
-engine = "timed"
-clock = "plant-ms"
 status = "running"
 expect_exit = 11
 expect_verdict = "indeterminate"
-serves = "FR-091-AC-10 to AC-16, AC-22, FR-094 (finite window)"
+serves = "FR-091-AC-13 (conflicting valuation), FR-091-AC-16"
 
 [[case]]
 id = "window-agreeing-same-stamp"
@@ -1203,8 +1193,6 @@ rule = "Eventually0To5"
 statement = "A trace with no observations is refused at admission."
 file = "rules/timed-window.fsl"
 command = "run requests/window-no-observations.json"
-engine = "timed"
-clock = "plant-ms"
 status = "running"
 expect_exit = 20
 expect_verdict = "refused: invalid-value"
@@ -1229,8 +1217,6 @@ rule = "OnceIn0To4"
 statement = "With a history cutoff the look-back reaches history the trace does not carry: the result is indeterminate, with missing history, never false."
 file = "rules/timed-window.fsl"
 command = "run requests/window-once-cutoff-indeterminate.json"
-engine = "timed"
-clock = "plant-ms"
 status = "running"
 expect_exit = 11
 expect_verdict = "indeterminate"
@@ -1460,7 +1446,6 @@ rule = "ReachesAboveThree"
 statement = "No state of the dial has n above 3, so no path reaches one: the possible claim is refuted."
 file = "rules/dial-acyclic.fsl"
 command = "analyze requests/model-possible-trap.json"
-engine = "model-checking"
 status = "running"
 expect_exit = 10
 expect_verdict = "refuted"
@@ -1484,7 +1469,6 @@ rule = "ReturnsToZero"
 statement = "In the acyclic dial there is no way back to 0 from n = 1, so the claim that every state can return to 0 is refuted."
 file = "rules/dial-acyclic.fsl"
 command = "analyze requests/model-always-possible-trap.json"
-engine = "model-checking"
 status = "running"
 expect_exit = 10
 expect_verdict = "refuted"
@@ -1508,7 +1492,6 @@ rule = "OneRouteToThree"
 statement = "With skip enabled three paths lead from 0 to 3, so the unique-path claim is refuted with a pair of paths."
 file = "rules/dial-branch.fsl"
 command = "analyze requests/model-unique-path-branching.json"
-engine = "model-checking"
 status = "running"
 expect_exit = 10
 expect_verdict = "refuted"
@@ -1751,7 +1734,6 @@ id = "model-unknown-claim"
 statement = "An analyze item that names no declared claim is refused with unknown-claim."
 file = "rules/dial.fsl"
 command = "analyze requests/model-unknown-claim.json"
-engine = "model-checking"
 status = "running"
 expect_exit = 20
 expect_verdict = "refused: invalid_capability"
@@ -1766,8 +1748,205 @@ engine = "model-checking"
 status = "staged"
 expect_exit = 22
 ready_exit = 10
-waits_on = "QSL-2103"
+waits_on = "QSL-2756"
 why = "analyze never settles a possible claim whose predicate holds in no state when the state graph has a cycle: deadline_ms stops it with cancelled/deadline, where FR-391-AC-2 requires refuted, closed-scope"
 needs = "a refuted verdict for a possible claim with a trap over a cyclic state graph"
 serves = "FR-391-AC-2 (possible claim, trap)"
+
+
+[[case]]
+id = "window-cover-default-2998"
+statement = "With no cover named the trace is read under exact cover. A request at tick 0 and an acknowledgement at tick 2998 meet the 3000 bound: true."
+file = "rules/timed-window.fsl"
+command = "run requests/window-cover-default-2998.json"
+engine = "timed"
+clock = "plant-ms"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "FR-091-AC-25 (no cover = exact)"
+
+[[case]]
+id = "window-cover-exact-2998"
+statement = "With exact cover named. A request at tick 0 and an acknowledgement at tick 2998 meet the 3000 bound: true."
+file = "rules/timed-window.fsl"
+command = "run requests/window-cover-exact-2998.json"
+engine = "timed"
+clock = "plant-ms"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "FR-091-AC-18, AC-25"
+
+[[case]]
+id = "window-cover-default-3000"
+statement = "With no cover named the trace is read under exact cover. An acknowledgement at tick 3000, the inclusive bound, meets it: true."
+file = "rules/timed-window.fsl"
+command = "run requests/window-cover-default-3000.json"
+engine = "timed"
+clock = "plant-ms"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "FR-091-AC-25 (no cover = exact)"
+
+[[case]]
+id = "window-cover-exact-3000"
+statement = "With exact cover named. An acknowledgement at tick 3000, the inclusive bound, meets it: true."
+file = "rules/timed-window.fsl"
+command = "run requests/window-cover-exact-3000.json"
+engine = "timed"
+clock = "plant-ms"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "FR-091-AC-18, AC-25"
+
+[[case]]
+id = "window-cover-default-3001"
+statement = "With no cover named the trace is read under exact cover. An acknowledgement at tick 3001 is one tick late: false."
+file = "rules/timed-window.fsl"
+command = "run requests/window-cover-default-3001.json"
+engine = "timed"
+clock = "plant-ms"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
+serves = "FR-091-AC-25 (no cover = exact)"
+
+[[case]]
+id = "window-cover-exact-3001"
+statement = "With exact cover named. An acknowledgement at tick 3001 is one tick late: false."
+file = "rules/timed-window.fsl"
+command = "run requests/window-cover-exact-3001.json"
+engine = "timed"
+clock = "plant-ms"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
+serves = "FR-091-AC-18, AC-25"
+
+[[case]]
+id = "window-cover-counter-2998"
+statement = "Under a counter cover of uncertainty 0, an acknowledgement at tick 2998 is clear of the bound: true."
+file = "rules/timed-window.fsl"
+command = "run requests/window-cover-counter-2998.json"
+engine = "timed"
+clock = "plant-ms"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "FR-091-AC-18 (counter cover)"
+
+[[case]]
+id = "window-cover-counter-3000"
+statement = "Under a counter cover of uncertainty 0, an acknowledgement at tick 3000 straddles the bound, because a counter reading may stand for the tick before or after: indeterminate."
+file = "rules/timed-window.fsl"
+command = "run requests/window-cover-counter-3000.json"
+status = "running"
+expect_exit = 11
+expect_verdict = "indeterminate"
+serves = "FR-091-AC-18 (counter cover)"
+
+[[case]]
+id = "window-cover-counter-3001"
+statement = "Under a counter cover of uncertainty 0, an acknowledgement at tick 3001 is past the bound: false."
+file = "rules/timed-window.fsl"
+command = "run requests/window-cover-counter-3001.json"
+engine = "timed"
+clock = "plant-ms"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
+serves = "FR-091-AC-18 (counter cover)"
+
+[[case]]
+id = "window-cover-counter-1-pending"
+statement = "Under a counter cover of uncertainty 1, a request with no acknowledgement and progress to 3001 is pending: the margin 2u keeps the deadline at 3002."
+file = "rules/timed-window.fsl"
+command = "run requests/window-cover-counter-1-pending.json"
+engine = "timed"
+clock = "plant-ms"
+status = "running"
+expect_exit = 0
+expect_verdict = "pending"
+serves = "FR-091-AC-20"
+
+[[case]]
+id = "window-cover-counter-1-settled"
+statement = "With progress to 3002 the window is closed with no acknowledgement: false."
+file = "rules/timed-window.fsl"
+command = "run requests/window-cover-counter-1-settled.json"
+engine = "timed"
+clock = "plant-ms"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
+serves = "FR-091-AC-20"
+
+[[case]]
+id = "window-cover-exact-no-ack-settled"
+statement = "Under exact cover, progress to 3000 with completeness through 3000 already settles the missing acknowledgement as false."
+file = "rules/timed-window.fsl"
+command = "run requests/window-cover-exact-no-ack-settled.json"
+engine = "timed"
+clock = "plant-ms"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
+serves = "FR-091-AC-20"
+
+[[case]]
+id = "window-half-open-watermark"
+rule = "Eventually0To3"
+statement = "A half-open watermark of 3 covers ticks up to 2, so the window [0,3] is not closed and eventually[0,3] p stays pending."
+file = "rules/timed-window.fsl"
+command = "run requests/window-half-open-watermark.json"
+engine = "timed"
+clock = "plant-ms"
+status = "running"
+expect_exit = 0
+expect_verdict = "pending"
+serves = "FR-091-AC-15 (half-open watermark)"
+
+[[case]]
+id = "window-absent-valuation"
+rule = "Eventually0To5"
+statement = "p is false at stamps 0 and 5 and is absent from the observation at stamp 2: the missing valuation at that position makes eventually[0,5] p indeterminate, never false."
+file = "rules/timed-window.fsl"
+command = "run requests/window-absent-valuation.json"
+status = "staged"
+expect_exit = 20
+ready_exit = 11
+waits_on = "QSL-2750"
+why = "the stepping wire refuses a sample that omits a field (invalid_runtime_input/missing-member), where the standard reads the absent atom as a missing valuation"
+needs = "absent atom valuations on a stepped sample"
+serves = "FR-091-AC-13 (absent valuation)"
+
+[[case]]
+id = "window-order-keys-admit-until"
+rule = "PUntil0To1Q"
+statement = "Two observations stamped 1 carry distinct keys 1 and 2 from one order authority, so they are two ordered instants and p until[0,1] q is true: p holds at 0 and at the first stamp-1 instant, and q at the second."
+file = "rules/timed-window.fsl"
+command = "run requests/window-order-keys-admit-until.json"
+engine = "timed"
+clock = "plant-ms"
+status = "staged"
+expect_exit = 11
+ready_exit = 0
+waits_on = "QSL-2750"
+why = "the evaluator reads the two observations stamped 1 as one instant and reports a conflicting valuation (exit 11); the order keys are parsed and not used"
+needs = "order keys that order observations of one stamp"
+serves = "FR-091-AC-16 (order keys)"
+
+[[case]]
+id = "window-order-keys-two-authorities"
+rule = "PUntil0To1Q"
+statement = "The same two observations with keys from two different authorities have no usable order, so until is refused at the second instant of stamp 1."
+file = "rules/timed-window.fsl"
+command = "run requests/window-order-keys-two-authorities.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: invalid-value"
+serves = "FR-091-AC-16 (order keys)"
 

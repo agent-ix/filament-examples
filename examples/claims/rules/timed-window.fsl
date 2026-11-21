@@ -16,3 +16,6 @@ temporal PUntil0To1Q using t over (s: Sig) clock "plant-ms" on origin { holds(s.
 // FR-091-AC-17: a look-back from an activation at every position. The lower boundary of the trace says what
 // lies before the first stamp.
 temporal OnceIn0To4 using t over (s: Sig) clock "plant-ms" on each (e: Sig) { once[0,4] holds(s.p) }
+
+// FR-091-AC-18, AC-20, AC-25: an acknowledgement (p) is due within 3000 ms of each request (q).
+temporal AckWithin3000 using t over (s: Sig) clock "plant-ms" on each (e: Sig) when (e.q) { eventually[0,3000] holds(s.p) }
