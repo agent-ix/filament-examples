@@ -1,6 +1,6 @@
 {
-  "category": "refusal",
-  "last_stage": "S1",
+  "category": "success",
+  "last_stage": "S2",
   "result": {
     "bytes": "222",
     "kind": "parsed",
@@ -23,18 +23,15 @@
       {
         "bound": "50000",
         "setting": "s1.nodes",
-        "used": "3"
+        "used": "39"
       },
       {
         "bound": "288",
         "setting": "s1.work_units",
-        "used": "514"
+        "used": "997"
       }
     ]
   },
-  "first_diagnostic": {
-    "code": "invalid_syntax",
-    "cause": "unexpected-token"
-  },
+  "first_diagnostic": null,
   "items": []
 }

@@ -1,47 +1,33 @@
 {
-  "category": "success",
-  "last_stage": "S6c",
+  "category": "unsupported",
+  "last_stage": "S6b",
   "result": null,
   "first_diagnostic": null,
   "items": [
     {
       "axes": {
-        "activation": "active",
-        "execution": "completed",
-        "settlement": "closed-scope",
-        "truth": "true"
+        "activation": "unavailable",
+        "execution": null,
+        "settlement": "unavailable",
+        "truth": null
       },
-      "category": "success",
-      "certificate": {
-        "accepted": true,
-        "checker": "en-1-closure",
-        "identity": {
-          "model": "example/parts",
-          "node_id": {
-            "ordinal": 0,
-            "package": "example:parts-saga/part-flow-untimed",
-            "path": [
-              "PartFlow"
-            ]
-          },
-          "ordinal": 0
-        }
-      },
+      "category": "unsupported",
       "claim_name": "PartFlow",
-      "exploration": {
-        "automaton_states": "1",
-        "states": "8",
-        "transitions": "48"
-      },
       "record": {
-        "backend": "en-1",
-        "basis": {
-          "type": "exhaustive"
+        "diagnostic": {
+          "cause": "unbounded-extent",
+          "code": "unsupported_projection",
+          "detail": {
+            "candidate": "en-1",
+            "kind": "temporal-satisfaction",
+            "modes": [
+              "bounded",
+              "unbounded"
+            ]
+          }
         },
-        "cause": null,
-        "certification": "certified",
-        "result": "proved",
-        "settled_by": "result"
+        "result": "unsupported",
+        "settled_by": "disposition"
       },
       "request": {
         "candidates": {
@@ -68,6 +54,7 @@
           "classification": "bounded"
         },
         "kind": "temporal-satisfaction",
+        "memory": [],
         "request_index": 0,
         "temporal": {
           "fairness": [],
@@ -88,6 +75,34 @@
               }
             ],
             "proof_bounds": [],
+            "protocol": {
+              "capacities": {},
+              "over": {
+                "reference": {
+                  "key": "j1",
+                  "population": "ix://example/parts/jobs"
+                }
+              },
+              "protocol": "PartFlow",
+              "roles": {
+                "Assembly": {
+                  "selection": "example/parts",
+                  "type": "model-binding"
+                },
+                "Inspection": {
+                  "selection": "example/parts",
+                  "type": "model-binding"
+                },
+                "Machining": {
+                  "selection": "example/parts",
+                  "type": "model-binding"
+                },
+                "Planning": {
+                  "selection": "example/parts",
+                  "type": "model-binding"
+                }
+              }
+            },
             "universes": [
               {
                 "authority": "example",

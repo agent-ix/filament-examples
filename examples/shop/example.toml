@@ -435,15 +435,12 @@ serves = "Learn L3 (preferred form of the post rule)"
 [[case]]
 id = "staged-optional-parameter"
 rule = ""
-statement = "A rule can test whether an optional operation parameter is present."
+statement = "The package compiles a rule that tests whether an optional operation parameter is present."
 file = "rules/staged-optional-parameter.fsl"
 command = "compile requests/staged-optional-parameter.json"
-status = "staged"
-expect_exit = 20
-ready_exit = 0
-waits_on = "QSL-1983"
-needs = "optional operation parameters"
-why = "present(secondApprover) is refused ill_typed/type-mismatch: an optional operation parameter is typed as a required value, and a call cannot omit it"
+status = "running"
+expect_exit = 0
+expect_verdict = "compiled"
 serves = "State and models: optional operation parameters"
 
 [[case]]
@@ -704,12 +701,12 @@ serves = "Types reference (expressions and definedness)"
 [[case]]
 id = "expr-guard-two-names"
 rule = ""
-statement = "A comparison between two names is no proof about their difference."
+statement = "The sold <= stock guard proves stock - sold remains within Int[0, 100] (FR-577-AC-31)."
 file = "rules/values/expressions/expr-guard-two-names.fsl"
 command = "check rules/values/expressions/expr-guard-two-names.fsl"
 status = "running"
-expect_exit = 20
-expect_verdict = "refused: undefined_expression unproved-range"
+expect_exit = 0
+expect_verdict = "checked"
 serves = "Types reference (expressions and definedness)"
 
 [[case]]
@@ -1691,7 +1688,7 @@ file = "rules/paid-in-full.fsl"
 command = "run requests/limits/observation-document-bytes.json"
 status = "running"
 expect_exit = 22
-expect_verdict = "incomplete: resource_exhausted"
+expect_verdict = "incomplete: stage_limit_exceeded input-bytes-exceeded"
 serves = "Checks: limits"
 
 [[case]]

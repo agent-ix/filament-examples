@@ -27,7 +27,36 @@
         "claim": "PartFlow",
         "kind": "temporal-satisfaction",
         "temporal": {
-          "item_kind": "deadlock-freedom"
+          "item_kind": "deadlock-freedom",
+          "subject": {
+            "protocol": {
+              "protocol": "PartFlow",
+              "over": {
+                "reference": {
+                  "population": "ix://example/parts/jobs",
+                  "key": "j1"
+                }
+              },
+              "roles": {
+                "Planning": {
+                  "type": "model-binding",
+                  "selection": "example/parts"
+                },
+                "Machining": {
+                  "type": "model-binding",
+                  "selection": "example/parts"
+                },
+                "Inspection": {
+                  "type": "model-binding",
+                  "selection": "example/parts"
+                },
+                "Assembly": {
+                  "type": "model-binding",
+                  "selection": "example/parts"
+                }
+              }
+            }
+          }
         }
       }
     ],

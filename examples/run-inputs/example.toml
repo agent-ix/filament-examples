@@ -361,7 +361,7 @@ serves = "FR-824 (plan run outcome, severity order)"
 
 [[case]]
 id = "call-three-items-complete"
-statement = "A request selecting three items that each complete yields three dispositions in selection order and the overall category success."
+statement = "A request selecting three calls with tagged integer arguments 3, 5 and 7 yields three completed dispositions in selection order and category success."
 file = "rules/calls.fsl"
 command = "run requests/call-three-items-complete.json"
 status = "staged"
@@ -370,7 +370,7 @@ ready_exit = 0
 waits_on = "QSL-2760"
 why = "run refuses the items member (invalid-request: items is handled by the multi-selection runner), exit 20"
 needs = "a multi-item run through the run verb (FR-550-AC-3)"
-serves = "FR-550-AC-3 (multi-item results)"
+serves = "FR-550-AC-3; FR-651 (multi-item request and results)"
 
 [[case]]
 id = "plan-null-members-as-absent"

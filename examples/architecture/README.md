@@ -76,10 +76,11 @@ The case `probability-as-percent` writes the threshold of a probabilistic claim 
 These cases are staged until the language supports them.
 
 - `staged-deploy-bounded`: The deploy rule over a window of five steps. Needs clock selection.
-- `staged-availability`: 99% availability over 10 calls with 1-in-1,000 failures. Needs packaging of random parameters.
-- `staged-availability-missed`, `staged-sampling-claim-missed` and `staged-exact-reachability-missed`: the failing counterparts of the availability, sampling and exact claims, each with a bound the system misses. Need packaging of random parameters.
+- `staged-availability-missed` and `staged-exact-reachability-missed`: exact analysis of these availability claims settles unsupported.
 
 `example.toml` records the exact reason and ticket for each.
+
+The unlisted [sampling-negative request](requests/probability/sampling/staged-sampling-claim-missed.json) has no reproducible unforced outcome yet; QSL-2158 tracks it.
 
 ## Probability reference cases
 

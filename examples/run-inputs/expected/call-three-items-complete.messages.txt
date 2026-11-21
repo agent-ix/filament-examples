@@ -1,1 +1,1 @@
-invalid request: invalid type: sequence, expected a JSON object at line 12 column 13
+invalid clause request member items: items is handled by the multi-selection runner

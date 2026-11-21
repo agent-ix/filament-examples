@@ -33,12 +33,9 @@ id = "synthesis-objective"
 statement = "A synthesis declaration admits an objective before satisfies."
 file = "rules/synthesis-objective.fsl"
 command = "parse example grammar/synthesis-objective rules/synthesis-objective.fsl"
-status = "staged"
-expect_exit = 20
-ready_exit = 0
-waits_on = "QSL-2235"
-why = "The parser expects satisfies where the synthesis objective begins."
-needs = "Synthesis objective syntax"
+status = "running"
+expect_exit = 0
+expect_verdict = "parsed"
 [[case]]
 id = "type-rounding-exact"
 statement = "The exact rounding spelling parses in a decimal type."

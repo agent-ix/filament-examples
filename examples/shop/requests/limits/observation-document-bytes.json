@@ -41,7 +41,7 @@
         "current": "../../data/paid-in-full.json"
       },
       "observation_limits": {
-        "input_bytes": 10
+        "document_bytes": 10
       }
     }
   }

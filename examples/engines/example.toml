@@ -420,12 +420,9 @@ statement = "With no terminal declaration the full tank has no successor, so the
 file = "rules/tank-no-terminal.fsl"
 command = "analyze requests/deadlock-no-terminal-refuted.json"
 engine = "model-checking"
-status = "staged"
-expect_exit = 22
-ready_exit = 10
-waits_on = "QSL-2759"
-why = "the explicit deadlock-freedom item settles inconclusive (stale_dependency, replay-refused), where FR-366 requires refuted with a prefix that ends at the deadlock"
-needs = "a deadlock-freedom refutation whose witness replays"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
 serves = "FR-366 (deadlock freedom)"
 
 [[case]]
@@ -445,12 +442,9 @@ statement = "A terminal declaration that holds only in the empty tank leaves the
 file = "rules/tank-terminal-empty.fsl"
 command = "analyze requests/deadlock-terminal-misses-state.json"
 engine = "model-checking"
-status = "staged"
-expect_exit = 22
-ready_exit = 10
-waits_on = "QSL-2759"
-why = "the explicit deadlock-freedom item settles inconclusive (stale_dependency, replay-refused), where FR-366 requires refuted with a prefix that ends at the deadlock"
-needs = "a deadlock-freedom refutation whose witness replays"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
 serves = "FR-366 (deadlock freedom)"
 
 [[case]]

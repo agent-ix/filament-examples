@@ -16,7 +16,7 @@ The table lists each system with the number of cases that run today and the numb
 
 | System | Family | Running | Staged |
 | --- | --- | --- | --- |
-| [grammar](examples/grammar) | Language | 200 | 1 |
+| [grammar](examples/grammar) | Language | 201 | 0 |
 | [types-checking](examples/types-checking) | Language | 203 | 1 |
 | [operations-arithmetic](examples/operations-arithmetic) | Language | 306 | 6 |
 | [declarations-models](examples/declarations-models) | Language | 111 | 0 |
@@ -24,12 +24,12 @@ The table lists each system with the number of cases that run today and the numb
 | [docs-captures](examples/docs-captures) | Language | 7 | 0 |
 | [docs-values](examples/docs-values) | Language | 15 | 0 |
 | [language-values](examples/language-values) | Language | 44 | 0 |
-| [engines](examples/engines) | Language | 39 | 12 |
-| [shop](examples/shop) | Shop | 154 | 2 |
-| [architecture](examples/architecture) | Enterprise | 31 | 12 |
-| [parts-saga](examples/parts-saga) | Distributed | 32 | 0 |
+| [engines](examples/engines) | Language | 41 | 10 |
+| [shop](examples/shop) | Shop | 155 | 1 |
+| [architecture](examples/architecture) | Enterprise | 33 | 9 |
+| [parts-saga](examples/parts-saga) | Distributed | 31 | 1 |
 | [cell](examples/cell) | Safety | 13 | 0 |
-| [rover](examples/rover) | Safety | 67 | 6 |
+| [rover](examples/rover) | Safety | 68 | 5 |
 | [run-inputs](examples/run-inputs) | Language | 11 | 21 |
 | [lock](examples/lock) | Safety | 25 | 1 |
 | [library](examples/library) | Shop | 6 | 0 |

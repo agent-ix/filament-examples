@@ -1,10 +1,40 @@
 {
   "category": "incomplete",
-  "last_stage": null,
+  "last_stage": "S4",
   "result": null,
-  "first_diagnostic": {
-    "code": "resource_exhausted",
-    "cause": null
-  },
-  "items": []
+  "first_diagnostic": null,
+  "items": [
+    {
+      "axes": {
+        "activation": "unavailable",
+        "execution": null,
+        "settlement": "unavailable",
+        "truth": null
+      },
+      "category": "incomplete",
+      "cause": {
+        "bound": "10",
+        "code": "stage_limit_exceeded",
+        "counter": "2047",
+        "kind": "input-bytes-exceeded",
+        "limit": "input-bytes-exceeded",
+        "locus": {
+          "document": {
+            "authority": "example",
+            "identity": "ix://example/shop/data/paid-in-full"
+          },
+          "kind": "document",
+          "member": null,
+          "object": null,
+          "path": "../../data/paid-in-full.json",
+          "pointer": ""
+        },
+        "setting": "observation.input_bytes",
+        "value": 10
+      },
+      "clause": "PaidInFull",
+      "request_index": 0,
+      "result": "incomplete"
+    }
+  ]
 }
