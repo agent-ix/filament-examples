@@ -6982,20 +6982,20 @@
     {
       "system": "engines",
       "case": "deadlock-no-terminal-refuted",
-      "status": "staged",
+      "status": "running",
       "rule": null,
       "statement": "With no terminal declaration the full tank has no successor, so the deadlock-freedom item is refuted with a prefix that ends there.",
       "rule_file": "examples/engines/rules/tank-no-terminal.fsl",
       "data_files": [],
       "request_file": "examples/engines/requests/deadlock-no-terminal-refuted.json",
       "expected_file": "examples/engines/expected/deadlock-no-terminal-refuted.json",
-      "verdict": null,
-      "exit": 22,
-      "ready_exit": 10,
+      "verdict": "violated",
+      "exit": 10,
+      "ready_exit": null,
       "engine": "model-checking",
       "clock": null,
-      "waits_on": "QSL-2759",
-      "needs": "a deadlock-freedom refutation whose witness replays"
+      "waits_on": null,
+      "needs": null
     },
     {
       "system": "engines",
@@ -7018,20 +7018,20 @@
     {
       "system": "engines",
       "case": "deadlock-terminal-misses-state",
-      "status": "staged",
+      "status": "running",
       "rule": null,
       "statement": "A terminal declaration that holds only in the empty tank leaves the full tank a deadlock, so the item is refuted.",
       "rule_file": "examples/engines/rules/tank-terminal-empty.fsl",
       "data_files": [],
       "request_file": "examples/engines/requests/deadlock-terminal-misses-state.json",
       "expected_file": "examples/engines/expected/deadlock-terminal-misses-state.json",
-      "verdict": null,
-      "exit": 22,
-      "ready_exit": 10,
+      "verdict": "violated",
+      "exit": 10,
+      "ready_exit": null,
       "engine": "model-checking",
       "clock": null,
-      "waits_on": "QSL-2759",
-      "needs": "a deadlock-freedom refutation whose witness replays"
+      "waits_on": null,
+      "needs": null
     },
     {
       "system": "engines",
@@ -18019,7 +18019,7 @@
       "engine": null,
       "clock": null,
       "waits_on": "QSL-2727",
-      "needs": "deadlock-freedom analysis of the unbounded saga protocol"
+      "needs": "deadlock-freedom analysis of the saga protocol"
     },
     {
       "system": "parts-saga",

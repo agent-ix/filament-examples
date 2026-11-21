@@ -24,7 +24,7 @@ The table lists each system with the number of cases that run today and the numb
 | [docs-captures](examples/docs-captures) | Language | 7 | 0 |
 | [docs-values](examples/docs-values) | Language | 15 | 0 |
 | [language-values](examples/language-values) | Language | 44 | 0 |
-| [engines](examples/engines) | Language | 39 | 12 |
+| [engines](examples/engines) | Language | 41 | 10 |
 | [shop](examples/shop) | Shop | 155 | 1 |
 | [architecture](examples/architecture) | Enterprise | 33 | 9 |
 | [parts-saga](examples/parts-saga) | Distributed | 31 | 1 |
