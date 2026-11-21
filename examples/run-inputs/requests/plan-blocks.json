@@ -22,6 +22,9 @@
         "formal_revision": 1
       }
     },
+    "requirements": {
+      "backend": "en-1"
+    },
     "verification_plan": {
       "plan": "Release",
       "initial": "../data/tank-0.json"
