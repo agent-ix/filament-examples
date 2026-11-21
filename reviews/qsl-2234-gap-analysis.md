@@ -3,8 +3,8 @@ id: SR-2026111919340478491681437
 title: PR 75 gap-analysis review
 type: SpecReview
 analysis: gap-analysis
-scope: agent-ix/filament-examples; QSL-2234; PR 75 initial review and disposition
-  1 at bd95aba848158fadff21ba31380b5c53ade40b5c
+scope: agent-ix/filament-examples; QSL-2234; PR 75 through narrow rebase review at
+  cea30fc2d28ce56c042238a07be2f168c5eb2e9d
 review_set: subset
 examined_scope:
 - id: README.md
@@ -467,15 +467,28 @@ disposition_1_scope:
     \ { charge = 4 };\n  mode Standby invariant { charge >= 2 and charge <= 4 }\n\
     \    flow { charge' = -1; }\n    transition to Harvest when { charge = 2 } reset\
     \ { charge = 2 };\n}"
+rebase_review_scope:
+- id: README.md
+  path: README.md
+  role: examined
+  excerpt: '| [rover](examples/rover) | Safety | 67 | 6 |'
+- id: index.json
+  path: index.json
+  role: examined
+  excerpt: '"case": "hybrid-systems-radio-below-capacity"'
+- id: index.json-radio-exceeds-six
+  path: index.json
+  role: examined
+  excerpt: '"case": "hybrid-systems-radio-exceeds-six"'
 ---
 
 ## Summary
 
-Disposition 1 reviewed the independent radio replacement and its fresh retained outcomes. The bounded manual acceptance check is clean; full repository gap assurance remains unavailable because there is no root spec scope.
+Latest narrow rebase review confirms unchanged semantic inputs and refreshed counts/index. The bounded manual acceptance check remains clean; full repository gap assurance remains unavailable without root spec scope.
 
 ## Verdict
 
-CONDITIONAL — current bounded manual acceptance check is clean; full repository gap assurance remains unavailable and is not claimed at bd95aba848158fadff21ba31380b5c53ade40b5c.
+CONDITIONAL — bounded manual acceptance remains clean at cea30fc2d28ce56c042238a07be2f168c5eb2e9d; no full repository gap assurance is claimed.
 
 ## Findings
 
@@ -528,3 +541,19 @@ Current bounded manual gap reconciliation remains CONDITIONAL: no root spec/, no
 Plan completion: not assessed
 
 No new findings in disposition 1. QSL-2234 remains open for configured-provider/driver acceptance, timeout/cancellation and combined-engine work; examples alone cannot close it. These two latest validated SR files require lead/coder custody before merge.
+
+## Narrow rebase review coverage
+
+Narrow post-rebase review at exact PR #75 head cea30fc2d28ce56c042238a07be2f168c5eb2e9d, base 49a2d2445fba24ffb6a0d70d82108dda431171b7. This is the latest reviewed source head. The original review and disposition-1 finding text, evidence and outcome remain preserved below; FND-001 remains fixed. No new or open findings.
+
+Compared all six semantic inputs directly with independently reviewed bd95aba848158fadff21ba31380b5c53ade40b5c: radio native source, both requests, manifest and both expected JSON files are byte-identical. Both committed SR copies also matched the reviewer's prior disposition-1 scratch artifacts before this update. The brief's abbreviated custody object 55cd2 was not available locally; no fetch was attempted and the stronger direct comparison with reviewed bd95 plus prior reviewer artifacts supplies continuity. This review did not repeat unchanged model, oracle or solver analysis.
+
+Fresh-base README differs only at rover running count 65 -> 67; staged count stays 6. Index equals fresh main plus exactly the two radio entries, 614 -> 616 overall. All pre-existing records, including current main protocol and architecture additions, are preserved. Existing production runner/generator files are unchanged between the prior base e48d4355684aa97dc53c97d58440b66312a974bf and new base; the only tools/fsl-examples change is tests/protocol_docs.rs. git diff --check passed.
+
+Retained static generation qsl-2234-08d0310-readme.log reports 2 generated files. Independently verified returned archive: 1245 bytes, SHA-256 21e0eea7458d9f8dd840a569a21c51546b3195a6abfdd857133584a9ba9c8363. Independently verified derived patch: 2323 bytes, SHA-256 2f3e1962527ea76006d5fe74993e8e3f066fabbb0eb01de70224678a08d028bf. These are counts/index generation evidence only, not a fresh runtime run or focused behavioral check.
+
+Because every semantic input and the production harness are unchanged, the independently inspected 79b radio actual proof/replay outputs and 8fb final-manifest focused 2-case check remain applicable. They are not claimed as executions at cea30fc. The capacity proof remains certified/accepted with horizon 12 and six jumps; the native counterexample still replays a later violation after a true initial state. No build, runtime, scoped check, matrix, full gate, fetch, source edit or push was performed for this narrow review.
+
+One remote PR query returned head cea30fc2d28ce56c042238a07be2f168c5eb2e9d, base 49a2d2445fba24ffb6a0d70d82108dda431171b7, mergeable MERGEABLE and mergeStateStatus BLOCKED. The reviewed source has no review blocker, but this is not a claim that all GitHub gates are satisfied. Latest two SR artifacts still need custody on the branch before merge.
+
+Code-review remains PASS. Gap review remains CONDITIONAL, bounded manual acceptance only: root spec/ is absent, and no engine-backed repository assurance or whole-repository traceability/reverse-gap PASS is claimed. No matrix rerun. Plan completion: not assessed. QSL-2234 stays open for remaining driver/provider acceptance and timeout/cancellation work; examples do not close the umbrella.
