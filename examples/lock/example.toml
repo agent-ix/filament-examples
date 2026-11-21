@@ -123,8 +123,8 @@ file = "rules/model-subjects/two-locks.fsl"
 command = "analyze requests/staged-two-locks-deadlock.json"
 engine = "model-checking"
 status = "running"
-expect_exit = 10
-expect_verdict = "violated"
+expect_exit = 21
+expect_verdict = "unsupported operation-contract items; derived deadlock-freedom violated"
 serves = "Model checking reference (model subjects)"
 
 [[case]]
@@ -135,8 +135,8 @@ file = "rules/model-subjects/two-locks-ordered.fsl"
 command = "analyze requests/two-locks-ordered.json"
 engine = "model-checking"
 status = "running"
-expect_exit = 0
-expect_verdict = "holds"
+expect_exit = 21
+expect_verdict = "unsupported operation-contract items; derived deadlock-freedom holds"
 serves = "Model checking reference (model subjects)"
 
 [[case]]

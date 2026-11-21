@@ -9,6 +9,9 @@ model Arch = "example/architecture";
 random Arch::Service::call(ok) ~ { true: 9999, false: 1 };
 workload Traffic on Arch { weight Arch::Service::call = 1; }
 
+// A service is up after a call exactly when the call succeeded.
+post UpFollowsCall using v on Arch::Service::call { self.up = ok }
+
 // The claim asks for at least 0.9999, which a service that stays up with
 // probability about 0.999 misses. It states alpha, beta and indifference, so
 // sampling decides it.
