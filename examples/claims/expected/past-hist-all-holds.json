@@ -1,0 +1,21 @@
+{
+  "category": "success",
+  "last_stage": "S6a",
+  "result": null,
+  "first_diagnostic": null,
+  "items": [
+    {
+      "axes": {
+        "activation": "active",
+        "execution": "completed",
+        "settlement": "closed-scope",
+        "truth": "true"
+      },
+      "category": "success",
+      "cause": null,
+      "clause": "HistoricallyAlways",
+      "request_index": 0,
+      "result": "tested"
+    }
+  ]
+}

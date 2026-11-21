@@ -1,0 +1,93 @@
+{
+  "events": [
+    {
+      "basis": "closed-scope",
+      "category": "violation",
+      "clause": "PUntil1To2Q",
+      "disposition": {
+        "category": "violation",
+        "stage": "evaluate",
+        "temporal": {
+          "counterexample": {
+            "fairness": [],
+            "initial_state": null,
+            "interval": {
+              "lower": "1",
+              "upper": "2"
+            },
+            "kind": "formula",
+            "loop": [],
+            "over_binding": null,
+            "prefix": [
+              {
+                "sample": "0"
+              }
+            ],
+            "trace": "observed",
+            "trace_position": 0
+          },
+          "kind": "violated",
+          "position": 0
+        },
+        "truth": false
+      },
+      "format": "filament.monitor-event/1",
+      "position": 0,
+      "record": 0,
+      "settled": false
+    },
+    {
+      "basis": "closed-scope",
+      "category": "success",
+      "clause": "PUntil1To2Q",
+      "disposition": {
+        "category": "success",
+        "stage": "evaluate",
+        "temporal": {
+          "kind": "holds"
+        },
+        "truth": true
+      },
+      "format": "filament.monitor-event/1",
+      "position": 1,
+      "record": 1,
+      "settled": true,
+      "settlement": {
+        "basis": "decisive-witness",
+        "horizon": "1",
+        "position": "1",
+        "step": "2",
+        "trigger": "decided"
+      }
+    }
+  ],
+  "summary": {
+    "clauses": [
+      {
+        "basis": "closed-scope",
+        "category": "success",
+        "clause": "PUntil1To2Q",
+        "disposition": {
+          "category": "success",
+          "stage": "evaluate",
+          "temporal": {
+            "kind": "holds"
+          },
+          "truth": true
+        },
+        "settled": true,
+        "settlement": {
+          "basis": "decisive-witness",
+          "horizon": "1",
+          "position": "1",
+          "step": "2",
+          "trigger": "decided"
+        }
+      }
+    ],
+    "format": "filament.monitor-summary/1",
+    "ledger": null,
+    "records": 3,
+    "refused": 0
+  }
+}

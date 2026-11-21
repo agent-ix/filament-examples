@@ -1,0 +1,47 @@
+{
+  "events": [
+    {
+      "basis": "closed-scope",
+      "category": "success",
+      "clause": "EventuallyNot0To1",
+      "disposition": {
+        "category": "success",
+        "stage": "evaluate",
+        "temporal": {
+          "kind": "holds"
+        },
+        "truth": true
+      },
+      "format": "filament.monitor-event/1",
+      "position": 0,
+      "record": 0,
+      "settled": false
+    }
+  ],
+  "summary": {
+    "clauses": [
+      {
+        "basis": "closed-scope",
+        "category": "success",
+        "clause": "EventuallyNot0To1",
+        "disposition": {
+          "category": "success",
+          "stage": "evaluate",
+          "temporal": {
+            "kind": "holds"
+          },
+          "truth": true
+        },
+        "settled": false,
+        "settlement": {
+          "step": "1",
+          "trigger": "finish"
+        }
+      }
+    ],
+    "format": "filament.monitor-summary/1",
+    "ledger": null,
+    "records": 2,
+    "refused": 0
+  }
+}

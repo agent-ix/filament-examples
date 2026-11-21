@@ -1,0 +1,1 @@
+ill_typed (type-mismatch): the clock role `ms` spells a time unit or a model binding name, but under `filament.temporal.infinite-trace/v1` one tick is one position of the trace; name the role otherwise

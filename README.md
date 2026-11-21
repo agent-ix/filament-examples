@@ -17,6 +17,7 @@ The table lists each system with the number of cases that run today and the numb
 | System | Family | Running | Staged |
 | --- | --- | --- | --- |
 | [grammar](examples/grammar) | Language | 200 | 1 |
+| [claims](examples/claims) | Language | 142 | 1 |
 | [docs-captures](examples/docs-captures) | Language | 7 | 0 |
 | [docs-values](examples/docs-values) | Language | 15 | 0 |
 | [language-values](examples/language-values) | Language | 44 | 0 |

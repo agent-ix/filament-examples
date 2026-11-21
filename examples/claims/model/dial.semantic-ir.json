@@ -1,0 +1,285 @@
+{
+  "contractVersion": "2.0.0",
+  "canonicalization": {
+    "algorithm": "rfc8785-v1"
+  },
+  "source": {
+    "identity": "ix://example/dial/spec",
+    "version": "1.0.0",
+    "dialect": "spec-bundle"
+  },
+  "package": {
+    "identity": "example/dial",
+    "version": "1.0.0",
+    "mappingVersions": [],
+    "profileVersions": []
+  },
+  "occurrences": [],
+  "extensions": [],
+  "constructs": [
+    {
+      "kind": {
+        "module": "example/dial",
+        "name": "object_type"
+      },
+      "moduleVersion": "1.0.0",
+      "construct": {
+        "identity": "none",
+        "shape": "record",
+        "members": {},
+        "meaning": "filament.meaning.model.object-type/v1"
+      }
+    },
+    {
+      "kind": {
+        "module": "example/dial",
+        "name": "population"
+      },
+      "moduleVersion": "1.0.0",
+      "construct": {
+        "identity": "none",
+        "shape": "record",
+        "members": {},
+        "meaning": "filament.meaning.model.population/v1"
+      }
+    },
+    {
+      "kind": {
+        "module": "example/dial",
+        "name": "value_type"
+      },
+      "moduleVersion": "1.0.0",
+      "construct": {
+        "identity": "none",
+        "shape": "record",
+        "members": {},
+        "meaning": "filament.meaning.model.value-type/v1"
+      }
+    }
+  ],
+  "types": [
+    {
+      "identity": "ix://example/dial/Level",
+      "displayName": "Level",
+      "kind": {
+        "module": "example/dial",
+        "name": "value_type"
+      },
+      "roles": [],
+      "origin": {
+        "generated": {
+          "generatorIdentity": "ix://example/dial/Level",
+          "generatorVersion": "1.0.0",
+          "inputIdentities": [
+            "ix://example/dial/Level"
+          ]
+        }
+      },
+      "extensions": [],
+      "unknownPolicy": "reject",
+      "scalar": "integer",
+      "constraints": [
+        {
+          "identity": "ix://example/dial/Level/constraints/min",
+          "keyword": "min",
+          "operands": {
+            "value": "0"
+          },
+          "appliesTo": "ix://filament/native/Integer",
+          "diagnosticCode": "bound.min",
+          "origin": {
+            "generated": {
+              "generatorIdentity": "ix://example/dial/Level",
+              "generatorVersion": "1.0.0",
+              "inputIdentities": [
+                "ix://example/dial/Level"
+              ]
+            }
+          }
+        },
+        {
+          "identity": "ix://example/dial/Level/constraints/max",
+          "keyword": "max",
+          "operands": {
+            "value": "3"
+          },
+          "appliesTo": "ix://filament/native/Integer",
+          "diagnosticCode": "bound.max",
+          "origin": {
+            "generated": {
+              "generatorIdentity": "ix://example/dial/Level",
+              "generatorVersion": "1.0.0",
+              "inputIdentities": [
+                "ix://example/dial/Level"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "identity": "ix://example/dial/Dial",
+      "displayName": "Dial",
+      "kind": {
+        "module": "example/dial",
+        "name": "object_type"
+      },
+      "roles": [],
+      "origin": {
+        "generated": {
+          "generatorIdentity": "ix://example/dial/Dial",
+          "generatorVersion": "1.0.0",
+          "inputIdentities": [
+            "ix://example/dial/Dial"
+          ]
+        }
+      },
+      "constraints": [],
+      "extensions": [],
+      "unknownPolicy": "reject",
+      "supertypes": [],
+      "fields": [
+        {
+          "identity": "ix://example/dial/Dial/n",
+          "name": "n",
+          "typeRef": "ix://example/dial/Level",
+          "presence": "required",
+          "nullable": false,
+          "defaultKind": "none",
+          "multiplicity": {
+            "lower": 1,
+            "upper": 1,
+            "ordered": false,
+            "unique": true
+          },
+          "origin": {
+            "generated": {
+              "generatorIdentity": "ix://example/dial/Dial/n",
+              "generatorVersion": "1.0.0",
+              "inputIdentities": [
+                "ix://example/dial/Dial/n"
+              ]
+            }
+          }
+        }
+      ],
+      "operations": [
+        {
+          "identity": "ix://example/dial/Dial/up",
+          "name": "up",
+          "params": [],
+          "pre": [],
+          "post": [],
+          "origin": {
+            "generated": {
+              "generatorIdentity": "ix://example/dial/Dial/up",
+              "generatorVersion": "1.0.0",
+              "inputIdentities": [
+                "ix://example/dial/Dial/up"
+              ]
+            }
+          },
+          "frame": {
+            "modifies": [
+              "ix://example/dial/Dial/n"
+            ],
+            "creates": [],
+            "deletes": []
+          }
+        },
+        {
+          "identity": "ix://example/dial/Dial/skip",
+          "name": "skip",
+          "params": [],
+          "pre": [],
+          "post": [],
+          "origin": {
+            "generated": {
+              "generatorIdentity": "ix://example/dial/Dial/skip",
+              "generatorVersion": "1.0.0",
+              "inputIdentities": [
+                "ix://example/dial/Dial/skip"
+              ]
+            }
+          },
+          "frame": {
+            "modifies": [
+              "ix://example/dial/Dial/n"
+            ],
+            "creates": [],
+            "deletes": []
+          }
+        },
+        {
+          "identity": "ix://example/dial/Dial/down",
+          "name": "down",
+          "params": [],
+          "pre": [],
+          "post": [],
+          "origin": {
+            "generated": {
+              "generatorIdentity": "ix://example/dial/Dial/down",
+              "generatorVersion": "1.0.0",
+              "inputIdentities": [
+                "ix://example/dial/Dial/down"
+              ]
+            }
+          },
+          "frame": {
+            "modifies": [
+              "ix://example/dial/Dial/n"
+            ],
+            "creates": [],
+            "deletes": []
+          }
+        },
+        {
+          "identity": "ix://example/dial/Dial/reset",
+          "name": "reset",
+          "params": [],
+          "pre": [],
+          "post": [],
+          "origin": {
+            "generated": {
+              "generatorIdentity": "ix://example/dial/Dial/reset",
+              "generatorVersion": "1.0.0",
+              "inputIdentities": [
+                "ix://example/dial/Dial/reset"
+              ]
+            }
+          },
+          "frame": {
+            "modifies": [
+              "ix://example/dial/Dial/n"
+            ],
+            "creates": [],
+            "deletes": []
+          }
+        }
+      ]
+    }
+  ],
+  "populations": [
+    {
+      "identity": "ix://example/dial/dials",
+      "displayName": "dials",
+      "kind": {
+        "module": "example/dial",
+        "name": "population"
+      },
+      "members": [
+        "ix://example/dial/Dial"
+      ],
+      "extent": "closed",
+      "origin": {
+        "generated": {
+          "generatorIdentity": "ix://example/dial/dials",
+          "generatorVersion": "1.0.0",
+          "inputIdentities": [
+            "ix://example/dial/dials"
+          ]
+        }
+      }
+    }
+  ]
+}

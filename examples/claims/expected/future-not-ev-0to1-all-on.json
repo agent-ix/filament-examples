@@ -1,0 +1,47 @@
+{
+  "category": "violation",
+  "last_stage": "S6a",
+  "result": null,
+  "first_diagnostic": null,
+  "items": [
+    {
+      "axes": {
+        "activation": "active",
+        "execution": "completed",
+        "settlement": "closed-scope",
+        "truth": "false"
+      },
+      "category": "violation",
+      "cause": null,
+      "clause": "EventuallyNotPIn0To1",
+      "counterexample": {
+        "fairness": [],
+        "initial_state": null,
+        "interval": {
+          "lower": "0",
+          "upper": "1"
+        },
+        "kind": "formula",
+        "loop": [
+          {
+            "sample": "2"
+          }
+        ],
+        "over_binding": null,
+        "prefix": [
+          {
+            "sample": "0"
+          },
+          {
+            "sample": "1"
+          }
+        ],
+        "trace": "observed",
+        "trace_position": 0
+      },
+      "position": 0,
+      "request_index": 0,
+      "result": "refuted"
+    }
+  ]
+}

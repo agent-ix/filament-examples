@@ -1,0 +1,14 @@
+language "ix:native" edition "1-draft";
+profile fe = "filament.temporal.event-position.false-extension/v1";
+record Sig { p: Boolean; q: Boolean; }
+
+// FR-091-AC-2, AC-3 and AC-7: under false extension an atom is false at every position the trace does not have.
+temporal Always0To1 using fe over (s: Sig) clock "events" on origin { always[0,1] holds(s.p) }
+temporal Eventually0To1 using fe over (s: Sig) clock "events" on origin { eventually[0,1] holds(s.p) }
+temporal Eventually0To2 using fe over (s: Sig) clock "events" on origin { eventually[0,2] holds(s.p) }
+temporal AlwaysNot0To1 using fe over (s: Sig) clock "events" on origin { always[0,1] not holds(s.p) }
+// The atom holds(not p) is false at a missing position, unlike the temporal negation not holds(p) above.
+temporal AlwaysHoldsNot0To1 using fe over (s: Sig) clock "events" on origin { always[0,1] holds(not s.p) }
+temporal EventuallyNot0To1 using fe over (s: Sig) clock "events" on origin { eventually[0,1] not holds(s.p) }
+temporal EventuallyHoldsNot0To1 using fe over (s: Sig) clock "events" on origin { eventually[0,1] holds(not s.p) }
+temporal PUntil1To2Q using fe over (s: Sig) clock "events" on origin { holds(s.p) until[1,2] holds(s.q) }

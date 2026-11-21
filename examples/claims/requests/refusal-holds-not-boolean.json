@@ -1,0 +1,26 @@
+{
+  "format": "native-compile/1",
+  "request": {
+    "models": [
+      {
+        "format": "semantic-ir/2.0.0",
+        "source": {
+          "file": "../model/dial.semantic-ir.json",
+          "authority": "example",
+          "identity": "example:claims/dial-model",
+          "document": "model",
+          "formal_revision": 1
+        }
+      }
+    ],
+    "program": {
+      "source": {
+        "file": "../rules/refusals/holds-not-boolean.fsl",
+        "authority": "example",
+        "identity": "example:claims/refusal-holds-not-boolean",
+        "document": "holdsnotboolean",
+        "formal_revision": 1
+      }
+    }
+  }
+}

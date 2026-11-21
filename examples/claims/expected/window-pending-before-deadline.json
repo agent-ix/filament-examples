@@ -1,0 +1,21 @@
+{
+  "category": "pending",
+  "last_stage": "S6a",
+  "result": null,
+  "first_diagnostic": null,
+  "items": [
+    {
+      "axes": {
+        "activation": "active",
+        "execution": "completed",
+        "settlement": "unsettled",
+        "truth": "pending"
+      },
+      "category": "pending",
+      "cause": null,
+      "clause": "Eventually0To5",
+      "request_index": 0,
+      "result": "pending"
+    }
+  ]
+}

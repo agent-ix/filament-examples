@@ -1,0 +1,16 @@
+language "ix:native" edition "1-draft";
+profile v = "filament.model.complete/v1";
+model D = "example/dial";
+
+// Up adds one and skip adds two, so the dial reaches 3 by three routes: 0-1-2-3, 0-1-3 and 0-2-3.
+pre UpBelowTop using v on D::Dial::up { self.n < 3 }
+post UpAddsOne using v on D::Dial::up { self.n = pre(self.n) + 1 }
+pre SkipBelowTwo using v on D::Dial::skip { self.n < 2 }
+post SkipAddsTwo using v on D::Dial::skip { self.n = pre(self.n) + 2 }
+pre DownDisabled using v on D::Dial::down { false }
+pre ResetDisabled using v on D::Dial::reset { false }
+
+// Three paths lead from 0 to 3, so the claim that exactly one does is false.
+unique path OneRouteToThree using v over (d: D::Dial) from (d.n = 0) to (d.n = 3);
+// Exactly one path leads from 2 to 3, whatever the way into 2.
+unique path OneRouteFromTwo using v over (d: D::Dial) from (d.n = 2) to (d.n = 3);

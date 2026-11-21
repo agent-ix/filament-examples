@@ -1,0 +1,265 @@
+{
+  "category": "violation",
+  "last_stage": "S7",
+  "result": null,
+  "first_diagnostic": null,
+  "items": [
+    {
+      "axes": {
+        "activation": "active",
+        "execution": "completed",
+        "settlement": "decisive-counterexample",
+        "truth": "false"
+      },
+      "category": "violation",
+      "claim_name": "OneRouteToThree",
+      "counterexample": {
+        "arm": "path-pair",
+        "first": [
+          {
+            "post_state": "eyJib3VuZHMiOnsiZW50cmllcyI6W10sInR5cGUiOiJtYXAifSwiY29udHJvbCI6eyJlbnRyaWVzIjpbXSwidHlwZSI6Im1hcCJ9LCJtZW1vcnkiOnsiZW50cmllcyI6W10sInR5cGUiOiJtYXAifSwib2JzZXJ2YXRpb25zIjp7ImVudHJpZXMiOltdLCJ0eXBlIjoibWFwIn0sInF1ZXVlcyI6eyJlbnRyaWVzIjpbXSwidHlwZSI6Im1hcCJ9LCJyb2xlcyI6eyJlbnRyaWVzIjpbXSwidHlwZSI6Im1hcCJ9LCJzZW1hbnRpYyI6eyJlbnRyaWVzIjpbeyJrZXkiOnsidHlwZSI6InRleHQiLCJ2YWx1ZSI6IntcIm5vZGVcIjpcIml4Oi8vZXhhbXBsZS9kaWFsL2RpYWxzXCIsXCJwYWNrYWdlXCI6XCJleGFtcGxlL2RpYWxcIn0ifSwidmFsdWUiOnsiZW50cmllcyI6W3sia2V5Ijp7ImlkZW50aXR5IjoiZCIsIm9iamVjdF90eXBlIjp7Im9yaWdpbmFsIjp7Im5vZGUiOiJpeDovL2V4YW1wbGUvZGlhbC9EaWFsIiwicGFja2FnZSI6ImV4YW1wbGUvZGlhbCJ9LCJvd25lcl9lZmZlY3RpdmVfdHlwZSI6bnVsbH0sInR5cGUiOiJyZWZlcmVuY2UiLCJ1bml2ZXJzZSI6eyJvcmRpbmFsIjowLCJwYWNrYWdlIjoiZXhhbXBsZS9kaWFsIiwicGF0aCI6WyJtb2RlbCIsIm9iamVjdF90eXBlIiwiaXg6Ly9leGFtcGxlL2RpYWwvRGlhbCJdfX0sInZhbHVlIjp7ImZpZWxkcyI6W3sibmFtZSI6Im4iLCJ2YWx1ZSI6eyJ0eXBlIjoiaW50ZWdlciIsInZhbHVlIjoiMiJ9fV0sIm5hbWUiOiJ7XCJub2RlXCI6XCJpeDovL2V4YW1wbGUvZGlhbC9EaWFsXCIsXCJwYWNrYWdlXCI6XCJleGFtcGxlL2RpYWxcIn0iLCJ0eXBlIjoicmVjb3JkIn19XSwidHlwZSI6Im1hcCJ9fV0sInR5cGUiOiJtYXAifSwidHlwZSI6InNpbXVsYXRpb24tc3RhdGUifQ",
+            "transition": {
+              "arguments": [],
+              "operation": {
+                "node": "ix://example/dial/Dial/skip",
+                "package": "example/dial"
+              },
+              "receiver": {
+                "identity": "d",
+                "object_type": {
+                  "original": {
+                    "node": "ix://example/dial/Dial",
+                    "package": "example/dial"
+                  },
+                  "owner_effective_type": null
+                },
+                "type": "reference",
+                "universe": {
+                  "ordinal": 0,
+                  "package": "example/dial",
+                  "path": [
+                    "model",
+                    "object_type",
+                    "ix://example/dial/Dial"
+                  ]
+                }
+              },
+              "type": "transition"
+            },
+            "type": "step"
+          },
+          {
+            "post_state": "eyJib3VuZHMiOnsiZW50cmllcyI6W10sInR5cGUiOiJtYXAifSwiY29udHJvbCI6eyJlbnRyaWVzIjpbXSwidHlwZSI6Im1hcCJ9LCJtZW1vcnkiOnsiZW50cmllcyI6W10sInR5cGUiOiJtYXAifSwib2JzZXJ2YXRpb25zIjp7ImVudHJpZXMiOltdLCJ0eXBlIjoibWFwIn0sInF1ZXVlcyI6eyJlbnRyaWVzIjpbXSwidHlwZSI6Im1hcCJ9LCJyb2xlcyI6eyJlbnRyaWVzIjpbXSwidHlwZSI6Im1hcCJ9LCJzZW1hbnRpYyI6eyJlbnRyaWVzIjpbeyJrZXkiOnsidHlwZSI6InRleHQiLCJ2YWx1ZSI6IntcIm5vZGVcIjpcIml4Oi8vZXhhbXBsZS9kaWFsL2RpYWxzXCIsXCJwYWNrYWdlXCI6XCJleGFtcGxlL2RpYWxcIn0ifSwidmFsdWUiOnsiZW50cmllcyI6W3sia2V5Ijp7ImlkZW50aXR5IjoiZCIsIm9iamVjdF90eXBlIjp7Im9yaWdpbmFsIjp7Im5vZGUiOiJpeDovL2V4YW1wbGUvZGlhbC9EaWFsIiwicGFja2FnZSI6ImV4YW1wbGUvZGlhbCJ9LCJvd25lcl9lZmZlY3RpdmVfdHlwZSI6bnVsbH0sInR5cGUiOiJyZWZlcmVuY2UiLCJ1bml2ZXJzZSI6eyJvcmRpbmFsIjowLCJwYWNrYWdlIjoiZXhhbXBsZS9kaWFsIiwicGF0aCI6WyJtb2RlbCIsIm9iamVjdF90eXBlIiwiaXg6Ly9leGFtcGxlL2RpYWwvRGlhbCJdfX0sInZhbHVlIjp7ImZpZWxkcyI6W3sibmFtZSI6Im4iLCJ2YWx1ZSI6eyJ0eXBlIjoiaW50ZWdlciIsInZhbHVlIjoiMyJ9fV0sIm5hbWUiOiJ7XCJub2RlXCI6XCJpeDovL2V4YW1wbGUvZGlhbC9EaWFsXCIsXCJwYWNrYWdlXCI6XCJleGFtcGxlL2RpYWxcIn0iLCJ0eXBlIjoicmVjb3JkIn19XSwidHlwZSI6Im1hcCJ9fV0sInR5cGUiOiJtYXAifSwidHlwZSI6InNpbXVsYXRpb24tc3RhdGUifQ",
+            "transition": {
+              "arguments": [],
+              "operation": {
+                "node": "ix://example/dial/Dial/up",
+                "package": "example/dial"
+              },
+              "receiver": {
+                "identity": "d",
+                "object_type": {
+                  "original": {
+                    "node": "ix://example/dial/Dial",
+                    "package": "example/dial"
+                  },
+                  "owner_effective_type": null
+                },
+                "type": "reference",
+                "universe": {
+                  "ordinal": 0,
+                  "package": "example/dial",
+                  "path": [
+                    "model",
+                    "object_type",
+                    "ix://example/dial/Dial"
+                  ]
+                }
+              },
+              "type": "transition"
+            },
+            "type": "step"
+          }
+        ],
+        "instance": {
+          "key": {
+            "identity": "d",
+            "object_type": {
+              "original": {
+                "node": "ix://example/dial/Dial",
+                "package": "example/dial"
+              },
+              "owner_effective_type": null
+            },
+            "type": "reference",
+            "universe": {
+              "ordinal": 0,
+              "package": "example/dial",
+              "path": [
+                "model",
+                "object_type",
+                "ix://example/dial/Dial"
+              ]
+            }
+          },
+          "parameter": "d",
+          "type": "instance"
+        },
+        "second": [
+          {
+            "post_state": "eyJib3VuZHMiOnsiZW50cmllcyI6W10sInR5cGUiOiJtYXAifSwiY29udHJvbCI6eyJlbnRyaWVzIjpbXSwidHlwZSI6Im1hcCJ9LCJtZW1vcnkiOnsiZW50cmllcyI6W10sInR5cGUiOiJtYXAifSwib2JzZXJ2YXRpb25zIjp7ImVudHJpZXMiOltdLCJ0eXBlIjoibWFwIn0sInF1ZXVlcyI6eyJlbnRyaWVzIjpbXSwidHlwZSI6Im1hcCJ9LCJyb2xlcyI6eyJlbnRyaWVzIjpbXSwidHlwZSI6Im1hcCJ9LCJzZW1hbnRpYyI6eyJlbnRyaWVzIjpbeyJrZXkiOnsidHlwZSI6InRleHQiLCJ2YWx1ZSI6IntcIm5vZGVcIjpcIml4Oi8vZXhhbXBsZS9kaWFsL2RpYWxzXCIsXCJwYWNrYWdlXCI6XCJleGFtcGxlL2RpYWxcIn0ifSwidmFsdWUiOnsiZW50cmllcyI6W3sia2V5Ijp7ImlkZW50aXR5IjoiZCIsIm9iamVjdF90eXBlIjp7Im9yaWdpbmFsIjp7Im5vZGUiOiJpeDovL2V4YW1wbGUvZGlhbC9EaWFsIiwicGFja2FnZSI6ImV4YW1wbGUvZGlhbCJ9LCJvd25lcl9lZmZlY3RpdmVfdHlwZSI6bnVsbH0sInR5cGUiOiJyZWZlcmVuY2UiLCJ1bml2ZXJzZSI6eyJvcmRpbmFsIjowLCJwYWNrYWdlIjoiZXhhbXBsZS9kaWFsIiwicGF0aCI6WyJtb2RlbCIsIm9iamVjdF90eXBlIiwiaXg6Ly9leGFtcGxlL2RpYWwvRGlhbCJdfX0sInZhbHVlIjp7ImZpZWxkcyI6W3sibmFtZSI6Im4iLCJ2YWx1ZSI6eyJ0eXBlIjoiaW50ZWdlciIsInZhbHVlIjoiMSJ9fV0sIm5hbWUiOiJ7XCJub2RlXCI6XCJpeDovL2V4YW1wbGUvZGlhbC9EaWFsXCIsXCJwYWNrYWdlXCI6XCJleGFtcGxlL2RpYWxcIn0iLCJ0eXBlIjoicmVjb3JkIn19XSwidHlwZSI6Im1hcCJ9fV0sInR5cGUiOiJtYXAifSwidHlwZSI6InNpbXVsYXRpb24tc3RhdGUifQ",
+            "transition": {
+              "arguments": [],
+              "operation": {
+                "node": "ix://example/dial/Dial/up",
+                "package": "example/dial"
+              },
+              "receiver": {
+                "identity": "d",
+                "object_type": {
+                  "original": {
+                    "node": "ix://example/dial/Dial",
+                    "package": "example/dial"
+                  },
+                  "owner_effective_type": null
+                },
+                "type": "reference",
+                "universe": {
+                  "ordinal": 0,
+                  "package": "example/dial",
+                  "path": [
+                    "model",
+                    "object_type",
+                    "ix://example/dial/Dial"
+                  ]
+                }
+              },
+              "type": "transition"
+            },
+            "type": "step"
+          },
+          {
+            "post_state": "eyJib3VuZHMiOnsiZW50cmllcyI6W10sInR5cGUiOiJtYXAifSwiY29udHJvbCI6eyJlbnRyaWVzIjpbXSwidHlwZSI6Im1hcCJ9LCJtZW1vcnkiOnsiZW50cmllcyI6W10sInR5cGUiOiJtYXAifSwib2JzZXJ2YXRpb25zIjp7ImVudHJpZXMiOltdLCJ0eXBlIjoibWFwIn0sInF1ZXVlcyI6eyJlbnRyaWVzIjpbXSwidHlwZSI6Im1hcCJ9LCJyb2xlcyI6eyJlbnRyaWVzIjpbXSwidHlwZSI6Im1hcCJ9LCJzZW1hbnRpYyI6eyJlbnRyaWVzIjpbeyJrZXkiOnsidHlwZSI6InRleHQiLCJ2YWx1ZSI6IntcIm5vZGVcIjpcIml4Oi8vZXhhbXBsZS9kaWFsL2RpYWxzXCIsXCJwYWNrYWdlXCI6XCJleGFtcGxlL2RpYWxcIn0ifSwidmFsdWUiOnsiZW50cmllcyI6W3sia2V5Ijp7ImlkZW50aXR5IjoiZCIsIm9iamVjdF90eXBlIjp7Im9yaWdpbmFsIjp7Im5vZGUiOiJpeDovL2V4YW1wbGUvZGlhbC9EaWFsIiwicGFja2FnZSI6ImV4YW1wbGUvZGlhbCJ9LCJvd25lcl9lZmZlY3RpdmVfdHlwZSI6bnVsbH0sInR5cGUiOiJyZWZlcmVuY2UiLCJ1bml2ZXJzZSI6eyJvcmRpbmFsIjowLCJwYWNrYWdlIjoiZXhhbXBsZS9kaWFsIiwicGF0aCI6WyJtb2RlbCIsIm9iamVjdF90eXBlIiwiaXg6Ly9leGFtcGxlL2RpYWwvRGlhbCJdfX0sInZhbHVlIjp7ImZpZWxkcyI6W3sibmFtZSI6Im4iLCJ2YWx1ZSI6eyJ0eXBlIjoiaW50ZWdlciIsInZhbHVlIjoiMyJ9fV0sIm5hbWUiOiJ7XCJub2RlXCI6XCJpeDovL2V4YW1wbGUvZGlhbC9EaWFsXCIsXCJwYWNrYWdlXCI6XCJleGFtcGxlL2RpYWxcIn0iLCJ0eXBlIjoicmVjb3JkIn19XSwidHlwZSI6Im1hcCJ9fV0sInR5cGUiOiJtYXAifSwidHlwZSI6InNpbXVsYXRpb24tc3RhdGUifQ",
+            "transition": {
+              "arguments": [],
+              "operation": {
+                "node": "ix://example/dial/Dial/skip",
+                "package": "example/dial"
+              },
+              "receiver": {
+                "identity": "d",
+                "object_type": {
+                  "original": {
+                    "node": "ix://example/dial/Dial",
+                    "package": "example/dial"
+                  },
+                  "owner_effective_type": null
+                },
+                "type": "reference",
+                "universe": {
+                  "ordinal": 0,
+                  "package": "example/dial",
+                  "path": [
+                    "model",
+                    "object_type",
+                    "ix://example/dial/Dial"
+                  ]
+                }
+              },
+              "type": "transition"
+            },
+            "type": "step"
+          }
+        ],
+        "stem": {
+          "initial": "0",
+          "steps": [],
+          "type": "model-path"
+        },
+        "type": "graph-evidence"
+      },
+      "exploration": {
+        "automaton_states": "0",
+        "states": "4",
+        "transitions": "5"
+      },
+      "record": {
+        "backend": "en-1",
+        "cause": null,
+        "limits": {
+          "max_automaton_states": 1048576,
+          "max_states": 10000000,
+          "max_transitions": 100000000
+        },
+        "max_depth": null,
+        "method": "explicit-state",
+        "result": "refuted",
+        "seed": "0",
+        "settled_by": "result",
+        "witness_samples": 64
+      },
+      "replay": {
+        "reproduced": true,
+        "target": {
+          "state_clause": "OneRouteToThree"
+        }
+      },
+      "request": {
+        "candidates": {
+          "backends": [
+            "en-1"
+          ],
+          "type": "set"
+        },
+        "claim": {
+          "node": {
+            "ordinal": 0,
+            "package": "example:claims/dial-branch",
+            "path": [
+              "claim",
+              "state_graph"
+            ]
+          },
+          "occurrence": {
+            "ordinal": 0,
+            "role": "claim"
+          }
+        },
+        "extent": {
+          "classification": "unbounded",
+          "finite_bound_available": false
+        },
+        "kind": "temporal-satisfaction",
+        "request_index": 0,
+        "temporal": {
+          "fairness": [],
+          "item_kind": "formula",
+          "limits": {
+            "max_automaton_states": 1048576,
+            "max_relation_tuples": 16777216,
+            "max_states": 10000000,
+            "max_transitions": 100000000,
+            "max_walk_steps": 4096,
+            "max_witness_set": 65536
+          },
+          "subject": {
+            "initial_states": [
+              {
+                "authority": "example",
+                "identity": "example:claims/start-0"
+              }
+            ],
+            "proof_bounds": [],
+            "universes": [
+              {
+                "authority": "example",
+                "identity": "example:claims/start-0"
+              }
+            ]
+          }
+        }
+      },
+      "request_index": 0
+    }
+  ]
+}

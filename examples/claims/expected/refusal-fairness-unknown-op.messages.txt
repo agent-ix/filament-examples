@@ -1,0 +1,1 @@
+missing_declaration (missing-name): the fairness operation `D::Dial::spin` names no model operation

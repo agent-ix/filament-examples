@@ -1,0 +1,93 @@
+{
+  "format": "native-run/1",
+  "request": {
+    "models": [],
+    "program": {
+      "source": {
+        "file": "../rules/timed-window.fsl",
+        "authority": "example",
+        "identity": "example:claims/timed-window",
+        "document": "timedwindow",
+        "formal_revision": 1
+      }
+    },
+    "clocks": {
+      "plant-ms": {
+        "kind": "timestamped_event",
+        "timestamp_unit": "ms"
+      }
+    },
+    "clause": {
+      "selection": {
+        "temporal": {
+          "name": "PUntil0To1Q",
+          "trace": {
+            "timestamped": {
+              "observations": [
+                {
+                  "position": {
+                    "sample": {
+                      "p": {
+                        "boolean": true
+                      },
+                      "q": {
+                        "boolean": false
+                      }
+                    }
+                  },
+                  "stamp": 0
+                },
+                {
+                  "position": {
+                    "sample": {
+                      "p": {
+                        "boolean": true
+                      },
+                      "q": {
+                        "boolean": false
+                      }
+                    }
+                  },
+                  "stamp": 1
+                },
+                {
+                  "position": {
+                    "sample": {
+                      "p": {
+                        "boolean": false
+                      },
+                      "q": {
+                        "boolean": true
+                      }
+                    }
+                  },
+                  "stamp": 1
+                }
+              ],
+              "progress": {
+                "watermark": 1,
+                "completeness": {
+                  "complete": {
+                    "through": 1
+                  }
+                },
+                "scope": "closed",
+                "execution": "closed"
+              },
+              "lower_boundary": "authoritative-origin",
+              "binding": {
+                "profile": "filament.temporal.timestamped-event.finite-window/v1",
+                "clock": "plant-ms",
+                "parameters": {
+                  "kind": "timestamped_event",
+                  "timestamp_unit": "ms"
+                }
+              }
+            }
+          }
+        }
+      },
+      "observations": {}
+    }
+  }
+}

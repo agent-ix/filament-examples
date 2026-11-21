@@ -1,0 +1,18 @@
+language "ix:native" edition "1-draft";
+profile t = "filament.temporal.timestamped-event.finite-window/v1";
+record Sig { p: Boolean; q: Boolean; }
+
+// FR-091-AC-10 to AC-16, FR-094: the finite-window profile over stamped observations in milliseconds.
+temporal Always0To5 using t over (s: Sig) clock "plant-ms" on origin { always[0,5] holds(s.p) }
+temporal Always0To1 using t over (s: Sig) clock "plant-ms" on origin { always[0,1] holds(s.p) }
+temporal Always2To3 using t over (s: Sig) clock "plant-ms" on origin { always[2,3] holds(s.p) }
+temporal Eventually0To1 using t over (s: Sig) clock "plant-ms" on origin { eventually[0,1] holds(s.p) }
+temporal Eventually0To2 using t over (s: Sig) clock "plant-ms" on origin { eventually[0,2] holds(s.p) }
+temporal Eventually0To3 using t over (s: Sig) clock "plant-ms" on origin { eventually[0,3] holds(s.p) }
+temporal Eventually0To5 using t over (s: Sig) clock "plant-ms" on origin { eventually[0,5] holds(s.p) }
+temporal Eventually2To3 using t over (s: Sig) clock "plant-ms" on origin { eventually[2,3] holds(s.p) }
+temporal PUntil0To1Q using t over (s: Sig) clock "plant-ms" on origin { holds(s.p) until[0,1] holds(s.q) }
+
+// FR-091-AC-17: a look-back from an activation at every position. The lower boundary of the trace says what
+// lies before the first stamp.
+temporal OnceIn0To4 using t over (s: Sig) clock "plant-ms" on each (e: Sig) { once[0,4] holds(s.p) }

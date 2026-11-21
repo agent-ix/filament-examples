@@ -42,6 +42,7 @@ models:
 	$(NODE) tools/model.mjs tools/models/payment-spec.mjs examples/shop/model/payment-spec.semantic-ir.json
 	$(NODE) tools/model.mjs tools/models/payment-client.mjs examples/shop/model/payment-client.semantic-ir.json
 	$(NODE) tools/model.mjs tools/models/shop-outcomes.mjs examples/shop/model/shop-outcomes.semantic-ir.json
+	$(NODE) tools/model.mjs tools/models/dial.mjs examples/claims/model/dial.semantic-ir.json
 
 # Tests of the example runner in tools/fsl-examples. They use a stand-in driver and need cargo, not an FSL binary.
 runner-test:
