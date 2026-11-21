@@ -329,3 +329,25 @@ status = "running"
 expect_exit = 0
 expect_verdict = "checked: first-in first-out channel keyed by part"
 serves = "Protocols reference (roles and channels)"
+
+[[case]]
+id = "release-declaration"
+rule = ""
+statement = "A release declaration binds the task reserve of a task set to the model operation that starts each of its jobs."
+file = "rules/release-declaration.fsl"
+command = "compile requests/release-declaration.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "compiled"
+serves = "Advanced analyses reference (schedulability)"
+
+[[case]]
+id = "release-unknown-operation"
+rule = ""
+statement = "A release declaration that names no operation of the model is refused."
+file = "rules/release-unknown-operation.fsl"
+command = "compile requests/release-unknown-operation.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refusal: missing_declaration"
+serves = "Advanced analyses reference (schedulability)"

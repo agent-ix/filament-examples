@@ -1,0 +1,12 @@
+language "ix:native" edition "1-draft";
+profile t = "filament.temporal.complete/v1";
+model Parts = "example/parts";
+dimension Time;
+unit ms : Time = rational(1, 1);
+
+// The reserve task of a machining station runs every 10 ms. The release
+// declaration says the model operation that starts each job of the task.
+taskset Flow {
+  task reserve periodic 10 ms deadline 10 ms wcet 2 ms priority 2 lo;
+}
+release Flow.reserve on Parts::MachiningStation::nothing;
