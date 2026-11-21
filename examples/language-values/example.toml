@@ -2,6 +2,16 @@ name = "language-values"
 summary = "Original runnable value-language forms with independently stated semantic results."
 
 [[case]]
+id = "native-operation-dispatch"
+rule = "DispatchSelectsSubtype"
+statement = "A native Sub object conforms to Order, and self.size() in an Order invariant selects Sub's redefining body (7) over Order's body (1)."
+file = "rules/native-operation-dispatch.fsl"
+command = "run requests/native-operation-dispatch.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
 id = "float-specials-nan"
 rule = "example"
 statement = "NaN is unequal to itself."

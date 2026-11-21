@@ -1,0 +1,29 @@
+{
+  "format": "filament.state.snapshot/v1",
+  "identity": {
+    "authority": "example",
+    "identity": "language-values/native-operation-dispatch/current"
+  },
+  "observation": "current",
+  "anchor": {
+    "kind": "handler",
+    "name": "validate"
+  },
+  "populations": [
+    {
+      "population": "orders",
+      "complete": true,
+      "objects": [
+        {
+          "key": "sub1",
+          "type": "Sub",
+          "fields": {
+            "total": {
+              "integer": "4"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

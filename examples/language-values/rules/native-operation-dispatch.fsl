@@ -1,0 +1,19 @@
+language "ix:native" edition "1-draft";
+profile P = "filament.model.complete/v1";
+
+object Order identity (total) {
+  total: Int[0, 9];
+  population orders;
+  operation size(): Integer;
+}
+
+object Sub extends Order {
+  operation size(): Integer redefines Order::size;
+}
+
+body SubSize using P on Sub::size() { 7 }
+body OrderSize using P on Order::size() { 1 }
+pre CanSize using P on Order::size { self.total >= 0 }
+
+// The selected Sub receiver must use SubSize, which differs from OrderSize.
+invariant DispatchSelectsSubtype using P on Order at current { self.size() = 7 }
