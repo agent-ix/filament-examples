@@ -1,5 +1,5 @@
 {
-  "format": "native-compile/1",
+  "format": "native-analyze/1",
   "request": {
     "models": [
       {
@@ -21,6 +21,23 @@
         "document": "stagedsamplingclaimmissed",
         "formal_revision": 1
       }
-    }
+    },
+    "documents": [
+      {
+        "file": "../../../data/start-available.json"
+      }
+    ],
+    "items": [
+      {
+        "claim": "CheckoutAvailable",
+        "probabilistic": {
+          "evidence": "statistical",
+          "method": {
+            "type": "sprt"
+          },
+          "seed": "0"
+        }
+      }
+    ]
   }
 }

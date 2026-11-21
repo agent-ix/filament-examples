@@ -14,6 +14,20 @@ workload Driving on Rover {
   weight Rover::enterFailsafe = 1;
 }
 
+// This probability model fixes one update for each non-sampling operation.
+post LidarLossDegrades using v on Rover::Rover::loseLidar {
+  self.mode = Rover::Mode::Degraded and not self.lidarOk and self.speed = 300
+}
+post BrakeEntersSafeStop using v on Rover::Rover::brake {
+  self.mode = Rover::Mode::SafeStop and self.speed = 100
+}
+post HaltStops using v on Rover::Rover::halt {
+  self.speed = 0 and self.stopped
+}
+post FailsafeEntered using v on Rover::Rover::enterFailsafe {
+  self.mode = Rover::Mode::Failsafe
+}
+
 // The voted reading is wrong only when two sensors fail on the same sample.
 post VoteTracksFaults using v on Rover::Rover::sample {
   self.voteWrong = ((faultA and faultB) or (faultA and faultC) or (faultB and faultC))
