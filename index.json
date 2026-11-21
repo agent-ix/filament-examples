@@ -18018,7 +18018,7 @@
       "ready_exit": 0,
       "engine": null,
       "clock": null,
-      "waits_on": "QSL-2727",
+      "waits_on": "QSL-2761",
       "needs": "deadlock-freedom analysis of the saga protocol"
     },
     {
