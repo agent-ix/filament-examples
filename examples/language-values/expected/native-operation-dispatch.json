@@ -1,0 +1,65 @@
+{
+  "category": "success",
+  "last_stage": "S6a",
+  "result": null,
+  "first_diagnostic": null,
+  "items": [
+    {
+      "axes": {
+        "activation": "active",
+        "execution": "completed",
+        "settlement": "decisive-witness",
+        "truth": "true"
+      },
+      "category": "success",
+      "cause": null,
+      "clause": "DispatchSelectsSubtype",
+      "request_index": 0,
+      "result": "tested",
+      "witness": {
+        "deciding_comparison": {
+          "node_id": "{\"ordinal\":0,\"package\":\"language-values/native-operation-dispatch\",\"path\":[\"expression\",\"binary\",{\"ordinal\":0,\"package\":\"language-values/native-operation-dispatch\",\"path\":[\"expression\",\"call\",{\"ordinal\":0,\"package\":\"language-values/native-operation-dispatch\",\"path\":[\"value\",\"parameter\",\"name\",{\"ordinal\":0,\"package\":\"language-values/native-operation-dispatch\",\"path\":[\"scalar_type\",\"text\"]},\"self\",\"level\",{\"ordinal\":0,\"package\":\"language-values/native-operation-dispatch\",\"path\":[\"scalar_type\",\"integer\"]},\"0\",{\"ordinal\":0,\"package\":\"language-values/native-operation-dispatch\",\"path\":[\"composite_type\",\"reference\",{\"ordinal\":0,\"package\":\"language-values/native-operation-dispatch\",\"path\":[\"Order\"]}]}]},\"filament.op.model.dispatch_call\",\"call\",{\"ordinal\":0,\"package\":\"language-values/native-operation-dispatch\",\"path\":[\"scalar_type\",\"integer\"]},{\"ordinal\":0,\"package\":\"language-values/native-operation-dispatch\",\"path\":[\"scalar_type\",\"integer\"]}]},{\"ordinal\":0,\"package\":\"language-values/native-operation-dispatch\",\"path\":[\"scalar_type\",\"integer\"]},\"7\",\"filament.op.integer.eq\",\"binary\",{\"ordinal\":0,\"package\":\"language-values/native-operation-dispatch\",\"path\":[\"scalar_type\",\"boolean\"]},{\"ordinal\":0,\"package\":\"language-values/native-operation-dispatch\",\"path\":[\"scalar_type\",\"boolean\"]}]}",
+          "ordinal": 0,
+          "role": "expression"
+        },
+        "deciding_element": {
+          "kind": "boolean",
+          "value": true
+        },
+        "decision_path": [
+          {
+            "node_id": "{\"ordinal\":0,\"package\":\"language-values/native-operation-dispatch\",\"path\":[\"expression\",\"binary\",{\"ordinal\":0,\"package\":\"language-values/native-operation-dispatch\",\"path\":[\"expression\",\"call\",{\"ordinal\":0,\"package\":\"language-values/native-operation-dispatch\",\"path\":[\"value\",\"parameter\",\"name\",{\"ordinal\":0,\"package\":\"language-values/native-operation-dispatch\",\"path\":[\"scalar_type\",\"text\"]},\"self\",\"level\",{\"ordinal\":0,\"package\":\"language-values/native-operation-dispatch\",\"path\":[\"scalar_type\",\"integer\"]},\"0\",{\"ordinal\":0,\"package\":\"language-values/native-operation-dispatch\",\"path\":[\"composite_type\",\"reference\",{\"ordinal\":0,\"package\":\"language-values/native-operation-dispatch\",\"path\":[\"Order\"]}]}]},\"filament.op.model.dispatch_call\",\"call\",{\"ordinal\":0,\"package\":\"language-values/native-operation-dispatch\",\"path\":[\"scalar_type\",\"integer\"]},{\"ordinal\":0,\"package\":\"language-values/native-operation-dispatch\",\"path\":[\"scalar_type\",\"integer\"]}]},{\"ordinal\":0,\"package\":\"language-values/native-operation-dispatch\",\"path\":[\"scalar_type\",\"integer\"]},\"7\",\"filament.op.integer.eq\",\"binary\",{\"ordinal\":0,\"package\":\"language-values/native-operation-dispatch\",\"path\":[\"scalar_type\",\"boolean\"]},{\"ordinal\":0,\"package\":\"language-values/native-operation-dispatch\",\"path\":[\"scalar_type\",\"boolean\"]}]}",
+            "ordinal": 0,
+            "role": "expression"
+          }
+        ],
+        "operands": [
+          {
+            "decimal": "7",
+            "kind": "integer"
+          },
+          {
+            "decimal": "7",
+            "kind": "integer"
+          }
+        ],
+        "value_path": {
+          "kind": "runtime_value",
+          "root": {
+            "observation": {
+              "authority": "example",
+              "identity": "language-values/native-operation-dispatch/current"
+            },
+            "subject": {
+              "object_identity": "sub1",
+              "tag": "object",
+              "type": "[{\"node\":\"ix://source/language-values/native-operation-dispatch/Sub\",\"package\":\"source/language-values/native-operation-dispatch\"}]",
+              "universe": "{\"ordinal\":0,\"package\":\"source/language-values/native-operation-dispatch\",\"path\":[\"model\",\"object_type\",\"ix://source/language-values/native-operation-dispatch/Order\"]}"
+            }
+          },
+          "steps": []
+        }
+      }
+    }
+  ]
+}
