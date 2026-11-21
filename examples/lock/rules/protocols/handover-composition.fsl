@@ -1,0 +1,13 @@
+language "ix:native" edition "1-draft";
+profile m = "filament.model.complete/v1";
+import "example/holder" as Holder;
+import "example/observer" as Observer;
+model L = "example/lock";
+
+compose HandoverSystem rule assume-guarantee {
+  component H from Holder using L;
+  component O from Observer using L;
+  guarantee H::OwnerValid;
+  guarantee O::OwnerKnown;
+  rely O::OwnerKnown on H::OwnerValid;
+}
