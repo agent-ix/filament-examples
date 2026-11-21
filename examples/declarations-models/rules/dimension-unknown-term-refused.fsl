@@ -1,0 +1,6 @@
+// FSpec FR-142-AC-17 (TC-187 U11p)
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+dimension L;
+dimension D = L * K;
+unit m: L = rational(1, 1);

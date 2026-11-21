@@ -1,0 +1,15 @@
+{
+  "format": "native-compile/1",
+  "request": {
+    "models": [],
+    "program": {
+      "source": {
+        "authority": "example",
+        "document": "model-not-supplied-refused",
+        "file": "../rules/model-not-supplied-refused.fsl",
+        "formal_revision": 1,
+        "identity": "example:declarations-models/model-not-supplied-refused"
+      }
+    }
+  }
+}

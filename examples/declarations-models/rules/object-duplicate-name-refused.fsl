@@ -1,0 +1,5 @@
+// FSpec FR-002-AC-3
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+object Order identity (total) { total: Int[0, 9]; population orders; }
+object Order identity (total) { total: Int[0, 9]; population others; }

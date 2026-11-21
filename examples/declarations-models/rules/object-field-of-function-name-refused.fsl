@@ -1,0 +1,5 @@
+// FSpec FR-610-AC-6
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+function money using v(): Int[0, 9] pure { 1 }
+object Order identity (total) { total: Int[0, 9]; price: money; population orders; }

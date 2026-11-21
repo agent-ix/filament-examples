@@ -1,0 +1,5 @@
+// FSpec FR-001-AC-5
+language "ix:native" edition "1-draft";
+profile v = "filament.state.core/v1";
+model Library = "my/library";
+invariant Positive using v on Library::Book at current { self.copies >= 0 }

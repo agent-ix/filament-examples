@@ -1,0 +1,3 @@
+// FSpec FR-001, FR-019
+profile v = "filament.value.complete/v1";
+function f using v(a: Boolean): Boolean pure { a }

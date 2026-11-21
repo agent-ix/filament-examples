@@ -1,0 +1,4 @@
+// FSpec FR-002
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+function f using v(): Item pure { true }

@@ -1,0 +1,5 @@
+// FSpec FR-339 (a model declaration is not a clause body)
+language "ix:native" edition "1-draft";
+profile v = "filament.model.complete/v1";
+model Library = "my/library";
+invariant Nested using v on Library::Book at current { model Other = "my/library"; true }

@@ -1,0 +1,7 @@
+// FSpec FR-610-AC-2
+language "ix:native" edition "1-draft";
+profile v = "filament.model.complete/v1";
+model Library = "my/library";
+object Book identity (copies) { copies: Int[0, 1000]; population books; }
+function f using v(b: Book): Int[0, 1000] pure { 1 }
+function g using v(b: Library::Book): Int[0, 1000] pure { f(b) }

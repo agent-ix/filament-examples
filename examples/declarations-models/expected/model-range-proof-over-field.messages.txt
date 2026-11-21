@@ -1,0 +1,1 @@
+undefined_expression (unproved-range): `deref(b).copies + 1` must lie in [0, 1000] but is proved only in [1, 1001]

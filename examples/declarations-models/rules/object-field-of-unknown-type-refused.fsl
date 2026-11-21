@@ -1,0 +1,4 @@
+// FSpec FR-610-AC-6
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+object Order identity (total) { total: Int[0, 9]; price: Nothing; population orders; }

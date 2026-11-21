@@ -1,0 +1,1 @@
+the alias `Price` reaches itself

@@ -1,0 +1,5 @@
+// FSpec FR-339 (shared grammar tuple-decl, minimum size)
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+tuple Single(Int[0, 9]);
+function f using v(): Single pure { Single(1) }

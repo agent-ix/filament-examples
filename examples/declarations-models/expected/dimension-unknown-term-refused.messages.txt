@@ -1,0 +1,1 @@
+dimension `D` names undeclared term `K`

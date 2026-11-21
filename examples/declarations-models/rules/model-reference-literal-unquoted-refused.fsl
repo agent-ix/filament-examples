@@ -1,0 +1,5 @@
+// FSpec FR-480-AC-1
+language "ix:native" edition "1-draft";
+profile v = "filament.model.complete/v1";
+model Library = "my/library";
+function same using v(r: Reference<Library::Book>): Boolean pure { r = Library::Book#b1 }

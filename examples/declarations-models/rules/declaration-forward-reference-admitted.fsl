@@ -1,0 +1,5 @@
+// FSpec FR-002 (declaration order does not matter)
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+function area using v(): Int[0, 81] pure { Box { w: 3, h: 4 }.w * Box { w: 3, h: 4 }.h }
+record Box { w: Int[0, 9]; h: Int[0, 9]; }

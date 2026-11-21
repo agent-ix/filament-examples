@@ -1,0 +1,4 @@
+// FSpec FR-001-AC-5, FR-001-AC-8
+language "ix:native" edition "1-draft";
+profile v = "filament.temporal.complete/v1";
+function f using v(a: Boolean): Boolean pure { a }

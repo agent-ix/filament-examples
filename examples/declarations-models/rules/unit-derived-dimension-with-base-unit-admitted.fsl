@@ -1,0 +1,7 @@
+// FSpec FR-142-AC-16
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+dimension L;
+unit m: L = rational(1, 1);
+dimension Area = L ^ 2;
+unit m2: Area = rational(1, 1);

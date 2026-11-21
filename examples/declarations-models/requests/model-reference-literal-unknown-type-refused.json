@@ -1,0 +1,26 @@
+{
+  "format": "native-compile/1",
+  "request": {
+    "models": [
+      {
+        "format": "semantic-ir/2.0.0",
+        "source": {
+          "authority": "example",
+          "document": "model",
+          "file": "../../library/model/library.semantic-ir.json",
+          "formal_revision": 1,
+          "identity": "example:library/model"
+        }
+      }
+    ],
+    "program": {
+      "source": {
+        "authority": "example",
+        "document": "model-reference-literal-unknown-type-refused",
+        "file": "../rules/model-reference-literal-unknown-type-refused.fsl",
+        "formal_revision": 1,
+        "identity": "example:declarations-models/model-reference-literal-unknown-type-refused"
+      }
+    }
+  }
+}

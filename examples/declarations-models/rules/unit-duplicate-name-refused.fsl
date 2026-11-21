@@ -1,0 +1,7 @@
+// FSpec FR-142-AC-13
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+dimension L;
+unit m: L = rational(1, 1);
+unit m: L = rational(1, 1);
+function f using v(b: Quantity<m>): Quantity<m> pure { b }

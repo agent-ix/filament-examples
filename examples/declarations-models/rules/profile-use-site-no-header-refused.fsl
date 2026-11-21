@@ -1,0 +1,3 @@
+// FSpec FR-001-AC-4
+language "ix:native" edition "1-draft";
+function f using v(a: Boolean): Boolean pure { a }

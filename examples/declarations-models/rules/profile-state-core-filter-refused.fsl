@@ -1,0 +1,5 @@
+// FSpec FR-001-AC-6
+language "ix:native" edition "1-draft";
+profile v = "filament.state.core/v1";
+model Library = "my/library";
+invariant Filtered using v on Library::Book at current { let q: Sequence<Integer>[0, 3] = sequence[1, 2] in size(filter(x in q: x > 0)) >= 0 }

@@ -1,0 +1,5 @@
+// FSpec FR-149 (equality admission over a model field)
+language "ix:native" edition "1-draft";
+profile v = "filament.model.complete/v1";
+model Library = "my/library";
+invariant Mixed using v on Library::Book at current { self.copies = Library::Status::OnLoan }
