@@ -31,12 +31,9 @@ rule = "undefinedClaim"
 statement = "A function claim with an undefined evaluation is refuted."
 file = "rules/claim-functions.fsl"
 command = "run requests/claim-function-undefined.json"
-status = "staged"
-expect_exit = 20
-ready_exit = 10
-waits_on = "QSL-2500"
-needs = "FR-867 undefined claim item serialization"
-why = "the current driver pin predates QSL-2462 and refuses argument 0 as wrong-role-mapping; after QSL-2500 and the planned pin to an FSL revision containing QSL-2462, this should reach undefined evaluation and exit 10 with a refuted violation item"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
 serves = "Function claims"
 
 [[case]]
