@@ -363,8 +363,8 @@ statement = "A probability event under a bounded profile has an interval on ever
 file = "rules/probability/claims/claims-unbounded-event.fsl"
 command = "compile requests/probability/claims/claims-unbounded-event.json"
 status = "running"
-expect_exit = 20
-expect_verdict = "refused: unbounded-event"
+expect_exit = 21
+expect_verdict = "unsupported: interval-less operator under a bounded profile"
 serves = "Probability reference (claims)"
 
 [[case]]
