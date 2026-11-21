@@ -1,0 +1,16 @@
+{
+  "format": "native-analyze/1",
+  "request": {
+    "models": [],
+    "program": {
+      "source": {
+        "file": "../../rules/hybrid-systems/radio-energy-cycle.fsl",
+        "authority": "example",
+        "identity": "example:rover/radio-energy-cycle",
+        "document": "radioenergycycle",
+        "formal_revision": 1
+      }
+    },
+    "items": [{"claim": "BelowStorageCapacity"}]
+  }
+}

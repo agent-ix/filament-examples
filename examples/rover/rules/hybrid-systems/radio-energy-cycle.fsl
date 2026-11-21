@@ -1,0 +1,27 @@
+language "ix:native" edition "1-draft";
+profile energy = "filament.temporal.infinite-trace/v1";
+
+// A solar-powered radio repeats a six-second energy cycle. Harvesting adds
+// three units per second; transmission consumes two; standby consumes one.
+hybrid RadioEnergyCycle using energy {
+  initial { mode Harvest when { charge = 2 }; }
+  mode Harvest invariant { charge >= 2 and charge <= 8 }
+    flow { charge' = 3; }
+    transition to Transmit when { charge = 8 } reset { charge = 8 };
+  mode Transmit invariant { charge >= 4 and charge <= 8 }
+    flow { charge' = -2; }
+    transition to Standby when { charge = 4 } reset { charge = 4 };
+  mode Standby invariant { charge >= 2 and charge <= 4 }
+    flow { charge' = -1; }
+    transition to Harvest when { charge = 2 } reset { charge = 2 };
+}
+
+// Two complete cycles stay below the nine-unit storage capacity.
+temporal BelowStorageCapacity using energy over (r: RadioEnergyCycle) clock "model-time" on origin {
+  always [0, 12] holds(r.charge < 9)
+}
+
+// This starts true, but harvesting crosses six units before transmission.
+temporal ChargeNeverExceedsSix using energy over (r: RadioEnergyCycle) clock "model-time" on origin {
+  always [0, 12] holds(r.charge <= 6)
+}
