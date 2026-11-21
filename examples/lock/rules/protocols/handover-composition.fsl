@@ -1,4 +1,5 @@
 language "ix:native" edition "1-draft";
+profile m = "filament.model.complete/v1";
 import "example/holder" as Holder;
 import "example/observer" as Observer;
 model L = "example/lock";

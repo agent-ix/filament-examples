@@ -22,11 +22,11 @@ protocol Handover using pp over (lock: L::Lock) on origin {
     choice Decide by Holder visible (heard.granted) {
       case no when { not heard.granted } sequence Rejected {
         send DeniedNotice via Denied as (denial: Denial) { true };
-        receive ObservedDenial via Denied of DeniedNotice as (seen: Denial) { true };
+        receive ObservedDenial via Denied of DeniedNotice as (denied: Denial) { true };
       }
       case yes when { heard.granted } sequence Accepted {
         send GrantedNotice via Granted as (grant: Grant) { true };
-        receive ObservedGrant via Granted of GrantedNotice as (seen: Grant) { true };
+        receive ObservedGrant via Granted of GrantedNotice as (granted: Grant) { true };
       }
     }
   }
