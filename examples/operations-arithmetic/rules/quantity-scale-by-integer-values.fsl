@@ -1,0 +1,7 @@
+// FSpec FR-142-AC-41
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+dimension T;
+unit s: T = rational(1, 1);
+unit ms: T = rational(1, 1000) * s;
+function example using v(): Boolean pure { 3 ms * 2 = 6 ms and 2 * 3 ms = 6 ms and 3 ms * rational(1, 2) = rational(3, 2) ms }

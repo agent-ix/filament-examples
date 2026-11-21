@@ -1,0 +1,19 @@
+{
+  "format": "native-run/1",
+  "request": {
+    "call": {
+      "arguments": [],
+      "function": "example"
+    },
+    "models": [],
+    "program": {
+      "source": {
+        "authority": "example",
+        "document": "text-to-quantity-upper-case-unit",
+        "file": "../rules/text-to-quantity-upper-case-unit.fsl",
+        "formal_revision": 1,
+        "identity": "operations-arithmetic/text-to-quantity-upper-case-unit"
+      }
+    }
+  }
+}

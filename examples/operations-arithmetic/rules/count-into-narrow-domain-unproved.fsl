@@ -1,0 +1,5 @@
+// FSpec FR-145-AC-16
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+type I03 = Int[0, 3];
+function bad using v(q: Sequence<Integer>[0, 5]): Int[0, 3] pure { count<I03>(x in q: x > 0) }

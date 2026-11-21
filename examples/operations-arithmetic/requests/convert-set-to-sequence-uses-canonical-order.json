@@ -1,0 +1,19 @@
+{
+  "format": "native-run/1",
+  "request": {
+    "call": {
+      "arguments": [],
+      "function": "example"
+    },
+    "models": [],
+    "program": {
+      "source": {
+        "authority": "example",
+        "document": "convert-set-to-sequence-uses-canonical-order",
+        "file": "../rules/convert-set-to-sequence-uses-canonical-order.fsl",
+        "formal_revision": 1,
+        "identity": "operations-arithmetic/convert-set-to-sequence-uses-canonical-order"
+      }
+    }
+  }
+}

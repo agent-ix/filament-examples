@@ -1,0 +1,4 @@
+// FSpec FR-783-AC-2
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+function a using v(q: Sequence<Integer>[0, 5]): Integer pure { size<Undeclared>(q) }

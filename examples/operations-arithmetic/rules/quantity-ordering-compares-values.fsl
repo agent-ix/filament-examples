@@ -1,0 +1,6 @@
+// FSpec FR-142-AC-9
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+dimension Length;
+unit m: Length = rational(1, 1);
+function example using v(): Boolean pure { 3 m < 4 m and 4 m > 3 m and not (3 m > 4 m) }

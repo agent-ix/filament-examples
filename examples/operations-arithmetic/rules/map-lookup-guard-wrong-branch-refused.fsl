@@ -1,0 +1,4 @@
+// FSpec FR-146-AC-20
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+function a using v(m: Map<Int[0, 9], Integer>[0, 3]): Integer pure { if contains(m, 1) then -1 else m[1] }

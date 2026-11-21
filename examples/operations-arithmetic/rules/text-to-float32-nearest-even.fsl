@@ -1,0 +1,6 @@
+// FSpec FR-478-AC-8
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+function ne using v(t: Text[0, 16; unicode-scalars]): Float32[nearest-even] pure { convert<Float32[nearest-even]>(t) }
+function tz using v(t: Text[0, 16; unicode-scalars]): Float32[toward-zero] pure { convert<Float32[toward-zero]>(t) }
+function example using v(): Boolean pure { filament::value::ieee::bitIdentical(ne(Text("0.1")), float32(bits: 0x3dcccccd)) and filament::value::ieee::bitIdentical(tz(Text("0.1")), float32(bits: 0x3dcccccc)) }

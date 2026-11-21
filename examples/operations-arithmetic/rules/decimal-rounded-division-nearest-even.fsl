@@ -1,0 +1,4 @@
+// FSpec FR-140-AC-3
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+function example using v(): Boolean pure { let a: Decimal[0, 99999; 2, 2; nearest-even] = decimal(100, 2) in a / decimal(300, 2) = decimal(33, 2) }

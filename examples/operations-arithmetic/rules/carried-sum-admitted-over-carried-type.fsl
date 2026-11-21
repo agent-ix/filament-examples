@@ -1,0 +1,7 @@
+// FSpec FR-142-AC-33
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+dimension L;
+unit m: L = rational(1, 1);
+type Li = Quantity<m, Int[-5, 5]>;
+function f using v(q: Sequence<Li>[0, 1]): Li pure { sum<Li>(x in q: x) }

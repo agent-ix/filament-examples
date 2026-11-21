@@ -1,0 +1,19 @@
+{
+  "format": "native-run/1",
+  "request": {
+    "call": {
+      "arguments": [],
+      "function": "example"
+    },
+    "models": [],
+    "program": {
+      "source": {
+        "authority": "example",
+        "document": "rounding-toward-positive-positive",
+        "file": "../rules/rounding-toward-positive-positive.fsl",
+        "formal_revision": 1,
+        "identity": "operations-arithmetic/rounding-toward-positive-positive"
+      }
+    }
+  }
+}

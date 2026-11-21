@@ -1,0 +1,19 @@
+{
+  "format": "native-run/1",
+  "request": {
+    "call": {
+      "arguments": [],
+      "function": "example"
+    },
+    "models": [],
+    "program": {
+      "source": {
+        "authority": "example",
+        "document": "mod-euclidean-whatever-the-law",
+        "file": "../rules/mod-euclidean-whatever-the-law.fsl",
+        "formal_revision": 1,
+        "identity": "operations-arithmetic/mod-euclidean-whatever-the-law"
+      }
+    }
+  }
+}

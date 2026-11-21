@@ -1,0 +1,7 @@
+// FSpec FR-145-AC-16
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+type I05 = Int[0, 5];
+type Tot = Integer;
+function a using v(q: Sequence<Integer>[0, 5]): Int[0, 5] pure { count<I05>(x in q: x > 0) }
+function b using v(q: Sequence<Integer>[0, 5]): Integer pure { count<Tot>(x in q: x > 0) }

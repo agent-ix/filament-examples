@@ -1,0 +1,10 @@
+// FSpec FR-142-AC-3, FR-142-AC-30
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+dimension L;
+unit m: L = rational(1, 1);
+unit inch: L = rational(127, 5000) * m;
+type Cn = Quantity<m, Decimal[-100, 100; 2, 2; nearest-even]>;
+function cn using v(q: Quantity<inch>): Cn pure { convert<Cn>(q) }
+function backn using v(q: Cn): Quantity<m> pure { convert<Quantity<m>>(q) }
+function example using v(): Boolean pure { backn(cn(1 inch)) = 0.03 m }

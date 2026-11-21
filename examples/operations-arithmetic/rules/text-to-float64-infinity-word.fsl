@@ -1,0 +1,5 @@
+// FSpec FR-478-AC-9
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+function conv using v(t: Text[0, 16; unicode-scalars]): Float64[nearest-even] pure { convert<Float64[nearest-even]>(t) }
+function example using v(): Boolean pure { conv(Text("Infinity")) = conv(Text("inf")) }

@@ -1,0 +1,19 @@
+{
+  "format": "native-run/1",
+  "request": {
+    "call": {
+      "arguments": [],
+      "function": "example"
+    },
+    "models": [],
+    "program": {
+      "source": {
+        "authority": "example",
+        "document": "sum-prefix-at-domain-bound",
+        "file": "../rules/sum-prefix-at-domain-bound.fsl",
+        "formal_revision": 1,
+        "identity": "operations-arithmetic/sum-prefix-at-domain-bound"
+      }
+    }
+  }
+}

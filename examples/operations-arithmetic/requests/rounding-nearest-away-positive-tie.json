@@ -1,0 +1,19 @@
+{
+  "format": "native-run/1",
+  "request": {
+    "call": {
+      "arguments": [],
+      "function": "example"
+    },
+    "models": [],
+    "program": {
+      "source": {
+        "authority": "example",
+        "document": "rounding-nearest-away-positive-tie",
+        "file": "../rules/rounding-nearest-away-positive-tie.fsl",
+        "formal_revision": 1,
+        "identity": "operations-arithmetic/rounding-nearest-away-positive-tie"
+      }
+    }
+  }
+}

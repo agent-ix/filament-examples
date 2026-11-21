@@ -1,0 +1,6 @@
+// FSpec FR-146-AC-11
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+union Shape { Rect(Int[0, 9], Int[0, 9]), Circle(Int[0, 9]), Empty }
+function area using v(s: Shape): Int[0, 81] pure { case s { Rect(w, h): w * h; Circle(r): r * r; Empty: 0; } }
+function example using v(): Boolean pure { area(Shape::Rect(3, 4)) = 12 and area(Shape::Circle(5)) = 25 and area(Shape::Empty) = 0 }

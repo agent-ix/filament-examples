@@ -1,0 +1,19 @@
+{
+  "format": "native-run/1",
+  "request": {
+    "call": {
+      "arguments": [],
+      "function": "example"
+    },
+    "models": [],
+    "program": {
+      "source": {
+        "authority": "example",
+        "document": "rounding-nearest-even-tie-up",
+        "file": "../rules/rounding-nearest-even-tie-up.fsl",
+        "formal_revision": 1,
+        "identity": "operations-arithmetic/rounding-nearest-even-tie-up"
+      }
+    }
+  }
+}

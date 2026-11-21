@@ -1,0 +1,9 @@
+// FSpec FR-142-AC-29 (bound boundary)
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+dimension L;
+unit m: L = rational(1, 1);
+type Cd = Quantity<m, Decimal[-2, 2; 0, 0; exact]>;
+function c using v(q: Quantity<m>): Cd pure { convert<Cd>(q) }
+function back using v(q: Cd): Quantity<m> pure { convert<Quantity<m>>(q) }
+function example using v(): Boolean pure { back(c(-2 m)) = -2 m and back(c(2 m)) = 2 m }

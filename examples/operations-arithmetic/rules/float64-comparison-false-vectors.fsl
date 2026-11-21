@@ -1,0 +1,11 @@
+// FSpec FR-148-AC-12, FR-148-AC-1
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+function example using v(): Boolean pure {
+  let p0: Float64[nearest-even] = float64(bits: 0x0000000000000000) in
+  let n0: Float64[nearest-even] = float64(bits: 0x8000000000000000) in
+  let one: Float64[nearest-even] = float64(bits: 0x3ff0000000000000) in
+  let qnan: Float64[nearest-even] = float64(bits: 0x7ff8000000000000) in
+  let snan: Float64[nearest-even] = float64(bits: 0x7ff0000000000001) in
+  not (n0 < p0) and not (p0 > n0) and not (qnan = qnan) and not (qnan < one) and not (qnan <= one) and not (one > qnan) and not (one >= qnan) and not (snan < one) and not (snan = snan)
+}

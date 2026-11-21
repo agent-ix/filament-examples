@@ -1,0 +1,5 @@
+// FSpec FR-570-AC-4
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+profile law = "filament.value.integer-division.floor/v1";
+function f using law(a: Int[-7, 7]): Int[-7, 7] pure { a }

@@ -1,0 +1,8 @@
+// FSpec FR-142-AC-2
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+dimension Length;
+dimension Time;
+unit m: Length = rational(1, 1);
+unit s: Time = rational(1, 1);
+function f using v(d: Quantity<m>): Quantity<s> pure { convert<Quantity<s>>(d) }

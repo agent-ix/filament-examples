@@ -1,0 +1,5 @@
+// FSpec FR-145-AC-4
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+type I05 = Int[0, 5];
+function example using v(): Boolean pure { let q: Bag<Integer>[0, 5] = bag[1, 1, 2] in count<I05>(x in q: x = 1) = 2 }

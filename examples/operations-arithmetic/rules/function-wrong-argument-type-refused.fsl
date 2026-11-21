@@ -1,0 +1,5 @@
+// FSpec FR-146-AC-3
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+function id using v(n: Int[0, 9]): Int[0, 9] pure { n }
+function f using v(): Int[0, 9] pure { if false then id(true) else 0 }

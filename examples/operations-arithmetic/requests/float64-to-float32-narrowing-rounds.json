@@ -1,0 +1,19 @@
+{
+  "format": "native-run/1",
+  "request": {
+    "call": {
+      "arguments": [],
+      "function": "example"
+    },
+    "models": [],
+    "program": {
+      "source": {
+        "authority": "example",
+        "document": "float64-to-float32-narrowing-rounds",
+        "file": "../rules/float64-to-float32-narrowing-rounds.fsl",
+        "formal_revision": 1,
+        "identity": "operations-arithmetic/float64-to-float32-narrowing-rounds"
+      }
+    }
+  }
+}

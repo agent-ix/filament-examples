@@ -1,0 +1,4 @@
+// FSpec FR-148-AC-12
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+function example using v(): Boolean pure { let one: Float32[nearest-even] = float32(bits: 0x3f800000) in one >= one }

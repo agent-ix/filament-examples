@@ -1,0 +1,8 @@
+// FSpec FR-148-AC-2
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+function example using v(): Boolean pure {
+  let a: Float64[toward-zero] = float64(bits: 0x4000000000000000) in let b: Float64[toward-zero] = float64(bits: 0x4008000000000000) in
+  let c: Float64[toward-positive] = float64(bits: 0x4000000000000000) in let d: Float64[toward-positive] = float64(bits: 0x4008000000000000) in
+  filament::value::ieee::bitIdentical(a / b, float64(bits: 0x3fe5555555555555)) and filament::value::ieee::bitIdentical(c / d, float64(bits: 0x3fe5555555555556))
+}

@@ -1,0 +1,4 @@
+// FSpec FR-140-AC-5
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+function f using v(a: Decimal[0, 99999; 2, 2; exact], b: Decimal[0, 99999; 2, 2; exact]): Decimal[0, 99999; 2, 2; exact] pure { a / b }

@@ -1,0 +1,6 @@
+// FSpec FR-147-AC-10
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+profile law = "filament.value.integer-division.floor/v1";
+function q using v(y: Int[1, 10]): Int[1, 10] pure { 10 div y }
+function example using v(): Boolean pure { q(5) = 2 }

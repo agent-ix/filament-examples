@@ -1,0 +1,19 @@
+{
+  "format": "native-run/1",
+  "request": {
+    "call": {
+      "arguments": [],
+      "function": "example"
+    },
+    "models": [],
+    "program": {
+      "source": {
+        "authority": "example",
+        "document": "count-sequence-counts-occurrences",
+        "file": "../rules/count-sequence-counts-occurrences.fsl",
+        "formal_revision": 1,
+        "identity": "operations-arithmetic/count-sequence-counts-occurrences"
+      }
+    }
+  }
+}

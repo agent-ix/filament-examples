@@ -1,0 +1,10 @@
+{
+  "category": "refusal",
+  "last_stage": "S6a",
+  "result": null,
+  "first_diagnostic": {
+    "code": "ieee_not_exact",
+    "cause": "rounding-required"
+  },
+  "items": []
+}

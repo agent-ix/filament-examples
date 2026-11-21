@@ -1,0 +1,4 @@
+// FSpec FR-145-AC-11
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+function example using v(): Boolean pure { let q: Set<Integer>[0, 5] = set[1, 2] in removeOne(q, 1) = set[2] }

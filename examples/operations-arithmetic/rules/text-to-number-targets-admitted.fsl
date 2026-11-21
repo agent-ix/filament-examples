@@ -1,0 +1,9 @@
+// FSpec FR-478-AC-3
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+function a using v(t: Text[0, 64; unicode-scalars]): Integer pure { convert<Integer>(t) }
+function b using v(t: Text[0, 64; unicode-scalars]): Decimal[0, 1000; 0, 2; exact] pure { convert<Decimal[0, 1000; 0, 2; exact]>(t) }
+function c using v(t: Text[0, 64; unicode-scalars]): Rational[-9, 9; 1, 9] pure { convert<Rational[-9, 9; 1, 9]>(t) }
+function d using v(t: Text[0, 64; unicode-scalars]): Float64 pure { convert<Float64>(t) }
+function e using v(s: String): Integer pure { convert<Integer>(s) }
+function f using v(s: String): Float32[nearest-even] pure { convert<Float32[nearest-even]>(s) }

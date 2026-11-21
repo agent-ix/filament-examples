@@ -1,0 +1,5 @@
+// FSpec FR-147-AC-2, FR-147-AC-13
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+profile law = "filament.value.integer-division.truncating/v1";
+function f using v(a: Int[0, 100]): Integer pure { a div 0 }

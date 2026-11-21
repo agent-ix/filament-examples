@@ -1,0 +1,5 @@
+// FSpec FR-140-AC-4
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+function rounded using v(): Decimal[-100, 100; 0, 0; toward-negative] pure { let r: Rational[-9, 9; 1, 2] = rational(-5, 2) in convert<Decimal[-100, 100; 0, 0; toward-negative]>(r) }
+function example using v(): Boolean pure { rounded() = decimal(-3, 0) }

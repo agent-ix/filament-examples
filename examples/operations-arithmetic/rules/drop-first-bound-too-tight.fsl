@@ -1,0 +1,4 @@
+// FSpec FR-145-AC-10
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+function f using v(q: Sequence<Integer>[1, 3]): Sequence<Integer>[1, 2] pure { dropFirst(q) }

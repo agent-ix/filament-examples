@@ -1,0 +1,4 @@
+// FSpec FR-148-AC-8
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+function f using v(a: Float32[nearest-even], b: Float64[nearest-even]): Float64[nearest-even] pure { a + b }

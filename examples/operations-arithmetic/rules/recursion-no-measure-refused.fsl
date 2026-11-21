@@ -1,0 +1,4 @@
+// FSpec FR-146-AC-2, FR-146-AC-7
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+function loop using v(n: Int[0, 12]): Integer pure { if n = 0 then 0 else loop(n - 1) }

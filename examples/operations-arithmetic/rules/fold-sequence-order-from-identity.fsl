@@ -1,0 +1,5 @@
+// FSpec FR-145-AC-2
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+type Acc = Integer;
+function example using v(): Boolean pure { let q: Sequence<Integer>[0, 5] = sequence[1, 2, 3] in fold<Acc>(a, x in q: a - x, identity: 10) = 4 }

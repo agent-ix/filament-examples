@@ -1,0 +1,5 @@
+// FSpec FR-146-AC-4
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+function even using v(n: Int[0, 12]): Boolean pure decreases(n) { if n = 0 then true else odd(n - 1) }
+function odd using v(n: Int[0, 12]): Boolean pure decreases(n) { if n = 0 then false else even(n - 1) }

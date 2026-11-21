@@ -1,0 +1,4 @@
+// FSpec FR-149-AC-27
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+function example using v(): Boolean pure { let a: Rational[0, 99; 1, 99] = rational(2, 4) in let b: Rational[0, 99; 1, 99] = rational(1, 2) in a = b }

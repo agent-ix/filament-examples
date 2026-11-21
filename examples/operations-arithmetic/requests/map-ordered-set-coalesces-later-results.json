@@ -1,0 +1,19 @@
+{
+  "format": "native-run/1",
+  "request": {
+    "call": {
+      "arguments": [],
+      "function": "example"
+    },
+    "models": [],
+    "program": {
+      "source": {
+        "authority": "example",
+        "document": "map-ordered-set-coalesces-later-results",
+        "file": "../rules/map-ordered-set-coalesces-later-results.fsl",
+        "formal_revision": 1,
+        "identity": "operations-arithmetic/map-ordered-set-coalesces-later-results"
+      }
+    }
+  }
+}

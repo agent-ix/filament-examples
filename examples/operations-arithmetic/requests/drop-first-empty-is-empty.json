@@ -1,0 +1,19 @@
+{
+  "format": "native-run/1",
+  "request": {
+    "call": {
+      "arguments": [],
+      "function": "example"
+    },
+    "models": [],
+    "program": {
+      "source": {
+        "authority": "example",
+        "document": "drop-first-empty-is-empty",
+        "file": "../rules/drop-first-empty-is-empty.fsl",
+        "formal_revision": 1,
+        "identity": "operations-arithmetic/drop-first-empty-is-empty"
+      }
+    }
+  }
+}

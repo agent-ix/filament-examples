@@ -1,0 +1,5 @@
+// FSpec FR-145 (sum rules 2 to 4)
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+type Tot = Integer;
+function example using v(): Boolean pure { let q: Sequence<Integer>[0, 3] = sequence[2, 3, 5] in sum<Tot>(x in q: x) = 10 }

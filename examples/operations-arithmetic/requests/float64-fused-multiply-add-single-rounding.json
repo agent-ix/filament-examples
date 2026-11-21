@@ -1,0 +1,19 @@
+{
+  "format": "native-run/1",
+  "request": {
+    "call": {
+      "arguments": [],
+      "function": "example"
+    },
+    "models": [],
+    "program": {
+      "source": {
+        "authority": "example",
+        "document": "float64-fused-multiply-add-single-rounding",
+        "file": "../rules/float64-fused-multiply-add-single-rounding.fsl",
+        "formal_revision": 1,
+        "identity": "operations-arithmetic/float64-fused-multiply-add-single-rounding"
+      }
+    }
+  }
+}

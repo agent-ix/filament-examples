@@ -1,0 +1,4 @@
+// FSpec FR-145-AC-10
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+function example using v(): Boolean pure { let q: OrderedSet<Integer>[0, 5] = orderedSet[5, 6, 7] in dropFirst(q) = orderedSet[6, 7] }

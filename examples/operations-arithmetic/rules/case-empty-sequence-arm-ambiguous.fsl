@@ -1,0 +1,5 @@
+// FSpec FR-146-AC-12
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+union U { A, B }
+function f using v(u: U): Integer pure { let r = case u { A: sequence[]; B: sequence[]; } in 0 }

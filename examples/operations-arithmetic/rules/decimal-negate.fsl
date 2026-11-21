@@ -1,0 +1,4 @@
+// FSpec FR-140
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+function example using v(): Boolean pure { let a: Decimal[-99999, 99999; 0, 2; exact] = decimal(125, 2) in -a = decimal(-125, 2) }

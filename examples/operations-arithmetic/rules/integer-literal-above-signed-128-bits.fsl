@@ -1,0 +1,4 @@
+// FSL FR-091-AC-38, FSpec FR-142-AC-40 (integer ceilings stay typed refusals)
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+function example using v(): Boolean pure { 170141183460469231731687303715884105728 != 1 }

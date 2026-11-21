@@ -1,0 +1,4 @@
+// FSpec FR-147-AC-14
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+function f using v(a: Int[91, 91], b: Int[2, 12]): Int[0, 7] pure { a mod b }

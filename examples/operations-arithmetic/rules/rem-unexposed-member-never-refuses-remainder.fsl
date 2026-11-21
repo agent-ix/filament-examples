@@ -1,0 +1,6 @@
+// FSpec FR-147-AC-10
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+profile law = "filament.value.integer-division.truncating/v1";
+function r using v(x: Int[-10, 5]): Int[-10, 5] pure { x rem (-1) }
+function example using v(): Boolean pure { r(-10) = 0 }

@@ -1,0 +1,19 @@
+{
+  "format": "native-run/1",
+  "request": {
+    "call": {
+      "arguments": [],
+      "function": "example"
+    },
+    "models": [],
+    "program": {
+      "source": {
+        "authority": "example",
+        "document": "count-set-counts-members",
+        "file": "../rules/count-set-counts-members.fsl",
+        "formal_revision": 1,
+        "identity": "operations-arithmetic/count-set-counts-members"
+      }
+    }
+  }
+}

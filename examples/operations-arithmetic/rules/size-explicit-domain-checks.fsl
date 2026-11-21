@@ -1,0 +1,8 @@
+// FSpec FR-783-AC-1
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+function a using v(q: Sequence<Integer>[0, 5]): Int[0, 5] pure { size<Int[0, 5]>(q) }
+function b using v(q: Bag<Integer>[0, 5]): Integer pure { size<Integer>(q) }
+function c using v(q: Set<Integer>[0, 5]): Int[0, 5] pure { size<Int[0, 5]>(q) }
+function d using v(q: OrderedSet<Integer>[0, 5]): Int[0, 5] pure { size<Int[0, 5]>(q) }
+function e using v(q: Map<Int[0, 9], Boolean>[0, 5]): Int[0, 5] pure { size<Int[0, 5]>(q) }

@@ -1,0 +1,7 @@
+// FSpec FR-142-AC-2
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+dimension Mass;
+unit kg: Mass = rational(1, 1);
+unit g: Mass = rational(1, 1000) * kg;
+function f using v(): Boolean pure { 2 kg + 500 g = 2 kg }

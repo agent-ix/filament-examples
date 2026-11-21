@@ -1,0 +1,19 @@
+{
+  "format": "native-run/1",
+  "request": {
+    "call": {
+      "arguments": [],
+      "function": "example"
+    },
+    "models": [],
+    "program": {
+      "source": {
+        "authority": "example",
+        "document": "map-bag-preserves-multiplicity",
+        "file": "../rules/map-bag-preserves-multiplicity.fsl",
+        "formal_revision": 1,
+        "identity": "operations-arithmetic/map-bag-preserves-multiplicity"
+      }
+    }
+  }
+}

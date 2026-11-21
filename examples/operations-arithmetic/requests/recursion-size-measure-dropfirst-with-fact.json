@@ -1,0 +1,19 @@
+{
+  "format": "native-run/1",
+  "request": {
+    "call": {
+      "arguments": [],
+      "function": "example"
+    },
+    "models": [],
+    "program": {
+      "source": {
+        "authority": "example",
+        "document": "recursion-size-measure-dropfirst-with-fact",
+        "file": "../rules/recursion-size-measure-dropfirst-with-fact.fsl",
+        "formal_revision": 1,
+        "identity": "operations-arithmetic/recursion-size-measure-dropfirst-with-fact"
+      }
+    }
+  }
+}

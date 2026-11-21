@@ -1,0 +1,19 @@
+{
+  "format": "native-run/1",
+  "request": {
+    "call": {
+      "arguments": [],
+      "function": "example"
+    },
+    "models": [],
+    "program": {
+      "source": {
+        "authority": "example",
+        "document": "map-sequence-preserves-multiplicity",
+        "file": "../rules/map-sequence-preserves-multiplicity.fsl",
+        "formal_revision": 1,
+        "identity": "operations-arithmetic/map-sequence-preserves-multiplicity"
+      }
+    }
+  }
+}

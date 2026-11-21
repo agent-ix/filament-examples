@@ -1,0 +1,4 @@
+// FSpec FR-147 (mathematical integers)
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+function example using v(): Boolean pure { 10000000000000000000 * 10000000000000000000 = 100000000000000000000000000000000000000 }

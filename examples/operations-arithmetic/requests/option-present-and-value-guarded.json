@@ -1,0 +1,19 @@
+{
+  "format": "native-run/1",
+  "request": {
+    "call": {
+      "arguments": [],
+      "function": "example"
+    },
+    "models": [],
+    "program": {
+      "source": {
+        "authority": "example",
+        "document": "option-present-and-value-guarded",
+        "file": "../rules/option-present-and-value-guarded.fsl",
+        "formal_revision": 1,
+        "identity": "operations-arithmetic/option-present-and-value-guarded"
+      }
+    }
+  }
+}

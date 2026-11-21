@@ -1,0 +1,4 @@
+// FSpec FR-145 (contains)
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+function example using v(): Boolean pure { let q: Sequence<Integer>[0, 5] = sequence[1, 2, 3] in let e: Sequence<Integer>[0, 5] = sequence[] in contains(q, 2) and not contains(q, 9) and not contains(e, 1) }

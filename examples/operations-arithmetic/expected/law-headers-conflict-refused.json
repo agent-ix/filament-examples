@@ -1,0 +1,10 @@
+{
+  "category": "refusal",
+  "last_stage": "S3",
+  "result": null,
+  "first_diagnostic": {
+    "code": "invalid_package",
+    "cause": "conflicting-definition"
+  },
+  "items": []
+}

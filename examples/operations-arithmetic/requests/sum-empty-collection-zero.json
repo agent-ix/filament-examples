@@ -1,0 +1,19 @@
+{
+  "format": "native-run/1",
+  "request": {
+    "call": {
+      "arguments": [],
+      "function": "example"
+    },
+    "models": [],
+    "program": {
+      "source": {
+        "authority": "example",
+        "document": "sum-empty-collection-zero",
+        "file": "../rules/sum-empty-collection-zero.fsl",
+        "formal_revision": 1,
+        "identity": "operations-arithmetic/sum-empty-collection-zero"
+      }
+    }
+  }
+}

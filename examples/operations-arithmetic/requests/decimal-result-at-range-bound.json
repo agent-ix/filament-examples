@@ -1,0 +1,19 @@
+{
+  "format": "native-run/1",
+  "request": {
+    "call": {
+      "arguments": [],
+      "function": "example"
+    },
+    "models": [],
+    "program": {
+      "source": {
+        "authority": "example",
+        "document": "decimal-result-at-range-bound",
+        "file": "../rules/decimal-result-at-range-bound.fsl",
+        "formal_revision": 1,
+        "identity": "operations-arithmetic/decimal-result-at-range-bound"
+      }
+    }
+  }
+}
