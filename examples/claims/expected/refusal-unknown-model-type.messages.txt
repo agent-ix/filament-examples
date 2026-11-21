@@ -1,0 +1,1 @@
+missing_declaration (missing-name): the type of `d` does not resolve

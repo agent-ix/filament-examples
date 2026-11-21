@@ -20,6 +20,7 @@ The table lists each system with the number of cases that run today and the numb
 | [types-checking](examples/types-checking) | Language | 203 | 1 |
 | [operations-arithmetic](examples/operations-arithmetic) | Language | 306 | 6 |
 | [declarations-models](examples/declarations-models) | Language | 111 | 0 |
+| [claims](examples/claims) | Language | 0 | 0 |
 | [docs-captures](examples/docs-captures) | Language | 7 | 0 |
 | [docs-values](examples/docs-values) | Language | 15 | 0 |
 | [language-values](examples/language-values) | Language | 44 | 0 |

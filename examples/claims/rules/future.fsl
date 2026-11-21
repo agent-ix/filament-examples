@@ -1,0 +1,41 @@
+language "ix:native" edition "1-draft";
+profile inf = "filament.temporal.infinite-trace/v1";
+record Sig { p: Boolean; q: Boolean; }
+
+// FR-091, FR-161 and FR-367: the future operators over an infinite trace written as a prefix and a repeating loop.
+// Every claim is read at position 0.
+
+// p holds at some position.
+temporal EventuallyP using inf over (s: Sig) clock "steps" on origin { eventually holds(s.p) }
+// p holds at every position.
+temporal AlwaysP using inf over (s: Sig) clock "steps" on origin { always holds(s.p) }
+// p holds at some position from 2 on.
+temporal EventuallyFrom2 using inf over (s: Sig) clock "steps" on origin { eventually[2,*] holds(s.p) }
+// p holds at some position in 0 to 2, both ends included.
+temporal EventuallyIn0To2 using inf over (s: Sig) clock "steps" on origin { eventually[0,2] holds(s.p) }
+// p holds at every position in 0 to 2, both ends included.
+temporal AlwaysIn0To2 using inf over (s: Sig) clock "steps" on origin { always[0,2] holds(s.p) }
+// p holds at position 1 exactly: a zero-width interval.
+temporal EventuallyAt1 using inf over (s: Sig) clock "steps" on origin { eventually[1,1] holds(s.p) }
+// p holds at every position from 1 on.
+temporal AlwaysFrom1 using inf over (s: Sig) clock "steps" on origin { always[1,*] holds(s.p) }
+// p holds again and again.
+temporal Recurs using inf over (s: Sig) clock "steps" on origin { always eventually holds(s.p) }
+// p holds at every position from some position on.
+temporal Persists using inf over (s: Sig) clock "steps" on origin { eventually always holds(s.p) }
+// p holds at every position up to a position where q holds, and q does hold.
+temporal PUntilQ using inf over (s: Sig) clock "steps" on origin { holds(s.p) until holds(s.q) }
+// The same, with q at an offset in 1 to 2: p need not hold at the anchor.
+temporal PUntil1To2Q using inf over (s: Sig) clock "steps" on origin { holds(s.p) until[1,2] holds(s.q) }
+// q holds up to and including the first position where p holds, or q holds for ever.
+temporal PReleasesQ using inf over (s: Sig) clock "steps" on origin { holds(s.p) release holds(s.q) }
+// q holds up to and including the first position in 1 to 2 where p holds, or q holds throughout the interval.
+temporal PReleases1To2Q using inf over (s: Sig) clock "steps" on origin { holds(s.p) release[1,2] holds(s.q) }
+// Negation inside a bounded operator is read position by position.
+temporal EventuallyNotPIn0To1 using inf over (s: Sig) clock "steps" on origin { eventually[0,1] holds(not s.p) }
+temporal AlwaysNotPIn0To1 using inf over (s: Sig) clock "steps" on origin { always[0,1] holds(not s.p) }
+// A request is answered within 2 positions at every position.
+temporal Answered using inf over (s: Sig) clock "steps" on origin { always (holds(s.p) implies eventually[0,2] holds(s.q)) }
+
+// FR-093: an activation. The body is checked from every position where the guard holds, not only from position 0.
+temporal AnswerWhenAsked using inf over (s: Sig) clock "steps" on each (e: Sig) when (e.p) { eventually[0,1] holds(s.q) }

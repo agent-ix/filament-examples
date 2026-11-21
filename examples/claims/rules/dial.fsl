@@ -1,0 +1,26 @@
+language "ix:native" edition "1-draft";
+profile v = "filament.model.complete/v1";
+profile inf = "filament.temporal.infinite-trace/v1";
+model D = "example/dial";
+
+// A dial counts 0 to 3. Up adds one below the top, down subtracts one above zero, reset returns it to zero,
+// and skip is disabled here. The dial starts at 0 (data/start-0.json).
+pre UpBelowTop using v on D::Dial::up { self.n < 3 }
+post UpAddsOne using v on D::Dial::up { self.n = pre(self.n) + 1 }
+pre DownAboveZero using v on D::Dial::down { self.n > 0 }
+post DownSubtractsOne using v on D::Dial::down { self.n = pre(self.n) - 1 }
+post ResetZeroes using v on D::Dial::reset { self.n = 0 }
+pre SkipDisabled using v on D::Dial::skip { false }
+
+// State clauses: the second is false in the state reached after three ups.
+invariant AtMostThree using v on D::Dial at current { self.n <= 3 }
+invariant AtMostTwo using v on D::Dial at current { self.n <= 2 }
+
+// Temporal claims over every behaviour of the dial.
+temporal NeverAboveThree using inf over (d: D::Dial) clock "model-steps" on origin { always holds(d.n <= 3) }
+temporal NeverAboveTwo using inf over (d: D::Dial) clock "model-steps" on origin { always holds(d.n <= 2) }
+
+// State-graph claims.
+possible ReachesThree using v over (d: D::Dial) { d.n = 3 }
+always possible CanReset using v over (d: D::Dial) { d.n = 0 }
+possible ReachesAboveThree using v over (d: D::Dial) { d.n > 3 }

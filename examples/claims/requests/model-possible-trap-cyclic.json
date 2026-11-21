@@ -1,0 +1,37 @@
+{
+  "format": "native-analyze/1",
+  "request": {
+    "models": [
+      {
+        "format": "semantic-ir/2.0.0",
+        "source": {
+          "file": "../model/dial.semantic-ir.json",
+          "authority": "example",
+          "identity": "example:claims/dial-model",
+          "document": "model",
+          "formal_revision": 1
+        }
+      }
+    ],
+    "program": {
+      "source": {
+        "file": "../rules/dial.fsl",
+        "authority": "example",
+        "identity": "example:claims/dial",
+        "document": "dial",
+        "formal_revision": 1
+      }
+    },
+    "documents": [
+      {
+        "file": "../data/start-0.json"
+      }
+    ],
+    "deadline_ms": 2000,
+    "items": [
+      {
+        "claim": "ReachesAboveThree"
+      }
+    ]
+  }
+}

@@ -1,0 +1,1 @@
+invalid_probabilistic_model (qualitative-threshold): the probability threshold or level of claim `Rule` must be strictly between 0 and 1 (for example, `0.99`, not `99`); a threshold of 0 is equivalent to a `possible` property

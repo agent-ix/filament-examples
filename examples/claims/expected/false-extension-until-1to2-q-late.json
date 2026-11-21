@@ -1,0 +1,143 @@
+{
+  "events": [
+    {
+      "basis": "closed-scope",
+      "category": "violation",
+      "clause": "PUntil1To2Q",
+      "disposition": {
+        "category": "violation",
+        "stage": "evaluate",
+        "temporal": {
+          "counterexample": {
+            "fairness": [],
+            "initial_state": null,
+            "interval": {
+              "lower": "1",
+              "upper": "2"
+            },
+            "kind": "formula",
+            "loop": [],
+            "over_binding": null,
+            "prefix": [
+              {
+                "sample": "0"
+              }
+            ],
+            "trace": "observed",
+            "trace_position": 0
+          },
+          "kind": "violated",
+          "position": 0
+        },
+        "truth": false
+      },
+      "format": "filament.monitor-event/1",
+      "position": 0,
+      "record": 0,
+      "settled": false
+    },
+    {
+      "basis": "closed-scope",
+      "category": "violation",
+      "clause": "PUntil1To2Q",
+      "disposition": {
+        "category": "violation",
+        "stage": "evaluate",
+        "temporal": {
+          "counterexample": {
+            "fairness": [],
+            "initial_state": null,
+            "interval": {
+              "lower": "1",
+              "upper": "2"
+            },
+            "kind": "formula",
+            "loop": [],
+            "over_binding": null,
+            "prefix": [
+              {
+                "sample": "0"
+              },
+              {
+                "sample": "1"
+              },
+              {
+                "sample": "2"
+              }
+            ],
+            "trace": "observed",
+            "trace_position": 0
+          },
+          "kind": "violated",
+          "position": 0
+        },
+        "truth": false
+      },
+      "format": "filament.monitor-event/1",
+      "position": 2,
+      "record": 2,
+      "settled": true,
+      "settlement": {
+        "basis": "decisive-counterexample",
+        "horizon": "2",
+        "position": "0",
+        "step": "3",
+        "trigger": "decided"
+      }
+    }
+  ],
+  "summary": {
+    "clauses": [
+      {
+        "basis": "closed-scope",
+        "category": "violation",
+        "clause": "PUntil1To2Q",
+        "disposition": {
+          "category": "violation",
+          "stage": "evaluate",
+          "temporal": {
+            "counterexample": {
+              "fairness": [],
+              "initial_state": null,
+              "interval": {
+                "lower": "1",
+                "upper": "2"
+              },
+              "kind": "formula",
+              "loop": [],
+              "over_binding": null,
+              "prefix": [
+                {
+                  "sample": "0"
+                },
+                {
+                  "sample": "1"
+                },
+                {
+                  "sample": "2"
+                }
+              ],
+              "trace": "observed",
+              "trace_position": 0
+            },
+            "kind": "violated",
+            "position": 0
+          },
+          "truth": false
+        },
+        "settled": true,
+        "settlement": {
+          "basis": "decisive-counterexample",
+          "horizon": "2",
+          "position": "0",
+          "step": "3",
+          "trigger": "decided"
+        }
+      }
+    ],
+    "format": "filament.monitor-summary/1",
+    "ledger": null,
+    "records": 5,
+    "refused": 0
+  }
+}

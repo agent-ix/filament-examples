@@ -1,0 +1,51 @@
+{
+  "format": "native-run/1",
+  "request": {
+    "models": [],
+    "program": {
+      "source": {
+        "file": "../rules/future.fsl",
+        "authority": "example",
+        "identity": "example:claims/future",
+        "document": "future",
+        "formal_revision": 1
+      }
+    },
+    "clause": {
+      "selection": {
+        "temporal": {
+          "name": "PUntil1To2Q",
+          "trace": {
+            "lasso": {
+              "prefix": [
+                {
+                  "sample": {
+                    "p": {
+                      "boolean": false
+                    },
+                    "q": {
+                      "boolean": true
+                    }
+                  }
+                }
+              ],
+              "loop": [
+                {
+                  "sample": {
+                    "p": {
+                      "boolean": false
+                    },
+                    "q": {
+                      "boolean": false
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      "observations": {}
+    }
+  }
+}
