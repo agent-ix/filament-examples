@@ -734,6 +734,28 @@ expect_verdict = "compiled"
 serves = "Advanced analyses reference (hybrid systems)"
 
 [[case]]
+id = "hybrid-systems-radio-below-capacity"
+rule = "BelowStorageCapacity"
+statement = "The radio's harvest, transmit and standby cycle stays below storage capacity for 12 seconds, with a certified proof."
+file = "rules/hybrid-systems/radio-energy-cycle.fsl"
+command = "analyze requests/hybrid-systems/radio-below-capacity.analyze.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "Advanced analyses reference (hybrid systems)"
+
+[[case]]
+id = "hybrid-systems-radio-exceeds-six"
+rule = "ChargeNeverExceedsSix"
+statement = "Harvesting raises the radio's charge above six after its initial state, producing a replayed counterexample."
+file = "rules/hybrid-systems/radio-energy-cycle.fsl"
+command = "analyze requests/hybrid-systems/radio-exceeds-six.analyze.json"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
+serves = "Advanced analyses reference (hybrid systems)"
+
+[[case]]
 id = "refinement-controller"
 rule = "ControllerRefinesStop"
 statement = "The rover controller implements a vehicle that can be stopped: halting is the abstract stop."
