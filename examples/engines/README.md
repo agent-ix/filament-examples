@@ -29,7 +29,7 @@ Set `FSL` to the driver binary. Every record in this system was written by the d
 
 - `probability-atom-now`, `probability-atom-now-at-most` and `probability-tails-through-one` wait on QSL-2158: analyze settles the claim `unsupported` (not-yet-implemented) where the standard gives an exact value.
 - `schedulability-*` wait on QSL-2757: analyze settles each schedulability and response claim `unsupported` (unsupported-requested-capability).
-- `deadlock-no-terminal-refuted` and `deadlock-terminal-misses-state` wait on QSL-2103: the explicit deadlock-freedom item settles inconclusive (`stale_dependency`, replay-refused) where FR-366 requires refuted. A request with no explicit items refutes the item but also settles every `pre` and `post` clause unsupported (unbounded-extent, FR-711-AC-2), so it exits 21; the explicit item is the only way to isolate it, and no way to add a derived deadlock item beside an explicit item was found.
+- `deadlock-no-terminal-refuted` and `deadlock-terminal-misses-state` wait on QSL-2759: the explicit deadlock-freedom item settles inconclusive (`stale_dependency`, replay-refused) where FR-366 requires refuted. A request with no explicit items refutes the item but also settles every `pre` and `post` clause unsupported (unbounded-extent, FR-711-AC-2), so it exits 21; the explicit item is the only way to isolate it, and no way to add a derived deadlock item beside an explicit item was found.
 - `composition-tank-bounds` waits on QSL-2739 (composition unsupported), `planning-tank-goal` and `synthesis-tank-controller` wait on QSL-1978 (the planning and synthesis item kinds are refused).
 
 ## Coverage
