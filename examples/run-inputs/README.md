@@ -28,8 +28,8 @@ Set `FSL` to the driver binary. Every record in this system was written by the d
 
 - `call-*` (except the zero-argument case), `option-engine-interpreter` and `option-request-bytes-large` wait on QSL-2758: `fsl run` reads and writes values in a legacy untagged form (`{"integer": "5"}`, `{"sequence": [...]}`) and refuses the FR-181 typed form as `wrong-value-kind`, exit 20. FR-550-AC-1 requires the typed canonical form for arguments and results.
 - `call-tagged-*` wait on QSL-2758 for the same reason.
-- `plan-passes`, `plan-fails`, `plan-blocks` and `plan-null-members-as-absent` wait on QSL-2103. QSL-2502 was cancelled as a duplicate of QSL-2511 (Done), and the newer driver still refuses the member: `invalid clause request member verification_plan: a verification plan is run by the plan coordinator route` (`invalid-request`, exit 20). FR-824 asks for the plan run outcome with the exits 0, 10 and 22.
-- `call-three-items-complete` waits on QSL-2103: `invalid clause request member items: items is handled by the multi-selection runner`, exit 20, where FR-550-AC-3 asks for three dispositions.
+- `plan-passes`, `plan-fails`, `plan-blocks` and `plan-null-members-as-absent` wait on QSL-2760. QSL-2502 was cancelled as a duplicate of QSL-2511 (Done), and the newer driver still refuses the member: `invalid clause request member verification_plan: a verification plan is run by the plan coordinator route` (`invalid-request`, exit 20). FR-824 asks for the plan run outcome with the exits 0, 10 and 22.
+- `call-three-items-complete` waits on QSL-2760: `invalid clause request member items: items is handled by the multi-selection runner`, exit 20, where FR-550-AC-3 asks for three dispositions.
 
 ## Coverage
 
