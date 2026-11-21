@@ -84,7 +84,7 @@
               "criticality",
               "lo",
               "priority",
-              "2",
+              "1",
               "jitter",
               "0/1",
               {
@@ -148,7 +148,7 @@
               "criticality",
               "lo",
               "priority",
-              "1",
+              "2",
               "jitter",
               "0/1",
               {

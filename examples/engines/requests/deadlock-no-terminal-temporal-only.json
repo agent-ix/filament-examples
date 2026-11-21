@@ -1,0 +1,32 @@
+{
+  "format": "native-analyze/1",
+  "request": {
+    "models": [
+      {
+        "format": "semantic-ir/2.0.0",
+        "source": {
+          "file": "../model/tank.semantic-ir.json",
+          "authority": "example",
+          "identity": "example:engines/tank",
+          "document": "model",
+          "formal_revision": 1
+        }
+      }
+    ],
+    "program": {
+      "source": {
+        "file": "../rules/no-terminal-temporal.fsl",
+        "authority": "example",
+        "identity": "example:engines/no-terminal-temporal",
+        "document": "noterminaltemporal",
+        "formal_revision": 1
+      }
+    },
+    "documents": [
+      {
+        "file": "../data/tank-0.json"
+      }
+    ],
+    "deadline_ms": 20000
+  }
+}

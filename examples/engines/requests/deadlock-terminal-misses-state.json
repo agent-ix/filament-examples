@@ -26,6 +26,16 @@
       {
         "file": "../data/tank-0.json"
       }
-    ]
+    ],
+    "items": [
+      {
+        "claim": "LevelNonNegative",
+        "kind": "temporal-satisfaction",
+        "temporal": {
+          "item_kind": "deadlock-freedom"
+        }
+      }
+    ],
+    "deadline_ms": 20000
   }
 }

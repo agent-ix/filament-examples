@@ -1,0 +1,7 @@
+language "ix:native" edition "1-draft";
+profile v = "filament.model.complete/v1";
+profile inf = "filament.temporal.infinite-trace/v1";
+model K = "example/tank";
+// Every state is an intended end, so no deadlock-freedom item is added to the request.
+terminal Anything using v on K any;
+temporal LevelNonNegative using inf over (t: K::Tank) clock "model-steps" on origin { always holds(t.level >= 0) }

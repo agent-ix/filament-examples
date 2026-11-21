@@ -73,7 +73,7 @@ serves = "FR-301-AC-6"
 
 [[case]]
 id = "verb-integer-division-on-compile"
-statement = "--integer-division belongs to check, run and analyze requests, so compile refuses it as an unknown option."
+statement = "--integer-division belongs to check alone: run, analyze, prove and monitor refuse it too, and so does compile, as an unknown option."
 file = "rules/hybrid-rate-expression.fsl"
 command = "compile --integer-division floor requests/hybrid-rate-expression.json"
 status = "running"
@@ -367,7 +367,7 @@ command = "analyze requests/schedulability-edf-full.json"
 status = "staged"
 expect_exit = 21
 ready_exit = 0
-waits_on = "QSL-2131"
+waits_on = "QSL-2757"
 why = "analyze settles the claim unsupported (unsupported-requested-capability), where it should prove it"
 needs = "schedulability and response-time analysis from the command line"
 serves = "FR-419 (schedulability)"
@@ -381,7 +381,7 @@ command = "analyze requests/schedulability-edf-over.json"
 status = "staged"
 expect_exit = 21
 ready_exit = 10
-waits_on = "QSL-2131"
+waits_on = "QSL-2757"
 why = "analyze settles the claim unsupported (unsupported-requested-capability), where it should refute it"
 needs = "schedulability and response-time analysis from the command line"
 serves = "FR-419 (schedulability)"
@@ -395,7 +395,7 @@ command = "analyze requests/schedulability-response-meets.json"
 status = "staged"
 expect_exit = 21
 ready_exit = 0
-waits_on = "QSL-2131"
+waits_on = "QSL-2757"
 why = "analyze settles the claim unsupported (unsupported-requested-capability), where it should prove it"
 needs = "schedulability and response-time analysis from the command line"
 serves = "FR-419 (schedulability)"
@@ -409,7 +409,7 @@ command = "analyze requests/schedulability-response-misses.json"
 status = "staged"
 expect_exit = 21
 ready_exit = 10
-waits_on = "QSL-2131"
+waits_on = "QSL-2757"
 why = "analyze settles the claim unsupported (unsupported-requested-capability), where it should refute it"
 needs = "schedulability and response-time analysis from the command line"
 serves = "FR-419 (schedulability)"
@@ -421,11 +421,11 @@ file = "rules/tank-no-terminal.fsl"
 command = "analyze requests/deadlock-no-terminal-refuted.json"
 engine = "model-checking"
 status = "staged"
-expect_exit = 21
+expect_exit = 22
 ready_exit = 10
 waits_on = "QSL-2103"
-why = "this binary settles each pre and post clause unsupported (unbounded-extent), so the request exits 21; the deadlock item itself is already refuted"
-needs = "the deadlock-freedom item to settle through a request that also carries operation contracts"
+why = "the explicit deadlock-freedom item settles inconclusive (stale_dependency, replay-refused), where FR-366 requires refuted with a prefix that ends at the deadlock"
+needs = "a deadlock-freedom refutation whose witness replays"
 serves = "FR-366 (deadlock freedom)"
 
 [[case]]
@@ -434,12 +434,9 @@ statement = "A terminal declaration that holds in the full tank makes it an inte
 file = "rules/tank-terminal-full.fsl"
 command = "analyze requests/deadlock-terminal-covers-state.json"
 engine = "model-checking"
-status = "staged"
-expect_exit = 21
-ready_exit = 0
-waits_on = "QSL-2103"
-why = "this binary settles each pre and post clause unsupported (unbounded-extent), so the request exits 21; the deadlock item itself is already proved"
-needs = "the deadlock-freedom item to settle through a request that also carries operation contracts"
+status = "running"
+expect_exit = 0
+expect_verdict = "proved"
 serves = "FR-366 (deadlock freedom)"
 
 [[case]]
@@ -449,11 +446,11 @@ file = "rules/tank-terminal-empty.fsl"
 command = "analyze requests/deadlock-terminal-misses-state.json"
 engine = "model-checking"
 status = "staged"
-expect_exit = 21
+expect_exit = 22
 ready_exit = 10
 waits_on = "QSL-2103"
-why = "this binary settles each pre and post clause unsupported (unbounded-extent), so the request exits 21; the deadlock item itself is already refuted"
-needs = "the deadlock-freedom item to settle through a request that also carries operation contracts"
+why = "the explicit deadlock-freedom item settles inconclusive (stale_dependency, replay-refused), where FR-366 requires refuted with a prefix that ends at the deadlock"
+needs = "a deadlock-freedom refutation whose witness replays"
 serves = "FR-366 (deadlock freedom)"
 
 [[case]]
@@ -516,3 +513,88 @@ expect_exit = 20
 expect_verdict = "refused: invalid-request"
 serves = "FR-181 (simulation)"
 
+[[case]]
+id = "refinement-strong-fairness-refuted"
+rule = "TankRefinesSpec"
+statement = "A tank whose drain flips the level between 0 and 3 refines a specification promising strongly fair fills only under a weakly fair assumption, and the cycle 0, 3, 0 never takes a fill: the refinement is refuted."
+file = "rules/refine-strong.fsl"
+command = "analyze requests/refine-strong-fairness.json"
+status = "running"
+expect_exit = 10
+expect_verdict = "refuted"
+serves = "FR-375 to FR-380 (refinement liveness, strong abstract fairness)"
+
+[[case]]
+id = "hyperproperty-same-steps-same-level"
+rule = "SameStepsSameLevel"
+statement = "Two runs of the tank that take the same steps are always at the same level, a hyperproperty proved by the copy-swap reduction."
+file = "rules/hyper-tank.fsl"
+command = "analyze requests/hyperproperty-tank.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "proved"
+serves = "FR-191, FR-395 (hyperproperties)"
+
+[[case]]
+id = "deadlock-terminal-any-adds-no-item"
+rule = "LevelNonNegative"
+statement = "A model that declares terminal any adds no deadlock-freedom item: only the authored claim is in the outcome, and it is proved."
+file = "rules/terminal-any.fsl"
+command = "analyze requests/deadlock-terminal-any.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "proved"
+serves = "FR-366-AC-3"
+
+[[case]]
+id = "deadlock-derived-item-beside-temporal"
+rule = "LevelNonNegative"
+statement = "Without a terminal declaration the request writer adds one deadlock-freedom item beside the authored claim; the tank here has no guards, so both are proved."
+file = "rules/no-terminal-temporal.fsl"
+command = "analyze requests/deadlock-no-terminal-temporal-only.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "proved"
+serves = "FR-366-AC-4"
+
+[[case]]
+id = "composition-tank-bounds"
+rule = "TankBounds"
+statement = "Two guarantees of one tank compose under assume-guarantee: the lower bound discharges the reliance of the upper bound, so the composition holds."
+file = "rules/compose-tank.fsl"
+command = "analyze requests/composition-tank.json"
+status = "staged"
+expect_exit = 21
+ready_exit = 0
+waits_on = "QSL-2739"
+why = "analyze settles the composition item unsupported (unsupported-requested-capability, capability=composition)"
+needs = "composition analysis from the command line"
+serves = "FR-348, FR-489 (composition)"
+
+[[case]]
+id = "planning-tank-goal"
+rule = "TankFull"
+statement = "A plan from the empty tank to the full tank is found: three fills."
+file = "rules/plan-tank.fsl"
+command = "analyze requests/planning-tank-goal.json"
+status = "staged"
+expect_exit = 20
+ready_exit = 0
+waits_on = "QSL-1978"
+why = "analyze refuses the item kind planning (invalid-request: unknown variant, expected one of formula, deadlock-freedom, time-lock-freedom, race-freedom, refinement, loop-invariant, loop-termination)"
+needs = "a planning item"
+serves = "FR-800 to FR-810 (planning)"
+
+[[case]]
+id = "synthesis-tank-controller"
+rule = "TankFull"
+statement = "A controller that reaches the full tank is synthesised from the tank model."
+file = "rules/plan-tank.fsl"
+command = "analyze requests/synthesis-tank-controller.json"
+status = "staged"
+expect_exit = 20
+ready_exit = 0
+waits_on = "QSL-1978"
+why = "analyze refuses the item kind synthesis (invalid-request: unknown variant, expected one of formula, deadlock-freedom, time-lock-freedom, race-freedom, refinement, loop-invariant, loop-termination)"
+needs = "a synthesis item"
+serves = "FR-194, FR-823 (synthesis)"

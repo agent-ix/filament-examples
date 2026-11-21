@@ -1,0 +1,30 @@
+language "ix:native" edition "1-draft";
+profile v = "filament.model.complete/v1";
+profile inf = "filament.temporal.infinite-trace/v1";
+model Spec = "example/tank-spec";
+model K = "example/tank";
+
+// The specification tank fills below the top and drains above zero.
+pre SpecFillBelowTop using v on Spec::Tank::fill { self.level < 3 }
+post SpecFillAddsOne using v on Spec::Tank::fill { self.level = pre(self.level) + 1 }
+pre SpecDrainAboveZero using v on Spec::Tank::drain { self.level > 0 }
+post SpecDrainSubtractsOne using v on Spec::Tank::drain { self.level = pre(self.level) - 1 }
+
+// The implementation tank fills the same way, but its drain flips the level between 0 and 3.
+pre FillBelowTop using v on K::Tank::fill { self.level < 3 }
+post FillAddsOne using v on K::Tank::fill { self.level = pre(self.level) + 1 }
+pre DrainAlways using v on K::Tank::drain { true }
+post DrainFlips using v on K::Tank::drain { self.level = 3 - pre(self.level) }
+
+// Each implementation step maps to the same step of the specification. The specification promises that fills
+// keep happening when they stay enabled again and again (strong fairness), but the implementation is only
+// assumed to take a fill that stays enabled continuously (weak fairness). The cycle 0, 3, 0 never takes a fill
+// and has it enabled only at 0, so the weak assumption does not give the strong guarantee.
+refinement TankRefinesSpec using inf abstract Spec concrete K {
+  population Spec::tanks from K::tanks;
+  object Spec::Tank from K::Tank { level = self.level; }
+  step K::Tank::fill -> Spec::Tank::fill(self);
+  step K::Tank::drain -> Spec::Tank::drain(self);
+  assume fair weak each K::Tank::fill;
+  ensure fair strong each Spec::Tank::fill;
+}

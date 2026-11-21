@@ -1,0 +1,5 @@
+language "ix:native" edition "1-draft";
+profile v = "filament.model.complete/v1";
+profile inf = "filament.temporal.infinite-trace/v1";
+model K = "example/tank";
+temporal LevelNonNegative using inf over (t: K::Tank) clock "model-steps" on origin { always holds(t.level >= 0) }

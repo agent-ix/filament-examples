@@ -6,3 +6,5 @@ model K = "example/tank";
 pre FillBelowTop using v on K::Tank::fill { self.level < 3 }
 post FillAddsOne using v on K::Tank::fill { self.level = pre(self.level) + 1 }
 pre DrainDisabled using v on K::Tank::drain { false }
+// The one authored temporal item the request names; the deadlock-freedom item is the second one.
+temporal LevelNonNegative using inf over (t: K::Tank) clock "model-steps" on origin { always holds(t.level >= 0) }

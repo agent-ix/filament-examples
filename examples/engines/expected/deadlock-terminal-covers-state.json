@@ -1,803 +1,9 @@
 {
-  "category": "unsupported",
+  "category": "success",
   "last_stage": "S6c",
   "result": null,
   "first_diagnostic": null,
   "items": [
-    {
-      "category": "unsupported",
-      "claim_name": "FillBelowTop",
-      "record": {
-        "diagnostic": {
-          "cause": "unbounded-extent",
-          "code": "unsupported_projection",
-          "detail": {
-            "candidate": "contract-checker",
-            "kind": "operation-contract",
-            "modes": [
-              "bounded"
-            ]
-          }
-        },
-        "result": "unsupported",
-        "settled_by": "disposition"
-      },
-      "request": {
-        "candidates": {
-          "backends": [
-            "contract-checker"
-          ],
-          "type": "set"
-        },
-        "claim": {
-          "node": {
-            "ordinal": 0,
-            "package": "example:engines/tank-terminal-full",
-            "path": [
-              "state",
-              "state_clause",
-              "precondition",
-              {
-                "ordinal": 0,
-                "package": "example:engines/tank-terminal-full",
-                "path": [
-                  "state",
-                  "operation_anchor",
-                  {
-                    "ordinal": 0,
-                    "package": "example/tank",
-                    "path": [
-                      "model",
-                      "object_type",
-                      "ix://example/tank/Tank"
-                    ]
-                  },
-                  "fill"
-                ]
-              },
-              {
-                "ordinal": 0,
-                "package": "example:engines/tank-terminal-full",
-                "path": [
-                  "expression",
-                  "binary",
-                  {
-                    "ordinal": 0,
-                    "package": "example:engines/tank-terminal-full",
-                    "path": [
-                      "expression",
-                      "query",
-                      {
-                        "ordinal": 0,
-                        "package": "example:engines/tank-terminal-full",
-                        "path": [
-                          "expression",
-                          "deref",
-                          {
-                            "ordinal": 0,
-                            "package": "example:engines/tank-terminal-full",
-                            "path": [
-                              "value",
-                              "parameter",
-                              "name",
-                              {
-                                "ordinal": 0,
-                                "package": "example:engines/tank-terminal-full",
-                                "path": [
-                                  "scalar_type",
-                                  "text"
-                                ]
-                              },
-                              "self",
-                              "level",
-                              {
-                                "ordinal": 0,
-                                "package": "example:engines/tank-terminal-full",
-                                "path": [
-                                  "scalar_type",
-                                  "integer"
-                                ]
-                              },
-                              "0",
-                              {
-                                "ordinal": 0,
-                                "package": "example:engines/tank-terminal-full",
-                                "path": [
-                                  "composite_type",
-                                  "reference",
-                                  {
-                                    "ordinal": 0,
-                                    "package": "example/tank",
-                                    "path": [
-                                      "model",
-                                      "object_type",
-                                      "ix://example/tank/Tank"
-                                    ]
-                                  }
-                                ]
-                              }
-                            ]
-                          },
-                          "filament.op.model.deref",
-                          "deref",
-                          {
-                            "ordinal": 0,
-                            "package": "example/tank",
-                            "path": [
-                              "model",
-                              "object_type",
-                              "ix://example/tank/Tank"
-                            ]
-                          },
-                          {
-                            "ordinal": 0,
-                            "package": "example/tank",
-                            "path": [
-                              "model",
-                              "object_type",
-                              "ix://example/tank/Tank"
-                            ]
-                          }
-                        ]
-                      },
-                      "filament.op.record.project",
-                      "false",
-                      "query",
-                      {
-                        "ordinal": 0,
-                        "package": "example:engines/tank-terminal-full",
-                        "path": [
-                          "bounded_domain",
-                          "integer_range",
-                          "min",
-                          {
-                            "ordinal": 0,
-                            "package": "example:engines/tank-terminal-full",
-                            "path": [
-                              "scalar_type",
-                              "integer"
-                            ]
-                          },
-                          "0",
-                          "max",
-                          "3"
-                        ]
-                      },
-                      {
-                        "ordinal": 0,
-                        "package": "example:engines/tank-terminal-full",
-                        "path": [
-                          "bounded_domain",
-                          "integer_range",
-                          "min",
-                          {
-                            "ordinal": 0,
-                            "package": "example:engines/tank-terminal-full",
-                            "path": [
-                              "scalar_type",
-                              "integer"
-                            ]
-                          },
-                          "0",
-                          "max",
-                          "3"
-                        ]
-                      }
-                    ]
-                  },
-                  {
-                    "ordinal": 0,
-                    "package": "example:engines/tank-terminal-full",
-                    "path": [
-                      "value",
-                      "literal",
-                      {
-                        "ordinal": 0,
-                        "package": "example:engines/tank-terminal-full",
-                        "path": [
-                          "scalar_type",
-                          "integer"
-                        ]
-                      },
-                      "3"
-                    ]
-                  },
-                  "filament.op.integer.lt",
-                  "binary",
-                  {
-                    "ordinal": 0,
-                    "package": "example:engines/tank-terminal-full",
-                    "path": [
-                      "scalar_type",
-                      "boolean"
-                    ]
-                  },
-                  {
-                    "ordinal": 0,
-                    "package": "example:engines/tank-terminal-full",
-                    "path": [
-                      "scalar_type",
-                      "boolean"
-                    ]
-                  }
-                ]
-              }
-            ]
-          },
-          "occurrence": {
-            "ordinal": 0,
-            "role": "claim"
-          }
-        },
-        "extent": {
-          "classification": "unbounded",
-          "finite_bound_available": true
-        },
-        "kind": "operation-contract",
-        "request_index": 0
-      },
-      "request_index": 0
-    },
-    {
-      "category": "unsupported",
-      "claim_name": "FillAddsOne",
-      "record": {
-        "diagnostic": {
-          "cause": "unbounded-extent",
-          "code": "unsupported_projection",
-          "detail": {
-            "candidate": "contract-checker",
-            "kind": "operation-contract",
-            "modes": [
-              "bounded"
-            ]
-          }
-        },
-        "result": "unsupported",
-        "settled_by": "disposition"
-      },
-      "request": {
-        "candidates": {
-          "backends": [
-            "contract-checker"
-          ],
-          "type": "set"
-        },
-        "claim": {
-          "node": {
-            "ordinal": 0,
-            "package": "example:engines/tank-terminal-full",
-            "path": [
-              "state",
-              "state_clause",
-              "postcondition",
-              {
-                "ordinal": 0,
-                "package": "example:engines/tank-terminal-full",
-                "path": [
-                  "state",
-                  "operation_anchor",
-                  {
-                    "ordinal": 0,
-                    "package": "example/tank",
-                    "path": [
-                      "model",
-                      "object_type",
-                      "ix://example/tank/Tank"
-                    ]
-                  },
-                  "fill"
-                ]
-              },
-              {
-                "ordinal": 0,
-                "package": "example:engines/tank-terminal-full",
-                "path": [
-                  "expression",
-                  "binary",
-                  {
-                    "ordinal": 0,
-                    "package": "example:engines/tank-terminal-full",
-                    "path": [
-                      "expression",
-                      "query",
-                      {
-                        "ordinal": 0,
-                        "package": "example:engines/tank-terminal-full",
-                        "path": [
-                          "expression",
-                          "deref",
-                          {
-                            "ordinal": 0,
-                            "package": "example:engines/tank-terminal-full",
-                            "path": [
-                              "value",
-                              "parameter",
-                              "name",
-                              {
-                                "ordinal": 0,
-                                "package": "example:engines/tank-terminal-full",
-                                "path": [
-                                  "scalar_type",
-                                  "text"
-                                ]
-                              },
-                              "self",
-                              "level",
-                              {
-                                "ordinal": 0,
-                                "package": "example:engines/tank-terminal-full",
-                                "path": [
-                                  "scalar_type",
-                                  "integer"
-                                ]
-                              },
-                              "0",
-                              {
-                                "ordinal": 0,
-                                "package": "example:engines/tank-terminal-full",
-                                "path": [
-                                  "composite_type",
-                                  "reference",
-                                  {
-                                    "ordinal": 0,
-                                    "package": "example/tank",
-                                    "path": [
-                                      "model",
-                                      "object_type",
-                                      "ix://example/tank/Tank"
-                                    ]
-                                  }
-                                ]
-                              }
-                            ]
-                          },
-                          "filament.op.model.deref",
-                          "deref",
-                          {
-                            "ordinal": 0,
-                            "package": "example/tank",
-                            "path": [
-                              "model",
-                              "object_type",
-                              "ix://example/tank/Tank"
-                            ]
-                          },
-                          {
-                            "ordinal": 0,
-                            "package": "example/tank",
-                            "path": [
-                              "model",
-                              "object_type",
-                              "ix://example/tank/Tank"
-                            ]
-                          }
-                        ]
-                      },
-                      "filament.op.record.project",
-                      "false",
-                      "query",
-                      {
-                        "ordinal": 0,
-                        "package": "example:engines/tank-terminal-full",
-                        "path": [
-                          "bounded_domain",
-                          "integer_range",
-                          "min",
-                          {
-                            "ordinal": 0,
-                            "package": "example:engines/tank-terminal-full",
-                            "path": [
-                              "scalar_type",
-                              "integer"
-                            ]
-                          },
-                          "0",
-                          "max",
-                          "3"
-                        ]
-                      },
-                      {
-                        "ordinal": 0,
-                        "package": "example:engines/tank-terminal-full",
-                        "path": [
-                          "bounded_domain",
-                          "integer_range",
-                          "min",
-                          {
-                            "ordinal": 0,
-                            "package": "example:engines/tank-terminal-full",
-                            "path": [
-                              "scalar_type",
-                              "integer"
-                            ]
-                          },
-                          "0",
-                          "max",
-                          "3"
-                        ]
-                      }
-                    ]
-                  },
-                  {
-                    "ordinal": 0,
-                    "package": "example:engines/tank-terminal-full",
-                    "path": [
-                      "expression",
-                      "conversion",
-                      {
-                        "ordinal": 0,
-                        "package": "example:engines/tank-terminal-full",
-                        "path": [
-                          "expression",
-                          "binary",
-                          {
-                            "ordinal": 0,
-                            "package": "example:engines/tank-terminal-full",
-                            "path": [
-                              "expression",
-                              "pre_read",
-                              {
-                                "ordinal": 0,
-                                "package": "example:engines/tank-terminal-full",
-                                "path": [
-                                  "expression",
-                                  "query",
-                                  {
-                                    "ordinal": 0,
-                                    "package": "example:engines/tank-terminal-full",
-                                    "path": [
-                                      "expression",
-                                      "deref",
-                                      {
-                                        "ordinal": 0,
-                                        "package": "example:engines/tank-terminal-full",
-                                        "path": [
-                                          "value",
-                                          "parameter",
-                                          "name",
-                                          {
-                                            "ordinal": 0,
-                                            "package": "example:engines/tank-terminal-full",
-                                            "path": [
-                                              "scalar_type",
-                                              "text"
-                                            ]
-                                          },
-                                          "self",
-                                          "level",
-                                          {
-                                            "ordinal": 0,
-                                            "package": "example:engines/tank-terminal-full",
-                                            "path": [
-                                              "scalar_type",
-                                              "integer"
-                                            ]
-                                          },
-                                          "0",
-                                          {
-                                            "ordinal": 0,
-                                            "package": "example:engines/tank-terminal-full",
-                                            "path": [
-                                              "composite_type",
-                                              "reference",
-                                              {
-                                                "ordinal": 0,
-                                                "package": "example/tank",
-                                                "path": [
-                                                  "model",
-                                                  "object_type",
-                                                  "ix://example/tank/Tank"
-                                                ]
-                                              }
-                                            ]
-                                          }
-                                        ]
-                                      },
-                                      "filament.op.model.deref",
-                                      "deref",
-                                      {
-                                        "ordinal": 0,
-                                        "package": "example/tank",
-                                        "path": [
-                                          "model",
-                                          "object_type",
-                                          "ix://example/tank/Tank"
-                                        ]
-                                      },
-                                      {
-                                        "ordinal": 0,
-                                        "package": "example/tank",
-                                        "path": [
-                                          "model",
-                                          "object_type",
-                                          "ix://example/tank/Tank"
-                                        ]
-                                      }
-                                    ]
-                                  },
-                                  "filament.op.record.project",
-                                  "false",
-                                  "query",
-                                  {
-                                    "ordinal": 0,
-                                    "package": "example:engines/tank-terminal-full",
-                                    "path": [
-                                      "bounded_domain",
-                                      "integer_range",
-                                      "min",
-                                      {
-                                        "ordinal": 0,
-                                        "package": "example:engines/tank-terminal-full",
-                                        "path": [
-                                          "scalar_type",
-                                          "integer"
-                                        ]
-                                      },
-                                      "0",
-                                      "max",
-                                      "3"
-                                    ]
-                                  },
-                                  {
-                                    "ordinal": 0,
-                                    "package": "example:engines/tank-terminal-full",
-                                    "path": [
-                                      "bounded_domain",
-                                      "integer_range",
-                                      "min",
-                                      {
-                                        "ordinal": 0,
-                                        "package": "example:engines/tank-terminal-full",
-                                        "path": [
-                                          "scalar_type",
-                                          "integer"
-                                        ]
-                                      },
-                                      "0",
-                                      "max",
-                                      "3"
-                                    ]
-                                  }
-                                ]
-                              },
-                              "filament.op.state.pre",
-                              "pre",
-                              {
-                                "ordinal": 0,
-                                "package": "example:engines/tank-terminal-full",
-                                "path": [
-                                  "bounded_domain",
-                                  "integer_range",
-                                  "min",
-                                  {
-                                    "ordinal": 0,
-                                    "package": "example:engines/tank-terminal-full",
-                                    "path": [
-                                      "scalar_type",
-                                      "integer"
-                                    ]
-                                  },
-                                  "0",
-                                  "max",
-                                  "3"
-                                ]
-                              },
-                              {
-                                "ordinal": 0,
-                                "package": "example:engines/tank-terminal-full",
-                                "path": [
-                                  "bounded_domain",
-                                  "integer_range",
-                                  "min",
-                                  {
-                                    "ordinal": 0,
-                                    "package": "example:engines/tank-terminal-full",
-                                    "path": [
-                                      "scalar_type",
-                                      "integer"
-                                    ]
-                                  },
-                                  "0",
-                                  "max",
-                                  "3"
-                                ]
-                              }
-                            ]
-                          },
-                          {
-                            "ordinal": 0,
-                            "package": "example:engines/tank-terminal-full",
-                            "path": [
-                              "scalar_type",
-                              "integer"
-                            ]
-                          },
-                          "1",
-                          "filament.op.integer.add",
-                          "binary",
-                          {
-                            "ordinal": 0,
-                            "package": "example:engines/tank-terminal-full",
-                            "path": [
-                              "scalar_type",
-                              "integer"
-                            ]
-                          },
-                          {
-                            "ordinal": 0,
-                            "package": "example:engines/tank-terminal-full",
-                            "path": [
-                              "scalar_type",
-                              "integer"
-                            ]
-                          }
-                        ]
-                      },
-                      "filament.op.numeric.narrow",
-                      "convert",
-                      {
-                        "ordinal": 0,
-                        "package": "example:engines/tank-terminal-full",
-                        "path": [
-                          "bounded_domain",
-                          "integer_range",
-                          "min",
-                          {
-                            "ordinal": 0,
-                            "package": "example:engines/tank-terminal-full",
-                            "path": [
-                              "scalar_type",
-                              "integer"
-                            ]
-                          },
-                          "0",
-                          "max",
-                          "3"
-                        ]
-                      },
-                      {
-                        "ordinal": 0,
-                        "package": "example:engines/tank-terminal-full",
-                        "path": [
-                          "bounded_domain",
-                          "integer_range",
-                          "min",
-                          {
-                            "ordinal": 0,
-                            "package": "example:engines/tank-terminal-full",
-                            "path": [
-                              "scalar_type",
-                              "integer"
-                            ]
-                          },
-                          "0",
-                          "max",
-                          "3"
-                        ]
-                      }
-                    ]
-                  },
-                  "filament.op.integer.eq",
-                  "binary",
-                  {
-                    "ordinal": 0,
-                    "package": "example:engines/tank-terminal-full",
-                    "path": [
-                      "scalar_type",
-                      "boolean"
-                    ]
-                  },
-                  {
-                    "ordinal": 0,
-                    "package": "example:engines/tank-terminal-full",
-                    "path": [
-                      "scalar_type",
-                      "boolean"
-                    ]
-                  }
-                ]
-              }
-            ]
-          },
-          "occurrence": {
-            "ordinal": 0,
-            "role": "claim"
-          }
-        },
-        "extent": {
-          "classification": "unbounded",
-          "finite_bound_available": true
-        },
-        "kind": "operation-contract",
-        "request_index": 1
-      },
-      "request_index": 1
-    },
-    {
-      "category": "unsupported",
-      "claim_name": "DrainDisabled",
-      "record": {
-        "diagnostic": {
-          "cause": "unbounded-extent",
-          "code": "unsupported_projection",
-          "detail": {
-            "candidate": "contract-checker",
-            "kind": "operation-contract",
-            "modes": [
-              "bounded"
-            ]
-          }
-        },
-        "result": "unsupported",
-        "settled_by": "disposition"
-      },
-      "request": {
-        "candidates": {
-          "backends": [
-            "contract-checker"
-          ],
-          "type": "set"
-        },
-        "claim": {
-          "node": {
-            "ordinal": 0,
-            "package": "example:engines/tank-terminal-full",
-            "path": [
-              "state",
-              "state_clause",
-              "precondition",
-              {
-                "ordinal": 0,
-                "package": "example:engines/tank-terminal-full",
-                "path": [
-                  "state",
-                  "operation_anchor",
-                  {
-                    "ordinal": 0,
-                    "package": "example/tank",
-                    "path": [
-                      "model",
-                      "object_type",
-                      "ix://example/tank/Tank"
-                    ]
-                  },
-                  "drain"
-                ]
-              },
-              {
-                "ordinal": 0,
-                "package": "example:engines/tank-terminal-full",
-                "path": [
-                  "value",
-                  "literal",
-                  {
-                    "ordinal": 0,
-                    "package": "example:engines/tank-terminal-full",
-                    "path": [
-                      "scalar_type",
-                      "boolean"
-                    ]
-                  },
-                  "false"
-                ]
-              }
-            ]
-          },
-          "occurrence": {
-            "ordinal": 0,
-            "role": "claim"
-          }
-        },
-        "extent": {
-          "classification": "unbounded",
-          "finite_bound_available": true
-        },
-        "kind": "operation-contract",
-        "request_index": 2
-      },
-      "request_index": 2
-    },
     {
       "axes": {
         "activation": "active",
@@ -813,16 +19,318 @@
           "model": "example/tank",
           "node_id": {
             "ordinal": 0,
-            "package": "example/tank",
+            "package": "example:engines/tank-terminal-full",
             "path": [
-              "model",
-              "model_root"
+              "temporal",
+              "temporal_clause",
+              {
+                "ordinal": 0,
+                "package": "example:engines/tank-terminal-full",
+                "path": [
+                  "value",
+                  "parameter",
+                  "name",
+                  {
+                    "ordinal": 0,
+                    "package": "example:engines/tank-terminal-full",
+                    "path": [
+                      "scalar_type",
+                      "text"
+                    ]
+                  },
+                  "t",
+                  "level",
+                  {
+                    "ordinal": 0,
+                    "package": "example:engines/tank-terminal-full",
+                    "path": [
+                      "scalar_type",
+                      "integer"
+                    ]
+                  },
+                  "0",
+                  {
+                    "ordinal": 0,
+                    "package": "example:engines/tank-terminal-full",
+                    "path": [
+                      "composite_type",
+                      "reference",
+                      {
+                        "ordinal": 0,
+                        "package": "example/tank",
+                        "path": [
+                          "model",
+                          "object_type",
+                          "ix://example/tank/Tank"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "ordinal": 0,
+                "package": "example:engines/tank-terminal-full",
+                "path": [
+                  "scalar_type",
+                  "text"
+                ]
+              },
+              "model-steps",
+              "kind",
+              {
+                "ordinal": 0,
+                "package": "example:engines/tank-terminal-full",
+                "path": [
+                  "scalar_type",
+                  "text"
+                ]
+              },
+              "origin",
+              {
+                "ordinal": 0,
+                "package": "example:engines/tank-terminal-full",
+                "path": [
+                  "temporal",
+                  "formula",
+                  {
+                    "ordinal": 0,
+                    "package": "example:engines/tank-terminal-full",
+                    "path": [
+                      "temporal",
+                      "formula",
+                      {
+                        "ordinal": 0,
+                        "package": "example:engines/tank-terminal-full",
+                        "path": [
+                          "expression",
+                          "binary",
+                          {
+                            "ordinal": 0,
+                            "package": "example:engines/tank-terminal-full",
+                            "path": [
+                              "expression",
+                              "query",
+                              {
+                                "ordinal": 0,
+                                "package": "example:engines/tank-terminal-full",
+                                "path": [
+                                  "expression",
+                                  "deref",
+                                  {
+                                    "ordinal": 0,
+                                    "package": "example:engines/tank-terminal-full",
+                                    "path": [
+                                      "value",
+                                      "parameter",
+                                      "name",
+                                      {
+                                        "ordinal": 0,
+                                        "package": "example:engines/tank-terminal-full",
+                                        "path": [
+                                          "scalar_type",
+                                          "text"
+                                        ]
+                                      },
+                                      "t",
+                                      "level",
+                                      {
+                                        "ordinal": 0,
+                                        "package": "example:engines/tank-terminal-full",
+                                        "path": [
+                                          "scalar_type",
+                                          "integer"
+                                        ]
+                                      },
+                                      "0",
+                                      {
+                                        "ordinal": 0,
+                                        "package": "example:engines/tank-terminal-full",
+                                        "path": [
+                                          "composite_type",
+                                          "reference",
+                                          {
+                                            "ordinal": 0,
+                                            "package": "example/tank",
+                                            "path": [
+                                              "model",
+                                              "object_type",
+                                              "ix://example/tank/Tank"
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  },
+                                  "filament.op.model.deref",
+                                  "deref",
+                                  {
+                                    "ordinal": 0,
+                                    "package": "example/tank",
+                                    "path": [
+                                      "model",
+                                      "object_type",
+                                      "ix://example/tank/Tank"
+                                    ]
+                                  },
+                                  {
+                                    "ordinal": 0,
+                                    "package": "example/tank",
+                                    "path": [
+                                      "model",
+                                      "object_type",
+                                      "ix://example/tank/Tank"
+                                    ]
+                                  }
+                                ]
+                              },
+                              "filament.op.record.project",
+                              "false",
+                              "query",
+                              {
+                                "ordinal": 0,
+                                "package": "example:engines/tank-terminal-full",
+                                "path": [
+                                  "bounded_domain",
+                                  "integer_range",
+                                  "min",
+                                  {
+                                    "ordinal": 0,
+                                    "package": "example:engines/tank-terminal-full",
+                                    "path": [
+                                      "scalar_type",
+                                      "integer"
+                                    ]
+                                  },
+                                  "0",
+                                  "max",
+                                  "3"
+                                ]
+                              },
+                              {
+                                "ordinal": 0,
+                                "package": "example:engines/tank-terminal-full",
+                                "path": [
+                                  "bounded_domain",
+                                  "integer_range",
+                                  "min",
+                                  {
+                                    "ordinal": 0,
+                                    "package": "example:engines/tank-terminal-full",
+                                    "path": [
+                                      "scalar_type",
+                                      "integer"
+                                    ]
+                                  },
+                                  "0",
+                                  "max",
+                                  "3"
+                                ]
+                              }
+                            ]
+                          },
+                          {
+                            "ordinal": 0,
+                            "package": "example:engines/tank-terminal-full",
+                            "path": [
+                              "value",
+                              "literal",
+                              {
+                                "ordinal": 0,
+                                "package": "example:engines/tank-terminal-full",
+                                "path": [
+                                  "scalar_type",
+                                  "integer"
+                                ]
+                              },
+                              "0"
+                            ]
+                          },
+                          "filament.op.integer.ge",
+                          "binary",
+                          {
+                            "ordinal": 0,
+                            "package": "example:engines/tank-terminal-full",
+                            "path": [
+                              "scalar_type",
+                              "boolean"
+                            ]
+                          },
+                          {
+                            "ordinal": 0,
+                            "package": "example:engines/tank-terminal-full",
+                            "path": [
+                              "scalar_type",
+                              "boolean"
+                            ]
+                          }
+                        ]
+                      },
+                      "filament.op.temporal.holds",
+                      "temporal_formula",
+                      {
+                        "ordinal": 0,
+                        "package": "example:engines/tank-terminal-full",
+                        "path": [
+                          "scalar_type",
+                          "boolean"
+                        ]
+                      },
+                      {
+                        "ordinal": 0,
+                        "package": "example:engines/tank-terminal-full",
+                        "path": [
+                          "scalar_type",
+                          "boolean"
+                        ]
+                      }
+                    ]
+                  },
+                  "filament.op.temporal.always",
+                  "temporal_formula",
+                  {
+                    "ordinal": 0,
+                    "package": "example:engines/tank-terminal-full",
+                    "path": [
+                      "scalar_type",
+                      "boolean"
+                    ]
+                  },
+                  {
+                    "ordinal": 0,
+                    "package": "example:engines/tank-terminal-full",
+                    "path": [
+                      "scalar_type",
+                      "boolean"
+                    ]
+                  }
+                ]
+              },
+              "filament.op.temporal.clause",
+              "filament.temporal.infinite-trace/v1",
+              "temporal",
+              {
+                "ordinal": 0,
+                "package": "example:engines/tank-terminal-full",
+                "path": [
+                  "scalar_type",
+                  "boolean"
+                ]
+              },
+              {
+                "ordinal": 0,
+                "package": "example:engines/tank-terminal-full",
+                "path": [
+                  "scalar_type",
+                  "boolean"
+                ]
+              }
             ]
           },
           "ordinal": 0
         }
       },
-      "claim_name": "",
+      "claim_name": "LevelNonNegative",
       "exploration": {
         "automaton_states": "1",
         "states": "4",
@@ -848,15 +356,317 @@
         "claim": {
           "node": {
             "ordinal": 0,
-            "package": "example/tank",
+            "package": "example:engines/tank-terminal-full",
             "path": [
-              "model",
-              "model_root"
+              "temporal",
+              "temporal_clause",
+              {
+                "ordinal": 0,
+                "package": "example:engines/tank-terminal-full",
+                "path": [
+                  "value",
+                  "parameter",
+                  "name",
+                  {
+                    "ordinal": 0,
+                    "package": "example:engines/tank-terminal-full",
+                    "path": [
+                      "scalar_type",
+                      "text"
+                    ]
+                  },
+                  "t",
+                  "level",
+                  {
+                    "ordinal": 0,
+                    "package": "example:engines/tank-terminal-full",
+                    "path": [
+                      "scalar_type",
+                      "integer"
+                    ]
+                  },
+                  "0",
+                  {
+                    "ordinal": 0,
+                    "package": "example:engines/tank-terminal-full",
+                    "path": [
+                      "composite_type",
+                      "reference",
+                      {
+                        "ordinal": 0,
+                        "package": "example/tank",
+                        "path": [
+                          "model",
+                          "object_type",
+                          "ix://example/tank/Tank"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "ordinal": 0,
+                "package": "example:engines/tank-terminal-full",
+                "path": [
+                  "scalar_type",
+                  "text"
+                ]
+              },
+              "model-steps",
+              "kind",
+              {
+                "ordinal": 0,
+                "package": "example:engines/tank-terminal-full",
+                "path": [
+                  "scalar_type",
+                  "text"
+                ]
+              },
+              "origin",
+              {
+                "ordinal": 0,
+                "package": "example:engines/tank-terminal-full",
+                "path": [
+                  "temporal",
+                  "formula",
+                  {
+                    "ordinal": 0,
+                    "package": "example:engines/tank-terminal-full",
+                    "path": [
+                      "temporal",
+                      "formula",
+                      {
+                        "ordinal": 0,
+                        "package": "example:engines/tank-terminal-full",
+                        "path": [
+                          "expression",
+                          "binary",
+                          {
+                            "ordinal": 0,
+                            "package": "example:engines/tank-terminal-full",
+                            "path": [
+                              "expression",
+                              "query",
+                              {
+                                "ordinal": 0,
+                                "package": "example:engines/tank-terminal-full",
+                                "path": [
+                                  "expression",
+                                  "deref",
+                                  {
+                                    "ordinal": 0,
+                                    "package": "example:engines/tank-terminal-full",
+                                    "path": [
+                                      "value",
+                                      "parameter",
+                                      "name",
+                                      {
+                                        "ordinal": 0,
+                                        "package": "example:engines/tank-terminal-full",
+                                        "path": [
+                                          "scalar_type",
+                                          "text"
+                                        ]
+                                      },
+                                      "t",
+                                      "level",
+                                      {
+                                        "ordinal": 0,
+                                        "package": "example:engines/tank-terminal-full",
+                                        "path": [
+                                          "scalar_type",
+                                          "integer"
+                                        ]
+                                      },
+                                      "0",
+                                      {
+                                        "ordinal": 0,
+                                        "package": "example:engines/tank-terminal-full",
+                                        "path": [
+                                          "composite_type",
+                                          "reference",
+                                          {
+                                            "ordinal": 0,
+                                            "package": "example/tank",
+                                            "path": [
+                                              "model",
+                                              "object_type",
+                                              "ix://example/tank/Tank"
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  },
+                                  "filament.op.model.deref",
+                                  "deref",
+                                  {
+                                    "ordinal": 0,
+                                    "package": "example/tank",
+                                    "path": [
+                                      "model",
+                                      "object_type",
+                                      "ix://example/tank/Tank"
+                                    ]
+                                  },
+                                  {
+                                    "ordinal": 0,
+                                    "package": "example/tank",
+                                    "path": [
+                                      "model",
+                                      "object_type",
+                                      "ix://example/tank/Tank"
+                                    ]
+                                  }
+                                ]
+                              },
+                              "filament.op.record.project",
+                              "false",
+                              "query",
+                              {
+                                "ordinal": 0,
+                                "package": "example:engines/tank-terminal-full",
+                                "path": [
+                                  "bounded_domain",
+                                  "integer_range",
+                                  "min",
+                                  {
+                                    "ordinal": 0,
+                                    "package": "example:engines/tank-terminal-full",
+                                    "path": [
+                                      "scalar_type",
+                                      "integer"
+                                    ]
+                                  },
+                                  "0",
+                                  "max",
+                                  "3"
+                                ]
+                              },
+                              {
+                                "ordinal": 0,
+                                "package": "example:engines/tank-terminal-full",
+                                "path": [
+                                  "bounded_domain",
+                                  "integer_range",
+                                  "min",
+                                  {
+                                    "ordinal": 0,
+                                    "package": "example:engines/tank-terminal-full",
+                                    "path": [
+                                      "scalar_type",
+                                      "integer"
+                                    ]
+                                  },
+                                  "0",
+                                  "max",
+                                  "3"
+                                ]
+                              }
+                            ]
+                          },
+                          {
+                            "ordinal": 0,
+                            "package": "example:engines/tank-terminal-full",
+                            "path": [
+                              "value",
+                              "literal",
+                              {
+                                "ordinal": 0,
+                                "package": "example:engines/tank-terminal-full",
+                                "path": [
+                                  "scalar_type",
+                                  "integer"
+                                ]
+                              },
+                              "0"
+                            ]
+                          },
+                          "filament.op.integer.ge",
+                          "binary",
+                          {
+                            "ordinal": 0,
+                            "package": "example:engines/tank-terminal-full",
+                            "path": [
+                              "scalar_type",
+                              "boolean"
+                            ]
+                          },
+                          {
+                            "ordinal": 0,
+                            "package": "example:engines/tank-terminal-full",
+                            "path": [
+                              "scalar_type",
+                              "boolean"
+                            ]
+                          }
+                        ]
+                      },
+                      "filament.op.temporal.holds",
+                      "temporal_formula",
+                      {
+                        "ordinal": 0,
+                        "package": "example:engines/tank-terminal-full",
+                        "path": [
+                          "scalar_type",
+                          "boolean"
+                        ]
+                      },
+                      {
+                        "ordinal": 0,
+                        "package": "example:engines/tank-terminal-full",
+                        "path": [
+                          "scalar_type",
+                          "boolean"
+                        ]
+                      }
+                    ]
+                  },
+                  "filament.op.temporal.always",
+                  "temporal_formula",
+                  {
+                    "ordinal": 0,
+                    "package": "example:engines/tank-terminal-full",
+                    "path": [
+                      "scalar_type",
+                      "boolean"
+                    ]
+                  },
+                  {
+                    "ordinal": 0,
+                    "package": "example:engines/tank-terminal-full",
+                    "path": [
+                      "scalar_type",
+                      "boolean"
+                    ]
+                  }
+                ]
+              },
+              "filament.op.temporal.clause",
+              "filament.temporal.infinite-trace/v1",
+              "temporal",
+              {
+                "ordinal": 0,
+                "package": "example:engines/tank-terminal-full",
+                "path": [
+                  "scalar_type",
+                  "boolean"
+                ]
+              },
+              {
+                "ordinal": 0,
+                "package": "example:engines/tank-terminal-full",
+                "path": [
+                  "scalar_type",
+                  "boolean"
+                ]
+              }
             ]
           },
           "occurrence": {
             "ordinal": 0,
-            "role": "generated"
+            "role": "claim"
           }
         },
         "extent": {
@@ -864,7 +674,7 @@
           "finite_bound_available": false
         },
         "kind": "temporal-satisfaction",
-        "request_index": 3,
+        "request_index": 0,
         "temporal": {
           "fairness": [],
           "item_kind": "deadlock-freedom",
@@ -893,7 +703,7 @@
           }
         }
       },
-      "request_index": 3
+      "request_index": 0
     }
   ]
 }
