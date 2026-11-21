@@ -1,0 +1,4 @@
+// FSpec FR-144-AC-1, FR-144-AC-4
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+function example using v(): Boolean pure { let a: Bag<Integer>[0, 3] = bag[1, 1, 2] in let b: Bag<Integer>[0, 3] = bag[2, 1, 1] in a = b }

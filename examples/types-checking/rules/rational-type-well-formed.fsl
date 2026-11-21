@@ -1,0 +1,5 @@
+// FSpec FR-149-AC-27
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+type R = Rational[-3, 7; 1, 12];
+function f using v(r: R): R pure { r }

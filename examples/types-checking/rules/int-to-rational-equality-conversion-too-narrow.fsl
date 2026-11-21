@@ -1,0 +1,4 @@
+// FSpec FR-149-AC-10
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+function f using v(a: Int[0, 99], b: Rational[0, 9; 1, 3]): Boolean pure { convert<Rational[0, 9; 1, 3]>(a) = b }

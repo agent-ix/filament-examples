@@ -1,0 +1,5 @@
+// FSpec FR-143-AC-12
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+union Shape { Rect(Integer, Integer), Circle(Integer), Empty }
+function a using v(): Shape pure { Shape::Triangle(1) }

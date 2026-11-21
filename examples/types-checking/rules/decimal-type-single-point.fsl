@@ -1,0 +1,5 @@
+// FSpec FR-140-AC-5 (lo = hi boundary)
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+type D = Decimal[3, 3; 0, 0; exact];
+function f using v(d: D): D pure { d }

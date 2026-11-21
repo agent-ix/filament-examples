@@ -1,0 +1,19 @@
+{
+  "format": "native-run/1",
+  "request": {
+    "call": {
+      "arguments": [],
+      "function": "example"
+    },
+    "models": [],
+    "program": {
+      "source": {
+        "authority": "example",
+        "document": "float-record-leaf-numeric-equality",
+        "file": "../rules/float-record-leaf-numeric-equality.fsl",
+        "formal_revision": 1,
+        "identity": "types-checking/float-record-leaf-numeric-equality"
+      }
+    }
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "format": "native-run/1",
+  "request": {
+    "call": {
+      "arguments": [],
+      "function": "example"
+    },
+    "models": [],
+    "program": {
+      "source": {
+        "authority": "example",
+        "document": "collection-below-minimum-literal",
+        "file": "../rules/collection-below-minimum-literal.fsl",
+        "formal_revision": 1,
+        "identity": "types-checking/collection-below-minimum-literal"
+      }
+    }
+  }
+}

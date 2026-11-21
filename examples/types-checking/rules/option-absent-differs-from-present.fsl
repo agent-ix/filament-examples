@@ -1,0 +1,4 @@
+// FSpec FR-149-AC-6
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+function example using v(): Boolean pure { let a: Option<Int[0, 9]> = absent in let b: Option<Int[0, 9]> = Some(0) in a != b and a = a }

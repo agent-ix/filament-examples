@@ -1,0 +1,5 @@
+// FSpec FR-002
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+type A = Missing;
+function f using v(a: A): A pure { a }

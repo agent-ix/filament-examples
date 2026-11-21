@@ -1,0 +1,19 @@
+{
+  "format": "native-run/1",
+  "request": {
+    "call": {
+      "arguments": [],
+      "function": "example"
+    },
+    "models": [],
+    "program": {
+      "source": {
+        "authority": "example",
+        "document": "collection-bag-counts-duplicates",
+        "file": "../rules/collection-bag-counts-duplicates.fsl",
+        "formal_revision": 1,
+        "identity": "types-checking/collection-bag-counts-duplicates"
+      }
+    }
+  }
+}

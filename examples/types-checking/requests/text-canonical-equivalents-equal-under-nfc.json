@@ -1,0 +1,19 @@
+{
+  "format": "native-run/1",
+  "request": {
+    "call": {
+      "arguments": [],
+      "function": "example"
+    },
+    "models": [],
+    "program": {
+      "source": {
+        "authority": "example",
+        "document": "text-canonical-equivalents-equal-under-nfc",
+        "file": "../rules/text-canonical-equivalents-equal-under-nfc.fsl",
+        "formal_revision": 1,
+        "identity": "types-checking/text-canonical-equivalents-equal-under-nfc"
+      }
+    }
+  }
+}

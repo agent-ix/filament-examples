@@ -1,0 +1,6 @@
+// FSpec FR-149-AC-12
+language "ix:native" edition "1-draft";
+profile v = "filament.model.complete/v1";
+object Order identity (total) { total: Int[0, 9]; population orders; }
+object Sub extends Order { extra: Int[0, 3]; }
+function f using v(a: Reference<Order>, b: Reference<Sub>): Boolean pure { a = b }

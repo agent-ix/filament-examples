@@ -1,0 +1,19 @@
+{
+  "format": "native-run/1",
+  "request": {
+    "call": {
+      "arguments": [],
+      "function": "example"
+    },
+    "models": [],
+    "program": {
+      "source": {
+        "authority": "example",
+        "document": "ordered-set-drops-duplicate",
+        "file": "../rules/ordered-set-drops-duplicate.fsl",
+        "formal_revision": 1,
+        "identity": "types-checking/ordered-set-drops-duplicate"
+      }
+    }
+  }
+}

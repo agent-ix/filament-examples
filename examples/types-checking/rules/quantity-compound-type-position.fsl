@@ -1,0 +1,10 @@
+// FSpec FR-142-AC-39
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+dimension Mass;
+dimension Length;
+dimension Time;
+unit kg: Mass = rational(1, 1);
+unit m: Length = rational(1, 1);
+unit s: Time = rational(1, 1);
+function f using v(e: Quantity<kg*m^2*s^-2>): Quantity<kg*m^2*s^-2> pure { e }

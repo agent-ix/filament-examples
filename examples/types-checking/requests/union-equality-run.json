@@ -1,0 +1,19 @@
+{
+  "format": "native-run/1",
+  "request": {
+    "call": {
+      "arguments": [],
+      "function": "example"
+    },
+    "models": [],
+    "program": {
+      "source": {
+        "authority": "example",
+        "document": "union-equality-run",
+        "file": "../rules/union-equality-run.fsl",
+        "formal_revision": 1,
+        "identity": "types-checking/union-equality-run"
+      }
+    }
+  }
+}

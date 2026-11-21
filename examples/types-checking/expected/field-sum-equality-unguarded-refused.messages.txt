@@ -1,0 +1,1 @@
+undefined_expression (unproved-range): `e.tally + 1` must lie in [0, 3] but is proved only in [1, 4]

@@ -1,0 +1,5 @@
+// FSpec FR-143 (construction names fields in any order)
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+record P { x: Int[0, 9]; y: Int[0, 9]; }
+function f using v(): Boolean pure { P { y: 2, x: 1 } = P { x: 1, y: 2 } }

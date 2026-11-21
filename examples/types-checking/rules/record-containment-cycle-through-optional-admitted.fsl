@@ -1,0 +1,5 @@
+// FSpec FR-143-AC-7
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+record Node { weight: Int[0, 9]; next: Node?; }
+function f using v(n: Node): Node pure { n }

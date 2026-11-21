@@ -1,0 +1,4 @@
+// FSpec FR-144-AC-33
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+function f using v(m: Map<Int[0, 3], Int[0, 9]>[0, 4], k: Int[0, 3]): Int[0, 9] pure { if contains(m, k) then m[k] else 0 }

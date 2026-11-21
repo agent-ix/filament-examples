@@ -1,0 +1,5 @@
+// FSpec FR-143-AC-4
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+record P { x: Int[0, 9]; }
+function f using v(): P pure { P { x: 10 } }

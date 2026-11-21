@@ -1,0 +1,19 @@
+{
+  "format": "native-run/1",
+  "request": {
+    "call": {
+      "arguments": [],
+      "function": "example"
+    },
+    "models": [],
+    "program": {
+      "source": {
+        "authority": "example",
+        "document": "enum-ordered-compare-run",
+        "file": "../rules/enum-ordered-compare-run.fsl",
+        "formal_revision": 1,
+        "identity": "types-checking/enum-ordered-compare-run"
+      }
+    }
+  }
+}

@@ -1,0 +1,4 @@
+// FSpec FR-149-AC-3
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+function f using v(a: Integer, b: Text[0, 8; nfc]): Boolean pure { a = b }

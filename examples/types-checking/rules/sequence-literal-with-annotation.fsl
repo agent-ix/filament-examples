@@ -1,0 +1,4 @@
+// FSpec FR-144-AC-10
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+function f using v(): Boolean pure { let xs: Sequence<Integer>[0, 4] = sequence[1, 2] in size(xs) = 2 }

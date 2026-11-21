@@ -1,0 +1,1841 @@
+name = "types-checking"
+summary = "Types and checking: type well-formedness, literal typing, equality admission and bounds, per the FSpec type model."
+
+[[case]]
+id = "decimal-literal-padded-member"
+statement = "The literal decimal(1, 0) has the value 1, which is a member of Decimal[0, 10000; 2, 2; exact] as the coefficient 100 at scale 2, so the program checks."
+file = "rules/decimal-literal-padded-member.fsl"
+command = "check rules/decimal-literal-padded-member.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "decimal-literal-scale-above-smax-nonmember"
+statement = "The literal decimal(150, 2) is 1.50, which needs scale 2 while Decimal[-9, 9; 0, 0; exact] allows scale 0, so it is refused as a type mismatch before evaluation."
+file = "rules/decimal-literal-scale-above-smax-nonmember.fsl"
+command = "check rules/decimal-literal-scale-above-smax-nonmember.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed type-mismatch"
+
+[[case]]
+id = "decimal-literal-coefficient-nonmember"
+statement = "The literal decimal(1234, 3) is 1.234, which needs scale 3 while Decimal[-1000, 1000; 0, 1; exact] allows scale at most 1, so it is not a member and is refused as a type mismatch."
+file = "rules/decimal-literal-coefficient-nonmember.fsl"
+command = "check rules/decimal-literal-coefficient-nonmember.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed type-mismatch"
+
+[[case]]
+id = "decimal-literal-retained-above-smax"
+statement = "The literal decimal(100, 2) is the value 1, a member of Decimal[-9, 9; 0, 0; exact] although spelled at scale 2, so it is admitted and retained as spelled."
+file = "rules/decimal-literal-retained-above-smax.fsl"
+command = "check rules/decimal-literal-retained-above-smax.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "decimal-type-coefficient-bounds-inverted"
+statement = "Decimal[5, 1; 0, 0; exact] has a lower coefficient bound above its upper bound, so type checking refuses the declaration as ill typed."
+file = "rules/decimal-type-coefficient-bounds-inverted.fsl"
+command = "check rules/decimal-type-coefficient-bounds-inverted.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed type-mismatch"
+
+[[case]]
+id = "decimal-type-scale-bounds-inverted"
+statement = "Decimal[0, 9; 2, 1; exact] has a minimum scale above its maximum scale, so type checking refuses the declaration as ill typed."
+file = "rules/decimal-type-scale-bounds-inverted.fsl"
+command = "check rules/decimal-type-scale-bounds-inverted.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed type-mismatch"
+
+[[case]]
+id = "decimal-type-scale-max-u32"
+statement = "A maximum scale of 4294967295, the largest u32, is a well-formed decimal type."
+file = "rules/decimal-type-scale-max-u32.fsl"
+command = "check rules/decimal-type-scale-max-u32.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "decimal-type-scale-above-u32"
+statement = "A maximum scale of 4294967296 exceeds u32::MAX, so the declaration is refused as ill typed."
+file = "rules/decimal-type-scale-above-u32.fsl"
+command = "check rules/decimal-type-scale-above-u32.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed type-mismatch"
+
+[[case]]
+id = "decimal-type-single-point"
+statement = "Decimal[3, 3; 0, 0; exact] has equal bounds on both axes and is well formed, admitting only the value 3."
+file = "rules/decimal-type-single-point.fsl"
+command = "check rules/decimal-type-single-point.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "decimal-type-without-mode"
+statement = "A source Decimal type written without a rounding mode is a syntax refusal at parse and reaches no type check."
+file = "rules/decimal-type-without-mode.fsl"
+command = "check rules/decimal-type-without-mode.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: invalid_syntax unexpected-token"
+
+[[case]]
+id = "decimal-type-with-mode-checks"
+statement = "The same type written with the exact rounding mode checks."
+file = "rules/decimal-type-with-mode-checks.fsl"
+command = "check rules/decimal-type-with-mode-checks.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "decimal-literal-ambiguous-let"
+statement = "A decimal literal sum bound by an unannotated let has no unique expected type, so it is refused as an ambiguous literal."
+file = "rules/decimal-literal-ambiguous-let.fsl"
+command = "check rules/decimal-literal-ambiguous-let.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed ambiguous-literal"
+
+[[case]]
+id = "decimal-literal-ambiguous-equality"
+statement = "Both operands of = are decimal literals with no expected type, so the comparison is refused as an ambiguous literal."
+file = "rules/decimal-literal-ambiguous-equality.fsl"
+command = "check rules/decimal-literal-ambiguous-equality.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed ambiguous-literal"
+
+[[case]]
+id = "decimal-literal-takes-other-operand-type"
+statement = "A decimal literal compared with a typed parameter takes that parameter's type, so the comparison checks."
+file = "rules/decimal-literal-takes-other-operand-type.fsl"
+command = "check rules/decimal-literal-takes-other-operand-type.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "decimal-distinct-types-refused"
+statement = "Adding operands of two different Decimal types is refused as a type mismatch until an explicit convert selects one."
+file = "rules/decimal-distinct-types-refused.fsl"
+command = "check rules/decimal-distinct-types-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed type-mismatch"
+
+[[case]]
+id = "rational-type-well-formed"
+statement = "Rational[-3, 7; 1, 12] is a well-formed bounded rational type."
+file = "rules/rational-type-well-formed.fsl"
+command = "check rules/rational-type-well-formed.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "rational-type-numerator-bounds-inverted"
+statement = "Rational[8, 7; 1, 12] has its lower numerator bound above its upper one and is refused as ill typed."
+file = "rules/rational-type-numerator-bounds-inverted.fsl"
+command = "check rules/rational-type-numerator-bounds-inverted.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed type-mismatch"
+
+[[case]]
+id = "rational-type-denominator-zero"
+statement = "Rational[0, 1; 0, 12] admits a zero denominator and is refused as ill typed."
+file = "rules/rational-type-denominator-zero.fsl"
+command = "check rules/rational-type-denominator-zero.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed type-mismatch"
+
+[[case]]
+id = "rational-type-denominator-negative"
+statement = "A negative denominator bound as in Rational[0, 1; -1, 12] is not admitted by the grammar, so it is refused at parse."
+file = "rules/rational-type-denominator-negative.fsl"
+command = "check rules/rational-type-denominator-negative.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: invalid_syntax unexpected-token"
+
+[[case]]
+id = "rational-literal-member"
+statement = "The rational literals 1/4, -3 and 0 are members of Rational[-3, 7; 1, 12]."
+file = "rules/rational-literal-member.fsl"
+command = "check rules/rational-literal-member.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "rational-literal-over-numerator"
+statement = "The rational 8 is above the numerator bound 7 of Rational[-3, 7; 1, 12], so the literal is refused."
+file = "rules/rational-literal-over-numerator.fsl"
+command = "check rules/rational-literal-over-numerator.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: undefined_expression unproved-range"
+
+[[case]]
+id = "rational-literal-over-denominator"
+statement = "The rational 1/13 has a denominator above the bound 12 of Rational[-3, 7; 1, 12], so the literal is refused."
+file = "rules/rational-literal-over-denominator.fsl"
+command = "check rules/rational-literal-over-denominator.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: undefined_expression unproved-range"
+
+[[case]]
+id = "int-type-bounds-inverted"
+statement = "Int[5, 1] has its lower bound above its upper bound and is refused as ill typed."
+file = "rules/int-type-bounds-inverted.fsl"
+command = "check rules/int-type-bounds-inverted.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed type-mismatch"
+
+[[case]]
+id = "int-type-single-point"
+statement = "Int[4, 4] is a well-formed integer type admitting only 4."
+file = "rules/int-type-single-point.fsl"
+command = "check rules/int-type-single-point.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "int-literal-above-bound"
+statement = "The literal 10 is above the bound of Int[0, 9], so it is not admitted as that type."
+file = "rules/int-literal-above-bound.fsl"
+command = "check rules/int-literal-above-bound.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: undefined_expression unproved-range"
+
+[[case]]
+id = "int-literal-at-upper-bound"
+statement = "The literal 9 is the upper bound of Int[0, 9] and is admitted."
+file = "rules/int-literal-at-upper-bound.fsl"
+command = "check rules/int-literal-at-upper-bound.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "int-literal-below-bound"
+statement = "The literal -1 is below the bound of Int[0, 9] and is not admitted."
+file = "rules/int-literal-below-bound.fsl"
+command = "check rules/int-literal-below-bound.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: undefined_expression unproved-range"
+
+[[case]]
+id = "text-type-bounds-missing"
+statement = "A Text type with no length bounds is not a valid text type and is refused."
+file = "rules/text-type-bounds-missing.fsl"
+command = "check rules/text-type-bounds-missing.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: invalid_syntax unexpected-token"
+
+[[case]]
+id = "text-type-profile-missing"
+statement = "A Text type with bounds but no normalization profile is refused at parse."
+file = "rules/text-type-profile-missing.fsl"
+command = "check rules/text-type-profile-missing.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: invalid_syntax unexpected-token"
+
+[[case]]
+id = "text-type-bounds-inverted"
+statement = "Text[5, 1; nfc] has its lower length bound above its upper bound and is refused as ill typed."
+file = "rules/text-type-bounds-inverted.fsl"
+command = "check rules/text-type-bounds-inverted.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed type-mismatch"
+
+[[case]]
+id = "text-types-of-different-profiles-differ"
+statement = "Two Text types with equal bounds but different profiles are different types, so comparing their values is refused as a type mismatch even though the display text is equal."
+file = "rules/text-types-of-different-profiles-differ.fsl"
+command = "check rules/text-types-of-different-profiles-differ.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed type-mismatch"
+
+[[case]]
+id = "text-types-of-same-profile-compare"
+statement = "Two parameters of one Text type compare with =."
+file = "rules/text-types-of-same-profile-compare.fsl"
+command = "check rules/text-types-of-same-profile-compare.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "text-types-of-different-bounds-compare"
+statement = "Text types with the same profile and different length bounds compare with =."
+file = "rules/text-types-of-different-bounds-compare.fsl"
+command = "check rules/text-types-of-different-bounds-compare.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "string-and-text-differ"
+statement = "A String and a Text operand cannot be compared, so the comparison is refused as a type mismatch."
+file = "rules/string-and-text-differ.fsl"
+command = "check rules/string-and-text-differ.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed type-mismatch"
+
+[[case]]
+id = "string-equality-checks"
+statement = "Two String values compare with =."
+file = "rules/string-equality-checks.fsl"
+command = "check rules/string-equality-checks.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "enum-equality-same-declaration"
+statement = "Members of one enumeration compare with =."
+file = "rules/enum-equality-same-declaration.fsl"
+command = "check rules/enum-equality-same-declaration.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "enum-cross-declaration-equality-refused"
+statement = "Members with equal spellings of two different enumerations cannot be compared, so equality is refused as ill typed."
+file = "rules/enum-cross-declaration-equality-refused.fsl"
+command = "check rules/enum-cross-declaration-equality-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed type-mismatch"
+
+[[case]]
+id = "enum-unordered-less-than-refused"
+statement = "An unordered enumeration has no ordering, so < over its members is refused as ill typed."
+file = "rules/enum-unordered-less-than-refused.fsl"
+command = "check rules/enum-unordered-less-than-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed operator-ineligible"
+
+[[case]]
+id = "enum-ordered-less-than"
+statement = "An ordered enumeration orders its members by declaration order, so < over its members checks."
+file = "rules/enum-ordered-less-than.fsl"
+command = "check rules/enum-ordered-less-than.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "enum-ordered-cross-declaration-refused"
+statement = "Two ordered enumerations remain distinct types, so ordering a member of one against a member of the other is refused as ill typed."
+file = "rules/enum-ordered-cross-declaration-refused.fsl"
+command = "check rules/enum-ordered-cross-declaration-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed type-mismatch"
+
+[[case]]
+id = "enum-unknown-member"
+statement = "A member the enumeration does not declare cannot be named."
+file = "rules/enum-unknown-member.fsl"
+command = "check rules/enum-unknown-member.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: missing_declaration missing-name"
+
+[[case]]
+id = "enum-duplicate-member"
+statement = "An enumeration that declares one member twice is refused."
+file = "rules/enum-duplicate-member.fsl"
+command = "check rules/enum-duplicate-member.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ambiguous_declaration ambiguous-name"
+
+[[case]]
+id = "record-structural-equality"
+statement = "Two values of one declared record type compare structurally with =."
+file = "rules/record-structural-equality.fsl"
+command = "check rules/record-structural-equality.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "record-equal-shape-different-type"
+statement = "Records Q and P declare the same fields but are different types, so comparing a P with a Q is refused as a type mismatch."
+file = "rules/record-equal-shape-different-type.fsl"
+command = "check rules/record-equal-shape-different-type.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed type-mismatch"
+
+[[case]]
+id = "record-missing-field-refused"
+statement = "A record construction that omits a required field is refused."
+file = "rules/record-missing-field-refused.fsl"
+command = "check rules/record-missing-field-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed type-mismatch"
+
+[[case]]
+id = "record-extra-field-refused"
+statement = "A record construction that names a field the record does not declare is refused."
+file = "rules/record-extra-field-refused.fsl"
+command = "check rules/record-extra-field-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed type-mismatch"
+
+[[case]]
+id = "record-field-order-irrelevant"
+statement = "A record construction names its fields in any order and equals the construction in declaration order."
+file = "rules/record-field-order-irrelevant.fsl"
+command = "check rules/record-field-order-irrelevant.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "record-direct-containment-cycle"
+statement = "A record that contains itself by value has no finite value and is refused."
+file = "rules/record-direct-containment-cycle.fsl"
+command = "check rules/record-direct-containment-cycle.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed type-mismatch"
+
+[[case]]
+id = "record-containment-cycle-through-optional-admitted"
+statement = "A record that holds itself only through an optional field has a finite value and is admitted."
+file = "rules/record-containment-cycle-through-optional-admitted.fsl"
+command = "check rules/record-containment-cycle-through-optional-admitted.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "record-mutual-containment-cycle"
+statement = "Two records that contain each other by value have no finite value, so the cycle is refused."
+file = "rules/record-mutual-containment-cycle.fsl"
+command = "check rules/record-mutual-containment-cycle.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed type-mismatch"
+
+[[case]]
+id = "record-field-wrong-type"
+statement = "A record field given a value outside its declared bounds is refused."
+file = "rules/record-field-wrong-type.fsl"
+command = "check rules/record-field-wrong-type.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: undefined_expression unproved-range"
+
+[[case]]
+id = "tuple-projection-typed"
+statement = "Projecting position 0 of a Pair(Boolean, Integer) yields a Boolean and position 1 an Integer."
+file = "rules/tuple-projection-typed.fsl"
+command = "check rules/tuple-projection-typed.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "tuple-projection-wrong-type"
+statement = "Position 0 of a Pair(Boolean, Integer) is a Boolean, so returning it as an Integer is refused as a type mismatch."
+file = "rules/tuple-projection-wrong-type.fsl"
+command = "check rules/tuple-projection-wrong-type.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed type-mismatch"
+
+[[case]]
+id = "tuple-projection-out-of-arity"
+statement = "A Pair has positions 0 and 1 only, so projecting position 2 is refused."
+file = "rules/tuple-projection-out-of-arity.fsl"
+command = "check rules/tuple-projection-out-of-arity.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed operator-ineligible"
+
+[[case]]
+id = "tuple-construction-wrong-arity"
+statement = "Constructing a Pair with one component is refused as the wrong tuple arity."
+file = "rules/tuple-construction-wrong-arity.fsl"
+command = "check rules/tuple-construction-wrong-arity.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed type-mismatch"
+
+[[case]]
+id = "tuple-equal-shape-different-type"
+statement = "Tuples Pair and Duo declare the same component types but are different types, so comparing them is refused."
+file = "rules/tuple-equal-shape-different-type.fsl"
+command = "check rules/tuple-equal-shape-different-type.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed type-mismatch"
+
+[[case]]
+id = "union-construction-one-member"
+statement = "A union value is built from exactly one declared member with its declared payload arity."
+file = "rules/union-construction-one-member.fsl"
+command = "check rules/union-construction-one-member.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "union-construction-wrong-arity"
+statement = "Shape::Rect declares two payload positions, so constructing it with one is refused."
+file = "rules/union-construction-wrong-arity.fsl"
+command = "check rules/union-construction-wrong-arity.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed type-mismatch"
+
+[[case]]
+id = "union-construction-unknown-member"
+statement = "Shape declares no member Triangle, so constructing it is refused."
+file = "rules/union-construction-unknown-member.fsl"
+command = "check rules/union-construction-unknown-member.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed type-mismatch"
+
+[[case]]
+id = "union-equality-member-and-payload"
+statement = "Two union values are equal exactly when their active member and payload positions match."
+file = "rules/union-equality-member-and-payload.fsl"
+command = "check rules/union-equality-member-and-payload.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "union-recursion-escaping-admitted"
+statement = "A union whose recursive payload positions pass Option escapes, so the declaration is admitted."
+file = "rules/union-recursion-escaping-admitted.fsl"
+command = "check rules/union-recursion-escaping-admitted.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "union-recursion-without-escape-refused"
+statement = "A union member whose payload holds the union itself without passing an option or an optionally empty collection does not escape, so the declaration is refused as ill typed."
+file = "rules/union-recursion-without-escape-refused.fsl"
+command = "check rules/union-recursion-without-escape-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed type-mismatch"
+
+[[case]]
+id = "union-equal-member-spellings-different-unions"
+statement = "Members with equal spellings of two different unions are different values, so comparing them is refused as a type mismatch."
+file = "rules/union-equal-member-spellings-different-unions.fsl"
+command = "check rules/union-equal-member-spellings-different-unions.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed type-mismatch"
+
+[[case]]
+id = "option-absent-with-expected-type"
+statement = "absent takes the Option type of its position, here the result type of the function."
+file = "rules/option-absent-with-expected-type.fsl"
+command = "check rules/option-absent-with-expected-type.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "option-absent-ambiguous-let"
+statement = "absent bound by an unannotated let has no expected type and is refused as an ambiguous literal."
+file = "rules/option-absent-ambiguous-let.fsl"
+command = "check rules/option-absent-ambiguous-let.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed ambiguous-literal"
+
+[[case]]
+id = "option-absent-ambiguous-equality"
+statement = "absent on both sides of = has no unique expected type and is refused as an ambiguous literal."
+file = "rules/option-absent-ambiguous-equality.fsl"
+command = "check rules/option-absent-ambiguous-equality.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed ambiguous-literal"
+
+[[case]]
+id = "option-absent-in-present"
+statement = "present(absent) gives absent no expected type and is refused as an ambiguous literal."
+file = "rules/option-absent-in-present.fsl"
+command = "check rules/option-absent-in-present.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed ambiguous-literal"
+
+[[case]]
+id = "option-some-expected-type"
+statement = "Some(3) in a position expecting Option<Int[0, 9]> checks with that type."
+file = "rules/option-some-expected-type.fsl"
+command = "check rules/option-some-expected-type.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "option-some-out-of-bounds"
+statement = "Some(30) is not a member of Option<Int[0, 9]> and is refused as a type mismatch."
+file = "rules/option-some-out-of-bounds.fsl"
+command = "check rules/option-some-out-of-bounds.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed type-mismatch"
+
+[[case]]
+id = "option-value-unguarded"
+statement = "value(o) without a presence fact over an optional parameter is refused as an unproved presence."
+file = "rules/option-value-unguarded.fsl"
+command = "check rules/option-value-unguarded.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: undefined_expression unproved-presence"
+
+[[case]]
+id = "option-value-guarded"
+statement = "value(o) under present(o) in a conditional checks."
+file = "rules/option-value-guarded.fsl"
+command = "check rules/option-value-guarded.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "option-optional-field-absent-literal-refused"
+statement = "A record field declared optional takes no absent literal, so P { a: 1, b: absent } is refused as a type mismatch."
+file = "rules/option-optional-field-absent-literal-refused.fsl"
+command = "check rules/option-optional-field-absent-literal-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed type-mismatch"
+
+[[case]]
+id = "option-optional-field-omitted"
+statement = "Omitting an optional record field constructs the absent slot."
+file = "rules/option-optional-field-omitted.fsl"
+command = "check rules/option-optional-field-omitted.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "option-optional-projection-unguarded"
+statement = "Using an optional field as a value without a presence guard is refused."
+file = "rules/option-optional-projection-unguarded.fsl"
+command = "check rules/option-optional-projection-unguarded.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed type-mismatch"
+
+[[case]]
+id = "sequence-literal-without-expected-type"
+statement = "A collection literal bound by an unannotated let has no unique expected type and is refused as an ambiguous literal."
+file = "rules/sequence-literal-without-expected-type.fsl"
+command = "check rules/sequence-literal-without-expected-type.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed ambiguous-literal"
+
+[[case]]
+id = "sequence-literal-with-annotation"
+statement = "An annotated let gives the sequence literal its expected type, so it checks."
+file = "rules/sequence-literal-with-annotation.fsl"
+command = "check rules/sequence-literal-with-annotation.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "collection-bound-part-of-type"
+statement = "A bounded and an unbounded Sequence of the same element type are different types, so equality between them is refused as a type mismatch."
+file = "rules/collection-bound-part-of-type.fsl"
+command = "check rules/collection-bound-part-of-type.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed type-mismatch"
+
+[[case]]
+id = "collection-different-bounds-differ"
+statement = "Sequences with two different present bounds are different types, so equality between them is refused as a type mismatch."
+file = "rules/collection-different-bounds-differ.fsl"
+command = "check rules/collection-different-bounds-differ.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed type-mismatch"
+
+[[case]]
+id = "collection-same-bound-equality"
+statement = "Two parameters of one bounded Sequence type compare with =."
+file = "rules/collection-same-bound-equality.fsl"
+command = "check rules/collection-same-bound-equality.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "collection-bound-inverted"
+statement = "A Sequence bound with its minimum above its maximum is refused."
+file = "rules/collection-bound-inverted.fsl"
+command = "check rules/collection-bound-inverted.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed type-mismatch"
+
+[[case]]
+id = "collection-kinds-differ"
+statement = "A Set and a Bag of one element type are different types, so equality between them is refused."
+file = "rules/collection-kinds-differ.fsl"
+command = "check rules/collection-kinds-differ.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed type-mismatch"
+
+[[case]]
+id = "collection-exceeds-bound-literal"
+statement = "A literal of three elements bound to Sequence<Integer>[0, 2] is refused at evaluation as a cardinality above the maximum."
+file = "rules/collection-exceeds-bound-literal.fsl"
+command = "run requests/collection-exceeds-bound-literal.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: cardinality_out_of_bound above-maximum"
+
+[[case]]
+id = "collection-below-minimum-literal"
+statement = "A literal of one element bound to Sequence<Integer>[2, 3] is refused at evaluation as a cardinality below the minimum."
+file = "rules/collection-below-minimum-literal.fsl"
+command = "run requests/collection-below-minimum-literal.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: cardinality_out_of_bound below-minimum"
+
+[[case]]
+id = "collection-at-maximum-literal"
+statement = "A literal of two elements bound to Sequence<Integer>[0, 2] fits its maximum exactly and evaluates."
+file = "rules/collection-at-maximum-literal.fsl"
+command = "run requests/collection-at-maximum-literal.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "collection-at-minimum-literal"
+statement = "A literal of two elements bound to Sequence<Integer>[2, 3] meets its minimum exactly and evaluates."
+file = "rules/collection-at-minimum-literal.fsl"
+command = "run requests/collection-at-minimum-literal.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "collection-set-dedup-within-bound"
+statement = "A set literal with a duplicate holds two members and so fits Set<Integer>[0, 2]."
+file = "rules/collection-set-dedup-within-bound.fsl"
+command = "check rules/collection-set-dedup-within-bound.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "collection-sequence-counts-duplicates"
+statement = "A sequence literal counts every occurrence, so sequence[1, 1, 2] bound to Sequence<Integer>[0, 2] is refused as a cardinality above the maximum."
+file = "rules/collection-sequence-counts-duplicates.fsl"
+command = "run requests/collection-sequence-counts-duplicates.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: cardinality_out_of_bound above-maximum"
+
+[[case]]
+id = "collection-bag-counts-duplicates"
+statement = "A bag literal counts every occurrence, so bag[1, 1, 2] bound to Bag<Integer>[0, 2] is refused as a cardinality above the maximum."
+file = "rules/collection-bag-counts-duplicates.fsl"
+command = "run requests/collection-bag-counts-duplicates.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: cardinality_out_of_bound above-maximum"
+
+[[case]]
+id = "collection-set-of-float-admitted"
+statement = "A Set may hold Float64 elements, keyed by their total order."
+file = "rules/collection-set-of-float-admitted.fsl"
+command = "check rules/collection-set-of-float-admitted.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "collection-set-ordering-comparison-refused"
+statement = "Sets have no ordering, so < over two sets is refused."
+file = "rules/collection-set-ordering-comparison-refused.fsl"
+command = "check rules/collection-set-ordering-comparison-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed operator-ineligible"
+
+[[case]]
+id = "collection-map-type"
+statement = "A Map parameter type with bounded key and value types is admitted."
+file = "rules/collection-map-type.fsl"
+command = "check rules/collection-map-type.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "collection-map-lookup-unguarded"
+statement = "m[k] without a contains(m, k) fact is refused as an unproved presence."
+file = "rules/collection-map-lookup-unguarded.fsl"
+command = "check rules/collection-map-lookup-unguarded.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: undefined_expression unproved-presence"
+
+[[case]]
+id = "collection-map-lookup-guarded"
+statement = "m[k] under contains(m, k) is typed as the map's value type."
+file = "rules/collection-map-lookup-guarded.fsl"
+command = "check rules/collection-map-lookup-guarded.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "collection-index-unguarded"
+statement = "s[0] over a sequence with no size fact is refused as an unproved presence."
+file = "rules/collection-index-unguarded.fsl"
+command = "check rules/collection-index-unguarded.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: undefined_expression unproved-presence"
+
+[[case]]
+id = "collection-index-guarded"
+statement = "s[0] under size(s) >= 1 is typed as the element type."
+file = "rules/collection-index-guarded.fsl"
+command = "check rules/collection-index-guarded.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "collection-index-on-set-refused"
+statement = "A Set has no positions, so indexing it is refused."
+file = "rules/collection-index-on-set-refused.fsl"
+command = "check rules/collection-index-on-set-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed operator-ineligible"
+
+[[case]]
+id = "float-types-widths-differ"
+statement = "Float32 and Float64 values are different types, so comparing them is refused as ill typed before any evaluation."
+file = "rules/float-types-widths-differ.fsl"
+command = "check rules/float-types-widths-differ.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed type-mismatch"
+
+[[case]]
+id = "float-types-rounding-modes-differ"
+statement = "Float64 values with different rounding modes are different types and cannot be added."
+file = "rules/float-types-rounding-modes-differ.fsl"
+command = "check rules/float-types-rounding-modes-differ.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed type-mismatch"
+
+[[case]]
+id = "float-ieee-and-exact-mix"
+statement = "A Float64 operand and an exact Rational operand cannot be added, so the sum is refused as ill typed."
+file = "rules/float-ieee-and-exact-mix.fsl"
+command = "check rules/float-ieee-and-exact-mix.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed type-mismatch"
+
+[[case]]
+id = "tuple-recursion-unnamed-edge-refused"
+statement = "A tuple position is an unnamed edge, so a tuple that holds itself through Option is refused as ill typed even though the position escapes."
+file = "rules/tuple-recursion-unnamed-edge-refused.fsl"
+command = "check rules/tuple-recursion-unnamed-edge-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed type-mismatch"
+
+[[case]]
+id = "record-recursion-through-sequence-admitted"
+statement = "A record that holds itself through a Sequence whose minimum is 0 escapes and is admitted."
+file = "rules/record-recursion-through-sequence-admitted.fsl"
+command = "check rules/record-recursion-through-sequence-admitted.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "record-recursion-through-nonempty-sequence-refused"
+statement = "A record that holds itself through a Sequence whose minimum is 1 does not escape and is refused as ill typed."
+file = "rules/record-recursion-through-nonempty-sequence-refused.fsl"
+command = "check rules/record-recursion-through-nonempty-sequence-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed type-mismatch"
+
+[[case]]
+id = "record-recursion-through-optional-admitted"
+statement = "A record whose tail is optional, the List shape of the standard, is admitted."
+file = "rules/record-recursion-through-optional-admitted.fsl"
+command = "check rules/record-recursion-through-optional-admitted.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "quantity-argument-in-declared-unit"
+statement = "With the unit ms a function taking Quantity<ms> admits the argument 3 ms."
+file = "rules/quantity-argument-in-declared-unit.fsl"
+command = "check rules/quantity-argument-in-declared-unit.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "quantity-argument-in-other-unit-refused"
+statement = "The same function called with 3 s is refused as a type mismatch because s is not ms; conversion must be explicit."
+file = "rules/quantity-argument-in-other-unit-refused.fsl"
+command = "check rules/quantity-argument-in-other-unit-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed type-mismatch"
+
+[[case]]
+id = "quantity-return-converted-refused"
+statement = "Returning convert<Quantity<s>>(d) from a function whose result is Quantity<ms> is refused as a type mismatch at the returned expression."
+file = "rules/quantity-return-converted-refused.fsl"
+command = "check rules/quantity-return-converted-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed type-mismatch"
+
+[[case]]
+id = "quantity-incompatible-dimensions-refused"
+statement = "Adding a length to a time is refused as ill typed because the units have different dimensions."
+file = "rules/quantity-incompatible-dimensions-refused.fsl"
+command = "check rules/quantity-incompatible-dimensions-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed type-mismatch"
+
+[[case]]
+id = "quantity-equality-distinct-units-refused"
+statement = "Equality of quantities in distinct units is refused as ill typed before any charge."
+file = "rules/quantity-equality-distinct-units-refused.fsl"
+command = "check rules/quantity-equality-distinct-units-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed type-mismatch"
+
+[[case]]
+id = "quantity-equality-same-unit"
+statement = "Quantities in one unit compare with = and with <."
+file = "rules/quantity-equality-same-unit.fsl"
+command = "check rules/quantity-equality-same-unit.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "quantity-convert-between-units"
+statement = "convert<Quantity<s>> of a Quantity<ms> parameter is an explicit conversion that checks."
+file = "rules/quantity-convert-between-units.fsl"
+command = "check rules/quantity-convert-between-units.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "quantity-compound-type-position"
+statement = "Quantity<kg*m^2*s^-2> is accepted in a parameter and a result position over the roots kg, m and s."
+file = "rules/quantity-compound-type-position.fsl"
+command = "check rules/quantity-compound-type-position.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "quantity-unit-expression-empty"
+statement = "Quantity<> names no unit and is refused as invalid syntax."
+file = "rules/quantity-unit-expression-empty.fsl"
+command = "check rules/quantity-unit-expression-empty.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: invalid_syntax unexpected-token"
+
+[[case]]
+id = "quantity-unit-expression-dangling-star"
+statement = "Quantity<m*> ends its unit expression after the operator and is refused as invalid syntax."
+file = "rules/quantity-unit-expression-dangling-star.fsl"
+command = "check rules/quantity-unit-expression-dangling-star.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: invalid_syntax unexpected-token"
+
+[[case]]
+id = "quantity-unit-expression-fractional-power"
+statement = "Quantity<m^1.5> gives a fractional exponent and is refused as invalid syntax."
+file = "rules/quantity-unit-expression-fractional-power.fsl"
+command = "check rules/quantity-unit-expression-fractional-power.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: invalid_syntax unexpected-token"
+
+[[case]]
+id = "quantity-unit-unknown"
+statement = "Quantity<ghost> names a unit that is not declared and is refused."
+file = "rules/quantity-unit-unknown.fsl"
+command = "check rules/quantity-unit-unknown.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: missing_declaration missing-name"
+
+[[case]]
+id = "quantity-scale-by-integer"
+statement = "Multiplying a Quantity<ms> by an integer parameter on either side keeps the unit."
+file = "rules/quantity-scale-by-integer.fsl"
+command = "check rules/quantity-scale-by-integer.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "quantity-scale-by-division"
+statement = "Dividing a Quantity<ms> by the literal 2 scales it and keeps the unit ms, so the result checks as Quantity<ms>."
+file = "rules/quantity-scale-by-division.fsl"
+command = "check rules/quantity-scale-by-division.fsl"
+status = "staged"
+expect_exit = 20
+ready_exit = 0
+waits_on = "QSL-2752"
+why = "The driver build embedding FSL 529282e9 refuses a quantity divided by a number as a type mismatch on the operator; FR-142 defines q / n as scaling."
+needs = "Quantity scaling by division"
+
+[[case]]
+id = "quantity-times-float-refused"
+statement = "Multiplying a quantity by a Float64 is refused as a type mismatch."
+file = "rules/quantity-times-float-refused.fsl"
+command = "check rules/quantity-times-float-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed type-mismatch"
+
+[[case]]
+id = "quantity-carried-distinct-from-plain"
+statement = "Quantity<m, Int[-5, 5]> is a different type from Quantity<m>, so a carried quantity cannot stand where the plain one is required."
+file = "rules/quantity-carried-distinct-from-plain.fsl"
+command = "check rules/quantity-carried-distinct-from-plain.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed type-mismatch"
+
+[[case]]
+id = "quantity-carried-types-differ-by-carrier"
+statement = "Quantity<m, Int[-5, 5]> and Quantity<m, Int[-6, 6]> are different types, so comparing them is refused."
+file = "rules/quantity-carried-types-differ-by-carrier.fsl"
+command = "check rules/quantity-carried-types-differ-by-carrier.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed type-mismatch"
+
+[[case]]
+id = "quantity-carried-rational-type"
+statement = "Quantity<m, Rational[-3, 7; 1, 12]> is a well-formed carried quantity type."
+file = "rules/quantity-carried-rational-type.fsl"
+command = "check rules/quantity-carried-rational-type.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "uuid-and-timestamp-differ"
+statement = "A UUID and a Timestamp cannot be compared, so equality is refused as a type mismatch."
+file = "rules/uuid-and-timestamp-differ.fsl"
+command = "check rules/uuid-and-timestamp-differ.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed type-mismatch"
+
+[[case]]
+id = "uuid-equality-same-kind"
+statement = "Two UUID values compare with =."
+file = "rules/uuid-equality-same-kind.fsl"
+command = "check rules/uuid-equality-same-kind.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "uuid-versus-integer"
+statement = "A UUID and an Integer cannot be compared, so equality is refused as a type mismatch."
+file = "rules/uuid-versus-integer.fsl"
+command = "check rules/uuid-versus-integer.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed type-mismatch"
+
+[[case]]
+id = "timestamp-versus-boolean"
+statement = "A Timestamp and a Boolean cannot be compared, so equality is refused as a type mismatch."
+file = "rules/timestamp-versus-boolean.fsl"
+command = "check rules/timestamp-versus-boolean.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed type-mismatch"
+
+[[case]]
+id = "bytes-versus-string"
+statement = "Bytes and String cannot be compared, so equality is refused as a type mismatch."
+file = "rules/bytes-versus-string.fsl"
+command = "check rules/bytes-versus-string.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed type-mismatch"
+
+[[case]]
+id = "bytes-equality-same-kind"
+statement = "Two Bytes values compare with =."
+file = "rules/bytes-equality-same-kind.fsl"
+command = "check rules/bytes-equality-same-kind.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "json-object-versus-boolean"
+statement = "JsonObject and Boolean cannot be compared, so equality is refused as a type mismatch."
+file = "rules/json-object-versus-boolean.fsl"
+command = "check rules/json-object-versus-boolean.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed type-mismatch"
+
+[[case]]
+id = "bytes-versus-json-object"
+statement = "Bytes and JsonObject cannot be compared, so equality is refused as a type mismatch."
+file = "rules/bytes-versus-json-object.fsl"
+command = "check rules/bytes-versus-json-object.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed type-mismatch"
+
+[[case]]
+id = "integer-and-text-differ"
+statement = "An Integer and a Text cannot be compared, so equality is refused as a type mismatch."
+file = "rules/integer-and-text-differ.fsl"
+command = "check rules/integer-and-text-differ.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed type-mismatch"
+
+[[case]]
+id = "boolean-and-integer-differ"
+statement = "A Boolean and an Integer cannot be compared, so equality is refused as a type mismatch."
+file = "rules/boolean-and-integer-differ.fsl"
+command = "check rules/boolean-and-integer-differ.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed type-mismatch"
+
+[[case]]
+id = "int-and-integer-implicit-equality-refused"
+statement = "An Int[0, 9] and an Integer are different numeric types, so = between them without an explicit equality conversion is refused as a type mismatch."
+file = "rules/int-and-integer-implicit-equality-refused.fsl"
+command = "check rules/int-and-integer-implicit-equality-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed type-mismatch"
+
+[[case]]
+id = "int-to-integer-equality-conversion"
+statement = "convert<Integer> of an Int[0, 9] operand is an admitted equality conversion, so it compares with an Integer."
+file = "rules/int-to-integer-equality-conversion.fsl"
+command = "check rules/int-to-integer-equality-conversion.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "integer-to-int-equality-conversion-refused"
+statement = "An unbounded Integer converts only to Integer, so convert<Int[0, 9]> of an Integer operand in an equality is refused as ill typed."
+file = "rules/integer-to-int-equality-conversion-refused.fsl"
+command = "check rules/integer-to-int-equality-conversion-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed type-mismatch"
+
+[[case]]
+id = "int-to-rational-equality-conversion"
+statement = "convert<Rational[0, 9; 1, 3]> of an Int[0, 9] operand is an admitted equality conversion because the integer range and the denominator 1 fit."
+file = "rules/int-to-rational-equality-conversion.fsl"
+command = "check rules/int-to-rational-equality-conversion.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "int-to-rational-equality-conversion-too-narrow"
+statement = "An Int[0, 99] does not fit the numerator range of Rational[0, 9; 1, 3], so the equality conversion is refused as ill typed even if the value would fit."
+file = "rules/int-to-rational-equality-conversion-too-narrow.fsl"
+command = "check rules/int-to-rational-equality-conversion-too-narrow.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed type-mismatch"
+
+[[case]]
+id = "int-to-decimal-equality-conversion"
+statement = "convert<Decimal[0, 999; 0, 2; exact]> of an Int[0, 9] operand is an admitted equality conversion because 9 at scale 0 fits the coefficient range."
+file = "rules/int-to-decimal-equality-conversion.fsl"
+command = "check rules/int-to-decimal-equality-conversion.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "int-to-decimal-equality-conversion-too-narrow"
+statement = "An Int[0, 9] at scale 1 needs the coefficient 90, which exceeds the range of Decimal[0, 50; 1, 2; exact], so the equality conversion is refused as ill typed."
+file = "rules/int-to-decimal-equality-conversion-too-narrow.fsl"
+command = "check rules/int-to-decimal-equality-conversion-too-narrow.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed type-mismatch"
+
+[[case]]
+id = "float-and-int-equality-refused"
+statement = "A Float64 and an Int[0, 9] cannot be compared with =, so the comparison is refused as ill typed."
+file = "rules/float-and-int-equality-refused.fsl"
+command = "check rules/float-and-int-equality-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed type-mismatch"
+
+[[case]]
+id = "option-and-payload-compare"
+statement = "An Option<Integer> compares with an Option<Integer> but a bare Integer cannot be compared with an Option<Integer>."
+file = "rules/option-and-payload-compare.fsl"
+command = "check rules/option-and-payload-compare.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed type-mismatch"
+
+[[case]]
+id = "option-equality-same-type"
+statement = "Two Option<Integer> values compare with =."
+file = "rules/option-equality-same-type.fsl"
+command = "check rules/option-equality-same-type.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "map-equality-same-type"
+statement = "Two Map parameters of one type compare with =."
+file = "rules/map-equality-same-type.fsl"
+command = "check rules/map-equality-same-type.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "sum-equality-unproved-range"
+statement = "Comparing c = a + b where a, b and c are Int[0, 10] is refused as an unproved range because the sum can reach 20."
+file = "rules/sum-equality-unproved-range.fsl"
+command = "check rules/sum-equality-unproved-range.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: undefined_expression unproved-range"
+
+[[case]]
+id = "sum-equality-guarded-range-checks"
+statement = "With the guard a + b <= 10 the comparison c = a + b is admitted because the sum lies in Int[0, 10]."
+file = "rules/sum-equality-guarded-range-checks.fsl"
+command = "check rules/sum-equality-guarded-range-checks.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "set-permutation-equal"
+statement = "Permuting the members of a set does not change equality, so set[1, 2] = set[2, 1] holds."
+file = "rules/set-permutation-equal.fsl"
+command = "run requests/set-permutation-equal.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "bag-permutation-equal"
+statement = "Permuting the occurrences of a bag does not change equality, so bag[1, 1, 2] = bag[2, 1, 1] holds."
+file = "rules/bag-permutation-equal.fsl"
+command = "run requests/bag-permutation-equal.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "sequence-permutation-unequal"
+statement = "Permuting a sequence changes it, so sequence[1, 2] differs from sequence[2, 1]."
+file = "rules/sequence-permutation-unequal.fsl"
+command = "run requests/sequence-permutation-unequal.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "ordered-set-permutation-unequal"
+statement = "Permuting an ordered set changes it, so orderedSet[1, 2] differs from orderedSet[2, 1]."
+file = "rules/ordered-set-permutation-unequal.fsl"
+command = "run requests/ordered-set-permutation-unequal.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "set-drops-duplicate"
+statement = "A set holds one member per distinct value, so set[1, 1, 2] equals set[1, 2]."
+file = "rules/set-drops-duplicate.fsl"
+command = "run requests/set-drops-duplicate.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "sequence-keeps-duplicate"
+statement = "A sequence keeps every occurrence, so sequence[1, 1] differs from sequence[1]."
+file = "rules/sequence-keeps-duplicate.fsl"
+command = "run requests/sequence-keeps-duplicate.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "bag-keeps-duplicate"
+statement = "A bag keeps every occurrence, so bag[1, 1] differs from bag[1]."
+file = "rules/bag-keeps-duplicate.fsl"
+command = "run requests/bag-keeps-duplicate.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "ordered-set-drops-duplicate"
+statement = "An ordered set keeps the first occurrence of each value, so orderedSet[2, 1, 2] equals orderedSet[2, 1]."
+file = "rules/ordered-set-drops-duplicate.fsl"
+command = "run requests/ordered-set-drops-duplicate.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "set-bound-counts-unique-members"
+statement = "A set literal counts unique members against its bound, so set[1, 1, 1] fits Set<Integer>[0, 1]."
+file = "rules/set-bound-counts-unique-members.fsl"
+command = "run requests/set-bound-counts-unique-members.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "unbounded-collection-admits-many"
+statement = "A Sequence type with no declared bound admits any number of occurrences, here five."
+file = "rules/unbounded-collection-admits-many.fsl"
+command = "run requests/unbounded-collection-admits-many.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "empty-collection-at-zero-minimum"
+statement = "An empty sequence fits a bound whose minimum is 0."
+file = "rules/empty-collection-at-zero-minimum.fsl"
+command = "run requests/empty-collection-at-zero-minimum.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "record-structural-equality-run"
+statement = "Two record values with the same field values compare equal at evaluation and differ when one field differs."
+file = "rules/record-structural-equality-run.fsl"
+command = "run requests/record-structural-equality-run.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "tuple-structural-equality-run"
+statement = "Two tuple values of one type compare by position at evaluation."
+file = "rules/tuple-structural-equality-run.fsl"
+command = "run requests/tuple-structural-equality-run.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "union-equality-run"
+statement = "Union values compare by active member and payload at evaluation."
+file = "rules/union-equality-run.fsl"
+command = "run requests/union-equality-run.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "option-absent-differs-from-present"
+statement = "An absent option differs from a present one, and two absent options of one type are equal."
+file = "rules/option-absent-differs-from-present.fsl"
+command = "run requests/option-absent-differs-from-present.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "text-canonical-equivalents-equal-under-nfc"
+statement = "Under the nfc profile the precomposed e-acute and e followed by a combining acute accent are the same text."
+file = "rules/text-canonical-equivalents-equal-under-nfc.fsl"
+command = "run requests/text-canonical-equivalents-equal-under-nfc.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "text-canonical-equivalents-differ-under-unicode-scalars"
+statement = "Under the unicode-scalars profile no normalization is applied, so the precomposed e-acute and e followed by a combining acute accent are different texts."
+file = "rules/text-canonical-equivalents-differ-under-unicode-scalars.fsl"
+command = "run requests/text-canonical-equivalents-differ-under-unicode-scalars.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "string-never-normalized"
+statement = "A String compares scalar sequences without normalization, so the precomposed and decomposed e-acute differ."
+file = "rules/string-never-normalized.fsl"
+command = "run requests/string-never-normalized.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "text-length-counted-after-normalization"
+statement = "The decomposed spelling e followed by a combining accent has two scalars, but under nfc it normalizes to one, so it fits Text[0, 1; nfc]."
+file = "rules/text-length-counted-after-normalization.fsl"
+command = "run requests/text-length-counted-after-normalization.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "text-literal-over-bound-nfc"
+statement = "The literal \"ab\" has two scalars and does not fit Text[0, 1; nfc], so it is refused as a type mismatch before evaluation."
+file = "rules/text-literal-over-bound-nfc.fsl"
+command = "run requests/text-literal-over-bound-nfc.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed type-mismatch"
+
+[[case]]
+id = "text-length-at-bound"
+statement = "Text of exactly the maximum length fits Text[0, 2; nfc]."
+file = "rules/text-length-at-bound.fsl"
+command = "run requests/text-length-at-bound.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "text-literal-below-minimum"
+statement = "The literal \"a\" has one scalar and does not reach the minimum of Text[2, 4; nfc], so it is refused as a type mismatch before evaluation."
+file = "rules/text-literal-below-minimum.fsl"
+command = "run requests/text-literal-below-minimum.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed type-mismatch"
+
+[[case]]
+id = "text-lexicographic-order"
+statement = "Text orders by its scalars lexicographically, so \"ab\" < \"b\" and a proper prefix orders first."
+file = "rules/text-lexicographic-order.fsl"
+command = "run requests/text-lexicographic-order.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "enum-ordered-compare-run"
+statement = "An ordered enumeration orders by declaration order at evaluation, so Slow < Fast < Faster."
+file = "rules/enum-ordered-compare-run.fsl"
+command = "run requests/enum-ordered-compare-run.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "reference-of-non-object-refused"
+statement = "Reference<T> admits only a model object type, so Reference<Integer> is refused."
+file = "rules/reference-of-non-object-refused.fsl"
+command = "check rules/reference-of-non-object-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: invalid_syntax unexpected-token"
+
+[[case]]
+id = "type-alias-unknown-name"
+statement = "A type alias that names a type that is not declared is refused."
+file = "rules/type-alias-unknown-name.fsl"
+command = "check rules/type-alias-unknown-name.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: missing_declaration missing-name"
+
+[[case]]
+id = "type-alias-transparent"
+statement = "A type alias denotes the type it names, so a parameter of the alias and one of its target compare with =."
+file = "rules/type-alias-transparent.fsl"
+command = "check rules/type-alias-transparent.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "nested-collection-element-types"
+statement = "A Set whose elements are Sequences, and a Sequence of Options, are admitted collection element types."
+file = "rules/nested-collection-element-types.fsl"
+command = "check rules/nested-collection-element-types.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "float-set-total-order-members-run"
+statement = "A set of Float64 values keys its members by the total order, so +0 and -0 are two members and the same NaN bits twice are one."
+file = "rules/float-set-total-order-members-run.fsl"
+command = "run requests/float-set-total-order-members-run.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "decimal-equality-ignores-scale"
+statement = "Decimal equality compares mathematical values, so 1.0 written at scale 1 equals 1.00 written at scale 2 once both are held in one Decimal type."
+file = "rules/decimal-equality-ignores-scale.fsl"
+command = "run requests/decimal-equality-ignores-scale.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "arg-widening-integer-parameter"
+statement = "An Int[0, 1000] argument is admitted where an Integer or an Int[0, 2000] parameter is declared."
+file = "rules/arg-widening-integer-parameter.fsl"
+command = "check rules/arg-widening-integer-parameter.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "arg-narrowing-unproved-range"
+statement = "An Int[0, 20] argument where an Int[0, 9] parameter is declared is refused as an unproved range."
+file = "rules/arg-narrowing-unproved-range.fsl"
+command = "check rules/arg-narrowing-unproved-range.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: undefined_expression unproved-range"
+
+[[case]]
+id = "arg-narrowing-from-integer-unproved-range"
+statement = "An unbounded Integer argument where an Int[0, 9] parameter is declared is refused as an unproved range."
+file = "rules/arg-narrowing-from-integer-unproved-range.fsl"
+command = "check rules/arg-narrowing-from-integer-unproved-range.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: undefined_expression unproved-range"
+
+[[case]]
+id = "arg-narrowing-proved-by-guard"
+statement = "Under the guard w <= 9 an Int[0, 20] argument is admitted where an Int[0, 9] parameter is declared."
+file = "rules/arg-narrowing-proved-by-guard.fsl"
+command = "check rules/arg-narrowing-proved-by-guard.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "union-payload-widening"
+statement = "An Int[0, 1000] value is admitted as the payload of a member declared Integer or Int[0, 2000]."
+file = "rules/union-payload-widening.fsl"
+command = "check rules/union-payload-widening.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "union-payload-narrowing-unproved"
+statement = "An Int[0, 20] value as the payload of a member declared Int[0, 9] is refused as an unproved range."
+file = "rules/union-payload-narrowing-unproved.fsl"
+command = "check rules/union-payload-narrowing-unproved.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: undefined_expression unproved-range"
+
+[[case]]
+id = "tuple-position-widening"
+statement = "An Int[0, 1000] value is admitted at the Integer and the Int[0, 2000] positions of Pair(Integer, Int[0, 2000])."
+file = "rules/tuple-position-widening.fsl"
+command = "check rules/tuple-position-widening.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "tuple-position-narrowing-unproved"
+statement = "An unbounded Integer at the position of Small(Int[0, 9]) is refused as an unproved range."
+file = "rules/tuple-position-narrowing-unproved.fsl"
+command = "check rules/tuple-position-narrowing-unproved.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: undefined_expression unproved-range"
+
+[[case]]
+id = "some-integer-range-no-widening"
+statement = "Some(b) with b of Int[0, 3] where Option<Int[0, 9]> is expected stays refused as a type mismatch because option payloads take no integer widening."
+file = "rules/some-integer-range-no-widening.fsl"
+command = "check rules/some-integer-range-no-widening.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed type-mismatch"
+
+[[case]]
+id = "int-and-integer-equality-refused-x-n"
+statement = "x = n for x of Int[0, 1000] and n of Integer is refused as a type mismatch."
+file = "rules/int-and-integer-equality-refused-x-n.fsl"
+command = "check rules/int-and-integer-equality-refused-x-n.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed type-mismatch"
+
+[[case]]
+id = "ordering-int-and-integer-accepted"
+statement = "An ordering comparison between an Integer and an Int[0, 3] operand supplies no expected type and is accepted."
+file = "rules/ordering-int-and-integer-accepted.fsl"
+command = "check rules/ordering-int-and-integer-accepted.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "equality-integer-path-against-int-refused"
+statement = "A plain Integer parameter compared with = against an Int[0, 3] parameter is refused as a type mismatch without convert."
+file = "rules/equality-integer-path-against-int-refused.fsl"
+command = "check rules/equality-integer-path-against-int-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed type-mismatch"
+
+[[case]]
+id = "equality-unary-minus-against-int-refused"
+statement = "Unary minus is not a binary arithmetic operand, so -t = u for t and u of Int[0, 3] is refused as a type mismatch."
+file = "rules/equality-unary-minus-against-int-refused.fsl"
+command = "check rules/equality-unary-minus-against-int-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed type-mismatch"
+
+[[case]]
+id = "uuid-ordering-operator-ineligible"
+statement = "No ordering operator applies to UUID, so < over two UUID parameters is refused as an ineligible operator."
+file = "rules/uuid-ordering-operator-ineligible.fsl"
+command = "check rules/uuid-ordering-operator-ineligible.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed operator-ineligible"
+
+[[case]]
+id = "timestamp-ordering-operator-ineligible"
+statement = "No ordering operator applies to Timestamp, so >= over two Timestamp parameters is refused as an ineligible operator."
+file = "rules/timestamp-ordering-operator-ineligible.fsl"
+command = "check rules/timestamp-ordering-operator-ineligible.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed operator-ineligible"
+
+[[case]]
+id = "float-equality-signed-zero-and-nan"
+statement = "Float64 equality follows numericEqual: +0 equals -0, and a NaN is unequal to itself."
+file = "rules/float-equality-signed-zero-and-nan.fsl"
+command = "run requests/float-equality-signed-zero-and-nan.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "float-record-leaf-numeric-equality"
+statement = "A Float64 leaf inside a record compares by numericEqual, so records holding +0 and -0 are equal and records holding NaN are unequal."
+file = "rules/float-record-leaf-numeric-equality.fsl"
+command = "run requests/float-record-leaf-numeric-equality.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "option-null-refused"
+statement = "null is not an Option value, so assigning it to an Option<Int[0, 9]> result is refused."
+file = "rules/option-null-refused.fsl"
+command = "check rules/option-null-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed type-mismatch"
+
+[[case]]
+id = "option-value-of-absent-ambiguous"
+statement = "value(absent) gives absent no expected type and is refused as an ambiguous literal."
+file = "rules/option-value-of-absent-ambiguous.fsl"
+command = "check rules/option-value-of-absent-ambiguous.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed ambiguous-literal"
+
+[[case]]
+id = "reference-upcast-to-supertype-compares"
+statement = "Under the complete model profile a Reference to a source object Sub that extends Order compares with a Reference to Order through the upcast, so the comparison checks."
+file = "rules/reference-upcast-to-supertype-compares.fsl"
+command = "check rules/reference-upcast-to-supertype-compares.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "reference-nonconforming-pair-refused"
+statement = "A Reference to Other and a Reference to Order, where Other does not conform to Order, cannot be compared, so the comparison is refused as a type mismatch."
+file = "rules/reference-nonconforming-pair-refused.fsl"
+command = "check rules/reference-nonconforming-pair-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed type-mismatch"
+
+[[case]]
+id = "reference-downcast-comparison-checks-by-supertype-only"
+statement = "A Reference to Order compared with a Reference to Sub, the subtype, checks in either operand order because the pair conforms."
+file = "rules/reference-downcast-comparison-checks-by-supertype-only.fsl"
+command = "check rules/reference-downcast-comparison-checks-by-supertype-only.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "reference-equality-same-type"
+statement = "Two Reference parameters of one object type compare with =, by object identity."
+file = "rules/reference-equality-same-type.fsl"
+command = "check rules/reference-equality-same-type.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "float-ordering-rounding-modes-differ"
+statement = "Ordering two Float64 operands whose rounding modes differ is refused as a type mismatch before any evaluation."
+file = "rules/float-ordering-rounding-modes-differ.fsl"
+command = "check rules/float-ordering-rounding-modes-differ.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed type-mismatch"
+
+[[case]]
+id = "float-ordering-against-exact-type"
+statement = "Ordering a Float64 operand against an Int[0, 9] operand is refused as a type mismatch before any evaluation."
+file = "rules/float-ordering-against-exact-type.fsl"
+command = "check rules/float-ordering-against-exact-type.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed type-mismatch"
+
+[[case]]
+id = "float-ordering-widths-differ"
+statement = "Ordering a Float32 operand against a Float64 operand is refused as a type mismatch before any evaluation."
+file = "rules/float-ordering-widths-differ.fsl"
+command = "check rules/float-ordering-widths-differ.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed type-mismatch"
+
+[[case]]
+id = "float-total-order-same-type-admitted"
+statement = "totalOrder over two operands of one Float64 type checks."
+file = "rules/float-total-order-same-type-admitted.fsl"
+command = "check rules/float-total-order-same-type-admitted.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "field-sum-equality-unguarded-refused"
+statement = "later.tally = earlier.tally + 1 over fields of Int[0, 3] refuses as an unproved range because the sum lies in [1, 4]."
+file = "rules/field-sum-equality-unguarded-refused.fsl"
+command = "check rules/field-sum-equality-unguarded-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: undefined_expression unproved-range"
+
+[[case]]
+id = "field-sum-equality-same-field-refused"
+statement = "r.tally = r.tally + 1 over a field of Int[0, 3] refuses as an unproved range at its sum."
+file = "rules/field-sum-equality-same-field-refused.fsl"
+command = "check rules/field-sum-equality-same-field-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: undefined_expression unproved-range"
+
+[[case]]
+id = "field-sum-equality-guarded-admitted"
+statement = "With the guard e.tally < 3 the relation l.tally = e.tally + 1 checks because the sum lies in [1, 3]."
+file = "rules/field-sum-equality-guarded-admitted.fsl"
+command = "check rules/field-sum-equality-guarded-admitted.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"

@@ -1,0 +1,6 @@
+// FSpec FR-143-AC-2
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+tuple Pair(Boolean, Integer);
+tuple Duo(Boolean, Integer);
+function a using v(): Boolean pure { Pair(true, 1) = Duo(true, 1) }
