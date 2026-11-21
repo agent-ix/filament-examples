@@ -6,6 +6,9 @@ model Arch = "example/architecture";
 
 random Arch::Service::call(ok) ~ { true: 9999, false: 1 };
 
+// A service is up after a call exactly when the call succeeded.
+post UpFollowsCall using v on Arch::Service::call { self.up = ok }
+
 // A service that calls again and again fails at some call with probability 1, so
 // under the scheduler that keeps calling it is not always up: the claim misses.
 // No confidence clause: only exact computation decides this claim.

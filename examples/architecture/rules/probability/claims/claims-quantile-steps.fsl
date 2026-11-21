@@ -4,6 +4,11 @@ profile ev = "filament.temporal.event-position.false-extension/v1";
 profile inf = "filament.temporal.infinite-trace/v1";
 model Arch = "example/architecture";
 
+random Arch::Service::call(ok) ~ { true: 9999, false: 1 };
+
+// A service is up after a call exactly when the call succeeded.
+post UpFollowsCall using v on Arch::Service::call { self.up = ok }
+
 probabilistic DownSoon using ev on Arch over (s: Arch::Service) under every scheduler on origin {
   quantile 0.95 of (steps from holds(s.up) until holds(not s.up) within 10) <= 5
 }

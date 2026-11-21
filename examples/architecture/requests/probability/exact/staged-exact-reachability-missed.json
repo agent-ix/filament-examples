@@ -1,5 +1,5 @@
 {
-  "format": "native-compile/1",
+  "format": "native-analyze/1",
   "request": {
     "models": [
       {
@@ -21,6 +21,19 @@
         "document": "stagedexactreachabilitymissed",
         "formal_revision": 1
       }
-    }
+    },
+    "documents": [
+      {
+        "file": "../../../data/start-service-down.json"
+      }
+    ],
+    "items": [
+      {
+        "claim": "StaysUp",
+        "probabilistic": {
+          "evidence": "exact"
+        }
+      }
+    ]
   }
 }

@@ -4,7 +4,13 @@ profile ev = "filament.temporal.event-position.false-extension/v1";
 profile inf = "filament.temporal.infinite-trace/v1";
 model Arch = "example/architecture";
 
-// The claim limits the schedulers to those that serve the call operation weakly fairly.
+random Arch::Service::call(ok) ~ { true: 9999, false: 1 };
+
+// A service is up after a call exactly when the call succeeded.
+post UpFollowsCall using v on Arch::Service::call { self.up = ok }
+
+// The service starts down and only weakly fair schedulers are considered; each call brings it up with
+// probability 9999 in 10,000, so it is up within 10 calls with probability 1 - (1/10000)^10.
 probabilistic FairlyUp using ev on Arch over (s: Arch::Service) under every scheduler fair weak Arch::Service::call on origin {
   probability >= 0.9 [ eventually[0,10] holds(s.up) ]
 }

@@ -6,6 +6,10 @@ model Arch = "example/architecture";
 
 random Arch::Service::call(ok) ~ { true: 9999, false: 1 };
 
+// A service is up after a call exactly when the call succeeded.
+post UpFollowsCall using v on Arch::Service::call { self.up = ok }
+
+// The service starts down; every scheduler must call it, and each call brings it up with probability 9999 in 10,000.
 // No confidence clause: only exact computation decides this claim.
 probabilistic ComesUp using inf on Arch over (s: Arch::Service) under every scheduler on origin {
   probability >= 0.9 [ eventually holds(s.up) ]
