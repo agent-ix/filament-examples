@@ -75,6 +75,13 @@ fn protocol_docs_examples_run_and_match_records() -> TestResult {
             document["items"][0]["record"]["result"], result,
             "{case}: {document}"
         );
+        if *case == "protocol-unrealizable" {
+            let counterexample = &document["items"][0]["counterexample"];
+            assert!(
+                counterexample.is_object(),
+                "the unrealizable docs example must expose its counterexample: {document}"
+            );
+        }
     }
     Ok(())
 }
