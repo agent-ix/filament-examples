@@ -5109,6 +5109,26 @@
     },
     {
       "system": "language-values",
+      "case": "native-operation-dispatch",
+      "status": "running",
+      "rule": "DispatchSelectsSubtype",
+      "statement": "A native Sub object conforms to Order, and self.size() in an Order invariant selects Sub's redefining body (7) over Order's body (1).",
+      "rule_file": "examples/language-values/rules/native-operation-dispatch.fsl",
+      "data_files": [
+        "examples/language-values/data/native-operation-dispatch.json"
+      ],
+      "request_file": "examples/language-values/requests/native-operation-dispatch.json",
+      "expected_file": "examples/language-values/expected/native-operation-dispatch.json",
+      "verdict": "holds",
+      "exit": 0,
+      "ready_exit": null,
+      "engine": null,
+      "clock": null,
+      "waits_on": null,
+      "needs": null
+    },
+    {
+      "system": "language-values",
       "case": "float-specials-nan",
       "status": "running",
       "rule": "example",
