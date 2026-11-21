@@ -1,33 +1,1018 @@
 {
-  "category": "unsupported",
-  "last_stage": "S6b",
+  "category": "violation",
+  "last_stage": "S8",
   "result": null,
   "first_diagnostic": null,
   "items": [
     {
       "axes": {
-        "activation": "unavailable",
-        "execution": null,
-        "settlement": "unavailable",
-        "truth": null
+        "activation": "active",
+        "execution": "completed",
+        "settlement": "decisive-counterexample",
+        "truth": "false"
       },
-      "category": "unsupported",
+      "category": "violation",
       "claim_name": "PartFlow",
-      "record": {
-        "diagnostic": {
-          "cause": "unbounded-extent",
-          "code": "unsupported_projection",
-          "detail": {
-            "candidate": "en-1",
-            "kind": "temporal-satisfaction",
-            "modes": [
-              "bounded",
-              "unbounded"
-            ]
+      "counterexample": {
+        "blocked": [
+          {
+            "cause": {
+              "type": "constraint"
+            },
+            "rest": {
+              "kind": "node",
+              "node": "Main/Reserved",
+              "type": "rest"
+            },
+            "thread": {
+              "instance": "0",
+              "steps": [],
+              "type": "thread-path"
+            }
           }
+        ],
+        "fairness": [],
+        "initial_state": 0,
+        "interval": null,
+        "kind": "deadlock",
+        "loop": [],
+        "over_binding": null,
+        "prefix": [
+          {
+            "post_state": {
+              "key": "eyJib3VuZHMiOnsiZW50cmllcyI6W3sia2V5Ijp7Im1lc3NhZ2UiOnsiaW5zdGFuY2UiOiIwIiwibm9kZSI6IjEiLCJvcmRpbmFsIjoiMCIsInBhdGgiOnsiaW5zdGFuY2UiOiIwIiwic3RlcHMiOltdLCJ0eXBlIjoidGhyZWFkLXBhdGgifSwidHlwZSI6Im1lc3NhZ2Utb2NjdXJyZW5jZSJ9LCJ0eXBlIjoibmV4dC1kZWxpdmVyeSJ9LCJ2YWx1ZSI6eyJ0eXBlIjoiaW50ZWdlciIsInZhbHVlIjoiMSJ9fSx7ImtleSI6eyJub2RlIjoiTWFpbi9SZWxlYXNlZCIsInRocmVhZCI6eyJpbnN0YW5jZSI6IjAiLCJzdGVwcyI6W10sInR5cGUiOiJ0aHJlYWQtcGF0aCJ9LCJ0eXBlIjoibWVzc2FnZS1vcmRpbmFsIn0sInZhbHVlIjp7InR5cGUiOiJpbnRlZ2VyIiwidmFsdWUiOiIxIn19XSwidHlwZSI6Im1hcCJ9LCJjb250cm9sIjp7ImVudHJpZXMiOlt7ImtleSI6eyJpbnN0YW5jZSI6IjAiLCJzdGVwcyI6W10sInR5cGUiOiJ0aHJlYWQtcGF0aCJ9LCJ2YWx1ZSI6eyJkaXNwb3NpdGlvbiI6InJ1bm5pbmciLCJyZXN0Ijp7ImtpbmQiOiJub2RlIiwibm9kZSI6Ik1haW4vUmVjZWl2ZWQiLCJ0eXBlIjoicmVzdCJ9LCJ0eXBlIjoidGhyZWFkLXN0YXRlIn19LHsia2V5Ijp7Im9yZGluYWwiOiIwIiwidHlwZSI6InByb3RvY29sLWluc3RhbmNlIn0sInZhbHVlIjp7ImZpbmlzaGVkIjpmYWxzZSwicmVjb3Zlcnlfc3VtbWFyeSI6InVudHJpZ2dlcmVkIiwidHlwZSI6Imluc3RhbmNlLXN0YXRlIn19XSwidHlwZSI6Im1hcCJ9LCJtZW1vcnkiOnsiZW50cmllcyI6W10sInR5cGUiOiJtYXAifSwib2JzZXJ2YXRpb25zIjp7ImVudHJpZXMiOltdLCJ0eXBlIjoibWFwIn0sInF1ZXVlcyI6eyJlbnRyaWVzIjpbeyJrZXkiOnsiY2hhbm5lbCI6IlBhcnRGbG93OjpSZWxlYXNlIiwiZmlmb19rZXkiOnsidHlwZSI6ImludGVnZXIiLCJ2YWx1ZSI6IjQ3MTEifSwiaW5zdGFuY2UiOiIwIiwidHlwZSI6InF1ZXVlIn0sInZhbHVlIjp7ImVsZW1lbnRzIjpbeyJkZWxpdmVyeSI6IjAiLCJtZXNzYWdlIjp7Imluc3RhbmNlIjoiMCIsIm5vZGUiOiIxIiwib3JkaW5hbCI6IjAiLCJwYXRoIjp7Imluc3RhbmNlIjoiMCIsInN0ZXBzIjpbXSwidHlwZSI6InRocmVhZC1wYXRoIn0sInR5cGUiOiJtZXNzYWdlLW9jY3VycmVuY2UifSwicGF5bG9hZCI6eyJmaWVsZHMiOlt7Im5hbWUiOiJvayIsInZhbHVlIjp7InR5cGUiOiJib29sZWFuIiwidmFsdWUiOnRydWV9fSx7Im5hbWUiOiJwYXJ0IiwidmFsdWUiOnsidHlwZSI6ImludGVnZXIiLCJ2YWx1ZSI6IjQ3MTEifX1dLCJuYW1lIjoie1wibm9kZVwiOlwiaXg6Ly9leGFtcGxlL3BhcnRzL1dvcmtPcmRlclwiLFwicGFja2FnZVwiOlwiZXhhbXBsZS9wYXJ0c1wifSIsInR5cGUiOiJyZWNvcmQifSwidHlwZSI6InF1ZXVlLWVudHJ5In1dLCJ0eXBlIjoic2VxdWVuY2UifX1dLCJ0eXBlIjoibWFwIn0sInJvbGVzIjp7ImVudHJpZXMiOlt7ImtleSI6eyJpbnN0YW5jZSI6IjAiLCJyb2xlIjoiQXNzZW1ibHkiLCJ0eXBlIjoicm9sZSJ9LCJ2YWx1ZSI6eyJ0eXBlIjoidGV4dCIsInZhbHVlIjoiZXhhbXBsZS9wYXJ0cyJ9fSx7ImtleSI6eyJpbnN0YW5jZSI6IjAiLCJyb2xlIjoiSW5zcGVjdGlvbiIsInR5cGUiOiJyb2xlIn0sInZhbHVlIjp7InR5cGUiOiJ0ZXh0IiwidmFsdWUiOiJleGFtcGxlL3BhcnRzIn19LHsia2V5Ijp7Imluc3RhbmNlIjoiMCIsInJvbGUiOiJNYWNoaW5pbmciLCJ0eXBlIjoicm9sZSJ9LCJ2YWx1ZSI6eyJ0eXBlIjoidGV4dCIsInZhbHVlIjoiZXhhbXBsZS9wYXJ0cyJ9fSx7ImtleSI6eyJpbnN0YW5jZSI6IjAiLCJyb2xlIjoiUGxhbm5pbmciLCJ0eXBlIjoicm9sZSJ9LCJ2YWx1ZSI6eyJ0eXBlIjoidGV4dCIsInZhbHVlIjoiZXhhbXBsZS9wYXJ0cyJ9fV0sInR5cGUiOiJtYXAifSwic2VtYW50aWMiOnsiZW50cmllcyI6W3sia2V5Ijp7InR5cGUiOiJ0ZXh0IiwidmFsdWUiOiJ7XCJub2RlXCI6XCJpeDovL2V4YW1wbGUvcGFydHMvYXNzZW1ibHlcIixcInBhY2thZ2VcIjpcImV4YW1wbGUvcGFydHNcIn0ifSwidmFsdWUiOnsiZW50cmllcyI6W3sia2V5Ijp7ImlkZW50aXR5IjoiYTEiLCJvYmplY3RfdHlwZSI6eyJvcmlnaW5hbCI6eyJub2RlIjoiaXg6Ly9leGFtcGxlL3BhcnRzL0Fzc2VtYmx5U3RhdGlvbiIsInBhY2thZ2UiOiJleGFtcGxlL3BhcnRzIn0sIm93bmVyX2VmZmVjdGl2ZV90eXBlIjpudWxsfSwidHlwZSI6InJlZmVyZW5jZSIsInVuaXZlcnNlIjp7Im9yZGluYWwiOjAsInBhY2thZ2UiOiJleGFtcGxlL3BhcnRzIiwicGF0aCI6WyJtb2RlbCIsIm9iamVjdF90eXBlIiwiaXg6Ly9leGFtcGxlL3BhcnRzL0Fzc2VtYmx5U3RhdGlvbiJdfX0sInZhbHVlIjp7ImZpZWxkcyI6W3sibmFtZSI6InJlc2VydmVkIiwidmFsdWUiOnsidHlwZSI6ImJvb2xlYW4iLCJ2YWx1ZSI6ZmFsc2V9fV0sIm5hbWUiOiJ7XCJub2RlXCI6XCJpeDovL2V4YW1wbGUvcGFydHMvQXNzZW1ibHlTdGF0aW9uXCIsXCJwYWNrYWdlXCI6XCJleGFtcGxlL3BhcnRzXCJ9IiwidHlwZSI6InJlY29yZCJ9fV0sInR5cGUiOiJtYXAifX0seyJrZXkiOnsidHlwZSI6InRleHQiLCJ2YWx1ZSI6IntcIm5vZGVcIjpcIml4Oi8vZXhhbXBsZS9wYXJ0cy9pbnNwZWN0aW9uXCIsXCJwYWNrYWdlXCI6XCJleGFtcGxlL3BhcnRzXCJ9In0sInZhbHVlIjp7ImVudHJpZXMiOlt7ImtleSI6eyJpZGVudGl0eSI6ImkxIiwib2JqZWN0X3R5cGUiOnsib3JpZ2luYWwiOnsibm9kZSI6Iml4Oi8vZXhhbXBsZS9wYXJ0cy9JbnNwZWN0aW9uU3RhdGlvbiIsInBhY2thZ2UiOiJleGFtcGxlL3BhcnRzIn0sIm93bmVyX2VmZmVjdGl2ZV90eXBlIjpudWxsfSwidHlwZSI6InJlZmVyZW5jZSIsInVuaXZlcnNlIjp7Im9yZGluYWwiOjAsInBhY2thZ2UiOiJleGFtcGxlL3BhcnRzIiwicGF0aCI6WyJtb2RlbCIsIm9iamVjdF90eXBlIiwiaXg6Ly9leGFtcGxlL3BhcnRzL0luc3BlY3Rpb25TdGF0aW9uIl19fSwidmFsdWUiOnsiZmllbGRzIjpbeyJuYW1lIjoicXVldWUiLCJ2YWx1ZSI6eyJ0eXBlIjoiaW50ZWdlciIsInZhbHVlIjoiMCJ9fV0sIm5hbWUiOiJ7XCJub2RlXCI6XCJpeDovL2V4YW1wbGUvcGFydHMvSW5zcGVjdGlvblN0YXRpb25cIixcInBhY2thZ2VcIjpcImV4YW1wbGUvcGFydHNcIn0iLCJ0eXBlIjoicmVjb3JkIn19XSwidHlwZSI6Im1hcCJ9fSx7ImtleSI6eyJ0eXBlIjoidGV4dCIsInZhbHVlIjoie1wibm9kZVwiOlwiaXg6Ly9leGFtcGxlL3BhcnRzL2pvYnNcIixcInBhY2thZ2VcIjpcImV4YW1wbGUvcGFydHNcIn0ifSwidmFsdWUiOnsiZW50cmllcyI6W3sia2V5Ijp7ImlkZW50aXR5IjoiajEiLCJvYmplY3RfdHlwZSI6eyJvcmlnaW5hbCI6eyJub2RlIjoiaXg6Ly9leGFtcGxlL3BhcnRzL0pvYiIsInBhY2thZ2UiOiJleGFtcGxlL3BhcnRzIn0sIm93bmVyX2VmZmVjdGl2ZV90eXBlIjpudWxsfSwidHlwZSI6InJlZmVyZW5jZSIsInVuaXZlcnNlIjp7Im9yZGluYWwiOjAsInBhY2thZ2UiOiJleGFtcGxlL3BhcnRzIiwicGF0aCI6WyJtb2RlbCIsIm9iamVjdF90eXBlIiwiaXg6Ly9leGFtcGxlL3BhcnRzL0pvYiJdfX0sInZhbHVlIjp7ImZpZWxkcyI6W3sibmFtZSI6InBhcnQiLCJ2YWx1ZSI6eyJ0eXBlIjoiaW50ZWdlciIsInZhbHVlIjoiNDcxMSJ9fSx7Im5hbWUiOiJzdGF0dXMiLCJ2YWx1ZSI6eyJtZW1iZXIiOiJSZWxlYXNlZCIsIm5hbWUiOiJ7XCJub2RlXCI6XCJpeDovL2V4YW1wbGUvcGFydHMvUGFydFN0YXR1c1wiLFwicGFja2FnZVwiOlwiZXhhbXBsZS9wYXJ0c1wifSIsInR5cGUiOiJlbnVtIn19LHsibmFtZSI6InJld29ya3MiLCJ2YWx1ZSI6eyJ0eXBlIjoiaW50ZWdlciIsInZhbHVlIjoiMCJ9fV0sIm5hbWUiOiJ7XCJub2RlXCI6XCJpeDovL2V4YW1wbGUvcGFydHMvSm9iXCIsXCJwYWNrYWdlXCI6XCJleGFtcGxlL3BhcnRzXCJ9IiwidHlwZSI6InJlY29yZCJ9fV0sInR5cGUiOiJtYXAifX0seyJrZXkiOnsidHlwZSI6InRleHQiLCJ2YWx1ZSI6IntcIm5vZGVcIjpcIml4Oi8vZXhhbXBsZS9wYXJ0cy9tYWNoaW5pbmdcIixcInBhY2thZ2VcIjpcImV4YW1wbGUvcGFydHNcIn0ifSwidmFsdWUiOnsiZW50cmllcyI6W3sia2V5Ijp7ImlkZW50aXR5IjoibTEiLCJvYmplY3RfdHlwZSI6eyJvcmlnaW5hbCI6eyJub2RlIjoiaXg6Ly9leGFtcGxlL3BhcnRzL01hY2hpbmluZ1N0YXRpb24iLCJwYWNrYWdlIjoiZXhhbXBsZS9wYXJ0cyJ9LCJvd25lcl9lZmZlY3RpdmVfdHlwZSI6bnVsbH0sInR5cGUiOiJyZWZlcmVuY2UiLCJ1bml2ZXJzZSI6eyJvcmRpbmFsIjowLCJwYWNrYWdlIjoiZXhhbXBsZS9wYXJ0cyIsInBhdGgiOlsibW9kZWwiLCJvYmplY3RfdHlwZSIsIml4Oi8vZXhhbXBsZS9wYXJ0cy9NYWNoaW5pbmdTdGF0aW9uIl19fSwidmFsdWUiOnsiZmllbGRzIjpbeyJuYW1lIjoicmVzZXJ2ZWQiLCJ2YWx1ZSI6eyJ0eXBlIjoiYm9vbGVhbiIsInZhbHVlIjpmYWxzZX19LHsibmFtZSI6ImJ1c3kiLCJ2YWx1ZSI6eyJ0eXBlIjoiYm9vbGVhbiIsInZhbHVlIjpmYWxzZX19XSwibmFtZSI6IntcIm5vZGVcIjpcIml4Oi8vZXhhbXBsZS9wYXJ0cy9NYWNoaW5pbmdTdGF0aW9uXCIsXCJwYWNrYWdlXCI6XCJleGFtcGxlL3BhcnRzXCJ9IiwidHlwZSI6InJlY29yZCJ9fV0sInR5cGUiOiJtYXAifX0seyJrZXkiOnsidHlwZSI6InRleHQiLCJ2YWx1ZSI6IntcIm5vZGVcIjpcIml4Oi8vZXhhbXBsZS9wYXJ0cy9wbGFubmluZ1wiLFwicGFja2FnZVwiOlwiZXhhbXBsZS9wYXJ0c1wifSJ9LCJ2YWx1ZSI6eyJlbnRyaWVzIjpbeyJrZXkiOnsiaWRlbnRpdHkiOiJwMSIsIm9iamVjdF90eXBlIjp7Im9yaWdpbmFsIjp7Im5vZGUiOiJpeDovL2V4YW1wbGUvcGFydHMvUGxhbm5pbmdTZXJ2aWNlIiwicGFja2FnZSI6ImV4YW1wbGUvcGFydHMifSwib3duZXJfZWZmZWN0aXZlX3R5cGUiOm51bGx9LCJ0eXBlIjoicmVmZXJlbmNlIiwidW5pdmVyc2UiOnsib3JkaW5hbCI6MCwicGFja2FnZSI6ImV4YW1wbGUvcGFydHMiLCJwYXRoIjpbIm1vZGVsIiwib2JqZWN0X3R5cGUiLCJpeDovL2V4YW1wbGUvcGFydHMvUGxhbm5pbmdTZXJ2aWNlIl19fSwidmFsdWUiOnsiZmllbGRzIjpbeyJuYW1lIjoib3BlbiIsInZhbHVlIjp7InR5cGUiOiJpbnRlZ2VyIiwidmFsdWUiOiIxIn19XSwibmFtZSI6IntcIm5vZGVcIjpcIml4Oi8vZXhhbXBsZS9wYXJ0cy9QbGFubmluZ1NlcnZpY2VcIixcInBhY2thZ2VcIjpcImV4YW1wbGUvcGFydHNcIn0iLCJ0eXBlIjoicmVjb3JkIn19XSwidHlwZSI6Im1hcCJ9fV0sInR5cGUiOiJtYXAifSwidHlwZSI6InNpbXVsYXRpb24tc3RhdGUifQ",
+              "state": {
+                "bounds": {
+                  "entries": [
+                    {
+                      "key": {
+                        "message": {
+                          "instance": "0",
+                          "node": "1",
+                          "ordinal": "0",
+                          "path": {
+                            "instance": "0",
+                            "steps": [],
+                            "type": "thread-path"
+                          },
+                          "type": "message-occurrence"
+                        },
+                        "type": "next-delivery"
+                      },
+                      "value": {
+                        "type": "integer",
+                        "value": "1"
+                      }
+                    },
+                    {
+                      "key": {
+                        "node": "Main/Released",
+                        "thread": {
+                          "instance": "0",
+                          "steps": [],
+                          "type": "thread-path"
+                        },
+                        "type": "message-ordinal"
+                      },
+                      "value": {
+                        "type": "integer",
+                        "value": "1"
+                      }
+                    }
+                  ],
+                  "type": "map"
+                },
+                "control": {
+                  "entries": [
+                    {
+                      "key": {
+                        "instance": "0",
+                        "steps": [],
+                        "type": "thread-path"
+                      },
+                      "value": {
+                        "disposition": "running",
+                        "rest": {
+                          "kind": "node",
+                          "node": "Main/Received",
+                          "type": "rest"
+                        },
+                        "type": "thread-state"
+                      }
+                    },
+                    {
+                      "key": {
+                        "ordinal": "0",
+                        "type": "protocol-instance"
+                      },
+                      "value": {
+                        "finished": false,
+                        "recovery_summary": "untriggered",
+                        "type": "instance-state"
+                      }
+                    }
+                  ],
+                  "type": "map"
+                },
+                "memory": {
+                  "entries": [],
+                  "type": "map"
+                },
+                "observations": {
+                  "entries": [],
+                  "type": "map"
+                },
+                "queues": {
+                  "entries": [
+                    {
+                      "key": {
+                        "channel": "PartFlow::Release",
+                        "fifo_key": {
+                          "type": "integer",
+                          "value": "4711"
+                        },
+                        "instance": "0",
+                        "type": "queue"
+                      },
+                      "value": {
+                        "elements": [
+                          {
+                            "delivery": "0",
+                            "message": {
+                              "instance": "0",
+                              "node": "1",
+                              "ordinal": "0",
+                              "path": {
+                                "instance": "0",
+                                "steps": [],
+                                "type": "thread-path"
+                              },
+                              "type": "message-occurrence"
+                            },
+                            "payload": {
+                              "fields": [
+                                {
+                                  "name": "ok",
+                                  "value": {
+                                    "type": "boolean",
+                                    "value": true
+                                  }
+                                },
+                                {
+                                  "name": "part",
+                                  "value": {
+                                    "type": "integer",
+                                    "value": "4711"
+                                  }
+                                }
+                              ],
+                              "name": "{\"node\":\"ix://example/parts/WorkOrder\",\"package\":\"example/parts\"}",
+                              "type": "record"
+                            },
+                            "type": "queue-entry"
+                          }
+                        ],
+                        "type": "sequence"
+                      }
+                    }
+                  ],
+                  "type": "map"
+                },
+                "roles": {
+                  "entries": [
+                    {
+                      "key": {
+                        "instance": "0",
+                        "role": "Assembly",
+                        "type": "role"
+                      },
+                      "value": {
+                        "type": "text",
+                        "value": "example/parts"
+                      }
+                    },
+                    {
+                      "key": {
+                        "instance": "0",
+                        "role": "Inspection",
+                        "type": "role"
+                      },
+                      "value": {
+                        "type": "text",
+                        "value": "example/parts"
+                      }
+                    },
+                    {
+                      "key": {
+                        "instance": "0",
+                        "role": "Machining",
+                        "type": "role"
+                      },
+                      "value": {
+                        "type": "text",
+                        "value": "example/parts"
+                      }
+                    },
+                    {
+                      "key": {
+                        "instance": "0",
+                        "role": "Planning",
+                        "type": "role"
+                      },
+                      "value": {
+                        "type": "text",
+                        "value": "example/parts"
+                      }
+                    }
+                  ],
+                  "type": "map"
+                },
+                "semantic": {
+                  "entries": [
+                    {
+                      "key": {
+                        "type": "text",
+                        "value": "{\"node\":\"ix://example/parts/assembly\",\"package\":\"example/parts\"}"
+                      },
+                      "value": {
+                        "entries": [
+                          {
+                            "key": {
+                              "identity": "a1",
+                              "object_type": {
+                                "original": {
+                                  "node": "ix://example/parts/AssemblyStation",
+                                  "package": "example/parts"
+                                },
+                                "owner_effective_type": null
+                              },
+                              "type": "reference",
+                              "universe": {
+                                "ordinal": 0,
+                                "package": "example/parts",
+                                "path": [
+                                  "model",
+                                  "object_type",
+                                  "ix://example/parts/AssemblyStation"
+                                ]
+                              }
+                            },
+                            "value": {
+                              "fields": [
+                                {
+                                  "name": "reserved",
+                                  "value": {
+                                    "type": "boolean",
+                                    "value": false
+                                  }
+                                }
+                              ],
+                              "name": "{\"node\":\"ix://example/parts/AssemblyStation\",\"package\":\"example/parts\"}",
+                              "type": "record"
+                            }
+                          }
+                        ],
+                        "type": "map"
+                      }
+                    },
+                    {
+                      "key": {
+                        "type": "text",
+                        "value": "{\"node\":\"ix://example/parts/inspection\",\"package\":\"example/parts\"}"
+                      },
+                      "value": {
+                        "entries": [
+                          {
+                            "key": {
+                              "identity": "i1",
+                              "object_type": {
+                                "original": {
+                                  "node": "ix://example/parts/InspectionStation",
+                                  "package": "example/parts"
+                                },
+                                "owner_effective_type": null
+                              },
+                              "type": "reference",
+                              "universe": {
+                                "ordinal": 0,
+                                "package": "example/parts",
+                                "path": [
+                                  "model",
+                                  "object_type",
+                                  "ix://example/parts/InspectionStation"
+                                ]
+                              }
+                            },
+                            "value": {
+                              "fields": [
+                                {
+                                  "name": "queue",
+                                  "value": {
+                                    "type": "integer",
+                                    "value": "0"
+                                  }
+                                }
+                              ],
+                              "name": "{\"node\":\"ix://example/parts/InspectionStation\",\"package\":\"example/parts\"}",
+                              "type": "record"
+                            }
+                          }
+                        ],
+                        "type": "map"
+                      }
+                    },
+                    {
+                      "key": {
+                        "type": "text",
+                        "value": "{\"node\":\"ix://example/parts/jobs\",\"package\":\"example/parts\"}"
+                      },
+                      "value": {
+                        "entries": [
+                          {
+                            "key": {
+                              "identity": "j1",
+                              "object_type": {
+                                "original": {
+                                  "node": "ix://example/parts/Job",
+                                  "package": "example/parts"
+                                },
+                                "owner_effective_type": null
+                              },
+                              "type": "reference",
+                              "universe": {
+                                "ordinal": 0,
+                                "package": "example/parts",
+                                "path": [
+                                  "model",
+                                  "object_type",
+                                  "ix://example/parts/Job"
+                                ]
+                              }
+                            },
+                            "value": {
+                              "fields": [
+                                {
+                                  "name": "part",
+                                  "value": {
+                                    "type": "integer",
+                                    "value": "4711"
+                                  }
+                                },
+                                {
+                                  "name": "status",
+                                  "value": {
+                                    "member": "Released",
+                                    "name": "{\"node\":\"ix://example/parts/PartStatus\",\"package\":\"example/parts\"}",
+                                    "type": "enum"
+                                  }
+                                },
+                                {
+                                  "name": "reworks",
+                                  "value": {
+                                    "type": "integer",
+                                    "value": "0"
+                                  }
+                                }
+                              ],
+                              "name": "{\"node\":\"ix://example/parts/Job\",\"package\":\"example/parts\"}",
+                              "type": "record"
+                            }
+                          }
+                        ],
+                        "type": "map"
+                      }
+                    },
+                    {
+                      "key": {
+                        "type": "text",
+                        "value": "{\"node\":\"ix://example/parts/machining\",\"package\":\"example/parts\"}"
+                      },
+                      "value": {
+                        "entries": [
+                          {
+                            "key": {
+                              "identity": "m1",
+                              "object_type": {
+                                "original": {
+                                  "node": "ix://example/parts/MachiningStation",
+                                  "package": "example/parts"
+                                },
+                                "owner_effective_type": null
+                              },
+                              "type": "reference",
+                              "universe": {
+                                "ordinal": 0,
+                                "package": "example/parts",
+                                "path": [
+                                  "model",
+                                  "object_type",
+                                  "ix://example/parts/MachiningStation"
+                                ]
+                              }
+                            },
+                            "value": {
+                              "fields": [
+                                {
+                                  "name": "reserved",
+                                  "value": {
+                                    "type": "boolean",
+                                    "value": false
+                                  }
+                                },
+                                {
+                                  "name": "busy",
+                                  "value": {
+                                    "type": "boolean",
+                                    "value": false
+                                  }
+                                }
+                              ],
+                              "name": "{\"node\":\"ix://example/parts/MachiningStation\",\"package\":\"example/parts\"}",
+                              "type": "record"
+                            }
+                          }
+                        ],
+                        "type": "map"
+                      }
+                    },
+                    {
+                      "key": {
+                        "type": "text",
+                        "value": "{\"node\":\"ix://example/parts/planning\",\"package\":\"example/parts\"}"
+                      },
+                      "value": {
+                        "entries": [
+                          {
+                            "key": {
+                              "identity": "p1",
+                              "object_type": {
+                                "original": {
+                                  "node": "ix://example/parts/PlanningService",
+                                  "package": "example/parts"
+                                },
+                                "owner_effective_type": null
+                              },
+                              "type": "reference",
+                              "universe": {
+                                "ordinal": 0,
+                                "package": "example/parts",
+                                "path": [
+                                  "model",
+                                  "object_type",
+                                  "ix://example/parts/PlanningService"
+                                ]
+                              }
+                            },
+                            "value": {
+                              "fields": [
+                                {
+                                  "name": "open",
+                                  "value": {
+                                    "type": "integer",
+                                    "value": "1"
+                                  }
+                                }
+                              ],
+                              "name": "{\"node\":\"ix://example/parts/PlanningService\",\"package\":\"example/parts\"}",
+                              "type": "record"
+                            }
+                          }
+                        ],
+                        "type": "map"
+                      }
+                    }
+                  ],
+                  "type": "map"
+                },
+                "type": "simulation-state"
+              }
+            },
+            "send_record": {
+              "channel": "PartFlow::Release",
+              "displaced": null,
+              "outcome": "accepted",
+              "payload": {
+                "fields": [
+                  {
+                    "name": "ok",
+                    "value": {
+                      "type": "boolean",
+                      "value": true
+                    }
+                  },
+                  {
+                    "name": "part",
+                    "value": {
+                      "type": "integer",
+                      "value": "4711"
+                    }
+                  }
+                ],
+                "name": "{\"node\":\"ix://example/parts/WorkOrder\",\"package\":\"example/parts\"}",
+                "type": "record"
+              },
+              "type": "send-record"
+            },
+            "transition": {
+              "message": {
+                "instance": "0",
+                "node": "1",
+                "ordinal": "0",
+                "path": {
+                  "instance": "0",
+                  "steps": [],
+                  "type": "thread-path"
+                },
+                "type": "message-occurrence"
+              },
+              "node": "Main/Released",
+              "step": "send",
+              "thread": {
+                "instance": "0",
+                "steps": [],
+                "type": "thread-path"
+              },
+              "type": "protocol-transition"
+            }
+          },
+          {
+            "post_state": {
+              "key": "eyJib3VuZHMiOnsiZW50cmllcyI6W3sia2V5Ijp7Im1lc3NhZ2UiOnsiaW5zdGFuY2UiOiIwIiwibm9kZSI6IjEiLCJvcmRpbmFsIjoiMCIsInBhdGgiOnsiaW5zdGFuY2UiOiIwIiwic3RlcHMiOltdLCJ0eXBlIjoidGhyZWFkLXBhdGgifSwidHlwZSI6Im1lc3NhZ2Utb2NjdXJyZW5jZSJ9LCJ0eXBlIjoibmV4dC1kZWxpdmVyeSJ9LCJ2YWx1ZSI6eyJ0eXBlIjoiaW50ZWdlciIsInZhbHVlIjoiMSJ9fSx7ImtleSI6eyJub2RlIjoiTWFpbi9SZWxlYXNlZCIsInRocmVhZCI6eyJpbnN0YW5jZSI6IjAiLCJzdGVwcyI6W10sInR5cGUiOiJ0aHJlYWQtcGF0aCJ9LCJ0eXBlIjoibWVzc2FnZS1vcmRpbmFsIn0sInZhbHVlIjp7InR5cGUiOiJpbnRlZ2VyIiwidmFsdWUiOiIxIn19XSwidHlwZSI6Im1hcCJ9LCJjb250cm9sIjp7ImVudHJpZXMiOlt7ImtleSI6eyJpbnN0YW5jZSI6IjAiLCJzdGVwcyI6W10sInR5cGUiOiJ0aHJlYWQtcGF0aCJ9LCJ2YWx1ZSI6eyJkaXNwb3NpdGlvbiI6InJ1bm5pbmciLCJyZXN0Ijp7ImtpbmQiOiJub2RlIiwibm9kZSI6Ik1haW4vUmVzZXJ2ZWQiLCJ0eXBlIjoicmVzdCJ9LCJ0eXBlIjoidGhyZWFkLXN0YXRlIn19LHsia2V5Ijp7Im9yZGluYWwiOiIwIiwidHlwZSI6InByb3RvY29sLWluc3RhbmNlIn0sInZhbHVlIjp7ImZpbmlzaGVkIjpmYWxzZSwicmVjb3Zlcnlfc3VtbWFyeSI6InVudHJpZ2dlcmVkIiwidHlwZSI6Imluc3RhbmNlLXN0YXRlIn19XSwidHlwZSI6Im1hcCJ9LCJtZW1vcnkiOnsiZW50cmllcyI6W10sInR5cGUiOiJtYXAifSwib2JzZXJ2YXRpb25zIjp7ImVudHJpZXMiOltdLCJ0eXBlIjoibWFwIn0sInF1ZXVlcyI6eyJlbnRyaWVzIjpbXSwidHlwZSI6Im1hcCJ9LCJyb2xlcyI6eyJlbnRyaWVzIjpbeyJrZXkiOnsiaW5zdGFuY2UiOiIwIiwicm9sZSI6IkFzc2VtYmx5IiwidHlwZSI6InJvbGUifSwidmFsdWUiOnsidHlwZSI6InRleHQiLCJ2YWx1ZSI6ImV4YW1wbGUvcGFydHMifX0seyJrZXkiOnsiaW5zdGFuY2UiOiIwIiwicm9sZSI6Ikluc3BlY3Rpb24iLCJ0eXBlIjoicm9sZSJ9LCJ2YWx1ZSI6eyJ0eXBlIjoidGV4dCIsInZhbHVlIjoiZXhhbXBsZS9wYXJ0cyJ9fSx7ImtleSI6eyJpbnN0YW5jZSI6IjAiLCJyb2xlIjoiTWFjaGluaW5nIiwidHlwZSI6InJvbGUifSwidmFsdWUiOnsidHlwZSI6InRleHQiLCJ2YWx1ZSI6ImV4YW1wbGUvcGFydHMifX0seyJrZXkiOnsiaW5zdGFuY2UiOiIwIiwicm9sZSI6IlBsYW5uaW5nIiwidHlwZSI6InJvbGUifSwidmFsdWUiOnsidHlwZSI6InRleHQiLCJ2YWx1ZSI6ImV4YW1wbGUvcGFydHMifX1dLCJ0eXBlIjoibWFwIn0sInNlbWFudGljIjp7ImVudHJpZXMiOlt7ImtleSI6eyJ0eXBlIjoidGV4dCIsInZhbHVlIjoie1wibm9kZVwiOlwiaXg6Ly9leGFtcGxlL3BhcnRzL2Fzc2VtYmx5XCIsXCJwYWNrYWdlXCI6XCJleGFtcGxlL3BhcnRzXCJ9In0sInZhbHVlIjp7ImVudHJpZXMiOlt7ImtleSI6eyJpZGVudGl0eSI6ImExIiwib2JqZWN0X3R5cGUiOnsib3JpZ2luYWwiOnsibm9kZSI6Iml4Oi8vZXhhbXBsZS9wYXJ0cy9Bc3NlbWJseVN0YXRpb24iLCJwYWNrYWdlIjoiZXhhbXBsZS9wYXJ0cyJ9LCJvd25lcl9lZmZlY3RpdmVfdHlwZSI6bnVsbH0sInR5cGUiOiJyZWZlcmVuY2UiLCJ1bml2ZXJzZSI6eyJvcmRpbmFsIjowLCJwYWNrYWdlIjoiZXhhbXBsZS9wYXJ0cyIsInBhdGgiOlsibW9kZWwiLCJvYmplY3RfdHlwZSIsIml4Oi8vZXhhbXBsZS9wYXJ0cy9Bc3NlbWJseVN0YXRpb24iXX19LCJ2YWx1ZSI6eyJmaWVsZHMiOlt7Im5hbWUiOiJyZXNlcnZlZCIsInZhbHVlIjp7InR5cGUiOiJib29sZWFuIiwidmFsdWUiOmZhbHNlfX1dLCJuYW1lIjoie1wibm9kZVwiOlwiaXg6Ly9leGFtcGxlL3BhcnRzL0Fzc2VtYmx5U3RhdGlvblwiLFwicGFja2FnZVwiOlwiZXhhbXBsZS9wYXJ0c1wifSIsInR5cGUiOiJyZWNvcmQifX1dLCJ0eXBlIjoibWFwIn19LHsia2V5Ijp7InR5cGUiOiJ0ZXh0IiwidmFsdWUiOiJ7XCJub2RlXCI6XCJpeDovL2V4YW1wbGUvcGFydHMvaW5zcGVjdGlvblwiLFwicGFja2FnZVwiOlwiZXhhbXBsZS9wYXJ0c1wifSJ9LCJ2YWx1ZSI6eyJlbnRyaWVzIjpbeyJrZXkiOnsiaWRlbnRpdHkiOiJpMSIsIm9iamVjdF90eXBlIjp7Im9yaWdpbmFsIjp7Im5vZGUiOiJpeDovL2V4YW1wbGUvcGFydHMvSW5zcGVjdGlvblN0YXRpb24iLCJwYWNrYWdlIjoiZXhhbXBsZS9wYXJ0cyJ9LCJvd25lcl9lZmZlY3RpdmVfdHlwZSI6bnVsbH0sInR5cGUiOiJyZWZlcmVuY2UiLCJ1bml2ZXJzZSI6eyJvcmRpbmFsIjowLCJwYWNrYWdlIjoiZXhhbXBsZS9wYXJ0cyIsInBhdGgiOlsibW9kZWwiLCJvYmplY3RfdHlwZSIsIml4Oi8vZXhhbXBsZS9wYXJ0cy9JbnNwZWN0aW9uU3RhdGlvbiJdfX0sInZhbHVlIjp7ImZpZWxkcyI6W3sibmFtZSI6InF1ZXVlIiwidmFsdWUiOnsidHlwZSI6ImludGVnZXIiLCJ2YWx1ZSI6IjAifX1dLCJuYW1lIjoie1wibm9kZVwiOlwiaXg6Ly9leGFtcGxlL3BhcnRzL0luc3BlY3Rpb25TdGF0aW9uXCIsXCJwYWNrYWdlXCI6XCJleGFtcGxlL3BhcnRzXCJ9IiwidHlwZSI6InJlY29yZCJ9fV0sInR5cGUiOiJtYXAifX0seyJrZXkiOnsidHlwZSI6InRleHQiLCJ2YWx1ZSI6IntcIm5vZGVcIjpcIml4Oi8vZXhhbXBsZS9wYXJ0cy9qb2JzXCIsXCJwYWNrYWdlXCI6XCJleGFtcGxlL3BhcnRzXCJ9In0sInZhbHVlIjp7ImVudHJpZXMiOlt7ImtleSI6eyJpZGVudGl0eSI6ImoxIiwib2JqZWN0X3R5cGUiOnsib3JpZ2luYWwiOnsibm9kZSI6Iml4Oi8vZXhhbXBsZS9wYXJ0cy9Kb2IiLCJwYWNrYWdlIjoiZXhhbXBsZS9wYXJ0cyJ9LCJvd25lcl9lZmZlY3RpdmVfdHlwZSI6bnVsbH0sInR5cGUiOiJyZWZlcmVuY2UiLCJ1bml2ZXJzZSI6eyJvcmRpbmFsIjowLCJwYWNrYWdlIjoiZXhhbXBsZS9wYXJ0cyIsInBhdGgiOlsibW9kZWwiLCJvYmplY3RfdHlwZSIsIml4Oi8vZXhhbXBsZS9wYXJ0cy9Kb2IiXX19LCJ2YWx1ZSI6eyJmaWVsZHMiOlt7Im5hbWUiOiJwYXJ0IiwidmFsdWUiOnsidHlwZSI6ImludGVnZXIiLCJ2YWx1ZSI6IjQ3MTEifX0seyJuYW1lIjoic3RhdHVzIiwidmFsdWUiOnsibWVtYmVyIjoiUmVsZWFzZWQiLCJuYW1lIjoie1wibm9kZVwiOlwiaXg6Ly9leGFtcGxlL3BhcnRzL1BhcnRTdGF0dXNcIixcInBhY2thZ2VcIjpcImV4YW1wbGUvcGFydHNcIn0iLCJ0eXBlIjoiZW51bSJ9fSx7Im5hbWUiOiJyZXdvcmtzIiwidmFsdWUiOnsidHlwZSI6ImludGVnZXIiLCJ2YWx1ZSI6IjAifX1dLCJuYW1lIjoie1wibm9kZVwiOlwiaXg6Ly9leGFtcGxlL3BhcnRzL0pvYlwiLFwicGFja2FnZVwiOlwiZXhhbXBsZS9wYXJ0c1wifSIsInR5cGUiOiJyZWNvcmQifX1dLCJ0eXBlIjoibWFwIn19LHsia2V5Ijp7InR5cGUiOiJ0ZXh0IiwidmFsdWUiOiJ7XCJub2RlXCI6XCJpeDovL2V4YW1wbGUvcGFydHMvbWFjaGluaW5nXCIsXCJwYWNrYWdlXCI6XCJleGFtcGxlL3BhcnRzXCJ9In0sInZhbHVlIjp7ImVudHJpZXMiOlt7ImtleSI6eyJpZGVudGl0eSI6Im0xIiwib2JqZWN0X3R5cGUiOnsib3JpZ2luYWwiOnsibm9kZSI6Iml4Oi8vZXhhbXBsZS9wYXJ0cy9NYWNoaW5pbmdTdGF0aW9uIiwicGFja2FnZSI6ImV4YW1wbGUvcGFydHMifSwib3duZXJfZWZmZWN0aXZlX3R5cGUiOm51bGx9LCJ0eXBlIjoicmVmZXJlbmNlIiwidW5pdmVyc2UiOnsib3JkaW5hbCI6MCwicGFja2FnZSI6ImV4YW1wbGUvcGFydHMiLCJwYXRoIjpbIm1vZGVsIiwib2JqZWN0X3R5cGUiLCJpeDovL2V4YW1wbGUvcGFydHMvTWFjaGluaW5nU3RhdGlvbiJdfX0sInZhbHVlIjp7ImZpZWxkcyI6W3sibmFtZSI6InJlc2VydmVkIiwidmFsdWUiOnsidHlwZSI6ImJvb2xlYW4iLCJ2YWx1ZSI6ZmFsc2V9fSx7Im5hbWUiOiJidXN5IiwidmFsdWUiOnsidHlwZSI6ImJvb2xlYW4iLCJ2YWx1ZSI6ZmFsc2V9fV0sIm5hbWUiOiJ7XCJub2RlXCI6XCJpeDovL2V4YW1wbGUvcGFydHMvTWFjaGluaW5nU3RhdGlvblwiLFwicGFja2FnZVwiOlwiZXhhbXBsZS9wYXJ0c1wifSIsInR5cGUiOiJyZWNvcmQifX1dLCJ0eXBlIjoibWFwIn19LHsia2V5Ijp7InR5cGUiOiJ0ZXh0IiwidmFsdWUiOiJ7XCJub2RlXCI6XCJpeDovL2V4YW1wbGUvcGFydHMvcGxhbm5pbmdcIixcInBhY2thZ2VcIjpcImV4YW1wbGUvcGFydHNcIn0ifSwidmFsdWUiOnsiZW50cmllcyI6W3sia2V5Ijp7ImlkZW50aXR5IjoicDEiLCJvYmplY3RfdHlwZSI6eyJvcmlnaW5hbCI6eyJub2RlIjoiaXg6Ly9leGFtcGxlL3BhcnRzL1BsYW5uaW5nU2VydmljZSIsInBhY2thZ2UiOiJleGFtcGxlL3BhcnRzIn0sIm93bmVyX2VmZmVjdGl2ZV90eXBlIjpudWxsfSwidHlwZSI6InJlZmVyZW5jZSIsInVuaXZlcnNlIjp7Im9yZGluYWwiOjAsInBhY2thZ2UiOiJleGFtcGxlL3BhcnRzIiwicGF0aCI6WyJtb2RlbCIsIm9iamVjdF90eXBlIiwiaXg6Ly9leGFtcGxlL3BhcnRzL1BsYW5uaW5nU2VydmljZSJdfX0sInZhbHVlIjp7ImZpZWxkcyI6W3sibmFtZSI6Im9wZW4iLCJ2YWx1ZSI6eyJ0eXBlIjoiaW50ZWdlciIsInZhbHVlIjoiMSJ9fV0sIm5hbWUiOiJ7XCJub2RlXCI6XCJpeDovL2V4YW1wbGUvcGFydHMvUGxhbm5pbmdTZXJ2aWNlXCIsXCJwYWNrYWdlXCI6XCJleGFtcGxlL3BhcnRzXCJ9IiwidHlwZSI6InJlY29yZCJ9fV0sInR5cGUiOiJtYXAifX1dLCJ0eXBlIjoibWFwIn0sInR5cGUiOiJzaW11bGF0aW9uLXN0YXRlIn0",
+              "state": {
+                "bounds": {
+                  "entries": [
+                    {
+                      "key": {
+                        "message": {
+                          "instance": "0",
+                          "node": "1",
+                          "ordinal": "0",
+                          "path": {
+                            "instance": "0",
+                            "steps": [],
+                            "type": "thread-path"
+                          },
+                          "type": "message-occurrence"
+                        },
+                        "type": "next-delivery"
+                      },
+                      "value": {
+                        "type": "integer",
+                        "value": "1"
+                      }
+                    },
+                    {
+                      "key": {
+                        "node": "Main/Released",
+                        "thread": {
+                          "instance": "0",
+                          "steps": [],
+                          "type": "thread-path"
+                        },
+                        "type": "message-ordinal"
+                      },
+                      "value": {
+                        "type": "integer",
+                        "value": "1"
+                      }
+                    }
+                  ],
+                  "type": "map"
+                },
+                "control": {
+                  "entries": [
+                    {
+                      "key": {
+                        "instance": "0",
+                        "steps": [],
+                        "type": "thread-path"
+                      },
+                      "value": {
+                        "disposition": "running",
+                        "rest": {
+                          "kind": "node",
+                          "node": "Main/Reserved",
+                          "type": "rest"
+                        },
+                        "type": "thread-state"
+                      }
+                    },
+                    {
+                      "key": {
+                        "ordinal": "0",
+                        "type": "protocol-instance"
+                      },
+                      "value": {
+                        "finished": false,
+                        "recovery_summary": "untriggered",
+                        "type": "instance-state"
+                      }
+                    }
+                  ],
+                  "type": "map"
+                },
+                "memory": {
+                  "entries": [],
+                  "type": "map"
+                },
+                "observations": {
+                  "entries": [],
+                  "type": "map"
+                },
+                "queues": {
+                  "entries": [],
+                  "type": "map"
+                },
+                "roles": {
+                  "entries": [
+                    {
+                      "key": {
+                        "instance": "0",
+                        "role": "Assembly",
+                        "type": "role"
+                      },
+                      "value": {
+                        "type": "text",
+                        "value": "example/parts"
+                      }
+                    },
+                    {
+                      "key": {
+                        "instance": "0",
+                        "role": "Inspection",
+                        "type": "role"
+                      },
+                      "value": {
+                        "type": "text",
+                        "value": "example/parts"
+                      }
+                    },
+                    {
+                      "key": {
+                        "instance": "0",
+                        "role": "Machining",
+                        "type": "role"
+                      },
+                      "value": {
+                        "type": "text",
+                        "value": "example/parts"
+                      }
+                    },
+                    {
+                      "key": {
+                        "instance": "0",
+                        "role": "Planning",
+                        "type": "role"
+                      },
+                      "value": {
+                        "type": "text",
+                        "value": "example/parts"
+                      }
+                    }
+                  ],
+                  "type": "map"
+                },
+                "semantic": {
+                  "entries": [
+                    {
+                      "key": {
+                        "type": "text",
+                        "value": "{\"node\":\"ix://example/parts/assembly\",\"package\":\"example/parts\"}"
+                      },
+                      "value": {
+                        "entries": [
+                          {
+                            "key": {
+                              "identity": "a1",
+                              "object_type": {
+                                "original": {
+                                  "node": "ix://example/parts/AssemblyStation",
+                                  "package": "example/parts"
+                                },
+                                "owner_effective_type": null
+                              },
+                              "type": "reference",
+                              "universe": {
+                                "ordinal": 0,
+                                "package": "example/parts",
+                                "path": [
+                                  "model",
+                                  "object_type",
+                                  "ix://example/parts/AssemblyStation"
+                                ]
+                              }
+                            },
+                            "value": {
+                              "fields": [
+                                {
+                                  "name": "reserved",
+                                  "value": {
+                                    "type": "boolean",
+                                    "value": false
+                                  }
+                                }
+                              ],
+                              "name": "{\"node\":\"ix://example/parts/AssemblyStation\",\"package\":\"example/parts\"}",
+                              "type": "record"
+                            }
+                          }
+                        ],
+                        "type": "map"
+                      }
+                    },
+                    {
+                      "key": {
+                        "type": "text",
+                        "value": "{\"node\":\"ix://example/parts/inspection\",\"package\":\"example/parts\"}"
+                      },
+                      "value": {
+                        "entries": [
+                          {
+                            "key": {
+                              "identity": "i1",
+                              "object_type": {
+                                "original": {
+                                  "node": "ix://example/parts/InspectionStation",
+                                  "package": "example/parts"
+                                },
+                                "owner_effective_type": null
+                              },
+                              "type": "reference",
+                              "universe": {
+                                "ordinal": 0,
+                                "package": "example/parts",
+                                "path": [
+                                  "model",
+                                  "object_type",
+                                  "ix://example/parts/InspectionStation"
+                                ]
+                              }
+                            },
+                            "value": {
+                              "fields": [
+                                {
+                                  "name": "queue",
+                                  "value": {
+                                    "type": "integer",
+                                    "value": "0"
+                                  }
+                                }
+                              ],
+                              "name": "{\"node\":\"ix://example/parts/InspectionStation\",\"package\":\"example/parts\"}",
+                              "type": "record"
+                            }
+                          }
+                        ],
+                        "type": "map"
+                      }
+                    },
+                    {
+                      "key": {
+                        "type": "text",
+                        "value": "{\"node\":\"ix://example/parts/jobs\",\"package\":\"example/parts\"}"
+                      },
+                      "value": {
+                        "entries": [
+                          {
+                            "key": {
+                              "identity": "j1",
+                              "object_type": {
+                                "original": {
+                                  "node": "ix://example/parts/Job",
+                                  "package": "example/parts"
+                                },
+                                "owner_effective_type": null
+                              },
+                              "type": "reference",
+                              "universe": {
+                                "ordinal": 0,
+                                "package": "example/parts",
+                                "path": [
+                                  "model",
+                                  "object_type",
+                                  "ix://example/parts/Job"
+                                ]
+                              }
+                            },
+                            "value": {
+                              "fields": [
+                                {
+                                  "name": "part",
+                                  "value": {
+                                    "type": "integer",
+                                    "value": "4711"
+                                  }
+                                },
+                                {
+                                  "name": "status",
+                                  "value": {
+                                    "member": "Released",
+                                    "name": "{\"node\":\"ix://example/parts/PartStatus\",\"package\":\"example/parts\"}",
+                                    "type": "enum"
+                                  }
+                                },
+                                {
+                                  "name": "reworks",
+                                  "value": {
+                                    "type": "integer",
+                                    "value": "0"
+                                  }
+                                }
+                              ],
+                              "name": "{\"node\":\"ix://example/parts/Job\",\"package\":\"example/parts\"}",
+                              "type": "record"
+                            }
+                          }
+                        ],
+                        "type": "map"
+                      }
+                    },
+                    {
+                      "key": {
+                        "type": "text",
+                        "value": "{\"node\":\"ix://example/parts/machining\",\"package\":\"example/parts\"}"
+                      },
+                      "value": {
+                        "entries": [
+                          {
+                            "key": {
+                              "identity": "m1",
+                              "object_type": {
+                                "original": {
+                                  "node": "ix://example/parts/MachiningStation",
+                                  "package": "example/parts"
+                                },
+                                "owner_effective_type": null
+                              },
+                              "type": "reference",
+                              "universe": {
+                                "ordinal": 0,
+                                "package": "example/parts",
+                                "path": [
+                                  "model",
+                                  "object_type",
+                                  "ix://example/parts/MachiningStation"
+                                ]
+                              }
+                            },
+                            "value": {
+                              "fields": [
+                                {
+                                  "name": "reserved",
+                                  "value": {
+                                    "type": "boolean",
+                                    "value": false
+                                  }
+                                },
+                                {
+                                  "name": "busy",
+                                  "value": {
+                                    "type": "boolean",
+                                    "value": false
+                                  }
+                                }
+                              ],
+                              "name": "{\"node\":\"ix://example/parts/MachiningStation\",\"package\":\"example/parts\"}",
+                              "type": "record"
+                            }
+                          }
+                        ],
+                        "type": "map"
+                      }
+                    },
+                    {
+                      "key": {
+                        "type": "text",
+                        "value": "{\"node\":\"ix://example/parts/planning\",\"package\":\"example/parts\"}"
+                      },
+                      "value": {
+                        "entries": [
+                          {
+                            "key": {
+                              "identity": "p1",
+                              "object_type": {
+                                "original": {
+                                  "node": "ix://example/parts/PlanningService",
+                                  "package": "example/parts"
+                                },
+                                "owner_effective_type": null
+                              },
+                              "type": "reference",
+                              "universe": {
+                                "ordinal": 0,
+                                "package": "example/parts",
+                                "path": [
+                                  "model",
+                                  "object_type",
+                                  "ix://example/parts/PlanningService"
+                                ]
+                              }
+                            },
+                            "value": {
+                              "fields": [
+                                {
+                                  "name": "open",
+                                  "value": {
+                                    "type": "integer",
+                                    "value": "1"
+                                  }
+                                }
+                              ],
+                              "name": "{\"node\":\"ix://example/parts/PlanningService\",\"package\":\"example/parts\"}",
+                              "type": "record"
+                            }
+                          }
+                        ],
+                        "type": "map"
+                      }
+                    }
+                  ],
+                  "type": "map"
+                },
+                "type": "simulation-state"
+              }
+            },
+            "transition": {
+              "delivery": {
+                "index": "0",
+                "message": {
+                  "instance": "0",
+                  "node": "1",
+                  "ordinal": "0",
+                  "path": {
+                    "instance": "0",
+                    "steps": [],
+                    "type": "thread-path"
+                  },
+                  "type": "message-occurrence"
+                },
+                "type": "delivery-identity"
+              },
+              "node": "Main/Received",
+              "step": "receive",
+              "thread": {
+                "instance": "0",
+                "steps": [],
+                "type": "thread-path"
+              },
+              "type": "protocol-transition"
+            }
+          }
+        ],
+        "subject": {
+          "over": {
+            "identity": "j1",
+            "object_type": {
+              "original": {
+                "node": "ix://example/parts/Job",
+                "package": "example/parts"
+              },
+              "owner_effective_type": null
+            },
+            "type": "reference",
+            "universe": {
+              "ordinal": 0,
+              "package": "example/parts",
+              "path": [
+                "model",
+                "object_type",
+                "ix://example/parts/Job"
+              ]
+            }
+          },
+          "protocol": "PartFlow",
+          "roles": {
+            "Assembly": "example/parts",
+            "Inspection": "example/parts",
+            "Machining": "example/parts",
+            "Planning": "example/parts"
+          },
+          "type": "protocol-subject"
         },
-        "result": "unsupported",
-        "settled_by": "disposition"
+        "trace": "model",
+        "trace_position": null
+      },
+      "exploration": {
+        "automaton_states": "1",
+        "states": "9",
+        "transitions": "8"
+      },
+      "record": {
+        "backend": "en-1",
+        "cause": null,
+        "memory_bound": {
+          "bound": "max_messages",
+          "reached": false,
+          "value": 4
+        },
+        "result": "refuted",
+        "settled_by": "result"
+      },
+      "replay": {
+        "reproduced": true,
+        "target": {
+          "state_clause": "PartFlow"
+        }
       },
       "request": {
         "candidates": {

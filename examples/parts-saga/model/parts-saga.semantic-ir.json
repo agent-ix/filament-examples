@@ -324,7 +324,7 @@
         {
           "identity": "ix://example/parts/Job/part",
           "name": "part",
-          "typeRef": "ix://filament/native/Integer",
+          "typeRef": "ix://example/parts/PartId",
           "presence": "required",
           "nullable": false,
           "defaultKind": "none",
@@ -768,7 +768,7 @@
         {
           "identity": "ix://example/parts/WorkOrder/part",
           "name": "part",
-          "typeRef": "ix://filament/native/Integer",
+          "typeRef": "ix://example/parts/PartId",
           "presence": "required",
           "nullable": false,
           "defaultKind": "none",
@@ -839,7 +839,7 @@
         {
           "identity": "ix://example/parts/Handoff/part",
           "name": "part",
-          "typeRef": "ix://filament/native/Integer",
+          "typeRef": "ix://example/parts/PartId",
           "presence": "required",
           "nullable": false,
           "defaultKind": "none",
@@ -979,7 +979,7 @@
         {
           "identity": "ix://example/parts/AttemptView/id",
           "name": "id",
-          "typeRef": "ix://filament/native/Integer",
+          "typeRef": "ix://example/parts/Count",
           "presence": "required",
           "nullable": false,
           "defaultKind": "none",
@@ -1002,7 +1002,7 @@
         {
           "identity": "ix://example/parts/AttemptView/previous",
           "name": "previous",
-          "typeRef": "ix://filament/native/Integer",
+          "typeRef": "ix://example/parts/Count",
           "presence": "required",
           "nullable": false,
           "defaultKind": "none",
@@ -1073,7 +1073,7 @@
         {
           "identity": "ix://example/parts/EffectView/part",
           "name": "part",
-          "typeRef": "ix://filament/native/Integer",
+          "typeRef": "ix://example/parts/PartId",
           "presence": "required",
           "nullable": false,
           "defaultKind": "none",

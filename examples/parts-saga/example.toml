@@ -84,10 +84,10 @@ statement = "Every job ends assembled, scrapped or given up."
 file = "rules/part-flow-untimed.fsl"
 command = "analyze requests/analyze/saga-deadlock-free.json"
 status = "staged"
-expect_exit = 21
+expect_exit = 10
 ready_exit = 0
 waits_on = "QSL-2761"
-why = "PartFlow analysis settles unsupported with unsupported_projection/unbounded-extent in en-1 for temporal-satisfaction."
+why = "With part and attempt fields declared PartId and Count the unbounded-extent refusal is gone: PartFlow analysis explores and refutes deadlock-freedom, the thread blocked at Main/Reserved (cause constraint); the case expects proved."
 needs = "deadlock-freedom analysis of the saga protocol"
 serves = "Learn L5/L6; Guide: check a model exhaustively"
 

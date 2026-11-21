@@ -18014,7 +18014,7 @@
       "request_file": "examples/parts-saga/requests/analyze/saga-deadlock-free.json",
       "expected_file": "examples/parts-saga/expected/staged-saga-deadlock-free.json",
       "verdict": null,
-      "exit": 21,
+      "exit": 10,
       "ready_exit": 0,
       "engine": null,
       "clock": null,
