@@ -1,0 +1,19 @@
+{
+  "format": "native-run/1",
+  "request": {
+    "models": [],
+    "program": {
+      "source": {
+        "file": "../rules/convert-ordered-set-to-bag.fsl",
+        "authority": "example",
+        "identity": "language-values/convert-ordered-set-to-bag",
+        "document": "convert-ordered-set-to-bag",
+        "formal_revision": 1
+      }
+    },
+    "call": {
+      "function": "example",
+      "arguments": []
+    }
+  }
+}

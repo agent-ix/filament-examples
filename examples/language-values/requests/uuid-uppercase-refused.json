@@ -1,0 +1,19 @@
+{
+  "format": "native-run/1",
+  "request": {
+    "models": [],
+    "program": {
+      "source": {
+        "file": "../rules/uuid-uppercase-refused.fsl",
+        "authority": "example",
+        "identity": "language-values/uuid-uppercase-refused",
+        "document": "uuid-uppercase-refused",
+        "formal_revision": 1
+      }
+    },
+    "call": {
+      "function": "example",
+      "arguments": []
+    }
+  }
+}

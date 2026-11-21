@@ -1,0 +1,19 @@
+{
+  "format": "native-run/1",
+  "request": {
+    "models": [],
+    "program": {
+      "source": {
+        "file": "../rules/ordered-set-over-bound-refused.fsl",
+        "authority": "example",
+        "identity": "language-values/ordered-set-over-bound-refused",
+        "document": "ordered-set-over-bound-refused",
+        "formal_revision": 1
+      }
+    },
+    "call": {
+      "function": "example",
+      "arguments": []
+    }
+  }
+}

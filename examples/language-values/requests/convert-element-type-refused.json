@@ -1,0 +1,19 @@
+{
+  "format": "native-run/1",
+  "request": {
+    "models": [],
+    "program": {
+      "source": {
+        "file": "../rules/convert-element-type-refused.fsl",
+        "authority": "example",
+        "identity": "language-values/convert-element-type-refused",
+        "document": "convert-element-type-refused",
+        "formal_revision": 1
+      }
+    },
+    "call": {
+      "function": "example",
+      "arguments": []
+    }
+  }
+}

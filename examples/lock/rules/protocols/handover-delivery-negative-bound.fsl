@@ -1,0 +1,18 @@
+language "ix:native" edition "1-draft";
+profile pp = "filament.protocol.finite-global/v1";
+profile v = "filament.value.complete/v1";
+model L = "example/lock";
+
+record Request { granted: Boolean; }
+
+protocol Handover using pp over (lock: L::Lock) on origin {
+  role Asker on L::Lock;
+  role Holder on L::Lock;
+  channel Ask from Asker to Holder carries Request
+    ordering unordered delivery [-1, 3] capacity 4 overflow reject;
+  run sequence Main {
+    send Asked via Ask as (asked: Request) { true };
+    receive Heard via Ask of Asked as (heard: Request) { true };
+  }
+  finish Done as (done: Boolean) { true };
+}

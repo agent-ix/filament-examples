@@ -186,3 +186,47 @@ status = "running"
 expect_exit = 10
 expect_verdict = "violated"
 serves = "Protocol analysis reference (recorded runs)"
+
+[[case]]
+id = "protocol-reference"
+rule = "Handover"
+statement = "A function body can refer to the protocol Handover with protocol Handover, and the unit compiles."
+file = "rules/protocols/handover-reference.fsl"
+command = "compile requests/protocols/handover-reference.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "compiled"
+serves = "Protocols reference (declaration)"
+
+[[case]]
+id = "protocol-reference-missing"
+rule = "Handover"
+statement = "A protocol reference to a name the unit does not declare is refused."
+file = "rules/protocols/handover-reference-missing.fsl"
+command = "compile requests/protocols/handover-reference-missing.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refusal: missing_declaration"
+serves = "Protocols reference (declaration)"
+
+[[case]]
+id = "channel-delivery-interval"
+rule = "Handover"
+statement = "A channel declares that each message is delivered between 0 and 2 times with delivery [0, 2], and the unit compiles."
+file = "rules/protocols/handover-delivery-interval.fsl"
+command = "compile requests/protocols/handover-delivery-interval.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "compiled"
+serves = "Protocols reference (channels)"
+
+[[case]]
+id = "channel-delivery-negative-bound"
+rule = "Handover"
+statement = "A delivery interval with a negative bound is refused as a syntax error."
+file = "rules/protocols/handover-delivery-negative-bound.fsl"
+command = "compile requests/protocols/handover-delivery-negative-bound.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refusal: invalid_syntax"
+serves = "Protocols reference (channels)"
