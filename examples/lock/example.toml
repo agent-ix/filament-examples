@@ -230,3 +230,69 @@ status = "running"
 expect_exit = 20
 expect_verdict = "refusal: invalid_syntax"
 serves = "Protocols reference (channels)"
+
+[[case]]
+id = "protocol-project-asker"
+rule = "Handover"
+statement = "The asker projection contains its send and omits the holder receive."
+file = "rules/protocols/handover-heard.fsl"
+command = "analyze requests/protocols/protocol-project-asker.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "Protocols reference (projection and realizability)"
+
+[[case]]
+id = "protocol-project-holder"
+rule = "Handover"
+statement = "The holder projection contains its receive and omits the asker send."
+file = "rules/protocols/handover-heard.fsl"
+command = "analyze requests/protocols/protocol-project-holder.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "Protocols reference (projection and realizability)"
+
+[[case]]
+id = "protocol-realizable"
+rule = "Handover"
+statement = "One send followed by its receive has a local strategy for each role."
+file = "rules/protocols/handover-heard.fsl"
+command = "analyze requests/protocols/protocol-realizable.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "Protocols reference (projection and realizability)"
+
+[[case]]
+id = "protocol-unrealizable"
+rule = "Handover"
+statement = "An observer cannot choose between waiting for a grant and ending when it hears nothing about a denial."
+file = "rules/protocols/handover-hidden-choice.fsl"
+command = "analyze requests/protocols/protocol-unrealizable.json"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
+serves = "Protocols reference (projection and realizability)"
+
+[[case]]
+id = "protocol-choice-repaired"
+rule = "Handover"
+statement = "A grant or denial message lets the observer follow either decision of the holder."
+file = "rules/protocols/handover-visible-choice.fsl"
+command = "analyze requests/protocols/protocol-choice-repaired.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "Protocols reference (projection and realizability)"
+
+[[case]]
+id = "protocol-composition"
+rule = ""
+statement = "A composition names the guarantees of the holder and observer, with the holder guarantee discharging the observer reliance."
+file = "rules/protocols/handover-composition.fsl"
+command = "compile requests/protocols/protocol-composition.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "Protocols reference (composition)"

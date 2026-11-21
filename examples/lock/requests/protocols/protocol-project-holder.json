@@ -1,0 +1,77 @@
+{
+  "format": "native-analyze/1",
+  "request": {
+    "models": [
+      {
+        "format": "semantic-ir/2.0.0",
+        "source": {
+          "file": "../../model/lock.semantic-ir.json",
+          "authority": "example",
+          "identity": "example:lock/model",
+          "document": "model",
+          "formal_revision": 1
+        }
+      }
+    ],
+    "program": {
+      "source": {
+        "file": "../../rules/protocols/handover-heard.fsl",
+        "authority": "example",
+        "identity": "example:lock/handover-heard",
+        "document": "handoverheard",
+        "formal_revision": 1
+      }
+    },
+    "documents": [
+      {
+        "file": "../../data/lock-free.json"
+      }
+    ],
+    "items": [
+      {
+        "claim": "Handover",
+        "kind": "local-projection",
+        "assessed_root": {
+          "observation": {
+            "authority": "example",
+            "identity": "example:lock/lock-free"
+          },
+          "subject": {
+            "tag": "object",
+            "universe": "{\"package\":\"example/lock\",\"path\":[\"Lock\"],\"ordinal\":0}",
+            "type": "[{\"package\":\"example/lock\",\"node\":\"ix://example/lock/Lock\"}]",
+            "object_identity": "m"
+          }
+        },
+        "temporal": {
+          "profile": "bounded",
+          "max_depth": 32,
+          "subject": {
+            "protocol": {
+              "protocol": "Handover",
+              "over": {
+                "reference": {
+                  "population": "ix://example/lock/locks",
+                  "key": "m"
+                }
+              },
+              "roles": {
+                "Asker": {
+                  "type": "model-binding",
+                  "selection": "example/lock"
+                },
+                "Holder": {
+                  "type": "model-binding",
+                  "selection": "example/lock"
+                }
+              }
+            }
+          }
+        },
+        "options": {
+          "role": "Holder"
+        }
+      }
+    ]
+  }
+}

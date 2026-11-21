@@ -1,0 +1,7 @@
+language "ix:native" edition "1-draft";
+profile inf = "filament.temporal.infinite-trace/v1";
+model L = "example/lock";
+
+temporal OwnerKnown using inf over (lock: L::Lock) clock "model-steps" on origin {
+  always holds(lock.owner >= 0 and lock.owner <= 2)
+}
