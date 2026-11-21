@@ -196,7 +196,7 @@ command = "compile requests/protocols/handover-reference.json"
 status = "running"
 expect_exit = 0
 expect_verdict = "compiled"
-serves = "Types reference (protocol reference)"
+serves = "Protocols reference (declaration)"
 
 [[case]]
 id = "protocol-reference-missing"
@@ -207,7 +207,7 @@ command = "compile requests/protocols/handover-reference-missing.json"
 status = "running"
 expect_exit = 20
 expect_verdict = "refusal: missing_declaration"
-serves = "Types reference (protocol reference)"
+serves = "Protocols reference (declaration)"
 
 [[case]]
 id = "channel-delivery-interval"

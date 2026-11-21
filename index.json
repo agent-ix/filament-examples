@@ -5846,6 +5846,24 @@
       "needs": null
     },
     {
+      "system": "language-values",
+      "case": "text-decomposed-normalized",
+      "status": "running",
+      "rule": "example",
+      "statement": "Text(\"cafe\\u0301\") has 5 scalars as written and 4 after normalization to form C, so it fits Text[0, 4; nfc].",
+      "rule_file": "examples/language-values/rules/text-decomposed-normalized.fsl",
+      "data_files": [],
+      "request_file": "examples/language-values/requests/text-decomposed-normalized.json",
+      "expected_file": "examples/language-values/expected/text-decomposed-normalized.json",
+      "verdict": "holds",
+      "exit": 0,
+      "ready_exit": null,
+      "engine": null,
+      "clock": null,
+      "waits_on": null,
+      "needs": null
+    },
+    {
       "system": "library",
       "case": "compile-ok",
       "status": "running",

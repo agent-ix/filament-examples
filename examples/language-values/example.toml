@@ -420,3 +420,13 @@ command = "run requests/timestamp-integer-refused.json"
 status = "running"
 expect_exit = 20
 expect_verdict = "refusal: ill_typed"
+
+[[case]]
+id = "text-decomposed-normalized"
+rule = "example"
+statement = "Text(\"cafe\\u0301\") has 5 scalars as written and 4 after normalization to form C, so it fits Text[0, 4; nfc]."
+file = "rules/text-decomposed-normalized.fsl"
+command = "run requests/text-decomposed-normalized.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
