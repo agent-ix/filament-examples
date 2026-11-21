@@ -1,0 +1,1 @@
+a type's declared bounds are ill-formed

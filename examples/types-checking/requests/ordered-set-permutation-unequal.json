@@ -1,0 +1,19 @@
+{
+  "format": "native-run/1",
+  "request": {
+    "call": {
+      "arguments": [],
+      "function": "example"
+    },
+    "models": [],
+    "program": {
+      "source": {
+        "authority": "example",
+        "document": "ordered-set-permutation-unequal",
+        "file": "../rules/ordered-set-permutation-unequal.fsl",
+        "formal_revision": 1,
+        "identity": "types-checking/ordered-set-permutation-unequal"
+      }
+    }
+  }
+}

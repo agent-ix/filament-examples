@@ -1,0 +1,4 @@
+// FSpec FR-141-AC-4
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+function example using v(): Boolean pure { let a: Text[0, 4; nfc] = Text("ab") in let b: Text[0, 4; nfc] = Text("b") in let c: Text[0, 4; nfc] = Text("abc") in a < b and a < c and not (b < a) }

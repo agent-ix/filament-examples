@@ -1,0 +1,5 @@
+// FSpec FR-140-AC-9
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+type D = Decimal[0, 99; 0, 2; exact];
+function f using v(d: D): D pure { d }

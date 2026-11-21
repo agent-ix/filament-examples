@@ -1,0 +1,5 @@
+// FSpec FR-149-AC-31
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+tuple Small(Int[0, 9]);
+function a using v(n: Integer): Small pure { Small(n) }

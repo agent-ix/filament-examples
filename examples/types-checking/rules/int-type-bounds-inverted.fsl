@@ -1,0 +1,5 @@
+// FSpec FR-007 (bounded integer well-formedness)
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+type I = Int[5, 1];
+function f using v(i: I): I pure { i }

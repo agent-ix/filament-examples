@@ -1,0 +1,5 @@
+// FSpec FR-143-AC-21
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+function a using v(): Option<Int[0, 9]> pure { Some(3) }
+function b using v(o: Option<Int[0, 9]>): Boolean pure { o = Some(3) }

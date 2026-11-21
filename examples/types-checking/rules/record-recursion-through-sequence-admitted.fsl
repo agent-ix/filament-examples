@@ -1,0 +1,5 @@
+// FSpec FR-143-AC-7
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+record Dir { name: Int[0, 9]; children: Sequence<Dir>[0, 4]; }
+function f using v(d: Dir): Dir pure { d }

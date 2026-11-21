@@ -1,0 +1,5 @@
+// FSpec FR-002
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+type Qty = Int[1, 99];
+function f using v(a: Qty, b: Int[1, 99]): Boolean pure { a = b }

@@ -1,0 +1,4 @@
+// FSpec FR-149-AC-10
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+function f using v(a: Int[0, 9], b: Decimal[0, 999; 0, 2; exact]): Boolean pure { convert<Decimal[0, 999; 0, 2; exact]>(a) = b }

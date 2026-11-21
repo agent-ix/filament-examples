@@ -1,0 +1,19 @@
+{
+  "format": "native-run/1",
+  "request": {
+    "call": {
+      "arguments": [],
+      "function": "example"
+    },
+    "models": [],
+    "program": {
+      "source": {
+        "authority": "example",
+        "document": "decimal-equality-ignores-scale",
+        "file": "../rules/decimal-equality-ignores-scale.fsl",
+        "formal_revision": 1,
+        "identity": "types-checking/decimal-equality-ignores-scale"
+      }
+    }
+  }
+}

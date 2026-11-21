@@ -1,0 +1,19 @@
+{
+  "format": "native-run/1",
+  "request": {
+    "call": {
+      "arguments": [],
+      "function": "example"
+    },
+    "models": [],
+    "program": {
+      "source": {
+        "authority": "example",
+        "document": "text-length-below-minimum",
+        "file": "../rules/text-length-below-minimum.fsl",
+        "formal_revision": 1,
+        "identity": "types-checking/text-length-below-minimum"
+      }
+    }
+  }
+}

@@ -1,0 +1,4 @@
+// FSpec FR-140-AC-5 (membership by value)
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+function f using v(): Decimal[0, 10000; 2, 2; exact] pure { decimal(1, 0) }

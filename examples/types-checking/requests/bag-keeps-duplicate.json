@@ -1,0 +1,19 @@
+{
+  "format": "native-run/1",
+  "request": {
+    "call": {
+      "arguments": [],
+      "function": "example"
+    },
+    "models": [],
+    "program": {
+      "source": {
+        "authority": "example",
+        "document": "bag-keeps-duplicate",
+        "file": "../rules/bag-keeps-duplicate.fsl",
+        "formal_revision": 1,
+        "identity": "types-checking/bag-keeps-duplicate"
+      }
+    }
+  }
+}

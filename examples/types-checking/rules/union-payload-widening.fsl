@@ -1,0 +1,6 @@
+// FSpec FR-149-AC-30
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+union Reading { Raw(Integer), Wide(Int[0, 2000]), Tiny(Int[0, 9]) }
+function a using v(x: Int[0, 1000]): Reading pure { Reading::Raw(x) }
+function b using v(x: Int[0, 1000]): Reading pure { Reading::Wide(x) }

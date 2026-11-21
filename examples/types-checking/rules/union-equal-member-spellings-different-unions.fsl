@@ -1,0 +1,6 @@
+// FSpec FR-143-AC-12
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+union A { X, Y }
+union B { X, Y }
+function a using v(): Boolean pure { A::X = B::X }

@@ -1,0 +1,2 @@
+the records and tuples are not an admitted declaration set
+the records and tuples are not an admitted declaration set

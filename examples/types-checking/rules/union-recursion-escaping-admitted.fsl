@@ -1,0 +1,5 @@
+// FSpec FR-143-AC-13
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+union Tree { Leaf, Node(Integer, Option<Tree>, Option<Tree>) }
+function a using v(t: Tree): Tree pure { t }

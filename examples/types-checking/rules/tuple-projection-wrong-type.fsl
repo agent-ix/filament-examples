@@ -1,0 +1,5 @@
+// FSpec FR-143-AC-22
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+tuple Pair(Boolean, Integer);
+function a using v(p: Pair): Integer pure { p[0] }
