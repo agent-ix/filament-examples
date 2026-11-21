@@ -6,6 +6,7 @@ model Arch = "example/architecture";
 
 random Arch::Service::call(ok) ~ { true: 9999, false: 1 };
 
+// A service that is up already satisfies eventually-up, so the claim holds with probability 1.
 // No confidence clause: only exact computation decides this claim.
 probabilistic ComesUp using inf on Arch over (s: Arch::Service) under every scheduler on origin {
   probability >= 0.9 [ eventually holds(s.up) ]

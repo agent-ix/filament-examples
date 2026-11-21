@@ -1,0 +1,39 @@
+{
+  "format": "native-analyze/1",
+  "request": {
+    "models": [
+      {
+        "format": "semantic-ir/2.0.0",
+        "source": {
+          "file": "../../../model/architecture.semantic-ir.json",
+          "authority": "example",
+          "identity": "example:architecture/model",
+          "document": "model",
+          "formal_revision": 1
+        }
+      }
+    ],
+    "program": {
+      "source": {
+        "file": "../../../rules/probability/claims/claims-every-scheduler-without-random.fsl",
+        "authority": "example",
+        "identity": "example:architecture/claims-every-scheduler-without-random",
+        "document": "claimseveryschedulerwithoutrandom",
+        "formal_revision": 1
+      }
+    },
+    "documents": [
+      {
+        "file": "../../../data/start-service-up.json"
+      }
+    ],
+    "items": [
+      {
+        "claim": "NoRandomUp",
+        "probabilistic": {
+          "evidence": "exact"
+        }
+      }
+    ]
+  }
+}

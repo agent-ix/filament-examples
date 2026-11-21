@@ -315,18 +315,37 @@ serves = "Probability reference (models)"
 [[case]]
 id = "claims-probability-every-scheduler"
 rule = ""
-statement = "The claim states that each service stays up for the next 10 steps with probability at least 0.99 under every scheduler."
+statement = "Each call fails 1 time in 10,000, so a service that is up stays up through the next 10 steps with probability about 0.999 under every scheduler, above the 0.99 the claim asks for."
 file = "rules/probability/claims/claims-probability-every-scheduler.fsl"
-command = "compile requests/probability/claims/claims-probability-every-scheduler.json"
-status = "running"
-expect_exit = 0
-expect_verdict = "checked: probability claim"
+command = "analyze requests/probability/claims/claims-probability-every-scheduler.json"
+engine = "probability"
+status = "staged"
+expect_exit = 21
+ready_exit = 0
+waits_on = "QSL-2158"
+why = "analyze settles the bounded always claim over Arch::Service::call as unsupported (not-yet-implemented), where it should prove it"
+needs = "exact bounded always under every scheduler over a model operation with a random parameter"
+serves = "Probability reference (claims)"
+
+[[case]]
+id = "claims-every-scheduler-without-random"
+rule = ""
+statement = "The model declares no random choice, so the scheduler picks each call argument: a service that is up stays up through 10 steps with probability 0 under the scheduler that always passes false, and the claim of 0.99 is refuted with a replayed counterexample."
+file = "rules/probability/claims/claims-every-scheduler-without-random.fsl"
+command = "analyze requests/probability/claims/claims-every-scheduler-without-random.json"
+engine = "probability"
+status = "staged"
+expect_exit = 21
+ready_exit = 10
+waits_on = "QSL-2158"
+why = "analyze settles the bounded always claim without random lines as unsupported (not-yet-implemented), where FR-876-AC-2 requires refuted with value 0 and a replayed counterexample"
+needs = "FR-876-AC-2 refutation over a model operation"
 serves = "Probability reference (claims)"
 
 [[case]]
 id = "claims-quantile-steps"
 rule = ""
-statement = "The claim states that once a service is up, it is down within 5 steps on at least 95% of runs."
+statement = "The model declares no random choice, so the scheduler picks each call argument; a service that is up is down within 5 steps on at least 95% of runs only under a scheduler that makes it fail. The claim is compiled, not decided."
 file = "rules/probability/claims/claims-quantile-steps.fsl"
 command = "compile requests/probability/claims/claims-quantile-steps.json"
 status = "running"
@@ -337,7 +356,7 @@ serves = "Probability reference (claims)"
 [[case]]
 id = "claims-mean-of-fraction"
 rule = ""
-statement = "The claim states that a service is up for at least 90% of the next 10 steps on average."
+statement = "Each call fails 1 time in 10,000, so a service is up for about 99.99% of the next 10 steps on average, above the 90% the claim asks for."
 file = "rules/probability/claims/claims-mean-of-fraction.fsl"
 command = "compile requests/probability/claims/claims-mean-of-fraction.json"
 status = "running"
@@ -348,7 +367,7 @@ serves = "Probability reference (claims)"
 [[case]]
 id = "claims-long-run-fraction"
 rule = ""
-statement = "A service is up for at least 99% of the time in the long run."
+statement = "Each call fails 1 time in 10,000, so a service is up about 99.99% of the time in the long run, above the 99% the claim asks for."
 file = "rules/probability/claims/claims-long-run-fraction.fsl"
 command = "compile requests/probability/claims/claims-long-run-fraction.json"
 status = "running"
@@ -359,12 +378,12 @@ serves = "Probability reference (claims)"
 [[case]]
 id = "claims-unbounded-reachability"
 rule = ""
-statement = "The claim states that a service comes up with probability at least 0.9 under every scheduler."
+statement = "A service that is up already satisfies eventually-up, so the claim holds with probability 1 under every scheduler, above the 0.9 the claim asks for; each call fails 1 time in 10,000."
 file = "rules/probability/claims/claims-unbounded-reachability.fsl"
-command = "compile requests/probability/claims/claims-unbounded-reachability.json"
+command = "analyze requests/probability/claims/claims-unbounded-reachability.json"
 status = "running"
 expect_exit = 0
-expect_verdict = "checked: unbounded reachability"
+expect_verdict = "holds"
 serves = "Probability reference (claims)"
 
 [[case]]
@@ -403,14 +422,17 @@ serves = "Probability reference (claims)"
 [[case]]
 id = "schedulers-fair-weak"
 rule = ""
-statement = "The claim limits the schedulers to those that serve the call operation weakly fairly."
+statement = "Each call fails 1 time in 10,000; the schedulers are limited to those that serve the call operation weakly fairly, and a service is up within 10 steps with probability about 0.9999."
 file = "rules/probability/schedulers/schedulers-fair-weak.fsl"
-command = "compile requests/probability/schedulers/schedulers-fair-weak.json"
-status = "running"
-expect_exit = 0
-expect_verdict = "checked: fairness set"
+command = "analyze requests/probability/schedulers/schedulers-fair-weak.json"
+engine = "probability"
+status = "staged"
+expect_exit = 21
+ready_exit = 0
+waits_on = "QSL-2158"
+why = "analyze settles the fair-weak every-scheduler claim over Arch::Service::call as unsupported (not-yet-implemented), where it should prove it"
+needs = "exact every-scheduler claims under a weak-fairness set over a model operation with a random parameter"
 serves = "Probability reference (schedulers)"
-
 
 [[case]]
 id = "staged-sampling-claim"
@@ -431,16 +453,12 @@ serves = "Probability reference (sampling)"
 [[case]]
 id = "staged-exact-reachability"
 rule = ""
-statement = "The claim states that a service comes up with probability at least 0.9 under every scheduler, decided by exact computation."
+statement = "Each call fails 1 time in 10,000, so a service that is up stays or comes up with probability 1 under every scheduler, decided by exact computation."
 file = "rules/probability/exact/staged-exact-reachability.fsl"
-command = "compile requests/probability/exact/staged-exact-reachability.json"
-engine = "probability"
-status = "staged"
-expect_exit = 21
-ready_exit = 0
-waits_on = "QSL-2000"
-why = "A random parameter is refused when the package is written, so the claim cannot be checked yet."
-needs = "probability"
+command = "analyze requests/probability/exact/staged-exact-reachability.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
 serves = "Probability reference (exact)"
 
 [[case]]
@@ -476,14 +494,14 @@ serves = "Probability reference (sampling): a missed claim"
 [[case]]
 id = "staged-exact-reachability-missed"
 rule = "StaysUp"
-statement = "A service stays up forever with probability at least 0.9 under every scheduler: a scheduler that keeps calling it makes it fail."
+statement = "A service stays up forever with probability at least 0.9 under every scheduler: a scheduler that keeps calling it makes it fail, so exact computation refutes the claim."
 file = "rules/probability/exact/staged-exact-reachability-missed.fsl"
-command = "compile requests/probability/exact/staged-exact-reachability-missed.json"
+command = "analyze requests/probability/exact/staged-exact-reachability-missed.json"
 engine = "probability"
 status = "staged"
 expect_exit = 21
 ready_exit = 10
-waits_on = "QSL-2000"
-why = "checks at S3, then S4 refuses: a random parameter cannot be written to a checked-package/v2 graph yet; checking the claim then runs through `fsl analyze`, where it is missed"
-needs = "probability"
+waits_on = "QSL-2158"
+why = "analyze settles the unbounded always claim under every scheduler as unsupported (not-yet-implemented), where it should refute it"
+needs = "exact unbounded always under every scheduler"
 serves = "Probability reference (exact): a missed claim"

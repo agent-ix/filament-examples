@@ -1,0 +1,32 @@
+{
+  "format": "filament.state.snapshot/v1",
+  "identity": {"authority": "example", "identity": "example:architecture/start-service-up"},
+  "observation": "current",
+  "model": {"identity": "example/architecture"},
+  "anchor": {"kind": "initialization", "name": "start"},
+  "populations": [
+    {"population": "ix://example/architecture/teams", "complete": true, "objects": []},
+    {"population": "ix://example/architecture/stores", "complete": true, "objects": []},
+    {
+      "population": "ix://example/architecture/services",
+      "complete": true,
+      "objects": [
+        {
+          "key": "checkout",
+          "type": "ix://example/architecture/Service",
+          "fields": {
+            "tier": {"variant": {"type": "ix://example/architecture/Tier", "case": "Core"}},
+            "owner": {"absent": {}},
+            "dependsOn": {"sequence": []},
+            "reads": {"set": []},
+            "handlesPersonalData": {"boolean": false},
+            "minServing": {"integer": "1"},
+            "instances": {"set": []},
+            "up": {"boolean": true}
+          }
+        }
+      ]
+    },
+    {"population": "ix://example/architecture/instances", "complete": true, "objects": []}
+  ]
+}
