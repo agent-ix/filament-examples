@@ -203,7 +203,7 @@ Frozen review: agent-ix/filament-examples PR 71 at 8076ef95a1058d0030646b11213da
 
 ## Verdict
 
-FAIL — the delivered sampling and vote analysis commands do not satisfy their retained staged contracts. No waiver is inferred from partial scope or pending runtime. QSL-2268 and the two non-probability authoring fixes have no scoped source defect.
+PASS after disposition round 1 — FND-001 and FND-002 are fixed by exclusion of pending probability edits. The retained partial changes have no scoped finding; required probability and released-driver acceptance remain open.
 
 ## Findings
 
@@ -219,3 +219,18 @@ The complete 15-file diff was inspected, including request path resolution, snap
 Producer context: pinned FSL ab98ea12d8a4e66a4bce4ac0008703bb5cec2527 FR-185 Workloads and AC-10 admit zero and all-zero weights. FR-192 Description requires EN4 measured/rejected, never a refuted counterexample. FSpec FR-407-AC-11/16 require bounded-profile interval-less operators to refuse unsupported_construct, consistent with the changed expected record. The new posts specify every frame-modified field and Boolean result; source inspection does not identify the remaining EN4 refusal's precise cause. Diagnostics retains that triage.
 
 Sampling still returned EN4/not-markov at S6c. Vote ended only after owned cancellation: incomplete/22, not a natural verdict or counterexample. Neither probability record/status was promoted. Availability and exact reachability source/request bytes remain unchanged from base, with product gaps on QSL-2158; they are not accepted or waived. PR title/body correctly describe partial delivery and leave QSL-2727 open. QSL-2268's scoped gate is evidenced on the fresh driver; the separate released-driver wording in its ticket is not independently established by this review. A partial merge is supportable after pending probability analysis edits are kept outside the delivery, or after both cases obtain justified evidence and consistent contracts.
+
+## Dispositions
+
+| FND | outcome | reason |
+| --- | --- | --- |
+| FND-001 | fixed | Sampling analysis edits excluded; source, request, manifest case and expected result match base. Pending oracle remains open. |
+| FND-002 | fixed | Vote analysis edits excluded; source, request, manifest case and expected result match base. No cancellation recorded as acceptance. |
+
+## Disposition round 1 coverage
+
+Disposition round 1 reviewed frozen d80bf4f001bd24ca0e6f2e57e081b861ad0e1c18 against the original reviewed 8076ef95a1058d0030646b11213da973bf826b26 and base 2518f065969678e816700aef1ebcd2c931c50f55. Both findings are fixed by exclusion from this partial delivery: sampling/vote source, requests and manifest case blocks are restored byte-for-byte to base, the newly added start-available snapshot is removed, and their expected records are unchanged. Availability and exact reachability source/request/manifest/expected bytes also match base. No probability expected record, oracle, rate, threshold, weight, enabled operation or status was weakened.
+
+The pending-probability remote branch was independently checked with git ls-remote: codex/qsl-2727-pending-probability resolves to the original reviewed 8076ef95a1058d0030646b11213da973bf826b26. Pending work is preserved, not accepted. The final nine product files retain the three previously evidenced changes; aside from the restored sampling manifest block, every retained product file is byte-identical to the prior reviewed head. All three committed original review artifacts match the prior scratch artifacts exactly. No branch writes, local build, tests, runtime execution or regeneration were performed for this disposition.
+
+The PR is mergeable as a partial delivery of timeout clock selection, bounded-event unsupported/21 correction, and the zero-weight workload example, with no new finding. This does not clear the pre-existing probability gate failures, accept any probability oracle, or complete QSL-2727/QSL-2158. QSL-2268's released-driver wording remains unverified: supplied focused checks used fresh driver a34862bf3cc3c6a04e6468d87f1155bd3fe86f8f, not an independently verified released binary. Keep that ticket open until its release acceptance is established or explicitly resolved by the owner. The missing root spec/ still prevents a full engine-backed gap-analysis PASS; the manual diff review is complete.
