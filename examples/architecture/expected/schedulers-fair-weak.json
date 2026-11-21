@@ -1,20 +1,22 @@
 {
-  "category": "unsupported",
-  "last_stage": "S6b",
+  "category": "incomplete",
+  "last_stage": "S6c",
   "result": null,
   "first_diagnostic": null,
   "items": [
     {
-      "category": "unsupported",
+      "category": "incomplete",
       "claim_name": "FairlyUp",
       "record": {
-        "diagnostic": {
-          "cause": "not-yet-implemented",
-          "code": "unsupported_construct",
-          "detail": {}
+        "backend": "en-5",
+        "cause": {
+          "kind": "limit-reached",
+          "limit": "work_units",
+          "setting": "accounting.work_units",
+          "value": 1000000
         },
-        "result": "unsupported",
-        "settled_by": "disposition"
+        "result": "incomplete",
+        "settled_by": "result"
       },
       "request": {
         "candidates": {

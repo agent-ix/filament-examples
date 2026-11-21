@@ -4,6 +4,9 @@ profile ev = "filament.temporal.event-position.false-extension/v1";
 profile inf = "filament.temporal.infinite-trace/v1";
 model Arch = "example/architecture";
 
+// A service is up after a call exactly when the call succeeded.
+post UpFollowsCall using v on Arch::Service::call { self.up = ok }
+
 // No random line: every call argument belongs to the scheduler. The scheduler that always passes
 // false makes the service fail at once, so the probability under every scheduler is 0.
 probabilistic NoRandomUp using ev on Arch over (s: Arch::Service) under every scheduler on origin {

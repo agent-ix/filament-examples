@@ -6,6 +6,9 @@ model Arch = "example/architecture";
 
 random Arch::Service::call(ok) ~ { true: 9999, false: 1 };
 
+// A service is up after a call exactly when the call succeeded.
+post UpFollowsCall using v on Arch::Service::call { self.up = ok }
+
 // Each call fails 1 time in 10,000, so a service stays up through the next 10 steps with probability
 // about 0.999, whatever the scheduler picks: at least 0.99 under every scheduler.
 probabilistic CheckoutAvailable using ev on Arch over (s: Arch::Service) under every scheduler on origin {

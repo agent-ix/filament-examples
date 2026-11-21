@@ -1,7 +1,267 @@
 {
-  "category": "success",
-  "last_stage": "S4",
+  "category": "unsupported",
+  "last_stage": "S6b",
   "result": null,
   "first_diagnostic": null,
-  "items": []
+  "items": [
+    {
+      "category": "unsupported",
+      "claim_name": "UpMostly",
+      "record": {
+        "diagnostic": {
+          "cause": "not-yet-implemented",
+          "code": "unsupported_construct",
+          "detail": {}
+        },
+        "result": "unsupported",
+        "settled_by": "disposition"
+      },
+      "request": {
+        "candidates": {
+          "backends": [
+            "en-5"
+          ],
+          "type": "set"
+        },
+        "claim": {
+          "node": {
+            "ordinal": 0,
+            "package": "example:architecture/claims-mean-of-fraction",
+            "path": [
+              "claim",
+              "probabilistic_claim",
+              "UpMostly",
+              "subject",
+              {
+                "ordinal": 0,
+                "package": "example/architecture",
+                "path": [
+                  "model",
+                  "model_root"
+                ]
+              },
+              "scheduler",
+              "every",
+              "reward",
+              "distributions",
+              {
+                "ordinal": 0,
+                "package": "example:architecture/claims-mean-of-fraction",
+                "path": [
+                  "probabilistic",
+                  "random_parameter",
+                  {
+                    "ordinal": 0,
+                    "package": "example/architecture",
+                    "path": [
+                      "model",
+                      "object_type",
+                      "ix://example/architecture/Service"
+                    ]
+                  },
+                  "call",
+                  "ok",
+                  "true*9999,false*1"
+                ]
+              },
+              "delays",
+              "form",
+              "kind",
+              "mean_of_fraction",
+              "measure",
+              "kind",
+              "fraction",
+              "predicate",
+              {
+                "ordinal": 0,
+                "package": "example:architecture/claims-mean-of-fraction",
+                "path": [
+                  "expression",
+                  "query",
+                  {
+                    "ordinal": 0,
+                    "package": "example:architecture/claims-mean-of-fraction",
+                    "path": [
+                      "expression",
+                      "deref",
+                      {
+                        "ordinal": 0,
+                        "package": "example:architecture/claims-mean-of-fraction",
+                        "path": [
+                          "value",
+                          "parameter",
+                          "name",
+                          {
+                            "ordinal": 0,
+                            "package": "example:architecture/claims-mean-of-fraction",
+                            "path": [
+                              "scalar_type",
+                              "text"
+                            ]
+                          },
+                          "s",
+                          "level",
+                          {
+                            "ordinal": 0,
+                            "package": "example:architecture/claims-mean-of-fraction",
+                            "path": [
+                              "scalar_type",
+                              "integer"
+                            ]
+                          },
+                          "0",
+                          {
+                            "ordinal": 0,
+                            "package": "example:architecture/claims-mean-of-fraction",
+                            "path": [
+                              "composite_type",
+                              "reference",
+                              {
+                                "ordinal": 0,
+                                "package": "example/architecture",
+                                "path": [
+                                  "model",
+                                  "object_type",
+                                  "ix://example/architecture/Service"
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      "filament.op.model.deref",
+                      "deref",
+                      {
+                        "ordinal": 0,
+                        "package": "example/architecture",
+                        "path": [
+                          "model",
+                          "object_type",
+                          "ix://example/architecture/Service"
+                        ]
+                      },
+                      {
+                        "ordinal": 0,
+                        "package": "example/architecture",
+                        "path": [
+                          "model",
+                          "object_type",
+                          "ix://example/architecture/Service"
+                        ]
+                      }
+                    ]
+                  },
+                  "filament.op.record.project",
+                  "false",
+                  "query",
+                  {
+                    "ordinal": 0,
+                    "package": "example:architecture/claims-mean-of-fraction",
+                    "path": [
+                      "scalar_type",
+                      "boolean"
+                    ]
+                  },
+                  {
+                    "ordinal": 0,
+                    "package": "example:architecture/claims-mean-of-fraction",
+                    "path": [
+                      "scalar_type",
+                      "boolean"
+                    ]
+                  }
+                ]
+              },
+              "window",
+              "integer",
+              "10",
+              "weighting",
+              "kind",
+              "none",
+              "bound",
+              "direction",
+              "at_least",
+              "value",
+              "rational",
+              "9/10",
+              "over",
+              {
+                "ordinal": 0,
+                "package": "example:architecture/claims-mean-of-fraction",
+                "path": [
+                  "value",
+                  "parameter",
+                  "name",
+                  {
+                    "ordinal": 0,
+                    "package": "example:architecture/claims-mean-of-fraction",
+                    "path": [
+                      "scalar_type",
+                      "text"
+                    ]
+                  },
+                  "s",
+                  "level",
+                  {
+                    "ordinal": 0,
+                    "package": "example:architecture/claims-mean-of-fraction",
+                    "path": [
+                      "scalar_type",
+                      "integer"
+                    ]
+                  },
+                  "0",
+                  {
+                    "ordinal": 0,
+                    "package": "example:architecture/claims-mean-of-fraction",
+                    "path": [
+                      "composite_type",
+                      "reference",
+                      {
+                        "ordinal": 0,
+                        "package": "example/architecture",
+                        "path": [
+                          "model",
+                          "object_type",
+                          "ix://example/architecture/Service"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              "activation",
+              "kind",
+              "origin",
+              "confidence"
+            ]
+          },
+          "occurrence": {
+            "ordinal": 0,
+            "role": "claim"
+          }
+        },
+        "extent": {
+          "classification": "unbounded",
+          "finite_bound_available": false
+        },
+        "kind": "probabilistic-satisfaction",
+        "probabilistic": {
+          "evidence": "exact",
+          "limits": {
+            "max_automaton_states": 1048576,
+            "max_iterations": 1000000,
+            "max_policy_iterations": 10000,
+            "max_precision_bits": 4096,
+            "max_rational_bits": 65536,
+            "max_states": 10000000,
+            "max_transitions": 100000000,
+            "precision_bits": 64
+          }
+        },
+        "request_index": 0
+      },
+      "request_index": 0
+    }
+  ]
 }
