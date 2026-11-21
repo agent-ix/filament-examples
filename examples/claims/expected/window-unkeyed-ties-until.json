@@ -1,0 +1,24 @@
+{
+  "category": "refusal",
+  "last_stage": "S6a",
+  "result": null,
+  "first_diagnostic": null,
+  "items": [
+    {
+      "axes": {
+        "activation": "unavailable",
+        "execution": null,
+        "settlement": "unavailable",
+        "truth": null
+      },
+      "category": "refusal",
+      "cause": {
+        "code": "invalid_runtime_input",
+        "kind": "invalid-value"
+      },
+      "clause": "PUntil0To1Q",
+      "request_index": 0,
+      "result": "declined"
+    }
+  ]
+}

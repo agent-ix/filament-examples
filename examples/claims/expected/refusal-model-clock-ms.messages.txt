@@ -1,0 +1,1 @@
+unsupported_construct (declaration-form): `clock "ms"` over a model subject; the clock of a model claim is `model-steps` or `model-time`

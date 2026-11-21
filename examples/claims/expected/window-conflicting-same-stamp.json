@@ -1,0 +1,27 @@
+{
+  "category": "indeterminate",
+  "last_stage": "S6a",
+  "result": null,
+  "first_diagnostic": null,
+  "items": [
+    {
+      "axes": {
+        "activation": "active",
+        "execution": "completed",
+        "settlement": "unavailable",
+        "truth": null
+      },
+      "category": "indeterminate",
+      "cause": {
+        "atom": "holds(s.p)",
+        "kind": "conflicting-valuation",
+        "position": 1,
+        "where": "position 0"
+      },
+      "clause": "Eventually0To1",
+      "position": 1,
+      "request_index": 0,
+      "result": "indeterminate"
+    }
+  ]
+}

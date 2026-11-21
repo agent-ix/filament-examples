@@ -1,0 +1,81 @@
+{
+  "format": "native-run/1",
+  "request": {
+    "models": [],
+    "program": {
+      "source": {
+        "file": "../rules/timed-window.fsl",
+        "authority": "example",
+        "identity": "example:claims/timed-window",
+        "document": "timedwindow",
+        "formal_revision": 1
+      }
+    },
+    "clocks": {
+      "plant-ms": {
+        "kind": "timestamped_event",
+        "timestamp_unit": "ms"
+      }
+    },
+    "clause": {
+      "selection": {
+        "temporal": {
+          "name": "AckWithin3000",
+          "trace": {
+            "timestamped": {
+              "observations": [
+                {
+                  "position": {
+                    "sample": {
+                      "p": {
+                        "boolean": false
+                      },
+                      "q": {
+                        "boolean": true
+                      }
+                    }
+                  },
+                  "stamp": 0
+                },
+                {
+                  "position": {
+                    "sample": {
+                      "p": {
+                        "boolean": true
+                      },
+                      "q": {
+                        "boolean": false
+                      }
+                    }
+                  },
+                  "stamp": 3001
+                }
+              ],
+              "progress": {
+                "watermark": 3001,
+                "completeness": {
+                  "complete": {
+                    "through": 3001
+                  }
+                },
+                "scope": "closed",
+                "execution": "closed"
+              },
+              "lower_boundary": "authoritative-origin",
+              "binding": {
+                "profile": "filament.temporal.timestamped-event.finite-window/v1",
+                "clock": "plant-ms",
+                "parameters": {
+                  "kind": "timestamped_event",
+                  "timestamp_unit": "ms"
+                }
+              },
+              "cover": "exact"
+            }
+          }
+        }
+      },
+      "observations": {}
+    }
+  }
+}

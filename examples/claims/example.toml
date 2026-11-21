@@ -1,0 +1,1952 @@
+name = "claims"
+summary = "Claims and temporal forms: every temporal operator on a trace, finite windows, false extension, model claims and the refusals of claim declarations."
+
+[[case]]
+id = "future-ev-prefix"
+rule = "EventuallyP"
+statement = "p first holds at position 2, in the prefix: eventually p is true."
+file = "rules/future.fsl"
+command = "run requests/future-ev-prefix.json"
+engine = "timed"
+clock = "steps"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "FR-091, FR-161, FR-367 (future operators)"
+
+[[case]]
+id = "future-ev-never"
+rule = "EventuallyP"
+statement = "p never holds in the prefix or the loop: eventually p is false."
+file = "rules/future.fsl"
+command = "run requests/future-ev-never.json"
+engine = "timed"
+clock = "steps"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
+serves = "FR-091, FR-161, FR-367 (future operators)"
+
+[[case]]
+id = "future-ev-loop"
+rule = "EventuallyP"
+statement = "p holds only inside the loop: eventually p is true."
+file = "rules/future.fsl"
+command = "run requests/future-ev-loop.json"
+engine = "timed"
+clock = "steps"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "FR-091, FR-161, FR-367 (future operators)"
+
+[[case]]
+id = "future-al-all"
+rule = "AlwaysP"
+statement = "p holds at every position: always p is true."
+file = "rules/future.fsl"
+command = "run requests/future-al-all.json"
+engine = "timed"
+clock = "steps"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "FR-091, FR-161, FR-367 (future operators)"
+
+[[case]]
+id = "future-al-prefix-gap"
+rule = "AlwaysP"
+statement = "p fails at position 1, in the prefix: always p is false."
+file = "rules/future.fsl"
+command = "run requests/future-al-prefix-gap.json"
+engine = "timed"
+clock = "steps"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
+serves = "FR-091, FR-161, FR-367 (future operators)"
+
+[[case]]
+id = "future-al-loop-gap"
+rule = "AlwaysP"
+statement = "p fails at every second position of the loop: always p is false."
+file = "rules/future.fsl"
+command = "run requests/future-al-loop-gap.json"
+engine = "timed"
+clock = "steps"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
+serves = "FR-091, FR-161, FR-367 (future operators)"
+
+[[case]]
+id = "future-ev-from2-too-early"
+rule = "EventuallyFrom2"
+statement = "p holds only at position 1, below the lower bound 2: eventually[2,*] p is false."
+file = "rules/future.fsl"
+command = "run requests/future-ev-from2-too-early.json"
+engine = "timed"
+clock = "steps"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
+serves = "FR-091, FR-161, FR-367 (future operators)"
+
+[[case]]
+id = "future-ev-from2-at-bound"
+rule = "EventuallyFrom2"
+statement = "p holds at position 2, the lower bound itself: eventually[2,*] p is true."
+file = "rules/future.fsl"
+command = "run requests/future-ev-from2-at-bound.json"
+engine = "timed"
+clock = "steps"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "FR-091, FR-161, FR-367 (future operators)"
+
+[[case]]
+id = "future-ev-0to2-upper-end"
+rule = "EventuallyIn0To2"
+statement = "p holds at position 2, the upper bound itself, which the interval includes."
+file = "rules/future.fsl"
+command = "run requests/future-ev-0to2-upper-end.json"
+engine = "timed"
+clock = "steps"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "FR-091, FR-161, FR-367 (future operators)"
+
+[[case]]
+id = "future-ev-0to2-past-upper"
+rule = "EventuallyIn0To2"
+statement = "p holds at position 3, one past the upper bound: eventually[0,2] p is false."
+file = "rules/future.fsl"
+command = "run requests/future-ev-0to2-past-upper.json"
+engine = "timed"
+clock = "steps"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
+serves = "FR-091, FR-161, FR-367 (future operators)"
+
+[[case]]
+id = "future-al-0to2-ignores-after"
+rule = "AlwaysIn0To2"
+statement = "p fails only at position 3, outside the interval: always[0,2] p is true."
+file = "rules/future.fsl"
+command = "run requests/future-al-0to2-ignores-after.json"
+engine = "timed"
+clock = "steps"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "FR-091, FR-161, FR-367 (future operators)"
+
+[[case]]
+id = "future-al-0to2-upper-end"
+rule = "AlwaysIn0To2"
+statement = "p fails at position 2, the upper bound: always[0,2] p is false."
+file = "rules/future.fsl"
+command = "run requests/future-al-0to2-upper-end.json"
+engine = "timed"
+clock = "steps"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
+serves = "FR-091, FR-161, FR-367 (future operators)"
+
+[[case]]
+id = "future-ev-at1-hit"
+rule = "EventuallyAt1"
+statement = "A zero-width interval [1,1] reads position 1 only, where p holds."
+file = "rules/future.fsl"
+command = "run requests/future-ev-at1-hit.json"
+engine = "timed"
+clock = "steps"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "FR-091, FR-161, FR-367 (future operators)"
+
+[[case]]
+id = "future-ev-at1-before"
+rule = "EventuallyAt1"
+statement = "p holds at position 0 only: the zero-width interval [1,1] does not read it."
+file = "rules/future.fsl"
+command = "run requests/future-ev-at1-before.json"
+engine = "timed"
+clock = "steps"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
+serves = "FR-091, FR-161, FR-367 (future operators)"
+
+[[case]]
+id = "future-ev-at1-after"
+rule = "EventuallyAt1"
+statement = "p holds at position 2 only: the zero-width interval [1,1] does not read it."
+file = "rules/future.fsl"
+command = "run requests/future-ev-at1-after.json"
+engine = "timed"
+clock = "steps"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
+serves = "FR-091, FR-161, FR-367 (future operators)"
+
+[[case]]
+id = "future-al-from1-skips-anchor"
+rule = "AlwaysFrom1"
+statement = "p fails at position 0 only: always[1,*] p starts at position 1 and is true."
+file = "rules/future.fsl"
+command = "run requests/future-al-from1-skips-anchor.json"
+engine = "timed"
+clock = "steps"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "FR-091, FR-161, FR-367 (future operators)"
+
+[[case]]
+id = "future-al-from1-gap"
+rule = "AlwaysFrom1"
+statement = "p fails at position 2: always[1,*] p is false."
+file = "rules/future.fsl"
+command = "run requests/future-al-from1-gap.json"
+engine = "timed"
+clock = "steps"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
+serves = "FR-091, FR-161, FR-367 (future operators)"
+
+[[case]]
+id = "future-recur-in-loop"
+rule = "Recurs"
+statement = "p holds in every pass of the loop: always eventually p is true."
+file = "rules/future.fsl"
+command = "run requests/future-recur-in-loop.json"
+engine = "timed"
+clock = "steps"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "FR-091, FR-161, FR-367 (future operators)"
+
+[[case]]
+id = "future-recur-prefix-only"
+rule = "Recurs"
+statement = "p holds only in the prefix, never again after it: always eventually p is false."
+file = "rules/future.fsl"
+command = "run requests/future-recur-prefix-only.json"
+engine = "timed"
+clock = "steps"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
+serves = "FR-091, FR-161, FR-367 (future operators)"
+
+[[case]]
+id = "future-persist-from-loop"
+rule = "Persists"
+statement = "p holds at every position from position 1 on: eventually always p is true."
+file = "rules/future.fsl"
+command = "run requests/future-persist-from-loop.json"
+engine = "timed"
+clock = "steps"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "FR-091, FR-161, FR-367 (future operators)"
+
+[[case]]
+id = "future-persist-broken-by-loop"
+rule = "Persists"
+statement = "p fails in every pass of the loop: eventually always p is false."
+file = "rules/future.fsl"
+command = "run requests/future-persist-broken-by-loop.json"
+engine = "timed"
+clock = "steps"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
+serves = "FR-091, FR-161, FR-367 (future operators)"
+
+[[case]]
+id = "future-until-holds"
+rule = "PUntilQ"
+statement = "p holds at positions 0 and 1 and q at position 2: p until q is true."
+file = "rules/future.fsl"
+command = "run requests/future-until-holds.json"
+engine = "timed"
+clock = "steps"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "FR-091, FR-161, FR-367 (future operators)"
+
+[[case]]
+id = "future-until-p-gap"
+rule = "PUntilQ"
+statement = "p fails at position 1 before q holds at position 2: p until q is false."
+file = "rules/future.fsl"
+command = "run requests/future-until-p-gap.json"
+engine = "timed"
+clock = "steps"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
+serves = "FR-091, FR-161, FR-367 (future operators)"
+
+[[case]]
+id = "future-until-q-never"
+rule = "PUntilQ"
+statement = "q never holds: until is strong, so p until q is false even though p holds throughout."
+file = "rules/future.fsl"
+command = "run requests/future-until-q-never.json"
+engine = "timed"
+clock = "steps"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
+serves = "FR-091, FR-161, FR-367 (future operators)"
+
+[[case]]
+id = "future-until-q-at-anchor"
+rule = "PUntilQ"
+statement = "q holds at position 0: p until q is true with p false at the anchor."
+file = "rules/future.fsl"
+command = "run requests/future-until-q-at-anchor.json"
+engine = "timed"
+clock = "steps"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "FR-091, FR-161, FR-367 (future operators)"
+
+[[case]]
+id = "future-until-1to2-p-off-at-anchor"
+rule = "PUntil1To2Q"
+statement = "q holds at offset 1 and p is false at the anchor: p until[1,2] q is true, as positions before the lower bound need no p."
+file = "rules/future.fsl"
+command = "run requests/future-until-1to2-p-off-at-anchor.json"
+engine = "timed"
+clock = "steps"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "FR-091, FR-161, FR-367 (future operators)"
+
+[[case]]
+id = "future-until-1to2-q-at-upper"
+rule = "PUntil1To2Q"
+statement = "q holds at offset 2, the upper bound, and p holds at offset 1: true."
+file = "rules/future.fsl"
+command = "run requests/future-until-1to2-q-at-upper.json"
+engine = "timed"
+clock = "steps"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "FR-091, FR-161, FR-367 (future operators)"
+
+[[case]]
+id = "future-until-1to2-p-gap"
+rule = "PUntil1To2Q"
+statement = "q holds at offset 2 but p fails at offset 1: false."
+file = "rules/future.fsl"
+command = "run requests/future-until-1to2-p-gap.json"
+engine = "timed"
+clock = "steps"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
+serves = "FR-091, FR-161, FR-367 (future operators)"
+
+[[case]]
+id = "future-until-1to2-q-too-early"
+rule = "PUntil1To2Q"
+statement = "q holds only at offset 0, below the lower bound 1: false."
+file = "rules/future.fsl"
+command = "run requests/future-until-1to2-q-too-early.json"
+engine = "timed"
+clock = "steps"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
+serves = "FR-091, FR-161, FR-367 (future operators)"
+
+[[case]]
+id = "future-until-1to2-q-too-late"
+rule = "PUntil1To2Q"
+statement = "q holds only at offset 3, past the upper bound 2: false."
+file = "rules/future.fsl"
+command = "run requests/future-until-1to2-q-too-late.json"
+engine = "timed"
+clock = "steps"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
+serves = "FR-091, FR-161, FR-367 (future operators)"
+
+[[case]]
+id = "future-release-q-for-ever"
+rule = "PReleasesQ"
+statement = "q holds at every position and p never does: p release q is true."
+file = "rules/future.fsl"
+command = "run requests/future-release-q-for-ever.json"
+engine = "timed"
+clock = "steps"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "FR-091, FR-161, FR-367 (future operators)"
+
+[[case]]
+id = "future-release-p-with-q"
+rule = "PReleasesQ"
+statement = "q holds up to position 1 where p also holds: the release is true."
+file = "rules/future.fsl"
+command = "run requests/future-release-p-with-q.json"
+engine = "timed"
+clock = "steps"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "FR-091, FR-161, FR-367 (future operators)"
+
+[[case]]
+id = "future-release-p-without-q"
+rule = "PReleasesQ"
+statement = "p holds at position 0 while q does not: q is needed up to and including the releasing position, so false."
+file = "rules/future.fsl"
+command = "run requests/future-release-p-without-q.json"
+engine = "timed"
+clock = "steps"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
+serves = "FR-091, FR-161, FR-367 (future operators)"
+
+[[case]]
+id = "future-release-q-fails-first"
+rule = "PReleasesQ"
+statement = "q fails at position 1 before p holds at position 2: false."
+file = "rules/future.fsl"
+command = "run requests/future-release-q-fails-first.json"
+engine = "timed"
+clock = "steps"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
+serves = "FR-091, FR-161, FR-367 (future operators)"
+
+[[case]]
+id = "future-release-1to2-q-throughout"
+rule = "PReleases1To2Q"
+statement = "q holds at offsets 1 and 2 with no p: p release[1,2] q is true."
+file = "rules/future.fsl"
+command = "run requests/future-release-1to2-q-throughout.json"
+engine = "timed"
+clock = "steps"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "FR-091, FR-161, FR-367 (future operators)"
+
+[[case]]
+id = "future-release-1to2-q-fails"
+rule = "PReleases1To2Q"
+statement = "q fails at offset 2 and p never held at offset 1: false."
+file = "rules/future.fsl"
+command = "run requests/future-release-1to2-q-fails.json"
+engine = "timed"
+clock = "steps"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
+serves = "FR-091, FR-161, FR-367 (future operators)"
+
+[[case]]
+id = "future-release-1to2-released-at-1"
+rule = "PReleases1To2Q"
+statement = "p holds at offset 1 together with q, which releases offset 2 from q: true."
+file = "rules/future.fsl"
+command = "run requests/future-release-1to2-released-at-1.json"
+engine = "timed"
+clock = "steps"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "FR-091, FR-161, FR-367 (future operators)"
+
+[[case]]
+id = "future-not-ev-0to1-some-off"
+rule = "EventuallyNotPIn0To1"
+statement = "p is false at position 1: eventually[0,1] not p is true."
+file = "rules/future.fsl"
+command = "run requests/future-not-ev-0to1-some-off.json"
+engine = "timed"
+clock = "steps"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "FR-091, FR-161, FR-367 (future operators)"
+
+[[case]]
+id = "future-not-ev-0to1-all-on"
+rule = "EventuallyNotPIn0To1"
+statement = "p holds at positions 0 and 1: eventually[0,1] not p is false."
+file = "rules/future.fsl"
+command = "run requests/future-not-ev-0to1-all-on.json"
+engine = "timed"
+clock = "steps"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
+serves = "FR-091, FR-161, FR-367 (future operators)"
+
+[[case]]
+id = "future-not-al-0to1-all-off"
+rule = "AlwaysNotPIn0To1"
+statement = "p is false at positions 0 and 1: always[0,1] not p is true."
+file = "rules/future.fsl"
+command = "run requests/future-not-al-0to1-all-off.json"
+engine = "timed"
+clock = "steps"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "FR-091, FR-161, FR-367 (future operators)"
+
+[[case]]
+id = "future-not-al-0to1-one-on"
+rule = "AlwaysNotPIn0To1"
+statement = "p holds at position 1: always[0,1] not p is false."
+file = "rules/future.fsl"
+command = "run requests/future-not-al-0to1-one-on.json"
+engine = "timed"
+clock = "steps"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
+serves = "FR-091, FR-161, FR-367 (future operators)"
+
+[[case]]
+id = "future-answered-all"
+rule = "Answered"
+statement = "The request at position 0 is answered at position 1, within 2: true."
+file = "rules/future.fsl"
+command = "run requests/future-answered-all.json"
+engine = "timed"
+clock = "steps"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "FR-091, FR-161, FR-367 (future operators)"
+
+[[case]]
+id = "future-answered-late"
+rule = "Answered"
+statement = "The request at position 0 is answered at position 3, past the bound 2: false."
+file = "rules/future.fsl"
+command = "run requests/future-answered-late.json"
+engine = "timed"
+clock = "steps"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
+serves = "FR-091, FR-161, FR-367 (future operators)"
+
+[[case]]
+id = "future-activation-answered"
+rule = "AnswerWhenAsked"
+statement = "The guard p holds at position 1 only, and q holds at position 2 within the interval [0,1] counted from position 1: the activated clause is true."
+file = "rules/future.fsl"
+command = "run requests/future-activation-answered.json"
+engine = "timed"
+clock = "steps"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "FR-091, FR-161, FR-367 (future operators)"
+
+[[case]]
+id = "future-activation-unanswered"
+rule = "AnswerWhenAsked"
+statement = "The guard holds at position 1 and q never holds: the clause activated there is false."
+file = "rules/future.fsl"
+command = "run requests/future-activation-unanswered.json"
+engine = "timed"
+clock = "steps"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
+serves = "FR-091, FR-161, FR-367 (future operators)"
+
+[[case]]
+id = "future-activation-second-trigger-unanswered"
+rule = "AnswerWhenAsked"
+statement = "The first trigger at position 0 is answered at position 1, but the trigger at position 2 is not answered: every activation must hold, so false."
+file = "rules/future.fsl"
+command = "run requests/future-activation-second-trigger-unanswered.json"
+engine = "timed"
+clock = "steps"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
+serves = "FR-091, FR-161, FR-367 (future operators)"
+
+[[case]]
+id = "future-activation-in-loop"
+rule = "AnswerWhenAsked"
+statement = "The guard holds in every pass of the loop and is answered one position later: true."
+file = "rules/future.fsl"
+command = "run requests/future-activation-in-loop.json"
+engine = "timed"
+clock = "steps"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "FR-091, FR-161, FR-367 (future operators)"
+
+[[case]]
+id = "future-activation-none"
+rule = "AnswerWhenAsked"
+statement = "The guard never holds: no obligation is created, the clause is inactive and has no truth value."
+file = "rules/future.fsl"
+command = "run requests/future-activation-none.json"
+engine = "timed"
+clock = "steps"
+status = "running"
+expect_exit = 0
+expect_verdict = "inactive"
+serves = "FR-091, FR-161, FR-367 (future operators)"
+
+[[case]]
+id = "past-once-1to2-offset1"
+rule = "OnceBack1To2"
+statement = "p held at position 2, one step back from position 3: once[1,2] p is true."
+file = "rules/past.fsl"
+command = "run requests/past-once-1to2-offset1.json"
+engine = "timed"
+clock = "steps"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "FR-092, FR-161-AC-12 (past operators)"
+
+[[case]]
+id = "past-once-1to2-offset2"
+rule = "OnceBack1To2"
+statement = "p held at position 1, two steps back, the upper bound: true."
+file = "rules/past.fsl"
+command = "run requests/past-once-1to2-offset2.json"
+engine = "timed"
+clock = "steps"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "FR-092, FR-161-AC-12 (past operators)"
+
+[[case]]
+id = "past-once-1to2-offset3"
+rule = "OnceBack1To2"
+statement = "p held at position 0, three steps back, past the upper bound: false."
+file = "rules/past.fsl"
+command = "run requests/past-once-1to2-offset3.json"
+engine = "timed"
+clock = "steps"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
+serves = "FR-092, FR-161-AC-12 (past operators)"
+
+[[case]]
+id = "past-once-1to2-offset0"
+rule = "OnceBack1To2"
+statement = "p holds at position 3 itself, offset 0 below the lower bound 1: false."
+file = "rules/past.fsl"
+command = "run requests/past-once-1to2-offset0.json"
+engine = "timed"
+clock = "steps"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
+serves = "FR-092, FR-161-AC-12 (past operators)"
+
+[[case]]
+id = "past-once-ever-past"
+rule = "OnceEver"
+statement = "p held at position 0: once p is true at position 3."
+file = "rules/past.fsl"
+command = "run requests/past-once-ever-past.json"
+engine = "timed"
+clock = "steps"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "FR-092, FR-161-AC-12 (past operators)"
+
+[[case]]
+id = "past-once-ever-now"
+rule = "OnceEver"
+statement = "p holds at position 3: once p includes the current position, so it is true."
+file = "rules/past.fsl"
+command = "run requests/past-once-ever-now.json"
+engine = "timed"
+clock = "steps"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "FR-092, FR-161-AC-12 (past operators)"
+
+[[case]]
+id = "past-once-ever-never"
+rule = "OnceEver"
+statement = "p never held up to position 3: once p is false."
+file = "rules/past.fsl"
+command = "run requests/past-once-ever-never.json"
+engine = "timed"
+clock = "steps"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
+serves = "FR-092, FR-161-AC-12 (past operators)"
+
+[[case]]
+id = "past-once-before-origin"
+rule = "OnceBeforeOrigin"
+statement = "An offset of 5 to 6 reaches before the first position, where nothing held: false."
+file = "rules/past.fsl"
+command = "run requests/past-once-before-origin.json"
+engine = "timed"
+clock = "steps"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
+serves = "FR-092, FR-161-AC-12 (past operators)"
+
+[[case]]
+id = "past-hist-last2-holds"
+rule = "HistoricallyLast2"
+statement = "p held at positions 2 and 3: historically[0,1] p is true."
+file = "rules/past.fsl"
+command = "run requests/past-hist-last2-holds.json"
+engine = "timed"
+clock = "steps"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "FR-092, FR-161-AC-12 (past operators)"
+
+[[case]]
+id = "past-hist-last2-gap"
+rule = "HistoricallyLast2"
+statement = "p failed at position 2: historically[0,1] p is false."
+file = "rules/past.fsl"
+command = "run requests/past-hist-last2-gap.json"
+engine = "timed"
+clock = "steps"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
+serves = "FR-092, FR-161-AC-12 (past operators)"
+
+[[case]]
+id = "past-hist-all-holds"
+rule = "HistoricallyAlways"
+statement = "p held at every position up to 3: historically p is true."
+file = "rules/past.fsl"
+command = "run requests/past-hist-all-holds.json"
+engine = "timed"
+clock = "steps"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "FR-092, FR-161-AC-12 (past operators)"
+
+[[case]]
+id = "past-hist-all-gap"
+rule = "HistoricallyAlways"
+statement = "p failed at position 1: historically p is false."
+file = "rules/past.fsl"
+command = "run requests/past-hist-all-gap.json"
+engine = "timed"
+clock = "steps"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
+serves = "FR-092, FR-161-AC-12 (past operators)"
+
+[[case]]
+id = "past-since-holds"
+rule = "PSinceQ"
+statement = "q held at position 1 and p at positions 2 and 3: p since q is true."
+file = "rules/past.fsl"
+command = "run requests/past-since-holds.json"
+engine = "timed"
+clock = "steps"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "FR-092, FR-161-AC-12 (past operators)"
+
+[[case]]
+id = "past-since-p-gap"
+rule = "PSinceQ"
+statement = "p failed at position 2 after q held at position 1: false."
+file = "rules/past.fsl"
+command = "run requests/past-since-p-gap.json"
+engine = "timed"
+clock = "steps"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
+serves = "FR-092, FR-161-AC-12 (past operators)"
+
+[[case]]
+id = "past-since-q-now"
+rule = "PSinceQ"
+statement = "q holds at position 3 itself: since is non-strict, so it is true with no p."
+file = "rules/past.fsl"
+command = "run requests/past-since-q-now.json"
+engine = "timed"
+clock = "steps"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "FR-092, FR-161-AC-12 (past operators)"
+
+[[case]]
+id = "past-since-q-never"
+rule = "PSinceQ"
+statement = "q never held: false."
+file = "rules/past.fsl"
+command = "run requests/past-since-q-never.json"
+engine = "timed"
+clock = "steps"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
+serves = "FR-092, FR-161-AC-12 (past operators)"
+
+[[case]]
+id = "past-triggered-q-throughout"
+rule = "PTriggeredQ"
+statement = "q held at every position and p never: p triggered q is true."
+file = "rules/past.fsl"
+command = "run requests/past-triggered-q-throughout.json"
+engine = "timed"
+clock = "steps"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "FR-092, FR-161-AC-12 (past operators)"
+
+[[case]]
+id = "past-triggered-released"
+rule = "PTriggeredQ"
+statement = "q failed at position 1, then p and q held together at position 2: true."
+file = "rules/past.fsl"
+command = "run requests/past-triggered-released.json"
+engine = "timed"
+clock = "steps"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "FR-092, FR-161-AC-12 (past operators)"
+
+[[case]]
+id = "past-triggered-q-fails-unreleased"
+rule = "PTriggeredQ"
+statement = "q failed at position 1 and p never held after it: false."
+file = "rules/past.fsl"
+command = "run requests/past-triggered-q-fails-unreleased.json"
+engine = "timed"
+clock = "steps"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
+serves = "FR-092, FR-161-AC-12 (past operators)"
+
+[[case]]
+id = "past-triggered-p-without-q"
+rule = "PTriggeredQ"
+statement = "p holds at position 3 while q fails there: q is needed at the releasing position, so false."
+file = "rules/past.fsl"
+command = "run requests/past-triggered-p-without-q.json"
+engine = "timed"
+clock = "steps"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
+serves = "FR-092, FR-161-AC-12 (past operators)"
+
+[[case]]
+id = "window-always-false-middle"
+rule = "Always0To5"
+statement = "p fails at stamp 2 inside [0,5]: always[0,5] p is false."
+file = "rules/timed-window.fsl"
+command = "run requests/window-always-false-middle.json"
+engine = "timed"
+clock = "plant-ms"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
+serves = "FR-091-AC-10 to AC-16, AC-22, FR-094 (finite window)"
+
+[[case]]
+id = "window-always-all-true"
+rule = "Always0To5"
+statement = "p holds at stamps 0, 2 and 5: always[0,5] p is true."
+file = "rules/timed-window.fsl"
+command = "run requests/window-always-all-true.json"
+engine = "timed"
+clock = "plant-ms"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "FR-091-AC-10 to AC-16, AC-22, FR-094 (finite window)"
+
+[[case]]
+id = "window-eventually-miss-by-one"
+rule = "Eventually0To1"
+statement = "p holds only at stamp 2, past the interval [0,1]: false."
+file = "rules/timed-window.fsl"
+command = "run requests/window-eventually-miss-by-one.json"
+engine = "timed"
+clock = "plant-ms"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
+serves = "FR-091-AC-10 to AC-16, AC-22, FR-094 (finite window)"
+
+[[case]]
+id = "window-eventually-hit-upper"
+rule = "Eventually0To2"
+statement = "p holds at stamp 2, the upper endpoint of [0,2]: true."
+file = "rules/timed-window.fsl"
+command = "run requests/window-eventually-hit-upper.json"
+engine = "timed"
+clock = "plant-ms"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "FR-091-AC-10 to AC-16, AC-22, FR-094 (finite window)"
+
+[[case]]
+id = "window-stamp-past-upper"
+rule = "Eventually0To5"
+statement = "The only p is stamped 6, outside [0,5]: false."
+file = "rules/timed-window.fsl"
+command = "run requests/window-stamp-past-upper.json"
+engine = "timed"
+clock = "plant-ms"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
+serves = "FR-091-AC-10 to AC-16, AC-22, FR-094 (finite window)"
+
+[[case]]
+id = "window-stamp-at-upper"
+rule = "Eventually0To5"
+statement = "The only p is stamped 5, the upper endpoint: true."
+file = "rules/timed-window.fsl"
+command = "run requests/window-stamp-at-upper.json"
+engine = "timed"
+clock = "plant-ms"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "FR-091-AC-10 to AC-16, AC-22, FR-094 (finite window)"
+
+[[case]]
+id = "window-single-always-no-synthetic-false"
+rule = "Always0To1"
+statement = "One position with p true and completeness through 1: always[0,1] p is true, with no synthetic false position after the trace."
+file = "rules/timed-window.fsl"
+command = "run requests/window-single-always-no-synthetic-false.json"
+engine = "timed"
+clock = "plant-ms"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "FR-091-AC-10 to AC-16, AC-22, FR-094 (finite window)"
+
+[[case]]
+id = "window-empty-existential-window"
+rule = "Eventually2To3"
+statement = "No observation lies in [2,3] and the window is complete: eventually is false."
+file = "rules/timed-window.fsl"
+command = "run requests/window-empty-existential-window.json"
+engine = "timed"
+clock = "plant-ms"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
+serves = "FR-091-AC-10 to AC-16, AC-22, FR-094 (finite window)"
+
+[[case]]
+id = "window-empty-universal-window"
+rule = "Always2To3"
+statement = "No observation lies in [2,3] and the window is complete: always is true."
+file = "rules/timed-window.fsl"
+command = "run requests/window-empty-universal-window.json"
+engine = "timed"
+clock = "plant-ms"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "FR-091-AC-10 to AC-16, AC-22, FR-094 (finite window)"
+
+[[case]]
+id = "window-pending-before-deadline"
+rule = "Eventually0To5"
+statement = "p is false at stamps 0 and 1 with progress only to 1: the window to 5 is open, so the result is pending."
+file = "rules/timed-window.fsl"
+command = "run requests/window-pending-before-deadline.json"
+engine = "timed"
+clock = "plant-ms"
+status = "running"
+expect_exit = 0
+expect_verdict = "pending"
+serves = "FR-091-AC-10 to AC-16, AC-22, FR-094 (finite window)"
+
+[[case]]
+id = "window-settled-at-deadline"
+rule = "Eventually0To5"
+statement = "The same observations with progress to 5: the window closed with no p, so false."
+file = "rules/timed-window.fsl"
+command = "run requests/window-settled-at-deadline.json"
+engine = "timed"
+clock = "plant-ms"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
+serves = "FR-091-AC-10 to AC-16, AC-22, FR-094 (finite window)"
+
+[[case]]
+id = "window-open-scope-witness"
+rule = "Eventually0To5"
+statement = "With an open scope, p true at stamp 1 settles eventually early as true."
+file = "rules/timed-window.fsl"
+command = "run requests/window-open-scope-witness.json"
+engine = "timed"
+clock = "plant-ms"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "FR-091-AC-10 to AC-16, AC-22, FR-094 (finite window)"
+
+[[case]]
+id = "window-open-scope-counterexample"
+rule = "Always0To5"
+statement = "With an open scope, p false at stamp 1 settles always early as false."
+file = "rules/timed-window.fsl"
+command = "run requests/window-open-scope-counterexample.json"
+engine = "timed"
+clock = "plant-ms"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
+serves = "FR-091-AC-10 to AC-16, AC-22, FR-094 (finite window)"
+
+[[case]]
+id = "window-incomplete-always"
+rule = "Always0To5"
+statement = "Completeness is not asserted: always[0,5] p is indeterminate, not true."
+file = "rules/timed-window.fsl"
+command = "run requests/window-incomplete-always.json"
+status = "running"
+expect_exit = 11
+expect_verdict = "indeterminate"
+serves = "FR-091-AC-10 to AC-16, AC-22, FR-094 (finite window)"
+
+[[case]]
+id = "window-complete-always"
+rule = "Always0To5"
+statement = "The same observation with completeness through 5: always[0,5] p is true."
+file = "rules/timed-window.fsl"
+command = "run requests/window-complete-always.json"
+engine = "timed"
+clock = "plant-ms"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "FR-091-AC-10 to AC-16, AC-22, FR-094 (finite window)"
+
+[[case]]
+id = "window-incomplete-eventually-not-false"
+rule = "Eventually2To3"
+statement = "Completeness is not asserted: eventually[2,3] p is indeterminate and not false."
+file = "rules/timed-window.fsl"
+command = "run requests/window-incomplete-eventually-not-false.json"
+status = "running"
+expect_exit = 11
+expect_verdict = "indeterminate"
+serves = "FR-091-AC-10 to AC-16, AC-22, FR-094 (finite window)"
+
+[[case]]
+id = "window-complete-short-of-bound"
+rule = "Eventually2To3"
+statement = "Completeness through 2 does not reach the window end 3: indeterminate."
+file = "rules/timed-window.fsl"
+command = "run requests/window-complete-short-of-bound.json"
+status = "running"
+expect_exit = 11
+expect_verdict = "indeterminate"
+serves = "FR-091-AC-10 to AC-16, AC-22, FR-094 (finite window)"
+
+[[case]]
+id = "window-deadline-instant-participates"
+rule = "Eventually0To3"
+statement = "p at stamp 3, the inclusive deadline, participates: eventually[0,3] p is true."
+file = "rules/timed-window.fsl"
+command = "run requests/window-deadline-instant-participates.json"
+engine = "timed"
+clock = "plant-ms"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "FR-091-AC-10 to AC-16, AC-22, FR-094 (finite window)"
+
+[[case]]
+id = "window-after-deadline-ignored"
+rule = "Eventually0To3"
+statement = "p only at stamp 4, one past the deadline: false."
+file = "rules/timed-window.fsl"
+command = "run requests/window-after-deadline-ignored.json"
+engine = "timed"
+clock = "plant-ms"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
+serves = "FR-091-AC-10 to AC-16, AC-22, FR-094 (finite window)"
+
+[[case]]
+id = "window-single-position-false"
+rule = "Eventually0To3"
+statement = "One position with p false and progress to 3: false, no later observation needed."
+file = "rules/timed-window.fsl"
+command = "run requests/window-single-position-false.json"
+engine = "timed"
+clock = "plant-ms"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
+serves = "FR-091-AC-10 to AC-16, AC-22, FR-094 (finite window)"
+
+[[case]]
+id = "window-unkeyed-ties-until"
+rule = "PUntil0To1Q"
+statement = "Stamps 0, 1, 1 without order keys have no usable order, so until is refused."
+file = "rules/timed-window.fsl"
+command = "run requests/window-unkeyed-ties-until.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: invalid-value"
+serves = "FR-091-AC-10 to AC-16, AC-22, FR-094 (finite window)"
+
+[[case]]
+id = "window-conflicting-same-stamp"
+rule = "Eventually0To1"
+statement = "Two observations stamped 1 disagree on p and carry no order key: the valuation at that instant conflicts, so eventually is indeterminate, never false."
+file = "rules/timed-window.fsl"
+command = "run requests/window-conflicting-same-stamp.json"
+status = "running"
+expect_exit = 11
+expect_verdict = "indeterminate"
+serves = "FR-091-AC-13 (conflicting valuation), FR-091-AC-16"
+
+[[case]]
+id = "window-agreeing-same-stamp"
+rule = "Eventually0To1"
+statement = "Two observations stamped 1 agree that p holds: eventually[0,1] p is true, and the unkeyed tie does not matter."
+file = "rules/timed-window.fsl"
+command = "run requests/window-agreeing-same-stamp.json"
+engine = "timed"
+clock = "plant-ms"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "FR-091-AC-10 to AC-16, AC-22, FR-094 (finite window)"
+
+[[case]]
+id = "window-listing-order-ignored"
+rule = "Eventually0To5"
+statement = "Observations listed as stamps 5, 0, 2 are evaluated in stamp order, so p at stamp 2 gives true."
+file = "rules/timed-window.fsl"
+command = "run requests/window-listing-order-ignored.json"
+engine = "timed"
+clock = "plant-ms"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "FR-091-AC-10 to AC-16, AC-22, FR-094 (finite window)"
+
+[[case]]
+id = "window-no-observations"
+rule = "Eventually0To5"
+statement = "A trace with no observations is refused at admission."
+file = "rules/timed-window.fsl"
+command = "run requests/window-no-observations.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: invalid-value"
+serves = "FR-091-AC-10 to AC-16, AC-22, FR-094 (finite window)"
+
+[[case]]
+id = "window-once-origin-false"
+rule = "OnceIn0To4"
+statement = "With an authoritative origin, nothing lies before stamp 3, so once[0,4] p is false at the first activation."
+file = "rules/timed-window.fsl"
+command = "run requests/window-once-origin-false.json"
+engine = "timed"
+clock = "plant-ms"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
+serves = "FR-091-AC-10 to AC-16, AC-22, FR-094 (finite window)"
+
+[[case]]
+id = "window-once-cutoff-indeterminate"
+rule = "OnceIn0To4"
+statement = "With a history cutoff the look-back reaches history the trace does not carry: the result is indeterminate, with missing history, never false."
+file = "rules/timed-window.fsl"
+command = "run requests/window-once-cutoff-indeterminate.json"
+status = "running"
+expect_exit = 11
+expect_verdict = "indeterminate"
+serves = "FR-091-AC-10 to AC-16, AC-22, FR-094 (finite window)"
+
+[[case]]
+id = "window-once-origin-true"
+rule = "OnceIn0To4"
+statement = "p holds at stamp 3 within the look-back of both activations: true under an authoritative origin."
+file = "rules/timed-window.fsl"
+command = "run requests/window-once-origin-true.json"
+engine = "timed"
+clock = "plant-ms"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "FR-091-AC-10 to AC-16, AC-22, FR-094 (finite window)"
+
+[[case]]
+id = "window-once-cutoff-true"
+rule = "OnceIn0To4"
+statement = "The same observations under a history cutoff are also true: the witness is in the trace."
+file = "rules/timed-window.fsl"
+command = "run requests/window-once-cutoff-true.json"
+engine = "timed"
+clock = "plant-ms"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "FR-091-AC-10 to AC-16, AC-22, FR-094 (finite window)"
+
+[[case]]
+id = "false-extension-always-one-position"
+rule = "Always0To1"
+statement = "One closed position with p true: always[0,1] p is false, because the missing position 1 reads p as false."
+file = "rules/false-extension.fsl"
+command = "monitor requests/false-extension-always-one-position.json --input records/false-extension-always-one-position.jsonl"
+engine = "monitor"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
+serves = "FR-091-AC-2, AC-3, AC-7 (false extension)"
+
+[[case]]
+id = "false-extension-always-two-positions"
+rule = "Always0To1"
+statement = "Two closed positions with p true: always[0,1] p is true."
+file = "rules/false-extension.fsl"
+command = "monitor requests/false-extension-always-two-positions.json --input records/false-extension-always-two-positions.jsonl"
+engine = "monitor"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "FR-091-AC-2, AC-3, AC-7 (false extension)"
+
+[[case]]
+id = "false-extension-eventually-not-p-one-position"
+rule = "EventuallyNot0To1"
+statement = "One closed position with p true: eventually[0,1] not p is true, because position 1 is missing and p reads false there."
+file = "rules/false-extension.fsl"
+command = "monitor requests/false-extension-eventually-not-p-one-position.json --input records/false-extension-eventually-not-p-one-position.jsonl"
+engine = "monitor"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "FR-091-AC-2, AC-3, AC-7 (false extension)"
+
+[[case]]
+id = "false-extension-always-not-p-one-position"
+rule = "AlwaysNot0To1"
+statement = "The same position: always[0,1] not p is false at position 0, where p holds."
+file = "rules/false-extension.fsl"
+command = "monitor requests/false-extension-always-not-p-one-position.json --input records/false-extension-always-not-p-one-position.jsonl"
+engine = "monitor"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
+serves = "FR-091-AC-2, AC-3, AC-7 (false extension)"
+
+[[case]]
+id = "false-extension-eventually-open-stream"
+rule = "Eventually0To2"
+statement = "p is false at the one position seen and the stream has not ended: eventually[0,2] p is still pending."
+file = "rules/false-extension.fsl"
+command = "monitor requests/false-extension-eventually-open-stream.json --input records/false-extension-eventually-open-stream.jsonl"
+engine = "monitor"
+status = "running"
+expect_exit = 0
+expect_verdict = "pending"
+serves = "FR-091-AC-2, AC-3, AC-7 (false extension)"
+
+[[case]]
+id = "false-extension-holds-not-p-eventually"
+rule = "EventuallyHoldsNot0To1"
+statement = "The atom holds(not p) is false at the missing position 1, so eventually[0,1] holds(not p) is false where the temporal negation of the previous case is true."
+file = "rules/false-extension.fsl"
+command = "monitor requests/false-extension-holds-not-p-eventually.json --input records/false-extension-holds-not-p-eventually.jsonl"
+engine = "monitor"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
+serves = "FR-091-AC-2, AC-3, AC-7 (false extension)"
+
+[[case]]
+id = "false-extension-holds-not-p-always"
+rule = "AlwaysHoldsNot0To1"
+statement = "always[0,1] holds(not p) is false at position 0, where p holds."
+file = "rules/false-extension.fsl"
+command = "monitor requests/false-extension-holds-not-p-always.json --input records/false-extension-holds-not-p-always.jsonl"
+engine = "monitor"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
+serves = "FR-091-AC-2, AC-3, AC-7 (false extension)"
+
+[[case]]
+id = "false-extension-eventually-closed-stream"
+rule = "Eventually0To2"
+statement = "The same position with the stream ended: nothing more can arrive, so eventually[0,2] p is false."
+file = "rules/false-extension.fsl"
+command = "monitor requests/false-extension-eventually-closed-stream.json --input records/false-extension-eventually-closed-stream.jsonl"
+engine = "monitor"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
+serves = "FR-091-AC-2, AC-3, AC-7 (false extension)"
+
+[[case]]
+id = "false-extension-until-1to2-p-off-at-anchor"
+rule = "PUntil1To2Q"
+statement = "q holds at offset 1 and p is false at the anchor: p until[1,2] q is true, pinning the lower-bound convention."
+file = "rules/false-extension.fsl"
+command = "monitor requests/false-extension-until-1to2-p-off-at-anchor.json --input records/false-extension-until-1to2-p-off-at-anchor.jsonl"
+engine = "monitor"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "FR-091-AC-2, AC-3, AC-7 (false extension)"
+
+[[case]]
+id = "false-extension-until-1to2-q-late"
+rule = "PUntil1To2Q"
+statement = "q holds only at offset 3, past the interval: false."
+file = "rules/false-extension.fsl"
+command = "monitor requests/false-extension-until-1to2-q-late.json --input records/false-extension-until-1to2-q-late.jsonl"
+engine = "monitor"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
+serves = "FR-091-AC-2, AC-3, AC-7 (false extension)"
+
+[[case]]
+id = "model-invariant-holds"
+rule = "AtMostThree"
+statement = "The dial never exceeds 3, so the invariant n <= 3 holds in every reachable state."
+file = "rules/dial.fsl"
+command = "analyze requests/model-invariant-holds.json"
+engine = "model-checking"
+status = "running"
+expect_exit = 0
+expect_verdict = "proved"
+serves = "FR-390, FR-391 (invariant claim)"
+
+[[case]]
+id = "model-invariant-violated"
+rule = "AtMostTwo"
+statement = "Three ups reach n = 3, so the invariant n <= 2 is refuted with a replayed counterexample."
+file = "rules/dial.fsl"
+command = "analyze requests/model-invariant-violated.json"
+engine = "model-checking"
+status = "running"
+expect_exit = 10
+expect_verdict = "refuted"
+serves = "FR-390, FR-391 (invariant claim)"
+
+[[case]]
+id = "model-always-holds"
+rule = "NeverAboveThree"
+statement = "On every behaviour of the dial, n stays at most 3: always holds is proved."
+file = "rules/dial.fsl"
+command = "analyze requests/model-always-holds.json"
+engine = "model-checking"
+status = "running"
+expect_exit = 0
+expect_verdict = "proved"
+serves = "FR-390, FR-391 (temporal claim)"
+
+[[case]]
+id = "model-always-refuted"
+rule = "NeverAboveTwo"
+statement = "On a behaviour that counts up, n reaches 3: always n <= 2 is refuted with a counterexample."
+file = "rules/dial.fsl"
+command = "analyze requests/model-always-refuted.json"
+engine = "model-checking"
+status = "running"
+expect_exit = 10
+expect_verdict = "refuted"
+serves = "FR-390, FR-391 (temporal claim)"
+
+[[case]]
+id = "model-possible-reachable"
+rule = "ReachesThree"
+statement = "From the start, some path of ups reaches n = 3: the possible claim is proved by a witness path."
+file = "rules/dial.fsl"
+command = "analyze requests/model-possible-reachable.json"
+engine = "model-checking"
+status = "running"
+expect_exit = 0
+expect_verdict = "proved"
+serves = "FR-390, FR-391 (possible claim)"
+
+[[case]]
+id = "model-always-possible-reset"
+rule = "CanReset"
+statement = "Reset is enabled in every state and sets n to 0: from every reachable state some path reaches n = 0."
+file = "rules/dial.fsl"
+command = "analyze requests/model-always-possible-reset.json"
+engine = "model-checking"
+status = "running"
+expect_exit = 0
+expect_verdict = "proved"
+serves = "FR-390, FR-391 (always possible claim)"
+
+[[case]]
+id = "model-possible-trap"
+rule = "ReachesAboveThree"
+statement = "No state of the dial has n above 3, so no path reaches one: the possible claim is refuted."
+file = "rules/dial-acyclic.fsl"
+command = "analyze requests/model-possible-trap.json"
+status = "running"
+expect_exit = 10
+expect_verdict = "refuted"
+serves = "FR-390, FR-391 (possible claim)"
+
+[[case]]
+id = "model-always-possible-from-one"
+rule = "ReachesThreeFromOne"
+statement = "From every state with n of at least 1, the ups lead to n = 3."
+file = "rules/dial-acyclic.fsl"
+command = "analyze requests/model-always-possible-from-one.json"
+engine = "model-checking"
+status = "running"
+expect_exit = 0
+expect_verdict = "proved"
+serves = "FR-390, FR-391 (always possible claim)"
+
+[[case]]
+id = "model-always-possible-trap"
+rule = "ReturnsToZero"
+statement = "In the acyclic dial there is no way back to 0 from n = 1, so the claim that every state can return to 0 is refuted."
+file = "rules/dial-acyclic.fsl"
+command = "analyze requests/model-always-possible-trap.json"
+status = "running"
+expect_exit = 10
+expect_verdict = "refuted"
+serves = "FR-390, FR-391 (always possible claim)"
+
+[[case]]
+id = "model-unique-path-single"
+rule = "OneRouteToThree"
+statement = "In the acyclic dial exactly one path leads from n = 0 to n = 3."
+file = "rules/dial-acyclic.fsl"
+command = "analyze requests/model-unique-path-single.json"
+engine = "model-checking"
+status = "running"
+expect_exit = 0
+expect_verdict = "proved"
+serves = "FR-390, FR-391 (unique path claim)"
+
+[[case]]
+id = "model-unique-path-branching"
+rule = "OneRouteToThree"
+statement = "With skip enabled three paths lead from 0 to 3, so the unique-path claim is refuted with a pair of paths."
+file = "rules/dial-branch.fsl"
+command = "analyze requests/model-unique-path-branching.json"
+status = "running"
+expect_exit = 10
+expect_verdict = "refuted"
+serves = "FR-390, FR-391 (unique path claim)"
+
+[[case]]
+id = "model-unique-path-from-two"
+rule = "OneRouteFromTwo"
+statement = "Only one path leads from n = 2 to n = 3, even though several lead into 2."
+file = "rules/dial-branch.fsl"
+command = "analyze requests/model-unique-path-from-two.json"
+engine = "model-checking"
+status = "running"
+expect_exit = 0
+expect_verdict = "proved"
+serves = "FR-390, FR-391 (unique path claim)"
+
+[[case]]
+id = "refusal-no-clock"
+statement = "A trace clause that writes no clock takes the profile's default clock and compiles."
+file = "rules/refusals/no-clock.fsl"
+command = "compile requests/refusal-no-clock.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "compiled"
+serves = "FR-090-AC-11"
+
+[[case]]
+id = "refusal-trace-clock-events"
+statement = "Over a trace, clock \"events\" is a role the caller binds, and it compiles."
+file = "rules/refusals/trace-clock-events.fsl"
+command = "compile requests/refusal-trace-clock-events.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "compiled"
+serves = "FR-090-AC-12"
+
+[[case]]
+id = "refusal-trace-clock-model-steps"
+statement = "Over a trace, the model clock name model-steps is refused: it names a model binding, not a role."
+file = "rules/refusals/trace-clock-model-steps.fsl"
+command = "compile requests/refusal-trace-clock-model-steps.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed"
+serves = "FR-090-AC-12"
+
+[[case]]
+id = "refusal-trace-clock-ms"
+statement = "Over a trace, a role spelled as a time unit is refused under a position-counting profile."
+file = "rules/refusals/trace-clock-ms.fsl"
+command = "compile requests/refusal-trace-clock-ms.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed"
+serves = "FR-090-AC-12"
+
+[[case]]
+id = "refusal-model-clock-model-steps"
+statement = "Over a model, clock \"model-steps\" counts one tick per step and compiles."
+file = "rules/refusals/model-clock-model-steps.fsl"
+command = "compile requests/refusal-model-clock-model-steps.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "compiled"
+serves = "FR-090-AC-11"
+
+[[case]]
+id = "refusal-model-clock-unwritten"
+statement = "Over a model, an unwritten clock binds model-steps, and compiles."
+file = "rules/refusals/model-clock-unwritten.fsl"
+command = "compile requests/refusal-model-clock-unwritten.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "compiled"
+serves = "FR-090-AC-11"
+
+[[case]]
+id = "refusal-model-clock-steps"
+statement = "Over a model, clock \"steps\" is refused as unsupported and names model-steps and model-time."
+file = "rules/refusals/model-clock-steps.fsl"
+command = "compile requests/refusal-model-clock-steps.json"
+status = "running"
+expect_exit = 21
+expect_verdict = "unsupported: declaration-form"
+serves = "FR-090-AC-11"
+
+[[case]]
+id = "refusal-model-clock-ms"
+statement = "Over a model, clock \"ms\" is refused as unsupported."
+file = "rules/refusals/model-clock-ms.fsl"
+command = "compile requests/refusal-model-clock-ms.json"
+status = "running"
+expect_exit = 21
+expect_verdict = "unsupported: declaration-form"
+serves = "FR-090-AC-11"
+
+[[case]]
+id = "refusal-model-clock-wall"
+statement = "Over a model, clock \"wall\" is refused as unsupported."
+file = "rules/refusals/model-clock-wall.fsl"
+command = "compile requests/refusal-model-clock-wall.json"
+status = "running"
+expect_exit = 21
+expect_verdict = "unsupported: declaration-form"
+serves = "FR-090-AC-11"
+
+[[case]]
+id = "refusal-unknown-profile"
+statement = "A profile name that selects no profile is refused before evaluation."
+file = "rules/refusals/unknown-profile.fsl"
+command = "compile requests/refusal-unknown-profile.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: missing_declaration"
+serves = "FR-090-AC-2"
+
+[[case]]
+id = "refusal-interval-reversed"
+statement = "An interval whose lower bound is above its upper bound is refused."
+file = "rules/refusals/interval-reversed.fsl"
+command = "compile requests/refusal-interval-reversed.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed"
+serves = "FR-091 (inclusive interval a <= b)"
+
+[[case]]
+id = "refusal-unbounded-under-bounded"
+statement = "An interval-less eventually under a false-extension profile needs a closed interval and is unsupported."
+file = "rules/refusals/unbounded-under-bounded.fsl"
+command = "compile requests/refusal-unbounded-under-bounded.json"
+status = "running"
+expect_exit = 21
+expect_verdict = "unsupported: expression-form"
+serves = "FR-091-AC-6"
+
+[[case]]
+id = "refusal-lower-only-under-bounded"
+statement = "A lower-bounded open interval [2,*] under a false-extension profile is unsupported."
+file = "rules/refusals/lower-only-under-bounded.fsl"
+command = "compile requests/refusal-lower-only-under-bounded.json"
+status = "running"
+expect_exit = 21
+expect_verdict = "unsupported: expression-form"
+serves = "FR-091-AC-6"
+
+[[case]]
+id = "refusal-unknown-field"
+statement = "A predicate that reads a field the record does not have is refused."
+file = "rules/refusals/unknown-field.fsl"
+command = "compile requests/refusal-unknown-field.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed"
+serves = "FR-091 (total Boolean predicates)"
+
+[[case]]
+id = "refusal-holds-not-boolean"
+statement = "holds takes a Boolean predicate: an integer field is refused."
+file = "rules/refusals/holds-not-boolean.fsl"
+command = "compile requests/refusal-holds-not-boolean.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed"
+serves = "FR-091 (total Boolean predicates)"
+
+[[case]]
+id = "refusal-unknown-model-type"
+statement = "An over binding whose model type does not exist is refused."
+file = "rules/refusals/unknown-model-type.fsl"
+command = "compile requests/refusal-unknown-model-type.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: missing_declaration"
+serves = "FR-090"
+
+[[case]]
+id = "refusal-fairness-unknown-op"
+statement = "A fairness constraint that names no model operation is refused."
+file = "rules/refusals/fairness-unknown-op.fsl"
+command = "compile requests/refusal-fairness-unknown-op.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: missing_declaration"
+serves = "FR-362"
+
+[[case]]
+id = "refusal-possible-not-boolean"
+statement = "The predicate of a possible claim must be Boolean."
+file = "rules/refusals/possible-not-boolean.fsl"
+command = "compile requests/refusal-possible-not-boolean.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed"
+serves = "FR-390"
+
+[[case]]
+id = "refusal-invariant-not-boolean"
+statement = "The body of an invariant must be Boolean."
+file = "rules/refusals/invariant-not-boolean.fsl"
+command = "compile requests/refusal-invariant-not-boolean.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed"
+serves = "FR-019-AC-6"
+
+[[case]]
+id = "refusal-probability-zero"
+statement = "A probability threshold of 0 is not strictly between 0 and 1 and is refused."
+file = "rules/refusals/probability-zero.fsl"
+command = "compile requests/refusal-probability-zero.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: invalid_probabilistic_model"
+serves = "FR-407"
+
+[[case]]
+id = "refusal-probability-one"
+statement = "A probability threshold of 1 is not strictly between 0 and 1 and is refused."
+file = "rules/refusals/probability-one.fsl"
+command = "compile requests/refusal-probability-one.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: invalid_probabilistic_model"
+serves = "FR-407"
+
+[[case]]
+id = "refusal-probability-half"
+statement = "A probability threshold of 0.5 is strictly between 0 and 1 and compiles."
+file = "rules/refusals/probability-half.fsl"
+command = "compile requests/refusal-probability-half.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "compiled"
+serves = "FR-407"
+
+[[case]]
+id = "model-unknown-claim"
+statement = "An analyze item that names no declared claim is refused with unknown-claim."
+file = "rules/dial.fsl"
+command = "analyze requests/model-unknown-claim.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: invalid_capability"
+serves = "FR-520 (analyze item naming)"
+
+[[case]]
+id = "model-possible-trap-cyclic"
+statement = "No state of the dial has n above 3, so the possible claim is refuted. The dial can return to 0, so the state graph has a cycle, and analyze does not settle the claim; the deadline stops it."
+file = "rules/dial.fsl"
+command = "analyze requests/model-possible-trap-cyclic.json"
+engine = "model-checking"
+status = "staged"
+expect_exit = 22
+ready_exit = 10
+waits_on = "QSL-2756"
+why = "analyze never settles a possible claim whose predicate holds in no state when the state graph has a cycle: deadline_ms stops it with cancelled/deadline, where FR-391-AC-2 requires refuted, closed-scope"
+needs = "a refuted verdict for a possible claim with a trap over a cyclic state graph"
+serves = "FR-391-AC-2 (possible claim, trap)"
+
+
+[[case]]
+id = "window-cover-default-2998"
+statement = "With no cover named the trace is read under exact cover. A request at tick 0 and an acknowledgement at tick 2998 meet the 3000 bound: true."
+file = "rules/timed-window.fsl"
+command = "run requests/window-cover-default-2998.json"
+engine = "timed"
+clock = "plant-ms"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "FR-091-AC-25 (no cover = exact)"
+
+[[case]]
+id = "window-cover-exact-2998"
+statement = "With exact cover named. A request at tick 0 and an acknowledgement at tick 2998 meet the 3000 bound: true."
+file = "rules/timed-window.fsl"
+command = "run requests/window-cover-exact-2998.json"
+engine = "timed"
+clock = "plant-ms"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "FR-091-AC-18, AC-25"
+
+[[case]]
+id = "window-cover-default-3000"
+statement = "With no cover named the trace is read under exact cover. An acknowledgement at tick 3000, the inclusive bound, meets it: true."
+file = "rules/timed-window.fsl"
+command = "run requests/window-cover-default-3000.json"
+engine = "timed"
+clock = "plant-ms"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "FR-091-AC-25 (no cover = exact)"
+
+[[case]]
+id = "window-cover-exact-3000"
+statement = "With exact cover named. An acknowledgement at tick 3000, the inclusive bound, meets it: true."
+file = "rules/timed-window.fsl"
+command = "run requests/window-cover-exact-3000.json"
+engine = "timed"
+clock = "plant-ms"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "FR-091-AC-18, AC-25"
+
+[[case]]
+id = "window-cover-default-3001"
+statement = "With no cover named the trace is read under exact cover. An acknowledgement at tick 3001 is one tick late: false."
+file = "rules/timed-window.fsl"
+command = "run requests/window-cover-default-3001.json"
+engine = "timed"
+clock = "plant-ms"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
+serves = "FR-091-AC-25 (no cover = exact)"
+
+[[case]]
+id = "window-cover-exact-3001"
+statement = "With exact cover named. An acknowledgement at tick 3001 is one tick late: false."
+file = "rules/timed-window.fsl"
+command = "run requests/window-cover-exact-3001.json"
+engine = "timed"
+clock = "plant-ms"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
+serves = "FR-091-AC-18, AC-25"
+
+[[case]]
+id = "window-cover-counter-2998"
+statement = "Under a counter cover of uncertainty 0, an acknowledgement at tick 2998 is clear of the bound: true."
+file = "rules/timed-window.fsl"
+command = "run requests/window-cover-counter-2998.json"
+engine = "timed"
+clock = "plant-ms"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "FR-091-AC-18 (counter cover)"
+
+[[case]]
+id = "window-cover-counter-3000"
+statement = "Under a counter cover of uncertainty 0, an acknowledgement at tick 3000 straddles the bound, because a counter reading may stand for the tick before or after: indeterminate."
+file = "rules/timed-window.fsl"
+command = "run requests/window-cover-counter-3000.json"
+status = "running"
+expect_exit = 11
+expect_verdict = "indeterminate"
+serves = "FR-091-AC-18 (counter cover)"
+
+[[case]]
+id = "window-cover-counter-3001"
+statement = "Under a counter cover of uncertainty 0, an acknowledgement at tick 3001 is past the bound: false."
+file = "rules/timed-window.fsl"
+command = "run requests/window-cover-counter-3001.json"
+engine = "timed"
+clock = "plant-ms"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
+serves = "FR-091-AC-18 (counter cover)"
+
+[[case]]
+id = "window-cover-counter-1-pending"
+statement = "Under a counter cover of uncertainty 1, a request with no acknowledgement and progress to 3001 is pending: the margin 2u keeps the deadline at 3002."
+file = "rules/timed-window.fsl"
+command = "run requests/window-cover-counter-1-pending.json"
+engine = "timed"
+clock = "plant-ms"
+status = "running"
+expect_exit = 0
+expect_verdict = "pending"
+serves = "FR-091-AC-20"
+
+[[case]]
+id = "window-cover-counter-1-settled"
+statement = "With progress to 3002 the window is closed with no acknowledgement: false."
+file = "rules/timed-window.fsl"
+command = "run requests/window-cover-counter-1-settled.json"
+engine = "timed"
+clock = "plant-ms"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
+serves = "FR-091-AC-20"
+
+[[case]]
+id = "window-cover-exact-no-ack-settled"
+statement = "Under exact cover, progress to 3000 with completeness through 3000 already settles the missing acknowledgement as false."
+file = "rules/timed-window.fsl"
+command = "run requests/window-cover-exact-no-ack-settled.json"
+engine = "timed"
+clock = "plant-ms"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
+serves = "FR-091-AC-20"
+
+[[case]]
+id = "window-half-open-watermark"
+rule = "Eventually0To3"
+statement = "A half-open watermark of 3 covers ticks up to 2, so the window [0,3] is not closed and eventually[0,3] p stays pending."
+file = "rules/timed-window.fsl"
+command = "run requests/window-half-open-watermark.json"
+engine = "timed"
+clock = "plant-ms"
+status = "running"
+expect_exit = 0
+expect_verdict = "pending"
+serves = "FR-091-AC-15 (half-open watermark)"
+
+[[case]]
+id = "window-absent-valuation"
+rule = "Eventually0To5"
+statement = "p is false at stamps 0 and 5 and is absent from the observation at stamp 2: the missing valuation at that position makes eventually[0,5] p indeterminate, never false."
+file = "rules/timed-window.fsl"
+command = "run requests/window-absent-valuation.json"
+status = "staged"
+expect_exit = 20
+ready_exit = 11
+waits_on = "QSL-2750"
+why = "the stepping wire refuses a sample that omits a field (invalid_runtime_input/missing-member), where the standard reads the absent atom as a missing valuation"
+needs = "absent atom valuations on a stepped sample"
+serves = "FR-091-AC-13 (absent valuation)"
+
+[[case]]
+id = "window-order-keys-admit-until"
+rule = "PUntil0To1Q"
+statement = "Two observations stamped 1 carry distinct keys 1 and 2 from one order authority, so they are two ordered instants and p until[0,1] q is true: p holds at 0 and at the first stamp-1 instant, and q at the second."
+file = "rules/timed-window.fsl"
+command = "run requests/window-order-keys-admit-until.json"
+engine = "timed"
+clock = "plant-ms"
+status = "staged"
+expect_exit = 11
+ready_exit = 0
+waits_on = "QSL-2750"
+why = "the evaluator reads the two observations stamped 1 as one instant and reports a conflicting valuation (exit 11); the order keys are parsed and not used"
+needs = "order keys that order observations of one stamp"
+serves = "FR-091-AC-16 (order keys)"
+
+[[case]]
+id = "window-order-keys-two-authorities"
+rule = "PUntil0To1Q"
+statement = "The same two observations with keys from two different authorities have no usable order, so until is refused at the second instant of stamp 1."
+file = "rules/timed-window.fsl"
+command = "run requests/window-order-keys-two-authorities.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: invalid-value"
+serves = "FR-091-AC-16 (order keys)"
+

@@ -1,0 +1,8 @@
+language "ix:native" edition "1-draft";
+profile v = "filament.model.complete/v1";
+profile inf = "filament.temporal.infinite-trace/v1";
+profile fe = "filament.temporal.event-position.false-extension/v1";
+model D = "example/dial";
+record Sig { p: Boolean; n: Int[0, 9]; }
+
+temporal Rule using inf over (d: D::Dial) clock "ms" on origin { always holds(d.n <= 3) }

@@ -1,0 +1,26 @@
+{
+  "format": "native-compile/1",
+  "request": {
+    "models": [
+      {
+        "format": "semantic-ir/2.0.0",
+        "source": {
+          "file": "../model/dial.semantic-ir.json",
+          "authority": "example",
+          "identity": "example:claims/dial-model",
+          "document": "model",
+          "formal_revision": 1
+        }
+      }
+    ],
+    "program": {
+      "source": {
+        "file": "../rules/refusals/trace-clock-model-steps.fsl",
+        "authority": "example",
+        "identity": "example:claims/refusal-trace-clock-model-steps",
+        "document": "traceclockmodelsteps",
+        "formal_revision": 1
+      }
+    }
+  }
+}

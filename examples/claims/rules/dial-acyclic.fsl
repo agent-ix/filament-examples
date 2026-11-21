@@ -1,0 +1,19 @@
+language "ix:native" edition "1-draft";
+profile v = "filament.model.complete/v1";
+model D = "example/dial";
+
+// Only up is enabled, so the dial counts 0, 1, 2, 3 and stops: the state graph is one path with no cycle.
+pre UpBelowTop using v on D::Dial::up { self.n < 3 }
+post UpAddsOne using v on D::Dial::up { self.n = pre(self.n) + 1 }
+pre SkipDisabled using v on D::Dial::skip { false }
+pre DownDisabled using v on D::Dial::down { false }
+pre ResetDisabled using v on D::Dial::reset { false }
+
+// No state has n above 3, so no path reaches one.
+possible ReachesAboveThree using v over (d: D::Dial) { d.n > 3 }
+// From every state with n at least 1 some path reaches 3.
+always possible ReachesThreeFromOne using v over (d: D::Dial) from (d.n >= 1) { d.n = 3 }
+// From every state, some path returns to 0, which fails at n = 3 where the dial can only stay.
+always possible ReturnsToZero using v over (d: D::Dial) { d.n = 0 }
+// Exactly one path leads from 0 to 3.
+unique path OneRouteToThree using v over (d: D::Dial) from (d.n = 0) to (d.n = 3);

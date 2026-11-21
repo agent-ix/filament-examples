@@ -1,0 +1,85 @@
+{
+  "events": [
+    {
+      "basis": "closed-scope",
+      "category": "violation",
+      "clause": "Eventually0To2",
+      "disposition": {
+        "category": "violation",
+        "stage": "evaluate",
+        "temporal": {
+          "counterexample": {
+            "fairness": [],
+            "initial_state": null,
+            "interval": {
+              "lower": "0",
+              "upper": "2"
+            },
+            "kind": "formula",
+            "loop": [],
+            "over_binding": null,
+            "prefix": [
+              {
+                "sample": "0"
+              }
+            ],
+            "trace": "observed",
+            "trace_position": 0
+          },
+          "kind": "violated",
+          "position": 0
+        },
+        "truth": false
+      },
+      "format": "filament.monitor-event/1",
+      "position": 0,
+      "record": 0,
+      "settled": false
+    }
+  ],
+  "summary": {
+    "clauses": [
+      {
+        "basis": "closed-scope",
+        "category": "violation",
+        "clause": "Eventually0To2",
+        "disposition": {
+          "category": "violation",
+          "stage": "evaluate",
+          "temporal": {
+            "counterexample": {
+              "fairness": [],
+              "initial_state": null,
+              "interval": {
+                "lower": "0",
+                "upper": "2"
+              },
+              "kind": "formula",
+              "loop": [],
+              "over_binding": null,
+              "prefix": [
+                {
+                  "sample": "0"
+                }
+              ],
+              "trace": "observed",
+              "trace_position": 0
+            },
+            "kind": "violated",
+            "position": 0
+          },
+          "truth": false
+        },
+        "settled": false,
+        "settlement": {
+          "step": "1",
+          "trigger": "finish"
+        }
+      }
+    ],
+    "format": "filament.monitor-summary/1",
+    "ledger": null,
+    "records": 2,
+    "refused": 0
+  }
+}

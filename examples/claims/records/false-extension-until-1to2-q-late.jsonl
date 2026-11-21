@@ -1,0 +1,5 @@
+{"observation":{"sample":{"p":{"boolean":true},"q":{"boolean":false}}}}
+{"observation":{"sample":{"p":{"boolean":true},"q":{"boolean":false}}}}
+{"observation":{"sample":{"p":{"boolean":true},"q":{"boolean":false}}}}
+{"observation":{"sample":{"p":{"boolean":false},"q":{"boolean":true}}}}
+{"end":true}

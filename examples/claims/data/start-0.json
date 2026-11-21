@@ -1,0 +1,16 @@
+{
+  "format": "filament.state.snapshot/v1",
+  "identity": {"authority": "example", "identity": "example:claims/start-0"},
+  "observation": "current",
+  "model": {"identity": "example/dial"},
+  "anchor": {"kind": "initialization", "name": "start"},
+  "populations": [
+    {
+      "population": "ix://example/dial/dials",
+      "complete": true,
+      "objects": [
+        {"key": "d", "type": "ix://example/dial/Dial", "fields": {"n": {"integer": "0"}}}
+      ]
+    }
+  ]
+}

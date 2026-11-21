@@ -1,0 +1,24 @@
+{
+  "category": "refusal",
+  "last_stage": "S4",
+  "result": null,
+  "first_diagnostic": null,
+  "items": [
+    {
+      "category": "refusal",
+      "claim_name": "NoSuchClaim",
+      "record": {
+        "diagnostic": {
+          "cause": "unknown-claim",
+          "code": "invalid_capability",
+          "detail": {
+            "name": "NoSuchClaim"
+          }
+        },
+        "settled_by": "disposition"
+      },
+      "request": null,
+      "request_index": 0
+    }
+  ]
+}

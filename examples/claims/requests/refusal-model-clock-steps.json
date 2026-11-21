@@ -1,0 +1,26 @@
+{
+  "format": "native-compile/1",
+  "request": {
+    "models": [
+      {
+        "format": "semantic-ir/2.0.0",
+        "source": {
+          "file": "../model/dial.semantic-ir.json",
+          "authority": "example",
+          "identity": "example:claims/dial-model",
+          "document": "model",
+          "formal_revision": 1
+        }
+      }
+    ],
+    "program": {
+      "source": {
+        "file": "../rules/refusals/model-clock-steps.fsl",
+        "authority": "example",
+        "identity": "example:claims/refusal-model-clock-steps",
+        "document": "modelclocksteps",
+        "formal_revision": 1
+      }
+    }
+  }
+}

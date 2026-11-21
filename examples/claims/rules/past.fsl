@@ -1,0 +1,21 @@
+language "ix:native" edition "1-draft";
+profile inf = "filament.temporal.infinite-trace/v1";
+record Sig { p: Boolean; q: Boolean; }
+
+// FR-092 and FR-161-AC-12: the past operators. A past operator read at position 0 sees only position 0,
+// so every claim is read at position 3 with eventually[3,3]. Offsets count back from position 3.
+
+// p held at an offset 1 to 2 back, that is at position 2 or 1.
+temporal OnceBack1To2 using inf over (s: Sig) clock "steps" on origin { eventually[3,3] once[1,2] holds(s.p) }
+// p held at some position up to and including position 3.
+temporal OnceEver using inf over (s: Sig) clock "steps" on origin { eventually[3,3] once holds(s.p) }
+// p held at an offset 5 to 6 back, which is before the first position.
+temporal OnceBeforeOrigin using inf over (s: Sig) clock "steps" on origin { eventually[3,3] once[5,6] holds(s.p) }
+// p held at the last two positions, 3 and 2.
+temporal HistoricallyLast2 using inf over (s: Sig) clock "steps" on origin { eventually[3,3] historically[0,1] holds(s.p) }
+// p held at every position up to and including position 3.
+temporal HistoricallyAlways using inf over (s: Sig) clock "steps" on origin { eventually[3,3] historically holds(s.p) }
+// p has held at every position since q last held, and q held at that position or after it began.
+temporal PSinceQ using inf over (s: Sig) clock "steps" on origin { eventually[3,3] (holds(s.p) since holds(s.q)) }
+// q has held at every position since p last held, with p's own position included, or q held throughout.
+temporal PTriggeredQ using inf over (s: Sig) clock "steps" on origin { eventually[3,3] (holds(s.p) triggered holds(s.q)) }
