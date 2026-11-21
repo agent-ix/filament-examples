@@ -808,7 +808,7 @@
       "case": "staged-exact-reachability-missed",
       "status": "staged",
       "rule": "StaysUp",
-      "statement": "A service stays up forever with probability at least 0.9 under every scheduler: a scheduler that keeps calling it makes it fail, so exact computation refutes the claim. The case uses the down start snapshot: from data/start-service-up.json analyze does not terminate (over 11 minutes), so switch to it when QSL-2158 lands.",
+      "statement": "The service starts down, so it is not up forever: the claim is false under every scheduler with value 0 and exact computation refutes it. From an up start it fails too, because a scheduler that keeps calling it makes it fail.",
       "rule_file": "examples/architecture/rules/probability/exact/staged-exact-reachability-missed.fsl",
       "data_files": [],
       "request_file": "examples/architecture/requests/probability/exact/staged-exact-reachability-missed.json",

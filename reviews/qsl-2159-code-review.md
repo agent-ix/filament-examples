@@ -102,3 +102,20 @@ FIX ROUND NEEDED. Clean: README count 34/9 matches the case moves; staged `ready
 ## Coverage
 
 Frozen candidate agent-ix/filament-examples PR #74 head 06aef6083c4efd5d13fe8c9e476303754adf6750, base origin/main 49ff6cf. Read the full non-generated diff and the decision-bearing parts of every expected file. Worktree /Users/peter/dev/qsl-2727-code used read-only; no builds or tests run. Context: model JSON operation `call` (pre/post empty, frame modifies up), the existing `post UpFollowsCall` in rules/staged-availability.fsl and rules/probability-as-percent.fsl, the FR-876 Link fixture (keeps pre/post, drops only `random`), FR-876 spec text, fsl-eval FR-120 domain enumeration of `modifies` fields. Method: code-review only; rust-review, review-react, gap-analysis and spec-review skipped: no Rust, React, production code or spec changes in the diff.
+
+## Dispositions
+
+| FND | outcome | reason |
+| --- | --- | --- |
+| FND-001 | fixed | `post UpFollowsCall using v on Arch::Service::call { self.up = ok }` added to all nine probability units (7391ac1); captions and ready_exit now true of the model |
+| FND-002 | fixed | data/start-service-down.json added; both ComesUp requests use it and record proved, value 1 over the reached states |
+| FND-003 | fixed | down start; caption gives 1 - (1/10000)^10; staged expect_exit 22 (incomplete, work_units limit), ready_exit 0, waits_on QSL-2158 |
+| FND-004 | fixed | mean-of-fraction and long-run-fraction moved to native-analyze/1, staged expect_exit 21, ready_exit 0, waits_on QSL-2158; README:86 now names them as staged |
+| FND-005 | fixed | quantile-steps gets random + post, analyze request, staged ready_exit 10, waits_on QSL-2158, caption says the claim is false |
+| FND-006 | fixed | `engine = "probability"` on claims-unbounded-reachability and staged-exact-reachability; index.json regenerated |
+
+## New findings (disposition pass 1)
+
+| ID | Severity | Summary | Refs |
+| --- | --- | --- | --- |
+| FND-007 | low | staged-exact-reachability-missed now starts down, so StaysUp fails at position 0 with value 0; the caption's reason ("a scheduler that keeps calling it makes it fail") is not what refutes the case as run, and the hang note sits in the caption, not in `why` | examples/architecture/example.toml:511,519 |

@@ -508,7 +508,7 @@ serves = "Probability reference (sampling): a missed claim"
 [[case]]
 id = "staged-exact-reachability-missed"
 rule = "StaysUp"
-statement = "A service stays up forever with probability at least 0.9 under every scheduler: a scheduler that keeps calling it makes it fail, so exact computation refutes the claim. The case uses the down start snapshot: from data/start-service-up.json analyze does not terminate (over 11 minutes), so switch to it when QSL-2158 lands."
+statement = "The service starts down, so it is not up forever: the claim is false under every scheduler with value 0 and exact computation refutes it. From an up start it fails too, because a scheduler that keeps calling it makes it fail."
 file = "rules/probability/exact/staged-exact-reachability-missed.fsl"
 command = "analyze requests/probability/exact/staged-exact-reachability-missed.json"
 engine = "probability"
@@ -516,6 +516,6 @@ status = "staged"
 expect_exit = 21
 ready_exit = 10
 waits_on = "QSL-2158"
-why = "analyze settles the unbounded always claim under every scheduler as unsupported (not-yet-implemented), where it should refute it"
+why = "analyze settles the unbounded always claim under every scheduler as unsupported (not-yet-implemented), where it should refute it; the case starts down because from data/start-service-up.json analyze does not finish (over 11 minutes, QSL-2158): switch back to the up start when QSL-2158 lands"
 needs = "exact unbounded always under every scheduler"
 serves = "Probability reference (exact): a missed claim"
