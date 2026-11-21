@@ -1,0 +1,19 @@
+{
+  "format": "native-run/1",
+  "request": {
+    "models": [],
+    "program": {
+      "source": {
+        "file": "../rules/remove-one-wrong-element-type.fsl",
+        "authority": "example",
+        "identity": "language-values/remove-one-wrong-element-type",
+        "document": "remove-one-wrong-element-type",
+        "formal_revision": 1
+      }
+    },
+    "call": {
+      "function": "example",
+      "arguments": []
+    }
+  }
+}

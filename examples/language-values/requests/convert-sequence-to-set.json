@@ -1,0 +1,19 @@
+{
+  "format": "native-run/1",
+  "request": {
+    "models": [],
+    "program": {
+      "source": {
+        "file": "../rules/convert-sequence-to-set.fsl",
+        "authority": "example",
+        "identity": "language-values/convert-sequence-to-set",
+        "document": "convert-sequence-to-set",
+        "formal_revision": 1
+      }
+    },
+    "call": {
+      "function": "example",
+      "arguments": []
+    }
+  }
+}

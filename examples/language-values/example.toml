@@ -220,3 +220,173 @@ command = "run requests/ordered-set-ordering-mismatch.json"
 status = "running"
 expect_exit = 0
 expect_verdict = "holds"
+
+[[case]]
+id = "drop-first-sequence"
+rule = "example"
+statement = "dropFirst removes the first member of a sequence and keeps the rest in order."
+file = "rules/drop-first-sequence.fsl"
+command = "run requests/drop-first-sequence.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "some-present"
+rule = "example"
+statement = "Some(3) fits Option<Int[0, 9]>, is present, and holds 3."
+file = "rules/some-present.fsl"
+command = "run requests/some-present.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "some-out-of-bound"
+rule = "example"
+statement = "Some(30) does not fit Option<Int[0, 9]>: the payload is checked against the expected option type."
+file = "rules/some-out-of-bound.fsl"
+command = "run requests/some-out-of-bound.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refusal: ill_typed"
+
+[[case]]
+id = "uuid-equality"
+rule = "example"
+statement = "Two UUIDs are equal when they have the same text, and different otherwise."
+file = "rules/uuid-equality.fsl"
+command = "run requests/uuid-equality.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "uuid-ordering-refused"
+rule = "example"
+statement = "A UUID has no order, so < on two UUIDs is refused."
+file = "rules/uuid-ordering-refused.fsl"
+command = "run requests/uuid-ordering-refused.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refusal: ill_typed"
+
+[[case]]
+id = "timestamp-equality"
+rule = "example"
+statement = "Two Timestamps are equal when they have the same count, and different otherwise."
+file = "rules/timestamp-equality.fsl"
+command = "run requests/timestamp-equality.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "timestamp-ordering-refused"
+rule = "example"
+statement = "A Timestamp has no order here, so < on two Timestamps is refused."
+file = "rules/timestamp-ordering-refused.fsl"
+command = "run requests/timestamp-ordering-refused.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refusal: ill_typed"
+
+[[case]]
+id = "index-past-end-refused"
+rule = "example"
+statement = "An index that the bound does not prove to be in range is refused: position 3 of a sequence of exactly 3 members."
+file = "rules/index-past-end-refused.fsl"
+command = "run requests/index-past-end-refused.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refusal: undefined_expression"
+
+[[case]]
+id = "remove-one-wrong-element-type"
+rule = "example"
+statement = "removeOne refuses a value whose type is not the element type."
+file = "rules/remove-one-wrong-element-type.fsl"
+command = "run requests/remove-one-wrong-element-type.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refusal: ill_typed"
+
+[[case]]
+id = "text-over-bound-refused"
+rule = "example"
+statement = "Text(\"café!\") has 5 scalars and does not fit Text[0, 3; nfc]."
+file = "rules/text-over-bound-refused.fsl"
+command = "run requests/text-over-bound-refused.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refusal: ill_typed"
+
+[[case]]
+id = "bag-ordering-refused"
+rule = "example"
+statement = "A Bag has no order, so < on two bags is refused."
+file = "rules/bag-ordering-refused.fsl"
+command = "run requests/bag-ordering-refused.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refusal: ill_typed"
+
+[[case]]
+id = "ordered-set-over-bound-refused"
+rule = "example"
+statement = "An OrderedSet literal with 3 members is refused by a bound of 2."
+file = "rules/ordered-set-over-bound-refused.fsl"
+command = "run requests/ordered-set-over-bound-refused.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refusal: cardinality_out_of_bound"
+
+[[case]]
+id = "convert-sequence-to-set"
+rule = "example"
+statement = "Converting a sequence to a set drops order and duplicates."
+file = "rules/convert-sequence-to-set.fsl"
+command = "run requests/convert-sequence-to-set.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "convert-bag-to-sequence"
+rule = "example"
+statement = "Converting a bag to a sequence keeps every occurrence, in the canonical order of the bag."
+file = "rules/convert-bag-to-sequence.fsl"
+command = "run requests/convert-bag-to-sequence.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "convert-ordered-set-to-bag"
+rule = "example"
+statement = "Converting an ordered set to a bag drops the order."
+file = "rules/convert-ordered-set-to-bag.fsl"
+command = "run requests/convert-ordered-set-to-bag.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "convert-above-target-bound-refused"
+rule = "example"
+statement = "A conversion whose result has more members than the target bound is refused."
+file = "rules/convert-above-target-bound-refused.fsl"
+command = "run requests/convert-above-target-bound-refused.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refusal: cardinality_out_of_bound"
+
+[[case]]
+id = "convert-element-type-refused"
+rule = "example"
+statement = "A conversion does not change the element type: Set<Integer> does not convert to Set<Int[0, 5]>."
+file = "rules/convert-element-type-refused.fsl"
+command = "run requests/convert-element-type-refused.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refusal: ill_typed"
