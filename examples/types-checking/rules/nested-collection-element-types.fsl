@@ -1,0 +1,4 @@
+// FSpec FR-144-AC-6
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+function f using v(a: Set<Sequence<Integer>[0, 2]>[0, 3], b: Sequence<Option<Integer>>[0, 3]): Boolean pure { true }

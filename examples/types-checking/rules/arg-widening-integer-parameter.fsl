@@ -1,0 +1,7 @@
+// FSpec FR-149-AC-30
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+function g using v(a: Integer): Boolean pure { true }
+function h using v(a: Int[0, 2000]): Boolean pure { true }
+function c1 using v(x: Int[0, 1000]): Boolean pure { g(x) }
+function c2 using v(x: Int[0, 1000]): Boolean pure { h(x) }

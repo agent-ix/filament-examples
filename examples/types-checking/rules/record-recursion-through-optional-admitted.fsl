@@ -1,0 +1,5 @@
+// FSpec FR-143-AC-7
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+record List { head: Integer; tail: List?; }
+function f using v(l: List): List pure { l }

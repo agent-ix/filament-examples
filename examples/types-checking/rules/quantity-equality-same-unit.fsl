@@ -1,0 +1,6 @@
+// FSpec FR-142-AC-9
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+dimension T;
+unit s: T = rational(1, 1);
+function f using v(a: Quantity<s>, b: Quantity<s>): Boolean pure { a = b or a < b }

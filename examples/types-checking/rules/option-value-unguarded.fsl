@@ -1,0 +1,4 @@
+// FSpec FR-005, FR-143-AC-10
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+function a using v(o: Option<Int[0, 9]>): Int[0, 9] pure { value(o) }

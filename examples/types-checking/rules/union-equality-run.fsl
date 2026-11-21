@@ -1,0 +1,5 @@
+// FSpec FR-143-AC-12
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+union Shape { Rect(Integer, Integer), Circle(Integer), Empty }
+function example using v(): Boolean pure { Shape::Rect(2, 3) = Shape::Rect(2, 3) and Shape::Rect(2, 3) != Shape::Rect(3, 2) and Shape::Circle(2) != Shape::Rect(2, 3) and Shape::Empty = Shape::Empty }

@@ -1,0 +1,5 @@
+// FSpec FR-141-AC-3
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+type T = Text[0, 8];
+function f using v(t: T): T pure { t }

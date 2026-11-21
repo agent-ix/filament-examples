@@ -1,0 +1,4 @@
+// FSpec FR-149-AC-28
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+function f using v(a: Map<Int[0, 3], Integer>[0, 4], b: Map<Int[0, 3], Integer>[0, 4]): Boolean pure { a = b }

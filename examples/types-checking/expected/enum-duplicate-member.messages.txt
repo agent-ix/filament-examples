@@ -1,0 +1,1 @@
+the enum `Color` declares the case `Red` more than once

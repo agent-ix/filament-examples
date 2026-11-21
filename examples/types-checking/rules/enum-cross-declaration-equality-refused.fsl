@@ -1,0 +1,6 @@
+// FSpec FR-141-AC-2, FR-141-AC-5
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+enum Color { Red, Green }
+enum Light { Red, Amber }
+function f using v(): Boolean pure { Color::Red = Light::Red }

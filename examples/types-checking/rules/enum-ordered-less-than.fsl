@@ -1,0 +1,5 @@
+// FSpec FR-141-AC-5
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+ordered enum Speed { Slow, Fast }
+function f using v(): Boolean pure { Speed::Slow < Speed::Fast }

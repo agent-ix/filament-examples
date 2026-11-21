@@ -1,0 +1,5 @@
+// FSpec FR-143-AC-1
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+tuple Pair(Boolean, Int[0, 9]);
+function example using v(): Boolean pure { Pair(true, 1) = Pair(true, 1) and Pair(true, 1) != Pair(false, 1) and Pair(true, 1) != Pair(true, 2) }
