@@ -19,13 +19,13 @@ The table lists each system with the number of cases that run today and the numb
 | [grammar](examples/grammar) | Language | 200 | 1 |
 | [docs-captures](examples/docs-captures) | Language | 7 | 0 |
 | [docs-values](examples/docs-values) | Language | 15 | 0 |
-| [language-values](examples/language-values) | Language | 22 | 0 |
+| [language-values](examples/language-values) | Language | 42 | 0 |
 | [shop](examples/shop) | Shop | 153 | 3 |
 | [architecture](examples/architecture) | Enterprise | 34 | 7 |
-| [parts-saga](examples/parts-saga) | Distributed | 30 | 0 |
+| [parts-saga](examples/parts-saga) | Distributed | 32 | 0 |
 | [cell](examples/cell) | Safety | 13 | 0 |
 | [rover](examples/rover) | Safety | 65 | 6 |
-| [lock](examples/lock) | Safety | 16 | 0 |
+| [lock](examples/lock) | Safety | 20 | 0 |
 | [library](examples/library) | Shop | 6 | 0 |
 
 ## Beyond FSL
