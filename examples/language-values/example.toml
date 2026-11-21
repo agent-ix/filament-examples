@@ -390,3 +390,33 @@ command = "run requests/convert-element-type-refused.json"
 status = "running"
 expect_exit = 20
 expect_verdict = "refusal: ill_typed"
+
+[[case]]
+id = "uuid-malformed-refused"
+rule = "example"
+statement = "A UUID literal that is not 8-4-4-4-12 hexadecimal digits is refused."
+file = "rules/uuid-malformed-refused.fsl"
+command = "run requests/uuid-malformed-refused.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refusal: ill_typed"
+
+[[case]]
+id = "uuid-uppercase-refused"
+rule = "example"
+statement = "A UUID literal is written in lowercase, so an uppercase spelling is refused."
+file = "rules/uuid-uppercase-refused.fsl"
+command = "run requests/uuid-uppercase-refused.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refusal: ill_typed"
+
+[[case]]
+id = "timestamp-integer-refused"
+rule = "example"
+statement = "A Timestamp is not an Integer, so comparing the two is refused."
+file = "rules/timestamp-integer-refused.fsl"
+command = "run requests/timestamp-integer-refused.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refusal: ill_typed"

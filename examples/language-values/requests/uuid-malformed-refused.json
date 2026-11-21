@@ -1,0 +1,19 @@
+{
+  "format": "native-run/1",
+  "request": {
+    "models": [],
+    "program": {
+      "source": {
+        "file": "../rules/uuid-malformed-refused.fsl",
+        "authority": "example",
+        "identity": "language-values/uuid-malformed-refused",
+        "document": "uuid-malformed-refused",
+        "formal_revision": 1
+      }
+    },
+    "call": {
+      "function": "example",
+      "arguments": []
+    }
+  }
+}
