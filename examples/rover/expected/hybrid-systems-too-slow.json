@@ -1,0 +1,306 @@
+{
+  "category": "violation",
+  "last_stage": "S8",
+  "result": null,
+  "first_diagnostic": null,
+  "items": [
+    {
+      "axes": {
+        "activation": "active",
+        "execution": "completed",
+        "settlement": "decisive-counterexample",
+        "truth": "false"
+      },
+      "category": "violation",
+      "claim_name": "TooSlow",
+      "counterexample": {
+        "kind": "formula",
+        "trace": {
+          "jumps": [],
+          "start": {
+            "enclosure": {
+              "a": {
+                "lower": {
+                  "denominator": "1",
+                  "numerator": "1"
+                },
+                "upper": {
+                  "denominator": "1",
+                  "numerator": "1"
+                }
+              },
+              "v": {
+                "lower": {
+                  "denominator": "1",
+                  "numerator": "0"
+                },
+                "upper": {
+                  "denominator": "1",
+                  "numerator": "0"
+                }
+              }
+            },
+            "mode": "Moving",
+            "time": {
+              "lower": {
+                "denominator": "1",
+                "numerator": "0"
+              },
+              "upper": {
+                "denominator": "1",
+                "numerator": "0"
+              }
+            }
+          }
+        },
+        "type": "hybrid-counterexample"
+      },
+      "record": {
+        "backend": "fsl-hybrid-reference",
+        "cause": null,
+        "result": "refuted",
+        "settled_by": "result"
+      },
+      "replay": {
+        "reproduced": true,
+        "target": {
+          "state_clause": "TooSlow"
+        }
+      },
+      "request": {
+        "candidates": {
+          "backends": [
+            "fsl-hybrid-reference"
+          ],
+          "type": "set"
+        },
+        "claim": {
+          "node": {
+            "ordinal": 0,
+            "package": "example:rover/bounded-braking",
+            "path": [
+              "temporal",
+              "temporal_clause",
+              {
+                "ordinal": 0,
+                "package": "example:rover/bounded-braking",
+                "path": [
+                  "value",
+                  "parameter",
+                  "name",
+                  {
+                    "ordinal": 0,
+                    "package": "example:rover/bounded-braking",
+                    "path": [
+                      "scalar_type",
+                      "text"
+                    ]
+                  },
+                  "h",
+                  "level",
+                  {
+                    "ordinal": 0,
+                    "package": "example:rover/bounded-braking",
+                    "path": [
+                      "scalar_type",
+                      "integer"
+                    ]
+                  },
+                  "0",
+                  {
+                    "ordinal": 0,
+                    "package": "example:rover/bounded-braking",
+                    "path": [
+                      "Braking"
+                    ]
+                  }
+                ]
+              },
+              {
+                "ordinal": 0,
+                "package": "example:rover/bounded-braking",
+                "path": [
+                  "scalar_type",
+                  "text"
+                ]
+              },
+              "model-time",
+              "kind",
+              {
+                "ordinal": 0,
+                "package": "example:rover/bounded-braking",
+                "path": [
+                  "scalar_type",
+                  "text"
+                ]
+              },
+              "origin",
+              {
+                "ordinal": 0,
+                "package": "example:rover/bounded-braking",
+                "path": [
+                  "temporal",
+                  "formula",
+                  {
+                    "ordinal": 0,
+                    "package": "example:rover/bounded-braking",
+                    "path": [
+                      "temporal",
+                      "formula",
+                      {
+                        "ordinal": 0,
+                        "package": "example:rover/bounded-braking",
+                        "path": [
+                          "expression",
+                          "binary",
+                          {
+                            "ordinal": 0,
+                            "package": "example:rover/bounded-braking",
+                            "path": [
+                              "value",
+                              "parameter",
+                              "name",
+                              {
+                                "ordinal": 0,
+                                "package": "example:rover/bounded-braking",
+                                "path": [
+                                  "scalar_type",
+                                  "text"
+                                ]
+                              },
+                              "v",
+                              "level",
+                              {
+                                "ordinal": 0,
+                                "package": "example:rover/bounded-braking",
+                                "path": [
+                                  "scalar_type",
+                                  "integer"
+                                ]
+                              },
+                              "0",
+                              {
+                                "ordinal": 0,
+                                "package": "example:rover/bounded-braking",
+                                "path": [
+                                  "scalar_type",
+                                  "rational"
+                                ]
+                              }
+                            ]
+                          },
+                          {
+                            "ordinal": 0,
+                            "package": "example:rover/bounded-braking",
+                            "path": [
+                              "value",
+                              "literal",
+                              {
+                                "ordinal": 0,
+                                "package": "example:rover/bounded-braking",
+                                "path": [
+                                  "scalar_type",
+                                  "rational"
+                                ]
+                              },
+                              "5"
+                            ]
+                          },
+                          "filament.op.rational.gt",
+                          "binary",
+                          {
+                            "ordinal": 0,
+                            "package": "example:rover/bounded-braking",
+                            "path": [
+                              "scalar_type",
+                              "boolean"
+                            ]
+                          },
+                          {
+                            "ordinal": 0,
+                            "package": "example:rover/bounded-braking",
+                            "path": [
+                              "scalar_type",
+                              "boolean"
+                            ]
+                          }
+                        ]
+                      },
+                      "filament.op.temporal.holds",
+                      "temporal_formula",
+                      {
+                        "ordinal": 0,
+                        "package": "example:rover/bounded-braking",
+                        "path": [
+                          "scalar_type",
+                          "boolean"
+                        ]
+                      },
+                      {
+                        "ordinal": 0,
+                        "package": "example:rover/bounded-braking",
+                        "path": [
+                          "scalar_type",
+                          "boolean"
+                        ]
+                      }
+                    ]
+                  },
+                  "filament.op.temporal.always",
+                  "steps:0..10",
+                  "temporal_formula",
+                  {
+                    "ordinal": 0,
+                    "package": "example:rover/bounded-braking",
+                    "path": [
+                      "scalar_type",
+                      "boolean"
+                    ]
+                  },
+                  {
+                    "ordinal": 0,
+                    "package": "example:rover/bounded-braking",
+                    "path": [
+                      "scalar_type",
+                      "boolean"
+                    ]
+                  }
+                ]
+              },
+              "filament.op.temporal.clause",
+              "filament.temporal.infinite-trace/v1",
+              "temporal",
+              {
+                "ordinal": 0,
+                "package": "example:rover/bounded-braking",
+                "path": [
+                  "scalar_type",
+                  "boolean"
+                ]
+              },
+              {
+                "ordinal": 0,
+                "package": "example:rover/bounded-braking",
+                "path": [
+                  "scalar_type",
+                  "boolean"
+                ]
+              }
+            ]
+          },
+          "occurrence": {
+            "ordinal": 0,
+            "role": "claim"
+          }
+        },
+        "extent": {
+          "bounds": [],
+          "classification": "bounded"
+        },
+        "kind": "temporal-satisfaction",
+        "request_index": 0
+      },
+      "request_index": 0
+    }
+  ]
+}
