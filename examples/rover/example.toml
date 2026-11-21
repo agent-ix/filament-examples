@@ -734,6 +734,28 @@ expect_verdict = "compiled"
 serves = "Advanced analyses reference (hybrid systems)"
 
 [[case]]
+id = "hybrid-systems-slow-enough"
+rule = "SlowEnough"
+statement = "The bounded braking model stays below speed 30 for 10 seconds, with a certified flowpipe proof."
+file = "rules/hybrid-systems/bounded-braking.fsl"
+command = "analyze requests/hybrid-systems/bounded-slow-enough.analyze.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "Advanced analyses reference (hybrid systems)"
+
+[[case]]
+id = "hybrid-systems-too-slow"
+rule = "TooSlow"
+statement = "The bounded braking model can start at speed zero, refuting a speed above 5 with a replayed counterexample."
+file = "rules/hybrid-systems/bounded-braking.fsl"
+command = "analyze requests/hybrid-systems/bounded-too-slow.analyze.json"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
+serves = "Advanced analyses reference (hybrid systems)"
+
+[[case]]
 id = "refinement-controller"
 rule = "ControllerRefinesStop"
 statement = "The rover controller implements a vehicle that can be stopped: halting is the abstract stop."
