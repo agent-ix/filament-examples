@@ -1,1 +1,0 @@
-observation.document_bytes limit 10 exceeded; raise --limit observation.document_bytes

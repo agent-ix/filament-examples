@@ -1,10 +1,7 @@
 {
-  "category": "refusal",
-  "last_stage": "S3",
+  "category": "success",
+  "last_stage": "S4",
   "result": null,
-  "first_diagnostic": {
-    "code": "ill_typed",
-    "cause": "type-mismatch"
-  },
+  "first_diagnostic": null,
   "items": []
 }
