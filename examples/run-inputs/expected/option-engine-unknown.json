@@ -1,0 +1,10 @@
+{
+  "category": "refusal",
+  "last_stage": null,
+  "result": null,
+  "first_diagnostic": {
+    "code": "invalid-request",
+    "cause": null
+  },
+  "items": []
+}

@@ -1,0 +1,30 @@
+{
+  "format": "native-run/1",
+  "request": {
+    "models": [
+      {
+        "format": "semantic-ir/2.0.0",
+        "source": {
+          "file": "../model/tank.semantic-ir.json",
+          "authority": "example",
+          "identity": "example:run-inputs/tank",
+          "document": "model",
+          "formal_revision": 1
+        }
+      }
+    ],
+    "program": {
+      "source": {
+        "file": "../rules/plan-fails.fsl",
+        "authority": "example",
+        "identity": "example:run-inputs/plan-fails",
+        "document": "planfails",
+        "formal_revision": 1
+      }
+    },
+    "verification_plan": {
+      "plan": "Release",
+      "initial": "../data/tank-0.json"
+    }
+  }
+}

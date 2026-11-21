@@ -1,0 +1,22 @@
+{
+  "category": "success",
+  "last_stage": "S6a",
+  "result": {
+    "kind": "completed",
+    "value": {
+      "sequence": [
+        {
+          "integer": "1"
+        },
+        {
+          "integer": "2"
+        },
+        {
+          "integer": "3"
+        }
+      ]
+    }
+  },
+  "first_diagnostic": null,
+  "items": []
+}

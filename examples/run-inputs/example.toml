@@ -1,0 +1,485 @@
+name = "run-inputs"
+summary = "Run inputs and results: call arguments in their value forms, refusals of bad arguments, zero-declaration units, run options and limits, and verification plan runs."
+
+[[case]]
+id = "call-zero-arguments"
+statement = "A function with no parameter runs with no argument and completes with 5."
+file = "rules/calls.fsl"
+command = "run requests/call-zero-arguments.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "completed"
+serves = "FR-550-AC-1 (argument and result values)"
+
+[[case]]
+id = "call-two-arguments"
+statement = "Two integer arguments are bound by parameter name and the sum 5 completes."
+file = "rules/calls.fsl"
+command = "run requests/call-two-arguments.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "completed"
+serves = "FR-550-AC-1 (argument and result values)"
+
+[[case]]
+id = "call-arguments-reordered"
+statement = "Arguments are matched by parameter name, not by position, so the reversed list gives the same 5."
+file = "rules/calls.fsl"
+command = "run requests/call-arguments-reordered.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "completed"
+serves = "FR-550-AC-1 (argument and result values)"
+
+[[case]]
+id = "call-big-integer"
+statement = "An integer is an exact decimal string at any magnitude: a 23-digit value comes back unchanged."
+file = "rules/calls.fsl"
+command = "run requests/call-big-integer.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "completed"
+serves = "FR-550-AC-1 (argument and result values)"
+
+[[case]]
+id = "call-negative-integer"
+statement = "A negative integer is an optional minus and a decimal string."
+file = "rules/calls.fsl"
+command = "run requests/call-negative-integer.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "completed"
+serves = "FR-550-AC-1 (argument and result values)"
+
+[[case]]
+id = "call-zero-integer"
+statement = "Zero is the string 0."
+file = "rules/calls.fsl"
+command = "run requests/call-zero-integer.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "completed"
+serves = "FR-550-AC-1 (argument and result values)"
+
+[[case]]
+id = "call-boolean"
+statement = "A Boolean argument comes back unchanged."
+file = "rules/calls.fsl"
+command = "run requests/call-boolean.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "completed"
+serves = "FR-550-AC-1 (argument and result values)"
+
+[[case]]
+id = "call-sequence-at-bound"
+statement = "A sequence of three integers meets the declared maximum of three and comes back in order."
+file = "rules/calls.fsl"
+command = "run requests/call-sequence-at-bound.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "completed"
+serves = "FR-550-AC-1 (argument and result values)"
+
+[[case]]
+id = "call-sequence-empty"
+statement = "An empty sequence meets the declared minimum of zero."
+file = "rules/calls.fsl"
+command = "run requests/call-sequence-empty.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "completed"
+serves = "FR-550-AC-1 (argument and result values)"
+
+[[case]]
+id = "call-digit-at-max"
+statement = "9 is the top of the declared range 0 to 9 and is admitted."
+file = "rules/calls.fsl"
+command = "run requests/call-digit-at-max.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "completed"
+serves = "FR-550-AC-1 (argument and result values)"
+
+[[case]]
+id = "call-digit-at-min"
+statement = "0 is the bottom of the declared range 0 to 9 and is admitted."
+file = "rules/calls.fsl"
+command = "run requests/call-digit-at-min.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "completed"
+serves = "FR-550-AC-1 (argument and result values)"
+
+[[case]]
+id = "call-digit-above-max"
+statement = "10 is one above the declared range 0 to 9 and is refused as an invalid value."
+file = "rules/calls.fsl"
+command = "run requests/call-digit-above-max.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: invalid-value"
+serves = "FR-550-AC-2 (refused arguments)"
+
+[[case]]
+id = "call-digit-below-min"
+statement = "-1 is one below the declared range 0 to 9 and is refused as an invalid value."
+file = "rules/calls.fsl"
+command = "run requests/call-digit-below-min.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: invalid-value"
+serves = "FR-550-AC-2 (refused arguments)"
+
+[[case]]
+id = "call-sequence-above-max"
+statement = "Four elements exceed the declared maximum of three: the argument is refused as out of bound."
+file = "rules/calls.fsl"
+command = "run requests/call-sequence-above-max.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: cardinality_out_of_bound"
+serves = "FR-550-AC-2 (refused arguments)"
+
+[[case]]
+id = "call-sequence-wrong-element-kind"
+statement = "The second element is a Boolean in a sequence of integers: refused as the wrong kind, at the element's location."
+file = "rules/calls.fsl"
+command = "run requests/call-sequence-wrong-element-kind.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: wrong-value-kind"
+serves = "FR-550-AC-2 (refused arguments)"
+
+[[case]]
+id = "call-missing-argument"
+statement = "The parameter b has no argument: the call is refused before it runs."
+file = "rules/calls.fsl"
+command = "run requests/call-missing-argument.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: invalid_runtime_input"
+serves = "FR-550-AC-2 (refused arguments)"
+
+[[case]]
+id = "call-unknown-parameter"
+statement = "Five has no parameter a: the argument is refused."
+file = "rules/calls.fsl"
+command = "run requests/call-unknown-parameter.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: invalid_runtime_input"
+serves = "FR-550-AC-2 (refused arguments)"
+
+[[case]]
+id = "call-wrong-kind-boolean-for-integer"
+statement = "A Boolean supplied for an integer parameter is refused as the wrong kind."
+file = "rules/calls.fsl"
+command = "run requests/call-wrong-kind-boolean-for-integer.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: wrong-value-kind"
+serves = "FR-550-AC-2 (refused arguments)"
+
+[[case]]
+id = "call-wrong-kind-json-number"
+statement = "An integer is a decimal string: the JSON number 5 is refused as the wrong kind."
+file = "rules/calls.fsl"
+command = "run requests/call-wrong-kind-json-number.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: wrong-value-kind"
+serves = "FR-550-AC-2 (refused arguments)"
+
+[[case]]
+id = "call-wrong-kind-string-boolean"
+statement = "A Boolean is the JSON true or false: the string \"true\" is refused as the wrong kind."
+file = "rules/calls.fsl"
+command = "run requests/call-wrong-kind-string-boolean.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: wrong-value-kind"
+serves = "FR-550-AC-2 (refused arguments)"
+
+[[case]]
+id = "call-integer-leading-zero"
+statement = "A decimal string is 0 or an optional minus and a digit from 1 to 9 first: 05 is refused."
+file = "rules/calls.fsl"
+command = "run requests/call-integer-leading-zero.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: invalid-value"
+serves = "FR-550-AC-2 (refused arguments)"
+
+[[case]]
+id = "call-integer-negative-zero"
+statement = "-0 is not a decimal string: zero is written 0."
+file = "rules/calls.fsl"
+command = "run requests/call-integer-negative-zero.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: invalid-value"
+serves = "FR-550-AC-2 (refused arguments)"
+
+[[case]]
+id = "call-integer-plus-sign"
+statement = "A plus sign is not part of the decimal string."
+file = "rules/calls.fsl"
+command = "run requests/call-integer-plus-sign.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: invalid-value"
+serves = "FR-550-AC-2 (refused arguments)"
+
+[[case]]
+id = "call-integer-fraction"
+statement = "5.0 is not an integer decimal string."
+file = "rules/calls.fsl"
+command = "run requests/call-integer-fraction.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: invalid-value"
+serves = "FR-550-AC-2 (refused arguments)"
+
+[[case]]
+id = "call-integer-empty"
+statement = "The empty string is not an integer."
+file = "rules/calls.fsl"
+command = "run requests/call-integer-empty.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: invalid-value"
+serves = "FR-550-AC-2 (refused arguments)"
+
+[[case]]
+id = "call-unknown-function"
+statement = "A call that names a function the unit does not declare is refused."
+file = "rules/calls.fsl"
+command = "run requests/call-unknown-function.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: missing_declaration"
+serves = "FR-550-AC-2 (refused arguments)"
+
+[[case]]
+id = "call-tagged-integer"
+statement = "An integer argument in the FR-181 typed canonical form {\"type\": \"integer\", \"value\": \"5\"} completes with the same form."
+file = "rules/calls.fsl"
+command = "run requests/call-tagged-integer.json"
+status = "staged"
+expect_exit = 20
+ready_exit = 0
+waits_on = "QSL-2103"
+why = "this build reads an integer as {\"integer\": \"5\"} and refuses the FR-181 tagged form, so the argument is refused wrong-value-kind (exit 20)"
+needs = "arguments read in the FR-181 typed canonical form"
+serves = "FR-550-AC-1 (typed canonical form)"
+
+[[case]]
+id = "call-tagged-rational"
+statement = "A rational argument 4/6 is read as 2/3: the result is the normalized form {\"type\": \"rational\", \"numerator\": \"2\", \"denominator\": \"3\"}."
+file = "rules/calls.fsl"
+command = "run requests/call-tagged-rational.json"
+status = "staged"
+expect_exit = 20
+ready_exit = 0
+waits_on = "QSL-2103"
+why = "this build reads an integer as {\"integer\": \"5\"} and refuses the FR-181 tagged form, so the rational argument is refused wrong-value-kind (exit 20)"
+needs = "arguments read in the FR-181 typed canonical form"
+serves = "FR-550-AC-1 (typed canonical form)"
+
+[[case]]
+id = "call-tagged-text"
+statement = "A text argument in the typed canonical form comes back unchanged."
+file = "rules/calls.fsl"
+command = "run requests/call-tagged-text.json"
+status = "staged"
+expect_exit = 20
+ready_exit = 0
+waits_on = "QSL-2103"
+why = "this build reads an integer as {\"integer\": \"5\"} and refuses the FR-181 tagged form, so the text argument is refused wrong-value-kind (exit 20)"
+needs = "arguments read in the FR-181 typed canonical form"
+serves = "FR-550-AC-1 (typed canonical form)"
+
+[[case]]
+id = "call-tagged-set-order"
+statement = "A set argument supplied as 3 then 1 comes back with its elements in canonical order, 1 then 3."
+file = "rules/calls.fsl"
+command = "run requests/call-tagged-set-order.json"
+status = "staged"
+expect_exit = 20
+ready_exit = 0
+waits_on = "QSL-2103"
+why = "this build reads an integer as {\"integer\": \"5\"} and refuses the FR-181 tagged form, so the set argument is refused wrong-value-kind (exit 20)"
+needs = "arguments read in the FR-181 typed canonical form"
+serves = "FR-550-AC-1 (typed canonical form)"
+
+[[case]]
+id = "unit-header-only"
+statement = "A unit with only its header parses, and checking it is refused: a checked package needs at least one declaration that has a node."
+file = "rules/header-only.fsl"
+command = "check rules/header-only.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: missing_declaration"
+serves = "FR-746, FR-339 (zero-declaration unit)"
+
+[[case]]
+id = "unit-profile-only"
+statement = "A header and a profile are still no declaration: the check is refused as an empty package."
+file = "rules/profile-only.fsl"
+command = "check rules/profile-only.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: missing_declaration"
+serves = "FR-746, FR-339"
+
+[[case]]
+id = "unit-alias-only"
+statement = "A type alias has no node of its own, so a unit that writes only an alias is an empty package."
+file = "rules/alias-only.fsl"
+command = "check rules/alias-only.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: missing_declaration"
+serves = "FR-746"
+
+[[case]]
+id = "unit-one-function"
+statement = "One function is a node-bearing declaration and the unit checks."
+file = "rules/one-function.fsl"
+command = "check rules/one-function.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "checked"
+serves = "FR-746"
+
+[[case]]
+id = "option-engine-interpreter"
+statement = "The interpreter engine runs the call and completes with 5."
+file = "rules/calls.fsl"
+command = "run requests/option-engine-interpreter.json --engine interpreter"
+status = "running"
+expect_exit = 0
+expect_verdict = "completed"
+serves = "FR-306 (equivalent backends)"
+
+[[case]]
+id = "option-engine-unknown"
+statement = "An engine name that is not interpreter, aot or jit is refused before the request runs."
+file = "rules/calls.fsl"
+command = "run requests/option-engine-unknown.json --engine bogus"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: invalid-request"
+serves = "FR-301-AC-3"
+
+[[case]]
+id = "option-request-bytes-too-small"
+statement = "A request larger than --request-bytes is incomplete with a resource_exhausted cause and no value."
+file = "rules/calls.fsl"
+command = "run requests/option-request-bytes-too-small.json --request-bytes 10"
+status = "running"
+expect_exit = 22
+expect_verdict = "incomplete: resource_exhausted"
+serves = "FR-460, FR-461 (limits)"
+
+[[case]]
+id = "option-request-bytes-large"
+statement = "A request within --request-bytes runs as without the option."
+file = "rules/calls.fsl"
+command = "run requests/option-request-bytes-large.json --request-bytes 100000"
+status = "running"
+expect_exit = 0
+expect_verdict = "completed"
+serves = "FR-460, FR-461"
+
+[[case]]
+id = "option-dependent-bytes-too-small"
+statement = "More dependent bytes than --dependent-bytes allows is incomplete with resource_exhausted."
+file = "rules/calls.fsl"
+command = "run requests/option-dependent-bytes-too-small.json --dependent-bytes 1"
+status = "running"
+expect_exit = 22
+expect_verdict = "incomplete: resource_exhausted"
+serves = "FR-460, FR-461"
+
+[[case]]
+id = "option-limit-unknown-setting"
+statement = "A --limit that names no setting is refused, listing the settings it accepts."
+file = "rules/calls.fsl"
+command = "run requests/option-limit-unknown-setting.json --limit nonsense=1"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: invalid-request"
+serves = "FR-461, FR-720"
+
+[[case]]
+id = "option-limit-not-integer"
+statement = "A --limit whose value is not an integer is refused."
+file = "rules/calls.fsl"
+command = "run requests/option-limit-not-integer.json --limit s1.input_bytes=x"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: invalid-request"
+serves = "FR-720"
+
+[[case]]
+id = "option-limit-source-bytes"
+statement = "Source longer than the s1.input_bytes limit stops at that stage as incomplete and names the limit."
+file = "rules/calls.fsl"
+command = "run requests/option-limit-source-bytes.json --limit s1.input_bytes=10"
+status = "running"
+expect_exit = 22
+expect_verdict = "incomplete: stage_limit_exceeded"
+serves = "FR-460, FR-461, FR-720"
+
+[[case]]
+id = "monitor-empty-stream"
+statement = "A stream with no records settles nothing: the eventually claim is pending, not proved and not refuted."
+file = "rules/monitor-eventually.fsl"
+command = "monitor requests/monitor-empty-stream.json --input records/monitor-empty.jsonl"
+engine = "monitor"
+status = "running"
+expect_exit = 0
+expect_verdict = "pending"
+serves = "FR-161-AC-2 (pending rather than proved)"
+
+[[case]]
+id = "plan-passes"
+statement = "Both steps of the plan settle proved, so the plan status is passed, the outcome has one disposition per step and the run exits 0."
+file = "rules/plan-passes.fsl"
+command = "run requests/plan-passes.json"
+status = "staged"
+expect_exit = 20
+ready_exit = 0
+waits_on = "QSL-2502"
+why = "run refuses the verification_plan member as invalid-request (a verification plan is run by the plan coordinator route), exit 20"
+needs = "a verification plan run through the run verb"
+serves = "FR-824 (plan run outcome)"
+
+[[case]]
+id = "plan-fails"
+statement = "The step Low is refuted and the independent step Bounded is proved: the plan status is failed, failed_steps lists low, and the run exits 10."
+file = "rules/plan-fails.fsl"
+command = "run requests/plan-fails.json"
+status = "staged"
+expect_exit = 20
+ready_exit = 10
+waits_on = "QSL-2502"
+why = "run refuses the verification_plan member as invalid-request, exit 20"
+needs = "a verification plan run through the run verb"
+serves = "FR-824 (plan run outcome)"
+
+[[case]]
+id = "plan-blocks"
+statement = "Low is refuted and the step that requires it is blocked, never run: the plan status is failed, and the exit is 22 because FR-301 ranks incomplete above a violation."
+file = "rules/plan-blocks.fsl"
+command = "run requests/plan-blocks.json"
+status = "staged"
+expect_exit = 20
+ready_exit = 22
+waits_on = "QSL-2502"
+why = "run refuses the verification_plan member as invalid-request, exit 20"
+needs = "a verification plan run through the run verb"
+serves = "FR-824 (plan run outcome, severity order)"
+
