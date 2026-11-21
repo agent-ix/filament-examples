@@ -1,9 +1,9 @@
 {
   "category": "refusal",
-  "last_stage": "S6a",
+  "last_stage": null,
   "result": null,
   "first_diagnostic": {
-    "code": "invalid_runtime_input",
+    "code": "invalid-request",
     "cause": null
   },
   "items": []

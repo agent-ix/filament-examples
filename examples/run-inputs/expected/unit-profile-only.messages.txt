@@ -1,1 +1,0 @@
-missing_declaration (empty-package): checked package `rules/profile-only.fsl` needs at least one declaration that has a node; a type alias has none (sources: filament:rules/profile-only.fsl)

@@ -17,15 +17,19 @@
         {
           "parameter": "a",
           "value": {
-            "sequence": [
+            "type": "sequence",
+            "elements": [
               {
-                "integer": "1"
+                "type": "integer",
+                "value": "1"
               },
               {
-                "integer": "2"
+                "type": "integer",
+                "value": "2"
               },
               {
-                "integer": "3"
+                "type": "integer",
+                "value": "3"
               }
             ]
           }

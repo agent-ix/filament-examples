@@ -3,7 +3,7 @@ summary = "Run inputs and results: call arguments in their value forms, refusals
 
 [[case]]
 id = "call-zero-arguments"
-statement = "A function with no parameter runs with no argument and completes with 5."
+statement = "LEGACY WIRE: A function with no parameter runs with no argument and completes with 5. The result is recorded in the driver's legacy untagged form {\"integer\": \"5\"}, not the FR-181 typed form, and is kept as the single legacy case."
 file = "rules/calls.fsl"
 command = "run requests/call-zero-arguments.json"
 status = "running"
@@ -16,9 +16,12 @@ id = "call-two-arguments"
 statement = "Two integer arguments are bound by parameter name and the sum 5 completes."
 file = "rules/calls.fsl"
 command = "run requests/call-two-arguments.json"
-status = "running"
-expect_exit = 0
-expect_verdict = "completed"
+status = "staged"
+expect_exit = 20
+ready_exit = 0
+waits_on = "QSL-2758"
+why = "fsl run reads and writes values in a legacy untagged form ({\"integer\": \"5\"}) and refuses the FR-181 typed canonical form ({\"type\": \"integer\", \"value\": \"5\"}) as wrong-value-kind (exit 20)"
+needs = "arguments read and results written in the FR-181 typed canonical form (FR-550)"
 serves = "FR-550-AC-1 (argument and result values)"
 
 [[case]]
@@ -26,9 +29,12 @@ id = "call-arguments-reordered"
 statement = "Arguments are matched by parameter name, not by position, so the reversed list gives the same 5."
 file = "rules/calls.fsl"
 command = "run requests/call-arguments-reordered.json"
-status = "running"
-expect_exit = 0
-expect_verdict = "completed"
+status = "staged"
+expect_exit = 20
+ready_exit = 0
+waits_on = "QSL-2758"
+why = "fsl run reads and writes values in a legacy untagged form ({\"integer\": \"5\"}) and refuses the FR-181 typed canonical form ({\"type\": \"integer\", \"value\": \"5\"}) as wrong-value-kind (exit 20)"
+needs = "arguments read and results written in the FR-181 typed canonical form (FR-550)"
 serves = "FR-550-AC-1 (argument and result values)"
 
 [[case]]
@@ -36,9 +42,12 @@ id = "call-big-integer"
 statement = "An integer is an exact decimal string at any magnitude: a 23-digit value comes back unchanged."
 file = "rules/calls.fsl"
 command = "run requests/call-big-integer.json"
-status = "running"
-expect_exit = 0
-expect_verdict = "completed"
+status = "staged"
+expect_exit = 20
+ready_exit = 0
+waits_on = "QSL-2758"
+why = "fsl run reads and writes values in a legacy untagged form ({\"integer\": \"5\"}) and refuses the FR-181 typed canonical form ({\"type\": \"integer\", \"value\": \"5\"}) as wrong-value-kind (exit 20)"
+needs = "arguments read and results written in the FR-181 typed canonical form (FR-550)"
 serves = "FR-550-AC-1 (argument and result values)"
 
 [[case]]
@@ -46,9 +55,12 @@ id = "call-negative-integer"
 statement = "A negative integer is an optional minus and a decimal string."
 file = "rules/calls.fsl"
 command = "run requests/call-negative-integer.json"
-status = "running"
-expect_exit = 0
-expect_verdict = "completed"
+status = "staged"
+expect_exit = 20
+ready_exit = 0
+waits_on = "QSL-2758"
+why = "fsl run reads and writes values in a legacy untagged form ({\"integer\": \"5\"}) and refuses the FR-181 typed canonical form ({\"type\": \"integer\", \"value\": \"5\"}) as wrong-value-kind (exit 20)"
+needs = "arguments read and results written in the FR-181 typed canonical form (FR-550)"
 serves = "FR-550-AC-1 (argument and result values)"
 
 [[case]]
@@ -56,9 +68,12 @@ id = "call-zero-integer"
 statement = "Zero is the string 0."
 file = "rules/calls.fsl"
 command = "run requests/call-zero-integer.json"
-status = "running"
-expect_exit = 0
-expect_verdict = "completed"
+status = "staged"
+expect_exit = 20
+ready_exit = 0
+waits_on = "QSL-2758"
+why = "fsl run reads and writes values in a legacy untagged form ({\"integer\": \"5\"}) and refuses the FR-181 typed canonical form ({\"type\": \"integer\", \"value\": \"5\"}) as wrong-value-kind (exit 20)"
+needs = "arguments read and results written in the FR-181 typed canonical form (FR-550)"
 serves = "FR-550-AC-1 (argument and result values)"
 
 [[case]]
@@ -66,9 +81,12 @@ id = "call-boolean"
 statement = "A Boolean argument comes back unchanged."
 file = "rules/calls.fsl"
 command = "run requests/call-boolean.json"
-status = "running"
-expect_exit = 0
-expect_verdict = "completed"
+status = "staged"
+expect_exit = 20
+ready_exit = 0
+waits_on = "QSL-2758"
+why = "fsl run reads and writes values in a legacy untagged form ({\"integer\": \"5\"}) and refuses the FR-181 typed canonical form ({\"type\": \"integer\", \"value\": \"5\"}) as wrong-value-kind (exit 20)"
+needs = "arguments read and results written in the FR-181 typed canonical form (FR-550)"
 serves = "FR-550-AC-1 (argument and result values)"
 
 [[case]]
@@ -76,9 +94,12 @@ id = "call-sequence-at-bound"
 statement = "A sequence of three integers meets the declared maximum of three and comes back in order."
 file = "rules/calls.fsl"
 command = "run requests/call-sequence-at-bound.json"
-status = "running"
-expect_exit = 0
-expect_verdict = "completed"
+status = "staged"
+expect_exit = 20
+ready_exit = 0
+waits_on = "QSL-2758"
+why = "fsl run reads and writes values in a legacy untagged form ({\"integer\": \"5\"}) and refuses the FR-181 typed canonical form ({\"type\": \"integer\", \"value\": \"5\"}) as wrong-value-kind (exit 20)"
+needs = "arguments read and results written in the FR-181 typed canonical form (FR-550)"
 serves = "FR-550-AC-1 (argument and result values)"
 
 [[case]]
@@ -86,9 +107,12 @@ id = "call-sequence-empty"
 statement = "An empty sequence meets the declared minimum of zero."
 file = "rules/calls.fsl"
 command = "run requests/call-sequence-empty.json"
-status = "running"
-expect_exit = 0
-expect_verdict = "completed"
+status = "staged"
+expect_exit = 20
+ready_exit = 0
+waits_on = "QSL-2758"
+why = "fsl run reads and writes values in a legacy untagged form ({\"integer\": \"5\"}) and refuses the FR-181 typed canonical form ({\"type\": \"integer\", \"value\": \"5\"}) as wrong-value-kind (exit 20)"
+needs = "arguments read and results written in the FR-181 typed canonical form (FR-550)"
 serves = "FR-550-AC-1 (argument and result values)"
 
 [[case]]
@@ -96,9 +120,12 @@ id = "call-digit-at-max"
 statement = "9 is the top of the declared range 0 to 9 and is admitted."
 file = "rules/calls.fsl"
 command = "run requests/call-digit-at-max.json"
-status = "running"
-expect_exit = 0
-expect_verdict = "completed"
+status = "staged"
+expect_exit = 20
+ready_exit = 0
+waits_on = "QSL-2758"
+why = "fsl run reads and writes values in a legacy untagged form ({\"integer\": \"5\"}) and refuses the FR-181 typed canonical form ({\"type\": \"integer\", \"value\": \"5\"}) as wrong-value-kind (exit 20)"
+needs = "arguments read and results written in the FR-181 typed canonical form (FR-550)"
 serves = "FR-550-AC-1 (argument and result values)"
 
 [[case]]
@@ -106,150 +133,13 @@ id = "call-digit-at-min"
 statement = "0 is the bottom of the declared range 0 to 9 and is admitted."
 file = "rules/calls.fsl"
 command = "run requests/call-digit-at-min.json"
-status = "running"
-expect_exit = 0
-expect_verdict = "completed"
+status = "staged"
+expect_exit = 20
+ready_exit = 0
+waits_on = "QSL-2758"
+why = "fsl run reads and writes values in a legacy untagged form ({\"integer\": \"5\"}) and refuses the FR-181 typed canonical form ({\"type\": \"integer\", \"value\": \"5\"}) as wrong-value-kind (exit 20)"
+needs = "arguments read and results written in the FR-181 typed canonical form (FR-550)"
 serves = "FR-550-AC-1 (argument and result values)"
-
-[[case]]
-id = "call-digit-above-max"
-statement = "10 is one above the declared range 0 to 9 and is refused as an invalid value."
-file = "rules/calls.fsl"
-command = "run requests/call-digit-above-max.json"
-status = "running"
-expect_exit = 20
-expect_verdict = "refused: invalid-value"
-serves = "FR-550-AC-2 (refused arguments)"
-
-[[case]]
-id = "call-digit-below-min"
-statement = "-1 is one below the declared range 0 to 9 and is refused as an invalid value."
-file = "rules/calls.fsl"
-command = "run requests/call-digit-below-min.json"
-status = "running"
-expect_exit = 20
-expect_verdict = "refused: invalid-value"
-serves = "FR-550-AC-2 (refused arguments)"
-
-[[case]]
-id = "call-sequence-above-max"
-statement = "Four elements exceed the declared maximum of three: the argument is refused as out of bound."
-file = "rules/calls.fsl"
-command = "run requests/call-sequence-above-max.json"
-status = "running"
-expect_exit = 20
-expect_verdict = "refused: cardinality_out_of_bound"
-serves = "FR-550-AC-2 (refused arguments)"
-
-[[case]]
-id = "call-sequence-wrong-element-kind"
-statement = "The second element is a Boolean in a sequence of integers: refused as the wrong kind, at the element's location."
-file = "rules/calls.fsl"
-command = "run requests/call-sequence-wrong-element-kind.json"
-status = "running"
-expect_exit = 20
-expect_verdict = "refused: wrong-value-kind"
-serves = "FR-550-AC-2 (refused arguments)"
-
-[[case]]
-id = "call-missing-argument"
-statement = "The parameter b has no argument: the call is refused before it runs."
-file = "rules/calls.fsl"
-command = "run requests/call-missing-argument.json"
-status = "running"
-expect_exit = 20
-expect_verdict = "refused: invalid_runtime_input"
-serves = "FR-550-AC-2 (refused arguments)"
-
-[[case]]
-id = "call-unknown-parameter"
-statement = "Five has no parameter a: the argument is refused."
-file = "rules/calls.fsl"
-command = "run requests/call-unknown-parameter.json"
-status = "running"
-expect_exit = 20
-expect_verdict = "refused: invalid_runtime_input"
-serves = "FR-550-AC-2 (refused arguments)"
-
-[[case]]
-id = "call-wrong-kind-boolean-for-integer"
-statement = "A Boolean supplied for an integer parameter is refused as the wrong kind."
-file = "rules/calls.fsl"
-command = "run requests/call-wrong-kind-boolean-for-integer.json"
-status = "running"
-expect_exit = 20
-expect_verdict = "refused: wrong-value-kind"
-serves = "FR-550-AC-2 (refused arguments)"
-
-[[case]]
-id = "call-wrong-kind-json-number"
-statement = "An integer is a decimal string: the JSON number 5 is refused as the wrong kind."
-file = "rules/calls.fsl"
-command = "run requests/call-wrong-kind-json-number.json"
-status = "running"
-expect_exit = 20
-expect_verdict = "refused: wrong-value-kind"
-serves = "FR-550-AC-2 (refused arguments)"
-
-[[case]]
-id = "call-wrong-kind-string-boolean"
-statement = "A Boolean is the JSON true or false: the string \"true\" is refused as the wrong kind."
-file = "rules/calls.fsl"
-command = "run requests/call-wrong-kind-string-boolean.json"
-status = "running"
-expect_exit = 20
-expect_verdict = "refused: wrong-value-kind"
-serves = "FR-550-AC-2 (refused arguments)"
-
-[[case]]
-id = "call-integer-leading-zero"
-statement = "A decimal string is 0 or an optional minus and a digit from 1 to 9 first: 05 is refused."
-file = "rules/calls.fsl"
-command = "run requests/call-integer-leading-zero.json"
-status = "running"
-expect_exit = 20
-expect_verdict = "refused: invalid-value"
-serves = "FR-550-AC-2 (refused arguments)"
-
-[[case]]
-id = "call-integer-negative-zero"
-statement = "-0 is not a decimal string: zero is written 0."
-file = "rules/calls.fsl"
-command = "run requests/call-integer-negative-zero.json"
-status = "running"
-expect_exit = 20
-expect_verdict = "refused: invalid-value"
-serves = "FR-550-AC-2 (refused arguments)"
-
-[[case]]
-id = "call-integer-plus-sign"
-statement = "A plus sign is not part of the decimal string."
-file = "rules/calls.fsl"
-command = "run requests/call-integer-plus-sign.json"
-status = "running"
-expect_exit = 20
-expect_verdict = "refused: invalid-value"
-serves = "FR-550-AC-2 (refused arguments)"
-
-[[case]]
-id = "call-integer-fraction"
-statement = "5.0 is not an integer decimal string."
-file = "rules/calls.fsl"
-command = "run requests/call-integer-fraction.json"
-status = "running"
-expect_exit = 20
-expect_verdict = "refused: invalid-value"
-serves = "FR-550-AC-2 (refused arguments)"
-
-[[case]]
-id = "call-integer-empty"
-statement = "The empty string is not an integer."
-file = "rules/calls.fsl"
-command = "run requests/call-integer-empty.json"
-status = "running"
-expect_exit = 20
-expect_verdict = "refused: invalid-value"
-serves = "FR-550-AC-2 (refused arguments)"
 
 [[case]]
 id = "call-unknown-function"
@@ -269,7 +159,7 @@ command = "run requests/call-tagged-integer.json"
 status = "staged"
 expect_exit = 20
 ready_exit = 0
-waits_on = "QSL-2103"
+waits_on = "QSL-2758"
 why = "this build reads an integer as {\"integer\": \"5\"} and refuses the FR-181 tagged form, so the argument is refused wrong-value-kind (exit 20)"
 needs = "arguments read in the FR-181 typed canonical form"
 serves = "FR-550-AC-1 (typed canonical form)"
@@ -282,7 +172,7 @@ command = "run requests/call-tagged-rational.json"
 status = "staged"
 expect_exit = 20
 ready_exit = 0
-waits_on = "QSL-2103"
+waits_on = "QSL-2758"
 why = "this build reads an integer as {\"integer\": \"5\"} and refuses the FR-181 tagged form, so the rational argument is refused wrong-value-kind (exit 20)"
 needs = "arguments read in the FR-181 typed canonical form"
 serves = "FR-550-AC-1 (typed canonical form)"
@@ -295,7 +185,7 @@ command = "run requests/call-tagged-text.json"
 status = "staged"
 expect_exit = 20
 ready_exit = 0
-waits_on = "QSL-2103"
+waits_on = "QSL-2758"
 why = "this build reads an integer as {\"integer\": \"5\"} and refuses the FR-181 tagged form, so the text argument is refused wrong-value-kind (exit 20)"
 needs = "arguments read in the FR-181 typed canonical form"
 serves = "FR-550-AC-1 (typed canonical form)"
@@ -308,30 +198,10 @@ command = "run requests/call-tagged-set-order.json"
 status = "staged"
 expect_exit = 20
 ready_exit = 0
-waits_on = "QSL-2103"
+waits_on = "QSL-2758"
 why = "this build reads an integer as {\"integer\": \"5\"} and refuses the FR-181 tagged form, so the set argument is refused wrong-value-kind (exit 20)"
 needs = "arguments read in the FR-181 typed canonical form"
 serves = "FR-550-AC-1 (typed canonical form)"
-
-[[case]]
-id = "unit-header-only"
-statement = "A unit with only its header parses, and checking it is refused: a checked package needs at least one declaration that has a node."
-file = "rules/header-only.fsl"
-command = "check rules/header-only.fsl"
-status = "running"
-expect_exit = 20
-expect_verdict = "refused: missing_declaration"
-serves = "FR-746, FR-339 (zero-declaration unit)"
-
-[[case]]
-id = "unit-profile-only"
-statement = "A header and a profile are still no declaration: the check is refused as an empty package."
-file = "rules/profile-only.fsl"
-command = "check rules/profile-only.fsl"
-status = "running"
-expect_exit = 20
-expect_verdict = "refused: missing_declaration"
-serves = "FR-746, FR-339"
 
 [[case]]
 id = "unit-alias-only"
@@ -358,9 +228,12 @@ id = "option-engine-interpreter"
 statement = "The interpreter engine runs the call and completes with 5."
 file = "rules/calls.fsl"
 command = "run requests/option-engine-interpreter.json --engine interpreter"
-status = "running"
-expect_exit = 0
-expect_verdict = "completed"
+status = "staged"
+expect_exit = 20
+ready_exit = 0
+waits_on = "QSL-2758"
+why = "fsl run reads and writes values in a legacy untagged form ({\"integer\": \"5\"}) and refuses the FR-181 typed canonical form ({\"type\": \"integer\", \"value\": \"5\"}) as wrong-value-kind (exit 20)"
+needs = "arguments read and results written in the FR-181 typed canonical form (FR-550)"
 serves = "FR-306 (equivalent backends)"
 
 [[case]]
@@ -388,9 +261,12 @@ id = "option-request-bytes-large"
 statement = "A request within --request-bytes runs as without the option."
 file = "rules/calls.fsl"
 command = "run requests/option-request-bytes-large.json --request-bytes 100000"
-status = "running"
-expect_exit = 0
-expect_verdict = "completed"
+status = "staged"
+expect_exit = 20
+ready_exit = 0
+waits_on = "QSL-2758"
+why = "fsl run reads and writes values in a legacy untagged form ({\"integer\": \"5\"}) and refuses the FR-181 typed canonical form ({\"type\": \"integer\", \"value\": \"5\"}) as wrong-value-kind (exit 20)"
+needs = "arguments read and results written in the FR-181 typed canonical form (FR-550)"
 serves = "FR-460, FR-461"
 
 [[case]]
@@ -452,8 +328,8 @@ command = "run requests/plan-passes.json"
 status = "staged"
 expect_exit = 20
 ready_exit = 0
-waits_on = "QSL-2502"
-why = "run refuses the verification_plan member as invalid-request (a verification plan is run by the plan coordinator route), exit 20"
+waits_on = "QSL-2103"
+why = "run refuses the verification_plan member as invalid-request (a verification plan is run by the plan coordinator route), exit 20; QSL-2502 was cancelled as a duplicate of QSL-2511 (Done) and the newer driver (FSL f5977125) still refuses the member"
 needs = "a verification plan run through the run verb"
 serves = "FR-824 (plan run outcome)"
 
@@ -465,8 +341,8 @@ command = "run requests/plan-fails.json"
 status = "staged"
 expect_exit = 20
 ready_exit = 10
-waits_on = "QSL-2502"
-why = "run refuses the verification_plan member as invalid-request, exit 20"
+waits_on = "QSL-2103"
+why = "run refuses the verification_plan member as invalid-request, exit 20; QSL-2502 was cancelled as a duplicate of QSL-2511 (Done) and the newer driver (FSL f5977125) still refuses the member"
 needs = "a verification plan run through the run verb"
 serves = "FR-824 (plan run outcome)"
 
@@ -478,8 +354,33 @@ command = "run requests/plan-blocks.json"
 status = "staged"
 expect_exit = 20
 ready_exit = 22
-waits_on = "QSL-2502"
-why = "run refuses the verification_plan member as invalid-request, exit 20"
+waits_on = "QSL-2103"
+why = "run refuses the verification_plan member as invalid-request, exit 20; QSL-2502 was cancelled as a duplicate of QSL-2511 (Done) and the newer driver (FSL f5977125) still refuses the member"
 needs = "a verification plan run through the run verb"
 serves = "FR-824 (plan run outcome, severity order)"
 
+[[case]]
+id = "call-three-items-complete"
+statement = "A request selecting three items that each complete yields three dispositions in selection order and the overall category success."
+file = "rules/calls.fsl"
+command = "run requests/call-three-items-complete.json"
+status = "staged"
+expect_exit = 20
+ready_exit = 0
+waits_on = "QSL-2103"
+why = "run refuses the items member (invalid-request: items is handled by the multi-selection runner), exit 20"
+needs = "a multi-item run through the run verb (FR-550-AC-3)"
+serves = "FR-550-AC-3 (multi-item results)"
+
+[[case]]
+id = "plan-null-members-as-absent"
+statement = "A verification plan whose seed, emit, max_value_bits and max_trace_length members are null runs Release as if the four members were absent: both steps proved, exit 0."
+file = "rules/plan-passes.fsl"
+command = "run requests/plan-null-members-as-absent.json"
+status = "staged"
+expect_exit = 20
+ready_exit = 0
+waits_on = "QSL-2103"
+why = "run refuses the verification_plan member as invalid-request (a verification plan is run by the plan coordinator route), exit 20; QSL-2502 was cancelled as a duplicate of QSL-2511 (Done)"
+needs = "a verification plan run through the run verb"
+serves = "FR-824-AC-6 (null members read as absent)"

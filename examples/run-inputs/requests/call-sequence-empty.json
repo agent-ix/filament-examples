@@ -17,7 +17,8 @@
         {
           "parameter": "a",
           "value": {
-            "sequence": []
+            "type": "sequence",
+            "elements": []
           }
         }
       ]

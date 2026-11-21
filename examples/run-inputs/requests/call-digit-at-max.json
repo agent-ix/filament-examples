@@ -17,7 +17,8 @@
         {
           "parameter": "a",
           "value": {
-            "integer": "9"
+            "type": "integer",
+            "value": "9"
           }
         }
       ]

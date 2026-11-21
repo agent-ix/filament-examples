@@ -17,7 +17,8 @@
         {
           "parameter": "a",
           "value": {
-            "boolean": true
+            "type": "boolean",
+            "value": true
           }
         }
       ]

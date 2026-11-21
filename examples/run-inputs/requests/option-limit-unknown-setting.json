@@ -17,13 +17,15 @@
         {
           "parameter": "a",
           "value": {
-            "integer": "2"
+            "type": "integer",
+            "value": "2"
           }
         },
         {
           "parameter": "b",
           "value": {
-            "integer": "3"
+            "type": "integer",
+            "value": "3"
           }
         }
       ]
