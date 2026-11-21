@@ -1,0 +1,9 @@
+language "ix:native" edition "1-draft";
+profile energy = "filament.temporal.infinite-trace/v1";
+
+// The only variable has rate 1 in its one mode: that is a clock, and a hybrid model must not declare one.
+hybrid Clockish using energy {
+  initial { mode Run when { t = 0 }; }
+  mode Run invariant { t >= 0 and t <= 5 } flow { t' = 1; }
+}
+temporal Bounded using energy over (r: Clockish) clock "model-time" on origin { always [0, 5] holds(r.t <= 5) }

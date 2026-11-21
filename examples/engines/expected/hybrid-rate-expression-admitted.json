@@ -1,0 +1,1809 @@
+{
+  "category": "success",
+  "last_stage": "S6c",
+  "result": null,
+  "first_diagnostic": null,
+  "items": [
+    {
+      "axes": {
+        "activation": "active",
+        "execution": "completed",
+        "settlement": "closed-scope",
+        "truth": "true"
+      },
+      "category": "success",
+      "certificate": {
+        "accepted": true,
+        "checker": "hybrid-interval-certificate",
+        "form": {
+          "steps": [
+            {
+              "apriori": {
+                "t": {
+                  "lower": {
+                    "denominator": "1",
+                    "numerator": "0"
+                  },
+                  "upper": {
+                    "denominator": "18446744073709551616",
+                    "numerator": "1297036692682702849"
+                  }
+                }
+              },
+              "box": {
+                "t": {
+                  "lower": {
+                    "denominator": "1",
+                    "numerator": "0"
+                  },
+                  "upper": {
+                    "denominator": "1",
+                    "numerator": "0"
+                  }
+                }
+              },
+              "mode": "Run",
+              "step": {
+                "denominator": "16",
+                "numerator": "1"
+              },
+              "time": {
+                "lower": {
+                  "denominator": "1",
+                  "numerator": "0"
+                },
+                "upper": {
+                  "denominator": "16",
+                  "numerator": "1"
+                }
+              }
+            },
+            {
+              "apriori": {
+                "t": {
+                  "lower": {
+                    "denominator": "18446744073709551616",
+                    "numerator": "1008806316530991101"
+                  },
+                  "upper": {
+                    "denominator": "9223372036854775808",
+                    "numerator": "1224979098644774913"
+                  }
+                }
+              },
+              "box": {
+                "t": {
+                  "lower": {
+                    "denominator": "16",
+                    "numerator": "1"
+                  },
+                  "upper": {
+                    "denominator": "16",
+                    "numerator": "1"
+                  }
+                }
+              },
+              "mode": "Run",
+              "step": {
+                "denominator": "16",
+                "numerator": "1"
+              },
+              "time": {
+                "lower": {
+                  "denominator": "16",
+                  "numerator": "1"
+                },
+                "upper": {
+                  "denominator": "8",
+                  "numerator": "1"
+                }
+              }
+            },
+            {
+              "apriori": {
+                "t": {
+                  "lower": {
+                    "denominator": "18446744073709551616",
+                    "numerator": "2161727821137838077"
+                  },
+                  "upper": {
+                    "denominator": "9223372036854775808",
+                    "numerator": "1801439850948198401"
+                  }
+                }
+              },
+              "box": {
+                "t": {
+                  "lower": {
+                    "denominator": "8",
+                    "numerator": "1"
+                  },
+                  "upper": {
+                    "denominator": "8",
+                    "numerator": "1"
+                  }
+                }
+              },
+              "mode": "Run",
+              "step": {
+                "denominator": "16",
+                "numerator": "1"
+              },
+              "time": {
+                "lower": {
+                  "denominator": "8",
+                  "numerator": "1"
+                },
+                "upper": {
+                  "denominator": "16",
+                  "numerator": "3"
+                }
+              }
+            },
+            {
+              "apriori": {
+                "t": {
+                  "lower": {
+                    "denominator": "18446744073709551616",
+                    "numerator": "3314649325744685053"
+                  },
+                  "upper": {
+                    "denominator": "9223372036854775808",
+                    "numerator": "2377900603251621889"
+                  }
+                }
+              },
+              "box": {
+                "t": {
+                  "lower": {
+                    "denominator": "16",
+                    "numerator": "3"
+                  },
+                  "upper": {
+                    "denominator": "16",
+                    "numerator": "3"
+                  }
+                }
+              },
+              "mode": "Run",
+              "step": {
+                "denominator": "16",
+                "numerator": "1"
+              },
+              "time": {
+                "lower": {
+                  "denominator": "16",
+                  "numerator": "3"
+                },
+                "upper": {
+                  "denominator": "4",
+                  "numerator": "1"
+                }
+              }
+            },
+            {
+              "apriori": {
+                "t": {
+                  "lower": {
+                    "denominator": "18446744073709551616",
+                    "numerator": "4467570830351532029"
+                  },
+                  "upper": {
+                    "denominator": "9223372036854775808",
+                    "numerator": "2954361355555045377"
+                  }
+                }
+              },
+              "box": {
+                "t": {
+                  "lower": {
+                    "denominator": "4",
+                    "numerator": "1"
+                  },
+                  "upper": {
+                    "denominator": "4",
+                    "numerator": "1"
+                  }
+                }
+              },
+              "mode": "Run",
+              "step": {
+                "denominator": "16",
+                "numerator": "1"
+              },
+              "time": {
+                "lower": {
+                  "denominator": "4",
+                  "numerator": "1"
+                },
+                "upper": {
+                  "denominator": "16",
+                  "numerator": "5"
+                }
+              }
+            },
+            {
+              "apriori": {
+                "t": {
+                  "lower": {
+                    "denominator": "18446744073709551616",
+                    "numerator": "5620492334958379005"
+                  },
+                  "upper": {
+                    "denominator": "9223372036854775808",
+                    "numerator": "3530822107858468865"
+                  }
+                }
+              },
+              "box": {
+                "t": {
+                  "lower": {
+                    "denominator": "16",
+                    "numerator": "5"
+                  },
+                  "upper": {
+                    "denominator": "16",
+                    "numerator": "5"
+                  }
+                }
+              },
+              "mode": "Run",
+              "step": {
+                "denominator": "16",
+                "numerator": "1"
+              },
+              "time": {
+                "lower": {
+                  "denominator": "16",
+                  "numerator": "5"
+                },
+                "upper": {
+                  "denominator": "8",
+                  "numerator": "3"
+                }
+              }
+            },
+            {
+              "apriori": {
+                "t": {
+                  "lower": {
+                    "denominator": "18446744073709551616",
+                    "numerator": "6773413839565225981"
+                  },
+                  "upper": {
+                    "denominator": "9223372036854775808",
+                    "numerator": "4107282860161892353"
+                  }
+                }
+              },
+              "box": {
+                "t": {
+                  "lower": {
+                    "denominator": "8",
+                    "numerator": "3"
+                  },
+                  "upper": {
+                    "denominator": "8",
+                    "numerator": "3"
+                  }
+                }
+              },
+              "mode": "Run",
+              "step": {
+                "denominator": "16",
+                "numerator": "1"
+              },
+              "time": {
+                "lower": {
+                  "denominator": "8",
+                  "numerator": "3"
+                },
+                "upper": {
+                  "denominator": "16",
+                  "numerator": "7"
+                }
+              }
+            },
+            {
+              "apriori": {
+                "t": {
+                  "lower": {
+                    "denominator": "18446744073709551616",
+                    "numerator": "7926335344172072957"
+                  },
+                  "upper": {
+                    "denominator": "9223372036854775808",
+                    "numerator": "4683743612465315841"
+                  }
+                }
+              },
+              "box": {
+                "t": {
+                  "lower": {
+                    "denominator": "16",
+                    "numerator": "7"
+                  },
+                  "upper": {
+                    "denominator": "16",
+                    "numerator": "7"
+                  }
+                }
+              },
+              "mode": "Run",
+              "step": {
+                "denominator": "16",
+                "numerator": "1"
+              },
+              "time": {
+                "lower": {
+                  "denominator": "16",
+                  "numerator": "7"
+                },
+                "upper": {
+                  "denominator": "2",
+                  "numerator": "1"
+                }
+              }
+            },
+            {
+              "apriori": {
+                "t": {
+                  "lower": {
+                    "denominator": "18446744073709551616",
+                    "numerator": "9079256848778919933"
+                  },
+                  "upper": {
+                    "denominator": "9223372036854775808",
+                    "numerator": "5260204364768739329"
+                  }
+                }
+              },
+              "box": {
+                "t": {
+                  "lower": {
+                    "denominator": "2",
+                    "numerator": "1"
+                  },
+                  "upper": {
+                    "denominator": "2",
+                    "numerator": "1"
+                  }
+                }
+              },
+              "mode": "Run",
+              "step": {
+                "denominator": "16",
+                "numerator": "1"
+              },
+              "time": {
+                "lower": {
+                  "denominator": "2",
+                  "numerator": "1"
+                },
+                "upper": {
+                  "denominator": "16",
+                  "numerator": "9"
+                }
+              }
+            },
+            {
+              "apriori": {
+                "t": {
+                  "lower": {
+                    "denominator": "18446744073709551616",
+                    "numerator": "10232178353385766909"
+                  },
+                  "upper": {
+                    "denominator": "9223372036854775808",
+                    "numerator": "5836665117072162817"
+                  }
+                }
+              },
+              "box": {
+                "t": {
+                  "lower": {
+                    "denominator": "16",
+                    "numerator": "9"
+                  },
+                  "upper": {
+                    "denominator": "16",
+                    "numerator": "9"
+                  }
+                }
+              },
+              "mode": "Run",
+              "step": {
+                "denominator": "16",
+                "numerator": "1"
+              },
+              "time": {
+                "lower": {
+                  "denominator": "16",
+                  "numerator": "9"
+                },
+                "upper": {
+                  "denominator": "8",
+                  "numerator": "5"
+                }
+              }
+            },
+            {
+              "apriori": {
+                "t": {
+                  "lower": {
+                    "denominator": "18446744073709551616",
+                    "numerator": "11385099857992613885"
+                  },
+                  "upper": {
+                    "denominator": "9223372036854775808",
+                    "numerator": "6413125869375586305"
+                  }
+                }
+              },
+              "box": {
+                "t": {
+                  "lower": {
+                    "denominator": "8",
+                    "numerator": "5"
+                  },
+                  "upper": {
+                    "denominator": "8",
+                    "numerator": "5"
+                  }
+                }
+              },
+              "mode": "Run",
+              "step": {
+                "denominator": "16",
+                "numerator": "1"
+              },
+              "time": {
+                "lower": {
+                  "denominator": "8",
+                  "numerator": "5"
+                },
+                "upper": {
+                  "denominator": "16",
+                  "numerator": "11"
+                }
+              }
+            },
+            {
+              "apriori": {
+                "t": {
+                  "lower": {
+                    "denominator": "18446744073709551616",
+                    "numerator": "12538021362599460861"
+                  },
+                  "upper": {
+                    "denominator": "9223372036854775808",
+                    "numerator": "6989586621679009793"
+                  }
+                }
+              },
+              "box": {
+                "t": {
+                  "lower": {
+                    "denominator": "16",
+                    "numerator": "11"
+                  },
+                  "upper": {
+                    "denominator": "16",
+                    "numerator": "11"
+                  }
+                }
+              },
+              "mode": "Run",
+              "step": {
+                "denominator": "16",
+                "numerator": "1"
+              },
+              "time": {
+                "lower": {
+                  "denominator": "16",
+                  "numerator": "11"
+                },
+                "upper": {
+                  "denominator": "4",
+                  "numerator": "3"
+                }
+              }
+            },
+            {
+              "apriori": {
+                "t": {
+                  "lower": {
+                    "denominator": "18446744073709551616",
+                    "numerator": "13690942867206307837"
+                  },
+                  "upper": {
+                    "denominator": "9223372036854775808",
+                    "numerator": "7566047373982433281"
+                  }
+                }
+              },
+              "box": {
+                "t": {
+                  "lower": {
+                    "denominator": "4",
+                    "numerator": "3"
+                  },
+                  "upper": {
+                    "denominator": "4",
+                    "numerator": "3"
+                  }
+                }
+              },
+              "mode": "Run",
+              "step": {
+                "denominator": "16",
+                "numerator": "1"
+              },
+              "time": {
+                "lower": {
+                  "denominator": "4",
+                  "numerator": "3"
+                },
+                "upper": {
+                  "denominator": "16",
+                  "numerator": "13"
+                }
+              }
+            },
+            {
+              "apriori": {
+                "t": {
+                  "lower": {
+                    "denominator": "18446744073709551616",
+                    "numerator": "14843864371813154813"
+                  },
+                  "upper": {
+                    "denominator": "9223372036854775808",
+                    "numerator": "8142508126285856769"
+                  }
+                }
+              },
+              "box": {
+                "t": {
+                  "lower": {
+                    "denominator": "16",
+                    "numerator": "13"
+                  },
+                  "upper": {
+                    "denominator": "16",
+                    "numerator": "13"
+                  }
+                }
+              },
+              "mode": "Run",
+              "step": {
+                "denominator": "16",
+                "numerator": "1"
+              },
+              "time": {
+                "lower": {
+                  "denominator": "16",
+                  "numerator": "13"
+                },
+                "upper": {
+                  "denominator": "8",
+                  "numerator": "7"
+                }
+              }
+            },
+            {
+              "apriori": {
+                "t": {
+                  "lower": {
+                    "denominator": "18446744073709551616",
+                    "numerator": "15996785876420001789"
+                  },
+                  "upper": {
+                    "denominator": "9223372036854775808",
+                    "numerator": "8718968878589280257"
+                  }
+                }
+              },
+              "box": {
+                "t": {
+                  "lower": {
+                    "denominator": "8",
+                    "numerator": "7"
+                  },
+                  "upper": {
+                    "denominator": "8",
+                    "numerator": "7"
+                  }
+                }
+              },
+              "mode": "Run",
+              "step": {
+                "denominator": "16",
+                "numerator": "1"
+              },
+              "time": {
+                "lower": {
+                  "denominator": "8",
+                  "numerator": "7"
+                },
+                "upper": {
+                  "denominator": "16",
+                  "numerator": "15"
+                }
+              }
+            },
+            {
+              "apriori": {
+                "t": {
+                  "lower": {
+                    "denominator": "18446744073709551616",
+                    "numerator": "17149707381026848765"
+                  },
+                  "upper": {
+                    "denominator": "9223372036854775808",
+                    "numerator": "9295429630892703745"
+                  }
+                }
+              },
+              "box": {
+                "t": {
+                  "lower": {
+                    "denominator": "16",
+                    "numerator": "15"
+                  },
+                  "upper": {
+                    "denominator": "16",
+                    "numerator": "15"
+                  }
+                }
+              },
+              "mode": "Run",
+              "step": {
+                "denominator": "16",
+                "numerator": "1"
+              },
+              "time": {
+                "lower": {
+                  "denominator": "16",
+                  "numerator": "15"
+                },
+                "upper": {
+                  "denominator": "1",
+                  "numerator": "1"
+                }
+              }
+            },
+            {
+              "apriori": {
+                "t": {
+                  "lower": {
+                    "denominator": "18446744073709551616",
+                    "numerator": "18302628885633695741"
+                  },
+                  "upper": {
+                    "denominator": "9223372036854775808",
+                    "numerator": "9871890383196127233"
+                  }
+                }
+              },
+              "box": {
+                "t": {
+                  "lower": {
+                    "denominator": "1",
+                    "numerator": "1"
+                  },
+                  "upper": {
+                    "denominator": "1",
+                    "numerator": "1"
+                  }
+                }
+              },
+              "mode": "Run",
+              "step": {
+                "denominator": "16",
+                "numerator": "1"
+              },
+              "time": {
+                "lower": {
+                  "denominator": "1",
+                  "numerator": "1"
+                },
+                "upper": {
+                  "denominator": "16",
+                  "numerator": "17"
+                }
+              }
+            },
+            {
+              "apriori": {
+                "t": {
+                  "lower": {
+                    "denominator": "18446744073709551616",
+                    "numerator": "19455550390240542717"
+                  },
+                  "upper": {
+                    "denominator": "9223372036854775808",
+                    "numerator": "10448351135499550721"
+                  }
+                }
+              },
+              "box": {
+                "t": {
+                  "lower": {
+                    "denominator": "16",
+                    "numerator": "17"
+                  },
+                  "upper": {
+                    "denominator": "16",
+                    "numerator": "17"
+                  }
+                }
+              },
+              "mode": "Run",
+              "step": {
+                "denominator": "16",
+                "numerator": "1"
+              },
+              "time": {
+                "lower": {
+                  "denominator": "16",
+                  "numerator": "17"
+                },
+                "upper": {
+                  "denominator": "8",
+                  "numerator": "9"
+                }
+              }
+            },
+            {
+              "apriori": {
+                "t": {
+                  "lower": {
+                    "denominator": "18446744073709551616",
+                    "numerator": "20608471894847389693"
+                  },
+                  "upper": {
+                    "denominator": "9223372036854775808",
+                    "numerator": "11024811887802974209"
+                  }
+                }
+              },
+              "box": {
+                "t": {
+                  "lower": {
+                    "denominator": "8",
+                    "numerator": "9"
+                  },
+                  "upper": {
+                    "denominator": "8",
+                    "numerator": "9"
+                  }
+                }
+              },
+              "mode": "Run",
+              "step": {
+                "denominator": "16",
+                "numerator": "1"
+              },
+              "time": {
+                "lower": {
+                  "denominator": "8",
+                  "numerator": "9"
+                },
+                "upper": {
+                  "denominator": "16",
+                  "numerator": "19"
+                }
+              }
+            },
+            {
+              "apriori": {
+                "t": {
+                  "lower": {
+                    "denominator": "18446744073709551616",
+                    "numerator": "21761393399454236669"
+                  },
+                  "upper": {
+                    "denominator": "9223372036854775808",
+                    "numerator": "11601272640106397697"
+                  }
+                }
+              },
+              "box": {
+                "t": {
+                  "lower": {
+                    "denominator": "16",
+                    "numerator": "19"
+                  },
+                  "upper": {
+                    "denominator": "16",
+                    "numerator": "19"
+                  }
+                }
+              },
+              "mode": "Run",
+              "step": {
+                "denominator": "16",
+                "numerator": "1"
+              },
+              "time": {
+                "lower": {
+                  "denominator": "16",
+                  "numerator": "19"
+                },
+                "upper": {
+                  "denominator": "4",
+                  "numerator": "5"
+                }
+              }
+            },
+            {
+              "apriori": {
+                "t": {
+                  "lower": {
+                    "denominator": "18446744073709551616",
+                    "numerator": "22914314904061083645"
+                  },
+                  "upper": {
+                    "denominator": "9223372036854775808",
+                    "numerator": "12177733392409821185"
+                  }
+                }
+              },
+              "box": {
+                "t": {
+                  "lower": {
+                    "denominator": "4",
+                    "numerator": "5"
+                  },
+                  "upper": {
+                    "denominator": "4",
+                    "numerator": "5"
+                  }
+                }
+              },
+              "mode": "Run",
+              "step": {
+                "denominator": "16",
+                "numerator": "1"
+              },
+              "time": {
+                "lower": {
+                  "denominator": "4",
+                  "numerator": "5"
+                },
+                "upper": {
+                  "denominator": "16",
+                  "numerator": "21"
+                }
+              }
+            },
+            {
+              "apriori": {
+                "t": {
+                  "lower": {
+                    "denominator": "18446744073709551616",
+                    "numerator": "24067236408667930621"
+                  },
+                  "upper": {
+                    "denominator": "9223372036854775808",
+                    "numerator": "12754194144713244673"
+                  }
+                }
+              },
+              "box": {
+                "t": {
+                  "lower": {
+                    "denominator": "16",
+                    "numerator": "21"
+                  },
+                  "upper": {
+                    "denominator": "16",
+                    "numerator": "21"
+                  }
+                }
+              },
+              "mode": "Run",
+              "step": {
+                "denominator": "16",
+                "numerator": "1"
+              },
+              "time": {
+                "lower": {
+                  "denominator": "16",
+                  "numerator": "21"
+                },
+                "upper": {
+                  "denominator": "8",
+                  "numerator": "11"
+                }
+              }
+            },
+            {
+              "apriori": {
+                "t": {
+                  "lower": {
+                    "denominator": "18446744073709551616",
+                    "numerator": "25220157913274777597"
+                  },
+                  "upper": {
+                    "denominator": "9223372036854775808",
+                    "numerator": "13330654897016668161"
+                  }
+                }
+              },
+              "box": {
+                "t": {
+                  "lower": {
+                    "denominator": "8",
+                    "numerator": "11"
+                  },
+                  "upper": {
+                    "denominator": "8",
+                    "numerator": "11"
+                  }
+                }
+              },
+              "mode": "Run",
+              "step": {
+                "denominator": "16",
+                "numerator": "1"
+              },
+              "time": {
+                "lower": {
+                  "denominator": "8",
+                  "numerator": "11"
+                },
+                "upper": {
+                  "denominator": "16",
+                  "numerator": "23"
+                }
+              }
+            },
+            {
+              "apriori": {
+                "t": {
+                  "lower": {
+                    "denominator": "18446744073709551616",
+                    "numerator": "26373079417881624573"
+                  },
+                  "upper": {
+                    "denominator": "9223372036854775808",
+                    "numerator": "13907115649320091649"
+                  }
+                }
+              },
+              "box": {
+                "t": {
+                  "lower": {
+                    "denominator": "16",
+                    "numerator": "23"
+                  },
+                  "upper": {
+                    "denominator": "16",
+                    "numerator": "23"
+                  }
+                }
+              },
+              "mode": "Run",
+              "step": {
+                "denominator": "16",
+                "numerator": "1"
+              },
+              "time": {
+                "lower": {
+                  "denominator": "16",
+                  "numerator": "23"
+                },
+                "upper": {
+                  "denominator": "2",
+                  "numerator": "3"
+                }
+              }
+            },
+            {
+              "apriori": {
+                "t": {
+                  "lower": {
+                    "denominator": "18446744073709551616",
+                    "numerator": "27526000922488471549"
+                  },
+                  "upper": {
+                    "denominator": "9223372036854775808",
+                    "numerator": "14483576401623515137"
+                  }
+                }
+              },
+              "box": {
+                "t": {
+                  "lower": {
+                    "denominator": "2",
+                    "numerator": "3"
+                  },
+                  "upper": {
+                    "denominator": "2",
+                    "numerator": "3"
+                  }
+                }
+              },
+              "mode": "Run",
+              "step": {
+                "denominator": "16",
+                "numerator": "1"
+              },
+              "time": {
+                "lower": {
+                  "denominator": "2",
+                  "numerator": "3"
+                },
+                "upper": {
+                  "denominator": "16",
+                  "numerator": "25"
+                }
+              }
+            },
+            {
+              "apriori": {
+                "t": {
+                  "lower": {
+                    "denominator": "18446744073709551616",
+                    "numerator": "28678922427095318525"
+                  },
+                  "upper": {
+                    "denominator": "9223372036854775808",
+                    "numerator": "15060037153926938625"
+                  }
+                }
+              },
+              "box": {
+                "t": {
+                  "lower": {
+                    "denominator": "16",
+                    "numerator": "25"
+                  },
+                  "upper": {
+                    "denominator": "16",
+                    "numerator": "25"
+                  }
+                }
+              },
+              "mode": "Run",
+              "step": {
+                "denominator": "16",
+                "numerator": "1"
+              },
+              "time": {
+                "lower": {
+                  "denominator": "16",
+                  "numerator": "25"
+                },
+                "upper": {
+                  "denominator": "8",
+                  "numerator": "13"
+                }
+              }
+            },
+            {
+              "apriori": {
+                "t": {
+                  "lower": {
+                    "denominator": "18446744073709551616",
+                    "numerator": "29831843931702165501"
+                  },
+                  "upper": {
+                    "denominator": "9223372036854775808",
+                    "numerator": "15636497906230362113"
+                  }
+                }
+              },
+              "box": {
+                "t": {
+                  "lower": {
+                    "denominator": "8",
+                    "numerator": "13"
+                  },
+                  "upper": {
+                    "denominator": "8",
+                    "numerator": "13"
+                  }
+                }
+              },
+              "mode": "Run",
+              "step": {
+                "denominator": "16",
+                "numerator": "1"
+              },
+              "time": {
+                "lower": {
+                  "denominator": "8",
+                  "numerator": "13"
+                },
+                "upper": {
+                  "denominator": "16",
+                  "numerator": "27"
+                }
+              }
+            },
+            {
+              "apriori": {
+                "t": {
+                  "lower": {
+                    "denominator": "18446744073709551616",
+                    "numerator": "30984765436309012477"
+                  },
+                  "upper": {
+                    "denominator": "9223372036854775808",
+                    "numerator": "16212958658533785601"
+                  }
+                }
+              },
+              "box": {
+                "t": {
+                  "lower": {
+                    "denominator": "16",
+                    "numerator": "27"
+                  },
+                  "upper": {
+                    "denominator": "16",
+                    "numerator": "27"
+                  }
+                }
+              },
+              "mode": "Run",
+              "step": {
+                "denominator": "16",
+                "numerator": "1"
+              },
+              "time": {
+                "lower": {
+                  "denominator": "16",
+                  "numerator": "27"
+                },
+                "upper": {
+                  "denominator": "4",
+                  "numerator": "7"
+                }
+              }
+            },
+            {
+              "apriori": {
+                "t": {
+                  "lower": {
+                    "denominator": "18446744073709551616",
+                    "numerator": "32137686940915859453"
+                  },
+                  "upper": {
+                    "denominator": "9223372036854775808",
+                    "numerator": "16789419410837209089"
+                  }
+                }
+              },
+              "box": {
+                "t": {
+                  "lower": {
+                    "denominator": "4",
+                    "numerator": "7"
+                  },
+                  "upper": {
+                    "denominator": "4",
+                    "numerator": "7"
+                  }
+                }
+              },
+              "mode": "Run",
+              "step": {
+                "denominator": "16",
+                "numerator": "1"
+              },
+              "time": {
+                "lower": {
+                  "denominator": "4",
+                  "numerator": "7"
+                },
+                "upper": {
+                  "denominator": "16",
+                  "numerator": "29"
+                }
+              }
+            },
+            {
+              "apriori": {
+                "t": {
+                  "lower": {
+                    "denominator": "18446744073709551616",
+                    "numerator": "33290608445522706429"
+                  },
+                  "upper": {
+                    "denominator": "9223372036854775808",
+                    "numerator": "17365880163140632577"
+                  }
+                }
+              },
+              "box": {
+                "t": {
+                  "lower": {
+                    "denominator": "16",
+                    "numerator": "29"
+                  },
+                  "upper": {
+                    "denominator": "16",
+                    "numerator": "29"
+                  }
+                }
+              },
+              "mode": "Run",
+              "step": {
+                "denominator": "16",
+                "numerator": "1"
+              },
+              "time": {
+                "lower": {
+                  "denominator": "16",
+                  "numerator": "29"
+                },
+                "upper": {
+                  "denominator": "8",
+                  "numerator": "15"
+                }
+              }
+            },
+            {
+              "apriori": {
+                "t": {
+                  "lower": {
+                    "denominator": "18446744073709551616",
+                    "numerator": "34443529950129553405"
+                  },
+                  "upper": {
+                    "denominator": "9223372036854775808",
+                    "numerator": "17942340915444056065"
+                  }
+                }
+              },
+              "box": {
+                "t": {
+                  "lower": {
+                    "denominator": "8",
+                    "numerator": "15"
+                  },
+                  "upper": {
+                    "denominator": "8",
+                    "numerator": "15"
+                  }
+                }
+              },
+              "mode": "Run",
+              "step": {
+                "denominator": "16",
+                "numerator": "1"
+              },
+              "time": {
+                "lower": {
+                  "denominator": "8",
+                  "numerator": "15"
+                },
+                "upper": {
+                  "denominator": "16",
+                  "numerator": "31"
+                }
+              }
+            },
+            {
+              "apriori": {
+                "t": {
+                  "lower": {
+                    "denominator": "18446744073709551616",
+                    "numerator": "35596451454736400381"
+                  },
+                  "upper": {
+                    "denominator": "9223372036854775808",
+                    "numerator": "18518801667747479553"
+                  }
+                }
+              },
+              "box": {
+                "t": {
+                  "lower": {
+                    "denominator": "16",
+                    "numerator": "31"
+                  },
+                  "upper": {
+                    "denominator": "16",
+                    "numerator": "31"
+                  }
+                }
+              },
+              "mode": "Run",
+              "step": {
+                "denominator": "16",
+                "numerator": "1"
+              },
+              "time": {
+                "lower": {
+                  "denominator": "16",
+                  "numerator": "31"
+                },
+                "upper": {
+                  "denominator": "1",
+                  "numerator": "2"
+                }
+              }
+            }
+          ],
+          "type": "flowpipe"
+        },
+        "identity": {
+          "model": "example:engines/hybrid-rate-expression",
+          "node_id": {
+            "ordinal": 0,
+            "package": "example:engines/hybrid-rate-expression",
+            "path": [
+              "temporal",
+              "temporal_clause",
+              {
+                "ordinal": 0,
+                "package": "example:engines/hybrid-rate-expression",
+                "path": [
+                  "value",
+                  "parameter",
+                  "name",
+                  {
+                    "ordinal": 0,
+                    "package": "example:engines/hybrid-rate-expression",
+                    "path": [
+                      "scalar_type",
+                      "text"
+                    ]
+                  },
+                  "r",
+                  "level",
+                  {
+                    "ordinal": 0,
+                    "package": "example:engines/hybrid-rate-expression",
+                    "path": [
+                      "scalar_type",
+                      "integer"
+                    ]
+                  },
+                  "0",
+                  {
+                    "ordinal": 0,
+                    "package": "example:engines/hybrid-rate-expression",
+                    "path": [
+                      "Ramp"
+                    ]
+                  }
+                ]
+              },
+              {
+                "ordinal": 0,
+                "package": "example:engines/hybrid-rate-expression",
+                "path": [
+                  "scalar_type",
+                  "text"
+                ]
+              },
+              "model-time",
+              "kind",
+              {
+                "ordinal": 0,
+                "package": "example:engines/hybrid-rate-expression",
+                "path": [
+                  "scalar_type",
+                  "text"
+                ]
+              },
+              "origin",
+              {
+                "ordinal": 0,
+                "package": "example:engines/hybrid-rate-expression",
+                "path": [
+                  "temporal",
+                  "formula",
+                  {
+                    "ordinal": 0,
+                    "package": "example:engines/hybrid-rate-expression",
+                    "path": [
+                      "temporal",
+                      "formula",
+                      {
+                        "ordinal": 0,
+                        "package": "example:engines/hybrid-rate-expression",
+                        "path": [
+                          "expression",
+                          "binary",
+                          {
+                            "ordinal": 0,
+                            "package": "example:engines/hybrid-rate-expression",
+                            "path": [
+                              "value",
+                              "parameter",
+                              "name",
+                              {
+                                "ordinal": 0,
+                                "package": "example:engines/hybrid-rate-expression",
+                                "path": [
+                                  "scalar_type",
+                                  "text"
+                                ]
+                              },
+                              "t",
+                              "level",
+                              {
+                                "ordinal": 0,
+                                "package": "example:engines/hybrid-rate-expression",
+                                "path": [
+                                  "scalar_type",
+                                  "integer"
+                                ]
+                              },
+                              "0",
+                              {
+                                "ordinal": 0,
+                                "package": "example:engines/hybrid-rate-expression",
+                                "path": [
+                                  "scalar_type",
+                                  "rational"
+                                ]
+                              }
+                            ]
+                          },
+                          {
+                            "ordinal": 0,
+                            "package": "example:engines/hybrid-rate-expression",
+                            "path": [
+                              "value",
+                              "literal",
+                              {
+                                "ordinal": 0,
+                                "package": "example:engines/hybrid-rate-expression",
+                                "path": [
+                                  "scalar_type",
+                                  "rational"
+                                ]
+                              },
+                              "10"
+                            ]
+                          },
+                          "filament.op.rational.le",
+                          "binary",
+                          {
+                            "ordinal": 0,
+                            "package": "example:engines/hybrid-rate-expression",
+                            "path": [
+                              "scalar_type",
+                              "boolean"
+                            ]
+                          },
+                          {
+                            "ordinal": 0,
+                            "package": "example:engines/hybrid-rate-expression",
+                            "path": [
+                              "scalar_type",
+                              "boolean"
+                            ]
+                          }
+                        ]
+                      },
+                      "filament.op.temporal.holds",
+                      "temporal_formula",
+                      {
+                        "ordinal": 0,
+                        "package": "example:engines/hybrid-rate-expression",
+                        "path": [
+                          "scalar_type",
+                          "boolean"
+                        ]
+                      },
+                      {
+                        "ordinal": 0,
+                        "package": "example:engines/hybrid-rate-expression",
+                        "path": [
+                          "scalar_type",
+                          "boolean"
+                        ]
+                      }
+                    ]
+                  },
+                  "filament.op.temporal.always",
+                  "steps:0..2",
+                  "temporal_formula",
+                  {
+                    "ordinal": 0,
+                    "package": "example:engines/hybrid-rate-expression",
+                    "path": [
+                      "scalar_type",
+                      "boolean"
+                    ]
+                  },
+                  {
+                    "ordinal": 0,
+                    "package": "example:engines/hybrid-rate-expression",
+                    "path": [
+                      "scalar_type",
+                      "boolean"
+                    ]
+                  }
+                ]
+              },
+              "filament.op.temporal.clause",
+              "filament.temporal.infinite-trace/v1",
+              "temporal",
+              {
+                "ordinal": 0,
+                "package": "example:engines/hybrid-rate-expression",
+                "path": [
+                  "scalar_type",
+                  "boolean"
+                ]
+              },
+              {
+                "ordinal": 0,
+                "package": "example:engines/hybrid-rate-expression",
+                "path": [
+                  "scalar_type",
+                  "boolean"
+                ]
+              }
+            ]
+          },
+          "ordinal": 0
+        }
+      },
+      "claim_name": "Bounded",
+      "record": {
+        "backend": "fsl-hybrid-reference",
+        "basis": {
+          "exhaustive": [
+            "time"
+          ],
+          "horizon": {
+            "denominator": "1",
+            "numerator": "2"
+          },
+          "jumps": 0,
+          "method": "flowpipe-outward-rounded",
+          "type": "bounded-solver"
+        },
+        "cause": null,
+        "certification": "certified",
+        "result": "proved",
+        "settled_by": "result"
+      },
+      "request": {
+        "candidates": {
+          "backends": [
+            "fsl-hybrid-reference"
+          ],
+          "type": "set"
+        },
+        "claim": {
+          "node": {
+            "ordinal": 0,
+            "package": "example:engines/hybrid-rate-expression",
+            "path": [
+              "temporal",
+              "temporal_clause",
+              {
+                "ordinal": 0,
+                "package": "example:engines/hybrid-rate-expression",
+                "path": [
+                  "value",
+                  "parameter",
+                  "name",
+                  {
+                    "ordinal": 0,
+                    "package": "example:engines/hybrid-rate-expression",
+                    "path": [
+                      "scalar_type",
+                      "text"
+                    ]
+                  },
+                  "r",
+                  "level",
+                  {
+                    "ordinal": 0,
+                    "package": "example:engines/hybrid-rate-expression",
+                    "path": [
+                      "scalar_type",
+                      "integer"
+                    ]
+                  },
+                  "0",
+                  {
+                    "ordinal": 0,
+                    "package": "example:engines/hybrid-rate-expression",
+                    "path": [
+                      "Ramp"
+                    ]
+                  }
+                ]
+              },
+              {
+                "ordinal": 0,
+                "package": "example:engines/hybrid-rate-expression",
+                "path": [
+                  "scalar_type",
+                  "text"
+                ]
+              },
+              "model-time",
+              "kind",
+              {
+                "ordinal": 0,
+                "package": "example:engines/hybrid-rate-expression",
+                "path": [
+                  "scalar_type",
+                  "text"
+                ]
+              },
+              "origin",
+              {
+                "ordinal": 0,
+                "package": "example:engines/hybrid-rate-expression",
+                "path": [
+                  "temporal",
+                  "formula",
+                  {
+                    "ordinal": 0,
+                    "package": "example:engines/hybrid-rate-expression",
+                    "path": [
+                      "temporal",
+                      "formula",
+                      {
+                        "ordinal": 0,
+                        "package": "example:engines/hybrid-rate-expression",
+                        "path": [
+                          "expression",
+                          "binary",
+                          {
+                            "ordinal": 0,
+                            "package": "example:engines/hybrid-rate-expression",
+                            "path": [
+                              "value",
+                              "parameter",
+                              "name",
+                              {
+                                "ordinal": 0,
+                                "package": "example:engines/hybrid-rate-expression",
+                                "path": [
+                                  "scalar_type",
+                                  "text"
+                                ]
+                              },
+                              "t",
+                              "level",
+                              {
+                                "ordinal": 0,
+                                "package": "example:engines/hybrid-rate-expression",
+                                "path": [
+                                  "scalar_type",
+                                  "integer"
+                                ]
+                              },
+                              "0",
+                              {
+                                "ordinal": 0,
+                                "package": "example:engines/hybrid-rate-expression",
+                                "path": [
+                                  "scalar_type",
+                                  "rational"
+                                ]
+                              }
+                            ]
+                          },
+                          {
+                            "ordinal": 0,
+                            "package": "example:engines/hybrid-rate-expression",
+                            "path": [
+                              "value",
+                              "literal",
+                              {
+                                "ordinal": 0,
+                                "package": "example:engines/hybrid-rate-expression",
+                                "path": [
+                                  "scalar_type",
+                                  "rational"
+                                ]
+                              },
+                              "10"
+                            ]
+                          },
+                          "filament.op.rational.le",
+                          "binary",
+                          {
+                            "ordinal": 0,
+                            "package": "example:engines/hybrid-rate-expression",
+                            "path": [
+                              "scalar_type",
+                              "boolean"
+                            ]
+                          },
+                          {
+                            "ordinal": 0,
+                            "package": "example:engines/hybrid-rate-expression",
+                            "path": [
+                              "scalar_type",
+                              "boolean"
+                            ]
+                          }
+                        ]
+                      },
+                      "filament.op.temporal.holds",
+                      "temporal_formula",
+                      {
+                        "ordinal": 0,
+                        "package": "example:engines/hybrid-rate-expression",
+                        "path": [
+                          "scalar_type",
+                          "boolean"
+                        ]
+                      },
+                      {
+                        "ordinal": 0,
+                        "package": "example:engines/hybrid-rate-expression",
+                        "path": [
+                          "scalar_type",
+                          "boolean"
+                        ]
+                      }
+                    ]
+                  },
+                  "filament.op.temporal.always",
+                  "steps:0..2",
+                  "temporal_formula",
+                  {
+                    "ordinal": 0,
+                    "package": "example:engines/hybrid-rate-expression",
+                    "path": [
+                      "scalar_type",
+                      "boolean"
+                    ]
+                  },
+                  {
+                    "ordinal": 0,
+                    "package": "example:engines/hybrid-rate-expression",
+                    "path": [
+                      "scalar_type",
+                      "boolean"
+                    ]
+                  }
+                ]
+              },
+              "filament.op.temporal.clause",
+              "filament.temporal.infinite-trace/v1",
+              "temporal",
+              {
+                "ordinal": 0,
+                "package": "example:engines/hybrid-rate-expression",
+                "path": [
+                  "scalar_type",
+                  "boolean"
+                ]
+              },
+              {
+                "ordinal": 0,
+                "package": "example:engines/hybrid-rate-expression",
+                "path": [
+                  "scalar_type",
+                  "boolean"
+                ]
+              }
+            ]
+          },
+          "occurrence": {
+            "ordinal": 0,
+            "role": "claim"
+          }
+        },
+        "extent": {
+          "bounds": [],
+          "classification": "bounded"
+        },
+        "kind": "temporal-satisfaction",
+        "request_index": 0
+      },
+      "request_index": 0
+    }
+  ]
+}

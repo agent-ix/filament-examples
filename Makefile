@@ -38,6 +38,9 @@ models:
 	$(NODE) tools/model.mjs tools/models/rover-deadline.mjs examples/rover/model/rover-deadline.semantic-ir.json
 	$(NODE) tools/model.mjs tools/models/lock.mjs examples/lock/model/lock.semantic-ir.json
 	$(NODE) tools/model.mjs tools/models/two-locks.mjs examples/lock/model/two-locks.semantic-ir.json
+	$(NODE) tools/model.mjs tools/models/tank.mjs examples/engines/model/tank.semantic-ir.json
+	$(NODE) tools/model.mjs tools/models/coin.mjs examples/engines/model/coin.semantic-ir.json
+	$(NODE) tools/model.mjs tools/models/rover-deadline.mjs examples/engines/model/rover-deadline.semantic-ir.json
 	$(NODE) tools/model.mjs tools/models/library.mjs examples/library/model/library.semantic-ir.json
 	$(NODE) tools/model.mjs tools/models/payment-spec.mjs examples/shop/model/payment-spec.semantic-ir.json
 	$(NODE) tools/model.mjs tools/models/payment-client.mjs examples/shop/model/payment-client.semantic-ir.json

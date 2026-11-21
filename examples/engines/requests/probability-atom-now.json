@@ -1,0 +1,39 @@
+{
+  "format": "native-analyze/1",
+  "request": {
+    "models": [
+      {
+        "format": "semantic-ir/2.0.0",
+        "source": {
+          "file": "../model/coin.semantic-ir.json",
+          "authority": "example",
+          "identity": "example:engines/coin",
+          "document": "model",
+          "formal_revision": 1
+        }
+      }
+    ],
+    "program": {
+      "source": {
+        "file": "../rules/coin.fsl",
+        "authority": "example",
+        "identity": "example:engines/coin",
+        "document": "coin",
+        "formal_revision": 1
+      }
+    },
+    "documents": [
+      {
+        "file": "../data/coin-tails.json"
+      }
+    ],
+    "items": [
+      {
+        "claim": "HeadsNow",
+        "probabilistic": {
+          "evidence": "exact"
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,518 @@
+name = "engines"
+summary = "Analysis engines and CLI verbs: hybrid, timed, probability, schedulability, deadlock, simulation and the verbs a build does not route."
+
+[[case]]
+id = "verb-prove-not-routed"
+statement = "The prove verb is accepted but this build does not route it: the outcome names the verb under unsupported_operation and exits 21."
+file = "rules/hybrid.fsl"
+command = "prove requests/hybrid-at-most-eight.json"
+status = "running"
+expect_exit = 21
+expect_verdict = "unsupported: operation-not-routed"
+serves = "FR-522-AC-1, FR-301-AC-4 (unrouted verbs)"
+
+[[case]]
+id = "verb-generate-not-routed"
+statement = "The generate verb is accepted but this build does not route it: the outcome names the verb under unsupported_operation and exits 21."
+file = "rules/hybrid.fsl"
+command = "generate requests/hybrid-at-most-eight.json"
+status = "running"
+expect_exit = 21
+expect_verdict = "unsupported: operation-not-routed"
+serves = "FR-522-AC-1, FR-301-AC-4 (unrouted verbs)"
+
+[[case]]
+id = "verb-render-not-routed"
+statement = "The render verb is accepted but this build does not route it: the outcome names the verb under unsupported_operation and exits 21."
+file = "rules/hybrid.fsl"
+command = "render requests/hybrid-at-most-eight.json"
+status = "running"
+expect_exit = 21
+expect_verdict = "unsupported: operation-not-routed"
+serves = "FR-522-AC-1, FR-301-AC-4 (unrouted verbs)"
+
+[[case]]
+id = "verb-unknown-option"
+statement = "An option the compile verb does not have is refused before any stage runs, and exits 20."
+file = "rules/hybrid-rate-expression.fsl"
+command = "compile --bogus requests/hybrid-rate-expression.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: invalid-request"
+serves = "FR-301-AC-3 (unknown options)"
+
+[[case]]
+id = "verb-integer-division-floor"
+statement = "A unit with div and no law header checks when --integer-division selects the floor law."
+file = "rules/division.fsl"
+command = "check --integer-division floor rules/division.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "checked"
+serves = "FR-301-AC-6 (integer-division option)"
+
+[[case]]
+id = "verb-integer-division-absent"
+statement = "The same unit without the option has no integer-division law and is refused as missing a selection."
+file = "rules/division.fsl"
+command = "check rules/division.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: missing_declaration"
+serves = "FR-301-AC-6"
+
+[[case]]
+id = "verb-integer-division-unknown-law"
+statement = "The law ceiling is not euclidean, floor or truncating: the option is refused before the source is read."
+file = "rules/division.fsl"
+command = "check --integer-division ceiling rules/division.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: unknown_profile"
+serves = "FR-301-AC-6"
+
+[[case]]
+id = "verb-integer-division-on-compile"
+statement = "--integer-division belongs to check, run and analyze requests, so compile refuses it as an unknown option."
+file = "rules/hybrid-rate-expression.fsl"
+command = "compile --integer-division floor requests/hybrid-rate-expression.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: invalid-request"
+serves = "FR-301-AC-6"
+
+[[case]]
+id = "hybrid-at-most-eight"
+rule = "AtMostEight"
+statement = "The charge peaks at 8 in a 12-second horizon, so charge <= 8 is proved by an accepted interval certificate."
+file = "rules/hybrid.fsl"
+command = "analyze requests/hybrid-at-most-eight.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "proved"
+serves = "FR-193 (hybrid analysis)"
+
+[[case]]
+id = "hybrid-below-eight"
+rule = "BelowEight"
+statement = "The charge reaches 8 when harvesting ends, so charge < 8 is refuted with a replayed counterexample."
+file = "rules/hybrid.fsl"
+command = "analyze requests/hybrid-below-eight.json"
+status = "running"
+expect_exit = 10
+expect_verdict = "refuted"
+serves = "FR-193 (hybrid analysis)"
+
+[[case]]
+id = "hybrid-at-least-two"
+rule = "AtLeastTwo"
+statement = "The charge never drops below its starting 2, so charge >= 2 is proved."
+file = "rules/hybrid.fsl"
+command = "analyze requests/hybrid-at-least-two.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "proved"
+serves = "FR-193 (hybrid analysis)"
+
+[[case]]
+id = "hybrid-above-two"
+rule = "AboveTwo"
+statement = "The charge is 2 at time 0 and again at 6 and 12, so charge > 2 is refuted."
+file = "rules/hybrid.fsl"
+command = "analyze requests/hybrid-above-two.json"
+status = "running"
+expect_exit = 10
+expect_verdict = "refuted"
+serves = "FR-193 (hybrid analysis)"
+
+[[case]]
+id = "hybrid-reach-point-inconclusive"
+rule = "ReachesEight"
+statement = "The charge is exactly 8 at time 2, but a flowpipe cannot prove a point is reached and no solver result settles refuted, so the claim is inconclusive."
+file = "rules/hybrid.fsl"
+command = "analyze requests/hybrid-reach-point-inconclusive.json"
+status = "running"
+expect_exit = 22
+expect_verdict = "inconclusive"
+serves = "FR-193 (hybrid analysis)"
+
+[[case]]
+id = "hybrid-rate-one-refused"
+statement = "A hybrid model whose only variable has rate 1 in every mode is a clock and is refused as rate-one-hybrid."
+file = "rules/hybrid-rate-one.fsl"
+command = "analyze requests/hybrid-rate-one-refused.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: invalid_timed_model"
+serves = "FR-193-AC-7"
+
+[[case]]
+id = "hybrid-rate-expression-admitted"
+statement = "A rate written 2 - 1 is not the literal 1: the variable is hybrid dynamics, the model is admitted and the bound is proved."
+file = "rules/hybrid-rate-expression.fsl"
+command = "analyze requests/hybrid-rate-expression-admitted.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "proved"
+serves = "FR-193-AC-7"
+
+[[case]]
+id = "hybrid-initial-mode-missing"
+statement = "An initial clause that names a mode the model does not declare is refused as a missing name."
+file = "rules/hybrid-missing-mode.fsl"
+command = "analyze requests/hybrid-initial-mode-missing.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: missing_declaration"
+serves = "FR-193-AC-11"
+
+[[case]]
+id = "timed-within-200"
+rule = "StopsWithin200ms"
+statement = "Braking and halting each take at most 100 ms, so the rover is stopped within 200 ms: proved with a zone certificate."
+file = "rules/deadline.fsl"
+command = "analyze requests/timed-within-200.json"
+engine = "timed"
+clock = "model-time"
+status = "running"
+expect_exit = 0
+expect_verdict = "proved"
+serves = "FR-415, FR-416 (timed claims, zone search)"
+
+[[case]]
+id = "timed-within-199"
+rule = "StopsWithin199ms"
+statement = "Braking and halting can each take exactly 100 ms, so 199 ms is one millisecond too short: refuted."
+file = "rules/deadline.fsl"
+command = "analyze requests/timed-within-199.json"
+engine = "timed"
+clock = "model-time"
+status = "running"
+expect_exit = 10
+expect_verdict = "refuted"
+serves = "FR-415, FR-416 (timed claims, zone search)"
+
+[[case]]
+id = "timed-within-201"
+rule = "StopsWithin201ms"
+statement = "A bound one millisecond above the worst case holds."
+file = "rules/deadline.fsl"
+command = "analyze requests/timed-within-201.json"
+engine = "timed"
+clock = "model-time"
+status = "running"
+expect_exit = 0
+expect_verdict = "proved"
+serves = "FR-415, FR-416 (timed claims, zone search)"
+
+[[case]]
+id = "timed-not-before-100"
+rule = "NotStoppedBefore100ms"
+statement = "Braking and halting each take at least 50 ms, so the rover is not stopped before 100 ms: always not stopped over [0, 99 ms] is proved."
+file = "rules/deadline.fsl"
+command = "analyze requests/timed-not-before-100.json"
+engine = "timed"
+clock = "model-time"
+status = "running"
+expect_exit = 0
+expect_verdict = "proved"
+serves = "FR-415, FR-416 (timed claims, zone search)"
+
+[[case]]
+id = "timed-not-before-150"
+rule = "NotStoppedBefore150ms"
+statement = "A rover that brakes and halts as soon as it may is stopped at 100 ms, so it is not always unstopped over [0, 150 ms]: refuted."
+file = "rules/deadline.fsl"
+command = "analyze requests/timed-not-before-150.json"
+engine = "timed"
+clock = "model-time"
+status = "running"
+expect_exit = 10
+expect_verdict = "refuted"
+serves = "FR-415, FR-416 (timed claims, zone search)"
+
+[[case]]
+id = "probability-within-one"
+rule = "HeadsWithinOne"
+statement = "A fair coin that starts as tails is heads within one step with probability exactly 1/2, which meets the bound 0.5."
+file = "rules/coin.fsl"
+command = "analyze requests/probability-within-one.json"
+engine = "probability"
+status = "running"
+expect_exit = 0
+expect_verdict = "proved"
+serves = "FR-407, FR-411 (exact probability)"
+
+[[case]]
+id = "probability-within-one-above"
+rule = "HeadsWithinOneAbove"
+statement = "The exact value 1/2 is below the bound 0.51: refuted."
+file = "rules/coin.fsl"
+command = "analyze requests/probability-within-one-above.json"
+engine = "probability"
+status = "running"
+expect_exit = 10
+expect_verdict = "refuted"
+serves = "FR-407, FR-411 (exact probability)"
+
+[[case]]
+id = "probability-within-one-at-most"
+rule = "HeadsWithinOneAtMost"
+statement = "The exact value 1/2 meets the upper bound 0.5."
+file = "rules/coin.fsl"
+command = "analyze requests/probability-within-one-at-most.json"
+engine = "probability"
+status = "running"
+expect_exit = 0
+expect_verdict = "proved"
+serves = "FR-407, FR-411 (exact probability)"
+
+[[case]]
+id = "probability-within-one-below"
+rule = "HeadsWithinOneBelow"
+statement = "The exact value 1/2 exceeds the upper bound 0.49: refuted."
+file = "rules/coin.fsl"
+command = "analyze requests/probability-within-one-below.json"
+engine = "probability"
+status = "running"
+expect_exit = 10
+expect_verdict = "refuted"
+serves = "FR-407, FR-411 (exact probability)"
+
+[[case]]
+id = "probability-within-two"
+rule = "HeadsWithinTwo"
+statement = "After at most two flips the coin is heads with probability 3/4, which meets the bound 0.75."
+file = "rules/coin.fsl"
+command = "analyze requests/probability-within-two.json"
+engine = "probability"
+status = "running"
+expect_exit = 0
+expect_verdict = "proved"
+serves = "FR-407, FR-411 (exact probability)"
+
+[[case]]
+id = "probability-within-two-above"
+rule = "HeadsWithinTwoAbove"
+statement = "The exact value 3/4 is below the bound 0.76: refuted."
+file = "rules/coin.fsl"
+command = "analyze requests/probability-within-two-above.json"
+engine = "probability"
+status = "running"
+expect_exit = 10
+expect_verdict = "refuted"
+serves = "FR-407, FR-411 (exact probability)"
+
+[[case]]
+id = "probability-atom-now"
+rule = "HeadsNow"
+statement = "The coin is tails now, so the probability that it is heads now is 0, below the bound 0.5: the claim is refuted."
+file = "rules/coin.fsl"
+command = "analyze requests/probability-atom-now.json"
+engine = "probability"
+status = "staged"
+expect_exit = 21
+ready_exit = 10
+waits_on = "QSL-2158"
+why = "analyze settles the atom claim unsupported (not-yet-implemented), where it should settle refuted"
+needs = "exact probability of an atom and of always over a model operation under every scheduler"
+serves = "FR-407, FR-411 (exact probability)"
+
+[[case]]
+id = "probability-atom-now-at-most"
+rule = "HeadsNowAtMost"
+statement = "The probability that the coin is heads now is 0, which meets the upper bound 0.5: the claim is proved."
+file = "rules/coin.fsl"
+command = "analyze requests/probability-atom-now-at-most.json"
+engine = "probability"
+status = "staged"
+expect_exit = 21
+ready_exit = 0
+waits_on = "QSL-2158"
+why = "analyze settles the atom claim unsupported (not-yet-implemented), where it should prove it"
+needs = "exact probability of an atom and of always over a model operation under every scheduler"
+serves = "FR-407, FR-411 (exact probability)"
+
+[[case]]
+id = "probability-tails-through-one"
+rule = "TailsThroughOne"
+statement = "The coin stays tails through the next step with probability 1/2, which meets the bound 0.5: the always claim is proved."
+file = "rules/coin.fsl"
+command = "analyze requests/probability-tails-through-one.json"
+engine = "probability"
+status = "staged"
+expect_exit = 21
+ready_exit = 0
+waits_on = "QSL-2158"
+why = "analyze settles the bounded always claim over a model operation unsupported (not-yet-implemented), where it should prove it"
+needs = "exact probability of an atom and of always over a model operation under every scheduler"
+serves = "FR-407, FR-411 (exact probability)"
+
+[[case]]
+id = "probability-strict-comparison-refused"
+statement = "A probability bound is written <= or >=: a strict > is a syntax error."
+file = "rules/coin-strict.fsl"
+command = "compile requests/probability-strict-comparison-refused.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: invalid_syntax"
+serves = "FR-407 (claim form)"
+
+[[case]]
+id = "schedulability-edf-full"
+rule = "FullEdf"
+statement = "Two tasks with utilization exactly 1 are schedulable under earliest-deadline-first."
+file = "rules/sched.fsl"
+command = "analyze requests/schedulability-edf-full.json"
+status = "staged"
+expect_exit = 21
+ready_exit = 0
+waits_on = "QSL-2131"
+why = "analyze settles the claim unsupported (unsupported-requested-capability), where it should prove it"
+needs = "schedulability and response-time analysis from the command line"
+serves = "FR-419 (schedulability)"
+
+[[case]]
+id = "schedulability-edf-over"
+rule = "OverEdf"
+statement = "Two tasks with utilization 1.1 are not schedulable under any scheduler."
+file = "rules/sched.fsl"
+command = "analyze requests/schedulability-edf-over.json"
+status = "staged"
+expect_exit = 21
+ready_exit = 10
+waits_on = "QSL-2131"
+why = "analyze settles the claim unsupported (unsupported-requested-capability), where it should refute it"
+needs = "schedulability and response-time analysis from the command line"
+serves = "FR-419 (schedulability)"
+
+[[case]]
+id = "schedulability-response-meets"
+rule = "AResponse5"
+statement = "The highest-priority task responds in its own 5 ms, so the bound 5 ms holds."
+file = "rules/sched.fsl"
+command = "analyze requests/schedulability-response-meets.json"
+status = "staged"
+expect_exit = 21
+ready_exit = 0
+waits_on = "QSL-2131"
+why = "analyze settles the claim unsupported (unsupported-requested-capability), where it should prove it"
+needs = "schedulability and response-time analysis from the command line"
+serves = "FR-419 (schedulability)"
+
+[[case]]
+id = "schedulability-response-misses"
+rule = "AResponse4"
+statement = "The same task cannot respond in 4 ms, so the bound 4 ms is refuted."
+file = "rules/sched.fsl"
+command = "analyze requests/schedulability-response-misses.json"
+status = "staged"
+expect_exit = 21
+ready_exit = 10
+waits_on = "QSL-2131"
+why = "analyze settles the claim unsupported (unsupported-requested-capability), where it should refute it"
+needs = "schedulability and response-time analysis from the command line"
+serves = "FR-419 (schedulability)"
+
+[[case]]
+id = "deadlock-no-terminal-refuted"
+statement = "With no terminal declaration the full tank has no successor, so the deadlock-freedom item is refuted with a prefix that ends there."
+file = "rules/tank-no-terminal.fsl"
+command = "analyze requests/deadlock-no-terminal-refuted.json"
+engine = "model-checking"
+status = "staged"
+expect_exit = 21
+ready_exit = 10
+waits_on = "QSL-2103"
+why = "this binary settles each pre and post clause unsupported (unbounded-extent), so the request exits 21; the deadlock item itself is already refuted"
+needs = "the deadlock-freedom item to settle through a request that also carries operation contracts"
+serves = "FR-366 (deadlock freedom)"
+
+[[case]]
+id = "deadlock-terminal-covers-state"
+statement = "A terminal declaration that holds in the full tank makes it an intended end, so the deadlock-freedom item is proved."
+file = "rules/tank-terminal-full.fsl"
+command = "analyze requests/deadlock-terminal-covers-state.json"
+engine = "model-checking"
+status = "staged"
+expect_exit = 21
+ready_exit = 0
+waits_on = "QSL-2103"
+why = "this binary settles each pre and post clause unsupported (unbounded-extent), so the request exits 21; the deadlock item itself is already proved"
+needs = "the deadlock-freedom item to settle through a request that also carries operation contracts"
+serves = "FR-366 (deadlock freedom)"
+
+[[case]]
+id = "deadlock-terminal-misses-state"
+statement = "A terminal declaration that holds only in the empty tank leaves the full tank a deadlock, so the item is refuted."
+file = "rules/tank-terminal-empty.fsl"
+command = "analyze requests/deadlock-terminal-misses-state.json"
+engine = "model-checking"
+status = "staged"
+expect_exit = 21
+ready_exit = 10
+waits_on = "QSL-2103"
+why = "this binary settles each pre and post clause unsupported (unbounded-extent), so the request exits 21; the deadlock item itself is already refuted"
+needs = "the deadlock-freedom item to settle through a request that also carries operation contracts"
+serves = "FR-366 (deadlock freedom)"
+
+[[case]]
+id = "deadlock-two-terminals-refused"
+statement = "Two terminal declarations for one model alias are refused as ambiguous."
+file = "rules/tank-terminal-twice.fsl"
+command = "analyze requests/deadlock-two-terminals-refused.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ambiguous_declaration"
+serves = "FR-366-AC-6"
+
+[[case]]
+id = "simulation-enumerate-finds-violation"
+statement = "Enumerating every trace of up to four steps finds the trace that fills the tank three times, which breaks the invariant level <= 2. The finding is reported and settles nothing."
+file = "rules/tank-simulate.fsl"
+command = "analyze requests/simulation-enumerate-finds-violation.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "simulated"
+serves = "FR-181 (simulation)"
+
+[[case]]
+id = "simulation-sample-with-seed"
+statement = "Three sampled traces from seed 7 are reproducible: the same seed gives the same traces."
+file = "rules/tank-simulate.fsl"
+command = "analyze requests/simulation-sample-with-seed.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "simulated"
+serves = "FR-181 (simulation)"
+
+[[case]]
+id = "simulation-sample-default-seed"
+statement = "A sampled simulation with no seed takes the default seed and runs."
+file = "rules/tank-simulate.fsl"
+command = "analyze requests/simulation-sample-default-seed.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "simulated"
+serves = "FR-181 (simulation)"
+
+[[case]]
+id = "simulation-enumerate-with-seed-refused"
+statement = "A seed belongs to a sample simulation only: an enumerate simulation that carries one is refused."
+file = "rules/tank-simulate.fsl"
+command = "analyze requests/simulation-enumerate-with-seed-refused.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: invalid-request"
+serves = "FR-181 (simulation)"
+
+[[case]]
+id = "simulation-zero-steps-refused"
+statement = "max_steps is a count from 1: zero is refused."
+file = "rules/tank-simulate.fsl"
+command = "analyze requests/simulation-zero-steps-refused.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: invalid-request"
+serves = "FR-181 (simulation)"
+

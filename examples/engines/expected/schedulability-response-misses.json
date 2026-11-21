@@ -1,0 +1,196 @@
+{
+  "category": "unsupported",
+  "last_stage": "S6b",
+  "result": null,
+  "first_diagnostic": null,
+  "items": [
+    {
+      "category": "unsupported",
+      "claim_name": "AResponse4",
+      "record": {
+        "diagnostic": {
+          "cause": "unsupported-requested-capability",
+          "code": "unsupported_projection",
+          "detail": {
+            "kind": "schedulability"
+          }
+        },
+        "result": "unsupported",
+        "settled_by": "disposition"
+      },
+      "request": {
+        "candidates": {
+          "backends": [
+            "en-7"
+          ],
+          "type": "set"
+        },
+        "claim": {
+          "node": {
+            "ordinal": 0,
+            "package": "example:engines/sched",
+            "path": [
+              "claim",
+              "schedulability",
+              "kind",
+              "response",
+              "policy",
+              "fixed-priority",
+              "task",
+              "a",
+              "bound",
+              "4/1",
+              {
+                "ordinal": 2,
+                "package": "example:engines/sched",
+                "path": [
+                  "ms"
+                ]
+              },
+              "tasks",
+              "task",
+              "name",
+              "a",
+              "arrival",
+              "periodic",
+              "period",
+              "10/1",
+              {
+                "ordinal": 2,
+                "package": "example:engines/sched",
+                "path": [
+                  "ms"
+                ]
+              },
+              "deadline",
+              "10/1",
+              {
+                "ordinal": 2,
+                "package": "example:engines/sched",
+                "path": [
+                  "ms"
+                ]
+              },
+              "bcet",
+              "0/1",
+              {
+                "ordinal": 2,
+                "package": "example:engines/sched",
+                "path": [
+                  "ms"
+                ]
+              },
+              "wcet",
+              "5/1",
+              {
+                "ordinal": 2,
+                "package": "example:engines/sched",
+                "path": [
+                  "ms"
+                ]
+              },
+              "wcet_hi",
+              "criticality",
+              "lo",
+              "priority",
+              "2",
+              "jitter",
+              "0/1",
+              {
+                "ordinal": 2,
+                "package": "example:engines/sched",
+                "path": [
+                  "ms"
+                ]
+              },
+              "blocking",
+              "0/1",
+              {
+                "ordinal": 2,
+                "package": "example:engines/sched",
+                "path": [
+                  "ms"
+                ]
+              },
+              "task",
+              "name",
+              "b",
+              "arrival",
+              "periodic",
+              "period",
+              "20/1",
+              {
+                "ordinal": 2,
+                "package": "example:engines/sched",
+                "path": [
+                  "ms"
+                ]
+              },
+              "deadline",
+              "20/1",
+              {
+                "ordinal": 2,
+                "package": "example:engines/sched",
+                "path": [
+                  "ms"
+                ]
+              },
+              "bcet",
+              "0/1",
+              {
+                "ordinal": 2,
+                "package": "example:engines/sched",
+                "path": [
+                  "ms"
+                ]
+              },
+              "wcet",
+              "10/1",
+              {
+                "ordinal": 2,
+                "package": "example:engines/sched",
+                "path": [
+                  "ms"
+                ]
+              },
+              "wcet_hi",
+              "criticality",
+              "lo",
+              "priority",
+              "1",
+              "jitter",
+              "0/1",
+              {
+                "ordinal": 2,
+                "package": "example:engines/sched",
+                "path": [
+                  "ms"
+                ]
+              },
+              "blocking",
+              "0/1",
+              {
+                "ordinal": 2,
+                "package": "example:engines/sched",
+                "path": [
+                  "ms"
+                ]
+              }
+            ]
+          },
+          "occurrence": {
+            "ordinal": 0,
+            "role": "claim"
+          }
+        },
+        "extent": {
+          "bounds": [],
+          "classification": "bounded"
+        },
+        "kind": "schedulability",
+        "request_index": 0
+      },
+      "request_index": 0
+    }
+  ]
+}

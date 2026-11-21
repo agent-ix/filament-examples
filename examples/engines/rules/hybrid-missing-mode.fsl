@@ -1,0 +1,9 @@
+language "ix:native" edition "1-draft";
+profile energy = "filament.temporal.infinite-trace/v1";
+
+// The initial clause names a mode the model does not declare.
+hybrid Ramp using energy {
+  initial { mode Halted when { x = 0 }; }
+  mode Run invariant { x >= 0 and x <= 5 } flow { x' = 2; }
+}
+temporal Bounded using energy over (r: Ramp) clock "model-time" on origin { always [0, 2] holds(r.x <= 5) }

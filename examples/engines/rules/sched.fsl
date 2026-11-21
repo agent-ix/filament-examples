@@ -1,0 +1,20 @@
+language "ix:native" edition "1-draft";
+profile t = "filament.temporal.complete/v1";
+dimension Time;
+unit ms : Time = rational(1, 1);
+
+// Utilization 5/10 + 10/20 is exactly 1, so earliest-deadline-first schedules it.
+taskset Full {
+  task a periodic 10 ms deadline 10 ms wcet 5 ms priority 2 lo;
+  task b periodic 20 ms deadline 20 ms wcet 10 ms priority 1 lo;
+}
+// Utilization 6/10 + 10/20 is 1.1, which no scheduler meets.
+taskset Over {
+  task a periodic 10 ms deadline 10 ms wcet 6 ms priority 2 lo;
+  task b periodic 20 ms deadline 20 ms wcet 10 ms priority 1 lo;
+}
+schedulable FullEdf on Full under edf;
+schedulable OverEdf on Over under edf;
+// Task a has the higher priority, so it is never preempted and responds in its own 5 ms.
+response AResponse5 on Full.a <= 5 ms under fixed_priority;
+response AResponse4 on Full.a <= 4 ms under fixed_priority;

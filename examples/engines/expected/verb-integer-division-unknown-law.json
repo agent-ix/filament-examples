@@ -1,0 +1,10 @@
+{
+  "category": "refusal",
+  "last_stage": null,
+  "result": null,
+  "first_diagnostic": {
+    "code": "unknown_profile",
+    "cause": "unsupported-selection"
+  },
+  "items": []
+}

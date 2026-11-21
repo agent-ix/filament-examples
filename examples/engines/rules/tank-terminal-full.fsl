@@ -1,0 +1,9 @@
+language "ix:native" edition "1-draft";
+profile v = "filament.model.complete/v1";
+profile inf = "filament.temporal.infinite-trace/v1";
+model K = "example/tank";
+// A tank holds 0 to 3 units. Fill adds one below the top. Drain is disabled, so a full tank has no successor.
+pre FillBelowTop using v on K::Tank::fill { self.level < 3 }
+post FillAddsOne using v on K::Tank::fill { self.level = pre(self.level) + 1 }
+pre DrainDisabled using v on K::Tank::drain { false }
+terminal Full using v on K when { self.level = 3 };

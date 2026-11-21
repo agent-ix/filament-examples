@@ -1,0 +1,453 @@
+{
+  "category": "violation",
+  "last_stage": "S8",
+  "result": null,
+  "first_diagnostic": null,
+  "items": [
+    {
+      "axes": {
+        "activation": "active",
+        "execution": "completed",
+        "settlement": "decisive-counterexample",
+        "truth": "false"
+      },
+      "category": "violation",
+      "claim_name": "NotStoppedBefore150ms",
+      "counterexample": {
+        "fairness": [],
+        "initial_state": 0,
+        "interval": null,
+        "kind": "formula",
+        "loop": [],
+        "over_binding": {
+          "identity": "r1",
+          "object_type": {
+            "original": {
+              "node": "ix://example/rover-deadline/Rover",
+              "package": "example/rover-deadline"
+            },
+            "owner_effective_type": null
+          },
+          "type": "reference",
+          "universe": {
+            "ordinal": 0,
+            "package": "example/rover-deadline",
+            "path": [
+              "model",
+              "object_type",
+              "ix://example/rover-deadline/Rover"
+            ]
+          }
+        },
+        "prefix": [
+          {
+            "delay": {
+              "denominator": "1",
+              "numerator": "50"
+            },
+            "post_state": {
+              "key": "eyJjbG9ja3MiOlt7ImZpZWxkIjp7Im5vZGUiOiJpeDovL2V4YW1wbGUvcm92ZXItZGVhZGxpbmUvUm92ZXIveCIsInBhY2thZ2UiOiJleGFtcGxlL3JvdmVyLWRlYWRsaW5lIn0sIm9iamVjdCI6eyJpZGVudGl0eSI6InIxIiwib2JqZWN0X3R5cGUiOnsib3JpZ2luYWwiOnsibm9kZSI6Iml4Oi8vZXhhbXBsZS9yb3Zlci1kZWFkbGluZS9Sb3ZlciIsInBhY2thZ2UiOiJleGFtcGxlL3JvdmVyLWRlYWRsaW5lIn0sIm93bmVyX2VmZmVjdGl2ZV90eXBlIjpudWxsfSwidHlwZSI6InJlZmVyZW5jZSIsInVuaXZlcnNlIjp7Im9yZGluYWwiOjAsInBhY2thZ2UiOiJleGFtcGxlL3JvdmVyLWRlYWRsaW5lIiwicGF0aCI6WyJtb2RlbCIsIm9iamVjdF90eXBlIiwiaXg6Ly9leGFtcGxlL3JvdmVyLWRlYWRsaW5lL1JvdmVyIl19fSwicGF0aCI6W3sibmFtZSI6IngiLCJ0eXBlIjoiZmllbGQifV0sInR5cGUiOiJjbG9jayIsInZhbHVlIjp7ImRlbm9taW5hdG9yIjoiMSIsIm51bWVyYXRvciI6IjAiLCJ0eXBlIjoicmF0aW9uYWwifX1dLCJzdGF0ZSI6eyJib3VuZHMiOnsiZW50cmllcyI6W10sInR5cGUiOiJtYXAifSwiY29udHJvbCI6eyJlbnRyaWVzIjpbXSwidHlwZSI6Im1hcCJ9LCJtZW1vcnkiOnsiZW50cmllcyI6W10sInR5cGUiOiJtYXAifSwib2JzZXJ2YXRpb25zIjp7ImVudHJpZXMiOltdLCJ0eXBlIjoibWFwIn0sInF1ZXVlcyI6eyJlbnRyaWVzIjpbXSwidHlwZSI6Im1hcCJ9LCJyb2xlcyI6eyJlbnRyaWVzIjpbXSwidHlwZSI6Im1hcCJ9LCJzZW1hbnRpYyI6eyJlbnRyaWVzIjpbeyJrZXkiOnsidHlwZSI6InRleHQiLCJ2YWx1ZSI6IntcIm5vZGVcIjpcIml4Oi8vZXhhbXBsZS9yb3Zlci1kZWFkbGluZS9yb3ZlcnNcIixcInBhY2thZ2VcIjpcImV4YW1wbGUvcm92ZXItZGVhZGxpbmVcIn0ifSwidmFsdWUiOnsiZW50cmllcyI6W3sia2V5Ijp7ImlkZW50aXR5IjoicjEiLCJvYmplY3RfdHlwZSI6eyJvcmlnaW5hbCI6eyJub2RlIjoiaXg6Ly9leGFtcGxlL3JvdmVyLWRlYWRsaW5lL1JvdmVyIiwicGFja2FnZSI6ImV4YW1wbGUvcm92ZXItZGVhZGxpbmUifSwib3duZXJfZWZmZWN0aXZlX3R5cGUiOm51bGx9LCJ0eXBlIjoicmVmZXJlbmNlIiwidW5pdmVyc2UiOnsib3JkaW5hbCI6MCwicGFja2FnZSI6ImV4YW1wbGUvcm92ZXItZGVhZGxpbmUiLCJwYXRoIjpbIm1vZGVsIiwib2JqZWN0X3R5cGUiLCJpeDovL2V4YW1wbGUvcm92ZXItZGVhZGxpbmUvUm92ZXIiXX19LCJ2YWx1ZSI6eyJmaWVsZHMiOlt7Im5hbWUiOiJtb2RlIiwidmFsdWUiOnsibWVtYmVyIjoiU2FmZVN0b3AiLCJuYW1lIjoie1wibm9kZVwiOlwiaXg6Ly9leGFtcGxlL3JvdmVyLWRlYWRsaW5lL01vZGVcIixcInBhY2thZ2VcIjpcImV4YW1wbGUvcm92ZXItZGVhZGxpbmVcIn0iLCJ0eXBlIjoiZW51bSJ9fSx7Im5hbWUiOiJzdG9wcGVkIiwidmFsdWUiOnsidHlwZSI6ImJvb2xlYW4iLCJ2YWx1ZSI6ZmFsc2V9fV0sIm5hbWUiOiJ7XCJub2RlXCI6XCJpeDovL2V4YW1wbGUvcm92ZXItZGVhZGxpbmUvUm92ZXJcIixcInBhY2thZ2VcIjpcImV4YW1wbGUvcm92ZXItZGVhZGxpbmVcIn0iLCJ0eXBlIjoicmVjb3JkIn19XSwidHlwZSI6Im1hcCJ9fV0sInR5cGUiOiJtYXAifSwidHlwZSI6InNpbXVsYXRpb24tc3RhdGUifSwidHlwZSI6InRpbWVkLXN0YXRlIn0"
+            },
+            "transition": {
+              "arguments": [],
+              "operation": {
+                "node": "ix://example/rover-deadline/Rover/brake",
+                "package": "example/rover-deadline"
+              },
+              "receiver": {
+                "identity": "r1",
+                "object_type": {
+                  "original": {
+                    "node": "ix://example/rover-deadline/Rover",
+                    "package": "example/rover-deadline"
+                  },
+                  "owner_effective_type": null
+                },
+                "type": "reference",
+                "universe": {
+                  "ordinal": 0,
+                  "package": "example/rover-deadline",
+                  "path": [
+                    "model",
+                    "object_type",
+                    "ix://example/rover-deadline/Rover"
+                  ]
+                }
+              },
+              "type": "transition"
+            }
+          },
+          {
+            "delay": {
+              "denominator": "1",
+              "numerator": "50"
+            },
+            "post_state": {
+              "key": "eyJjbG9ja3MiOlt7ImZpZWxkIjp7Im5vZGUiOiJpeDovL2V4YW1wbGUvcm92ZXItZGVhZGxpbmUvUm92ZXIveCIsInBhY2thZ2UiOiJleGFtcGxlL3JvdmVyLWRlYWRsaW5lIn0sIm9iamVjdCI6eyJpZGVudGl0eSI6InIxIiwib2JqZWN0X3R5cGUiOnsib3JpZ2luYWwiOnsibm9kZSI6Iml4Oi8vZXhhbXBsZS9yb3Zlci1kZWFkbGluZS9Sb3ZlciIsInBhY2thZ2UiOiJleGFtcGxlL3JvdmVyLWRlYWRsaW5lIn0sIm93bmVyX2VmZmVjdGl2ZV90eXBlIjpudWxsfSwidHlwZSI6InJlZmVyZW5jZSIsInVuaXZlcnNlIjp7Im9yZGluYWwiOjAsInBhY2thZ2UiOiJleGFtcGxlL3JvdmVyLWRlYWRsaW5lIiwicGF0aCI6WyJtb2RlbCIsIm9iamVjdF90eXBlIiwiaXg6Ly9leGFtcGxlL3JvdmVyLWRlYWRsaW5lL1JvdmVyIl19fSwicGF0aCI6W3sibmFtZSI6IngiLCJ0eXBlIjoiZmllbGQifV0sInR5cGUiOiJjbG9jayIsInZhbHVlIjp7ImRlbm9taW5hdG9yIjoiMSIsIm51bWVyYXRvciI6IjUwIiwidHlwZSI6InJhdGlvbmFsIn19XSwic3RhdGUiOnsiYm91bmRzIjp7ImVudHJpZXMiOltdLCJ0eXBlIjoibWFwIn0sImNvbnRyb2wiOnsiZW50cmllcyI6W10sInR5cGUiOiJtYXAifSwibWVtb3J5Ijp7ImVudHJpZXMiOltdLCJ0eXBlIjoibWFwIn0sIm9ic2VydmF0aW9ucyI6eyJlbnRyaWVzIjpbXSwidHlwZSI6Im1hcCJ9LCJxdWV1ZXMiOnsiZW50cmllcyI6W10sInR5cGUiOiJtYXAifSwicm9sZXMiOnsiZW50cmllcyI6W10sInR5cGUiOiJtYXAifSwic2VtYW50aWMiOnsiZW50cmllcyI6W3sia2V5Ijp7InR5cGUiOiJ0ZXh0IiwidmFsdWUiOiJ7XCJub2RlXCI6XCJpeDovL2V4YW1wbGUvcm92ZXItZGVhZGxpbmUvcm92ZXJzXCIsXCJwYWNrYWdlXCI6XCJleGFtcGxlL3JvdmVyLWRlYWRsaW5lXCJ9In0sInZhbHVlIjp7ImVudHJpZXMiOlt7ImtleSI6eyJpZGVudGl0eSI6InIxIiwib2JqZWN0X3R5cGUiOnsib3JpZ2luYWwiOnsibm9kZSI6Iml4Oi8vZXhhbXBsZS9yb3Zlci1kZWFkbGluZS9Sb3ZlciIsInBhY2thZ2UiOiJleGFtcGxlL3JvdmVyLWRlYWRsaW5lIn0sIm93bmVyX2VmZmVjdGl2ZV90eXBlIjpudWxsfSwidHlwZSI6InJlZmVyZW5jZSIsInVuaXZlcnNlIjp7Im9yZGluYWwiOjAsInBhY2thZ2UiOiJleGFtcGxlL3JvdmVyLWRlYWRsaW5lIiwicGF0aCI6WyJtb2RlbCIsIm9iamVjdF90eXBlIiwiaXg6Ly9leGFtcGxlL3JvdmVyLWRlYWRsaW5lL1JvdmVyIl19fSwidmFsdWUiOnsiZmllbGRzIjpbeyJuYW1lIjoibW9kZSIsInZhbHVlIjp7Im1lbWJlciI6IlNhZmVTdG9wIiwibmFtZSI6IntcIm5vZGVcIjpcIml4Oi8vZXhhbXBsZS9yb3Zlci1kZWFkbGluZS9Nb2RlXCIsXCJwYWNrYWdlXCI6XCJleGFtcGxlL3JvdmVyLWRlYWRsaW5lXCJ9IiwidHlwZSI6ImVudW0ifX0seyJuYW1lIjoic3RvcHBlZCIsInZhbHVlIjp7InR5cGUiOiJib29sZWFuIiwidmFsdWUiOnRydWV9fV0sIm5hbWUiOiJ7XCJub2RlXCI6XCJpeDovL2V4YW1wbGUvcm92ZXItZGVhZGxpbmUvUm92ZXJcIixcInBhY2thZ2VcIjpcImV4YW1wbGUvcm92ZXItZGVhZGxpbmVcIn0iLCJ0eXBlIjoicmVjb3JkIn19XSwidHlwZSI6Im1hcCJ9fV0sInR5cGUiOiJtYXAifSwidHlwZSI6InNpbXVsYXRpb24tc3RhdGUifSwidHlwZSI6InRpbWVkLXN0YXRlIn0"
+            },
+            "transition": {
+              "arguments": [],
+              "operation": {
+                "node": "ix://example/rover-deadline/Rover/halt",
+                "package": "example/rover-deadline"
+              },
+              "receiver": {
+                "identity": "r1",
+                "object_type": {
+                  "original": {
+                    "node": "ix://example/rover-deadline/Rover",
+                    "package": "example/rover-deadline"
+                  },
+                  "owner_effective_type": null
+                },
+                "type": "reference",
+                "universe": {
+                  "ordinal": 0,
+                  "package": "example/rover-deadline",
+                  "path": [
+                    "model",
+                    "object_type",
+                    "ix://example/rover-deadline/Rover"
+                  ]
+                }
+              },
+              "type": "transition"
+            }
+          }
+        ],
+        "trace": "model",
+        "trace_position": 2
+      },
+      "record": {
+        "backend": "en-6",
+        "cause": null,
+        "result": "refuted",
+        "settled_by": "result"
+      },
+      "replay": {
+        "reproduced": true,
+        "target": {
+          "state_clause": "NotStoppedBefore150ms"
+        }
+      },
+      "request": {
+        "candidates": {
+          "backends": [
+            "en-6"
+          ],
+          "type": "set"
+        },
+        "claim": {
+          "node": {
+            "ordinal": 0,
+            "package": "example:engines/deadline",
+            "path": [
+              "temporal",
+              "temporal_clause",
+              {
+                "ordinal": 0,
+                "package": "example:engines/deadline",
+                "path": [
+                  "value",
+                  "parameter",
+                  "name",
+                  {
+                    "ordinal": 0,
+                    "package": "example:engines/deadline",
+                    "path": [
+                      "scalar_type",
+                      "text"
+                    ]
+                  },
+                  "r",
+                  "level",
+                  {
+                    "ordinal": 0,
+                    "package": "example:engines/deadline",
+                    "path": [
+                      "scalar_type",
+                      "integer"
+                    ]
+                  },
+                  "0",
+                  {
+                    "ordinal": 0,
+                    "package": "example:engines/deadline",
+                    "path": [
+                      "composite_type",
+                      "reference",
+                      {
+                        "ordinal": 0,
+                        "package": "example/rover-deadline",
+                        "path": [
+                          "model",
+                          "object_type",
+                          "ix://example/rover-deadline/Rover"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "ordinal": 0,
+                "package": "example:engines/deadline",
+                "path": [
+                  "scalar_type",
+                  "text"
+                ]
+              },
+              "model-time",
+              "kind",
+              {
+                "ordinal": 0,
+                "package": "example:engines/deadline",
+                "path": [
+                  "scalar_type",
+                  "text"
+                ]
+              },
+              "origin",
+              {
+                "ordinal": 0,
+                "package": "example:engines/deadline",
+                "path": [
+                  "temporal",
+                  "formula",
+                  {
+                    "ordinal": 0,
+                    "package": "example:engines/deadline",
+                    "path": [
+                      "temporal",
+                      "formula",
+                      {
+                        "ordinal": 0,
+                        "package": "example:engines/deadline",
+                        "path": [
+                          "expression",
+                          "unary",
+                          {
+                            "ordinal": 0,
+                            "package": "example:engines/deadline",
+                            "path": [
+                              "expression",
+                              "query",
+                              {
+                                "ordinal": 0,
+                                "package": "example:engines/deadline",
+                                "path": [
+                                  "expression",
+                                  "deref",
+                                  {
+                                    "ordinal": 0,
+                                    "package": "example:engines/deadline",
+                                    "path": [
+                                      "value",
+                                      "parameter",
+                                      "name",
+                                      {
+                                        "ordinal": 0,
+                                        "package": "example:engines/deadline",
+                                        "path": [
+                                          "scalar_type",
+                                          "text"
+                                        ]
+                                      },
+                                      "r",
+                                      "level",
+                                      {
+                                        "ordinal": 0,
+                                        "package": "example:engines/deadline",
+                                        "path": [
+                                          "scalar_type",
+                                          "integer"
+                                        ]
+                                      },
+                                      "0",
+                                      {
+                                        "ordinal": 0,
+                                        "package": "example:engines/deadline",
+                                        "path": [
+                                          "composite_type",
+                                          "reference",
+                                          {
+                                            "ordinal": 0,
+                                            "package": "example/rover-deadline",
+                                            "path": [
+                                              "model",
+                                              "object_type",
+                                              "ix://example/rover-deadline/Rover"
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  },
+                                  "filament.op.model.deref",
+                                  "deref",
+                                  {
+                                    "ordinal": 0,
+                                    "package": "example/rover-deadline",
+                                    "path": [
+                                      "model",
+                                      "object_type",
+                                      "ix://example/rover-deadline/Rover"
+                                    ]
+                                  },
+                                  {
+                                    "ordinal": 0,
+                                    "package": "example/rover-deadline",
+                                    "path": [
+                                      "model",
+                                      "object_type",
+                                      "ix://example/rover-deadline/Rover"
+                                    ]
+                                  }
+                                ]
+                              },
+                              "filament.op.record.project",
+                              "false",
+                              "query",
+                              {
+                                "ordinal": 0,
+                                "package": "example:engines/deadline",
+                                "path": [
+                                  "scalar_type",
+                                  "boolean"
+                                ]
+                              },
+                              {
+                                "ordinal": 0,
+                                "package": "example:engines/deadline",
+                                "path": [
+                                  "scalar_type",
+                                  "boolean"
+                                ]
+                              }
+                            ]
+                          },
+                          "filament.op.boolean.not",
+                          "unary",
+                          {
+                            "ordinal": 0,
+                            "package": "example:engines/deadline",
+                            "path": [
+                              "scalar_type",
+                              "boolean"
+                            ]
+                          },
+                          {
+                            "ordinal": 0,
+                            "package": "example:engines/deadline",
+                            "path": [
+                              "scalar_type",
+                              "boolean"
+                            ]
+                          }
+                        ]
+                      },
+                      "filament.op.temporal.holds",
+                      "temporal_formula",
+                      {
+                        "ordinal": 0,
+                        "package": "example:engines/deadline",
+                        "path": [
+                          "scalar_type",
+                          "boolean"
+                        ]
+                      },
+                      {
+                        "ordinal": 0,
+                        "package": "example:engines/deadline",
+                        "path": [
+                          "scalar_type",
+                          "boolean"
+                        ]
+                      }
+                    ]
+                  },
+                  "filament.op.temporal.always",
+                  "time:[0..150]",
+                  "temporal_formula",
+                  {
+                    "ordinal": 0,
+                    "package": "example:engines/deadline",
+                    "path": [
+                      "scalar_type",
+                      "boolean"
+                    ]
+                  },
+                  {
+                    "ordinal": 0,
+                    "package": "example:engines/deadline",
+                    "path": [
+                      "scalar_type",
+                      "boolean"
+                    ]
+                  }
+                ]
+              },
+              "filament.op.temporal.clause",
+              "filament.temporal.timed/v1",
+              "temporal",
+              {
+                "ordinal": 0,
+                "package": "example:engines/deadline",
+                "path": [
+                  "scalar_type",
+                  "boolean"
+                ]
+              },
+              {
+                "ordinal": 0,
+                "package": "example:engines/deadline",
+                "path": [
+                  "scalar_type",
+                  "boolean"
+                ]
+              }
+            ]
+          },
+          "occurrence": {
+            "ordinal": 0,
+            "role": "claim"
+          }
+        },
+        "extent": {
+          "classification": "unbounded",
+          "finite_bound_available": false
+        },
+        "kind": "temporal-satisfaction",
+        "request_index": 0,
+        "temporal": {
+          "fairness": [],
+          "item_kind": "formula",
+          "limits": {
+            "max_automaton_states": 1048576,
+            "max_relation_tuples": 16777216,
+            "max_states": 10000000,
+            "max_transitions": 100000000,
+            "max_walk_steps": 4096,
+            "max_witness_set": 65536
+          },
+          "subject": {
+            "initial_states": [
+              {
+                "authority": "example",
+                "identity": "ix://example/rover-deadline/data/deadline-degraded-start"
+              }
+            ],
+            "proof_bounds": [],
+            "universes": [
+              {
+                "authority": "example",
+                "identity": "ix://example/rover-deadline/data/deadline-degraded-start"
+              }
+            ]
+          }
+        }
+      },
+      "request_index": 0
+    }
+  ]
+}
