@@ -1,0 +1,10 @@
+{
+  "category": "refusal",
+  "last_stage": "S1",
+  "result": null,
+  "first_diagnostic": {
+    "code": "unknown_language",
+    "cause": "unsupported-selection"
+  },
+  "items": []
+}

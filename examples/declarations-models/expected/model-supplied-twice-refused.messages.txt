@@ -1,0 +1,1 @@
+two supplied domain packages declare identity "my/library"; one domain package is supplied per identity

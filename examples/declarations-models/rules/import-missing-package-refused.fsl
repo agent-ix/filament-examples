@@ -1,0 +1,5 @@
+// FSpec FR-002-AC-2
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+import "no/such/package" as L;
+function f using v(a: Boolean): Boolean pure { a }

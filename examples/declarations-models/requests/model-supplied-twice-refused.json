@@ -1,0 +1,36 @@
+{
+  "format": "native-compile/1",
+  "request": {
+    "models": [
+      {
+        "format": "semantic-ir/2.0.0",
+        "source": {
+          "authority": "example",
+          "document": "model",
+          "file": "../../library/model/library.semantic-ir.json",
+          "formal_revision": 1,
+          "identity": "example:library/model"
+        }
+      },
+      {
+        "format": "semantic-ir/2.0.0",
+        "source": {
+          "authority": "example",
+          "document": "model",
+          "file": "../../library/model/library.semantic-ir.json",
+          "formal_revision": 1,
+          "identity": "example:library/model"
+        }
+      }
+    ],
+    "program": {
+      "source": {
+        "authority": "example",
+        "document": "model-supplied-twice-refused",
+        "file": "../rules/model-supplied-twice-refused.fsl",
+        "formal_revision": 1,
+        "identity": "example:declarations-models/model-supplied-twice-refused"
+      }
+    }
+  }
+}

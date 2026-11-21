@@ -1,0 +1,10 @@
+{
+  "category": "unsupported",
+  "last_stage": "S3",
+  "result": null,
+  "first_diagnostic": {
+    "code": "unsupported_construct",
+    "cause": "declaration-form"
+  },
+  "items": []
+}

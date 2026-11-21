@@ -1,0 +1,6 @@
+// FSpec FR-002 (declaration order does not matter)
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+record Item { qty: Qty; }
+type Qty = Int[1, 99];
+function f using v(i: Item): Qty pure { i.qty }

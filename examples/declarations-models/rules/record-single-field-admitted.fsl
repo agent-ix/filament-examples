@@ -1,0 +1,5 @@
+// FSpec FR-339 (shared grammar record-decl, minimum size)
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+record One { x: Int[0, 9]; }
+function f using v(): One pure { One { x: 1 } }

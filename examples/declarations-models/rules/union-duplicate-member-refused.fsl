@@ -1,0 +1,4 @@
+// FSpec FR-002-AC-3, FR-143-AC-12
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+union U { A, A }

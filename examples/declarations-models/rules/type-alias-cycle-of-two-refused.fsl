@@ -1,0 +1,6 @@
+// FSpec FR-002
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+type Price = Cost;
+type Cost = Price;
+function zero using v(): Int[0, 0] pure { 0 }

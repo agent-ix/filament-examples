@@ -1,0 +1,6 @@
+// FSpec FR-002
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+type A = Int[0, 9];
+type B = A;
+function f using v(a: A, b: B, c: Int[0, 9]): Boolean pure { a = b and b = c }

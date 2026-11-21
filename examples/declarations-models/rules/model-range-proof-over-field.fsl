@@ -1,0 +1,5 @@
+// FSpec FR-044
+language "ix:native" edition "1-draft";
+profile v = "filament.model.complete/v1";
+model Library = "my/library";
+function bump using v(b: Reference<Library::Book>): Int[0, 1000] pure { deref(b).copies + 1 }

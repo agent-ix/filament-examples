@@ -1,0 +1,5 @@
+// FSpec FR-002 (a model alias does not change what is resolved)
+language "ix:native" edition "1-draft";
+profile v = "filament.model.complete/v1";
+model Shelf = "my/library";
+invariant OnLoanHasCopies using v on Shelf::Book at current { self.status = Shelf::Status::OnLoan implies self.copies >= 1 }

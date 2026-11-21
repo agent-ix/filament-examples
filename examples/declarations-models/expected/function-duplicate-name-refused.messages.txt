@@ -1,0 +1,2 @@
+ambiguous_declaration (ambiguous-name): `f`
+ambiguous_declaration (ambiguous-name): `f`

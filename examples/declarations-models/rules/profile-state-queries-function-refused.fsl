@@ -1,0 +1,4 @@
+// FSpec FR-001-AC-5, FR-001-AC-6
+language "ix:native" edition "1-draft";
+profile v = "filament.state.queries/v1";
+function f using v(q: Boolean): Boolean pure { q }

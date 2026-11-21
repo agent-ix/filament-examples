@@ -1,0 +1,6 @@
+// FSpec FR-002-AC-3
+language "ix:native" edition "1-draft";
+profile v = "filament.model.complete/v1";
+model Library = "my/library";
+model Library = "my/library";
+invariant OnLoanHasCopies using v on Library::Book at current { self.copies >= 0 }

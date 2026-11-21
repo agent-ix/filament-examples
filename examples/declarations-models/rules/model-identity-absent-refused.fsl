@@ -1,0 +1,5 @@
+// FSpec FR-154-AC-35
+language "ix:native" edition "1-draft";
+profile v = "filament.model.complete/v1";
+model Library = ;
+invariant I using v on Library::Book at current { self.copies >= 0 }

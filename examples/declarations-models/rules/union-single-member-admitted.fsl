@@ -1,0 +1,5 @@
+// FSpec FR-339 (shared grammar union-decl, minimum size), FR-146-AC-10
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+union Only { One(Int[0, 9]) }
+function f using v(u: Only): Int[0, 9] pure { case u { One(n): n; } }

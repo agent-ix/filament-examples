@@ -1,0 +1,5 @@
+// FSpec FR-610-AC-5
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+enum Status { Open, Paid }
+object Order identity (total) { total: Int[0, 9]; status: Status; coupon: Option<Int[0, 9]>; population orders; }

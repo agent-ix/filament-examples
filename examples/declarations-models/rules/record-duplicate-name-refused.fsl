@@ -1,0 +1,5 @@
+// FSpec FR-002-AC-3
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+record P { x: Int[0, 9]; }
+record P { y: Int[0, 9]; }

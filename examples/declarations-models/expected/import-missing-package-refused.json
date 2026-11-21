@@ -1,0 +1,10 @@
+{
+  "category": "refusal",
+  "last_stage": "I1",
+  "result": null,
+  "first_diagnostic": {
+    "code": "missing_import",
+    "cause": "missing-selection"
+  },
+  "items": []
+}

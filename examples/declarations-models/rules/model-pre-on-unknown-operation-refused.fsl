@@ -1,0 +1,5 @@
+// FSpec FR-019-AC-6
+language "ix:native" edition "1-draft";
+profile v = "filament.model.complete/v1";
+model Library = "my/library";
+pre CanLend using v on Library::Book::vanish { self.copies >= 1 }

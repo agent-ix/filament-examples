@@ -1,0 +1,5 @@
+// FSpec model member lookup against the supplied model
+language "ix:native" edition "1-draft";
+profile v = "filament.model.complete/v1";
+model Library = "my/library";
+invariant Lost using v on Library::Book at current { self.status = Library::Status::Lost }

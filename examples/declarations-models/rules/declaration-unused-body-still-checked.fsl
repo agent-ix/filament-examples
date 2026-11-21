@@ -1,0 +1,6 @@
+// FSpec FR-007 (range proof applies to unused declarations)
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+type Qty = Int[1, 99];
+function used using v(q: Qty): Qty pure { q }
+function unused using v(q: Qty): Qty pure { q + 1 }

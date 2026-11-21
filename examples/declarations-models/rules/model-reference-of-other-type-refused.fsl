@@ -1,0 +1,6 @@
+// FSpec FR-143-AC-9
+language "ix:native" edition "1-draft";
+profile v = "filament.model.complete/v1";
+model Library = "my/library";
+type Qty = Int[0, 9];
+function same using v(r: Reference<Library::Book>, s: Reference<Qty>): Boolean pure { true }

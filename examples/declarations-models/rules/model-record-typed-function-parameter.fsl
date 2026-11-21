@@ -1,0 +1,5 @@
+// FSpec FR-143-AC-9 (Reference to a model object type)
+language "ix:native" edition "1-draft";
+profile v = "filament.model.complete/v1";
+model Library = "my/library";
+function copies using v(b: Reference<Library::Book>): Int[0, 1000] pure { deref(b).copies }

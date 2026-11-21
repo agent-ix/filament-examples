@@ -1,0 +1,1001 @@
+name = "declarations-models"
+summary = "Declarations and models: unit and dimension graphs, profile selection, name resolution, object declarations and their clauses, and the declaration refusals the standard requires."
+
+[[case]]
+id = "unit-zero-scale-refused"
+statement = "A unit with scale zero, unit zero : L = 0 * m, is refused as an invalid package at the unit and exposes no conversion."
+file = "rules/unit-zero-scale-refused.fsl"
+command = "check rules/unit-zero-scale-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: invalid_package invalid-value"
+
+[[case]]
+id = "unit-two-roots-refused"
+statement = "Two units of one dimension that both target nothing, m and m_alt, make two roots and are refused as conflicting definitions naming the dimension and both units."
+file = "rules/unit-two-roots-refused.fsl"
+command = "check rules/unit-two-roots-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: invalid_package conflicting-definition"
+
+[[case]]
+id = "unit-cycle-of-two-refused"
+statement = "Two units that target each other, m through cm and cm through m, leave no root and are refused as a definition cycle."
+file = "rules/unit-cycle-of-two-refused.fsl"
+command = "check rules/unit-cycle-of-two-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: invalid_package definition-cycle"
+
+[[case]]
+id = "unit-cycle-reversed-source-order"
+statement = "The same two-unit cycle declared in the opposite source order is refused as a definition cycle starting from the unit declared first."
+file = "rules/unit-cycle-reversed-source-order.fsl"
+command = "check rules/unit-cycle-reversed-source-order.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: invalid_package definition-cycle"
+
+[[case]]
+id = "unit-self-cycle-refused"
+statement = "A unit that targets itself, u_self : L = 1 * u_self, is refused as a definition cycle on one edge."
+file = "rules/unit-self-cycle-refused.fsl"
+command = "check rules/unit-self-cycle-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: invalid_package definition-cycle"
+
+[[case]]
+id = "unit-target-missing-refused"
+statement = "A unit whose target nothing is not declared is refused as a missing name naming the unit and the target."
+file = "rules/unit-target-missing-refused.fsl"
+command = "check rules/unit-target-missing-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: missing_declaration missing-name"
+
+[[case]]
+id = "unit-target-other-dimension-refused"
+statement = "A unit of dimension L whose target s belongs to dimension T is refused as an incompatible definition naming both dimensions."
+file = "rules/unit-target-other-dimension-refused.fsl"
+command = "check rules/unit-target-other-dimension-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: invalid_package incompatible-definition"
+
+[[case]]
+id = "unit-zero-scale-on-missing-target"
+statement = "A unit with a zero scale that also names a missing target is refused as an invalid value, the first row of the unit checks, not as a missing name."
+file = "rules/unit-zero-scale-on-missing-target.fsl"
+command = "check rules/unit-zero-scale-on-missing-target.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: invalid_package invalid-value"
+
+[[case]]
+id = "unit-earliest-unit-checked-first"
+statement = "In one dimension, a unit with a missing target declared before a unit with a zero scale is refused as the missing name, because units are checked in declaration order."
+file = "rules/unit-earliest-unit-checked-first.fsl"
+command = "check rules/unit-earliest-unit-checked-first.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: missing_declaration missing-name"
+
+[[case]]
+id = "unit-two-roots-before-self-cycle"
+statement = "A dimension with a second root and a self-cycle is refused as conflicting definitions, because the root check precedes the cycle check."
+file = "rules/unit-two-roots-before-self-cycle.fsl"
+command = "check rules/unit-two-roots-before-self-cycle.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: invalid_package conflicting-definition"
+
+[[case]]
+id = "unit-first-dimension-refused-second-not-examined"
+statement = "With dimension L declared before T, L's self-cycle is the refusal reported and T's zero-scale unit is not examined."
+file = "rules/unit-first-dimension-refused-second-not-examined.fsl"
+command = "check rules/unit-first-dimension-refused-second-not-examined.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: invalid_package definition-cycle"
+
+[[case]]
+id = "unit-valid-graph-admitted"
+statement = "A dimension with one root and a unit targeting it checks and converts."
+file = "rules/unit-valid-graph-admitted.fsl"
+command = "check rules/unit-valid-graph-admitted.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "unit-derived-dimension-without-base-unit-refused"
+statement = "A unit of the derived dimension Area = L ^ 2 when L is carried by no unit is refused as a missing name retaining L."
+file = "rules/unit-derived-dimension-without-base-unit-refused.fsl"
+command = "check rules/unit-derived-dimension-without-base-unit-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: missing_declaration missing-name"
+
+[[case]]
+id = "unit-derived-product-dimension-without-base-unit-refused"
+statement = "A unit of Vol = Area * L over a base dimension L with no unit is refused as a missing name; Area itself, a derived dimension with no unit, is not refused."
+file = "rules/unit-derived-product-dimension-without-base-unit-refused.fsl"
+command = "check rules/unit-derived-product-dimension-without-base-unit-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: missing_declaration missing-name"
+
+[[case]]
+id = "unit-derived-fourth-power-without-base-unit-refused"
+statement = "A unit of Vol = Area * Area over a base dimension L with no unit is refused as a missing name."
+file = "rules/unit-derived-fourth-power-without-base-unit-refused.fsl"
+command = "check rules/unit-derived-fourth-power-without-base-unit-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: missing_declaration missing-name"
+
+[[case]]
+id = "unit-dimensionless-derived-dimension-admitted"
+statement = "The dimensionless dimension N = L / L has the empty exponent map, so a unit of N is admitted although L carries no unit."
+file = "rules/unit-dimensionless-derived-dimension-admitted.fsl"
+command = "check rules/unit-dimensionless-derived-dimension-admitted.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "unit-derived-dimension-with-base-unit-admitted"
+statement = "A derived dimension Area = L ^ 2 over a base dimension L that has the unit m admits a unit m2 of Area."
+file = "rules/unit-derived-dimension-with-base-unit-admitted.fsl"
+command = "check rules/unit-derived-dimension-with-base-unit-admitted.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "dimension-cycle-of-two-refused"
+statement = "Dimensions A = B and B = A ^ 2 define each other and are refused as a definition cycle at A, before the unit a is examined."
+file = "rules/dimension-cycle-of-two-refused.fsl"
+command = "check rules/dimension-cycle-of-two-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: invalid_package definition-cycle"
+
+[[case]]
+id = "dimension-self-cycle-refused"
+statement = "A dimension D = D * L that uses itself is refused as a definition cycle at D; L has a unit and is admitted."
+file = "rules/dimension-self-cycle-refused.fsl"
+command = "check rules/dimension-self-cycle-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: invalid_package definition-cycle"
+
+[[case]]
+id = "dimension-unknown-term-refused"
+statement = "A dimension D = L * K whose term K is not declared is refused as a missing name retaining D and K, after L is admitted."
+file = "rules/dimension-unknown-term-refused.fsl"
+command = "check rules/dimension-unknown-term-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: missing_declaration missing-name"
+
+[[case]]
+id = "dimension-unknown-term-before-cycle"
+statement = "In dimensions A = B * K and B = A, the unknown term K is refused as a missing name before the cycle between A and B is examined."
+file = "rules/dimension-unknown-term-before-cycle.fsl"
+command = "check rules/dimension-unknown-term-before-cycle.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: missing_declaration missing-name"
+
+[[case]]
+id = "unit-and-record-of-one-name-coexist"
+statement = "A unit and a record may share one name; in a type position the name means the record and Quantity<name> means the unit."
+file = "rules/unit-and-record-of-one-name-coexist.fsl"
+command = "check rules/unit-and-record-of-one-name-coexist.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "unit-duplicate-name-refused"
+statement = "Two units of one name in one package are refused as ambiguous declarations at Quantity<name>."
+file = "rules/unit-duplicate-name-refused.fsl"
+command = "check rules/unit-duplicate-name-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ambiguous_declaration ambiguous-name"
+
+[[case]]
+id = "profile-unknown-refused"
+statement = "A header profile that selects an unknown definition identity is refused as an unknown profile."
+file = "rules/profile-unknown-refused.fsl"
+command = "check rules/profile-unknown-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: unknown_profile unsupported-selection"
+
+[[case]]
+id = "profile-use-site-no-header-refused"
+statement = "A declaration that uses a profile alias the unit's header never declares is refused as a missing selection."
+file = "rules/profile-use-site-no-header-refused.fsl"
+command = "check rules/profile-use-site-no-header-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: missing_declaration missing-selection"
+
+[[case]]
+id = "profile-use-site-wrong-alias-refused"
+statement = "A declaration that uses an alias other than the one the header declares is refused as a missing selection."
+file = "rules/profile-use-site-wrong-alias-refused.fsl"
+command = "check rules/profile-use-site-wrong-alias-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: missing_declaration missing-selection"
+
+[[case]]
+id = "profile-state-core-function-refused"
+statement = "A unit that selects filament.state.core/v1 and declares a function is refused as an unsupported declaration form."
+file = "rules/profile-state-core-function-refused.fsl"
+command = "check rules/profile-state-core-function-refused.fsl"
+status = "running"
+expect_exit = 21
+expect_verdict = "unsupported"
+
+[[case]]
+id = "profile-state-queries-predicate-admitted"
+statement = "A unit that selects filament.state.queries/v1 admits a named predicate declaration."
+file = "rules/profile-state-queries-predicate-admitted.fsl"
+command = "check rules/profile-state-queries-predicate-admitted.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "profile-state-core-predicate-refused"
+statement = "A unit that selects filament.state.core/v1 and declares a named predicate is refused as an unsupported declaration form naming the layer."
+file = "rules/profile-state-core-predicate-refused.fsl"
+command = "check rules/profile-state-core-predicate-refused.fsl"
+status = "running"
+expect_exit = 21
+expect_verdict = "unsupported"
+
+[[case]]
+id = "profile-model-complete-admits-functions"
+statement = "A unit that selects filament.model.complete/v1 admits a pure function declaration."
+file = "rules/profile-model-complete-admits-functions.fsl"
+command = "check rules/profile-model-complete-admits-functions.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "profile-temporal-complete-admits-functions"
+statement = "A unit that selects filament.temporal.complete/v1 admits a pure function declaration."
+file = "rules/profile-temporal-complete-admits-functions.fsl"
+command = "check rules/profile-temporal-complete-admits-functions.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "function-duplicate-name-refused"
+statement = "Two functions of one name in one unit are refused as ambiguous declarations."
+file = "rules/function-duplicate-name-refused.fsl"
+command = "check rules/function-duplicate-name-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ambiguous_declaration ambiguous-name"
+
+[[case]]
+id = "record-duplicate-name-refused"
+statement = "Two records of one name in one unit are refused as ambiguous declarations."
+file = "rules/record-duplicate-name-refused.fsl"
+command = "check rules/record-duplicate-name-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ambiguous_declaration ambiguous-name"
+
+[[case]]
+id = "type-duplicate-alias-refused"
+statement = "Two type aliases of one name in one unit are refused as ambiguous declarations."
+file = "rules/type-duplicate-alias-refused.fsl"
+command = "check rules/type-duplicate-alias-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ambiguous_declaration ambiguous-name"
+
+[[case]]
+id = "enum-and-record-duplicate-name-refused"
+statement = "An enumeration and a record of one name in one unit are refused as ambiguous declarations."
+file = "rules/enum-and-record-duplicate-name-refused.fsl"
+command = "check rules/enum-and-record-duplicate-name-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ambiguous_declaration ambiguous-name"
+
+[[case]]
+id = "record-duplicate-field-refused"
+statement = "A record that declares one field name twice is refused."
+file = "rules/record-duplicate-field-refused.fsl"
+command = "check rules/record-duplicate-field-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ambiguous_declaration ambiguous-name"
+
+[[case]]
+id = "union-duplicate-member-refused"
+statement = "A union that declares one member name twice is refused."
+file = "rules/union-duplicate-member-refused.fsl"
+command = "check rules/union-duplicate-member-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ambiguous_declaration ambiguous-name"
+
+[[case]]
+id = "function-duplicate-parameter-refused"
+statement = "A function that declares one parameter name twice is refused."
+file = "rules/function-duplicate-parameter-refused.fsl"
+command = "check rules/function-duplicate-parameter-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ambiguous_declaration ambiguous-name"
+
+[[case]]
+id = "import-missing-package-refused"
+statement = "An import of a package that is not available is refused as a missing import."
+file = "rules/import-missing-package-refused.fsl"
+command = "check rules/import-missing-package-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: missing_import missing-selection"
+
+[[case]]
+id = "declaration-forward-reference-admitted"
+statement = "A function may use a record that is declared after it, so declaration order does not matter."
+file = "rules/declaration-forward-reference-admitted.fsl"
+command = "check rules/declaration-forward-reference-admitted.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "type-alias-cycle-of-two-refused"
+statement = "Two aliases that name each other are refused as an invalid package."
+file = "rules/type-alias-cycle-of-two-refused.fsl"
+command = "check rules/type-alias-cycle-of-two-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: invalid_package definition-cycle"
+
+[[case]]
+id = "type-alias-self-cycle-refused"
+statement = "An alias that names itself is refused as an invalid package."
+file = "rules/type-alias-self-cycle-refused.fsl"
+command = "check rules/type-alias-self-cycle-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: invalid_package definition-cycle"
+
+[[case]]
+id = "type-alias-chain-admitted"
+statement = "An alias of an alias resolves to the underlying type, so a parameter of the chain compares with one of the base type."
+file = "rules/type-alias-chain-admitted.fsl"
+command = "check rules/type-alias-chain-admitted.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "function-nonrecursive-needs-no-measure"
+statement = "A non-recursive function declares no decreasing measure and is admitted."
+file = "rules/function-nonrecursive-needs-no-measure.fsl"
+command = "check rules/function-nonrecursive-needs-no-measure.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "function-call-to-record-refused"
+statement = "Calling a name that denotes a record, not a function, is refused."
+file = "rules/function-call-to-record-refused.fsl"
+command = "check rules/function-call-to-record-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed operator-ineligible"
+
+[[case]]
+id = "function-calls-undeclared-function-refused"
+statement = "Calling a function that is not declared is refused as a missing declaration."
+file = "rules/function-calls-undeclared-function-refused.fsl"
+command = "check rules/function-calls-undeclared-function-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: missing_declaration missing-name"
+
+[[case]]
+id = "object-declaration-with-members-admitted"
+statement = "An object declaration with an identity, a required field, an optional field, a population and an operation that modifies a field is admitted."
+file = "rules/object-declaration-with-members-admitted.fsl"
+command = "check rules/object-declaration-with-members-admitted.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "object-extends-admitted"
+statement = "An object may extend another object and add a field."
+file = "rules/object-extends-admitted.fsl"
+command = "check rules/object-extends-admitted.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "object-identity-unknown-field-refused"
+statement = "An object whose identity names a field it does not declare is refused as a missing name."
+file = "rules/object-identity-unknown-field-refused.fsl"
+command = "check rules/object-identity-unknown-field-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: missing_declaration missing-name"
+
+[[case]]
+id = "object-duplicate-field-refused"
+statement = "An object that declares one field twice is refused as an ambiguous name."
+file = "rules/object-duplicate-field-refused.fsl"
+command = "check rules/object-duplicate-field-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ambiguous_declaration ambiguous-name"
+
+[[case]]
+id = "object-operation-modifies-unknown-field-refused"
+statement = "An operation that modifies a field the object does not declare is refused as a missing name."
+file = "rules/object-operation-modifies-unknown-field-refused.fsl"
+command = "check rules/object-operation-modifies-unknown-field-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: missing_declaration missing-name"
+
+[[case]]
+id = "object-duplicate-name-refused"
+statement = "Two objects of one name are refused as ambiguous declarations."
+file = "rules/object-duplicate-name-refused.fsl"
+command = "check rules/object-duplicate-name-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ambiguous_declaration ambiguous-name"
+
+[[case]]
+id = "object-field-population-type-refused"
+statement = "A record field typed Population<Order>[3] is not an admitted declaration set and is refused as an ineligible operator."
+file = "rules/object-field-population-type-refused.fsl"
+command = "check rules/object-field-population-type-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed operator-ineligible"
+
+[[case]]
+id = "object-field-of-record-type-admitted"
+statement = "An object field may be typed by a record, as a native record field may."
+file = "rules/object-field-of-record-type-admitted.fsl"
+command = "check rules/object-field-of-record-type-admitted.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "object-field-of-enum-and-option-type-admitted"
+statement = "An object field may be typed by an enumeration or an Option, as a native record field may."
+file = "rules/object-field-of-enum-and-option-type-admitted.fsl"
+command = "check rules/object-field-of-enum-and-option-type-admitted.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "object-field-of-unknown-type-refused"
+statement = "An object field typed by a name that is not declared is refused as a missing name."
+file = "rules/object-field-of-unknown-type-refused.fsl"
+command = "check rules/object-field-of-unknown-type-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: missing_declaration missing-name"
+
+[[case]]
+id = "object-field-of-function-name-refused"
+statement = "An object field typed by the name of a function is refused as a missing declaration, as a record field would be."
+file = "rules/object-field-of-function-name-refused.fsl"
+command = "check rules/object-field-of-function-name-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: missing_declaration missing-name"
+
+[[case]]
+id = "object-invariant-bound-anchor-admitted"
+statement = "An invariant over an object at current, with a body that reads a declared field, is admitted."
+file = "rules/object-invariant-bound-anchor-admitted.fsl"
+command = "check rules/object-invariant-bound-anchor-admitted.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "object-invariant-unknown-field-refused"
+statement = "An invariant whose body reads a field the object does not declare is refused."
+file = "rules/object-invariant-unknown-field-refused.fsl"
+command = "check rules/object-invariant-unknown-field-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed type-mismatch"
+
+[[case]]
+id = "object-invariant-without-anchor-refused"
+statement = "An invariant that omits its at-current anchor is refused at parse as invalid syntax."
+file = "rules/object-invariant-without-anchor-refused.fsl"
+command = "check rules/object-invariant-without-anchor-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: invalid_syntax unexpected-token"
+
+[[case]]
+id = "object-invariant-on-unknown-object-refused"
+statement = "An invariant over an object that is not declared is refused as a missing declaration."
+file = "rules/object-invariant-on-unknown-object-refused.fsl"
+command = "check rules/object-invariant-on-unknown-object-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: missing_declaration missing-name"
+
+[[case]]
+id = "object-pre-post-on-operation-admitted"
+statement = "A precondition and a postcondition naming a declared operation of the object are admitted."
+file = "rules/object-pre-post-on-operation-admitted.fsl"
+command = "check rules/object-pre-post-on-operation-admitted.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "object-pre-on-unknown-operation-refused"
+statement = "A precondition naming an operation the object does not declare is refused as a missing declaration."
+file = "rules/object-pre-on-unknown-operation-refused.fsl"
+command = "check rules/object-pre-on-unknown-operation-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: missing_declaration missing-name"
+
+[[case]]
+id = "enum-declared-with-label-admitted"
+statement = "An enumeration member may carry a quoted label, and the members stay distinct values."
+file = "rules/enum-declared-with-label-admitted.fsl"
+command = "check rules/enum-declared-with-label-admitted.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "enum-empty-refused"
+statement = "An enumeration with no member is refused at parse because the grammar requires at least one member."
+file = "rules/enum-empty-refused.fsl"
+command = "check rules/enum-empty-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: invalid_syntax unexpected-token"
+
+[[case]]
+id = "tuple-empty-refused"
+statement = "A tuple with no component is refused at parse because the grammar requires at least one type."
+file = "rules/tuple-empty-refused.fsl"
+command = "check rules/tuple-empty-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: invalid_syntax unexpected-token"
+
+[[case]]
+id = "record-empty-refused"
+statement = "A record with no field is refused at parse because the grammar requires at least one field."
+file = "rules/record-empty-refused.fsl"
+command = "check rules/record-empty-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: invalid_syntax unexpected-token"
+
+[[case]]
+id = "declaration-unused-admitted"
+statement = "A function that nothing calls is checked like any other and an unused declaration does no harm."
+file = "rules/declaration-unused-admitted.fsl"
+command = "check rules/declaration-unused-admitted.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "declaration-unused-body-still-checked"
+statement = "An unused function whose body can leave its declared result type is still refused as an unproved range."
+file = "rules/declaration-unused-body-still-checked.fsl"
+command = "check rules/declaration-unused-body-still-checked.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: undefined_expression unproved-range"
+
+[[case]]
+id = "model-invariant-on-model-type-compiles"
+statement = "An invariant over the model type Library::Book at current that reads the model's fields and enumeration case compiles against the library model."
+file = "rules/model-invariant-on-model-type-compiles.fsl"
+command = "compile requests/model-invariant-on-model-type-compiles.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "model-invariant-alias-independent"
+statement = "The same invariant compiles when the model is selected under a different alias, because the declaration keys come from the package, not the alias."
+file = "rules/model-invariant-alias-independent.fsl"
+command = "compile requests/model-invariant-alias-independent.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "model-field-unknown-refused"
+statement = "An invariant that reads a field the model's Book does not declare is refused as a type mismatch, because Book has no field copy."
+file = "rules/model-field-unknown-refused.fsl"
+command = "compile requests/model-field-unknown-refused.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed type-mismatch"
+
+[[case]]
+id = "model-type-unknown-refused"
+statement = "An invariant over a type the model does not declare is refused as a missing declaration."
+file = "rules/model-type-unknown-refused.fsl"
+command = "compile requests/model-type-unknown-refused.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: missing_declaration missing-name"
+
+[[case]]
+id = "model-enum-case-unknown-refused"
+statement = "A clause that names an enumeration case the model's Status does not declare is refused as a type mismatch naming the enumeration and the case."
+file = "rules/model-enum-case-unknown-refused.fsl"
+command = "compile requests/model-enum-case-unknown-refused.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed type-mismatch"
+
+[[case]]
+id = "model-field-wrong-type-comparison-refused"
+statement = "Comparing a numeric field with an enumeration case is refused as a type mismatch."
+file = "rules/model-field-wrong-type-comparison-refused.fsl"
+command = "compile requests/model-field-wrong-type-comparison-refused.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed type-mismatch"
+
+[[case]]
+id = "model-not-supplied-refused"
+statement = "A model declaration that names a package the request does not supply is refused as a missing import."
+file = "rules/model-not-supplied-refused.fsl"
+command = "compile requests/model-not-supplied-refused.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: missing_import missing-selection"
+
+[[case]]
+id = "model-wrong-identity-refused"
+statement = "A model declaration that names a package identity different from the one supplied is refused as a missing import."
+file = "rules/model-wrong-identity-refused.fsl"
+command = "compile requests/model-wrong-identity-refused.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: missing_import missing-selection"
+
+[[case]]
+id = "model-alias-duplicate-refused"
+statement = "Two model declarations that use one alias are refused as ambiguous declarations."
+file = "rules/model-alias-duplicate-refused.fsl"
+command = "compile requests/model-alias-duplicate-refused.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ambiguous_declaration ambiguous-name"
+
+[[case]]
+id = "model-pre-and-post-on-model-operation-compile"
+statement = "A precondition and a postcondition that name the model operation Library::Book::lend compile."
+file = "rules/model-pre-and-post-on-model-operation-compile.fsl"
+command = "compile requests/model-pre-and-post-on-model-operation-compile.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "model-pre-on-unknown-operation-refused"
+statement = "A precondition that names an operation the model's Book does not declare is refused as a missing declaration."
+file = "rules/model-pre-on-unknown-operation-refused.fsl"
+command = "compile requests/model-pre-on-unknown-operation-refused.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: missing_declaration missing-name"
+
+[[case]]
+id = "model-invariant-without-anchor-refused"
+statement = "An invariant that omits its at-current anchor is refused at parse as invalid syntax."
+file = "rules/model-invariant-without-anchor-refused.fsl"
+command = "compile requests/model-invariant-without-anchor-refused.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: invalid_syntax unexpected-token"
+
+[[case]]
+id = "model-clause-header-in-clause-refused"
+statement = "A model declaration is not a clause body, so a body that begins with a model declaration is refused as invalid syntax at its first token."
+file = "rules/model-clause-header-in-clause-refused.fsl"
+command = "compile requests/model-clause-header-in-clause-refused.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: invalid_syntax unexpected-token"
+
+[[case]]
+id = "model-range-proof-over-field"
+statement = "Adding one to a Copies field can exceed the field's bound of 1000, so assigning the sum to a bound of Int[0, 1000] is refused as an unproved range."
+file = "rules/model-range-proof-over-field.fsl"
+command = "compile requests/model-range-proof-over-field.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: undefined_expression unproved-range"
+
+[[case]]
+id = "model-record-typed-function-parameter"
+statement = "A function may take a Reference to a model object type as a parameter and read its fields through deref."
+file = "rules/model-record-typed-function-parameter.fsl"
+command = "compile requests/model-record-typed-function-parameter.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "model-reference-literal-types-as-reference"
+statement = "The reference literal Library::Book#\"b1\" has type Reference<Library::Book>, so a parameter of that type and the literal compare with =."
+file = "rules/model-reference-literal-types-as-reference.fsl"
+command = "compile requests/model-reference-literal-types-as-reference.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "model-reference-literal-unknown-type-refused"
+statement = "The reference literal Library::Absent#\"b1\" names a type the model does not declare and is refused as a missing declaration."
+file = "rules/model-reference-literal-unknown-type-refused.fsl"
+command = "compile requests/model-reference-literal-unknown-type-refused.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: missing_declaration missing-name"
+
+[[case]]
+id = "model-reference-literal-unquoted-refused"
+statement = "A reference literal whose key is not quoted, Library::Book#b1, is refused at parse as invalid syntax."
+file = "rules/model-reference-literal-unquoted-refused.fsl"
+command = "compile requests/model-reference-literal-unquoted-refused.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: invalid_syntax unexpected-token"
+
+[[case]]
+id = "model-reference-literal-space-before-hash-refused"
+statement = "A space between the type name and the hash, as in Library::Book #\"b1\", is refused at parse as invalid syntax."
+file = "rules/model-reference-literal-space-before-hash-refused.fsl"
+command = "compile requests/model-reference-literal-space-before-hash-refused.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: invalid_syntax unexpected-token"
+
+[[case]]
+id = "model-reference-literal-chained-refused"
+statement = "Two keys in a row, Library::Book#\"a\"#\"b\", are refused at parse as invalid syntax at the second hash."
+file = "rules/model-reference-literal-chained-refused.fsl"
+command = "compile requests/model-reference-literal-chained-refused.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: invalid_syntax unexpected-token"
+
+[[case]]
+id = "model-reference-of-other-type-refused"
+statement = "Reference<T> admits only a model object type, so a parameter of type Reference over the integer alias Qty is refused as a missing declaration because Qty names no object type."
+file = "rules/model-reference-of-other-type-refused.fsl"
+command = "compile requests/model-reference-of-other-type-refused.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: missing_declaration missing-name"
+
+[[case]]
+id = "model-and-source-type-of-one-name-differ"
+statement = "A source object Order and a model object Order of the same name are different types, so a function taking the model's does not accept the source's."
+file = "rules/model-and-source-type-of-one-name-differ.fsl"
+command = "compile requests/model-and-source-type-of-one-name-differ.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: ill_typed type-mismatch"
+
+[[case]]
+id = "header-unknown-edition-refused"
+statement = "A unit whose header names an edition other than 1-draft is refused as an unknown edition."
+file = "rules/header-unknown-edition-refused.fsl"
+command = "check rules/header-unknown-edition-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: unknown_edition unsupported-selection"
+
+[[case]]
+id = "header-unknown-language-refused"
+statement = "A unit whose header names a language other than ix:native is refused as an unknown language."
+file = "rules/header-unknown-language-refused.fsl"
+command = "check rules/header-unknown-language-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: unknown_language unsupported-selection"
+
+[[case]]
+id = "header-missing-refused"
+statement = "A unit that begins with a profile declaration and no language header is refused at parse as invalid syntax."
+file = "rules/header-missing-refused.fsl"
+command = "check rules/header-missing-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: invalid_syntax unexpected-token"
+
+[[case]]
+id = "profile-state-graph-function-refused"
+statement = "A unit that selects filament.state.graph/v1 and declares a function is refused as an unsupported declaration form."
+file = "rules/profile-state-graph-function-refused.fsl"
+command = "check rules/profile-state-graph-function-refused.fsl"
+status = "running"
+expect_exit = 21
+expect_verdict = "unsupported"
+
+[[case]]
+id = "profile-state-queries-function-refused"
+statement = "A unit that selects filament.state.queries/v1 admits predicates but not function declarations, so a function is refused as an unsupported declaration form."
+file = "rules/profile-state-queries-function-refused.fsl"
+command = "check rules/profile-state-queries-function-refused.fsl"
+status = "running"
+expect_exit = 21
+expect_verdict = "unsupported"
+
+[[case]]
+id = "profile-two-aliases-of-one-definition-admitted"
+statement = "Two header aliases that name one definition are admitted, and a function may use either."
+file = "rules/profile-two-aliases-of-one-definition-admitted.fsl"
+command = "check rules/profile-two-aliases-of-one-definition-admitted.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "profile-state-core-clause-admitted"
+statement = "A unit that selects filament.state.core/v1 admits an invariant over a model type at current."
+file = "rules/profile-state-core-clause-admitted.fsl"
+command = "compile requests/profile-state-core-clause-admitted.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "profile-state-core-filter-refused"
+statement = "A unit that selects filament.state.core/v1 and calls filter is refused as an unsupported expression form naming the layer."
+file = "rules/profile-state-core-filter-refused.fsl"
+command = "compile requests/profile-state-core-filter-refused.json"
+status = "running"
+expect_exit = 21
+expect_verdict = "unsupported"
+
+[[case]]
+id = "enum-single-member-admitted"
+statement = "An enumeration with exactly one member is admitted, and its member equals itself."
+file = "rules/enum-single-member-admitted.fsl"
+command = "check rules/enum-single-member-admitted.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "record-single-field-admitted"
+statement = "A record with exactly one field is admitted."
+file = "rules/record-single-field-admitted.fsl"
+command = "check rules/record-single-field-admitted.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "tuple-single-component-admitted"
+statement = "A tuple with exactly one component is admitted."
+file = "rules/tuple-single-component-admitted.fsl"
+command = "check rules/tuple-single-component-admitted.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "union-single-member-admitted"
+statement = "A union with exactly one member is admitted and a case over it needs that one arm."
+file = "rules/union-single-member-admitted.fsl"
+command = "check rules/union-single-member-admitted.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "alias-of-collection-admitted"
+statement = "A type alias may name a bounded collection type, and a parameter of the alias compares with one of the collection type."
+file = "rules/alias-of-collection-admitted.fsl"
+command = "check rules/alias-of-collection-admitted.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "alias-through-record-field-admitted"
+statement = "A record field may use a type alias declared later in the unit."
+file = "rules/alias-through-record-field-admitted.fsl"
+command = "check rules/alias-through-record-field-admitted.fsl"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
+id = "function-parameter-of-undeclared-record-refused"
+statement = "A function parameter typed by a record that is not declared is refused as a missing declaration."
+file = "rules/function-parameter-of-undeclared-record-refused.fsl"
+command = "check rules/function-parameter-of-undeclared-record-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: missing_declaration missing-name"
+
+[[case]]
+id = "function-result-of-undeclared-type-refused"
+statement = "A function result typed by a type that is not declared is refused as a missing declaration."
+file = "rules/function-result-of-undeclared-type-refused.fsl"
+command = "check rules/function-result-of-undeclared-type-refused.fsl"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: missing_declaration missing-name"
+
+[[case]]
+id = "model-version-suffix-refused"
+statement = "A model declaration followed by a version token is refused at parse as invalid syntax, because a source selection carries only its identity."
+file = "rules/model-version-suffix-refused.fsl"
+command = "compile requests/model-version-suffix-refused.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: invalid_syntax unexpected-token"
+
+[[case]]
+id = "model-digest-suffix-refused"
+statement = "A model declaration followed by a digest token is refused at parse as invalid syntax, because a source selection carries only its identity."
+file = "rules/model-digest-suffix-refused.fsl"
+command = "compile requests/model-digest-suffix-refused.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: invalid_syntax unexpected-token"
+
+[[case]]
+id = "model-identity-absent-refused"
+statement = "A model declaration with no identity string is refused at parse as invalid syntax at the token where the string is expected."
+file = "rules/model-identity-absent-refused.fsl"
+command = "compile requests/model-identity-absent-refused.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: invalid_syntax unexpected-token"
+
+[[case]]
+id = "model-supplied-twice-refused"
+statement = "Two documents supplied under one domain package identity are refused as conflicting definitions before the source is read."
+file = "rules/model-supplied-twice-refused.fsl"
+command = "compile requests/model-supplied-twice-refused.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refused: invalid_package conflicting-definition"

@@ -1,0 +1,5 @@
+// FSpec FR-002, FR-144-AC-9
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+type Few = Sequence<Int[0, 9]>[0, 3];
+function f using v(a: Few, b: Sequence<Int[0, 9]>[0, 3]): Boolean pure { a = b }

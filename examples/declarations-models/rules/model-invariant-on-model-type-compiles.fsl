@@ -1,0 +1,5 @@
+// FSpec FR-154-AC-2, FR-019-AC-6
+language "ix:native" edition "1-draft";
+profile v = "filament.model.complete/v1";
+model Library = "my/library";
+invariant OnLoanHasCopies using v on Library::Book at current { self.status = Library::Status::OnLoan implies self.copies >= 1 }

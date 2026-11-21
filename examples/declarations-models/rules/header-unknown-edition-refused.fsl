@@ -1,0 +1,4 @@
+// FSpec FR-001, FR-019
+language "ix:native" edition "99";
+profile v = "filament.value.complete/v1";
+function f using v(a: Boolean): Boolean pure { a }
