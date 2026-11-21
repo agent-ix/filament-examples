@@ -1,6 +1,12 @@
 {
   "format": "native-compile/1",
   "request": {
+    "clocks": {
+      "line-clock": {
+        "kind": "timestamped_event",
+        "timestamp_unit": "s"
+      }
+    },
     "models": [
       {
         "format": "semantic-ir/2.0.0",

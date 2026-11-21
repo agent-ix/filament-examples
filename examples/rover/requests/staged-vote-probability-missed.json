@@ -1,5 +1,5 @@
 {
-  "format": "native-compile/1",
+  "format": "native-analyze/1",
   "request": {
     "models": [
       {
@@ -21,6 +21,19 @@
         "document": "stagedvoteprobabilitymissed",
         "formal_revision": 1
       }
-    }
+    },
+    "documents": [
+      {
+        "file": "../data/start-driving.json"
+      }
+    ],
+    "items": [
+      {
+        "claim": "VoteAlmostNeverWrong",
+        "probabilistic": {
+          "evidence": "exact"
+        }
+      }
+    ]
   }
 }
