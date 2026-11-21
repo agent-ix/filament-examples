@@ -3,17 +3,17 @@ export default {
   values: { PartId: [0, 100000], Count: [0, 10] },
   enums: { PartStatus: ["Released", "Machined", "Passed", "Rework", "Scrapped", "Assembled"] },
   records: {
-    WorkOrder: { part: "Integer", ok: "Boolean" },
-    Handoff: { part: "Integer", ok: "Boolean", pass: "Boolean", rework: "Boolean" },
-    AttemptView: { ok: "Boolean", id: "Integer", previous: "Integer" },
-    EffectView: { ok: "Boolean", part: "Integer" },
+    WorkOrder: { part: "PartId", ok: "Boolean" },
+    Handoff: { part: "PartId", ok: "Boolean", pass: "Boolean", rework: "Boolean" },
+    AttemptView: { ok: "Boolean", id: "Count", previous: "Count" },
+    EffectView: { ok: "Boolean", part: "PartId" },
     TriggerView: { scrapped: "Boolean" },
     RecoveryView: { complete: "Boolean" },
     CommitView: { ok: "Boolean" },
     ClosureView: { complete: "Boolean" },
   },
   objects: {
-    Job: { fields: { part: "Integer", status: "PartStatus", reworks: "Count" } },
+    Job: { fields: { part: "PartId", status: "PartStatus", reworks: "Count" } },
     PlanningService: { fields: { open: "Count" } },
     MachiningStation: {
       fields: { reserved: "Boolean", busy: "Boolean" },
