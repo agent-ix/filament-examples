@@ -1,0 +1,36 @@
+{
+  "format": "native-run/1",
+  "request": {
+    "models": [],
+    "program": {
+      "source": {
+        "file": "../rules/calls.fsl",
+        "authority": "example",
+        "identity": "example:run-inputs/calls",
+        "document": "calls",
+        "formal_revision": 1
+      }
+    },
+    "call": {
+      "function": "IdSet",
+      "arguments": [
+        {
+          "parameter": "a",
+          "value": {
+            "type": "set",
+            "elements": [
+              {
+                "type": "integer",
+                "value": "3"
+              },
+              {
+                "type": "integer",
+                "value": "1"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

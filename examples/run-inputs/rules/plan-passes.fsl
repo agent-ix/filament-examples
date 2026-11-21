@@ -1,0 +1,16 @@
+language "ix:native" edition "1-draft";
+profile v = "filament.model.complete/v1";
+profile inf = "filament.temporal.infinite-trace/v1";
+model K = "example/tank";
+// A tank holds 0 to 3 units: fill adds one below the top, drain subtracts one above zero.
+pre FillBelowTop using v on K::Tank::fill { self.level < 3 }
+post FillAddsOne using v on K::Tank::fill { self.level = pre(self.level) + 1 }
+pre DrainAboveZero using v on K::Tank::drain { self.level > 0 }
+post DrainSubtractsOne using v on K::Tank::drain { self.level = pre(self.level) - 1 }
+// Fills and drains keep the level in 0 to 3, so Bounded holds; three fills reach 3, so Low is refuted.
+temporal Bounded using inf over (t: K::Tank) clock "model-steps" on origin { always holds(t.level <= 3) }
+temporal Low using inf over (t: K::Tank) clock "model-steps" on origin { always holds(t.level <= 2) }
+verify Release using v {
+  check safe claim Bounded method model_check domain K::Tank bound 5;
+  check again claim Bounded method model_check domain K::Tank depends [safe] bound 5;
+}

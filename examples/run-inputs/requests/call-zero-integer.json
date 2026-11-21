@@ -1,0 +1,27 @@
+{
+  "format": "native-run/1",
+  "request": {
+    "models": [],
+    "program": {
+      "source": {
+        "file": "../rules/calls.fsl",
+        "authority": "example",
+        "identity": "example:run-inputs/calls",
+        "document": "calls",
+        "formal_revision": 1
+      }
+    },
+    "call": {
+      "function": "IdInt",
+      "arguments": [
+        {
+          "parameter": "a",
+          "value": {
+            "type": "integer",
+            "value": "0"
+          }
+        }
+      ]
+    }
+  }
+}

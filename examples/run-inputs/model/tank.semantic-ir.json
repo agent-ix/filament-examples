@@ -1,0 +1,239 @@
+{
+  "contractVersion": "2.0.0",
+  "canonicalization": {
+    "algorithm": "rfc8785-v1"
+  },
+  "source": {
+    "identity": "ix://example/tank/spec",
+    "version": "1.0.0",
+    "dialect": "spec-bundle"
+  },
+  "package": {
+    "identity": "example/tank",
+    "version": "1.0.0",
+    "mappingVersions": [],
+    "profileVersions": []
+  },
+  "occurrences": [],
+  "extensions": [],
+  "constructs": [
+    {
+      "kind": {
+        "module": "example/tank",
+        "name": "object_type"
+      },
+      "moduleVersion": "1.0.0",
+      "construct": {
+        "identity": "none",
+        "shape": "record",
+        "members": {},
+        "meaning": "filament.meaning.model.object-type/v1"
+      }
+    },
+    {
+      "kind": {
+        "module": "example/tank",
+        "name": "population"
+      },
+      "moduleVersion": "1.0.0",
+      "construct": {
+        "identity": "none",
+        "shape": "record",
+        "members": {},
+        "meaning": "filament.meaning.model.population/v1"
+      }
+    },
+    {
+      "kind": {
+        "module": "example/tank",
+        "name": "value_type"
+      },
+      "moduleVersion": "1.0.0",
+      "construct": {
+        "identity": "none",
+        "shape": "record",
+        "members": {},
+        "meaning": "filament.meaning.model.value-type/v1"
+      }
+    }
+  ],
+  "types": [
+    {
+      "identity": "ix://example/tank/Level",
+      "displayName": "Level",
+      "kind": {
+        "module": "example/tank",
+        "name": "value_type"
+      },
+      "roles": [],
+      "origin": {
+        "generated": {
+          "generatorIdentity": "ix://example/tank/Level",
+          "generatorVersion": "1.0.0",
+          "inputIdentities": [
+            "ix://example/tank/Level"
+          ]
+        }
+      },
+      "extensions": [],
+      "unknownPolicy": "reject",
+      "scalar": "integer",
+      "constraints": [
+        {
+          "identity": "ix://example/tank/Level/constraints/min",
+          "keyword": "min",
+          "operands": {
+            "value": "0"
+          },
+          "appliesTo": "ix://filament/native/Integer",
+          "diagnosticCode": "bound.min",
+          "origin": {
+            "generated": {
+              "generatorIdentity": "ix://example/tank/Level",
+              "generatorVersion": "1.0.0",
+              "inputIdentities": [
+                "ix://example/tank/Level"
+              ]
+            }
+          }
+        },
+        {
+          "identity": "ix://example/tank/Level/constraints/max",
+          "keyword": "max",
+          "operands": {
+            "value": "3"
+          },
+          "appliesTo": "ix://filament/native/Integer",
+          "diagnosticCode": "bound.max",
+          "origin": {
+            "generated": {
+              "generatorIdentity": "ix://example/tank/Level",
+              "generatorVersion": "1.0.0",
+              "inputIdentities": [
+                "ix://example/tank/Level"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "identity": "ix://example/tank/Tank",
+      "displayName": "Tank",
+      "kind": {
+        "module": "example/tank",
+        "name": "object_type"
+      },
+      "roles": [],
+      "origin": {
+        "generated": {
+          "generatorIdentity": "ix://example/tank/Tank",
+          "generatorVersion": "1.0.0",
+          "inputIdentities": [
+            "ix://example/tank/Tank"
+          ]
+        }
+      },
+      "constraints": [],
+      "extensions": [],
+      "unknownPolicy": "reject",
+      "supertypes": [],
+      "fields": [
+        {
+          "identity": "ix://example/tank/Tank/level",
+          "name": "level",
+          "typeRef": "ix://example/tank/Level",
+          "presence": "required",
+          "nullable": false,
+          "defaultKind": "none",
+          "multiplicity": {
+            "lower": 1,
+            "upper": 1,
+            "ordered": false,
+            "unique": true
+          },
+          "origin": {
+            "generated": {
+              "generatorIdentity": "ix://example/tank/Tank/level",
+              "generatorVersion": "1.0.0",
+              "inputIdentities": [
+                "ix://example/tank/Tank/level"
+              ]
+            }
+          }
+        }
+      ],
+      "operations": [
+        {
+          "identity": "ix://example/tank/Tank/fill",
+          "name": "fill",
+          "params": [],
+          "pre": [],
+          "post": [],
+          "origin": {
+            "generated": {
+              "generatorIdentity": "ix://example/tank/Tank/fill",
+              "generatorVersion": "1.0.0",
+              "inputIdentities": [
+                "ix://example/tank/Tank/fill"
+              ]
+            }
+          },
+          "frame": {
+            "modifies": [
+              "ix://example/tank/Tank/level"
+            ],
+            "creates": [],
+            "deletes": []
+          }
+        },
+        {
+          "identity": "ix://example/tank/Tank/drain",
+          "name": "drain",
+          "params": [],
+          "pre": [],
+          "post": [],
+          "origin": {
+            "generated": {
+              "generatorIdentity": "ix://example/tank/Tank/drain",
+              "generatorVersion": "1.0.0",
+              "inputIdentities": [
+                "ix://example/tank/Tank/drain"
+              ]
+            }
+          },
+          "frame": {
+            "modifies": [
+              "ix://example/tank/Tank/level"
+            ],
+            "creates": [],
+            "deletes": []
+          }
+        }
+      ]
+    }
+  ],
+  "populations": [
+    {
+      "identity": "ix://example/tank/tanks",
+      "displayName": "tanks",
+      "kind": {
+        "module": "example/tank",
+        "name": "population"
+      },
+      "members": [
+        "ix://example/tank/Tank"
+      ],
+      "extent": "closed",
+      "origin": {
+        "generated": {
+          "generatorIdentity": "ix://example/tank/tanks",
+          "generatorVersion": "1.0.0",
+          "inputIdentities": [
+            "ix://example/tank/tanks"
+          ]
+        }
+      }
+    }
+  ]
+}

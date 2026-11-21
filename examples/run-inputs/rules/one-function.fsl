@@ -1,0 +1,5 @@
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+
+// One function is a node-bearing declaration.
+function One using v(): Integer pure { 1 }

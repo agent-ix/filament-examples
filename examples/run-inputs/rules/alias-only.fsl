@@ -1,0 +1,5 @@
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+
+// A type alias has no node of its own, so a unit that writes only aliases writes no node.
+type Cents = Int[0, 100];

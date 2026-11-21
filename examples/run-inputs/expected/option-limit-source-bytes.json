@@ -1,0 +1,10 @@
+{
+  "category": "incomplete",
+  "last_stage": "S1",
+  "result": null,
+  "first_diagnostic": {
+    "code": "stage_limit_exceeded",
+    "cause": "input-bytes-exceeded"
+  },
+  "items": []
+}

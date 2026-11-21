@@ -1,0 +1,15 @@
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+
+// FR-550: functions a run request calls with supplied arguments and reads a completed value from.
+function Five using v(): Integer pure { 5 }
+function Add using v(a: Integer, b: Integer): Integer pure { a + b }
+function IdInt using v(a: Integer): Integer pure { a }
+function IdBool using v(a: Boolean): Boolean pure { a }
+// A digit is an integer from 0 to 9 inclusive.
+function Digit using v(a: Int[0, 9]): Int[0, 9] pure { a }
+// A sequence holds at most three integers.
+function IdSeq using v(a: Sequence<Integer>[0, 3]): Sequence<Integer>[0, 3] pure { a }
+function IdRat using v(a: Rational[-100, 100; 1, 100]): Rational[-100, 100; 1, 100] pure { a }
+function IdText using v(a: Text[0, 20; unicode-scalars]): Text[0, 20; unicode-scalars] pure { a }
+function IdSet using v(a: Set<Integer>[0, 3]): Set<Integer>[0, 3] pure { a }

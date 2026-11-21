@@ -1,0 +1,28 @@
+{
+  "events": [],
+  "summary": {
+    "clauses": [
+      {
+        "basis": "unsettled",
+        "category": "pending",
+        "clause": "EventuallyTwo",
+        "disposition": {
+          "category": "pending",
+          "stage": "evaluate",
+          "temporal": {
+            "kind": "pending"
+          }
+        },
+        "settled": false,
+        "settlement": {
+          "step": "0",
+          "trigger": "finish"
+        }
+      }
+    ],
+    "format": "filament.monitor-summary/1",
+    "ledger": null,
+    "records": 0,
+    "refused": 0
+  }
+}
