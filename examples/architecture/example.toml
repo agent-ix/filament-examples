@@ -269,6 +269,17 @@ expect_verdict = "refused: invalid-weight"
 serves = "Probability reference (models)"
 
 [[case]]
+id = "models-workload-zero-weight"
+rule = ""
+statement = "A workload can assign zero weight to an operation."
+file = "rules/probability/models/models-workload-zero-weight.fsl"
+command = "compile requests/probability/models/models-workload-zero-weight.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "checked: workload"
+serves = "Probability reference (models)"
+
+[[case]]
 id = "models-random-in-precondition"
 rule = ""
 statement = "A precondition cannot read a random parameter, because a draw happens after the operation is chosen."
@@ -363,8 +374,8 @@ statement = "A probability event under a bounded profile has an interval on ever
 file = "rules/probability/claims/claims-unbounded-event.fsl"
 command = "compile requests/probability/claims/claims-unbounded-event.json"
 status = "running"
-expect_exit = 20
-expect_verdict = "refused: unbounded-event"
+expect_exit = 21
+expect_verdict = "unsupported: interval-less operator under a bounded profile"
 serves = "Probability reference (claims)"
 
 [[case]]
