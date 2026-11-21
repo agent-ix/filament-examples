@@ -1,1 +1,1 @@
-the checker refused the package: invalid_probabilistic_model (unbounded-event): the event of claim `StaysUp` needs a finite window: every operator takes a closed interval under a bounded profile
+unsupported_construct (expression-form): the operator needs a closed interval under this profile

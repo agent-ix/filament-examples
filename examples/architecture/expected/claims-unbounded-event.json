@@ -1,10 +1,10 @@
 {
-  "category": "refusal",
+  "category": "unsupported",
   "last_stage": "S3",
   "result": null,
   "first_diagnostic": {
-    "code": "invalid_probabilistic_model",
-    "cause": "unbounded-event"
+    "code": "unsupported_construct",
+    "cause": "expression-form"
   },
   "items": []
 }
