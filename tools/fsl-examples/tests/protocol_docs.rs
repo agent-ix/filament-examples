@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MIT
 //! The protocol documentation cases through the production driver and runner.
 
 use std::cell::RefCell;
