@@ -1,0 +1,7 @@
+language "ix:native" edition "1-draft";
+profile v = "filament.model.complete/v1";
+model Shop = "example/shop";
+
+pre OptionalApproverBadge using v on Shop::Order::note {
+  present(secondApprover) implies deref(value(secondApprover)).badge = 1
+}
