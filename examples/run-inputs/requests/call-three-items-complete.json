@@ -11,25 +11,51 @@
         "formal_revision": 1
       }
     },
-    "items": [
-      {
-        "call": {
-          "function": "Five",
-          "arguments": []
+    "items": {
+      "selections": [
+        {
+          "call": {
+            "function": "IdInt",
+            "arguments": [
+              {
+                "parameter": "a",
+                "value": {
+                  "type": "integer",
+                  "value": "3"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "call": {
+            "function": "IdInt",
+            "arguments": [
+              {
+                "parameter": "a",
+                "value": {
+                  "type": "integer",
+                  "value": "5"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "call": {
+            "function": "IdInt",
+            "arguments": [
+              {
+                "parameter": "a",
+                "value": {
+                  "type": "integer",
+                  "value": "7"
+                }
+              }
+            ]
+          }
         }
-      },
-      {
-        "call": {
-          "function": "Five",
-          "arguments": []
-        }
-      },
-      {
-        "call": {
-          "function": "Five",
-          "arguments": []
-        }
-      }
-    ]
+      ]
+    }
   }
 }

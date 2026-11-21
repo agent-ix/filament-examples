@@ -124,7 +124,7 @@ command = "analyze requests/staged-two-locks-deadlock.json"
 engine = "model-checking"
 status = "running"
 expect_exit = 21
-expect_verdict = "unsupported operation-contract items; derived deadlock-freedom violated"
+expect_verdict = "six unsupported operation-contract items; derived deadlock-freedom refuted"
 serves = "Model checking reference (model subjects)"
 
 [[case]]
@@ -136,7 +136,7 @@ command = "analyze requests/two-locks-ordered.json"
 engine = "model-checking"
 status = "running"
 expect_exit = 21
-expect_verdict = "unsupported operation-contract items; derived deadlock-freedom holds"
+expect_verdict = "six unsupported operation-contract items; derived deadlock-freedom proved"
 serves = "Model checking reference (model subjects)"
 
 [[case]]

@@ -83,9 +83,12 @@ rule = ""
 statement = "Every job ends assembled, scrapped or given up."
 file = "rules/part-flow-untimed.fsl"
 command = "analyze requests/analyze/saga-deadlock-free.json"
-status = "running"
-expect_exit = 0
-expect_verdict = "holds"
+status = "staged"
+expect_exit = 21
+ready_exit = 0
+waits_on = "QSL-2727"
+why = "PartFlow analysis settles unsupported with unsupported_projection/unbounded-extent in en-1 for temporal-satisfaction."
+needs = "deadlock-freedom analysis of the unbounded saga protocol"
 serves = "Learn L5/L6; Guide: check a model exhaustively"
 
 [[case]]

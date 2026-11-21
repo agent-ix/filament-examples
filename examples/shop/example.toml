@@ -1688,7 +1688,7 @@ file = "rules/paid-in-full.fsl"
 command = "run requests/limits/observation-document-bytes.json"
 status = "running"
 expect_exit = 22
-expect_verdict = "incomplete: resource_exhausted"
+expect_verdict = "incomplete: stage_limit_exceeded input-bytes-exceeded"
 serves = "Checks: limits"
 
 [[case]]
