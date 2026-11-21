@@ -1,0 +1,59 @@
+{
+  "format": "native-analyze/1",
+  "request": {
+    "models": [
+      {
+        "format": "semantic-ir/2.0.0",
+        "source": {
+          "file": "../../model/lock.semantic-ir.json",
+          "authority": "example",
+          "identity": "example:lock/model",
+          "document": "model",
+          "formal_revision": 1
+        }
+      }
+    ],
+    "program": {
+      "source": {
+        "file": "../../rules/protocols/handover-composition.fsl",
+        "authority": "example",
+        "identity": "example:lock/handover-composition",
+        "document": "handovercomposition",
+        "formal_revision": 1
+      }
+    },
+    "libraries": [
+      {
+        "identity": "example/holder",
+        "source": {
+          "file": "../../rules/protocols/holder-guarantee.fsl",
+          "authority": "example",
+          "identity": "example/holder",
+          "document": "holderguarantee",
+          "formal_revision": 1
+        }
+      },
+      {
+        "identity": "example/observer",
+        "source": {
+          "file": "../../rules/protocols/observer-guarantee.fsl",
+          "authority": "example",
+          "identity": "example/observer",
+          "document": "observerguarantee",
+          "formal_revision": 1
+        }
+      }
+    ],
+    "documents": [
+      {
+        "file": "../../data/lock-free.json"
+      }
+    ],
+    "items": [
+      {
+        "claim": "HandoverSystem",
+        "kind": "composition"
+      }
+    ]
+  }
+}
