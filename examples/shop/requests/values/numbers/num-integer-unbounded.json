@@ -16,7 +16,10 @@
       "arguments": [
         {
           "parameter": "n",
-          "value": 3037000500
+          "value": {
+            "type": "integer",
+            "value": "3037000500"
+          }
         }
       ]
     }

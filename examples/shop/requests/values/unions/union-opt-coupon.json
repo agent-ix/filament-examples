@@ -16,11 +16,17 @@
       "arguments": [
         {
           "parameter": "has",
-          "value": 1
+          "value": {
+            "type": "boolean",
+            "value": true
+          }
         },
         {
           "parameter": "total",
-          "value": 900
+          "value": {
+            "type": "integer",
+            "value": "900"
+          }
         }
       ]
     }

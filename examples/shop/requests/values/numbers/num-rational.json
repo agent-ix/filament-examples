@@ -16,11 +16,17 @@
       "arguments": [
         {
           "parameter": "total",
-          "value": 1000
+          "value": {
+            "type": "integer",
+            "value": "1000"
+          }
         },
         {
           "parameter": "qty",
-          "value": 3
+          "value": {
+            "type": "integer",
+            "value": "3"
+          }
         }
       ]
     }

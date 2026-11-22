@@ -27,15 +27,24 @@
       "arguments": [
         {
           "parameter": "a",
-          "value": 1
+          "value": {
+            "type": "boolean",
+            "value": true
+          }
         },
         {
           "parameter": "b",
-          "value": 1
+          "value": {
+            "type": "boolean",
+            "value": true
+          }
         },
         {
           "parameter": "c",
-          "value": 0
+          "value": {
+            "type": "boolean",
+            "value": false
+          }
         }
       ]
     }

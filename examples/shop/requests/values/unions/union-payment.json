@@ -16,11 +16,17 @@
       "arguments": [
         {
           "parameter": "kind",
-          "value": 2
+          "value": {
+            "type": "integer",
+            "value": "2"
+          }
         },
         {
           "parameter": "voucher",
-          "value": 300
+          "value": {
+            "type": "integer",
+            "value": "300"
+          }
         }
       ]
     }

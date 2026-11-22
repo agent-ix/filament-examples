@@ -16,7 +16,10 @@
       "arguments": [
         {
           "parameter": "qty",
-          "value": 7
+          "value": {
+            "type": "integer",
+            "value": "7"
+          }
         }
       ]
     }
