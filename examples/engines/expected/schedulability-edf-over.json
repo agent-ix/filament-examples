@@ -1,22 +1,35 @@
 {
-  "category": "unsupported",
-  "last_stage": "S6b",
+  "category": "violation",
+  "last_stage": "S7",
   "result": null,
   "first_diagnostic": null,
   "items": [
     {
-      "category": "unsupported",
+      "category": "violation",
       "claim_name": "OverEdf",
-      "record": {
-        "diagnostic": {
-          "cause": "unsupported-requested-capability",
-          "code": "unsupported_projection",
-          "detail": {
-            "kind": "schedulability"
-          }
+      "counterexample": {
+        "backend": "en-7",
+        "counterexample": {
+          "analysis": "edf",
+          "claim": "OverEdf",
+          "miss": {
+            "kind": "utilization",
+            "utilization": {
+              "denominator": "10",
+              "numerator": "11",
+              "type": "rational"
+            }
+          },
+          "type": "schedulability-miss",
+          "unit": "ms"
         },
-        "result": "unsupported",
-        "settled_by": "disposition"
+        "request_index": 0
+      },
+      "record": {
+        "backend": "en-7",
+        "cause": null,
+        "result": "refuted",
+        "settled_by": "result"
       },
       "request": {
         "candidates": {
@@ -47,38 +60,22 @@
               "period",
               "10/1",
               {
-                "ordinal": 2,
-                "package": "example:engines/sched",
-                "path": [
-                  "ms"
-                ]
+                "node": 5
               },
               "deadline",
               "10/1",
               {
-                "ordinal": 2,
-                "package": "example:engines/sched",
-                "path": [
-                  "ms"
-                ]
+                "node": 5
               },
               "bcet",
               "0/1",
               {
-                "ordinal": 2,
-                "package": "example:engines/sched",
-                "path": [
-                  "ms"
-                ]
+                "node": 5
               },
               "wcet",
               "6/1",
               {
-                "ordinal": 2,
-                "package": "example:engines/sched",
-                "path": [
-                  "ms"
-                ]
+                "node": 5
               },
               "wcet_hi",
               "criticality",
@@ -88,20 +85,12 @@
               "jitter",
               "0/1",
               {
-                "ordinal": 2,
-                "package": "example:engines/sched",
-                "path": [
-                  "ms"
-                ]
+                "node": 5
               },
               "blocking",
               "0/1",
               {
-                "ordinal": 2,
-                "package": "example:engines/sched",
-                "path": [
-                  "ms"
-                ]
+                "node": 5
               },
               "task",
               "name",
@@ -111,38 +100,22 @@
               "period",
               "20/1",
               {
-                "ordinal": 2,
-                "package": "example:engines/sched",
-                "path": [
-                  "ms"
-                ]
+                "node": 5
               },
               "deadline",
               "20/1",
               {
-                "ordinal": 2,
-                "package": "example:engines/sched",
-                "path": [
-                  "ms"
-                ]
+                "node": 5
               },
               "bcet",
               "0/1",
               {
-                "ordinal": 2,
-                "package": "example:engines/sched",
-                "path": [
-                  "ms"
-                ]
+                "node": 5
               },
               "wcet",
               "10/1",
               {
-                "ordinal": 2,
-                "package": "example:engines/sched",
-                "path": [
-                  "ms"
-                ]
+                "node": 5
               },
               "wcet_hi",
               "criticality",
@@ -152,20 +125,12 @@
               "jitter",
               "0/1",
               {
-                "ordinal": 2,
-                "package": "example:engines/sched",
-                "path": [
-                  "ms"
-                ]
+                "node": 5
               },
               "blocking",
               "0/1",
               {
-                "ordinal": 2,
-                "package": "example:engines/sched",
-                "path": [
-                  "ms"
-                ]
+                "node": 5
               }
             ]
           },
@@ -175,8 +140,8 @@
           }
         },
         "extent": {
-          "bounds": [],
-          "classification": "bounded"
+          "classification": "unbounded",
+          "finite_bound_available": false
         },
         "kind": "schedulability",
         "request_index": 0

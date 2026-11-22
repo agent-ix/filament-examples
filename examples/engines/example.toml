@@ -364,12 +364,9 @@ rule = "FullEdf"
 statement = "Two tasks with utilization exactly 1 are schedulable under earliest-deadline-first."
 file = "rules/sched.fsl"
 command = "analyze requests/schedulability-edf-full.json"
-status = "staged"
-expect_exit = 21
-ready_exit = 0
-waits_on = "QSL-2757"
-why = "analyze settles the claim unsupported (unsupported-requested-capability), where it should prove it"
-needs = "schedulability and response-time analysis from the command line"
+status = "running"
+expect_exit = 0
+expect_verdict = "proved"
 serves = "FR-419 (schedulability)"
 
 [[case]]
@@ -378,12 +375,9 @@ rule = "OverEdf"
 statement = "Two tasks with utilization 1.1 are not schedulable under any scheduler."
 file = "rules/sched.fsl"
 command = "analyze requests/schedulability-edf-over.json"
-status = "staged"
-expect_exit = 21
-ready_exit = 10
-waits_on = "QSL-2757"
-why = "analyze settles the claim unsupported (unsupported-requested-capability), where it should refute it"
-needs = "schedulability and response-time analysis from the command line"
+status = "running"
+expect_exit = 10
+expect_verdict = "refuted"
 serves = "FR-419 (schedulability)"
 
 [[case]]
@@ -392,12 +386,9 @@ rule = "AResponse5"
 statement = "The highest-priority task responds in its own 5 ms, so the bound 5 ms holds."
 file = "rules/sched.fsl"
 command = "analyze requests/schedulability-response-meets.json"
-status = "staged"
-expect_exit = 21
-ready_exit = 0
-waits_on = "QSL-2757"
-why = "analyze settles the claim unsupported (unsupported-requested-capability), where it should prove it"
-needs = "schedulability and response-time analysis from the command line"
+status = "running"
+expect_exit = 0
+expect_verdict = "proved"
 serves = "FR-419 (schedulability)"
 
 [[case]]
@@ -406,12 +397,9 @@ rule = "AResponse4"
 statement = "The same task cannot respond in 4 ms, so the bound 4 ms is refuted."
 file = "rules/sched.fsl"
 command = "analyze requests/schedulability-response-misses.json"
-status = "staged"
-expect_exit = 21
-ready_exit = 10
-waits_on = "QSL-2757"
-why = "analyze settles the claim unsupported (unsupported-requested-capability), where it should refute it"
-needs = "schedulability and response-time analysis from the command line"
+status = "running"
+expect_exit = 10
+expect_verdict = "refuted"
 serves = "FR-419 (schedulability)"
 
 [[case]]
