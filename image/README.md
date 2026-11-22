@@ -42,16 +42,18 @@ docker build -f image/Dockerfile -t filament-toolchain .
 docker run --rm filament-toolchain smoke.sh
 ```
 
-By default, the image builds the driver from the exact commit in `FSL_REVISION`. To select another source commit, pass a different revision:
+By default, the image downloads the driver v0.2.0 release archive and verifies its checksum. The manual workflow defaults to the `0.2.0` image tag and this driver version.
+
+To build the driver from source, set `FSL_REVISION` to the exact current driver commit and select `FSL_SOURCE=source`. `FSL_REVISION` has no default, so a source build cannot silently use an old revision:
 
 ```
-docker build -f image/Dockerfile --build-arg FSL_REVISION=158bc4735167e75347afbfa883e03c1013d45f2d -t filament-toolchain .
+docker build -f image/Dockerfile --build-arg FSL_SOURCE=source --build-arg FSL_REVISION="$FSL_REVISION" -t filament-toolchain .
 ```
 
-To use a released driver archive instead, set `FSL_SOURCE=release`. The build checks the archive against the `SHA256SUMS.txt` file of that release. `FSL_VERSION` picks the release, and its default is the newest one:
+The release build checks the archive against the `SHA256SUMS.txt` file for the selected release. To select a different driver release, pass another `FSL_VERSION`:
 
 ```
-docker build -f image/Dockerfile --build-arg FSL_SOURCE=release --build-arg FSL_VERSION=0.1.4 -t filament-toolchain .
+docker build -f image/Dockerfile --build-arg FSL_SOURCE=release --build-arg FSL_VERSION=0.2.0 -t filament-toolchain .
 ```
 
 The source compile uses link-time optimization off and takes several minutes. The manual workflow [image.yml](../.github/workflows/image.yml) builds each platform on a native runner, runs `smoke.sh` on each build, and publishes one multi-platform tag for each tag in its `tags` input. The inputs `fsl_revision`, `fsl_version`, and `fsl_source` select the driver.

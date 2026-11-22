@@ -2,11 +2,11 @@
 #   docker build -f image/Dockerfile -t filament-toolchain .
 #   docker run --rm filament-toolchain smoke.sh
 #
-# The driver is built from a pinned source revision by default. The release
-# path downloads the archive for its platform and verifies its checksum.
+# The driver is downloaded from the v0.2.0 release by default. The source
+# option requires an explicit driver revision.
 # Build arguments:
-#   FSL_VERSION  release to download, such as 0.1.1; "latest" is the newest release
-#   FSL_SOURCE   "source" (default) or "release" to download a release archive
+#   FSL_VERSION  release to download, such as 0.2.0; "latest" is the newest release
+#   FSL_SOURCE   "release" (default) or "source" to build a source revision
 #   FSL_REVISION exact filament-driver commit built when FSL_SOURCE=source
 #   FSL_REPO     the driver repository
 
@@ -15,9 +15,9 @@ ARG RUST_VERSION=1.98.1
 
 # ------------------------------------------------------------ driver stage
 FROM ubuntu:${UBUNTU} AS driver
-ARG FSL_SOURCE=source
-ARG FSL_VERSION=latest
-ARG FSL_REVISION=158bc4735167e75347afbfa883e03c1013d45f2d
+ARG FSL_SOURCE=release
+ARG FSL_VERSION=0.2.0
+ARG FSL_REVISION
 ARG FSL_REPO=https://github.com/agent-ix/filament-driver
 ARG RUST_VERSION
 ENV DEBIAN_FRONTEND=noninteractive
@@ -48,6 +48,7 @@ RUN set -eu; \
       tar -xzf "$archive" -C /opt/fsl-driver/bin fsl; \
       echo "$tag" > /opt/fsl-driver/TAG; \
     else \
+      if [ -z "$FSL_REVISION" ]; then echo "FSL_REVISION is required when FSL_SOURCE=source" >&2; exit 1; fi; \
       apt-get install -y --no-install-recommends ca-certificates curl git build-essential pkg-config; \
       curl -sSf https://sh.rustup.rs | sh -s -- -y --profile minimal --default-toolchain "$RUST_VERSION"; \
       PATH=/root/.cargo/bin:$PATH cargo install --git "$FSL_REPO" --rev "$FSL_REVISION" \
