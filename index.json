@@ -18580,9 +18580,7 @@
       "rule": "NeverDeadheads",
       "statement": "On every behavior of the line, the pump never runs against a closed valve, when the valve closes only while the pump is stopped.",
       "rule_file": "examples/plant/rules/model-checking/guarded.fsl",
-      "data_files": [
-        "examples/plant/data/line-idle.json"
-      ],
+      "data_files": [],
       "request_file": "examples/plant/requests/analyze/close-guarded.json",
       "expected_file": "examples/plant/expected/close-guarded.json",
       "verdict": "holds",
@@ -18600,9 +18598,7 @@
       "rule": "NeverDeadheads",
       "statement": "On every behavior of the line, the pump never runs against a closed valve, when the valve can close while the pump runs.",
       "rule_file": "examples/plant/rules/model-checking/unguarded.fsl",
-      "data_files": [
-        "examples/plant/data/line-idle.json"
-      ],
+      "data_files": [],
       "request_file": "examples/plant/requests/analyze/close-unguarded.json",
       "expected_file": "examples/plant/expected/close-unguarded.json",
       "verdict": "violated",
