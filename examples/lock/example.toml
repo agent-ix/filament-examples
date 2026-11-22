@@ -270,12 +270,9 @@ rule = "Handover"
 statement = "An observer cannot choose between waiting for a grant and ending when it hears nothing about a denial."
 file = "rules/protocols/handover-hidden-choice.fsl"
 command = "analyze requests/protocols/protocol-unrealizable.json"
-status = "staged"
-expect_exit = 30
-ready_exit = 10
-waits_on = "QSL-2214"
-needs = "A realizability counterexample in the analyze result"
-why = "The hidden-choice analysis faults with runtime_invariant instead of returning its refuted result and counterexample."
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
 serves = "Protocols reference (projection and realizability)"
 
 [[case]]

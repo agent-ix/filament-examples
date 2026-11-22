@@ -12204,20 +12204,20 @@
     {
       "system": "lock",
       "case": "protocol-unrealizable",
-      "status": "staged",
+      "status": "running",
       "rule": "Handover",
       "statement": "An observer cannot choose between waiting for a grant and ending when it hears nothing about a denial.",
       "rule_file": "examples/lock/rules/protocols/handover-hidden-choice.fsl",
       "data_files": [],
       "request_file": "examples/lock/requests/protocols/protocol-unrealizable.json",
       "expected_file": "examples/lock/expected/protocol-unrealizable.json",
-      "verdict": null,
-      "exit": 30,
-      "ready_exit": 10,
+      "verdict": "violated",
+      "exit": 10,
+      "ready_exit": null,
       "engine": null,
       "clock": null,
-      "waits_on": "QSL-2214",
-      "needs": "A realizability counterexample in the analyze result"
+      "waits_on": null,
+      "needs": null
     },
     {
       "system": "lock",

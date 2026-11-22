@@ -1,10 +1,548 @@
 {
-  "category": "internal-failure",
-  "last_stage": null,
+  "category": "violation",
+  "last_stage": "S8",
   "result": null,
-  "first_diagnostic": {
-    "code": "runtime_invariant",
-    "cause": null
-  },
-  "items": []
+  "first_diagnostic": null,
+  "items": [
+    {
+      "axes": {
+        "activation": "active",
+        "execution": "completed",
+        "settlement": "decisive-counterexample",
+        "truth": "false"
+      },
+      "category": "violation",
+      "claim_name": "Handover",
+      "counterexample": {
+        "action_a": {
+          "kind": "end"
+        },
+        "action_b": {
+          "kind": "receive",
+          "peer": {
+            "ordinal": 0,
+            "package": "example:lock/handover-hidden-choice",
+            "path": [
+              "Handover",
+              "role",
+              "Holder"
+            ]
+          }
+        },
+        "history_a": {
+          "initial": "0",
+          "steps": [
+            {
+              "send_record": {
+                "channel": "Handover::Ask",
+                "displaced": null,
+                "outcome": "accepted",
+                "payload": {
+                  "fields": [
+                    {
+                      "name": "granted",
+                      "value": {
+                        "type": "boolean",
+                        "value": false
+                      }
+                    }
+                  ],
+                  "name": "{\"node\":\"Request\",\"package\":\"example:lock/handover-hidden-choice\"}",
+                  "type": "record"
+                },
+                "type": "send-record"
+              },
+              "successor": "0",
+              "transition": {
+                "message": {
+                  "instance": "0",
+                  "node": "Main/Asked",
+                  "ordinal": "0",
+                  "path": {
+                    "instance": "0",
+                    "steps": [],
+                    "type": "thread-path"
+                  },
+                  "type": "message-occurrence"
+                },
+                "node": "Main/Asked",
+                "step": "send",
+                "thread": {
+                  "instance": "0",
+                  "steps": [],
+                  "type": "thread-path"
+                },
+                "type": "protocol-transition"
+              }
+            },
+            {
+              "successor": "0",
+              "transition": {
+                "delivery": {
+                  "index": "0",
+                  "message": {
+                    "instance": "0",
+                    "node": "Main/Asked",
+                    "ordinal": "0",
+                    "path": {
+                      "instance": "0",
+                      "steps": [],
+                      "type": "thread-path"
+                    },
+                    "type": "message-occurrence"
+                  },
+                  "type": "delivery-identity"
+                },
+                "node": "Main/Heard",
+                "step": "receive",
+                "thread": {
+                  "instance": "0",
+                  "steps": [],
+                  "type": "thread-path"
+                },
+                "type": "protocol-transition"
+              }
+            },
+            {
+              "successor": "0",
+              "transition": {
+                "node": "Done",
+                "record": {
+                  "type": "boolean",
+                  "value": false
+                },
+                "recovery_summary": "untriggered",
+                "step": "finish",
+                "thread": {
+                  "instance": "0",
+                  "steps": [],
+                  "type": "thread-path"
+                },
+                "type": "protocol-transition"
+              }
+            }
+          ]
+        },
+        "history_b": {
+          "initial": "0",
+          "steps": [
+            {
+              "send_record": {
+                "channel": "Handover::Ask",
+                "displaced": null,
+                "outcome": "accepted",
+                "payload": {
+                  "fields": [
+                    {
+                      "name": "granted",
+                      "value": {
+                        "type": "boolean",
+                        "value": true
+                      }
+                    }
+                  ],
+                  "name": "{\"node\":\"Request\",\"package\":\"example:lock/handover-hidden-choice\"}",
+                  "type": "record"
+                },
+                "type": "send-record"
+              },
+              "successor": "1",
+              "transition": {
+                "message": {
+                  "instance": "0",
+                  "node": "Main/Asked",
+                  "ordinal": "0",
+                  "path": {
+                    "instance": "0",
+                    "steps": [],
+                    "type": "thread-path"
+                  },
+                  "type": "message-occurrence"
+                },
+                "node": "Main/Asked",
+                "step": "send",
+                "thread": {
+                  "instance": "0",
+                  "steps": [],
+                  "type": "thread-path"
+                },
+                "type": "protocol-transition"
+              }
+            },
+            {
+              "successor": "0",
+              "transition": {
+                "delivery": {
+                  "index": "0",
+                  "message": {
+                    "instance": "0",
+                    "node": "Main/Asked",
+                    "ordinal": "0",
+                    "path": {
+                      "instance": "0",
+                      "steps": [],
+                      "type": "thread-path"
+                    },
+                    "type": "message-occurrence"
+                  },
+                  "type": "delivery-identity"
+                },
+                "node": "Main/Heard",
+                "step": "receive",
+                "thread": {
+                  "instance": "0",
+                  "steps": [],
+                  "type": "thread-path"
+                },
+                "type": "protocol-transition"
+              }
+            },
+            {
+              "send_record": {
+                "channel": "Handover::Granted",
+                "displaced": null,
+                "outcome": "accepted",
+                "payload": {
+                  "fields": [
+                    {
+                      "name": "granted",
+                      "value": {
+                        "type": "boolean",
+                        "value": false
+                      }
+                    }
+                  ],
+                  "name": "{\"node\":\"Grant\",\"package\":\"example:lock/handover-hidden-choice\"}",
+                  "type": "record"
+                },
+                "type": "send-record"
+              },
+              "successor": "0",
+              "transition": {
+                "message": {
+                  "instance": "0",
+                  "node": "Main/Decide/yes/Accepted/GrantedNotice",
+                  "ordinal": "0",
+                  "path": {
+                    "instance": "0",
+                    "steps": [],
+                    "type": "thread-path"
+                  },
+                  "type": "message-occurrence"
+                },
+                "node": "Main/Decide/yes/Accepted/GrantedNotice",
+                "step": "send",
+                "thread": {
+                  "instance": "0",
+                  "steps": [],
+                  "type": "thread-path"
+                },
+                "type": "protocol-transition"
+              }
+            }
+          ]
+        },
+        "key": {
+          "analyzer": {
+            "identity": "fsl-analyze::protocol_analysis",
+            "version": "0.3.0"
+          },
+          "bounds": {
+            "max_depth": "32",
+            "max_history": "16"
+          },
+          "channels": [
+            {
+              "capacity": {
+                "kind": "literal",
+                "value": "4"
+              },
+              "channel": {
+                "ordinal": 0,
+                "package": "example:lock/handover-hidden-choice",
+                "path": [
+                  "Handover",
+                  "channel",
+                  "Ask"
+                ]
+              },
+              "delivery": {
+                "kind": "exactly-once-premise"
+              },
+              "message_type": {
+                "ordinal": 0,
+                "package": "example:lock/handover-hidden-choice",
+                "path": [
+                  "Request"
+                ]
+              },
+              "ordering": {
+                "kind": "unordered"
+              },
+              "overflow": {
+                "kind": "reject"
+              },
+              "receiver": {
+                "ordinal": 0,
+                "package": "example:lock/handover-hidden-choice",
+                "path": [
+                  "Handover",
+                  "role",
+                  "Holder"
+                ]
+              },
+              "sender": {
+                "ordinal": 0,
+                "package": "example:lock/handover-hidden-choice",
+                "path": [
+                  "Handover",
+                  "role",
+                  "Asker"
+                ]
+              }
+            },
+            {
+              "capacity": {
+                "kind": "literal",
+                "value": "4"
+              },
+              "channel": {
+                "ordinal": 0,
+                "package": "example:lock/handover-hidden-choice",
+                "path": [
+                  "Handover",
+                  "channel",
+                  "Granted"
+                ]
+              },
+              "delivery": {
+                "kind": "exactly-once-premise"
+              },
+              "message_type": {
+                "ordinal": 0,
+                "package": "example:lock/handover-hidden-choice",
+                "path": [
+                  "Grant"
+                ]
+              },
+              "ordering": {
+                "kind": "unordered"
+              },
+              "overflow": {
+                "kind": "reject"
+              },
+              "receiver": {
+                "ordinal": 0,
+                "package": "example:lock/handover-hidden-choice",
+                "path": [
+                  "Handover",
+                  "role",
+                  "Observer"
+                ]
+              },
+              "sender": {
+                "ordinal": 0,
+                "package": "example:lock/handover-hidden-choice",
+                "path": [
+                  "Handover",
+                  "role",
+                  "Holder"
+                ]
+              }
+            }
+          ],
+          "choices": [
+            {
+              "choice": {
+                "ordinal": 0,
+                "package": "example:lock/handover-hidden-choice",
+                "path": [
+                  "Handover",
+                  "run",
+                  "Main",
+                  "Decide"
+                ]
+              },
+              "owner": {
+                "ordinal": 0,
+                "package": "example:lock/handover-hidden-choice",
+                "path": [
+                  "Handover",
+                  "role",
+                  "Holder"
+                ]
+              },
+              "visible": [
+                {
+                  "ordinal": 0,
+                  "package": "example:lock/handover-hidden-choice",
+                  "path": [
+                    "expression",
+                    "query",
+                    {
+                      "node": 22
+                    },
+                    "filament.op.record.project",
+                    "query",
+                    {
+                      "node": 2
+                    },
+                    {
+                      "node": 2
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "definition_key": "ix://example:lock/handover-hidden-choice/Handover",
+          "environment": [],
+          "kind": "realizability",
+          "role_knowledge": [],
+          "strategy_profile": "bounded"
+        },
+        "kind": "indistinguishable-histories",
+        "obligation": {
+          "ordinal": 0,
+          "package": "example:lock/handover-hidden-choice",
+          "path": [
+            "Handover",
+            "finish",
+            "Done"
+          ]
+        },
+        "role": {
+          "ordinal": 0,
+          "package": "example:lock/handover-hidden-choice",
+          "path": [
+            "Handover",
+            "role",
+            "Observer"
+          ]
+        },
+        "separating_witness": {
+          "deciding_element": "{\"ordinal\":0,\"package\":\"example:lock/handover-hidden-choice\",\"path\":[\"Handover\",\"finish\",\"Done\"]}",
+          "trace_position": "2",
+          "value_path": {
+            "kind": "runtime_value",
+            "root": {
+              "observation": {
+                "authority": "example",
+                "identity": "example:lock/lock-free"
+              },
+              "subject": {
+                "object_identity": "m",
+                "tag": "object",
+                "type": "[{\"node\":\"ix://example/lock/Lock\",\"package\":\"example/lock\"}]",
+                "universe": "{\"ordinal\":0,\"package\":\"example/lock\",\"path\":[\"Lock\"]}"
+              }
+            },
+            "steps": []
+          }
+        },
+        "type": "protocol-analysis-counterexample"
+      },
+      "record": {
+        "backend": "protocol-analysis",
+        "cause": null,
+        "result": "refuted",
+        "settled_by": "result"
+      },
+      "request": {
+        "assessed_root": {
+          "observation": {
+            "authority": "example",
+            "identity": "example:lock/lock-free"
+          },
+          "subject": {
+            "object_identity": "m",
+            "tag": "object",
+            "type": "[{\"package\":\"example/lock\",\"node\":\"ix://example/lock/Lock\"}]",
+            "universe": "{\"package\":\"example/lock\",\"path\":[\"Lock\"],\"ordinal\":0}"
+          }
+        },
+        "candidates": {
+          "backends": [
+            "protocol-analysis"
+          ],
+          "type": "set"
+        },
+        "claim": {
+          "node": {
+            "ordinal": 0,
+            "package": "example:lock/handover-hidden-choice",
+            "path": [
+              "Handover"
+            ]
+          },
+          "occurrence": {
+            "ordinal": 0,
+            "role": "declaration"
+          }
+        },
+        "extent": {
+          "classification": "unbounded",
+          "finite_bound_available": false
+        },
+        "kind": "realizability",
+        "memory": [],
+        "request_index": 0,
+        "temporal": {
+          "fairness": [],
+          "item_kind": "formula",
+          "limits": {
+            "max_automaton_states": 1048576,
+            "max_relation_tuples": 16777216,
+            "max_states": 10000000,
+            "max_transitions": 100000000,
+            "max_walk_steps": 4096,
+            "max_witness_set": 65536
+          },
+          "max_depth": 32,
+          "max_history": 16,
+          "profile": "bounded",
+          "subject": {
+            "initial_states": [
+              {
+                "authority": "example",
+                "identity": "example:lock/lock-free"
+              }
+            ],
+            "proof_bounds": [],
+            "protocol": {
+              "capacities": {},
+              "over": {
+                "reference": {
+                  "key": "m",
+                  "population": "ix://example/lock/locks"
+                }
+              },
+              "protocol": "Handover",
+              "roles": {
+                "Asker": {
+                  "selection": "example/lock",
+                  "type": "model-binding"
+                },
+                "Holder": {
+                  "selection": "example/lock",
+                  "type": "model-binding"
+                },
+                "Observer": {
+                  "selection": "example/lock",
+                  "type": "model-binding"
+                }
+              }
+            },
+            "universes": [
+              {
+                "authority": "example",
+                "identity": "example:lock/lock-free"
+              }
+            ]
+          }
+        }
+      },
+      "request_index": 0
+    }
+  ]
 }
