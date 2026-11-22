@@ -1057,7 +1057,7 @@ serves = "FR-091-AC-10 to AC-16, AC-22, FR-094 (finite window)"
 [[case]]
 id = "window-incomplete-always"
 rule = "Always0To5"
-statement = "Completeness is not asserted: always[0,5] p is indeterminate, not true."
+statement = "Completeness is not asserted: always[0,5] p is indeterminate and is never reported as true."
 file = "rules/timed-window.fsl"
 command = "run requests/window-incomplete-always.json"
 status = "running"
@@ -1837,7 +1837,7 @@ serves = "FR-091-AC-18 (counter cover)"
 
 [[case]]
 id = "window-cover-counter-3000"
-statement = "Under a counter cover of uncertainty 0, an acknowledgement at tick 3000 straddles the bound, because a counter reading may stand for the tick before or after: indeterminate."
+statement = "Under a counter cover of uncertainty 0, an acknowledgement at tick 3000 straddles the bound, because a counter reading may denote the tick before or after: indeterminate."
 file = "rules/timed-window.fsl"
 command = "run requests/window-cover-counter-3000.json"
 status = "running"
