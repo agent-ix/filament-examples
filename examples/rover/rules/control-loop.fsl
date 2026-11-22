@@ -6,10 +6,11 @@ unit ms : Time = rational(1, 1);
 
 // The rover's control loop: sensor fusion every 10 ms, the stop monitor every
 // 20 ms, path planning every 50 ms.
+// A lower priority number is a higher priority, so the shortest period runs first.
 taskset Control {
-  task fusion periodic 10 ms deadline 10 ms wcet 2 ms priority 3 lo;
+  task fusion periodic 10 ms deadline 10 ms wcet 2 ms priority 1 lo;
   task stopMonitor periodic 20 ms deadline 20 ms wcet 3 ms priority 2 lo;
-  task planner periodic 50 ms deadline 50 ms wcet 15 ms priority 1 lo;
+  task planner periodic 50 ms deadline 50 ms wcet 15 ms priority 3 lo;
 }
 schedulable ControlFp on Control under fixed_priority;
 response StopMonitorFast on Control.stopMonitor <= 10 ms under fixed_priority;
