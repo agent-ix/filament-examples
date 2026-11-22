@@ -24,9 +24,10 @@ Set `FSL` to the driver binary. Every record in this system was written by the d
 - `model-*` analyze invariants, temporal claims and state-graph claims (`possible`, `always possible`, `unique path`) over a dial that counts 0 to 3. `rules/dial.fsl` has the full dial, `rules/dial-acyclic.fsl` counts up only, and `rules/dial-branch.fsl` adds a step of two.
 - `refusal-*` compile one claim declaration and record the refusal the standard names, or the successful compile for the boundary beside it: clocks over a model and over a trace, profiles, intervals, Boolean bodies, fairness and probability thresholds.
 
+The running case `model-possible-trap-cyclic` refutes a possible claim whose target no state satisfies, over a dial that can return to 0. It settles closed-scope with exit 10 within its unchanged 2000 ms deadline on an optimized (release) build of fsl. An unoptimized dev build was observed to return incomplete (`cancelled`/`deadline`), exit 22, for the same request.
+
 ## Staged
 
-- `model-possible-trap-cyclic` waits on QSL-2756. The dial can return to 0, so its state graph has a cycle, and a possible claim whose target no state satisfies never settles: the request's `deadline_ms` of 2000 stops it with `cancelled`/`deadline`, exit 22. FR-391-AC-2 requires `refuted`, closed-scope, exit 10. The same claim over the acyclic dial refutes at once (`model-possible-trap`). This case settles refuted within its 2000 ms deadline on an optimized (release) build of fsl; an unoptimized dev build was observed to return incomplete (deadline) for the same request.
 - `window-absent-valuation` waits on QSL-2750: the stepping wire refuses a sample that omits a field (`invalid_runtime_input`/`missing-member`), where FR-091-AC-13 reads the absent atom as a missing valuation and settles indeterminate (exit 11).
 - `window-order-keys-admit-until` waits on QSL-2750: two observations stamped 1 with distinct keys from one authority are read as one instant and give a conflicting valuation (exit 11), where FR-091-AC-16 orders them and until is true (exit 0).
 
@@ -54,7 +55,7 @@ Not assertable: FR-091-AC-12 says a pending result carries its deadline (5) and 
 | FR-090-AC-2, AC-11, AC-12 profile and clock selection | `refusal-no-clock`, `refusal-*clock*`, `refusal-unknown-profile` |
 | FR-019-AC-6 invariant anchor and Boolean body | `model-invariant-*`, `refusal-invariant-not-boolean` |
 | FR-390, FR-391 state-graph claims (AC-1 to AC-4) | `model-possible-*`, `model-always-possible-*`, `model-unique-path-*` |
-| FR-391-AC-2 trap over a cyclic graph | `model-possible-trap-cyclic` (staged, QSL-2756) |
+| FR-391-AC-2 trap over a cyclic graph | `model-possible-trap-cyclic` (release build, exit 10) |
 | FR-407 probability threshold strictly between 0 and 1 | `refusal-probability-*` |
 | FR-520 analyze item naming | `model-unknown-claim` |
 
