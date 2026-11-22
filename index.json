@@ -590,20 +590,20 @@
     {
       "system": "architecture",
       "case": "claims-quantile-steps",
-      "status": "staged",
+      "status": "running",
       "rule": null,
       "statement": "A service that is up fails 1 call in 10,000, so it is not down within 5 steps on 95% of runs: the claim is false for the model and analyze should refute it.",
       "rule_file": "examples/architecture/rules/probability/claims/claims-quantile-steps.fsl",
       "data_files": [],
       "request_file": "examples/architecture/requests/probability/claims/claims-quantile-steps.json",
       "expected_file": "examples/architecture/expected/claims-quantile-steps.json",
-      "verdict": null,
-      "exit": 21,
-      "ready_exit": 10,
+      "verdict": "violated",
+      "exit": 10,
+      "ready_exit": null,
       "engine": "probability",
       "clock": null,
-      "waits_on": "QSL-2158",
-      "needs": "exact step quantile under every scheduler"
+      "waits_on": null,
+      "needs": null
     },
     {
       "system": "architecture",
