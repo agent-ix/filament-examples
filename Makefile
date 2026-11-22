@@ -63,7 +63,7 @@ runner-test:
 test:
 	$(NODE) --test tools/*.test.mjs quoin-first-spec/*.test.mjs quire-first-document/*.test.mjs verification/tl-examples/*.test.mjs verification/foundations-examples/*.test.mjs verification/contracts-examples/*.test.mjs quire-library/*.test.mjs quire-library/python/*.test.mjs
 
-# Run the documented install steps on a bare ubuntu:22.04 container (needs Docker).
+# Run the documented install steps on a bare ubuntu:26.04 container (needs Docker).
 # INSTALL_DRIVER=release (default) downloads the driver release; source builds it.
 # INSTALL_SHELL=zsh runs the steps in zsh, the macOS default shell.
 INSTALL_DRIVER ?= release
@@ -71,7 +71,7 @@ INSTALL_SHELL ?= bash
 INSTALL_SKIP_release = driver-source,check-source
 INSTALL_SKIP_source = driver-target,driver-download,driver-verify,driver-install,check-release
 install-test:
-	INSTALL_DRIVER=$(INSTALL_DRIVER) $(NODE) tools/steps.mjs run install-test/steps.md --image ubuntu:22.04 --shell $(INSTALL_SHELL) --skip $(INSTALL_SKIP_$(INSTALL_DRIVER))
+	INSTALL_DRIVER=$(INSTALL_DRIVER) $(NODE) tools/steps.mjs run install-test/steps.md --image ubuntu:26.04 --shell $(INSTALL_SHELL) --skip $(INSTALL_SKIP_$(INSTALL_DRIVER))
 
 # Run the release steps on this machine, in zsh (for a macOS runner, which has
 # git, make and Rust already). It installs the driver under $HOME.

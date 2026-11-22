@@ -260,7 +260,7 @@ export function renderThirdParty({ programs }) {
   L.push("## Other components", "");
   L.push("| Component | Licence | Where its notices are |", "| --- | --- | --- |");
   L.push("| Node.js, with the npm and corepack that come with it | as listed in Node's own licence file | `texts/nodejs.LICENSE`; the version is in `BUILD-FACTS.txt` |");
-  L.push("| Ubuntu 22.04 packages | the licence of each package | `/usr/share/doc/<package>/copyright`; the package list is in `BUILD-FACTS.txt` |", "");
+  L.push("| Ubuntu 26.04 packages | the licence of each package | `/usr/share/doc/<package>/copyright`; the package list is in `BUILD-FACTS.txt` |", "");
   for (const p of programs) {
     const licence = licenceOf(p);
     const first = p.crates.filter((c) => isFirstParty(c, licence));

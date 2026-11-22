@@ -141,8 +141,8 @@ test("readMarkers turns marker lines into step durations", () => {
 });
 
 test("parseArgs reads skip and image", () => {
-  assert.deepEqual(parseArgs(["run", "f.md", "--image", "ubuntu:22.04", "--skip", "a,b"]), {
-    command: "run", file: "f.md", skip: ["a", "b"], image: "ubuntu:22.04", shell: "bash", host: false, copy: null, expected: null, record: false, keep: false,
+  assert.deepEqual(parseArgs(["run", "f.md", "--image", "ubuntu:26.04", "--skip", "a,b"]), {
+    command: "run", file: "f.md", skip: ["a", "b"], image: "ubuntu:26.04", shell: "bash", host: false, copy: null, expected: null, record: false, keep: false,
   });
   assert.deepEqual(parseArgs(["run", "f.md", "--host", "--shell", "zsh"]).shell, "zsh");
   assert.throws(() => parseArgs(["run", "f.md", "--bogus"]), /unknown argument/);
@@ -164,7 +164,7 @@ test("the real steps file has the documented steps, each with a bash body", () =
 });
 
 test("shellCommand starts zsh in a bare container after installing it, and on the host directly", () => {
-  const zsh = shellCommand({ host: false, image: "ubuntu:22.04", shell: "zsh" });
+  const zsh = shellCommand({ host: false, image: "ubuntu:26.04", shell: "zsh" });
   assert.equal(zsh.cmd, "docker");
   assert.match(zsh.args.at(-1), /apt-get install -y -qq zsh .*exec zsh -f -s$/);
   assert.match(shellCommand({ host: false, image: "i", shell: "bash" }).args.at(-1), /^exec bash -s$/);

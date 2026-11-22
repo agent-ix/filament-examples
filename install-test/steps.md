@@ -1,6 +1,6 @@
 # Install FSL and run the examples
 
-These are the commands to install the FSL toolchain and run the examples. The install test runs every fenced block on this page, in order, in one shell on a bare `ubuntu:22.04` container, so the page cannot drift from what was tested. The commands run as root. On a machine where you are not root, prefix the `apt-get` commands with `sudo`.
+These are the commands to install the FSL toolchain and run the examples. The install test runs every fenced block on this page, in order, in one shell on a bare `ubuntu:26.04` container, so the page cannot drift from what was tested. The commands run as root. On a machine where you are not root, prefix the `apt-get` commands with `sudo`.
 
 The FSL driver comes from a prebuilt release for Linux on x86_64 and arm64 and for macOS on Apple silicon and Intel. A second path builds the driver from source. You need network access to github.com, crates.io and static.rust-lang.org. No account or token is needed.
 
