@@ -1,10 +1,13 @@
 {
-  "category": "internal-failure",
-  "last_stage": "S4",
-  "result": null,
-  "first_diagnostic": {
-    "code": "runtime_invariant",
-    "cause": null
+  "category": "success",
+  "last_stage": "S6a",
+  "result": {
+    "kind": "completed",
+    "value": {
+      "type": "boolean",
+      "value": true
+    }
   },
+  "first_diagnostic": null,
   "items": []
 }

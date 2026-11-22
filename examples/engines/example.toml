@@ -340,12 +340,9 @@ statement = "The coin stays tails through the next step with probability 1/2, wh
 file = "rules/coin.fsl"
 command = "analyze requests/probability-tails-through-one.json"
 engine = "probability"
-status = "staged"
-expect_exit = 21
-ready_exit = 0
-waits_on = "QSL-2158"
-why = "analyze settles the bounded always claim over a model operation unsupported (not-yet-implemented), where it should prove it"
-needs = "exact probability of an atom and of always over a model operation under every scheduler"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
 serves = "FR-407, FR-411 (exact probability)"
 
 [[case]]

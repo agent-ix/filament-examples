@@ -1,10 +1,13 @@
 {
-  "category": "refusal",
-  "last_stage": "S3",
-  "result": null,
-  "first_diagnostic": {
-    "code": "undefined_expression",
-    "cause": "unproved-decrease"
+  "category": "success",
+  "last_stage": "S6a",
+  "result": {
+    "kind": "completed",
+    "value": {
+      "type": "boolean",
+      "value": true
+    }
   },
+  "first_diagnostic": null,
   "items": []
 }

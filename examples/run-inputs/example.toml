@@ -16,12 +16,9 @@ id = "call-two-arguments"
 statement = "Two integer arguments are bound by parameter name and the sum 5 completes."
 file = "rules/calls.fsl"
 command = "run requests/call-two-arguments.json"
-status = "staged"
-expect_exit = 20
-ready_exit = 0
-waits_on = "QSL-2758"
-why = "fsl run reads and writes values in a legacy untagged form ({\"integer\": \"5\"}) and refuses the FR-181 typed canonical form ({\"type\": \"integer\", \"value\": \"5\"}) as wrong-value-kind (exit 20)"
-needs = "arguments read and results written in the FR-181 typed canonical form (FR-550)"
+status = "running"
+expect_exit = 0
+expect_verdict = "5"
 serves = "FR-550-AC-1 (argument and result values)"
 
 [[case]]
@@ -29,12 +26,9 @@ id = "call-arguments-reordered"
 statement = "Arguments are matched by parameter name, not by position, so the reversed list gives the same 5."
 file = "rules/calls.fsl"
 command = "run requests/call-arguments-reordered.json"
-status = "staged"
-expect_exit = 20
-ready_exit = 0
-waits_on = "QSL-2758"
-why = "fsl run reads and writes values in a legacy untagged form ({\"integer\": \"5\"}) and refuses the FR-181 typed canonical form ({\"type\": \"integer\", \"value\": \"5\"}) as wrong-value-kind (exit 20)"
-needs = "arguments read and results written in the FR-181 typed canonical form (FR-550)"
+status = "running"
+expect_exit = 0
+expect_verdict = "5"
 serves = "FR-550-AC-1 (argument and result values)"
 
 [[case]]
@@ -42,12 +36,9 @@ id = "call-big-integer"
 statement = "An integer is an exact decimal string at any magnitude: a 23-digit value comes back unchanged."
 file = "rules/calls.fsl"
 command = "run requests/call-big-integer.json"
-status = "staged"
-expect_exit = 20
-ready_exit = 0
-waits_on = "QSL-2758"
-why = "fsl run reads and writes values in a legacy untagged form ({\"integer\": \"5\"}) and refuses the FR-181 typed canonical form ({\"type\": \"integer\", \"value\": \"5\"}) as wrong-value-kind (exit 20)"
-needs = "arguments read and results written in the FR-181 typed canonical form (FR-550)"
+status = "running"
+expect_exit = 0
+expect_verdict = "99999999999999999999999"
 serves = "FR-550-AC-1 (argument and result values)"
 
 [[case]]
@@ -55,12 +46,9 @@ id = "call-negative-integer"
 statement = "A negative integer is an optional minus and a decimal string."
 file = "rules/calls.fsl"
 command = "run requests/call-negative-integer.json"
-status = "staged"
-expect_exit = 20
-ready_exit = 0
-waits_on = "QSL-2758"
-why = "fsl run reads and writes values in a legacy untagged form ({\"integer\": \"5\"}) and refuses the FR-181 typed canonical form ({\"type\": \"integer\", \"value\": \"5\"}) as wrong-value-kind (exit 20)"
-needs = "arguments read and results written in the FR-181 typed canonical form (FR-550)"
+status = "running"
+expect_exit = 0
+expect_verdict = "-5"
 serves = "FR-550-AC-1 (argument and result values)"
 
 [[case]]
@@ -68,12 +56,9 @@ id = "call-zero-integer"
 statement = "Zero is the string 0."
 file = "rules/calls.fsl"
 command = "run requests/call-zero-integer.json"
-status = "staged"
-expect_exit = 20
-ready_exit = 0
-waits_on = "QSL-2758"
-why = "fsl run reads and writes values in a legacy untagged form ({\"integer\": \"5\"}) and refuses the FR-181 typed canonical form ({\"type\": \"integer\", \"value\": \"5\"}) as wrong-value-kind (exit 20)"
-needs = "arguments read and results written in the FR-181 typed canonical form (FR-550)"
+status = "running"
+expect_exit = 0
+expect_verdict = "0"
 serves = "FR-550-AC-1 (argument and result values)"
 
 [[case]]
@@ -81,12 +66,9 @@ id = "call-boolean"
 statement = "A Boolean argument comes back unchanged."
 file = "rules/calls.fsl"
 command = "run requests/call-boolean.json"
-status = "staged"
-expect_exit = 20
-ready_exit = 0
-waits_on = "QSL-2758"
-why = "fsl run reads and writes values in a legacy untagged form ({\"integer\": \"5\"}) and refuses the FR-181 typed canonical form ({\"type\": \"integer\", \"value\": \"5\"}) as wrong-value-kind (exit 20)"
-needs = "arguments read and results written in the FR-181 typed canonical form (FR-550)"
+status = "running"
+expect_exit = 0
+expect_verdict = "true"
 serves = "FR-550-AC-1 (argument and result values)"
 
 [[case]]
@@ -94,12 +76,9 @@ id = "call-sequence-at-bound"
 statement = "A sequence of three integers meets the declared maximum of three and comes back in order."
 file = "rules/calls.fsl"
 command = "run requests/call-sequence-at-bound.json"
-status = "staged"
-expect_exit = 20
-ready_exit = 0
-waits_on = "QSL-2758"
-why = "fsl run reads and writes values in a legacy untagged form ({\"integer\": \"5\"}) and refuses the FR-181 typed canonical form ({\"type\": \"integer\", \"value\": \"5\"}) as wrong-value-kind (exit 20)"
-needs = "arguments read and results written in the FR-181 typed canonical form (FR-550)"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
 serves = "FR-550-AC-1 (argument and result values)"
 
 [[case]]
@@ -107,12 +86,9 @@ id = "call-sequence-empty"
 statement = "An empty sequence meets the declared minimum of zero."
 file = "rules/calls.fsl"
 command = "run requests/call-sequence-empty.json"
-status = "staged"
-expect_exit = 20
-ready_exit = 0
-waits_on = "QSL-2758"
-why = "fsl run reads and writes values in a legacy untagged form ({\"integer\": \"5\"}) and refuses the FR-181 typed canonical form ({\"type\": \"integer\", \"value\": \"5\"}) as wrong-value-kind (exit 20)"
-needs = "arguments read and results written in the FR-181 typed canonical form (FR-550)"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
 serves = "FR-550-AC-1 (argument and result values)"
 
 [[case]]
@@ -120,12 +96,9 @@ id = "call-digit-at-max"
 statement = "9 is the top of the declared range 0 to 9 and is admitted."
 file = "rules/calls.fsl"
 command = "run requests/call-digit-at-max.json"
-status = "staged"
-expect_exit = 20
-ready_exit = 0
-waits_on = "QSL-2758"
-why = "fsl run reads and writes values in a legacy untagged form ({\"integer\": \"5\"}) and refuses the FR-181 typed canonical form ({\"type\": \"integer\", \"value\": \"5\"}) as wrong-value-kind (exit 20)"
-needs = "arguments read and results written in the FR-181 typed canonical form (FR-550)"
+status = "running"
+expect_exit = 0
+expect_verdict = "9"
 serves = "FR-550-AC-1 (argument and result values)"
 
 [[case]]
@@ -133,12 +106,9 @@ id = "call-digit-at-min"
 statement = "0 is the bottom of the declared range 0 to 9 and is admitted."
 file = "rules/calls.fsl"
 command = "run requests/call-digit-at-min.json"
-status = "staged"
-expect_exit = 20
-ready_exit = 0
-waits_on = "QSL-2758"
-why = "fsl run reads and writes values in a legacy untagged form ({\"integer\": \"5\"}) and refuses the FR-181 typed canonical form ({\"type\": \"integer\", \"value\": \"5\"}) as wrong-value-kind (exit 20)"
-needs = "arguments read and results written in the FR-181 typed canonical form (FR-550)"
+status = "running"
+expect_exit = 0
+expect_verdict = "0"
 serves = "FR-550-AC-1 (argument and result values)"
 
 [[case]]
@@ -156,12 +126,9 @@ id = "call-tagged-integer"
 statement = "An integer argument in the FR-181 typed canonical form {\"type\": \"integer\", \"value\": \"5\"} completes with the same form."
 file = "rules/calls.fsl"
 command = "run requests/call-tagged-integer.json"
-status = "staged"
-expect_exit = 20
-ready_exit = 0
-waits_on = "QSL-2758"
-why = "this build reads an integer as {\"integer\": \"5\"} and refuses the FR-181 tagged form, so the argument is refused wrong-value-kind (exit 20)"
-needs = "arguments read in the FR-181 typed canonical form"
+status = "running"
+expect_exit = 0
+expect_verdict = "5"
 serves = "FR-550-AC-1 (typed canonical form)"
 
 [[case]]
@@ -169,12 +136,9 @@ id = "call-tagged-rational"
 statement = "A rational argument 4/6 is read as 2/3: the result is the normalized form {\"type\": \"rational\", \"numerator\": \"2\", \"denominator\": \"3\"}."
 file = "rules/calls.fsl"
 command = "run requests/call-tagged-rational.json"
-status = "staged"
-expect_exit = 20
-ready_exit = 0
-waits_on = "QSL-2758"
-why = "this build reads an integer as {\"integer\": \"5\"} and refuses the FR-181 tagged form, so the rational argument is refused wrong-value-kind (exit 20)"
-needs = "arguments read in the FR-181 typed canonical form"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
 serves = "FR-550-AC-1 (typed canonical form)"
 
 [[case]]
@@ -182,12 +146,9 @@ id = "call-tagged-text"
 statement = "A text argument in the typed canonical form comes back unchanged."
 file = "rules/calls.fsl"
 command = "run requests/call-tagged-text.json"
-status = "staged"
-expect_exit = 20
-ready_exit = 0
-waits_on = "QSL-2758"
-why = "this build reads an integer as {\"integer\": \"5\"} and refuses the FR-181 tagged form, so the text argument is refused wrong-value-kind (exit 20)"
-needs = "arguments read in the FR-181 typed canonical form"
+status = "running"
+expect_exit = 0
+expect_verdict = "hi"
 serves = "FR-550-AC-1 (typed canonical form)"
 
 [[case]]
@@ -195,12 +156,9 @@ id = "call-tagged-set-order"
 statement = "A set argument supplied as 3 then 1 comes back with its elements in canonical order, 1 then 3."
 file = "rules/calls.fsl"
 command = "run requests/call-tagged-set-order.json"
-status = "staged"
-expect_exit = 20
-ready_exit = 0
-waits_on = "QSL-2758"
-why = "this build reads an integer as {\"integer\": \"5\"} and refuses the FR-181 tagged form, so the set argument is refused wrong-value-kind (exit 20)"
-needs = "arguments read in the FR-181 typed canonical form"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
 serves = "FR-550-AC-1 (typed canonical form)"
 
 [[case]]
@@ -228,12 +186,9 @@ id = "option-engine-interpreter"
 statement = "The interpreter engine runs the call and completes with 5."
 file = "rules/calls.fsl"
 command = "run requests/option-engine-interpreter.json --engine interpreter"
-status = "staged"
-expect_exit = 20
-ready_exit = 0
-waits_on = "QSL-2758"
-why = "fsl run reads and writes values in a legacy untagged form ({\"integer\": \"5\"}) and refuses the FR-181 typed canonical form ({\"type\": \"integer\", \"value\": \"5\"}) as wrong-value-kind (exit 20)"
-needs = "arguments read and results written in the FR-181 typed canonical form (FR-550)"
+status = "running"
+expect_exit = 0
+expect_verdict = "5"
 serves = "FR-306 (equivalent backends)"
 
 [[case]]
@@ -261,12 +216,9 @@ id = "option-request-bytes-large"
 statement = "A request within --request-bytes runs as without the option."
 file = "rules/calls.fsl"
 command = "run requests/option-request-bytes-large.json --request-bytes 100000"
-status = "staged"
-expect_exit = 20
-ready_exit = 0
-waits_on = "QSL-2758"
-why = "fsl run reads and writes values in a legacy untagged form ({\"integer\": \"5\"}) and refuses the FR-181 typed canonical form ({\"type\": \"integer\", \"value\": \"5\"}) as wrong-value-kind (exit 20)"
-needs = "arguments read and results written in the FR-181 typed canonical form (FR-550)"
+status = "running"
+expect_exit = 0
+expect_verdict = "5"
 serves = "FR-460, FR-461"
 
 [[case]]

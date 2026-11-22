@@ -1050,12 +1050,9 @@ id = "quantity-scale-by-division"
 statement = "Dividing a Quantity<ms> by the literal 2 scales it and keeps the unit ms, so the result checks as Quantity<ms>."
 file = "rules/quantity-scale-by-division.fsl"
 command = "check rules/quantity-scale-by-division.fsl"
-status = "staged"
-expect_exit = 20
-ready_exit = 0
-waits_on = "QSL-2752"
-why = "The driver build embedding FSL 529282e9 refuses a quantity divided by a number as a type mismatch on the operator; FR-142 defines q / n as scaling."
-needs = "Quantity scaling by division"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
 
 [[case]]
 id = "quantity-times-float-refused"
