@@ -31,7 +31,7 @@ The table lists each system with the number of cases that run today and the numb
 | [cell](examples/cell) | Safety | 13 | 0 |
 | [rover](examples/rover) | Safety | 68 | 5 |
 | [run-inputs](examples/run-inputs) | Language | 11 | 21 |
-| [lock](examples/lock) | Safety | 25 | 1 |
+| [lock](examples/lock) | Safety | 26 | 0 |
 | [library](examples/library) | Shop | 6 | 0 |
 
 ## Beyond FSL
