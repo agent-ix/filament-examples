@@ -10,7 +10,7 @@
 #   FSL_REVISION exact filament-driver commit built when FSL_SOURCE=source
 #   FSL_REPO     the driver repository
 
-ARG UBUNTU=22.04
+ARG UBUNTU=26.04
 ARG RUST_VERSION=1.98.1
 
 # ------------------------------------------------------------ driver stage
@@ -80,9 +80,9 @@ RUN apt-get update \
  && apt-get install -y --no-install-recommends ca-certificates curl git jq make xz-utils \
  && rm -rf /var/lib/apt/lists/*
 
-# Node from nodejs.org: the Ubuntu 22.04 package is too old. The tarball names
-# use arm64 and x64, not aarch64 and x86_64. Docs and headers are dropped; the
-# LICENSE file stays, because Node's licence notices must accompany the binary.
+# Node from nodejs.org keeps the selected Node major independent of Ubuntu's
+# packaged version. The tarball names use arm64 and x64, not aarch64 and x86_64.
+# Docs and headers are dropped; the LICENSE file stays with the binary.
 RUN set -eu; \
     case "$(uname -m)" in aarch64) a=arm64;; x86_64) a=x64;; esac; \
     v=$(curl -sSf https://nodejs.org/dist/index.json \

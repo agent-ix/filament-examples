@@ -19,7 +19,7 @@ It lists what the image ships, with each component's licence identifier as its o
 | Component | Licence | Where its notices are |
 | --- | --- | --- |
 | Node.js, with the npm and corepack that come with it | as listed in Node's own licence file | `texts/nodejs.LICENSE`; the version is in `BUILD-FACTS.txt` |
-| Ubuntu 22.04 packages | the licence of each package | `/usr/share/doc/<package>/copyright`; the package list is in `BUILD-FACTS.txt` |
+| Ubuntu 26.04 packages | the licence of each package | `/usr/share/doc/<package>/copyright`; the package list is in `BUILD-FACTS.txt` |
 
 ## Rust crates built into `fsl` (filament-driver v0.1.3)
 

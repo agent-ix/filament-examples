@@ -69,7 +69,7 @@ The [image folder](image/README.md) describes the image.
 
 ### With a release binary
 
-You need `make`, `curl` and Rust 1.98.1 or later: the example runner in [tools/fsl-examples](tools/README.md) is a Rust program that `make check` builds on its first run. Each [filament-driver release](https://github.com/agent-ix/filament-driver/releases) has an archive for Linux and macOS on x86_64 and arm64, and a `SHA256SUMS.txt` file. The [install steps](install-test/steps.md) list every command for a clean Ubuntu 22.04 machine: they download the archive for your platform, check its checksum and put `fsl` on your path. A manual workflow runs them in bash and zsh. The Makefile reads the driver path from one variable, `FSL`, set in [config.mk](config.mk). Its default is `fsl`.
+You need `make`, `curl` and Rust 1.98.1 or later: the example runner in [tools/fsl-examples](tools/README.md) is a Rust program that `make check` builds on its first run. Each [filament-driver release](https://github.com/agent-ix/filament-driver/releases) has an archive for Linux and macOS on x86_64 and arm64, and a `SHA256SUMS.txt` file. The [install steps](install-test/steps.md) list every command for a clean Ubuntu 26.04 machine: they download the archive for your platform, check its checksum and put `fsl` on your path. A manual workflow runs them in bash and zsh. The Makefile reads the driver path from one variable, `FSL`, set in [config.mk](config.mk). Its default is `fsl`.
 
 ```
 make check staged
@@ -164,7 +164,7 @@ make runner-test
 
 `make test` runs the tests of the Node tools and of the tutorial projects.
 
-The install test runs the commands of [install-test/steps.md](install-test/steps.md) on a bare `ubuntu:22.04` container. It needs Docker and a few minutes:
+The install test runs the commands of [install-test/steps.md](install-test/steps.md) on a bare `ubuntu:26.04` container. It needs Docker and a few minutes:
 
 ```
 make install-test
