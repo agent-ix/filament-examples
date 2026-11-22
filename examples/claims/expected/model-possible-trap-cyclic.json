@@ -1,26 +1,76 @@
 {
-  "category": "incomplete",
-  "last_stage": null,
+  "category": "violation",
+  "last_stage": "S7",
   "result": null,
   "first_diagnostic": null,
   "items": [
     {
       "axes": {
         "activation": "active",
-        "execution": "failed",
-        "settlement": "unsettled",
-        "truth": null
+        "execution": "completed",
+        "settlement": "closed-scope",
+        "truth": "false"
       },
-      "category": "incomplete",
+      "category": "violation",
       "claim_name": "ReachesAboveThree",
+      "counterexample": {
+        "arm": "trap",
+        "instance": {
+          "key": {
+            "identity": "d",
+            "object_type": {
+              "original": {
+                "node": "ix://example/dial/Dial",
+                "package": "example/dial"
+              },
+              "owner_effective_type": null
+            },
+            "type": "reference",
+            "universe": {
+              "ordinal": 0,
+              "package": "example/dial",
+              "path": [
+                "model",
+                "object_type",
+                "ix://example/dial/Dial"
+              ]
+            }
+          },
+          "parameter": "d",
+          "type": "instance"
+        },
+        "stem": {
+          "initial": "0",
+          "steps": [],
+          "type": "model-path"
+        },
+        "type": "graph-evidence"
+      },
+      "exploration": {
+        "automaton_states": "0",
+        "states": "4",
+        "transitions": "10"
+      },
       "record": {
         "backend": "en-1",
-        "cause": {
-          "kind": "cancelled",
-          "source": "deadline"
+        "cause": null,
+        "limits": {
+          "max_automaton_states": 1048576,
+          "max_states": 10000000,
+          "max_transitions": 100000000
         },
-        "result": "incomplete",
-        "settled_by": "result"
+        "max_depth": null,
+        "method": "explicit-state",
+        "result": "refuted",
+        "seed": "0",
+        "settled_by": "result",
+        "witness_samples": 64
+      },
+      "replay": {
+        "reproduced": true,
+        "target": {
+          "state_clause": "ReachesAboveThree"
+        }
       },
       "request": {
         "candidates": {

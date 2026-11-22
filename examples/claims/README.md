@@ -26,7 +26,7 @@ Set `FSL` to the driver binary. Every record in this system was written by the d
 
 ## Staged
 
-- `model-possible-trap-cyclic` waits on QSL-2756. The dial can return to 0, so its state graph has a cycle, and a possible claim whose target no state satisfies never settles: the request's `deadline_ms` of 2000 stops it with `cancelled`/`deadline`, exit 22. FR-391-AC-2 requires `refuted`, closed-scope, exit 10. The same claim over the acyclic dial refutes at once (`model-possible-trap`).
+- `model-possible-trap-cyclic` waits on QSL-2756. The dial can return to 0, so its state graph has a cycle, and a possible claim whose target no state satisfies never settles: the request's `deadline_ms` of 2000 stops it with `cancelled`/`deadline`, exit 22. FR-391-AC-2 requires `refuted`, closed-scope, exit 10. The same claim over the acyclic dial refutes at once (`model-possible-trap`). This case settles refuted within its 2000 ms deadline on an optimized (release) build of fsl; an unoptimized dev build was observed to return incomplete (deadline) for the same request.
 - `window-absent-valuation` waits on QSL-2750: the stepping wire refuses a sample that omits a field (`invalid_runtime_input`/`missing-member`), where FR-091-AC-13 reads the absent atom as a missing valuation and settles indeterminate (exit 11).
 - `window-order-keys-admit-until` waits on QSL-2750: two observations stamped 1 with distinct keys from one authority are read as one instant and give a conflicting valuation (exit 11), where FR-091-AC-16 orders them and until is true (exit 0).
 

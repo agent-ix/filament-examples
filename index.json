@@ -3628,20 +3628,20 @@
     {
       "system": "claims",
       "case": "model-possible-trap-cyclic",
-      "status": "staged",
+      "status": "running",
       "rule": null,
       "statement": "No state of the dial has n above 3, so the possible claim is refuted. The dial can return to 0, so the state graph has a cycle, and analyze does not settle the claim; the deadline stops it.",
       "rule_file": "examples/claims/rules/dial.fsl",
       "data_files": [],
       "request_file": "examples/claims/requests/model-possible-trap-cyclic.json",
       "expected_file": "examples/claims/expected/model-possible-trap-cyclic.json",
-      "verdict": null,
-      "exit": 22,
-      "ready_exit": 10,
+      "verdict": "refuted",
+      "exit": 10,
+      "ready_exit": null,
       "engine": "model-checking",
       "clock": null,
-      "waits_on": "QSL-2756",
-      "needs": "a refuted verdict for a possible claim with a trap over a cyclic state graph"
+      "waits_on": null,
+      "needs": null
     },
     {
       "system": "claims",
