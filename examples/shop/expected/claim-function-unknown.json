@@ -1,6 +1,6 @@
 {
   "category": "refusal",
-  "last_stage": "S4",
+  "last_stage": "S6a",
   "result": null,
   "first_diagnostic": null,
   "items": [
@@ -17,6 +17,13 @@
         "kind": "missing-name"
       },
       "clause": "nope",
+      "diagnostic": {
+        "cause": "missing-name",
+        "code": "missing_declaration",
+        "detail": {
+          "name": "nope"
+        }
+      },
       "request_index": 0,
       "result": "declined"
     }

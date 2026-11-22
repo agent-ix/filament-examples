@@ -50,10 +50,7 @@
             },
             "transition": {
               "arguments": [],
-              "operation": {
-                "node": "ix://example/rover-deadline/Rover/brake",
-                "package": "example/rover-deadline"
-              },
+              "operation": "ix://example/rover-deadline/Rover/brake",
               "receiver": {
                 "identity": "r1",
                 "object_type": {
@@ -87,10 +84,7 @@
             },
             "transition": {
               "arguments": [],
-              "operation": {
-                "node": "ix://example/rover-deadline/Rover/halt",
-                "package": "example/rover-deadline"
-              },
+              "operation": "ix://example/rover-deadline/Rover/halt",
               "receiver": {
                 "identity": "r1",
                 "object_type": {
@@ -145,190 +139,28 @@
               "temporal",
               "temporal_clause",
               {
-                "ordinal": 0,
-                "package": "example:rover/stop-deadline",
-                "path": [
-                  "value",
-                  "parameter",
-                  "name",
-                  {
-                    "ordinal": 0,
-                    "package": "example:rover/stop-deadline",
-                    "path": [
-                      "scalar_type",
-                      "text"
-                    ]
-                  },
-                  "r",
-                  "level",
-                  {
-                    "ordinal": 0,
-                    "package": "example:rover/stop-deadline",
-                    "path": [
-                      "scalar_type",
-                      "integer"
-                    ]
-                  },
-                  "0",
-                  {
-                    "ordinal": 0,
-                    "package": "example:rover/stop-deadline",
-                    "path": [
-                      "composite_type",
-                      "reference",
-                      {
-                        "ordinal": 0,
-                        "package": "example/rover-deadline",
-                        "path": [
-                          "model",
-                          "object_type",
-                          "ix://example/rover-deadline/Rover"
-                        ]
-                      }
-                    ]
-                  }
-                ]
+                "node": 18
               },
               {
-                "ordinal": 0,
-                "package": "example:rover/stop-deadline",
-                "path": [
-                  "scalar_type",
-                  "text"
-                ]
+                "node": 8
               },
               "model-time",
               "kind",
+              {
+                "node": 8
+              },
               "origin",
               {
-                "ordinal": 1,
-                "package": "example:rover/stop-deadline",
-                "path": [
-                  "temporal",
-                  "formula",
-                  {
-                    "ordinal": 0,
-                    "package": "example:rover/stop-deadline",
-                    "path": [
-                      "temporal",
-                      "formula",
-                      {
-                        "ordinal": 0,
-                        "package": "example:rover/stop-deadline",
-                        "path": [
-                          "expression",
-                          "query",
-                          {
-                            "ordinal": 0,
-                            "package": "example:rover/stop-deadline",
-                            "path": [
-                              "expression",
-                              "deref",
-                              {
-                                "ordinal": 0,
-                                "package": "example:rover/stop-deadline",
-                                "path": [
-                                  "value",
-                                  "parameter",
-                                  "name",
-                                  {
-                                    "ordinal": 0,
-                                    "package": "example:rover/stop-deadline",
-                                    "path": [
-                                      "scalar_type",
-                                      "text"
-                                    ]
-                                  },
-                                  "r",
-                                  "level",
-                                  {
-                                    "ordinal": 0,
-                                    "package": "example:rover/stop-deadline",
-                                    "path": [
-                                      "scalar_type",
-                                      "integer"
-                                    ]
-                                  },
-                                  "0",
-                                  {
-                                    "ordinal": 0,
-                                    "package": "example:rover/stop-deadline",
-                                    "path": [
-                                      "composite_type",
-                                      "reference",
-                                      {
-                                        "ordinal": 0,
-                                        "package": "example/rover-deadline",
-                                        "path": [
-                                          "model",
-                                          "object_type",
-                                          "ix://example/rover-deadline/Rover"
-                                        ]
-                                      }
-                                    ]
-                                  }
-                                ]
-                              },
-                              "filament.op.model.deref",
-                              "deref",
-                              {
-                                "ordinal": 0,
-                                "package": "example/rover-deadline",
-                                "path": [
-                                  "model",
-                                  "object_type",
-                                  "ix://example/rover-deadline/Rover"
-                                ]
-                              }
-                            ]
-                          },
-                          "filament.op.record.project",
-                          "false",
-                          "query",
-                          {
-                            "ordinal": 0,
-                            "package": "example:rover/stop-deadline",
-                            "path": [
-                              "scalar_type",
-                              "boolean"
-                            ]
-                          }
-                        ]
-                      },
-                      "filament.op.temporal.holds",
-                      "temporal_formula",
-                      {
-                        "ordinal": 0,
-                        "package": "example:rover/stop-deadline",
-                        "path": [
-                          "scalar_type",
-                          "boolean"
-                        ]
-                      }
-                    ]
-                  },
-                  "filament.op.temporal.eventually",
-                  "temporal_formula",
-                  {
-                    "ordinal": 0,
-                    "package": "example:rover/stop-deadline",
-                    "path": [
-                      "scalar_type",
-                      "boolean"
-                    ]
-                  }
-                ]
+                "node": 22
               },
               "filament.op.temporal.clause",
               "filament.temporal.timed/v1",
               "temporal",
               {
-                "ordinal": 0,
-                "package": "example:rover/stop-deadline",
-                "path": [
-                  "scalar_type",
-                  "boolean"
-                ]
+                "node": 6
+              },
+              {
+                "node": 6
               }
             ]
           },

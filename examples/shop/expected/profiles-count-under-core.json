@@ -1,10 +1,24 @@
 {
   "category": "unsupported",
-  "last_stage": "S3",
+  "last_stage": "S6a",
   "result": null,
-  "first_diagnostic": {
-    "code": "unsupported_construct",
-    "cause": "expression-form"
-  },
-  "items": []
+  "first_diagnostic": null,
+  "items": [
+    {
+      "axes": {
+        "activation": "unavailable",
+        "execution": null,
+        "settlement": "unavailable",
+        "truth": null
+      },
+      "category": "unsupported",
+      "cause": {
+        "code": "unsupported_construct",
+        "kind": "expression-form"
+      },
+      "clause": "AtMostTwoRefunds",
+      "request_index": 0,
+      "result": "unsupported"
+    }
+  ]
 }

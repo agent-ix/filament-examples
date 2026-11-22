@@ -1,1 +1,1 @@
-the checker refused the package: invalid_model_binding (malformed-declaration): channel `Release` carries the object type `Parts::Job`, not a message type
+invalid_model_binding (malformed-declaration): channel `Release` carries the object type `Parts::Job`, not a message type

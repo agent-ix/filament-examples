@@ -1,1 +1,2 @@
-the checker refused the package: missing_declaration (missing-name): `using t` names no profile selection of the unit, and 1 more
+missing_declaration (missing-name): `using t` names no profile selection of the unit
+missing_declaration (missing-selection): `await Wait` reads a clock, but the unit selects no temporal profile

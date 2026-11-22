@@ -4,7 +4,8 @@
   "result": {
     "kind": "completed",
     "value": {
-      "integer": "123456789012345678901234567890"
+      "type": "integer",
+      "value": "123456789012345678901234567890"
     }
   },
   "first_diagnostic": null,

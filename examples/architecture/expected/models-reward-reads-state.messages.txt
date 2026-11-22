@@ -1,1 +1,1 @@
-the checker refused the package: invalid_probabilistic_model (state-read-in-reward): reward `cost` on `Arch::Service::call` reads state or an ambient value
+invalid_probabilistic_model (state-read-in-reward): reward `cost` on `Arch::Service::call` reads state or an ambient value

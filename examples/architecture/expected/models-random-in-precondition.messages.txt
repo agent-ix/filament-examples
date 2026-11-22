@@ -1,1 +1,1 @@
-the checker refused the package: invalid_probabilistic_model (random-read-in-precondition): precondition Clause("NeedsOk") of `call` reads its random parameter `ok`
+invalid_probabilistic_model (random-read-in-precondition): precondition Clause("NeedsOk") of `call` reads its random parameter `ok`

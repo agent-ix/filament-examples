@@ -1,1 +1,2 @@
-the checker refused the package: invalid_probabilistic_model (unknown-operation): workload `Traffic` weights `Arch::Service::nope`, which is not in its model, and 1 more
+invalid_probabilistic_model (unknown-operation): workload `Traffic` weights `Arch::Service::nope`, which is not in its model
+invalid_probabilistic_model (incomplete-workload): workload `Traffic` gives `Service::call` no weight

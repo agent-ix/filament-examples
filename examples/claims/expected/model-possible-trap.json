@@ -8,7 +8,7 @@
       "axes": {
         "activation": "active",
         "execution": "completed",
-        "settlement": "decisive-counterexample",
+        "settlement": "closed-scope",
         "truth": "false"
       },
       "category": "violation",

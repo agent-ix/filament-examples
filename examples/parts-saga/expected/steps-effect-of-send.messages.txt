@@ -1,1 +1,1 @@
-the checker refused the package: ill_typed (type-mismatch): `effect-of` names a `send`, not attempt
+ill_typed (type-mismatch): `effect-of` names a `send`, not attempt

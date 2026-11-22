@@ -1,6 +1,6 @@
 {
   "category": "refusal",
-  "last_stage": "S4",
+  "last_stage": "S6a",
   "result": null,
   "first_diagnostic": null,
   "items": [
@@ -17,6 +17,15 @@
         "kind": "type-mismatch"
       },
       "clause": "seven",
+      "diagnostic": {
+        "cause": "type-mismatch",
+        "code": "ill_typed",
+        "detail": {
+          "actual": "Integer",
+          "expected": "Boolean",
+          "function": "seven"
+        }
+      },
       "request_index": 0,
       "result": "declined"
     }

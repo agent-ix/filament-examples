@@ -1,1 +1,1 @@
-the checker refused the package: unsupported_construct (declaration-form): the body of `repeat Again` does not necessarily take a step
+unsupported_construct (declaration-form): the body of `repeat Again` does not necessarily take a step

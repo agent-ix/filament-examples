@@ -1,6 +1,6 @@
 {
   "category": "refusal",
-  "last_stage": "S4",
+  "last_stage": "S6a",
   "result": null,
   "first_diagnostic": null,
   "items": [
@@ -14,7 +14,21 @@
       "category": "refusal",
       "cause": {
         "code": "dangling_reference",
-        "kind": "absent-target-in-complete-population"
+        "kind": "absent-target-in-complete-population",
+        "locus": {
+          "document": {
+            "authority": "example",
+            "identity": "ix://example/shop/data/dangling-charge"
+          },
+          "kind": "document",
+          "member": null,
+          "object": {
+            "key": "c1",
+            "population": "ix://example/shop/charges"
+          },
+          "path": "../data/dangling-charge.json",
+          "pointer": ""
+        }
       },
       "clause": "PaidInFull",
       "request_index": 0,

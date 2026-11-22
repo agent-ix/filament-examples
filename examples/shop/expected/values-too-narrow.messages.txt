@@ -1,1 +1,1 @@
-the checker refused the package: undefined_expression (unproved-range)
+undefined_expression (unproved-range): `price * qty` must lie in [0, 1000000] but is proved only in [0, 99000000]

@@ -1,1 +1,1 @@
-the checker refused the package: undefined_expression (unproved-range)
+undefined_expression (unproved-range): `sum<Small>(p in prices(): p)` must lie in [0, 3000] but is proved only in [0, 5000000]

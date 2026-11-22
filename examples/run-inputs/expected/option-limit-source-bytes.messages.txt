@@ -1,1 +1,1 @@
-S1 input byte limit 10 reached (914); raise it with `--limit s1.input_bytes=<n>`
+S1 input byte limit 10 reached (914); raise it with `--limit s1.input_bytes=<n>` or the request's `stage_limits` entry `s1.input_bytes`

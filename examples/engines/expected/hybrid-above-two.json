@@ -72,209 +72,28 @@
               "temporal",
               "temporal_clause",
               {
-                "ordinal": 0,
-                "package": "example:engines/hybrid",
-                "path": [
-                  "value",
-                  "parameter",
-                  "name",
-                  {
-                    "ordinal": 0,
-                    "package": "example:engines/hybrid",
-                    "path": [
-                      "scalar_type",
-                      "text"
-                    ]
-                  },
-                  "r",
-                  "level",
-                  {
-                    "ordinal": 0,
-                    "package": "example:engines/hybrid",
-                    "path": [
-                      "scalar_type",
-                      "integer"
-                    ]
-                  },
-                  "0",
-                  {
-                    "ordinal": 0,
-                    "package": "example:engines/hybrid",
-                    "path": [
-                      "RadioEnergyCycle"
-                    ]
-                  }
-                ]
+                "node": 41
               },
               {
-                "ordinal": 0,
-                "package": "example:engines/hybrid",
-                "path": [
-                  "scalar_type",
-                  "text"
-                ]
+                "node": 3
               },
               "model-time",
               "kind",
               {
-                "ordinal": 0,
-                "package": "example:engines/hybrid",
-                "path": [
-                  "scalar_type",
-                  "text"
-                ]
+                "node": 3
               },
               "origin",
               {
-                "ordinal": 0,
-                "package": "example:engines/hybrid",
-                "path": [
-                  "temporal",
-                  "formula",
-                  {
-                    "ordinal": 0,
-                    "package": "example:engines/hybrid",
-                    "path": [
-                      "temporal",
-                      "formula",
-                      {
-                        "ordinal": 0,
-                        "package": "example:engines/hybrid",
-                        "path": [
-                          "expression",
-                          "binary",
-                          {
-                            "ordinal": 0,
-                            "package": "example:engines/hybrid",
-                            "path": [
-                              "value",
-                              "parameter",
-                              "name",
-                              {
-                                "ordinal": 0,
-                                "package": "example:engines/hybrid",
-                                "path": [
-                                  "scalar_type",
-                                  "text"
-                                ]
-                              },
-                              "charge",
-                              "level",
-                              {
-                                "ordinal": 0,
-                                "package": "example:engines/hybrid",
-                                "path": [
-                                  "scalar_type",
-                                  "integer"
-                                ]
-                              },
-                              "0",
-                              {
-                                "ordinal": 0,
-                                "package": "example:engines/hybrid",
-                                "path": [
-                                  "scalar_type",
-                                  "rational"
-                                ]
-                              }
-                            ]
-                          },
-                          {
-                            "ordinal": 0,
-                            "package": "example:engines/hybrid",
-                            "path": [
-                              "value",
-                              "literal",
-                              {
-                                "ordinal": 0,
-                                "package": "example:engines/hybrid",
-                                "path": [
-                                  "scalar_type",
-                                  "rational"
-                                ]
-                              },
-                              "2"
-                            ]
-                          },
-                          "filament.op.rational.gt",
-                          "binary",
-                          {
-                            "ordinal": 0,
-                            "package": "example:engines/hybrid",
-                            "path": [
-                              "scalar_type",
-                              "boolean"
-                            ]
-                          },
-                          {
-                            "ordinal": 0,
-                            "package": "example:engines/hybrid",
-                            "path": [
-                              "scalar_type",
-                              "boolean"
-                            ]
-                          }
-                        ]
-                      },
-                      "filament.op.temporal.holds",
-                      "temporal_formula",
-                      {
-                        "ordinal": 0,
-                        "package": "example:engines/hybrid",
-                        "path": [
-                          "scalar_type",
-                          "boolean"
-                        ]
-                      },
-                      {
-                        "ordinal": 0,
-                        "package": "example:engines/hybrid",
-                        "path": [
-                          "scalar_type",
-                          "boolean"
-                        ]
-                      }
-                    ]
-                  },
-                  "filament.op.temporal.always",
-                  "steps:0..12",
-                  "temporal_formula",
-                  {
-                    "ordinal": 0,
-                    "package": "example:engines/hybrid",
-                    "path": [
-                      "scalar_type",
-                      "boolean"
-                    ]
-                  },
-                  {
-                    "ordinal": 0,
-                    "package": "example:engines/hybrid",
-                    "path": [
-                      "scalar_type",
-                      "boolean"
-                    ]
-                  }
-                ]
+                "node": 37
               },
               "filament.op.temporal.clause",
               "filament.temporal.infinite-trace/v1",
               "temporal",
               {
-                "ordinal": 0,
-                "package": "example:engines/hybrid",
-                "path": [
-                  "scalar_type",
-                  "boolean"
-                ]
+                "node": 0
               },
               {
-                "ordinal": 0,
-                "package": "example:engines/hybrid",
-                "path": [
-                  "scalar_type",
-                  "boolean"
-                ]
+                "node": 0
               }
             ]
           },

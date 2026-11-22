@@ -56,7 +56,7 @@ The same command on `requests/protocol-overlapping-verdict.json` is refused:
 <!-- output: protocol-overlapping-verdict -->
 ```
 exit 20
-refusal: undefined_expression: the checker refused the package: undefined_expression (unproved-exhaustiveness): the guards of `choice Verdict` are not exhaustive and exclusive (duplicate-arm)
+refusal: undefined_expression: undefined_expression (unproved-exhaustiveness): the guards of `choice Verdict` are not exhaustive and exclusive (duplicate-arm)
 ```
 <!-- /output -->
 

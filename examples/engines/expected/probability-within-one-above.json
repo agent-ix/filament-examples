@@ -233,36 +233,14 @@
               "HeadsWithinOneAbove",
               "subject",
               {
-                "ordinal": 0,
-                "package": "example/coin",
-                "path": [
-                  "model",
-                  "model_root"
-                ]
+                "node": 32
               },
               "scheduler",
               "every",
               "reward",
               "distributions",
               {
-                "ordinal": 0,
-                "package": "example:engines/coin",
-                "path": [
-                  "probabilistic",
-                  "random_parameter",
-                  {
-                    "ordinal": 0,
-                    "package": "example/coin",
-                    "path": [
-                      "model",
-                      "object_type",
-                      "ix://example/coin/Coin"
-                    ]
-                  },
-                  "flip",
-                  "ok",
-                  "true*1,false*1"
-                ]
+                "node": 33
               },
               "delays",
               "form",
@@ -273,157 +251,7 @@
               "formula",
               "formula",
               {
-                "ordinal": 0,
-                "package": "example:engines/coin",
-                "path": [
-                  "temporal",
-                  "formula",
-                  {
-                    "ordinal": 0,
-                    "package": "example:engines/coin",
-                    "path": [
-                      "temporal",
-                      "formula",
-                      {
-                        "ordinal": 0,
-                        "package": "example:engines/coin",
-                        "path": [
-                          "expression",
-                          "query",
-                          {
-                            "ordinal": 0,
-                            "package": "example:engines/coin",
-                            "path": [
-                              "expression",
-                              "deref",
-                              {
-                                "ordinal": 0,
-                                "package": "example:engines/coin",
-                                "path": [
-                                  "value",
-                                  "parameter",
-                                  "name",
-                                  {
-                                    "ordinal": 0,
-                                    "package": "example:engines/coin",
-                                    "path": [
-                                      "scalar_type",
-                                      "text"
-                                    ]
-                                  },
-                                  "c",
-                                  "level",
-                                  {
-                                    "ordinal": 0,
-                                    "package": "example:engines/coin",
-                                    "path": [
-                                      "scalar_type",
-                                      "integer"
-                                    ]
-                                  },
-                                  "0",
-                                  {
-                                    "ordinal": 0,
-                                    "package": "example:engines/coin",
-                                    "path": [
-                                      "composite_type",
-                                      "reference",
-                                      {
-                                        "ordinal": 0,
-                                        "package": "example/coin",
-                                        "path": [
-                                          "model",
-                                          "object_type",
-                                          "ix://example/coin/Coin"
-                                        ]
-                                      }
-                                    ]
-                                  }
-                                ]
-                              },
-                              "filament.op.model.deref",
-                              "deref",
-                              {
-                                "ordinal": 0,
-                                "package": "example/coin",
-                                "path": [
-                                  "model",
-                                  "object_type",
-                                  "ix://example/coin/Coin"
-                                ]
-                              },
-                              {
-                                "ordinal": 0,
-                                "package": "example/coin",
-                                "path": [
-                                  "model",
-                                  "object_type",
-                                  "ix://example/coin/Coin"
-                                ]
-                              }
-                            ]
-                          },
-                          "filament.op.record.project",
-                          "false",
-                          "query",
-                          {
-                            "ordinal": 0,
-                            "package": "example:engines/coin",
-                            "path": [
-                              "scalar_type",
-                              "boolean"
-                            ]
-                          },
-                          {
-                            "ordinal": 0,
-                            "package": "example:engines/coin",
-                            "path": [
-                              "scalar_type",
-                              "boolean"
-                            ]
-                          }
-                        ]
-                      },
-                      "filament.op.temporal.holds",
-                      "temporal_formula",
-                      {
-                        "ordinal": 0,
-                        "package": "example:engines/coin",
-                        "path": [
-                          "scalar_type",
-                          "boolean"
-                        ]
-                      },
-                      {
-                        "ordinal": 0,
-                        "package": "example:engines/coin",
-                        "path": [
-                          "scalar_type",
-                          "boolean"
-                        ]
-                      }
-                    ]
-                  },
-                  "filament.op.temporal.eventually",
-                  "steps:0..1",
-                  "temporal_formula",
-                  {
-                    "ordinal": 0,
-                    "package": "example:engines/coin",
-                    "path": [
-                      "scalar_type",
-                      "boolean"
-                    ]
-                  },
-                  {
-                    "ordinal": 0,
-                    "package": "example:engines/coin",
-                    "path": [
-                      "scalar_type",
-                      "boolean"
-                    ]
-                  }
-                ]
+                "node": 23
               },
               "bound",
               "direction",
@@ -433,49 +261,7 @@
               "51/100",
               "over",
               {
-                "ordinal": 0,
-                "package": "example:engines/coin",
-                "path": [
-                  "value",
-                  "parameter",
-                  "name",
-                  {
-                    "ordinal": 0,
-                    "package": "example:engines/coin",
-                    "path": [
-                      "scalar_type",
-                      "text"
-                    ]
-                  },
-                  "c",
-                  "level",
-                  {
-                    "ordinal": 0,
-                    "package": "example:engines/coin",
-                    "path": [
-                      "scalar_type",
-                      "integer"
-                    ]
-                  },
-                  "0",
-                  {
-                    "ordinal": 0,
-                    "package": "example:engines/coin",
-                    "path": [
-                      "composite_type",
-                      "reference",
-                      {
-                        "ordinal": 0,
-                        "package": "example/coin",
-                        "path": [
-                          "model",
-                          "object_type",
-                          "ix://example/coin/Coin"
-                        ]
-                      }
-                    ]
-                  }
-                ]
+                "node": 17
               },
               "activation",
               "kind",

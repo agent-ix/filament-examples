@@ -1,10 +1,24 @@
 {
   "category": "refusal",
-  "last_stage": "S3",
+  "last_stage": "S6a",
   "result": null,
-  "first_diagnostic": {
-    "code": "unknown_profile",
-    "cause": "unsupported-selection"
-  },
-  "items": []
+  "first_diagnostic": null,
+  "items": [
+    {
+      "axes": {
+        "activation": "unavailable",
+        "execution": null,
+        "settlement": "unavailable",
+        "truth": null
+      },
+      "category": "refusal",
+      "cause": {
+        "code": "unknown_profile",
+        "kind": "unsupported-selection"
+      },
+      "clause": "PaidInFull",
+      "request_index": 0,
+      "result": "declined"
+    }
+  ]
 }

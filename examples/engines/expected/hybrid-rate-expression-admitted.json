@@ -1341,209 +1341,28 @@
               "temporal",
               "temporal_clause",
               {
-                "ordinal": 0,
-                "package": "example:engines/hybrid-rate-expression",
-                "path": [
-                  "value",
-                  "parameter",
-                  "name",
-                  {
-                    "ordinal": 0,
-                    "package": "example:engines/hybrid-rate-expression",
-                    "path": [
-                      "scalar_type",
-                      "text"
-                    ]
-                  },
-                  "r",
-                  "level",
-                  {
-                    "ordinal": 0,
-                    "package": "example:engines/hybrid-rate-expression",
-                    "path": [
-                      "scalar_type",
-                      "integer"
-                    ]
-                  },
-                  "0",
-                  {
-                    "ordinal": 0,
-                    "package": "example:engines/hybrid-rate-expression",
-                    "path": [
-                      "Ramp"
-                    ]
-                  }
-                ]
+                "node": 18
               },
               {
-                "ordinal": 0,
-                "package": "example:engines/hybrid-rate-expression",
-                "path": [
-                  "scalar_type",
-                  "text"
-                ]
+                "node": 3
               },
               "model-time",
               "kind",
               {
-                "ordinal": 0,
-                "package": "example:engines/hybrid-rate-expression",
-                "path": [
-                  "scalar_type",
-                  "text"
-                ]
+                "node": 3
               },
               "origin",
               {
-                "ordinal": 0,
-                "package": "example:engines/hybrid-rate-expression",
-                "path": [
-                  "temporal",
-                  "formula",
-                  {
-                    "ordinal": 0,
-                    "package": "example:engines/hybrid-rate-expression",
-                    "path": [
-                      "temporal",
-                      "formula",
-                      {
-                        "ordinal": 0,
-                        "package": "example:engines/hybrid-rate-expression",
-                        "path": [
-                          "expression",
-                          "binary",
-                          {
-                            "ordinal": 0,
-                            "package": "example:engines/hybrid-rate-expression",
-                            "path": [
-                              "value",
-                              "parameter",
-                              "name",
-                              {
-                                "ordinal": 0,
-                                "package": "example:engines/hybrid-rate-expression",
-                                "path": [
-                                  "scalar_type",
-                                  "text"
-                                ]
-                              },
-                              "t",
-                              "level",
-                              {
-                                "ordinal": 0,
-                                "package": "example:engines/hybrid-rate-expression",
-                                "path": [
-                                  "scalar_type",
-                                  "integer"
-                                ]
-                              },
-                              "0",
-                              {
-                                "ordinal": 0,
-                                "package": "example:engines/hybrid-rate-expression",
-                                "path": [
-                                  "scalar_type",
-                                  "rational"
-                                ]
-                              }
-                            ]
-                          },
-                          {
-                            "ordinal": 0,
-                            "package": "example:engines/hybrid-rate-expression",
-                            "path": [
-                              "value",
-                              "literal",
-                              {
-                                "ordinal": 0,
-                                "package": "example:engines/hybrid-rate-expression",
-                                "path": [
-                                  "scalar_type",
-                                  "rational"
-                                ]
-                              },
-                              "10"
-                            ]
-                          },
-                          "filament.op.rational.le",
-                          "binary",
-                          {
-                            "ordinal": 0,
-                            "package": "example:engines/hybrid-rate-expression",
-                            "path": [
-                              "scalar_type",
-                              "boolean"
-                            ]
-                          },
-                          {
-                            "ordinal": 0,
-                            "package": "example:engines/hybrid-rate-expression",
-                            "path": [
-                              "scalar_type",
-                              "boolean"
-                            ]
-                          }
-                        ]
-                      },
-                      "filament.op.temporal.holds",
-                      "temporal_formula",
-                      {
-                        "ordinal": 0,
-                        "package": "example:engines/hybrid-rate-expression",
-                        "path": [
-                          "scalar_type",
-                          "boolean"
-                        ]
-                      },
-                      {
-                        "ordinal": 0,
-                        "package": "example:engines/hybrid-rate-expression",
-                        "path": [
-                          "scalar_type",
-                          "boolean"
-                        ]
-                      }
-                    ]
-                  },
-                  "filament.op.temporal.always",
-                  "steps:0..2",
-                  "temporal_formula",
-                  {
-                    "ordinal": 0,
-                    "package": "example:engines/hybrid-rate-expression",
-                    "path": [
-                      "scalar_type",
-                      "boolean"
-                    ]
-                  },
-                  {
-                    "ordinal": 0,
-                    "package": "example:engines/hybrid-rate-expression",
-                    "path": [
-                      "scalar_type",
-                      "boolean"
-                    ]
-                  }
-                ]
+                "node": 17
               },
               "filament.op.temporal.clause",
               "filament.temporal.infinite-trace/v1",
               "temporal",
               {
-                "ordinal": 0,
-                "package": "example:engines/hybrid-rate-expression",
-                "path": [
-                  "scalar_type",
-                  "boolean"
-                ]
+                "node": 0
               },
               {
-                "ordinal": 0,
-                "package": "example:engines/hybrid-rate-expression",
-                "path": [
-                  "scalar_type",
-                  "boolean"
-                ]
+                "node": 0
               }
             ]
           },
@@ -1585,209 +1404,28 @@
               "temporal",
               "temporal_clause",
               {
-                "ordinal": 0,
-                "package": "example:engines/hybrid-rate-expression",
-                "path": [
-                  "value",
-                  "parameter",
-                  "name",
-                  {
-                    "ordinal": 0,
-                    "package": "example:engines/hybrid-rate-expression",
-                    "path": [
-                      "scalar_type",
-                      "text"
-                    ]
-                  },
-                  "r",
-                  "level",
-                  {
-                    "ordinal": 0,
-                    "package": "example:engines/hybrid-rate-expression",
-                    "path": [
-                      "scalar_type",
-                      "integer"
-                    ]
-                  },
-                  "0",
-                  {
-                    "ordinal": 0,
-                    "package": "example:engines/hybrid-rate-expression",
-                    "path": [
-                      "Ramp"
-                    ]
-                  }
-                ]
+                "node": 18
               },
               {
-                "ordinal": 0,
-                "package": "example:engines/hybrid-rate-expression",
-                "path": [
-                  "scalar_type",
-                  "text"
-                ]
+                "node": 3
               },
               "model-time",
               "kind",
               {
-                "ordinal": 0,
-                "package": "example:engines/hybrid-rate-expression",
-                "path": [
-                  "scalar_type",
-                  "text"
-                ]
+                "node": 3
               },
               "origin",
               {
-                "ordinal": 0,
-                "package": "example:engines/hybrid-rate-expression",
-                "path": [
-                  "temporal",
-                  "formula",
-                  {
-                    "ordinal": 0,
-                    "package": "example:engines/hybrid-rate-expression",
-                    "path": [
-                      "temporal",
-                      "formula",
-                      {
-                        "ordinal": 0,
-                        "package": "example:engines/hybrid-rate-expression",
-                        "path": [
-                          "expression",
-                          "binary",
-                          {
-                            "ordinal": 0,
-                            "package": "example:engines/hybrid-rate-expression",
-                            "path": [
-                              "value",
-                              "parameter",
-                              "name",
-                              {
-                                "ordinal": 0,
-                                "package": "example:engines/hybrid-rate-expression",
-                                "path": [
-                                  "scalar_type",
-                                  "text"
-                                ]
-                              },
-                              "t",
-                              "level",
-                              {
-                                "ordinal": 0,
-                                "package": "example:engines/hybrid-rate-expression",
-                                "path": [
-                                  "scalar_type",
-                                  "integer"
-                                ]
-                              },
-                              "0",
-                              {
-                                "ordinal": 0,
-                                "package": "example:engines/hybrid-rate-expression",
-                                "path": [
-                                  "scalar_type",
-                                  "rational"
-                                ]
-                              }
-                            ]
-                          },
-                          {
-                            "ordinal": 0,
-                            "package": "example:engines/hybrid-rate-expression",
-                            "path": [
-                              "value",
-                              "literal",
-                              {
-                                "ordinal": 0,
-                                "package": "example:engines/hybrid-rate-expression",
-                                "path": [
-                                  "scalar_type",
-                                  "rational"
-                                ]
-                              },
-                              "10"
-                            ]
-                          },
-                          "filament.op.rational.le",
-                          "binary",
-                          {
-                            "ordinal": 0,
-                            "package": "example:engines/hybrid-rate-expression",
-                            "path": [
-                              "scalar_type",
-                              "boolean"
-                            ]
-                          },
-                          {
-                            "ordinal": 0,
-                            "package": "example:engines/hybrid-rate-expression",
-                            "path": [
-                              "scalar_type",
-                              "boolean"
-                            ]
-                          }
-                        ]
-                      },
-                      "filament.op.temporal.holds",
-                      "temporal_formula",
-                      {
-                        "ordinal": 0,
-                        "package": "example:engines/hybrid-rate-expression",
-                        "path": [
-                          "scalar_type",
-                          "boolean"
-                        ]
-                      },
-                      {
-                        "ordinal": 0,
-                        "package": "example:engines/hybrid-rate-expression",
-                        "path": [
-                          "scalar_type",
-                          "boolean"
-                        ]
-                      }
-                    ]
-                  },
-                  "filament.op.temporal.always",
-                  "steps:0..2",
-                  "temporal_formula",
-                  {
-                    "ordinal": 0,
-                    "package": "example:engines/hybrid-rate-expression",
-                    "path": [
-                      "scalar_type",
-                      "boolean"
-                    ]
-                  },
-                  {
-                    "ordinal": 0,
-                    "package": "example:engines/hybrid-rate-expression",
-                    "path": [
-                      "scalar_type",
-                      "boolean"
-                    ]
-                  }
-                ]
+                "node": 17
               },
               "filament.op.temporal.clause",
               "filament.temporal.infinite-trace/v1",
               "temporal",
               {
-                "ordinal": 0,
-                "package": "example:engines/hybrid-rate-expression",
-                "path": [
-                  "scalar_type",
-                  "boolean"
-                ]
+                "node": 0
               },
               {
-                "ordinal": 0,
-                "package": "example:engines/hybrid-rate-expression",
-                "path": [
-                  "scalar_type",
-                  "boolean"
-                ]
+                "node": 0
               }
             ]
           },

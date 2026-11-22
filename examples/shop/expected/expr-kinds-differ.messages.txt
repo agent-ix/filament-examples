@@ -1,1 +1,1 @@
-the checker refused the package: ill_typed (type-mismatch)
+ill_typed (type-mismatch)
