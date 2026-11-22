@@ -11,21 +11,20 @@ on:
       tags:
         description: "Tags to publish, separated by spaces."
         required: true
-        default: "latest"
+        default: "0.2.0"
       fsl_version:
-        description: "Driver release to put in the image, such as 0.1.1. \"latest\" is the newest release."
+        description: "Driver release to put in the image, such as 0.2.0. \"latest\" is the newest release."
         required: true
-        default: "latest"
+        default: "0.2.0"
       fsl_source:
         description: "source builds the pinned driver revision. release downloads a driver archive and checks its checksum."
         required: true
         type: choice
         options: [release, source]
-        default: source
+        default: release
       fsl_revision:
-        description: "Exact filament-driver commit to build when fsl_source is source."
+        description: "Exact driver commit; required when fsl_source is source."
         required: false
-        default: c6e7741ac632074126c8e7fd8a8108581e22f0c0
 
 env:
   IMAGE: ghcr.io/agent-ix/filament-toolchain
