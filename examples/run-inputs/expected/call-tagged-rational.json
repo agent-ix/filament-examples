@@ -1,10 +1,14 @@
 {
-  "category": "refusal",
+  "category": "success",
   "last_stage": "S6a",
-  "result": null,
-  "first_diagnostic": {
-    "code": "invalid_runtime_input",
-    "cause": "wrong-value-kind"
+  "result": {
+    "kind": "completed",
+    "value": {
+      "denominator": "3",
+      "numerator": "2",
+      "type": "rational"
+    }
   },
+  "first_diagnostic": null,
   "items": []
 }

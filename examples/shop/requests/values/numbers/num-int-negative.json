@@ -16,11 +16,17 @@
       "arguments": [
         {
           "parameter": "charged",
-          "value": 500
+          "value": {
+            "type": "integer",
+            "value": "500"
+          }
         },
         {
           "parameter": "refunded",
-          "value": 800
+          "value": {
+            "type": "integer",
+            "value": "800"
+          }
         }
       ]
     }

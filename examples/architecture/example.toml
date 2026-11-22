@@ -316,12 +316,9 @@ statement = "Each call fails 1 time in 10,000, so a service that is up stays up 
 file = "rules/probability/claims/claims-probability-every-scheduler.fsl"
 command = "analyze requests/probability/claims/claims-probability-every-scheduler.json"
 engine = "probability"
-status = "staged"
-expect_exit = 21
-ready_exit = 0
-waits_on = "QSL-2158"
-why = "analyze settles the bounded always claim over Arch::Service::call as unsupported (not-yet-implemented), where it should prove it"
-needs = "exact bounded always under every scheduler over a model operation with a random parameter"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
 serves = "Probability reference (claims)"
 
 [[case]]
@@ -331,12 +328,9 @@ statement = "The model declares no random choice, so the scheduler picks each ca
 file = "rules/probability/claims/claims-every-scheduler-without-random.fsl"
 command = "analyze requests/probability/claims/claims-every-scheduler-without-random.json"
 engine = "probability"
-status = "staged"
-expect_exit = 21
-ready_exit = 10
-waits_on = "QSL-2158"
-why = "analyze settles the bounded always claim without random lines as unsupported (not-yet-implemented), where FR-876-AC-2 requires refuted with value 0 and a replayed counterexample"
-needs = "FR-876-AC-2 refutation over a model operation"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
 serves = "Probability reference (claims)"
 
 [[case]]
@@ -473,12 +467,9 @@ statement = "Checkout stays up through 10 calls in a row with probability at lea
 file = "rules/staged-availability-missed.fsl"
 command = "analyze requests/staged-availability-missed.json"
 engine = "probability"
-status = "staged"
-expect_exit = 21
-ready_exit = 10
-waits_on = "QSL-2158"
-why = "Exact analysis settles CheckoutAvailable unsupported with unsupported_construct/not-yet-implemented; it does not refute the probability claim."
-needs = "exact analysis of the bounded availability claim"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
 serves = "Learn L7 (probability): a missed claim"
 
 [[case]]

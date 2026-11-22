@@ -1,10 +1,24 @@
 {
   "category": "incomplete",
-  "last_stage": "S1",
+  "last_stage": "S6a",
   "result": null,
-  "first_diagnostic": {
-    "code": "stage_limit_exceeded",
-    "cause": "input-bytes-exceeded"
-  },
-  "items": []
+  "first_diagnostic": null,
+  "items": [
+    {
+      "axes": {
+        "activation": "unavailable",
+        "execution": null,
+        "settlement": "unavailable",
+        "truth": null
+      },
+      "category": "incomplete",
+      "cause": {
+        "code": "stage_limit_exceeded",
+        "kind": "input-bytes-exceeded"
+      },
+      "clause": "PaidInFull",
+      "request_index": 0,
+      "result": "incomplete"
+    }
+  ]
 }

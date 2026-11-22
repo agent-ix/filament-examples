@@ -16,7 +16,10 @@
       "arguments": [
         {
           "parameter": "q",
-          "value": 12
+          "value": {
+            "type": "integer",
+            "value": "12"
+          }
         }
       ]
     }

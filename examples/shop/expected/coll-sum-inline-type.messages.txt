@@ -1,1 +1,1 @@
-expected identifier
+`count`, `sum`, `fold`, and `reduce` require a declared type name here; declare an alias such as `type Total = Integer;` and use the declared alias as the type argument

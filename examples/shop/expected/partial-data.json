@@ -1,6 +1,6 @@
 {
   "category": "incomplete",
-  "last_stage": "S4",
+  "last_stage": "S6a",
   "result": null,
   "first_diagnostic": null,
   "items": [
@@ -14,7 +14,18 @@
       "category": "incomplete",
       "cause": {
         "code": "incomplete_population",
-        "kind": "incomplete-scope"
+        "kind": "incomplete-scope",
+        "locus": {
+          "document": {
+            "authority": "example",
+            "identity": "ix://example/shop/data/partial-data"
+          },
+          "kind": "document",
+          "member": null,
+          "object": null,
+          "path": "../data/partial-data.json",
+          "pointer": ""
+        }
       },
       "clause": "RefundsWithinCharge",
       "request_index": 0,

@@ -23,12 +23,12 @@
       {
         "bound": "50000",
         "setting": "s1.nodes",
-        "used": "17"
+        "used": "18"
       },
       {
         "bound": "288",
         "setting": "s1.work_units",
-        "used": "660"
+        "used": "676"
       }
     ]
   },

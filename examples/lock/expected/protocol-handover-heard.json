@@ -40,6 +40,11 @@
         },
         "cause": null,
         "certification": "certified",
+        "memory_bound": {
+          "bound": "max_messages",
+          "reached": false,
+          "value": 4
+        },
         "result": "proved",
         "settled_by": "result"
       },

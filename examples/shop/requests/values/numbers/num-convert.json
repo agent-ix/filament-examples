@@ -16,7 +16,10 @@
       "arguments": [
         {
           "parameter": "price",
-          "value": 1250
+          "value": {
+            "type": "integer",
+            "value": "1250"
+          }
         }
       ]
     }

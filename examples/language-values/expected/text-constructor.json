@@ -4,8 +4,8 @@
   "result": {
     "kind": "completed",
     "value": {
-      "kind": "text",
-      "text": "café"
+      "type": "text",
+      "value": "café"
     }
   },
   "first_diagnostic": null,

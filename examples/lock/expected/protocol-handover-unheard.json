@@ -40,7 +40,7 @@
         "prefix": [
           {
             "post_state": {
-              "key": "eyJib3VuZHMiOnsiZW50cmllcyI6W3sia2V5Ijp7Im1lc3NhZ2UiOnsiaW5zdGFuY2UiOiIwIiwibm9kZSI6IjEiLCJvcmRpbmFsIjoiMCIsInBhdGgiOnsiaW5zdGFuY2UiOiIwIiwic3RlcHMiOltdLCJ0eXBlIjoidGhyZWFkLXBhdGgifSwidHlwZSI6Im1lc3NhZ2Utb2NjdXJyZW5jZSJ9LCJ0eXBlIjoibmV4dC1kZWxpdmVyeSJ9LCJ2YWx1ZSI6eyJ0eXBlIjoiaW50ZWdlciIsInZhbHVlIjoiMSJ9fSx7ImtleSI6eyJub2RlIjoiTWFpbi9Bc2tlZCIsInRocmVhZCI6eyJpbnN0YW5jZSI6IjAiLCJzdGVwcyI6W10sInR5cGUiOiJ0aHJlYWQtcGF0aCJ9LCJ0eXBlIjoibWVzc2FnZS1vcmRpbmFsIn0sInZhbHVlIjp7InR5cGUiOiJpbnRlZ2VyIiwidmFsdWUiOiIxIn19XSwidHlwZSI6Im1hcCJ9LCJjb250cm9sIjp7ImVudHJpZXMiOlt7ImtleSI6eyJpbnN0YW5jZSI6IjAiLCJzdGVwcyI6W10sInR5cGUiOiJ0aHJlYWQtcGF0aCJ9LCJ2YWx1ZSI6eyJkaXNwb3NpdGlvbiI6InJ1bm5pbmciLCJyZXN0Ijp7ImtpbmQiOiJub2RlIiwibm9kZSI6Ik1haW4vSGVhcmQiLCJ0eXBlIjoicmVzdCJ9LCJ0eXBlIjoidGhyZWFkLXN0YXRlIn19LHsia2V5Ijp7Im9yZGluYWwiOiIwIiwidHlwZSI6InByb3RvY29sLWluc3RhbmNlIn0sInZhbHVlIjp7ImZpbmlzaGVkIjpmYWxzZSwicmVjb3Zlcnlfc3VtbWFyeSI6InVudHJpZ2dlcmVkIiwidHlwZSI6Imluc3RhbmNlLXN0YXRlIn19XSwidHlwZSI6Im1hcCJ9LCJtZW1vcnkiOnsiZW50cmllcyI6W10sInR5cGUiOiJtYXAifSwib2JzZXJ2YXRpb25zIjp7ImVudHJpZXMiOltdLCJ0eXBlIjoibWFwIn0sInF1ZXVlcyI6eyJlbnRyaWVzIjpbeyJrZXkiOnsiY2hhbm5lbCI6IkhhbmRvdmVyOjpBc2siLCJmaWZvX2tleSI6bnVsbCwiaW5zdGFuY2UiOiIwIiwidHlwZSI6InF1ZXVlIn0sInZhbHVlIjp7ImVsZW1lbnRzIjpbeyJkZWxpdmVyeSI6IjAiLCJtZXNzYWdlIjp7Imluc3RhbmNlIjoiMCIsIm5vZGUiOiIxIiwib3JkaW5hbCI6IjAiLCJwYXRoIjp7Imluc3RhbmNlIjoiMCIsInN0ZXBzIjpbXSwidHlwZSI6InRocmVhZC1wYXRoIn0sInR5cGUiOiJtZXNzYWdlLW9jY3VycmVuY2UifSwicGF5bG9hZCI6eyJmaWVsZHMiOlt7Im5hbWUiOiJncmFudGVkIiwidmFsdWUiOnsidHlwZSI6ImJvb2xlYW4iLCJ2YWx1ZSI6ZmFsc2V9fV0sIm5hbWUiOiJ7XCJub2RlXCI6XCJSZXF1ZXN0XCIsXCJwYWNrYWdlXCI6XCJleGFtcGxlOmxvY2svaGFuZG92ZXItdW5oZWFyZFwifSIsInR5cGUiOiJyZWNvcmQifSwidHlwZSI6InF1ZXVlLWVudHJ5In1dLCJ0eXBlIjoiYmFnIn19XSwidHlwZSI6Im1hcCJ9LCJyb2xlcyI6eyJlbnRyaWVzIjpbeyJrZXkiOnsiaW5zdGFuY2UiOiIwIiwicm9sZSI6IkFza2VyIiwidHlwZSI6InJvbGUifSwidmFsdWUiOnsidHlwZSI6InRleHQiLCJ2YWx1ZSI6ImV4YW1wbGUvbG9jayJ9fSx7ImtleSI6eyJpbnN0YW5jZSI6IjAiLCJyb2xlIjoiSG9sZGVyIiwidHlwZSI6InJvbGUifSwidmFsdWUiOnsidHlwZSI6InRleHQiLCJ2YWx1ZSI6ImV4YW1wbGUvbG9jayJ9fV0sInR5cGUiOiJtYXAifSwic2VtYW50aWMiOnsiZW50cmllcyI6W3sia2V5Ijp7InR5cGUiOiJ0ZXh0IiwidmFsdWUiOiJ7XCJub2RlXCI6XCJpeDovL2V4YW1wbGUvbG9jay9sb2Nrc1wiLFwicGFja2FnZVwiOlwiZXhhbXBsZS9sb2NrXCJ9In0sInZhbHVlIjp7ImVudHJpZXMiOlt7ImtleSI6eyJpZGVudGl0eSI6Im0iLCJvYmplY3RfdHlwZSI6eyJvcmlnaW5hbCI6eyJub2RlIjoiaXg6Ly9leGFtcGxlL2xvY2svTG9jayIsInBhY2thZ2UiOiJleGFtcGxlL2xvY2sifSwib3duZXJfZWZmZWN0aXZlX3R5cGUiOm51bGx9LCJ0eXBlIjoicmVmZXJlbmNlIiwidW5pdmVyc2UiOnsib3JkaW5hbCI6MCwicGFja2FnZSI6ImV4YW1wbGUvbG9jayIsInBhdGgiOlsibW9kZWwiLCJvYmplY3RfdHlwZSIsIml4Oi8vZXhhbXBsZS9sb2NrL0xvY2siXX19LCJ2YWx1ZSI6eyJmaWVsZHMiOlt7Im5hbWUiOiJvd25lciIsInZhbHVlIjp7InR5cGUiOiJpbnRlZ2VyIiwidmFsdWUiOiIwIn19XSwibmFtZSI6IntcIm5vZGVcIjpcIml4Oi8vZXhhbXBsZS9sb2NrL0xvY2tcIixcInBhY2thZ2VcIjpcImV4YW1wbGUvbG9ja1wifSIsInR5cGUiOiJyZWNvcmQifX1dLCJ0eXBlIjoibWFwIn19XSwidHlwZSI6Im1hcCJ9LCJ0eXBlIjoic2ltdWxhdGlvbi1zdGF0ZSJ9",
+              "key": "eyJib3VuZHMiOnsiZW50cmllcyI6W3sia2V5Ijp7Im1lc3NhZ2UiOnsiaW5zdGFuY2UiOiIwIiwibm9kZSI6Ik1haW4vQXNrZWQiLCJvcmRpbmFsIjoiMCIsInBhdGgiOnsiaW5zdGFuY2UiOiIwIiwic3RlcHMiOltdLCJ0eXBlIjoidGhyZWFkLXBhdGgifSwidHlwZSI6Im1lc3NhZ2Utb2NjdXJyZW5jZSJ9LCJ0eXBlIjoibmV4dC1kZWxpdmVyeSJ9LCJ2YWx1ZSI6eyJ0eXBlIjoiaW50ZWdlciIsInZhbHVlIjoiMSJ9fSx7ImtleSI6eyJub2RlIjoiTWFpbi9Bc2tlZCIsInRocmVhZCI6eyJpbnN0YW5jZSI6IjAiLCJzdGVwcyI6W10sInR5cGUiOiJ0aHJlYWQtcGF0aCJ9LCJ0eXBlIjoibWVzc2FnZS1vcmRpbmFsIn0sInZhbHVlIjp7InR5cGUiOiJpbnRlZ2VyIiwidmFsdWUiOiIxIn19XSwidHlwZSI6Im1hcCJ9LCJjb250cm9sIjp7ImVudHJpZXMiOlt7ImtleSI6eyJpbnN0YW5jZSI6IjAiLCJzdGVwcyI6W10sInR5cGUiOiJ0aHJlYWQtcGF0aCJ9LCJ2YWx1ZSI6eyJkaXNwb3NpdGlvbiI6InJ1bm5pbmciLCJyZXN0Ijp7ImtpbmQiOiJub2RlIiwibm9kZSI6Ik1haW4vSGVhcmQiLCJ0eXBlIjoicmVzdCJ9LCJ0eXBlIjoidGhyZWFkLXN0YXRlIn19LHsia2V5Ijp7Im9yZGluYWwiOiIwIiwidHlwZSI6InByb3RvY29sLWluc3RhbmNlIn0sInZhbHVlIjp7ImZpbmlzaGVkIjpmYWxzZSwicmVjb3Zlcnlfc3VtbWFyeSI6InVudHJpZ2dlcmVkIiwidHlwZSI6Imluc3RhbmNlLXN0YXRlIn19XSwidHlwZSI6Im1hcCJ9LCJtZW1vcnkiOnsiZW50cmllcyI6W10sInR5cGUiOiJtYXAifSwib2JzZXJ2YXRpb25zIjp7ImVudHJpZXMiOltdLCJ0eXBlIjoibWFwIn0sInF1ZXVlcyI6eyJlbnRyaWVzIjpbeyJrZXkiOnsiY2hhbm5lbCI6IkhhbmRvdmVyOjpBc2siLCJmaWZvX2tleSI6bnVsbCwiaW5zdGFuY2UiOiIwIiwidHlwZSI6InF1ZXVlIn0sInZhbHVlIjp7ImVsZW1lbnRzIjpbeyJkZWxpdmVyeSI6IjAiLCJtZXNzYWdlIjp7Imluc3RhbmNlIjoiMCIsIm5vZGUiOiJNYWluL0Fza2VkIiwib3JkaW5hbCI6IjAiLCJwYXRoIjp7Imluc3RhbmNlIjoiMCIsInN0ZXBzIjpbXSwidHlwZSI6InRocmVhZC1wYXRoIn0sInR5cGUiOiJtZXNzYWdlLW9jY3VycmVuY2UifSwicGF5bG9hZCI6eyJmaWVsZHMiOlt7Im5hbWUiOiJncmFudGVkIiwidmFsdWUiOnsidHlwZSI6ImJvb2xlYW4iLCJ2YWx1ZSI6ZmFsc2V9fV0sIm5hbWUiOiJ7XCJub2RlXCI6XCJSZXF1ZXN0XCIsXCJwYWNrYWdlXCI6XCJleGFtcGxlOmxvY2svaGFuZG92ZXItdW5oZWFyZFwifSIsInR5cGUiOiJyZWNvcmQifSwidHlwZSI6InF1ZXVlLWVudHJ5In1dLCJ0eXBlIjoiYmFnIn19XSwidHlwZSI6Im1hcCJ9LCJyb2xlcyI6eyJlbnRyaWVzIjpbeyJrZXkiOnsiaW5zdGFuY2UiOiIwIiwicm9sZSI6IkFza2VyIiwidHlwZSI6InJvbGUifSwidmFsdWUiOnsidHlwZSI6InRleHQiLCJ2YWx1ZSI6ImV4YW1wbGUvbG9jayJ9fSx7ImtleSI6eyJpbnN0YW5jZSI6IjAiLCJyb2xlIjoiSG9sZGVyIiwidHlwZSI6InJvbGUifSwidmFsdWUiOnsidHlwZSI6InRleHQiLCJ2YWx1ZSI6ImV4YW1wbGUvbG9jayJ9fV0sInR5cGUiOiJtYXAifSwic2VtYW50aWMiOnsiZW50cmllcyI6W3sia2V5Ijp7InR5cGUiOiJ0ZXh0IiwidmFsdWUiOiJ7XCJub2RlXCI6XCJpeDovL2V4YW1wbGUvbG9jay9sb2Nrc1wiLFwicGFja2FnZVwiOlwiZXhhbXBsZS9sb2NrXCJ9In0sInZhbHVlIjp7ImVudHJpZXMiOlt7ImtleSI6eyJpZGVudGl0eSI6Im0iLCJvYmplY3RfdHlwZSI6eyJvcmlnaW5hbCI6eyJub2RlIjoiaXg6Ly9leGFtcGxlL2xvY2svTG9jayIsInBhY2thZ2UiOiJleGFtcGxlL2xvY2sifSwib3duZXJfZWZmZWN0aXZlX3R5cGUiOm51bGx9LCJ0eXBlIjoicmVmZXJlbmNlIiwidW5pdmVyc2UiOnsib3JkaW5hbCI6MCwicGFja2FnZSI6ImV4YW1wbGUvbG9jayIsInBhdGgiOlsibW9kZWwiLCJvYmplY3RfdHlwZSIsIml4Oi8vZXhhbXBsZS9sb2NrL0xvY2siXX19LCJ2YWx1ZSI6eyJmaWVsZHMiOlt7Im5hbWUiOiJvd25lciIsInZhbHVlIjp7InR5cGUiOiJpbnRlZ2VyIiwidmFsdWUiOiIwIn19XSwibmFtZSI6IntcIm5vZGVcIjpcIml4Oi8vZXhhbXBsZS9sb2NrL0xvY2tcIixcInBhY2thZ2VcIjpcImV4YW1wbGUvbG9ja1wifSIsInR5cGUiOiJyZWNvcmQifX1dLCJ0eXBlIjoibWFwIn19XSwidHlwZSI6Im1hcCJ9LCJ0eXBlIjoic2ltdWxhdGlvbi1zdGF0ZSJ9",
               "state": {
                 "bounds": {
                   "entries": [
@@ -48,7 +48,7 @@
                       "key": {
                         "message": {
                           "instance": "0",
-                          "node": "1",
+                          "node": "Main/Asked",
                           "ordinal": "0",
                           "path": {
                             "instance": "0",
@@ -137,7 +137,7 @@
                             "delivery": "0",
                             "message": {
                               "instance": "0",
-                              "node": "1",
+                              "node": "Main/Asked",
                               "ordinal": "0",
                               "path": {
                                 "instance": "0",
@@ -271,7 +271,7 @@
             "transition": {
               "message": {
                 "instance": "0",
-                "node": "1",
+                "node": "Main/Asked",
                 "ordinal": "0",
                 "path": {
                   "instance": "0",
@@ -330,6 +330,11 @@
       "record": {
         "backend": "protocol-analysis",
         "cause": null,
+        "memory_bound": {
+          "bound": "max_messages",
+          "reached": false,
+          "value": 4
+        },
         "result": "refuted",
         "settled_by": "result"
       },

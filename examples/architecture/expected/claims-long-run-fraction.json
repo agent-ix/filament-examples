@@ -33,36 +33,14 @@
               "Availability",
               "subject",
               {
-                "ordinal": 0,
-                "package": "example/architecture",
-                "path": [
-                  "model",
-                  "model_root"
-                ]
+                "node": 31
               },
               "scheduler",
               "every",
               "reward",
               "distributions",
               {
-                "ordinal": 0,
-                "package": "example:architecture/claims-long-run-fraction",
-                "path": [
-                  "probabilistic",
-                  "random_parameter",
-                  {
-                    "ordinal": 0,
-                    "package": "example/architecture",
-                    "path": [
-                      "model",
-                      "object_type",
-                      "ix://example/architecture/Service"
-                    ]
-                  },
-                  "call",
-                  "ok",
-                  "true*9999,false*1"
-                ]
+                "node": 32
               },
               "delays",
               "form",
@@ -70,104 +48,7 @@
               "long_run_fraction",
               "predicate",
               {
-                "ordinal": 0,
-                "package": "example:architecture/claims-long-run-fraction",
-                "path": [
-                  "expression",
-                  "query",
-                  {
-                    "ordinal": 0,
-                    "package": "example:architecture/claims-long-run-fraction",
-                    "path": [
-                      "expression",
-                      "deref",
-                      {
-                        "ordinal": 0,
-                        "package": "example:architecture/claims-long-run-fraction",
-                        "path": [
-                          "value",
-                          "parameter",
-                          "name",
-                          {
-                            "ordinal": 0,
-                            "package": "example:architecture/claims-long-run-fraction",
-                            "path": [
-                              "scalar_type",
-                              "text"
-                            ]
-                          },
-                          "s",
-                          "level",
-                          {
-                            "ordinal": 0,
-                            "package": "example:architecture/claims-long-run-fraction",
-                            "path": [
-                              "scalar_type",
-                              "integer"
-                            ]
-                          },
-                          "0",
-                          {
-                            "ordinal": 0,
-                            "package": "example:architecture/claims-long-run-fraction",
-                            "path": [
-                              "composite_type",
-                              "reference",
-                              {
-                                "ordinal": 0,
-                                "package": "example/architecture",
-                                "path": [
-                                  "model",
-                                  "object_type",
-                                  "ix://example/architecture/Service"
-                                ]
-                              }
-                            ]
-                          }
-                        ]
-                      },
-                      "filament.op.model.deref",
-                      "deref",
-                      {
-                        "ordinal": 0,
-                        "package": "example/architecture",
-                        "path": [
-                          "model",
-                          "object_type",
-                          "ix://example/architecture/Service"
-                        ]
-                      },
-                      {
-                        "ordinal": 0,
-                        "package": "example/architecture",
-                        "path": [
-                          "model",
-                          "object_type",
-                          "ix://example/architecture/Service"
-                        ]
-                      }
-                    ]
-                  },
-                  "filament.op.record.project",
-                  "false",
-                  "query",
-                  {
-                    "ordinal": 0,
-                    "package": "example:architecture/claims-long-run-fraction",
-                    "path": [
-                      "scalar_type",
-                      "boolean"
-                    ]
-                  },
-                  {
-                    "ordinal": 0,
-                    "package": "example:architecture/claims-long-run-fraction",
-                    "path": [
-                      "scalar_type",
-                      "boolean"
-                    ]
-                  }
-                ]
+                "node": 25
               },
               "weighting",
               "kind",
@@ -180,49 +61,7 @@
               "99/100",
               "over",
               {
-                "ordinal": 0,
-                "package": "example:architecture/claims-long-run-fraction",
-                "path": [
-                  "value",
-                  "parameter",
-                  "name",
-                  {
-                    "ordinal": 0,
-                    "package": "example:architecture/claims-long-run-fraction",
-                    "path": [
-                      "scalar_type",
-                      "text"
-                    ]
-                  },
-                  "s",
-                  "level",
-                  {
-                    "ordinal": 0,
-                    "package": "example:architecture/claims-long-run-fraction",
-                    "path": [
-                      "scalar_type",
-                      "integer"
-                    ]
-                  },
-                  "0",
-                  {
-                    "ordinal": 0,
-                    "package": "example:architecture/claims-long-run-fraction",
-                    "path": [
-                      "composite_type",
-                      "reference",
-                      {
-                        "ordinal": 0,
-                        "package": "example/architecture",
-                        "path": [
-                          "model",
-                          "object_type",
-                          "ix://example/architecture/Service"
-                        ]
-                      }
-                    ]
-                  }
-                ]
+                "node": 23
               },
               "activation",
               "kind",

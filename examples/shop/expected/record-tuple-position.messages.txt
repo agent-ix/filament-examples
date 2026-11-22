@@ -1,1 +1,1 @@
-expected identifier or `Text`
+`first` is a reserved word

@@ -29,7 +29,7 @@
     ],
     "items": [
       {
-        "claim": "LevelNonNegative",
+        "claim": "K",
         "kind": "temporal-satisfaction",
         "temporal": {
           "item_kind": "deadlock-freedom"

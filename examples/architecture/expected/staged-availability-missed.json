@@ -1,20 +1,660 @@
 {
-  "category": "unsupported",
-  "last_stage": "S6b",
+  "category": "violation",
+  "last_stage": "S8",
   "result": null,
   "first_diagnostic": null,
   "items": [
     {
-      "category": "unsupported",
+      "category": "violation",
       "claim_name": "CheckoutAvailable",
-      "record": {
-        "diagnostic": {
-          "cause": "not-yet-implemented",
-          "code": "unsupported_construct",
-          "detail": {}
+      "counterexample": {
+        "binding": {
+          "identity": "checkout",
+          "object_type": {
+            "original": {
+              "node": "ix://example/architecture/Service",
+              "package": "example/architecture"
+            },
+            "owner_effective_type": null
+          },
+          "type": "reference",
+          "universe": {
+            "ordinal": 0,
+            "package": "example/architecture",
+            "path": [
+              "model",
+              "object_type",
+              "ix://example/architecture/Service"
+            ]
+          }
         },
-        "result": "unsupported",
-        "settled_by": "disposition"
+        "bound": {
+          "comparison": ">=",
+          "threshold": {
+            "denominator": "1000",
+            "numerator": "999"
+          }
+        },
+        "evidence": {
+          "paths": [
+            [
+              {
+                "post_state": {
+                  "key": "eyJib3VuZHMiOnsiZW50cmllcyI6W10sInR5cGUiOiJtYXAifSwiY29udHJvbCI6eyJlbnRyaWVzIjpbXSwidHlwZSI6Im1hcCJ9LCJtZW1vcnkiOnsiZW50cmllcyI6W10sInR5cGUiOiJtYXAifSwib2JzZXJ2YXRpb25zIjp7ImVudHJpZXMiOltdLCJ0eXBlIjoibWFwIn0sInF1ZXVlcyI6eyJlbnRyaWVzIjpbXSwidHlwZSI6Im1hcCJ9LCJyb2xlcyI6eyJlbnRyaWVzIjpbXSwidHlwZSI6Im1hcCJ9LCJzZW1hbnRpYyI6eyJlbnRyaWVzIjpbeyJrZXkiOnsidHlwZSI6InRleHQiLCJ2YWx1ZSI6IntcIm5vZGVcIjpcIml4Oi8vZXhhbXBsZS9hcmNoaXRlY3R1cmUvaW5zdGFuY2VzXCIsXCJwYWNrYWdlXCI6XCJleGFtcGxlL2FyY2hpdGVjdHVyZVwifSJ9LCJ2YWx1ZSI6eyJlbnRyaWVzIjpbXSwidHlwZSI6Im1hcCJ9fSx7ImtleSI6eyJ0eXBlIjoidGV4dCIsInZhbHVlIjoie1wibm9kZVwiOlwiaXg6Ly9leGFtcGxlL2FyY2hpdGVjdHVyZS9zZXJ2aWNlc1wiLFwicGFja2FnZVwiOlwiZXhhbXBsZS9hcmNoaXRlY3R1cmVcIn0ifSwidmFsdWUiOnsiZW50cmllcyI6W3sia2V5Ijp7ImlkZW50aXR5IjoiY2hlY2tvdXQiLCJvYmplY3RfdHlwZSI6eyJvcmlnaW5hbCI6eyJub2RlIjoiaXg6Ly9leGFtcGxlL2FyY2hpdGVjdHVyZS9TZXJ2aWNlIiwicGFja2FnZSI6ImV4YW1wbGUvYXJjaGl0ZWN0dXJlIn0sIm93bmVyX2VmZmVjdGl2ZV90eXBlIjpudWxsfSwidHlwZSI6InJlZmVyZW5jZSIsInVuaXZlcnNlIjp7Im9yZGluYWwiOjAsInBhY2thZ2UiOiJleGFtcGxlL2FyY2hpdGVjdHVyZSIsInBhdGgiOlsibW9kZWwiLCJvYmplY3RfdHlwZSIsIml4Oi8vZXhhbXBsZS9hcmNoaXRlY3R1cmUvU2VydmljZSJdfX0sInZhbHVlIjp7ImZpZWxkcyI6W3sibmFtZSI6InRpZXIiLCJ2YWx1ZSI6eyJtZW1iZXIiOiJDb3JlIiwibmFtZSI6IntcIm5vZGVcIjpcIml4Oi8vZXhhbXBsZS9hcmNoaXRlY3R1cmUvVGllclwiLFwicGFja2FnZVwiOlwiZXhhbXBsZS9hcmNoaXRlY3R1cmVcIn0iLCJ0eXBlIjoiZW51bSJ9fSx7Im5hbWUiOiJvd25lciIsInZhbHVlIjpudWxsfSx7Im5hbWUiOiJkZXBlbmRzT24iLCJ2YWx1ZSI6eyJlbGVtZW50cyI6W10sInR5cGUiOiJzZXF1ZW5jZSJ9fSx7Im5hbWUiOiJyZWFkcyIsInZhbHVlIjp7ImVsZW1lbnRzIjpbXSwidHlwZSI6InNldCJ9fSx7Im5hbWUiOiJoYW5kbGVzUGVyc29uYWxEYXRhIiwidmFsdWUiOnsidHlwZSI6ImJvb2xlYW4iLCJ2YWx1ZSI6ZmFsc2V9fSx7Im5hbWUiOiJtaW5TZXJ2aW5nIiwidmFsdWUiOnsidHlwZSI6ImludGVnZXIiLCJ2YWx1ZSI6IjEifX0seyJuYW1lIjoiaW5zdGFuY2VzIiwidmFsdWUiOnsiZWxlbWVudHMiOltdLCJ0eXBlIjoic2V0In19LHsibmFtZSI6InVwIiwidmFsdWUiOnsidHlwZSI6ImJvb2xlYW4iLCJ2YWx1ZSI6ZmFsc2V9fV0sIm5hbWUiOiJ7XCJub2RlXCI6XCJpeDovL2V4YW1wbGUvYXJjaGl0ZWN0dXJlL1NlcnZpY2VcIixcInBhY2thZ2VcIjpcImV4YW1wbGUvYXJjaGl0ZWN0dXJlXCJ9IiwidHlwZSI6InJlY29yZCJ9fV0sInR5cGUiOiJtYXAifX0seyJrZXkiOnsidHlwZSI6InRleHQiLCJ2YWx1ZSI6IntcIm5vZGVcIjpcIml4Oi8vZXhhbXBsZS9hcmNoaXRlY3R1cmUvc3RvcmVzXCIsXCJwYWNrYWdlXCI6XCJleGFtcGxlL2FyY2hpdGVjdHVyZVwifSJ9LCJ2YWx1ZSI6eyJlbnRyaWVzIjpbXSwidHlwZSI6Im1hcCJ9fSx7ImtleSI6eyJ0eXBlIjoidGV4dCIsInZhbHVlIjoie1wibm9kZVwiOlwiaXg6Ly9leGFtcGxlL2FyY2hpdGVjdHVyZS90ZWFtc1wiLFwicGFja2FnZVwiOlwiZXhhbXBsZS9hcmNoaXRlY3R1cmVcIn0ifSwidmFsdWUiOnsiZW50cmllcyI6W10sInR5cGUiOiJtYXAifX1dLCJ0eXBlIjoibWFwIn0sInR5cGUiOiJzaW11bGF0aW9uLXN0YXRlIn0",
+                  "state": {
+                    "bounds": {
+                      "entries": [],
+                      "type": "map"
+                    },
+                    "control": {
+                      "entries": [],
+                      "type": "map"
+                    },
+                    "memory": {
+                      "entries": [],
+                      "type": "map"
+                    },
+                    "observations": {
+                      "entries": [],
+                      "type": "map"
+                    },
+                    "queues": {
+                      "entries": [],
+                      "type": "map"
+                    },
+                    "roles": {
+                      "entries": [],
+                      "type": "map"
+                    },
+                    "semantic": {
+                      "entries": [
+                        {
+                          "key": {
+                            "type": "text",
+                            "value": "{\"node\":\"ix://example/architecture/instances\",\"package\":\"example/architecture\"}"
+                          },
+                          "value": {
+                            "entries": [],
+                            "type": "map"
+                          }
+                        },
+                        {
+                          "key": {
+                            "type": "text",
+                            "value": "{\"node\":\"ix://example/architecture/services\",\"package\":\"example/architecture\"}"
+                          },
+                          "value": {
+                            "entries": [
+                              {
+                                "key": {
+                                  "identity": "checkout",
+                                  "object_type": {
+                                    "original": {
+                                      "node": "ix://example/architecture/Service",
+                                      "package": "example/architecture"
+                                    },
+                                    "owner_effective_type": null
+                                  },
+                                  "type": "reference",
+                                  "universe": {
+                                    "ordinal": 0,
+                                    "package": "example/architecture",
+                                    "path": [
+                                      "model",
+                                      "object_type",
+                                      "ix://example/architecture/Service"
+                                    ]
+                                  }
+                                },
+                                "value": {
+                                  "fields": [
+                                    {
+                                      "name": "tier",
+                                      "value": {
+                                        "member": "Core",
+                                        "name": "{\"node\":\"ix://example/architecture/Tier\",\"package\":\"example/architecture\"}",
+                                        "type": "enum"
+                                      }
+                                    },
+                                    {
+                                      "name": "owner",
+                                      "value": null
+                                    },
+                                    {
+                                      "name": "dependsOn",
+                                      "value": {
+                                        "elements": [],
+                                        "type": "sequence"
+                                      }
+                                    },
+                                    {
+                                      "name": "reads",
+                                      "value": {
+                                        "elements": [],
+                                        "type": "set"
+                                      }
+                                    },
+                                    {
+                                      "name": "handlesPersonalData",
+                                      "value": {
+                                        "type": "boolean",
+                                        "value": false
+                                      }
+                                    },
+                                    {
+                                      "name": "minServing",
+                                      "value": {
+                                        "type": "integer",
+                                        "value": "1"
+                                      }
+                                    },
+                                    {
+                                      "name": "instances",
+                                      "value": {
+                                        "elements": [],
+                                        "type": "set"
+                                      }
+                                    },
+                                    {
+                                      "name": "up",
+                                      "value": {
+                                        "type": "boolean",
+                                        "value": false
+                                      }
+                                    }
+                                  ],
+                                  "name": "{\"node\":\"ix://example/architecture/Service\",\"package\":\"example/architecture\"}",
+                                  "type": "record"
+                                }
+                              }
+                            ],
+                            "type": "map"
+                          }
+                        },
+                        {
+                          "key": {
+                            "type": "text",
+                            "value": "{\"node\":\"ix://example/architecture/stores\",\"package\":\"example/architecture\"}"
+                          },
+                          "value": {
+                            "entries": [],
+                            "type": "map"
+                          }
+                        },
+                        {
+                          "key": {
+                            "type": "text",
+                            "value": "{\"node\":\"ix://example/architecture/teams\",\"package\":\"example/architecture\"}"
+                          },
+                          "value": {
+                            "entries": [],
+                            "type": "map"
+                          }
+                        }
+                      ],
+                      "type": "map"
+                    },
+                    "type": "simulation-state"
+                  }
+                },
+                "random": [
+                  {
+                    "type": "boolean",
+                    "value": false
+                  }
+                ],
+                "transition": {
+                  "arguments": [
+                    {
+                      "type": "boolean",
+                      "value": false
+                    }
+                  ],
+                  "operation": {
+                    "node": "ix://example/architecture/Service/call",
+                    "package": "example/architecture"
+                  },
+                  "receiver": {
+                    "identity": "checkout",
+                    "object_type": {
+                      "original": {
+                        "node": "ix://example/architecture/Service",
+                        "package": "example/architecture"
+                      },
+                      "owner_effective_type": null
+                    },
+                    "type": "reference",
+                    "universe": {
+                      "ordinal": 0,
+                      "package": "example/architecture",
+                      "path": [
+                        "model",
+                        "object_type",
+                        "ix://example/architecture/Service"
+                      ]
+                    }
+                  },
+                  "type": "transition"
+                }
+              }
+            ],
+            [
+              {
+                "post_state": {
+                  "key": "eyJib3VuZHMiOnsiZW50cmllcyI6W10sInR5cGUiOiJtYXAifSwiY29udHJvbCI6eyJlbnRyaWVzIjpbXSwidHlwZSI6Im1hcCJ9LCJtZW1vcnkiOnsiZW50cmllcyI6W10sInR5cGUiOiJtYXAifSwib2JzZXJ2YXRpb25zIjp7ImVudHJpZXMiOltdLCJ0eXBlIjoibWFwIn0sInF1ZXVlcyI6eyJlbnRyaWVzIjpbXSwidHlwZSI6Im1hcCJ9LCJyb2xlcyI6eyJlbnRyaWVzIjpbXSwidHlwZSI6Im1hcCJ9LCJzZW1hbnRpYyI6eyJlbnRyaWVzIjpbeyJrZXkiOnsidHlwZSI6InRleHQiLCJ2YWx1ZSI6IntcIm5vZGVcIjpcIml4Oi8vZXhhbXBsZS9hcmNoaXRlY3R1cmUvaW5zdGFuY2VzXCIsXCJwYWNrYWdlXCI6XCJleGFtcGxlL2FyY2hpdGVjdHVyZVwifSJ9LCJ2YWx1ZSI6eyJlbnRyaWVzIjpbXSwidHlwZSI6Im1hcCJ9fSx7ImtleSI6eyJ0eXBlIjoidGV4dCIsInZhbHVlIjoie1wibm9kZVwiOlwiaXg6Ly9leGFtcGxlL2FyY2hpdGVjdHVyZS9zZXJ2aWNlc1wiLFwicGFja2FnZVwiOlwiZXhhbXBsZS9hcmNoaXRlY3R1cmVcIn0ifSwidmFsdWUiOnsiZW50cmllcyI6W3sia2V5Ijp7ImlkZW50aXR5IjoiY2hlY2tvdXQiLCJvYmplY3RfdHlwZSI6eyJvcmlnaW5hbCI6eyJub2RlIjoiaXg6Ly9leGFtcGxlL2FyY2hpdGVjdHVyZS9TZXJ2aWNlIiwicGFja2FnZSI6ImV4YW1wbGUvYXJjaGl0ZWN0dXJlIn0sIm93bmVyX2VmZmVjdGl2ZV90eXBlIjpudWxsfSwidHlwZSI6InJlZmVyZW5jZSIsInVuaXZlcnNlIjp7Im9yZGluYWwiOjAsInBhY2thZ2UiOiJleGFtcGxlL2FyY2hpdGVjdHVyZSIsInBhdGgiOlsibW9kZWwiLCJvYmplY3RfdHlwZSIsIml4Oi8vZXhhbXBsZS9hcmNoaXRlY3R1cmUvU2VydmljZSJdfX0sInZhbHVlIjp7ImZpZWxkcyI6W3sibmFtZSI6InRpZXIiLCJ2YWx1ZSI6eyJtZW1iZXIiOiJDb3JlIiwibmFtZSI6IntcIm5vZGVcIjpcIml4Oi8vZXhhbXBsZS9hcmNoaXRlY3R1cmUvVGllclwiLFwicGFja2FnZVwiOlwiZXhhbXBsZS9hcmNoaXRlY3R1cmVcIn0iLCJ0eXBlIjoiZW51bSJ9fSx7Im5hbWUiOiJvd25lciIsInZhbHVlIjpudWxsfSx7Im5hbWUiOiJkZXBlbmRzT24iLCJ2YWx1ZSI6eyJlbGVtZW50cyI6W10sInR5cGUiOiJzZXF1ZW5jZSJ9fSx7Im5hbWUiOiJyZWFkcyIsInZhbHVlIjp7ImVsZW1lbnRzIjpbXSwidHlwZSI6InNldCJ9fSx7Im5hbWUiOiJoYW5kbGVzUGVyc29uYWxEYXRhIiwidmFsdWUiOnsidHlwZSI6ImJvb2xlYW4iLCJ2YWx1ZSI6ZmFsc2V9fSx7Im5hbWUiOiJtaW5TZXJ2aW5nIiwidmFsdWUiOnsidHlwZSI6ImludGVnZXIiLCJ2YWx1ZSI6IjEifX0seyJuYW1lIjoiaW5zdGFuY2VzIiwidmFsdWUiOnsiZWxlbWVudHMiOltdLCJ0eXBlIjoic2V0In19LHsibmFtZSI6InVwIiwidmFsdWUiOnsidHlwZSI6ImJvb2xlYW4iLCJ2YWx1ZSI6dHJ1ZX19XSwibmFtZSI6IntcIm5vZGVcIjpcIml4Oi8vZXhhbXBsZS9hcmNoaXRlY3R1cmUvU2VydmljZVwiLFwicGFja2FnZVwiOlwiZXhhbXBsZS9hcmNoaXRlY3R1cmVcIn0iLCJ0eXBlIjoicmVjb3JkIn19XSwidHlwZSI6Im1hcCJ9fSx7ImtleSI6eyJ0eXBlIjoidGV4dCIsInZhbHVlIjoie1wibm9kZVwiOlwiaXg6Ly9leGFtcGxlL2FyY2hpdGVjdHVyZS9zdG9yZXNcIixcInBhY2thZ2VcIjpcImV4YW1wbGUvYXJjaGl0ZWN0dXJlXCJ9In0sInZhbHVlIjp7ImVudHJpZXMiOltdLCJ0eXBlIjoibWFwIn19LHsia2V5Ijp7InR5cGUiOiJ0ZXh0IiwidmFsdWUiOiJ7XCJub2RlXCI6XCJpeDovL2V4YW1wbGUvYXJjaGl0ZWN0dXJlL3RlYW1zXCIsXCJwYWNrYWdlXCI6XCJleGFtcGxlL2FyY2hpdGVjdHVyZVwifSJ9LCJ2YWx1ZSI6eyJlbnRyaWVzIjpbXSwidHlwZSI6Im1hcCJ9fV0sInR5cGUiOiJtYXAifSwidHlwZSI6InNpbXVsYXRpb24tc3RhdGUifQ",
+                  "state": {
+                    "bounds": {
+                      "entries": [],
+                      "type": "map"
+                    },
+                    "control": {
+                      "entries": [],
+                      "type": "map"
+                    },
+                    "memory": {
+                      "entries": [],
+                      "type": "map"
+                    },
+                    "observations": {
+                      "entries": [],
+                      "type": "map"
+                    },
+                    "queues": {
+                      "entries": [],
+                      "type": "map"
+                    },
+                    "roles": {
+                      "entries": [],
+                      "type": "map"
+                    },
+                    "semantic": {
+                      "entries": [
+                        {
+                          "key": {
+                            "type": "text",
+                            "value": "{\"node\":\"ix://example/architecture/instances\",\"package\":\"example/architecture\"}"
+                          },
+                          "value": {
+                            "entries": [],
+                            "type": "map"
+                          }
+                        },
+                        {
+                          "key": {
+                            "type": "text",
+                            "value": "{\"node\":\"ix://example/architecture/services\",\"package\":\"example/architecture\"}"
+                          },
+                          "value": {
+                            "entries": [
+                              {
+                                "key": {
+                                  "identity": "checkout",
+                                  "object_type": {
+                                    "original": {
+                                      "node": "ix://example/architecture/Service",
+                                      "package": "example/architecture"
+                                    },
+                                    "owner_effective_type": null
+                                  },
+                                  "type": "reference",
+                                  "universe": {
+                                    "ordinal": 0,
+                                    "package": "example/architecture",
+                                    "path": [
+                                      "model",
+                                      "object_type",
+                                      "ix://example/architecture/Service"
+                                    ]
+                                  }
+                                },
+                                "value": {
+                                  "fields": [
+                                    {
+                                      "name": "tier",
+                                      "value": {
+                                        "member": "Core",
+                                        "name": "{\"node\":\"ix://example/architecture/Tier\",\"package\":\"example/architecture\"}",
+                                        "type": "enum"
+                                      }
+                                    },
+                                    {
+                                      "name": "owner",
+                                      "value": null
+                                    },
+                                    {
+                                      "name": "dependsOn",
+                                      "value": {
+                                        "elements": [],
+                                        "type": "sequence"
+                                      }
+                                    },
+                                    {
+                                      "name": "reads",
+                                      "value": {
+                                        "elements": [],
+                                        "type": "set"
+                                      }
+                                    },
+                                    {
+                                      "name": "handlesPersonalData",
+                                      "value": {
+                                        "type": "boolean",
+                                        "value": false
+                                      }
+                                    },
+                                    {
+                                      "name": "minServing",
+                                      "value": {
+                                        "type": "integer",
+                                        "value": "1"
+                                      }
+                                    },
+                                    {
+                                      "name": "instances",
+                                      "value": {
+                                        "elements": [],
+                                        "type": "set"
+                                      }
+                                    },
+                                    {
+                                      "name": "up",
+                                      "value": {
+                                        "type": "boolean",
+                                        "value": true
+                                      }
+                                    }
+                                  ],
+                                  "name": "{\"node\":\"ix://example/architecture/Service\",\"package\":\"example/architecture\"}",
+                                  "type": "record"
+                                }
+                              }
+                            ],
+                            "type": "map"
+                          }
+                        },
+                        {
+                          "key": {
+                            "type": "text",
+                            "value": "{\"node\":\"ix://example/architecture/stores\",\"package\":\"example/architecture\"}"
+                          },
+                          "value": {
+                            "entries": [],
+                            "type": "map"
+                          }
+                        },
+                        {
+                          "key": {
+                            "type": "text",
+                            "value": "{\"node\":\"ix://example/architecture/teams\",\"package\":\"example/architecture\"}"
+                          },
+                          "value": {
+                            "entries": [],
+                            "type": "map"
+                          }
+                        }
+                      ],
+                      "type": "map"
+                    },
+                    "type": "simulation-state"
+                  }
+                },
+                "random": [
+                  {
+                    "type": "boolean",
+                    "value": true
+                  }
+                ],
+                "transition": {
+                  "arguments": [
+                    {
+                      "type": "boolean",
+                      "value": true
+                    }
+                  ],
+                  "operation": {
+                    "node": "ix://example/architecture/Service/call",
+                    "package": "example/architecture"
+                  },
+                  "receiver": {
+                    "identity": "checkout",
+                    "object_type": {
+                      "original": {
+                        "node": "ix://example/architecture/Service",
+                        "package": "example/architecture"
+                      },
+                      "owner_effective_type": null
+                    },
+                    "type": "reference",
+                    "universe": {
+                      "ordinal": 0,
+                      "package": "example/architecture",
+                      "path": [
+                        "model",
+                        "object_type",
+                        "ix://example/architecture/Service"
+                      ]
+                    }
+                  },
+                  "type": "transition"
+                }
+              },
+              {
+                "post_state": {
+                  "key": "eyJib3VuZHMiOnsiZW50cmllcyI6W10sInR5cGUiOiJtYXAifSwiY29udHJvbCI6eyJlbnRyaWVzIjpbXSwidHlwZSI6Im1hcCJ9LCJtZW1vcnkiOnsiZW50cmllcyI6W10sInR5cGUiOiJtYXAifSwib2JzZXJ2YXRpb25zIjp7ImVudHJpZXMiOltdLCJ0eXBlIjoibWFwIn0sInF1ZXVlcyI6eyJlbnRyaWVzIjpbXSwidHlwZSI6Im1hcCJ9LCJyb2xlcyI6eyJlbnRyaWVzIjpbXSwidHlwZSI6Im1hcCJ9LCJzZW1hbnRpYyI6eyJlbnRyaWVzIjpbeyJrZXkiOnsidHlwZSI6InRleHQiLCJ2YWx1ZSI6IntcIm5vZGVcIjpcIml4Oi8vZXhhbXBsZS9hcmNoaXRlY3R1cmUvaW5zdGFuY2VzXCIsXCJwYWNrYWdlXCI6XCJleGFtcGxlL2FyY2hpdGVjdHVyZVwifSJ9LCJ2YWx1ZSI6eyJlbnRyaWVzIjpbXSwidHlwZSI6Im1hcCJ9fSx7ImtleSI6eyJ0eXBlIjoidGV4dCIsInZhbHVlIjoie1wibm9kZVwiOlwiaXg6Ly9leGFtcGxlL2FyY2hpdGVjdHVyZS9zZXJ2aWNlc1wiLFwicGFja2FnZVwiOlwiZXhhbXBsZS9hcmNoaXRlY3R1cmVcIn0ifSwidmFsdWUiOnsiZW50cmllcyI6W3sia2V5Ijp7ImlkZW50aXR5IjoiY2hlY2tvdXQiLCJvYmplY3RfdHlwZSI6eyJvcmlnaW5hbCI6eyJub2RlIjoiaXg6Ly9leGFtcGxlL2FyY2hpdGVjdHVyZS9TZXJ2aWNlIiwicGFja2FnZSI6ImV4YW1wbGUvYXJjaGl0ZWN0dXJlIn0sIm93bmVyX2VmZmVjdGl2ZV90eXBlIjpudWxsfSwidHlwZSI6InJlZmVyZW5jZSIsInVuaXZlcnNlIjp7Im9yZGluYWwiOjAsInBhY2thZ2UiOiJleGFtcGxlL2FyY2hpdGVjdHVyZSIsInBhdGgiOlsibW9kZWwiLCJvYmplY3RfdHlwZSIsIml4Oi8vZXhhbXBsZS9hcmNoaXRlY3R1cmUvU2VydmljZSJdfX0sInZhbHVlIjp7ImZpZWxkcyI6W3sibmFtZSI6InRpZXIiLCJ2YWx1ZSI6eyJtZW1iZXIiOiJDb3JlIiwibmFtZSI6IntcIm5vZGVcIjpcIml4Oi8vZXhhbXBsZS9hcmNoaXRlY3R1cmUvVGllclwiLFwicGFja2FnZVwiOlwiZXhhbXBsZS9hcmNoaXRlY3R1cmVcIn0iLCJ0eXBlIjoiZW51bSJ9fSx7Im5hbWUiOiJvd25lciIsInZhbHVlIjpudWxsfSx7Im5hbWUiOiJkZXBlbmRzT24iLCJ2YWx1ZSI6eyJlbGVtZW50cyI6W10sInR5cGUiOiJzZXF1ZW5jZSJ9fSx7Im5hbWUiOiJyZWFkcyIsInZhbHVlIjp7ImVsZW1lbnRzIjpbXSwidHlwZSI6InNldCJ9fSx7Im5hbWUiOiJoYW5kbGVzUGVyc29uYWxEYXRhIiwidmFsdWUiOnsidHlwZSI6ImJvb2xlYW4iLCJ2YWx1ZSI6ZmFsc2V9fSx7Im5hbWUiOiJtaW5TZXJ2aW5nIiwidmFsdWUiOnsidHlwZSI6ImludGVnZXIiLCJ2YWx1ZSI6IjEifX0seyJuYW1lIjoiaW5zdGFuY2VzIiwidmFsdWUiOnsiZWxlbWVudHMiOltdLCJ0eXBlIjoic2V0In19LHsibmFtZSI6InVwIiwidmFsdWUiOnsidHlwZSI6ImJvb2xlYW4iLCJ2YWx1ZSI6ZmFsc2V9fV0sIm5hbWUiOiJ7XCJub2RlXCI6XCJpeDovL2V4YW1wbGUvYXJjaGl0ZWN0dXJlL1NlcnZpY2VcIixcInBhY2thZ2VcIjpcImV4YW1wbGUvYXJjaGl0ZWN0dXJlXCJ9IiwidHlwZSI6InJlY29yZCJ9fV0sInR5cGUiOiJtYXAifX0seyJrZXkiOnsidHlwZSI6InRleHQiLCJ2YWx1ZSI6IntcIm5vZGVcIjpcIml4Oi8vZXhhbXBsZS9hcmNoaXRlY3R1cmUvc3RvcmVzXCIsXCJwYWNrYWdlXCI6XCJleGFtcGxlL2FyY2hpdGVjdHVyZVwifSJ9LCJ2YWx1ZSI6eyJlbnRyaWVzIjpbXSwidHlwZSI6Im1hcCJ9fSx7ImtleSI6eyJ0eXBlIjoidGV4dCIsInZhbHVlIjoie1wibm9kZVwiOlwiaXg6Ly9leGFtcGxlL2FyY2hpdGVjdHVyZS90ZWFtc1wiLFwicGFja2FnZVwiOlwiZXhhbXBsZS9hcmNoaXRlY3R1cmVcIn0ifSwidmFsdWUiOnsiZW50cmllcyI6W10sInR5cGUiOiJtYXAifX1dLCJ0eXBlIjoibWFwIn0sInR5cGUiOiJzaW11bGF0aW9uLXN0YXRlIn0",
+                  "state": {
+                    "bounds": {
+                      "entries": [],
+                      "type": "map"
+                    },
+                    "control": {
+                      "entries": [],
+                      "type": "map"
+                    },
+                    "memory": {
+                      "entries": [],
+                      "type": "map"
+                    },
+                    "observations": {
+                      "entries": [],
+                      "type": "map"
+                    },
+                    "queues": {
+                      "entries": [],
+                      "type": "map"
+                    },
+                    "roles": {
+                      "entries": [],
+                      "type": "map"
+                    },
+                    "semantic": {
+                      "entries": [
+                        {
+                          "key": {
+                            "type": "text",
+                            "value": "{\"node\":\"ix://example/architecture/instances\",\"package\":\"example/architecture\"}"
+                          },
+                          "value": {
+                            "entries": [],
+                            "type": "map"
+                          }
+                        },
+                        {
+                          "key": {
+                            "type": "text",
+                            "value": "{\"node\":\"ix://example/architecture/services\",\"package\":\"example/architecture\"}"
+                          },
+                          "value": {
+                            "entries": [
+                              {
+                                "key": {
+                                  "identity": "checkout",
+                                  "object_type": {
+                                    "original": {
+                                      "node": "ix://example/architecture/Service",
+                                      "package": "example/architecture"
+                                    },
+                                    "owner_effective_type": null
+                                  },
+                                  "type": "reference",
+                                  "universe": {
+                                    "ordinal": 0,
+                                    "package": "example/architecture",
+                                    "path": [
+                                      "model",
+                                      "object_type",
+                                      "ix://example/architecture/Service"
+                                    ]
+                                  }
+                                },
+                                "value": {
+                                  "fields": [
+                                    {
+                                      "name": "tier",
+                                      "value": {
+                                        "member": "Core",
+                                        "name": "{\"node\":\"ix://example/architecture/Tier\",\"package\":\"example/architecture\"}",
+                                        "type": "enum"
+                                      }
+                                    },
+                                    {
+                                      "name": "owner",
+                                      "value": null
+                                    },
+                                    {
+                                      "name": "dependsOn",
+                                      "value": {
+                                        "elements": [],
+                                        "type": "sequence"
+                                      }
+                                    },
+                                    {
+                                      "name": "reads",
+                                      "value": {
+                                        "elements": [],
+                                        "type": "set"
+                                      }
+                                    },
+                                    {
+                                      "name": "handlesPersonalData",
+                                      "value": {
+                                        "type": "boolean",
+                                        "value": false
+                                      }
+                                    },
+                                    {
+                                      "name": "minServing",
+                                      "value": {
+                                        "type": "integer",
+                                        "value": "1"
+                                      }
+                                    },
+                                    {
+                                      "name": "instances",
+                                      "value": {
+                                        "elements": [],
+                                        "type": "set"
+                                      }
+                                    },
+                                    {
+                                      "name": "up",
+                                      "value": {
+                                        "type": "boolean",
+                                        "value": false
+                                      }
+                                    }
+                                  ],
+                                  "name": "{\"node\":\"ix://example/architecture/Service\",\"package\":\"example/architecture\"}",
+                                  "type": "record"
+                                }
+                              }
+                            ],
+                            "type": "map"
+                          }
+                        },
+                        {
+                          "key": {
+                            "type": "text",
+                            "value": "{\"node\":\"ix://example/architecture/stores\",\"package\":\"example/architecture\"}"
+                          },
+                          "value": {
+                            "entries": [],
+                            "type": "map"
+                          }
+                        },
+                        {
+                          "key": {
+                            "type": "text",
+                            "value": "{\"node\":\"ix://example/architecture/teams\",\"package\":\"example/architecture\"}"
+                          },
+                          "value": {
+                            "entries": [],
+                            "type": "map"
+                          }
+                        }
+                      ],
+                      "type": "map"
+                    },
+                    "type": "simulation-state"
+                  }
+                },
+                "random": [
+                  {
+                    "type": "boolean",
+                    "value": false
+                  }
+                ],
+                "transition": {
+                  "arguments": [
+                    {
+                      "type": "boolean",
+                      "value": false
+                    }
+                  ],
+                  "operation": {
+                    "node": "ix://example/architecture/Service/call",
+                    "package": "example/architecture"
+                  },
+                  "receiver": {
+                    "identity": "checkout",
+                    "object_type": {
+                      "original": {
+                        "node": "ix://example/architecture/Service",
+                        "package": "example/architecture"
+                      },
+                      "owner_effective_type": null
+                    },
+                    "type": "reference",
+                    "universe": {
+                      "ordinal": 0,
+                      "package": "example/architecture",
+                      "path": [
+                        "model",
+                        "object_type",
+                        "ix://example/architecture/Service"
+                      ]
+                    }
+                  },
+                  "type": "transition"
+                }
+              }
+            ]
+          ],
+          "type": "path-set"
+        },
+        "initial_state": 0,
+        "type": "probabilistic"
+      },
+      "record": {
+        "backend": "en-5",
+        "cause": null,
+        "result": "refuted",
+        "settled_by": "result"
+      },
+      "replay": {
+        "reproduced": true,
+        "target": {
+          "state_clause": "CheckoutAvailable"
+        }
       },
       "request": {
         "candidates": {
@@ -33,54 +673,16 @@
               "CheckoutAvailable",
               "subject",
               {
-                "ordinal": 0,
-                "package": "example/architecture",
-                "path": [
-                  "model",
-                  "model_root"
-                ]
+                "node": 33
               },
               "scheduler",
               {
-                "ordinal": 0,
-                "package": "example:architecture/staged-availability-missed",
-                "path": [
-                  "probabilistic",
-                  "workload",
-                  {
-                    "ordinal": 0,
-                    "package": "example/architecture",
-                    "path": [
-                      "model",
-                      "object_type",
-                      "ix://example/architecture/Service"
-                    ]
-                  },
-                  "Traffic",
-                  "call*1"
-                ]
+                "node": 35
               },
               "reward",
               "distributions",
               {
-                "ordinal": 0,
-                "package": "example:architecture/staged-availability-missed",
-                "path": [
-                  "probabilistic",
-                  "random_parameter",
-                  {
-                    "ordinal": 0,
-                    "package": "example/architecture",
-                    "path": [
-                      "model",
-                      "object_type",
-                      "ix://example/architecture/Service"
-                    ]
-                  },
-                  "call",
-                  "ok",
-                  "true*999,false*1"
-                ]
+                "node": 34
               },
               "delays",
               "form",
@@ -91,157 +693,7 @@
               "formula",
               "formula",
               {
-                "ordinal": 0,
-                "package": "example:architecture/staged-availability-missed",
-                "path": [
-                  "temporal",
-                  "formula",
-                  {
-                    "ordinal": 0,
-                    "package": "example:architecture/staged-availability-missed",
-                    "path": [
-                      "temporal",
-                      "formula",
-                      {
-                        "ordinal": 0,
-                        "package": "example:architecture/staged-availability-missed",
-                        "path": [
-                          "expression",
-                          "query",
-                          {
-                            "ordinal": 0,
-                            "package": "example:architecture/staged-availability-missed",
-                            "path": [
-                              "expression",
-                              "deref",
-                              {
-                                "ordinal": 0,
-                                "package": "example:architecture/staged-availability-missed",
-                                "path": [
-                                  "value",
-                                  "parameter",
-                                  "name",
-                                  {
-                                    "ordinal": 0,
-                                    "package": "example:architecture/staged-availability-missed",
-                                    "path": [
-                                      "scalar_type",
-                                      "text"
-                                    ]
-                                  },
-                                  "s",
-                                  "level",
-                                  {
-                                    "ordinal": 0,
-                                    "package": "example:architecture/staged-availability-missed",
-                                    "path": [
-                                      "scalar_type",
-                                      "integer"
-                                    ]
-                                  },
-                                  "0",
-                                  {
-                                    "ordinal": 0,
-                                    "package": "example:architecture/staged-availability-missed",
-                                    "path": [
-                                      "composite_type",
-                                      "reference",
-                                      {
-                                        "ordinal": 0,
-                                        "package": "example/architecture",
-                                        "path": [
-                                          "model",
-                                          "object_type",
-                                          "ix://example/architecture/Service"
-                                        ]
-                                      }
-                                    ]
-                                  }
-                                ]
-                              },
-                              "filament.op.model.deref",
-                              "deref",
-                              {
-                                "ordinal": 0,
-                                "package": "example/architecture",
-                                "path": [
-                                  "model",
-                                  "object_type",
-                                  "ix://example/architecture/Service"
-                                ]
-                              },
-                              {
-                                "ordinal": 0,
-                                "package": "example/architecture",
-                                "path": [
-                                  "model",
-                                  "object_type",
-                                  "ix://example/architecture/Service"
-                                ]
-                              }
-                            ]
-                          },
-                          "filament.op.record.project",
-                          "false",
-                          "query",
-                          {
-                            "ordinal": 0,
-                            "package": "example:architecture/staged-availability-missed",
-                            "path": [
-                              "scalar_type",
-                              "boolean"
-                            ]
-                          },
-                          {
-                            "ordinal": 0,
-                            "package": "example:architecture/staged-availability-missed",
-                            "path": [
-                              "scalar_type",
-                              "boolean"
-                            ]
-                          }
-                        ]
-                      },
-                      "filament.op.temporal.holds",
-                      "temporal_formula",
-                      {
-                        "ordinal": 0,
-                        "package": "example:architecture/staged-availability-missed",
-                        "path": [
-                          "scalar_type",
-                          "boolean"
-                        ]
-                      },
-                      {
-                        "ordinal": 0,
-                        "package": "example:architecture/staged-availability-missed",
-                        "path": [
-                          "scalar_type",
-                          "boolean"
-                        ]
-                      }
-                    ]
-                  },
-                  "filament.op.temporal.always",
-                  "steps:0..10",
-                  "temporal_formula",
-                  {
-                    "ordinal": 0,
-                    "package": "example:architecture/staged-availability-missed",
-                    "path": [
-                      "scalar_type",
-                      "boolean"
-                    ]
-                  },
-                  {
-                    "ordinal": 0,
-                    "package": "example:architecture/staged-availability-missed",
-                    "path": [
-                      "scalar_type",
-                      "boolean"
-                    ]
-                  }
-                ]
+                "node": 27
               },
               "bound",
               "direction",
@@ -251,49 +703,7 @@
               "999/1000",
               "over",
               {
-                "ordinal": 0,
-                "package": "example:architecture/staged-availability-missed",
-                "path": [
-                  "value",
-                  "parameter",
-                  "name",
-                  {
-                    "ordinal": 0,
-                    "package": "example:architecture/staged-availability-missed",
-                    "path": [
-                      "scalar_type",
-                      "text"
-                    ]
-                  },
-                  "s",
-                  "level",
-                  {
-                    "ordinal": 0,
-                    "package": "example:architecture/staged-availability-missed",
-                    "path": [
-                      "scalar_type",
-                      "integer"
-                    ]
-                  },
-                  "0",
-                  {
-                    "ordinal": 0,
-                    "package": "example:architecture/staged-availability-missed",
-                    "path": [
-                      "composite_type",
-                      "reference",
-                      {
-                        "ordinal": 0,
-                        "package": "example/architecture",
-                        "path": [
-                          "model",
-                          "object_type",
-                          "ix://example/architecture/Service"
-                        ]
-                      }
-                    ]
-                  }
-                ]
+                "node": 23
               },
               "activation",
               "kind",

@@ -1,1 +1,1 @@
-the checker refused the package: wrong_snapshot (wrong-anchor): a postcondition of an operation with no result of `note`
+wrong_snapshot (wrong-anchor): a postcondition of an operation with no result of `note`

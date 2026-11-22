@@ -522,7 +522,7 @@ serves = "QSL-2260 monitor progressed trace coverage"
 [[case]]
 id = "monitor-timestamped"
 rule = "ReachesWithin200ms"
-statement = "A timestamped stream settles a 200 ms rule when its watermark closes the time window."
+statement = "A timestamped stream settles a 200 ms rule at the record whose reading satisfies it, inside the time window."
 file = "rules/monitor-timestamped.fsl"
 command = "monitor requests/monitor-timestamped.json --input records/monitor-timestamped.jsonl"
 engine = "timed"

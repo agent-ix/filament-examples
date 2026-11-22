@@ -690,48 +690,36 @@ id = "float64-less-equal-same-operand"
 statement = "A binary64 value is less than or equal to itself, so one <= one is true when the same bound name is written on both sides."
 file = "rules/float64-less-equal-same-operand.fsl"
 command = "run requests/float64-less-equal-same-operand.json"
-status = "staged"
-expect_exit = 30
-ready_exit = 0
-waits_on = "QSL-2753"
-why = "The driver build embedding FSL 529282e9 stops with exit 30 (internal failure, runtime_invariant: protocol slot term has no complete emitted location context) when an IEEE ordering comparison has the same operand on both sides; a second name bound to the same bits evaluates."
-needs = "IEEE ordering of a value with itself"
+status = "running"
+expect_exit = 0
+expect_verdict = "true"
 
 [[case]]
 id = "float64-less-than-same-operand"
 statement = "A binary64 value is not less than itself, so not (one < one) is true when the same bound name is written on both sides."
 file = "rules/float64-less-than-same-operand.fsl"
 command = "run requests/float64-less-than-same-operand.json"
-status = "staged"
-expect_exit = 30
-ready_exit = 0
-waits_on = "QSL-2753"
-why = "The driver build embedding FSL 529282e9 stops with exit 30 (internal failure, runtime_invariant) when an IEEE ordering comparison has the same operand on both sides."
-needs = "IEEE ordering of a value with itself"
+status = "running"
+expect_exit = 0
+expect_verdict = "true"
 
 [[case]]
 id = "float32-greater-equal-same-operand"
 statement = "A binary32 value is greater than or equal to itself, so one >= one is true when the same bound name is written on both sides."
 file = "rules/float32-greater-equal-same-operand.fsl"
 command = "run requests/float32-greater-equal-same-operand.json"
-status = "staged"
-expect_exit = 30
-ready_exit = 0
-waits_on = "QSL-2753"
-why = "The driver build embedding FSL 529282e9 stops with exit 30 (internal failure, runtime_invariant) when an IEEE ordering comparison has the same operand on both sides."
-needs = "IEEE ordering of a value with itself"
+status = "running"
+expect_exit = 0
+expect_verdict = "true"
 
 [[case]]
 id = "float64-infinity-less-equal-same-operand"
 statement = "Positive infinity is less than or equal to itself, so pinf <= pinf is true when the same bound name is written on both sides."
 file = "rules/float64-infinity-less-equal-same-operand.fsl"
 command = "run requests/float64-infinity-less-equal-same-operand.json"
-status = "staged"
-expect_exit = 30
-ready_exit = 0
-waits_on = "QSL-2753"
-why = "The driver build embedding FSL 529282e9 stops with exit 30 (internal failure, runtime_invariant) when an IEEE ordering comparison has the same operand on both sides."
-needs = "IEEE ordering of a value with itself"
+status = "running"
+expect_exit = 0
+expect_verdict = "true"
 
 [[case]]
 id = "text-to-integer-empty"
@@ -2295,12 +2283,9 @@ id = "recursion-size-measure-dropfirst-with-fact"
 statement = "A recursive function measured by decreases(size(s)) is admitted when each call passes dropFirst(s) under the fact size(s) > 0, and it counts the occurrences of 7, 8, 7 as 3."
 file = "rules/recursion-size-measure-dropfirst-with-fact.fsl"
 command = "run requests/recursion-size-measure-dropfirst-with-fact.json"
-status = "staged"
-expect_exit = 20
-ready_exit = 0
-waits_on = "QSL-2754"
-why = "The driver build embedding FSL 529282e9 refuses dropFirst(s) under size(s) > 0 as an unproved decrease; FR-146-AC-16 admits it."
-needs = "dropFirst and removeOne decrease forms"
+status = "running"
+expect_exit = 0
+expect_verdict = "true"
 
 [[case]]
 id = "recursion-size-measure-dropfirst-without-fact"
@@ -2316,12 +2301,9 @@ id = "recursion-size-measure-remove-one-with-membership"
 statement = "A recursion measured by decreases(size(s)) over a set is admitted when it passes removeOne(s, e) under contains(s, e)."
 file = "rules/recursion-size-measure-remove-one-with-membership.fsl"
 command = "check rules/recursion-size-measure-remove-one-with-membership.fsl"
-status = "staged"
-expect_exit = 20
-ready_exit = 0
-waits_on = "QSL-2754"
-why = "The driver build embedding FSL 529282e9 refuses removeOne(s, e) under contains(s, e) as an unproved decrease; FR-146-AC-16 admits it."
-needs = "dropFirst and removeOne decrease forms"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
 
 [[case]]
 id = "recursion-size-measure-remove-one-without-membership"

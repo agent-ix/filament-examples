@@ -16,7 +16,10 @@
       "arguments": [
         {
           "parameter": "p",
-          "value": 6
+          "value": {
+            "type": "integer",
+            "value": "6"
+          }
         }
       ]
     }

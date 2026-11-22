@@ -16,11 +16,17 @@
       "arguments": [
         {
           "parameter": "subtotal",
-          "value": 3750
+          "value": {
+            "type": "integer",
+            "value": "3750"
+          }
         },
         {
           "parameter": "member",
-          "value": 1
+          "value": {
+            "type": "boolean",
+            "value": true
+          }
         }
       ]
     }

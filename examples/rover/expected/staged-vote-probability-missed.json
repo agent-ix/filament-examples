@@ -10,7 +10,44 @@
       "record": {
         "backend": "en-5",
         "cause": {
-          "kind": "not-markov"
+          "kind": "not-markov",
+          "post_state_count": 8004,
+          "post_states": [
+            {
+              "key": "eyJib3VuZHMiOnsiZW50cmllcyI6W10sInR5cGUiOiJtYXAifSwiY29udHJvbCI6eyJlbnRyaWVzIjpbXSwidHlwZSI6Im1hcCJ9LCJtZW1vcnkiOnsiZW50cmllcyI6W10sInR5cGUiOiJtYXAifSwib2JzZXJ2YXRpb25zIjp7ImVudHJpZXMiOltdLCJ0eXBlIjoibWFwIn0sInF1ZXVlcyI6eyJlbnRyaWVzIjpbXSwidHlwZSI6Im1hcCJ9LCJyb2xlcyI6eyJlbnRyaWVzIjpbXSwidHlwZSI6Im1hcCJ9LCJzZW1hbnRpYyI6eyJlbnRyaWVzIjpbeyJrZXkiOnsidHlwZSI6InRleHQiLCJ2YWx1ZSI6IntcIm5vZGVcIjpcIml4Oi8vZXhhbXBsZS9yb3Zlci9yb3ZlcnNcIixcInBhY2thZ2VcIjpcImV4YW1wbGUvcm92ZXJcIn0ifSwidmFsdWUiOnsiZW50cmllcyI6W3sia2V5Ijp7ImlkZW50aXR5IjoicjEiLCJvYmplY3RfdHlwZSI6eyJvcmlnaW5hbCI6eyJub2RlIjoiaXg6Ly9leGFtcGxlL3JvdmVyL1JvdmVyIiwicGFja2FnZSI6ImV4YW1wbGUvcm92ZXIifSwib3duZXJfZWZmZWN0aXZlX3R5cGUiOm51bGx9LCJ0eXBlIjoicmVmZXJlbmNlIiwidW5pdmVyc2UiOnsib3JkaW5hbCI6MCwicGFja2FnZSI6ImV4YW1wbGUvcm92ZXIiLCJwYXRoIjpbIm1vZGVsIiwib2JqZWN0X3R5cGUiLCJpeDovL2V4YW1wbGUvcm92ZXIvUm92ZXIiXX19LCJ2YWx1ZSI6eyJmaWVsZHMiOlt7Im5hbWUiOiJtb2RlIiwidmFsdWUiOnsibWVtYmVyIjoiRGVncmFkZWQiLCJuYW1lIjoie1wibm9kZVwiOlwiaXg6Ly9leGFtcGxlL3JvdmVyL01vZGVcIixcInBhY2thZ2VcIjpcImV4YW1wbGUvcm92ZXJcIn0iLCJ0eXBlIjoiZW51bSJ9fSx7Im5hbWUiOiJzcGVlZCIsInZhbHVlIjp7InR5cGUiOiJpbnRlZ2VyIiwidmFsdWUiOiIwIn19LHsibmFtZSI6InN0b3BwZWQiLCJ2YWx1ZSI6eyJ0eXBlIjoiYm9vbGVhbiIsInZhbHVlIjpmYWxzZX19LHsibmFtZSI6ImxpZGFyT2siLCJ2YWx1ZSI6eyJ0eXBlIjoiYm9vbGVhbiIsInZhbHVlIjp0cnVlfX0seyJuYW1lIjoicmFuZ2VBIiwidmFsdWUiOnsidHlwZSI6ImludGVnZXIiLCJ2YWx1ZSI6IjUwMDAifX0seyJuYW1lIjoicmFuZ2VCIiwidmFsdWUiOnsidHlwZSI6ImludGVnZXIiLCJ2YWx1ZSI6IjUwMDAifX0seyJuYW1lIjoicmFuZ2VDIiwidmFsdWUiOnsidHlwZSI6ImludGVnZXIiLCJ2YWx1ZSI6IjUwMDAifX0seyJuYW1lIjoiY2xvY2siLCJ2YWx1ZSI6eyJ0eXBlIjoiaW50ZWdlciIsInZhbHVlIjoiMCJ9fSx7Im5hbWUiOiJ2b3RlV3JvbmciLCJ2YWx1ZSI6eyJ0eXBlIjoiYm9vbGVhbiIsInZhbHVlIjpmYWxzZX19XSwibmFtZSI6IntcIm5vZGVcIjpcIml4Oi8vZXhhbXBsZS9yb3Zlci9Sb3ZlclwiLFwicGFja2FnZVwiOlwiZXhhbXBsZS9yb3ZlclwifSIsInR5cGUiOiJyZWNvcmQifX1dLCJ0eXBlIjoibWFwIn19XSwidHlwZSI6Im1hcCJ9LCJ0eXBlIjoic2ltdWxhdGlvbi1zdGF0ZSJ9"
+            },
+            {
+              "key": "eyJib3VuZHMiOnsiZW50cmllcyI6W10sInR5cGUiOiJtYXAifSwiY29udHJvbCI6eyJlbnRyaWVzIjpbXSwidHlwZSI6Im1hcCJ9LCJtZW1vcnkiOnsiZW50cmllcyI6W10sInR5cGUiOiJtYXAifSwib2JzZXJ2YXRpb25zIjp7ImVudHJpZXMiOltdLCJ0eXBlIjoibWFwIn0sInF1ZXVlcyI6eyJlbnRyaWVzIjpbXSwidHlwZSI6Im1hcCJ9LCJyb2xlcyI6eyJlbnRyaWVzIjpbXSwidHlwZSI6Im1hcCJ9LCJzZW1hbnRpYyI6eyJlbnRyaWVzIjpbeyJrZXkiOnsidHlwZSI6InRleHQiLCJ2YWx1ZSI6IntcIm5vZGVcIjpcIml4Oi8vZXhhbXBsZS9yb3Zlci9yb3ZlcnNcIixcInBhY2thZ2VcIjpcImV4YW1wbGUvcm92ZXJcIn0ifSwidmFsdWUiOnsiZW50cmllcyI6W3sia2V5Ijp7ImlkZW50aXR5IjoicjEiLCJvYmplY3RfdHlwZSI6eyJvcmlnaW5hbCI6eyJub2RlIjoiaXg6Ly9leGFtcGxlL3JvdmVyL1JvdmVyIiwicGFja2FnZSI6ImV4YW1wbGUvcm92ZXIifSwib3duZXJfZWZmZWN0aXZlX3R5cGUiOm51bGx9LCJ0eXBlIjoicmVmZXJlbmNlIiwidW5pdmVyc2UiOnsib3JkaW5hbCI6MCwicGFja2FnZSI6ImV4YW1wbGUvcm92ZXIiLCJwYXRoIjpbIm1vZGVsIiwib2JqZWN0X3R5cGUiLCJpeDovL2V4YW1wbGUvcm92ZXIvUm92ZXIiXX19LCJ2YWx1ZSI6eyJmaWVsZHMiOlt7Im5hbWUiOiJtb2RlIiwidmFsdWUiOnsibWVtYmVyIjoiRGVncmFkZWQiLCJuYW1lIjoie1wibm9kZVwiOlwiaXg6Ly9leGFtcGxlL3JvdmVyL01vZGVcIixcInBhY2thZ2VcIjpcImV4YW1wbGUvcm92ZXJcIn0iLCJ0eXBlIjoiZW51bSJ9fSx7Im5hbWUiOiJzcGVlZCIsInZhbHVlIjp7InR5cGUiOiJpbnRlZ2VyIiwidmFsdWUiOiIxIn19LHsibmFtZSI6InN0b3BwZWQiLCJ2YWx1ZSI6eyJ0eXBlIjoiYm9vbGVhbiIsInZhbHVlIjpmYWxzZX19LHsibmFtZSI6ImxpZGFyT2siLCJ2YWx1ZSI6eyJ0eXBlIjoiYm9vbGVhbiIsInZhbHVlIjp0cnVlfX0seyJuYW1lIjoicmFuZ2VBIiwidmFsdWUiOnsidHlwZSI6ImludGVnZXIiLCJ2YWx1ZSI6IjUwMDAifX0seyJuYW1lIjoicmFuZ2VCIiwidmFsdWUiOnsidHlwZSI6ImludGVnZXIiLCJ2YWx1ZSI6IjUwMDAifX0seyJuYW1lIjoicmFuZ2VDIiwidmFsdWUiOnsidHlwZSI6ImludGVnZXIiLCJ2YWx1ZSI6IjUwMDAifX0seyJuYW1lIjoiY2xvY2siLCJ2YWx1ZSI6eyJ0eXBlIjoiaW50ZWdlciIsInZhbHVlIjoiMCJ9fSx7Im5hbWUiOiJ2b3RlV3JvbmciLCJ2YWx1ZSI6eyJ0eXBlIjoiYm9vbGVhbiIsInZhbHVlIjpmYWxzZX19XSwibmFtZSI6IntcIm5vZGVcIjpcIml4Oi8vZXhhbXBsZS9yb3Zlci9Sb3ZlclwiLFwicGFja2FnZVwiOlwiZXhhbXBsZS9yb3ZlclwifSIsInR5cGUiOiJyZWNvcmQifX1dLCJ0eXBlIjoibWFwIn19XSwidHlwZSI6Im1hcCJ9LCJ0eXBlIjoic2ltdWxhdGlvbi1zdGF0ZSJ9"
+            }
+          ],
+          "state": {
+            "key": "eyJib3VuZHMiOnsiZW50cmllcyI6W10sInR5cGUiOiJtYXAifSwiY29udHJvbCI6eyJlbnRyaWVzIjpbXSwidHlwZSI6Im1hcCJ9LCJtZW1vcnkiOnsiZW50cmllcyI6W10sInR5cGUiOiJtYXAifSwib2JzZXJ2YXRpb25zIjp7ImVudHJpZXMiOltdLCJ0eXBlIjoibWFwIn0sInF1ZXVlcyI6eyJlbnRyaWVzIjpbXSwidHlwZSI6Im1hcCJ9LCJyb2xlcyI6eyJlbnRyaWVzIjpbXSwidHlwZSI6Im1hcCJ9LCJzZW1hbnRpYyI6eyJlbnRyaWVzIjpbeyJrZXkiOnsidHlwZSI6InRleHQiLCJ2YWx1ZSI6IntcIm5vZGVcIjpcIml4Oi8vZXhhbXBsZS9yb3Zlci9yb3ZlcnNcIixcInBhY2thZ2VcIjpcImV4YW1wbGUvcm92ZXJcIn0ifSwidmFsdWUiOnsiZW50cmllcyI6W3sia2V5Ijp7ImlkZW50aXR5IjoicjEiLCJvYmplY3RfdHlwZSI6eyJvcmlnaW5hbCI6eyJub2RlIjoiaXg6Ly9leGFtcGxlL3JvdmVyL1JvdmVyIiwicGFja2FnZSI6ImV4YW1wbGUvcm92ZXIifSwib3duZXJfZWZmZWN0aXZlX3R5cGUiOm51bGx9LCJ0eXBlIjoicmVmZXJlbmNlIiwidW5pdmVyc2UiOnsib3JkaW5hbCI6MCwicGFja2FnZSI6ImV4YW1wbGUvcm92ZXIiLCJwYXRoIjpbIm1vZGVsIiwib2JqZWN0X3R5cGUiLCJpeDovL2V4YW1wbGUvcm92ZXIvUm92ZXIiXX19LCJ2YWx1ZSI6eyJmaWVsZHMiOlt7Im5hbWUiOiJtb2RlIiwidmFsdWUiOnsibWVtYmVyIjoiRHJpdmluZyIsIm5hbWUiOiJ7XCJub2RlXCI6XCJpeDovL2V4YW1wbGUvcm92ZXIvTW9kZVwiLFwicGFja2FnZVwiOlwiZXhhbXBsZS9yb3ZlclwifSIsInR5cGUiOiJlbnVtIn19LHsibmFtZSI6InNwZWVkIiwidmFsdWUiOnsidHlwZSI6ImludGVnZXIiLCJ2YWx1ZSI6IjgwMCJ9fSx7Im5hbWUiOiJzdG9wcGVkIiwidmFsdWUiOnsidHlwZSI6ImJvb2xlYW4iLCJ2YWx1ZSI6ZmFsc2V9fSx7Im5hbWUiOiJsaWRhck9rIiwidmFsdWUiOnsidHlwZSI6ImJvb2xlYW4iLCJ2YWx1ZSI6dHJ1ZX19LHsibmFtZSI6InJhbmdlQSIsInZhbHVlIjp7InR5cGUiOiJpbnRlZ2VyIiwidmFsdWUiOiI1MDAwIn19LHsibmFtZSI6InJhbmdlQiIsInZhbHVlIjp7InR5cGUiOiJpbnRlZ2VyIiwidmFsdWUiOiI1MDAwIn19LHsibmFtZSI6InJhbmdlQyIsInZhbHVlIjp7InR5cGUiOiJpbnRlZ2VyIiwidmFsdWUiOiI1MDAwIn19LHsibmFtZSI6ImNsb2NrIiwidmFsdWUiOnsidHlwZSI6ImludGVnZXIiLCJ2YWx1ZSI6IjAifX0seyJuYW1lIjoidm90ZVdyb25nIiwidmFsdWUiOnsidHlwZSI6ImJvb2xlYW4iLCJ2YWx1ZSI6ZmFsc2V9fV0sIm5hbWUiOiJ7XCJub2RlXCI6XCJpeDovL2V4YW1wbGUvcm92ZXIvUm92ZXJcIixcInBhY2thZ2VcIjpcImV4YW1wbGUvcm92ZXJcIn0iLCJ0eXBlIjoicmVjb3JkIn19XSwidHlwZSI6Im1hcCJ9fV0sInR5cGUiOiJtYXAifSwidHlwZSI6InNpbXVsYXRpb24tc3RhdGUifQ"
+          },
+          "transition": {
+            "arguments": [],
+            "operation": "ix://example/rover/Rover/brake",
+            "receiver": {
+              "identity": "r1",
+              "object_type": {
+                "original": {
+                  "node": "ix://example/rover/Rover",
+                  "package": "example/rover"
+                },
+                "owner_effective_type": null
+              },
+              "type": "reference",
+              "universe": {
+                "ordinal": 0,
+                "package": "example/rover",
+                "path": [
+                  "model",
+                  "object_type",
+                  "ix://example/rover/Rover"
+                ]
+              }
+            },
+            "type": "transition"
+          }
         },
         "result": "unsupported",
         "settled_by": "result"
@@ -32,94 +69,22 @@
               "VoteAlmostNeverWrong",
               "subject",
               {
-                "ordinal": 0,
-                "package": "example/rover",
-                "path": [
-                  "model",
-                  "model_root"
-                ]
+                "node": 33
               },
               "scheduler",
               {
-                "ordinal": 0,
-                "package": "example:rover/staged-vote-probability-missed",
-                "path": [
-                  "probabilistic",
-                  "workload",
-                  {
-                    "ordinal": 0,
-                    "package": "example/rover",
-                    "path": [
-                      "model",
-                      "object_type",
-                      "ix://example/rover/Rover"
-                    ]
-                  },
-                  "Driving",
-                  "brake*1,enterFailsafe*1,halt*1,loseLidar*1,sample*1"
-                ]
+                "node": 37
               },
               "reward",
               "distributions",
               {
-                "ordinal": 0,
-                "package": "example:rover/staged-vote-probability-missed",
-                "path": [
-                  "probabilistic",
-                  "random_parameter",
-                  {
-                    "ordinal": 0,
-                    "package": "example/rover",
-                    "path": [
-                      "model",
-                      "object_type",
-                      "ix://example/rover/Rover"
-                    ]
-                  },
-                  "sample",
-                  "faultA",
-                  "true*1,false*999"
-                ]
+                "node": 34
               },
               {
-                "ordinal": 0,
-                "package": "example:rover/staged-vote-probability-missed",
-                "path": [
-                  "probabilistic",
-                  "random_parameter",
-                  {
-                    "ordinal": 0,
-                    "package": "example/rover",
-                    "path": [
-                      "model",
-                      "object_type",
-                      "ix://example/rover/Rover"
-                    ]
-                  },
-                  "sample",
-                  "faultB",
-                  "true*1,false*999"
-                ]
+                "node": 35
               },
               {
-                "ordinal": 0,
-                "package": "example:rover/staged-vote-probability-missed",
-                "path": [
-                  "probabilistic",
-                  "random_parameter",
-                  {
-                    "ordinal": 0,
-                    "package": "example/rover",
-                    "path": [
-                      "model",
-                      "object_type",
-                      "ix://example/rover/Rover"
-                    ]
-                  },
-                  "sample",
-                  "faultC",
-                  "true*1,false*999"
-                ]
+                "node": 36
               },
               "delays",
               "form",
@@ -130,157 +95,7 @@
               "formula",
               "formula",
               {
-                "ordinal": 0,
-                "package": "example:rover/staged-vote-probability-missed",
-                "path": [
-                  "temporal",
-                  "formula",
-                  {
-                    "ordinal": 0,
-                    "package": "example:rover/staged-vote-probability-missed",
-                    "path": [
-                      "temporal",
-                      "formula",
-                      {
-                        "ordinal": 0,
-                        "package": "example:rover/staged-vote-probability-missed",
-                        "path": [
-                          "expression",
-                          "query",
-                          {
-                            "ordinal": 0,
-                            "package": "example:rover/staged-vote-probability-missed",
-                            "path": [
-                              "expression",
-                              "deref",
-                              {
-                                "ordinal": 0,
-                                "package": "example:rover/staged-vote-probability-missed",
-                                "path": [
-                                  "value",
-                                  "parameter",
-                                  "name",
-                                  {
-                                    "ordinal": 0,
-                                    "package": "example:rover/staged-vote-probability-missed",
-                                    "path": [
-                                      "scalar_type",
-                                      "text"
-                                    ]
-                                  },
-                                  "r",
-                                  "level",
-                                  {
-                                    "ordinal": 0,
-                                    "package": "example:rover/staged-vote-probability-missed",
-                                    "path": [
-                                      "scalar_type",
-                                      "integer"
-                                    ]
-                                  },
-                                  "0",
-                                  {
-                                    "ordinal": 0,
-                                    "package": "example:rover/staged-vote-probability-missed",
-                                    "path": [
-                                      "composite_type",
-                                      "reference",
-                                      {
-                                        "ordinal": 0,
-                                        "package": "example/rover",
-                                        "path": [
-                                          "model",
-                                          "object_type",
-                                          "ix://example/rover/Rover"
-                                        ]
-                                      }
-                                    ]
-                                  }
-                                ]
-                              },
-                              "filament.op.model.deref",
-                              "deref",
-                              {
-                                "ordinal": 0,
-                                "package": "example/rover",
-                                "path": [
-                                  "model",
-                                  "object_type",
-                                  "ix://example/rover/Rover"
-                                ]
-                              },
-                              {
-                                "ordinal": 0,
-                                "package": "example/rover",
-                                "path": [
-                                  "model",
-                                  "object_type",
-                                  "ix://example/rover/Rover"
-                                ]
-                              }
-                            ]
-                          },
-                          "filament.op.record.project",
-                          "false",
-                          "query",
-                          {
-                            "ordinal": 0,
-                            "package": "example:rover/staged-vote-probability-missed",
-                            "path": [
-                              "scalar_type",
-                              "boolean"
-                            ]
-                          },
-                          {
-                            "ordinal": 0,
-                            "package": "example:rover/staged-vote-probability-missed",
-                            "path": [
-                              "scalar_type",
-                              "boolean"
-                            ]
-                          }
-                        ]
-                      },
-                      "filament.op.temporal.holds",
-                      "temporal_formula",
-                      {
-                        "ordinal": 0,
-                        "package": "example:rover/staged-vote-probability-missed",
-                        "path": [
-                          "scalar_type",
-                          "boolean"
-                        ]
-                      },
-                      {
-                        "ordinal": 0,
-                        "package": "example:rover/staged-vote-probability-missed",
-                        "path": [
-                          "scalar_type",
-                          "boolean"
-                        ]
-                      }
-                    ]
-                  },
-                  "filament.op.temporal.eventually",
-                  "steps:0..100",
-                  "temporal_formula",
-                  {
-                    "ordinal": 0,
-                    "package": "example:rover/staged-vote-probability-missed",
-                    "path": [
-                      "scalar_type",
-                      "boolean"
-                    ]
-                  },
-                  {
-                    "ordinal": 0,
-                    "package": "example:rover/staged-vote-probability-missed",
-                    "path": [
-                      "scalar_type",
-                      "boolean"
-                    ]
-                  }
-                ]
+                "node": 26
               },
               "bound",
               "direction",
@@ -290,49 +105,7 @@
               "1/1000000",
               "over",
               {
-                "ordinal": 0,
-                "package": "example:rover/staged-vote-probability-missed",
-                "path": [
-                  "value",
-                  "parameter",
-                  "name",
-                  {
-                    "ordinal": 0,
-                    "package": "example:rover/staged-vote-probability-missed",
-                    "path": [
-                      "scalar_type",
-                      "text"
-                    ]
-                  },
-                  "r",
-                  "level",
-                  {
-                    "ordinal": 0,
-                    "package": "example:rover/staged-vote-probability-missed",
-                    "path": [
-                      "scalar_type",
-                      "integer"
-                    ]
-                  },
-                  "0",
-                  {
-                    "ordinal": 0,
-                    "package": "example:rover/staged-vote-probability-missed",
-                    "path": [
-                      "composite_type",
-                      "reference",
-                      {
-                        "ordinal": 0,
-                        "package": "example/rover",
-                        "path": [
-                          "model",
-                          "object_type",
-                          "ix://example/rover/Rover"
-                        ]
-                      }
-                    ]
-                  }
-                ]
+                "node": 22
               },
               "activation",
               "kind",

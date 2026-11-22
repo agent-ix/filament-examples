@@ -27,11 +27,17 @@
       "arguments": [
         {
           "parameter": "price",
-          "value": 1250
+          "value": {
+            "type": "integer",
+            "value": "1250"
+          }
         },
         {
           "parameter": "qty",
-          "value": 3
+          "value": {
+            "type": "integer",
+            "value": "3"
+          }
         }
       ]
     }

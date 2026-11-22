@@ -1,1 +1,1 @@
-the checker refused the package: missing_declaration (missing-name): the fairness operation `Mutex::Lock::steal` names no model operation
+missing_declaration (missing-name): the fairness operation `Mutex::Lock::steal` names no model operation

@@ -112,10 +112,7 @@
             },
             "transition": {
               "arguments": [],
-              "operation": {
-                "node": "ix://example/payment-client/Payment/apply",
-                "package": "example/payment-client"
-              },
+              "operation": "ix://example/payment-client/Payment/apply",
               "receiver": {
                 "identity": "p1",
                 "object_type": {
@@ -230,10 +227,7 @@
             },
             "transition": {
               "arguments": [],
-              "operation": {
-                "node": "ix://example/payment-client/Payment/dropDuplicate",
-                "package": "example/payment-client"
-              },
+              "operation": "ix://example/payment-client/Payment/dropDuplicate",
               "receiver": {
                 "identity": "p1",
                 "object_type": {

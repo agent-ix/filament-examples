@@ -16,11 +16,17 @@
       "arguments": [
         {
           "parameter": "qty",
-          "value": 14
+          "value": {
+            "type": "integer",
+            "value": "14"
+          }
         },
         {
           "parameter": "pack",
-          "value": 4
+          "value": {
+            "type": "integer",
+            "value": "4"
+          }
         }
       ]
     }

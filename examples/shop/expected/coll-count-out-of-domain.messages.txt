@@ -1,1 +1,1 @@
-integer_out_of_domain/outside-domain
+undefined_expression (unproved-range): `count<Two>(p in prices(): p > 4)` must lie in [0, 2] but is proved only in [0, 5]

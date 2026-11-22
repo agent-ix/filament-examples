@@ -16,7 +16,10 @@
       "arguments": [
         {
           "parameter": "n",
-          "value": 30
+          "value": {
+            "type": "integer",
+            "value": "30"
+          }
         }
       ],
       "accounting": {

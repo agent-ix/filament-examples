@@ -1,1 +1,1 @@
-the checker refused the package: ill_typed (operator-ineligible)
+ill_typed (operator-ineligible)

@@ -16,7 +16,10 @@
       "arguments": [
         {
           "parameter": "stock",
-          "value": 0
+          "value": {
+            "type": "integer",
+            "value": "0"
+          }
         }
       ]
     }

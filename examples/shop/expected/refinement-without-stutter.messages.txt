@@ -1,1 +1,3 @@
-the checker refused the package: missing_declaration (missing-name): in `refinement NoStutterRows`, and 2 more
+missing_declaration (missing-name): the refinement has no step row for `Client::Payment::send`
+missing_declaration (missing-name): the refinement has no step row for `Client::Payment::retry`
+missing_declaration (missing-name): the refinement has no step row for `Client::Payment::dropDuplicate`

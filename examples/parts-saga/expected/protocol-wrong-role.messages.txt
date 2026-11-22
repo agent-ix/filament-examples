@@ -1,1 +1,2 @@
-the checker refused the package: wrong_snapshot (wrong-observation): `Again` reads `inspected`, which is no listed fact of `Machining` (other-role)
+wrong_snapshot (wrong-observation): `Again` reads `inspected`, which is no listed fact of `Machining` (other-role)
+wrong_snapshot (wrong-observation): `Again` reads `inspected`, which is no listed fact of `Machining` (other-role)

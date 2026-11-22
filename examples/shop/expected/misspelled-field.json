@@ -1,10 +1,24 @@
 {
   "category": "refusal",
-  "last_stage": "S3",
+  "last_stage": "S6a",
   "result": null,
-  "first_diagnostic": {
-    "code": "missing_declaration",
-    "cause": "missing-name"
-  },
-  "items": []
+  "first_diagnostic": null,
+  "items": [
+    {
+      "axes": {
+        "activation": "unavailable",
+        "execution": null,
+        "settlement": "unavailable",
+        "truth": null
+      },
+      "category": "refusal",
+      "cause": {
+        "code": "ill_typed",
+        "kind": "type-mismatch"
+      },
+      "clause": "PaidInFull",
+      "request_index": 0,
+      "result": "declined"
+    }
+  ]
 }

@@ -35,48 +35,20 @@
               "FairlyUp",
               "subject",
               {
-                "ordinal": 0,
-                "package": "example/architecture",
-                "path": [
-                  "model",
-                  "model_root"
-                ]
+                "node": 33
               },
               "scheduler",
               "every",
               "weak",
               "whole",
               {
-                "ordinal": 0,
-                "package": "example/architecture",
-                "path": [
-                  "model",
-                  "object_type",
-                  "ix://example/architecture/Service"
-                ]
+                "node": 1
               },
               "call",
               "reward",
               "distributions",
               {
-                "ordinal": 0,
-                "package": "example:architecture/schedulers-fair-weak",
-                "path": [
-                  "probabilistic",
-                  "random_parameter",
-                  {
-                    "ordinal": 0,
-                    "package": "example/architecture",
-                    "path": [
-                      "model",
-                      "object_type",
-                      "ix://example/architecture/Service"
-                    ]
-                  },
-                  "call",
-                  "ok",
-                  "true*9999,false*1"
-                ]
+                "node": 34
               },
               "delays",
               "form",
@@ -87,157 +59,7 @@
               "formula",
               "formula",
               {
-                "ordinal": 0,
-                "package": "example:architecture/schedulers-fair-weak",
-                "path": [
-                  "temporal",
-                  "formula",
-                  {
-                    "ordinal": 0,
-                    "package": "example:architecture/schedulers-fair-weak",
-                    "path": [
-                      "temporal",
-                      "formula",
-                      {
-                        "ordinal": 0,
-                        "package": "example:architecture/schedulers-fair-weak",
-                        "path": [
-                          "expression",
-                          "query",
-                          {
-                            "ordinal": 0,
-                            "package": "example:architecture/schedulers-fair-weak",
-                            "path": [
-                              "expression",
-                              "deref",
-                              {
-                                "ordinal": 0,
-                                "package": "example:architecture/schedulers-fair-weak",
-                                "path": [
-                                  "value",
-                                  "parameter",
-                                  "name",
-                                  {
-                                    "ordinal": 0,
-                                    "package": "example:architecture/schedulers-fair-weak",
-                                    "path": [
-                                      "scalar_type",
-                                      "text"
-                                    ]
-                                  },
-                                  "s",
-                                  "level",
-                                  {
-                                    "ordinal": 0,
-                                    "package": "example:architecture/schedulers-fair-weak",
-                                    "path": [
-                                      "scalar_type",
-                                      "integer"
-                                    ]
-                                  },
-                                  "0",
-                                  {
-                                    "ordinal": 0,
-                                    "package": "example:architecture/schedulers-fair-weak",
-                                    "path": [
-                                      "composite_type",
-                                      "reference",
-                                      {
-                                        "ordinal": 0,
-                                        "package": "example/architecture",
-                                        "path": [
-                                          "model",
-                                          "object_type",
-                                          "ix://example/architecture/Service"
-                                        ]
-                                      }
-                                    ]
-                                  }
-                                ]
-                              },
-                              "filament.op.model.deref",
-                              "deref",
-                              {
-                                "ordinal": 0,
-                                "package": "example/architecture",
-                                "path": [
-                                  "model",
-                                  "object_type",
-                                  "ix://example/architecture/Service"
-                                ]
-                              },
-                              {
-                                "ordinal": 0,
-                                "package": "example/architecture",
-                                "path": [
-                                  "model",
-                                  "object_type",
-                                  "ix://example/architecture/Service"
-                                ]
-                              }
-                            ]
-                          },
-                          "filament.op.record.project",
-                          "false",
-                          "query",
-                          {
-                            "ordinal": 0,
-                            "package": "example:architecture/schedulers-fair-weak",
-                            "path": [
-                              "scalar_type",
-                              "boolean"
-                            ]
-                          },
-                          {
-                            "ordinal": 0,
-                            "package": "example:architecture/schedulers-fair-weak",
-                            "path": [
-                              "scalar_type",
-                              "boolean"
-                            ]
-                          }
-                        ]
-                      },
-                      "filament.op.temporal.holds",
-                      "temporal_formula",
-                      {
-                        "ordinal": 0,
-                        "package": "example:architecture/schedulers-fair-weak",
-                        "path": [
-                          "scalar_type",
-                          "boolean"
-                        ]
-                      },
-                      {
-                        "ordinal": 0,
-                        "package": "example:architecture/schedulers-fair-weak",
-                        "path": [
-                          "scalar_type",
-                          "boolean"
-                        ]
-                      }
-                    ]
-                  },
-                  "filament.op.temporal.eventually",
-                  "steps:0..10",
-                  "temporal_formula",
-                  {
-                    "ordinal": 0,
-                    "package": "example:architecture/schedulers-fair-weak",
-                    "path": [
-                      "scalar_type",
-                      "boolean"
-                    ]
-                  },
-                  {
-                    "ordinal": 0,
-                    "package": "example:architecture/schedulers-fair-weak",
-                    "path": [
-                      "scalar_type",
-                      "boolean"
-                    ]
-                  }
-                ]
+                "node": 27
               },
               "bound",
               "direction",
@@ -247,49 +69,7 @@
               "9/10",
               "over",
               {
-                "ordinal": 0,
-                "package": "example:architecture/schedulers-fair-weak",
-                "path": [
-                  "value",
-                  "parameter",
-                  "name",
-                  {
-                    "ordinal": 0,
-                    "package": "example:architecture/schedulers-fair-weak",
-                    "path": [
-                      "scalar_type",
-                      "text"
-                    ]
-                  },
-                  "s",
-                  "level",
-                  {
-                    "ordinal": 0,
-                    "package": "example:architecture/schedulers-fair-weak",
-                    "path": [
-                      "scalar_type",
-                      "integer"
-                    ]
-                  },
-                  "0",
-                  {
-                    "ordinal": 0,
-                    "package": "example:architecture/schedulers-fair-weak",
-                    "path": [
-                      "composite_type",
-                      "reference",
-                      {
-                        "ordinal": 0,
-                        "package": "example/architecture",
-                        "path": [
-                          "model",
-                          "object_type",
-                          "ix://example/architecture/Service"
-                        ]
-                      }
-                    ]
-                  }
-                ]
+                "node": 23
               },
               "activation",
               "kind",
