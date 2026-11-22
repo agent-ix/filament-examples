@@ -2514,7 +2514,7 @@ expect_verdict = "unsupported"
 
 [[case]]
 id = "float-user-function-reserved-name-refused"
-statement = "A declaration named with the reserved qualified identity filament::value::ieee::sqrt is refused; the shared grammar admits only simple function names, so the refusal here is invalid syntax at the qualified name rather than the package refusal the standard names for a bound intrinsic identity."
+statement = "A declaration named with the reserved qualified identity filament::value::ieee::sqrt is refused; the shared grammar admits only simple function names, so the refusal here is invalid syntax at the qualified name, and the package refusal that the standard names for a bound intrinsic identity does not apply."
 file = "rules/float-user-function-reserved-name-refused.fsl"
 command = "check rules/float-user-function-reserved-name-refused.fsl"
 status = "running"

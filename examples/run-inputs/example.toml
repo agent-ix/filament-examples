@@ -3,7 +3,7 @@ summary = "Run inputs and results: call arguments in their value forms, refusals
 
 [[case]]
 id = "call-zero-arguments"
-statement = "LEGACY WIRE: A function with no parameter runs with no argument and completes with 5. The result is recorded in the driver's legacy untagged form {\"integer\": \"5\"}, not the FR-181 typed form, and is kept as the single legacy case."
+statement = "LEGACY WIRE: A function with no parameter runs with no argument and completes with 5. The result is recorded in the driver's legacy untagged form {\"integer\": \"5\"}, which differs from the FR-181 typed form, and is kept as the single legacy case."
 file = "rules/calls.fsl"
 command = "run requests/call-zero-arguments.json"
 status = "running"
@@ -23,7 +23,7 @@ serves = "FR-550-AC-1 (argument and result values)"
 
 [[case]]
 id = "call-arguments-reordered"
-statement = "Arguments are matched by parameter name, not by position, so the reversed list gives the same 5."
+statement = "Arguments are matched by parameter name and never by position, so the reversed list gives the same 5."
 file = "rules/calls.fsl"
 command = "run requests/call-arguments-reordered.json"
 status = "running"

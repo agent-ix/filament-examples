@@ -66,7 +66,7 @@ expect_verdict = "refused: invalid_package incompatible-definition"
 
 [[case]]
 id = "unit-zero-scale-on-missing-target"
-statement = "A unit with a zero scale that also names a missing target is refused as an invalid value, the first row of the unit checks, not as a missing name."
+statement = "A unit with a zero scale that also names a missing target is refused as an invalid value, which is the first row of the unit checks; the missing name is never reported."
 file = "rules/unit-zero-scale-on-missing-target.fsl"
 command = "check rules/unit-zero-scale-on-missing-target.fsl"
 status = "running"
@@ -399,7 +399,7 @@ expect_verdict = "holds"
 
 [[case]]
 id = "function-call-to-record-refused"
-statement = "Calling a name that denotes a record, not a function, is refused."
+statement = "Calling a name that denotes a record is refused, because only a function can be called."
 file = "rules/function-call-to-record-refused.fsl"
 command = "check rules/function-call-to-record-refused.fsl"
 status = "running"
@@ -633,7 +633,7 @@ expect_verdict = "holds"
 
 [[case]]
 id = "model-invariant-alias-independent"
-statement = "The same invariant compiles when the model is selected under a different alias, because the declaration keys come from the package, not the alias."
+statement = "The same invariant compiles when the model is selected under a different alias, because the declaration keys come from the package and never from the alias."
 file = "rules/model-invariant-alias-independent.fsl"
 command = "compile requests/model-invariant-alias-independent.json"
 status = "running"

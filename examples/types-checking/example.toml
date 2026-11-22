@@ -1065,7 +1065,7 @@ expect_verdict = "refused: ill_typed type-mismatch"
 
 [[case]]
 id = "quantity-carried-distinct-from-plain"
-statement = "Quantity<m, Int[-5, 5]> is a different type from Quantity<m>, so a carried quantity cannot stand where the plain one is required."
+statement = "Quantity<m, Int[-5, 5]> is a different type from Quantity<m>, so a carried quantity cannot be used where the plain one is required."
 file = "rules/quantity-carried-distinct-from-plain.fsl"
 command = "check rules/quantity-carried-distinct-from-plain.fsl"
 status = "running"
