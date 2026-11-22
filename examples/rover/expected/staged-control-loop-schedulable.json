@@ -1,22 +1,22 @@
 {
-  "category": "unsupported",
-  "last_stage": "S6b",
+  "category": "success",
+  "last_stage": "S6c",
   "result": null,
   "first_diagnostic": null,
   "items": [
     {
-      "category": "unsupported",
+      "category": "success",
       "claim_name": "ControlFp",
       "record": {
-        "diagnostic": {
-          "cause": "unsupported-requested-capability",
-          "code": "unsupported_projection",
-          "detail": {
-            "kind": "schedulability"
-          }
+        "backend": "en-7",
+        "basis": {
+          "analysis": "fixed-priority",
+          "type": "closed-form"
         },
-        "result": "unsupported",
-        "settled_by": "disposition"
+        "cause": null,
+        "certification": "certified",
+        "result": "proved",
+        "settled_by": "result"
       },
       "request": {
         "candidates": {
@@ -47,102 +47,22 @@
               "period",
               "10/1",
               {
-                "ordinal": 2,
-                "package": "example:rover/control-loop",
-                "path": [
-                  "ms"
-                ]
+                "node": 5
               },
               "deadline",
               "10/1",
               {
-                "ordinal": 2,
-                "package": "example:rover/control-loop",
-                "path": [
-                  "ms"
-                ]
+                "node": 5
               },
               "bcet",
               "0/1",
               {
-                "ordinal": 2,
-                "package": "example:rover/control-loop",
-                "path": [
-                  "ms"
-                ]
+                "node": 5
               },
               "wcet",
               "2/1",
               {
-                "ordinal": 2,
-                "package": "example:rover/control-loop",
-                "path": [
-                  "ms"
-                ]
-              },
-              "wcet_hi",
-              "criticality",
-              "lo",
-              "priority",
-              "3",
-              "jitter",
-              "0/1",
-              {
-                "ordinal": 2,
-                "package": "example:rover/control-loop",
-                "path": [
-                  "ms"
-                ]
-              },
-              "blocking",
-              "0/1",
-              {
-                "ordinal": 2,
-                "package": "example:rover/control-loop",
-                "path": [
-                  "ms"
-                ]
-              },
-              "task",
-              "name",
-              "planner",
-              "arrival",
-              "periodic",
-              "period",
-              "50/1",
-              {
-                "ordinal": 2,
-                "package": "example:rover/control-loop",
-                "path": [
-                  "ms"
-                ]
-              },
-              "deadline",
-              "50/1",
-              {
-                "ordinal": 2,
-                "package": "example:rover/control-loop",
-                "path": [
-                  "ms"
-                ]
-              },
-              "bcet",
-              "0/1",
-              {
-                "ordinal": 2,
-                "package": "example:rover/control-loop",
-                "path": [
-                  "ms"
-                ]
-              },
-              "wcet",
-              "15/1",
-              {
-                "ordinal": 2,
-                "package": "example:rover/control-loop",
-                "path": [
-                  "ms"
-                ]
+                "node": 5
               },
               "wcet_hi",
               "criticality",
@@ -152,20 +72,52 @@
               "jitter",
               "0/1",
               {
-                "ordinal": 2,
-                "package": "example:rover/control-loop",
-                "path": [
-                  "ms"
-                ]
+                "node": 5
               },
               "blocking",
               "0/1",
               {
-                "ordinal": 2,
-                "package": "example:rover/control-loop",
-                "path": [
-                  "ms"
-                ]
+                "node": 5
+              },
+              "task",
+              "name",
+              "planner",
+              "arrival",
+              "periodic",
+              "period",
+              "50/1",
+              {
+                "node": 5
+              },
+              "deadline",
+              "50/1",
+              {
+                "node": 5
+              },
+              "bcet",
+              "0/1",
+              {
+                "node": 5
+              },
+              "wcet",
+              "15/1",
+              {
+                "node": 5
+              },
+              "wcet_hi",
+              "criticality",
+              "lo",
+              "priority",
+              "3",
+              "jitter",
+              "0/1",
+              {
+                "node": 5
+              },
+              "blocking",
+              "0/1",
+              {
+                "node": 5
               },
               "task",
               "name",
@@ -175,38 +127,22 @@
               "period",
               "20/1",
               {
-                "ordinal": 2,
-                "package": "example:rover/control-loop",
-                "path": [
-                  "ms"
-                ]
+                "node": 5
               },
               "deadline",
               "20/1",
               {
-                "ordinal": 2,
-                "package": "example:rover/control-loop",
-                "path": [
-                  "ms"
-                ]
+                "node": 5
               },
               "bcet",
               "0/1",
               {
-                "ordinal": 2,
-                "package": "example:rover/control-loop",
-                "path": [
-                  "ms"
-                ]
+                "node": 5
               },
               "wcet",
               "3/1",
               {
-                "ordinal": 2,
-                "package": "example:rover/control-loop",
-                "path": [
-                  "ms"
-                ]
+                "node": 5
               },
               "wcet_hi",
               "criticality",
@@ -216,20 +152,12 @@
               "jitter",
               "0/1",
               {
-                "ordinal": 2,
-                "package": "example:rover/control-loop",
-                "path": [
-                  "ms"
-                ]
+                "node": 5
               },
               "blocking",
               "0/1",
               {
-                "ordinal": 2,
-                "package": "example:rover/control-loop",
-                "path": [
-                  "ms"
-                ]
+                "node": 5
               }
             ]
           },
@@ -239,8 +167,8 @@
           }
         },
         "extent": {
-          "bounds": [],
-          "classification": "bounded"
+          "classification": "unbounded",
+          "finite_bound_available": false
         },
         "kind": "schedulability",
         "request_index": 0
@@ -248,18 +176,18 @@
       "request_index": 0
     },
     {
-      "category": "unsupported",
+      "category": "success",
       "claim_name": "StopMonitorFast",
       "record": {
-        "diagnostic": {
-          "cause": "unsupported-requested-capability",
-          "code": "unsupported_projection",
-          "detail": {
-            "kind": "schedulability"
-          }
+        "backend": "en-7",
+        "basis": {
+          "analysis": "fixed-priority",
+          "type": "closed-form"
         },
-        "result": "unsupported",
-        "settled_by": "disposition"
+        "cause": null,
+        "certification": "certified",
+        "result": "proved",
+        "settled_by": "result"
       },
       "request": {
         "candidates": {
@@ -284,11 +212,7 @@
               "bound",
               "10/1",
               {
-                "ordinal": 2,
-                "package": "example:rover/control-loop",
-                "path": [
-                  "ms"
-                ]
+                "node": 5
               },
               "tasks",
               "task",
@@ -299,102 +223,22 @@
               "period",
               "10/1",
               {
-                "ordinal": 2,
-                "package": "example:rover/control-loop",
-                "path": [
-                  "ms"
-                ]
+                "node": 5
               },
               "deadline",
               "10/1",
               {
-                "ordinal": 2,
-                "package": "example:rover/control-loop",
-                "path": [
-                  "ms"
-                ]
+                "node": 5
               },
               "bcet",
               "0/1",
               {
-                "ordinal": 2,
-                "package": "example:rover/control-loop",
-                "path": [
-                  "ms"
-                ]
+                "node": 5
               },
               "wcet",
               "2/1",
               {
-                "ordinal": 2,
-                "package": "example:rover/control-loop",
-                "path": [
-                  "ms"
-                ]
-              },
-              "wcet_hi",
-              "criticality",
-              "lo",
-              "priority",
-              "3",
-              "jitter",
-              "0/1",
-              {
-                "ordinal": 2,
-                "package": "example:rover/control-loop",
-                "path": [
-                  "ms"
-                ]
-              },
-              "blocking",
-              "0/1",
-              {
-                "ordinal": 2,
-                "package": "example:rover/control-loop",
-                "path": [
-                  "ms"
-                ]
-              },
-              "task",
-              "name",
-              "planner",
-              "arrival",
-              "periodic",
-              "period",
-              "50/1",
-              {
-                "ordinal": 2,
-                "package": "example:rover/control-loop",
-                "path": [
-                  "ms"
-                ]
-              },
-              "deadline",
-              "50/1",
-              {
-                "ordinal": 2,
-                "package": "example:rover/control-loop",
-                "path": [
-                  "ms"
-                ]
-              },
-              "bcet",
-              "0/1",
-              {
-                "ordinal": 2,
-                "package": "example:rover/control-loop",
-                "path": [
-                  "ms"
-                ]
-              },
-              "wcet",
-              "15/1",
-              {
-                "ordinal": 2,
-                "package": "example:rover/control-loop",
-                "path": [
-                  "ms"
-                ]
+                "node": 5
               },
               "wcet_hi",
               "criticality",
@@ -404,20 +248,52 @@
               "jitter",
               "0/1",
               {
-                "ordinal": 2,
-                "package": "example:rover/control-loop",
-                "path": [
-                  "ms"
-                ]
+                "node": 5
               },
               "blocking",
               "0/1",
               {
-                "ordinal": 2,
-                "package": "example:rover/control-loop",
-                "path": [
-                  "ms"
-                ]
+                "node": 5
+              },
+              "task",
+              "name",
+              "planner",
+              "arrival",
+              "periodic",
+              "period",
+              "50/1",
+              {
+                "node": 5
+              },
+              "deadline",
+              "50/1",
+              {
+                "node": 5
+              },
+              "bcet",
+              "0/1",
+              {
+                "node": 5
+              },
+              "wcet",
+              "15/1",
+              {
+                "node": 5
+              },
+              "wcet_hi",
+              "criticality",
+              "lo",
+              "priority",
+              "3",
+              "jitter",
+              "0/1",
+              {
+                "node": 5
+              },
+              "blocking",
+              "0/1",
+              {
+                "node": 5
               },
               "task",
               "name",
@@ -427,38 +303,22 @@
               "period",
               "20/1",
               {
-                "ordinal": 2,
-                "package": "example:rover/control-loop",
-                "path": [
-                  "ms"
-                ]
+                "node": 5
               },
               "deadline",
               "20/1",
               {
-                "ordinal": 2,
-                "package": "example:rover/control-loop",
-                "path": [
-                  "ms"
-                ]
+                "node": 5
               },
               "bcet",
               "0/1",
               {
-                "ordinal": 2,
-                "package": "example:rover/control-loop",
-                "path": [
-                  "ms"
-                ]
+                "node": 5
               },
               "wcet",
               "3/1",
               {
-                "ordinal": 2,
-                "package": "example:rover/control-loop",
-                "path": [
-                  "ms"
-                ]
+                "node": 5
               },
               "wcet_hi",
               "criticality",
@@ -468,20 +328,12 @@
               "jitter",
               "0/1",
               {
-                "ordinal": 2,
-                "package": "example:rover/control-loop",
-                "path": [
-                  "ms"
-                ]
+                "node": 5
               },
               "blocking",
               "0/1",
               {
-                "ordinal": 2,
-                "package": "example:rover/control-loop",
-                "path": [
-                  "ms"
-                ]
+                "node": 5
               }
             ]
           },
@@ -491,8 +343,8 @@
           }
         },
         "extent": {
-          "bounds": [],
-          "classification": "bounded"
+          "classification": "unbounded",
+          "finite_bound_available": false
         },
         "kind": "schedulability",
         "request_index": 1

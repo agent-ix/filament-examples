@@ -19420,20 +19420,20 @@
     {
       "system": "rover",
       "case": "staged-control-loop-schedulable",
-      "status": "staged",
+      "status": "running",
       "rule": null,
       "statement": "The control task set meets its deadlines, and the stop monitor responds within 10 ms.",
       "rule_file": "examples/rover/rules/control-loop.fsl",
       "data_files": [],
       "request_file": "examples/rover/requests/analyze/control-loop-schedulable.json",
       "expected_file": "examples/rover/expected/staged-control-loop-schedulable.json",
-      "verdict": null,
-      "exit": 21,
-      "ready_exit": 0,
+      "verdict": "holds",
+      "exit": 0,
+      "ready_exit": null,
       "engine": null,
       "clock": null,
-      "waits_on": "QSL-2131",
-      "needs": "schedulability analysis from the command line"
+      "waits_on": null,
+      "needs": null
     },
     {
       "system": "rover",

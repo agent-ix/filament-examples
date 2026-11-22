@@ -436,12 +436,9 @@ rule = ""
 statement = "The control task set meets its deadlines, and the stop monitor responds within 10 ms."
 file = "rules/control-loop.fsl"
 command = "analyze requests/analyze/control-loop-schedulable.json"
-status = "staged"
-expect_exit = 21
-ready_exit = 0
-waits_on = "QSL-2131"
-why = "`fsl analyze` reads the request, but it does not decide schedulability or response-time claims yet: both items settle `unsupported` with `unsupported_projection`/`unsupported-requested-capability`"
-needs = "schedulability analysis from the command line"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
 serves = "Real-time reference; landing card U1"
 
 [[case]]
