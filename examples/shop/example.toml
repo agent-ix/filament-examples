@@ -444,6 +444,61 @@ expect_verdict = "compiled"
 serves = "State and models: optional operation parameters"
 
 [[case]]
+id = "optional-approver-absent"
+rule = "OptionalApproverBadge"
+statement = "An explicitly absent second approver satisfies the implication without unwrapping a value."
+file = "rules/optional-approver.fsl"
+command = "run requests/optional-approver-absent.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "State reference: optional operation parameters"
+
+[[case]]
+id = "optional-approver-ann"
+rule = "OptionalApproverBadge"
+statement = "A present second approver with badge 1 satisfies the comparison with 1."
+file = "rules/optional-approver.fsl"
+command = "run requests/optional-approver-ann.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "State reference: optional operation parameters"
+
+[[case]]
+id = "optional-approver-bob"
+rule = "OptionalApproverBadge"
+statement = "A present second approver with badge 2 violates the comparison with 1."
+file = "rules/optional-approver.fsl"
+command = "run requests/optional-approver-bob.json"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
+serves = "State reference: optional operation parameters"
+
+[[case]]
+id = "optional-approver-bare"
+rule = "OptionalApproverBadge"
+statement = "A bare reference supplied for an optional parameter is declined as invalid_runtime_input/wrong-value-kind, with no truth value."
+file = "rules/optional-approver.fsl"
+command = "run requests/optional-approver-bare.json"
+status = "running"
+expect_exit = 20
+expect_verdict = "refusal"
+serves = "State reference: optional operation parameters"
+
+[[case]]
+id = "optional-approver-omitted"
+rule = "OptionalApproverBadge"
+statement = "Omitting the optional second approver supplies an absent value and satisfies the implication."
+file = "rules/optional-approver.fsl"
+command = "run requests/optional-approver-omitted.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "State reference: optional operation parameters"
+
+[[case]]
 id = "staged-client-charges-once"
 rule = "ClientChargesOnce"
 statement = "A client that retries a charge with an idempotency key implements a payment that is charged at most once."

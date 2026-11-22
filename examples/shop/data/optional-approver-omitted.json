@@ -1,0 +1,31 @@
+{
+  "format": "filament.state.invocation/v1",
+  "identity": {
+    "authority": "example",
+    "identity": "ix://example/shop/data/optional-approver-omitted"
+  },
+  "model": {
+    "identity": "example/shop"
+  },
+  "context": "ix://example/shop/Order",
+  "operation": "note",
+  "self": {
+    "population": "ix://example/shop/orders",
+    "key": "o1"
+  },
+  "pre": {
+    "identity": {
+      "authority": "example",
+      "identity": "ix://example/shop/data/paid-order"
+    }
+  },
+  "post": {
+    "identity": {
+      "authority": "example",
+      "identity": "ix://example/shop/data/paid-order"
+    }
+  },
+  "parameters": {},
+  "created": [],
+  "deleted": []
+}

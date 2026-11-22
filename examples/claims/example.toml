@@ -1745,12 +1745,9 @@ statement = "No state of the dial has n above 3, so the possible claim is refute
 file = "rules/dial.fsl"
 command = "analyze requests/model-possible-trap-cyclic.json"
 engine = "model-checking"
-status = "staged"
-expect_exit = 22
-ready_exit = 10
-waits_on = "QSL-2756"
-why = "analyze never settles a possible claim whose predicate holds in no state when the state graph has a cycle: deadline_ms stops it with cancelled/deadline, where FR-391-AC-2 requires refuted, closed-scope"
-needs = "a refuted verdict for a possible claim with a trap over a cyclic state graph"
+status = "running"
+expect_exit = 10
+expect_verdict = "refuted"
 serves = "FR-391-AC-2 (possible claim, trap)"
 
 

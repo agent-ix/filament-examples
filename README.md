@@ -20,12 +20,12 @@ The table lists each system with the number of cases that run today and the numb
 | [types-checking](examples/types-checking) | Language | 203 | 1 |
 | [operations-arithmetic](examples/operations-arithmetic) | Language | 306 | 6 |
 | [declarations-models](examples/declarations-models) | Language | 111 | 0 |
-| [claims](examples/claims) | Language | 156 | 3 |
+| [claims](examples/claims) | Language | 157 | 2 |
 | [docs-captures](examples/docs-captures) | Language | 7 | 0 |
 | [docs-values](examples/docs-values) | Language | 15 | 0 |
 | [language-values](examples/language-values) | Language | 44 | 0 |
-| [engines](examples/engines) | Language | 41 | 10 |
-| [shop](examples/shop) | Shop | 155 | 1 |
+| [engines](examples/engines) | Language | 45 | 6 |
+| [shop](examples/shop) | Shop | 160 | 1 |
 | [architecture](examples/architecture) | Enterprise | 33 | 9 |
 | [parts-saga](examples/parts-saga) | Distributed | 31 | 1 |
 | [cell](examples/cell) | Safety | 13 | 0 |
