@@ -1,34 +1,24 @@
 {
-  "category": "violation",
+  "category": "refusal",
   "last_stage": "S6a",
   "result": null,
   "first_diagnostic": null,
   "items": [
     {
       "axes": {
-        "activation": "active",
-        "execution": "completed",
-        "settlement": "closed-scope",
-        "truth": "false"
+        "activation": "unavailable",
+        "execution": null,
+        "settlement": "unavailable",
+        "truth": null
       },
-      "category": "violation",
+      "category": "refusal",
       "cause": {
-        "cause": "absent-key",
-        "kind": "undefined-evaluation",
-        "where": {
-          "declaration": {
-            "function": "undefinedClaim",
-            "index": 4,
-            "kind": "body"
-          },
-          "path": [
-            0
-          ]
-        }
+        "code": "invalid_runtime_input",
+        "kind": "invalid_runtime_input"
       },
       "clause": "undefinedClaim",
       "request_index": 0,
-      "result": "refuted"
+      "result": "declined"
     }
   ]
 }
