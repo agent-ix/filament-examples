@@ -33,6 +33,8 @@ models:
 	$(NODE) tools/model.mjs tools/models/architecture.mjs examples/architecture/model/architecture.semantic-ir.json
 	$(NODE) tools/model.mjs tools/models/parts.mjs examples/parts-saga/model/parts-saga.semantic-ir.json
 	$(NODE) tools/model.mjs tools/models/cell.mjs examples/cell/model/cell.semantic-ir.json
+	$(NODE) tools/model.mjs tools/models/plant.mjs examples/plant/model/plant.semantic-ir.json
+	$(NODE) tools/model.mjs tools/models/plant-line.mjs examples/plant/model/plant-line.semantic-ir.json
 	$(NODE) tools/model.mjs tools/models/rover.mjs examples/rover/model/rover.semantic-ir.json
 	$(NODE) tools/model.mjs tools/models/rover-spec.mjs examples/rover/model/rover-spec.semantic-ir.json
 	$(NODE) tools/model.mjs tools/models/rover-deadline.mjs examples/rover/model/rover-deadline.semantic-ir.json

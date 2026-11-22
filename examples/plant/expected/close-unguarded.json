@@ -1,0 +1,491 @@
+{
+  "category": "violation",
+  "last_stage": "S8",
+  "result": null,
+  "first_diagnostic": null,
+  "items": [
+    {
+      "axes": {
+        "activation": "active",
+        "execution": "completed",
+        "settlement": "decisive-counterexample",
+        "truth": "false"
+      },
+      "category": "violation",
+      "claim_name": "NeverDeadheads",
+      "counterexample": {
+        "fairness": [],
+        "initial_state": 0,
+        "interval": null,
+        "kind": "formula",
+        "loop": [],
+        "over_binding": {
+          "identity": "line1",
+          "object_type": {
+            "original": {
+              "node": "ix://example/plant-line/Line",
+              "package": "example/plant-line"
+            },
+            "owner_effective_type": null
+          },
+          "type": "reference",
+          "universe": {
+            "ordinal": 0,
+            "package": "example/plant-line",
+            "path": [
+              "model",
+              "object_type",
+              "ix://example/plant-line/Line"
+            ]
+          }
+        },
+        "prefix": [
+          {
+            "post_state": {
+              "key": "eyJib3VuZHMiOnsiZW50cmllcyI6W10sInR5cGUiOiJtYXAifSwiY29udHJvbCI6eyJlbnRyaWVzIjpbXSwidHlwZSI6Im1hcCJ9LCJtZW1vcnkiOnsiZW50cmllcyI6W10sInR5cGUiOiJtYXAifSwib2JzZXJ2YXRpb25zIjp7ImVudHJpZXMiOltdLCJ0eXBlIjoibWFwIn0sInF1ZXVlcyI6eyJlbnRyaWVzIjpbXSwidHlwZSI6Im1hcCJ9LCJyb2xlcyI6eyJlbnRyaWVzIjpbXSwidHlwZSI6Im1hcCJ9LCJzZW1hbnRpYyI6eyJlbnRyaWVzIjpbeyJrZXkiOnsidHlwZSI6InRleHQiLCJ2YWx1ZSI6IntcIm5vZGVcIjpcIml4Oi8vZXhhbXBsZS9wbGFudC1saW5lL2xpbmVzXCIsXCJwYWNrYWdlXCI6XCJleGFtcGxlL3BsYW50LWxpbmVcIn0ifSwidmFsdWUiOnsiZW50cmllcyI6W3sia2V5Ijp7ImlkZW50aXR5IjoibGluZTEiLCJvYmplY3RfdHlwZSI6eyJvcmlnaW5hbCI6eyJub2RlIjoiaXg6Ly9leGFtcGxlL3BsYW50LWxpbmUvTGluZSIsInBhY2thZ2UiOiJleGFtcGxlL3BsYW50LWxpbmUifSwib3duZXJfZWZmZWN0aXZlX3R5cGUiOm51bGx9LCJ0eXBlIjoicmVmZXJlbmNlIiwidW5pdmVyc2UiOnsib3JkaW5hbCI6MCwicGFja2FnZSI6ImV4YW1wbGUvcGxhbnQtbGluZSIsInBhdGgiOlsibW9kZWwiLCJvYmplY3RfdHlwZSIsIml4Oi8vZXhhbXBsZS9wbGFudC1saW5lL0xpbmUiXX19LCJ2YWx1ZSI6eyJmaWVsZHMiOlt7Im5hbWUiOiJ2YWx2ZU9wZW4iLCJ2YWx1ZSI6eyJ0eXBlIjoiYm9vbGVhbiIsInZhbHVlIjp0cnVlfX0seyJuYW1lIjoicHVtcFJ1bm5pbmciLCJ2YWx1ZSI6eyJ0eXBlIjoiYm9vbGVhbiIsInZhbHVlIjpmYWxzZX19XSwibmFtZSI6IntcIm5vZGVcIjpcIml4Oi8vZXhhbXBsZS9wbGFudC1saW5lL0xpbmVcIixcInBhY2thZ2VcIjpcImV4YW1wbGUvcGxhbnQtbGluZVwifSIsInR5cGUiOiJyZWNvcmQifX1dLCJ0eXBlIjoibWFwIn19XSwidHlwZSI6Im1hcCJ9LCJ0eXBlIjoic2ltdWxhdGlvbi1zdGF0ZSJ9",
+              "state": {
+                "bounds": {
+                  "entries": [],
+                  "type": "map"
+                },
+                "control": {
+                  "entries": [],
+                  "type": "map"
+                },
+                "memory": {
+                  "entries": [],
+                  "type": "map"
+                },
+                "observations": {
+                  "entries": [],
+                  "type": "map"
+                },
+                "queues": {
+                  "entries": [],
+                  "type": "map"
+                },
+                "roles": {
+                  "entries": [],
+                  "type": "map"
+                },
+                "semantic": {
+                  "entries": [
+                    {
+                      "key": {
+                        "type": "text",
+                        "value": "{\"node\":\"ix://example/plant-line/lines\",\"package\":\"example/plant-line\"}"
+                      },
+                      "value": {
+                        "entries": [
+                          {
+                            "key": {
+                              "identity": "line1",
+                              "object_type": {
+                                "original": {
+                                  "node": "ix://example/plant-line/Line",
+                                  "package": "example/plant-line"
+                                },
+                                "owner_effective_type": null
+                              },
+                              "type": "reference",
+                              "universe": {
+                                "ordinal": 0,
+                                "package": "example/plant-line",
+                                "path": [
+                                  "model",
+                                  "object_type",
+                                  "ix://example/plant-line/Line"
+                                ]
+                              }
+                            },
+                            "value": {
+                              "fields": [
+                                {
+                                  "name": "valveOpen",
+                                  "value": {
+                                    "type": "boolean",
+                                    "value": true
+                                  }
+                                },
+                                {
+                                  "name": "pumpRunning",
+                                  "value": {
+                                    "type": "boolean",
+                                    "value": false
+                                  }
+                                }
+                              ],
+                              "name": "{\"node\":\"ix://example/plant-line/Line\",\"package\":\"example/plant-line\"}",
+                              "type": "record"
+                            }
+                          }
+                        ],
+                        "type": "map"
+                      }
+                    }
+                  ],
+                  "type": "map"
+                },
+                "type": "simulation-state"
+              }
+            },
+            "transition": {
+              "arguments": [],
+              "operation": "ix://example/plant-line/Line/openValve",
+              "receiver": {
+                "identity": "line1",
+                "object_type": {
+                  "original": {
+                    "node": "ix://example/plant-line/Line",
+                    "package": "example/plant-line"
+                  },
+                  "owner_effective_type": null
+                },
+                "type": "reference",
+                "universe": {
+                  "ordinal": 0,
+                  "package": "example/plant-line",
+                  "path": [
+                    "model",
+                    "object_type",
+                    "ix://example/plant-line/Line"
+                  ]
+                }
+              },
+              "type": "transition"
+            }
+          },
+          {
+            "post_state": {
+              "key": "eyJib3VuZHMiOnsiZW50cmllcyI6W10sInR5cGUiOiJtYXAifSwiY29udHJvbCI6eyJlbnRyaWVzIjpbXSwidHlwZSI6Im1hcCJ9LCJtZW1vcnkiOnsiZW50cmllcyI6W10sInR5cGUiOiJtYXAifSwib2JzZXJ2YXRpb25zIjp7ImVudHJpZXMiOltdLCJ0eXBlIjoibWFwIn0sInF1ZXVlcyI6eyJlbnRyaWVzIjpbXSwidHlwZSI6Im1hcCJ9LCJyb2xlcyI6eyJlbnRyaWVzIjpbXSwidHlwZSI6Im1hcCJ9LCJzZW1hbnRpYyI6eyJlbnRyaWVzIjpbeyJrZXkiOnsidHlwZSI6InRleHQiLCJ2YWx1ZSI6IntcIm5vZGVcIjpcIml4Oi8vZXhhbXBsZS9wbGFudC1saW5lL2xpbmVzXCIsXCJwYWNrYWdlXCI6XCJleGFtcGxlL3BsYW50LWxpbmVcIn0ifSwidmFsdWUiOnsiZW50cmllcyI6W3sia2V5Ijp7ImlkZW50aXR5IjoibGluZTEiLCJvYmplY3RfdHlwZSI6eyJvcmlnaW5hbCI6eyJub2RlIjoiaXg6Ly9leGFtcGxlL3BsYW50LWxpbmUvTGluZSIsInBhY2thZ2UiOiJleGFtcGxlL3BsYW50LWxpbmUifSwib3duZXJfZWZmZWN0aXZlX3R5cGUiOm51bGx9LCJ0eXBlIjoicmVmZXJlbmNlIiwidW5pdmVyc2UiOnsib3JkaW5hbCI6MCwicGFja2FnZSI6ImV4YW1wbGUvcGxhbnQtbGluZSIsInBhdGgiOlsibW9kZWwiLCJvYmplY3RfdHlwZSIsIml4Oi8vZXhhbXBsZS9wbGFudC1saW5lL0xpbmUiXX19LCJ2YWx1ZSI6eyJmaWVsZHMiOlt7Im5hbWUiOiJ2YWx2ZU9wZW4iLCJ2YWx1ZSI6eyJ0eXBlIjoiYm9vbGVhbiIsInZhbHVlIjp0cnVlfX0seyJuYW1lIjoicHVtcFJ1bm5pbmciLCJ2YWx1ZSI6eyJ0eXBlIjoiYm9vbGVhbiIsInZhbHVlIjp0cnVlfX1dLCJuYW1lIjoie1wibm9kZVwiOlwiaXg6Ly9leGFtcGxlL3BsYW50LWxpbmUvTGluZVwiLFwicGFja2FnZVwiOlwiZXhhbXBsZS9wbGFudC1saW5lXCJ9IiwidHlwZSI6InJlY29yZCJ9fV0sInR5cGUiOiJtYXAifX1dLCJ0eXBlIjoibWFwIn0sInR5cGUiOiJzaW11bGF0aW9uLXN0YXRlIn0",
+              "state": {
+                "bounds": {
+                  "entries": [],
+                  "type": "map"
+                },
+                "control": {
+                  "entries": [],
+                  "type": "map"
+                },
+                "memory": {
+                  "entries": [],
+                  "type": "map"
+                },
+                "observations": {
+                  "entries": [],
+                  "type": "map"
+                },
+                "queues": {
+                  "entries": [],
+                  "type": "map"
+                },
+                "roles": {
+                  "entries": [],
+                  "type": "map"
+                },
+                "semantic": {
+                  "entries": [
+                    {
+                      "key": {
+                        "type": "text",
+                        "value": "{\"node\":\"ix://example/plant-line/lines\",\"package\":\"example/plant-line\"}"
+                      },
+                      "value": {
+                        "entries": [
+                          {
+                            "key": {
+                              "identity": "line1",
+                              "object_type": {
+                                "original": {
+                                  "node": "ix://example/plant-line/Line",
+                                  "package": "example/plant-line"
+                                },
+                                "owner_effective_type": null
+                              },
+                              "type": "reference",
+                              "universe": {
+                                "ordinal": 0,
+                                "package": "example/plant-line",
+                                "path": [
+                                  "model",
+                                  "object_type",
+                                  "ix://example/plant-line/Line"
+                                ]
+                              }
+                            },
+                            "value": {
+                              "fields": [
+                                {
+                                  "name": "valveOpen",
+                                  "value": {
+                                    "type": "boolean",
+                                    "value": true
+                                  }
+                                },
+                                {
+                                  "name": "pumpRunning",
+                                  "value": {
+                                    "type": "boolean",
+                                    "value": true
+                                  }
+                                }
+                              ],
+                              "name": "{\"node\":\"ix://example/plant-line/Line\",\"package\":\"example/plant-line\"}",
+                              "type": "record"
+                            }
+                          }
+                        ],
+                        "type": "map"
+                      }
+                    }
+                  ],
+                  "type": "map"
+                },
+                "type": "simulation-state"
+              }
+            },
+            "transition": {
+              "arguments": [],
+              "operation": "ix://example/plant-line/Line/startPump",
+              "receiver": {
+                "identity": "line1",
+                "object_type": {
+                  "original": {
+                    "node": "ix://example/plant-line/Line",
+                    "package": "example/plant-line"
+                  },
+                  "owner_effective_type": null
+                },
+                "type": "reference",
+                "universe": {
+                  "ordinal": 0,
+                  "package": "example/plant-line",
+                  "path": [
+                    "model",
+                    "object_type",
+                    "ix://example/plant-line/Line"
+                  ]
+                }
+              },
+              "type": "transition"
+            }
+          },
+          {
+            "post_state": {
+              "key": "eyJib3VuZHMiOnsiZW50cmllcyI6W10sInR5cGUiOiJtYXAifSwiY29udHJvbCI6eyJlbnRyaWVzIjpbXSwidHlwZSI6Im1hcCJ9LCJtZW1vcnkiOnsiZW50cmllcyI6W10sInR5cGUiOiJtYXAifSwib2JzZXJ2YXRpb25zIjp7ImVudHJpZXMiOltdLCJ0eXBlIjoibWFwIn0sInF1ZXVlcyI6eyJlbnRyaWVzIjpbXSwidHlwZSI6Im1hcCJ9LCJyb2xlcyI6eyJlbnRyaWVzIjpbXSwidHlwZSI6Im1hcCJ9LCJzZW1hbnRpYyI6eyJlbnRyaWVzIjpbeyJrZXkiOnsidHlwZSI6InRleHQiLCJ2YWx1ZSI6IntcIm5vZGVcIjpcIml4Oi8vZXhhbXBsZS9wbGFudC1saW5lL2xpbmVzXCIsXCJwYWNrYWdlXCI6XCJleGFtcGxlL3BsYW50LWxpbmVcIn0ifSwidmFsdWUiOnsiZW50cmllcyI6W3sia2V5Ijp7ImlkZW50aXR5IjoibGluZTEiLCJvYmplY3RfdHlwZSI6eyJvcmlnaW5hbCI6eyJub2RlIjoiaXg6Ly9leGFtcGxlL3BsYW50LWxpbmUvTGluZSIsInBhY2thZ2UiOiJleGFtcGxlL3BsYW50LWxpbmUifSwib3duZXJfZWZmZWN0aXZlX3R5cGUiOm51bGx9LCJ0eXBlIjoicmVmZXJlbmNlIiwidW5pdmVyc2UiOnsib3JkaW5hbCI6MCwicGFja2FnZSI6ImV4YW1wbGUvcGxhbnQtbGluZSIsInBhdGgiOlsibW9kZWwiLCJvYmplY3RfdHlwZSIsIml4Oi8vZXhhbXBsZS9wbGFudC1saW5lL0xpbmUiXX19LCJ2YWx1ZSI6eyJmaWVsZHMiOlt7Im5hbWUiOiJ2YWx2ZU9wZW4iLCJ2YWx1ZSI6eyJ0eXBlIjoiYm9vbGVhbiIsInZhbHVlIjpmYWxzZX19LHsibmFtZSI6InB1bXBSdW5uaW5nIiwidmFsdWUiOnsidHlwZSI6ImJvb2xlYW4iLCJ2YWx1ZSI6dHJ1ZX19XSwibmFtZSI6IntcIm5vZGVcIjpcIml4Oi8vZXhhbXBsZS9wbGFudC1saW5lL0xpbmVcIixcInBhY2thZ2VcIjpcImV4YW1wbGUvcGxhbnQtbGluZVwifSIsInR5cGUiOiJyZWNvcmQifX1dLCJ0eXBlIjoibWFwIn19XSwidHlwZSI6Im1hcCJ9LCJ0eXBlIjoic2ltdWxhdGlvbi1zdGF0ZSJ9",
+              "state": {
+                "bounds": {
+                  "entries": [],
+                  "type": "map"
+                },
+                "control": {
+                  "entries": [],
+                  "type": "map"
+                },
+                "memory": {
+                  "entries": [],
+                  "type": "map"
+                },
+                "observations": {
+                  "entries": [],
+                  "type": "map"
+                },
+                "queues": {
+                  "entries": [],
+                  "type": "map"
+                },
+                "roles": {
+                  "entries": [],
+                  "type": "map"
+                },
+                "semantic": {
+                  "entries": [
+                    {
+                      "key": {
+                        "type": "text",
+                        "value": "{\"node\":\"ix://example/plant-line/lines\",\"package\":\"example/plant-line\"}"
+                      },
+                      "value": {
+                        "entries": [
+                          {
+                            "key": {
+                              "identity": "line1",
+                              "object_type": {
+                                "original": {
+                                  "node": "ix://example/plant-line/Line",
+                                  "package": "example/plant-line"
+                                },
+                                "owner_effective_type": null
+                              },
+                              "type": "reference",
+                              "universe": {
+                                "ordinal": 0,
+                                "package": "example/plant-line",
+                                "path": [
+                                  "model",
+                                  "object_type",
+                                  "ix://example/plant-line/Line"
+                                ]
+                              }
+                            },
+                            "value": {
+                              "fields": [
+                                {
+                                  "name": "valveOpen",
+                                  "value": {
+                                    "type": "boolean",
+                                    "value": false
+                                  }
+                                },
+                                {
+                                  "name": "pumpRunning",
+                                  "value": {
+                                    "type": "boolean",
+                                    "value": true
+                                  }
+                                }
+                              ],
+                              "name": "{\"node\":\"ix://example/plant-line/Line\",\"package\":\"example/plant-line\"}",
+                              "type": "record"
+                            }
+                          }
+                        ],
+                        "type": "map"
+                      }
+                    }
+                  ],
+                  "type": "map"
+                },
+                "type": "simulation-state"
+              }
+            },
+            "transition": {
+              "arguments": [],
+              "operation": "ix://example/plant-line/Line/closeValve",
+              "receiver": {
+                "identity": "line1",
+                "object_type": {
+                  "original": {
+                    "node": "ix://example/plant-line/Line",
+                    "package": "example/plant-line"
+                  },
+                  "owner_effective_type": null
+                },
+                "type": "reference",
+                "universe": {
+                  "ordinal": 0,
+                  "package": "example/plant-line",
+                  "path": [
+                    "model",
+                    "object_type",
+                    "ix://example/plant-line/Line"
+                  ]
+                }
+              },
+              "type": "transition"
+            }
+          }
+        ],
+        "trace": "model",
+        "trace_position": 3
+      },
+      "exploration": {
+        "automaton_states": "1",
+        "states": "4",
+        "transitions": "4"
+      },
+      "record": {
+        "backend": "en-1",
+        "cause": null,
+        "result": "refuted",
+        "settled_by": "result"
+      },
+      "replay": {
+        "reproduced": true,
+        "target": {
+          "state_clause": "NeverDeadheads"
+        }
+      },
+      "request": {
+        "candidates": {
+          "backends": [
+            "en-1"
+          ],
+          "type": "set"
+        },
+        "claim": {
+          "node": {
+            "ordinal": 0,
+            "package": "example:plant/unguarded",
+            "path": [
+              "temporal",
+              "temporal_clause",
+              {
+                "node": 11
+              },
+              {
+                "node": 4
+              },
+              "model-steps",
+              "kind",
+              {
+                "node": 4
+              },
+              "origin",
+              {
+                "node": 17
+              },
+              "filament.op.temporal.clause",
+              "filament.temporal.infinite-trace/v1",
+              "temporal",
+              {
+                "node": 2
+              },
+              {
+                "node": 2
+              }
+            ]
+          },
+          "occurrence": {
+            "ordinal": 0,
+            "role": "claim"
+          }
+        },
+        "extent": {
+          "classification": "unbounded",
+          "finite_bound_available": false
+        },
+        "kind": "temporal-satisfaction",
+        "request_index": 0,
+        "temporal": {
+          "fairness": [],
+          "item_kind": "formula",
+          "limits": {
+            "max_automaton_states": 1048576,
+            "max_relation_tuples": 16777216,
+            "max_states": 10000000,
+            "max_transitions": 100000000,
+            "max_walk_steps": 4096,
+            "max_witness_set": 65536
+          },
+          "subject": {
+            "initial_states": [
+              {
+                "authority": "example",
+                "identity": "ix://example/plant-line/data/line-idle"
+              }
+            ],
+            "proof_bounds": [],
+            "universes": [
+              {
+                "authority": "example",
+                "identity": "ix://example/plant-line/data/line-idle"
+              }
+            ]
+          }
+        }
+      },
+      "request_index": 0
+    }
+  ]
+}

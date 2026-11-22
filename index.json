@@ -18454,6 +18454,166 @@
       "needs": null
     },
     {
+      "system": "plant",
+      "case": "pump-open-valve",
+      "status": "running",
+      "rule": "NoDeadhead",
+      "statement": "The pump runs only while its discharge valve is open.",
+      "rule_file": "examples/plant/rules/pump.fsl",
+      "data_files": [
+        "examples/plant/data/pump-open-valve.json"
+      ],
+      "request_file": "examples/plant/requests/pump-open-valve.json",
+      "expected_file": "examples/plant/expected/pump-open-valve.json",
+      "verdict": "holds",
+      "exit": 0,
+      "ready_exit": null,
+      "engine": null,
+      "clock": null,
+      "waits_on": null,
+      "needs": null
+    },
+    {
+      "system": "plant",
+      "case": "pump-closed-valve",
+      "status": "running",
+      "rule": "NoDeadhead",
+      "statement": "The pump runs only while its discharge valve is open.",
+      "rule_file": "examples/plant/rules/pump.fsl",
+      "data_files": [
+        "examples/plant/data/pump-closed-valve.json"
+      ],
+      "request_file": "examples/plant/requests/pump-closed-valve.json",
+      "expected_file": "examples/plant/expected/pump-closed-valve.json",
+      "verdict": "violated",
+      "exit": 10,
+      "ready_exit": null,
+      "engine": null,
+      "clock": null,
+      "waits_on": null,
+      "needs": null
+    },
+    {
+      "system": "plant",
+      "case": "pump-off-valve-closed",
+      "status": "running",
+      "rule": "NoDeadhead",
+      "statement": "The pump runs only while its discharge valve is open.",
+      "rule_file": "examples/plant/rules/pump.fsl",
+      "data_files": [
+        "examples/plant/data/pump-off-valve-closed.json"
+      ],
+      "request_file": "examples/plant/requests/pump-off-valve-closed.json",
+      "expected_file": "examples/plant/expected/pump-off-valve-closed.json",
+      "verdict": "holds",
+      "exit": 0,
+      "ready_exit": null,
+      "engine": null,
+      "clock": null,
+      "waits_on": null,
+      "needs": null
+    },
+    {
+      "system": "plant",
+      "case": "level-below-limit",
+      "status": "running",
+      "rule": "TankBelowHighHigh",
+      "statement": "A tank stays below its high-high alarm level of 90 percent.",
+      "rule_file": "examples/plant/rules/tank.fsl",
+      "data_files": [
+        "examples/plant/data/level-below-limit.json"
+      ],
+      "request_file": "examples/plant/requests/level-below-limit.json",
+      "expected_file": "examples/plant/expected/level-below-limit.json",
+      "verdict": "holds",
+      "exit": 0,
+      "ready_exit": null,
+      "engine": null,
+      "clock": null,
+      "waits_on": null,
+      "needs": null
+    },
+    {
+      "system": "plant",
+      "case": "level-at-limit",
+      "status": "running",
+      "rule": "TankBelowHighHigh",
+      "statement": "A tank stays below its high-high alarm level of 90 percent.",
+      "rule_file": "examples/plant/rules/tank.fsl",
+      "data_files": [
+        "examples/plant/data/level-at-limit.json"
+      ],
+      "request_file": "examples/plant/requests/level-at-limit.json",
+      "expected_file": "examples/plant/expected/level-at-limit.json",
+      "verdict": "violated",
+      "exit": 10,
+      "ready_exit": null,
+      "engine": null,
+      "clock": null,
+      "waits_on": null,
+      "needs": null
+    },
+    {
+      "system": "plant",
+      "case": "level-above-limit",
+      "status": "running",
+      "rule": "TankBelowHighHigh",
+      "statement": "A tank stays below its high-high alarm level of 90 percent.",
+      "rule_file": "examples/plant/rules/tank.fsl",
+      "data_files": [
+        "examples/plant/data/level-above-limit.json"
+      ],
+      "request_file": "examples/plant/requests/level-above-limit.json",
+      "expected_file": "examples/plant/expected/level-above-limit.json",
+      "verdict": "violated",
+      "exit": 10,
+      "ready_exit": null,
+      "engine": null,
+      "clock": null,
+      "waits_on": null,
+      "needs": null
+    },
+    {
+      "system": "plant",
+      "case": "close-guarded",
+      "status": "running",
+      "rule": "NeverDeadheads",
+      "statement": "On every behavior of the line, the pump never runs against a closed valve, when the valve closes only while the pump is stopped.",
+      "rule_file": "examples/plant/rules/model-checking/guarded.fsl",
+      "data_files": [
+        "examples/plant/data/line-idle.json"
+      ],
+      "request_file": "examples/plant/requests/analyze/close-guarded.json",
+      "expected_file": "examples/plant/expected/close-guarded.json",
+      "verdict": "holds",
+      "exit": 0,
+      "ready_exit": null,
+      "engine": "model-checking",
+      "clock": null,
+      "waits_on": null,
+      "needs": null
+    },
+    {
+      "system": "plant",
+      "case": "close-unguarded",
+      "status": "running",
+      "rule": "NeverDeadheads",
+      "statement": "On every behavior of the line, the pump never runs against a closed valve, when the valve can close while the pump runs.",
+      "rule_file": "examples/plant/rules/model-checking/unguarded.fsl",
+      "data_files": [
+        "examples/plant/data/line-idle.json"
+      ],
+      "request_file": "examples/plant/requests/analyze/close-unguarded.json",
+      "expected_file": "examples/plant/expected/close-unguarded.json",
+      "verdict": "violated",
+      "exit": 10,
+      "ready_exit": null,
+      "engine": "model-checking",
+      "clock": null,
+      "waits_on": null,
+      "needs": null
+    },
+    {
       "system": "rover",
       "case": "vote-two-of-three",
       "status": "running",

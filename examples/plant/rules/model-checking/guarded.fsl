@@ -1,0 +1,21 @@
+language "ix:native" edition "1-draft";
+profile v = "filament.model.complete/v1";
+profile inf = "filament.temporal.infinite-trace/v1";
+model Line = "example/plant-line";
+
+// The valve opens only when it is closed, and closes only when the pump is stopped.
+pre OpenWhenClosed using v on Line::Line::openValve { not self.valveOpen }
+post OpenOpens using v on Line::Line::openValve { self.valveOpen }
+pre CloseWhenPumpStopped using v on Line::Line::closeValve { self.valveOpen and not self.pumpRunning }
+post CloseCloses using v on Line::Line::closeValve { not self.valveOpen }
+
+// The pump starts only against an open valve.
+pre StartAgainstOpenValve using v on Line::Line::startPump { self.valveOpen and not self.pumpRunning }
+post StartRuns using v on Line::Line::startPump { self.pumpRunning }
+pre StopWhenRunning using v on Line::Line::stopPump { self.pumpRunning }
+post StopStops using v on Line::Line::stopPump { not self.pumpRunning }
+
+// On every behavior, the pump never runs against a closed valve.
+temporal NeverDeadheads using inf over (l: Line::Line) clock "model-steps" on origin {
+  always (holds(l.pumpRunning implies l.valveOpen))
+}

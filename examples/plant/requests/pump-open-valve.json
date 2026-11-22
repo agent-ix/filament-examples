@@ -1,0 +1,45 @@
+{
+  "format": "native-run/1",
+  "request": {
+    "models": [
+      {
+        "format": "semantic-ir/2.0.0",
+        "source": {
+          "file": "../model/plant.semantic-ir.json",
+          "authority": "example",
+          "identity": "example:plant/model",
+          "document": "model",
+          "formal_revision": 1
+        }
+      }
+    ],
+    "program": {
+      "source": {
+        "file": "../rules/pump.fsl",
+        "authority": "example",
+        "identity": "example:plant/rules",
+        "document": "rules",
+        "formal_revision": 1
+      }
+    },
+    "clause": {
+      "selection": {
+        "clause": {
+          "name": "NoDeadhead",
+          "observation": "current",
+          "self": {
+            "population": "ix://example/plant/pumps",
+            "key": "P-101"
+          },
+          "anchor": {
+            "kind": "handler",
+            "name": "validate"
+          }
+        }
+      },
+      "observations": {
+        "current": "../data/pump-open-valve.json"
+      }
+    }
+  }
+}

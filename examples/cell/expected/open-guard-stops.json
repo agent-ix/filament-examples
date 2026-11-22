@@ -8,14 +8,65 @@
       "axes": {
         "activation": "active",
         "execution": "completed",
-        "settlement": "closed-scope",
+        "settlement": "decisive-witness",
         "truth": "true"
       },
       "category": "success",
       "cause": null,
       "clause": "OpeningGuardStops",
       "request_index": 0,
-      "result": "tested"
+      "result": "tested",
+      "witness": {
+        "deciding_comparison": {
+          "node_id": "{\"ordinal\":0,\"package\":\"example:cell/press\",\"path\":[\"expression\",\"binary\",{\"ordinal\":0,\"package\":\"example:cell/press\",\"path\":[\"expression\",\"query\",{\"ordinal\":0,\"package\":\"example:cell/press\",\"path\":[\"expression\",\"deref\",{\"ordinal\":0,\"package\":\"example:cell/press\",\"path\":[\"value\",\"parameter\",\"name\",{\"ordinal\":0,\"package\":\"example:cell/press\",\"path\":[\"scalar_type\",\"text\"]},\"self\",\"level\",{\"ordinal\":0,\"package\":\"example:cell/press\",\"path\":[\"scalar_type\",\"integer\"]},\"0\",{\"ordinal\":0,\"package\":\"example:cell/press\",\"path\":[\"composite_type\",\"reference\",{\"ordinal\":0,\"package\":\"example/cell\",\"path\":[\"model\",\"object_type\",\"ix://example/cell/Press\"]}]}]},\"filament.op.model.deref\",\"deref\",{\"ordinal\":0,\"package\":\"example/cell\",\"path\":[\"model\",\"object_type\",\"ix://example/cell/Press\"]},{\"ordinal\":0,\"package\":\"example/cell\",\"path\":[\"model\",\"object_type\",\"ix://example/cell/Press\"]}]},\"filament.op.record.project\",\"false\",\"query\",{\"ordinal\":0,\"package\":\"example/cell\",\"path\":[\"model\",\"variant_type\",\"ix://example/cell/PressMode\"]},{\"ordinal\":0,\"package\":\"example/cell\",\"path\":[\"model\",\"variant_type\",\"ix://example/cell/PressMode\"]}]},{\"ordinal\":0,\"package\":\"example:cell/press\",\"path\":[\"value\",\"enum_value\",{\"ordinal\":0,\"package\":\"example/cell\",\"path\":[\"model\",\"variant_type\",\"ix://example/cell/PressMode\"]},\"Stopped\"]},\"filament.op.enum.eq\",\"binary\",{\"ordinal\":0,\"package\":\"example:cell/press\",\"path\":[\"scalar_type\",\"boolean\"]},{\"ordinal\":0,\"package\":\"example:cell/press\",\"path\":[\"scalar_type\",\"boolean\"]}]}",
+          "ordinal": 0,
+          "role": "expression"
+        },
+        "deciding_element": {
+          "kind": "boolean",
+          "value": true
+        },
+        "decision_path": [
+          {
+            "node_id": "{\"ordinal\":0,\"package\":\"example:cell/press\",\"path\":[\"expression\",\"binary\",{\"ordinal\":0,\"package\":\"example:cell/press\",\"path\":[\"expression\",\"unary\",{\"ordinal\":0,\"package\":\"example:cell/press\",\"path\":[\"expression\",\"query\",{\"ordinal\":0,\"package\":\"example:cell/press\",\"path\":[\"expression\",\"deref\",{\"ordinal\":0,\"package\":\"example:cell/press\",\"path\":[\"value\",\"parameter\",\"name\",{\"ordinal\":0,\"package\":\"example:cell/press\",\"path\":[\"scalar_type\",\"text\"]},\"self\",\"level\",{\"ordinal\":0,\"package\":\"example:cell/press\",\"path\":[\"scalar_type\",\"integer\"]},\"0\",{\"ordinal\":0,\"package\":\"example:cell/press\",\"path\":[\"composite_type\",\"reference\",{\"ordinal\":0,\"package\":\"example/cell\",\"path\":[\"model\",\"object_type\",\"ix://example/cell/Press\"]}]}]},\"filament.op.model.deref\",\"deref\",{\"ordinal\":0,\"package\":\"example/cell\",\"path\":[\"model\",\"object_type\",\"ix://example/cell/Press\"]},{\"ordinal\":0,\"package\":\"example/cell\",\"path\":[\"model\",\"object_type\",\"ix://example/cell/Press\"]}]},\"filament.op.record.project\",\"false\",\"query\",{\"ordinal\":0,\"package\":\"example:cell/press\",\"path\":[\"scalar_type\",\"boolean\"]},{\"ordinal\":0,\"package\":\"example:cell/press\",\"path\":[\"scalar_type\",\"boolean\"]}]},\"filament.op.boolean.not\",\"unary\",{\"ordinal\":0,\"package\":\"example:cell/press\",\"path\":[\"scalar_type\",\"boolean\"]},{\"ordinal\":0,\"package\":\"example:cell/press\",\"path\":[\"scalar_type\",\"boolean\"]}]},{\"ordinal\":0,\"package\":\"example:cell/press\",\"path\":[\"expression\",\"binary\",{\"ordinal\":0,\"package\":\"example:cell/press\",\"path\":[\"expression\",\"query\",{\"ordinal\":0,\"package\":\"example:cell/press\",\"path\":[\"expression\",\"deref\",{\"ordinal\":0,\"package\":\"example:cell/press\",\"path\":[\"value\",\"parameter\",\"name\",{\"ordinal\":0,\"package\":\"example:cell/press\",\"path\":[\"scalar_type\",\"text\"]},\"self\",\"level\",{\"ordinal\":0,\"package\":\"example:cell/press\",\"path\":[\"scalar_type\",\"integer\"]},\"0\",{\"ordinal\":0,\"package\":\"example:cell/press\",\"path\":[\"composite_type\",\"reference\",{\"ordinal\":0,\"package\":\"example/cell\",\"path\":[\"model\",\"object_type\",\"ix://example/cell/Press\"]}]}]},\"filament.op.model.deref\",\"deref\",{\"ordinal\":0,\"package\":\"example/cell\",\"path\":[\"model\",\"object_type\",\"ix://example/cell/Press\"]},{\"ordinal\":0,\"package\":\"example/cell\",\"path\":[\"model\",\"object_type\",\"ix://example/cell/Press\"]}]},\"filament.op.record.project\",\"false\",\"query\",{\"ordinal\":0,\"package\":\"example/cell\",\"path\":[\"model\",\"variant_type\",\"ix://example/cell/PressMode\"]},{\"ordinal\":0,\"package\":\"example/cell\",\"path\":[\"model\",\"variant_type\",\"ix://example/cell/PressMode\"]}]},{\"ordinal\":0,\"package\":\"example:cell/press\",\"path\":[\"value\",\"enum_value\",{\"ordinal\":0,\"package\":\"example/cell\",\"path\":[\"model\",\"variant_type\",\"ix://example/cell/PressMode\"]},\"Stopped\"]},\"filament.op.enum.eq\",\"binary\",{\"ordinal\":0,\"package\":\"example:cell/press\",\"path\":[\"scalar_type\",\"boolean\"]},{\"ordinal\":0,\"package\":\"example:cell/press\",\"path\":[\"scalar_type\",\"boolean\"]}]},\"filament.op.boolean.and\",\"binary\",{\"ordinal\":0,\"package\":\"example:cell/press\",\"path\":[\"scalar_type\",\"boolean\"]},{\"ordinal\":0,\"package\":\"example:cell/press\",\"path\":[\"scalar_type\",\"boolean\"]}]}",
+            "ordinal": 0,
+            "role": "expression"
+          },
+          {
+            "node_id": "{\"ordinal\":0,\"package\":\"example:cell/press\",\"path\":[\"expression\",\"binary\",{\"ordinal\":0,\"package\":\"example:cell/press\",\"path\":[\"expression\",\"query\",{\"ordinal\":0,\"package\":\"example:cell/press\",\"path\":[\"expression\",\"deref\",{\"ordinal\":0,\"package\":\"example:cell/press\",\"path\":[\"value\",\"parameter\",\"name\",{\"ordinal\":0,\"package\":\"example:cell/press\",\"path\":[\"scalar_type\",\"text\"]},\"self\",\"level\",{\"ordinal\":0,\"package\":\"example:cell/press\",\"path\":[\"scalar_type\",\"integer\"]},\"0\",{\"ordinal\":0,\"package\":\"example:cell/press\",\"path\":[\"composite_type\",\"reference\",{\"ordinal\":0,\"package\":\"example/cell\",\"path\":[\"model\",\"object_type\",\"ix://example/cell/Press\"]}]}]},\"filament.op.model.deref\",\"deref\",{\"ordinal\":0,\"package\":\"example/cell\",\"path\":[\"model\",\"object_type\",\"ix://example/cell/Press\"]},{\"ordinal\":0,\"package\":\"example/cell\",\"path\":[\"model\",\"object_type\",\"ix://example/cell/Press\"]}]},\"filament.op.record.project\",\"false\",\"query\",{\"ordinal\":0,\"package\":\"example/cell\",\"path\":[\"model\",\"variant_type\",\"ix://example/cell/PressMode\"]},{\"ordinal\":0,\"package\":\"example/cell\",\"path\":[\"model\",\"variant_type\",\"ix://example/cell/PressMode\"]}]},{\"ordinal\":0,\"package\":\"example:cell/press\",\"path\":[\"value\",\"enum_value\",{\"ordinal\":0,\"package\":\"example/cell\",\"path\":[\"model\",\"variant_type\",\"ix://example/cell/PressMode\"]},\"Stopped\"]},\"filament.op.enum.eq\",\"binary\",{\"ordinal\":0,\"package\":\"example:cell/press\",\"path\":[\"scalar_type\",\"boolean\"]},{\"ordinal\":0,\"package\":\"example:cell/press\",\"path\":[\"scalar_type\",\"boolean\"]}]}",
+            "ordinal": 0,
+            "role": "expression"
+          }
+        ],
+        "operands": [
+          {
+            "kind": "enum",
+            "rank": 2,
+            "variant": "{\"case\":\"Stopped\",\"owner\":{\"ordinal\":0,\"package\":\"example/cell\",\"path\":[\"model\",\"variant_type\",\"ix://example/cell/PressMode\"]}}"
+          },
+          {
+            "kind": "enum",
+            "rank": 2,
+            "variant": "{\"case\":\"Stopped\",\"owner\":{\"ordinal\":0,\"package\":\"example/cell\",\"path\":[\"model\",\"variant_type\",\"ix://example/cell/PressMode\"]}}"
+          }
+        ],
+        "value_path": {
+          "kind": "runtime_value",
+          "root": {
+            "observation": {
+              "authority": "example",
+              "identity": "ix://example/cell/data/post-guard-open-stopped"
+            },
+            "subject": {
+              "object_identity": "p1",
+              "tag": "object",
+              "type": "[{\"node\":\"ix://example/cell/Press\",\"package\":\"example/cell\"}]",
+              "universe": "{\"ordinal\":0,\"package\":\"example/cell\",\"path\":[\"model\",\"object_type\",\"ix://example/cell/Press\"]}"
+            }
+          },
+          "steps": []
+        }
+      }
     }
   ]
 }

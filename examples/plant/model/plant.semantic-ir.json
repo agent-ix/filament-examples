@@ -1,0 +1,353 @@
+{
+  "contractVersion": "2.0.0",
+  "canonicalization": {
+    "algorithm": "rfc8785-v1"
+  },
+  "source": {
+    "identity": "ix://example/plant/spec",
+    "version": "1.0.0",
+    "dialect": "spec-bundle"
+  },
+  "package": {
+    "identity": "example/plant",
+    "version": "1.0.0",
+    "mappingVersions": [],
+    "profileVersions": []
+  },
+  "occurrences": [],
+  "extensions": [],
+  "constructs": [
+    {
+      "kind": {
+        "module": "example/plant",
+        "name": "object_type"
+      },
+      "moduleVersion": "1.0.0",
+      "construct": {
+        "identity": "none",
+        "shape": "record",
+        "members": {},
+        "meaning": "filament.meaning.model.object-type/v1"
+      }
+    },
+    {
+      "kind": {
+        "module": "example/plant",
+        "name": "population"
+      },
+      "moduleVersion": "1.0.0",
+      "construct": {
+        "identity": "none",
+        "shape": "record",
+        "members": {},
+        "meaning": "filament.meaning.model.population/v1"
+      }
+    },
+    {
+      "kind": {
+        "module": "example/plant",
+        "name": "value_type"
+      },
+      "moduleVersion": "1.0.0",
+      "construct": {
+        "identity": "none",
+        "shape": "record",
+        "members": {},
+        "meaning": "filament.meaning.model.value-type/v1"
+      }
+    }
+  ],
+  "types": [
+    {
+      "identity": "ix://example/plant/Percent",
+      "displayName": "Percent",
+      "kind": {
+        "module": "example/plant",
+        "name": "value_type"
+      },
+      "roles": [],
+      "origin": {
+        "generated": {
+          "generatorIdentity": "ix://example/plant/Percent",
+          "generatorVersion": "1.0.0",
+          "inputIdentities": [
+            "ix://example/plant/Percent"
+          ]
+        }
+      },
+      "extensions": [],
+      "unknownPolicy": "reject",
+      "scalar": "integer",
+      "constraints": [
+        {
+          "identity": "ix://example/plant/Percent/constraints/min",
+          "keyword": "min",
+          "operands": {
+            "value": "0"
+          },
+          "appliesTo": "ix://filament/native/Integer",
+          "diagnosticCode": "bound.min",
+          "origin": {
+            "generated": {
+              "generatorIdentity": "ix://example/plant/Percent",
+              "generatorVersion": "1.0.0",
+              "inputIdentities": [
+                "ix://example/plant/Percent"
+              ]
+            }
+          }
+        },
+        {
+          "identity": "ix://example/plant/Percent/constraints/max",
+          "keyword": "max",
+          "operands": {
+            "value": "100"
+          },
+          "appliesTo": "ix://filament/native/Integer",
+          "diagnosticCode": "bound.max",
+          "origin": {
+            "generated": {
+              "generatorIdentity": "ix://example/plant/Percent",
+              "generatorVersion": "1.0.0",
+              "inputIdentities": [
+                "ix://example/plant/Percent"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "identity": "ix://example/plant/Valve",
+      "displayName": "Valve",
+      "kind": {
+        "module": "example/plant",
+        "name": "object_type"
+      },
+      "roles": [],
+      "origin": {
+        "generated": {
+          "generatorIdentity": "ix://example/plant/Valve",
+          "generatorVersion": "1.0.0",
+          "inputIdentities": [
+            "ix://example/plant/Valve"
+          ]
+        }
+      },
+      "constraints": [],
+      "extensions": [],
+      "unknownPolicy": "reject",
+      "supertypes": [],
+      "fields": [
+        {
+          "identity": "ix://example/plant/Valve/open",
+          "name": "open",
+          "typeRef": "ix://filament/native/Boolean",
+          "presence": "required",
+          "nullable": false,
+          "defaultKind": "none",
+          "multiplicity": {
+            "lower": 1,
+            "upper": 1,
+            "ordered": false,
+            "unique": true
+          },
+          "origin": {
+            "generated": {
+              "generatorIdentity": "ix://example/plant/Valve/open",
+              "generatorVersion": "1.0.0",
+              "inputIdentities": [
+                "ix://example/plant/Valve/open"
+              ]
+            }
+          }
+        }
+      ],
+      "operations": []
+    },
+    {
+      "identity": "ix://example/plant/Pump",
+      "displayName": "Pump",
+      "kind": {
+        "module": "example/plant",
+        "name": "object_type"
+      },
+      "roles": [],
+      "origin": {
+        "generated": {
+          "generatorIdentity": "ix://example/plant/Pump",
+          "generatorVersion": "1.0.0",
+          "inputIdentities": [
+            "ix://example/plant/Pump"
+          ]
+        }
+      },
+      "constraints": [],
+      "extensions": [],
+      "unknownPolicy": "reject",
+      "supertypes": [],
+      "fields": [
+        {
+          "identity": "ix://example/plant/Pump/running",
+          "name": "running",
+          "typeRef": "ix://filament/native/Boolean",
+          "presence": "required",
+          "nullable": false,
+          "defaultKind": "none",
+          "multiplicity": {
+            "lower": 1,
+            "upper": 1,
+            "ordered": false,
+            "unique": true
+          },
+          "origin": {
+            "generated": {
+              "generatorIdentity": "ix://example/plant/Pump/running",
+              "generatorVersion": "1.0.0",
+              "inputIdentities": [
+                "ix://example/plant/Pump/running"
+              ]
+            }
+          }
+        },
+        {
+          "identity": "ix://example/plant/Pump/discharge",
+          "name": "discharge",
+          "typeRef": "ix://example/plant/Valve",
+          "presence": "required",
+          "nullable": false,
+          "defaultKind": "none",
+          "multiplicity": {
+            "lower": 1,
+            "upper": 1,
+            "ordered": false,
+            "unique": true
+          },
+          "origin": {
+            "generated": {
+              "generatorIdentity": "ix://example/plant/Pump/discharge",
+              "generatorVersion": "1.0.0",
+              "inputIdentities": [
+                "ix://example/plant/Pump/discharge"
+              ]
+            }
+          }
+        }
+      ],
+      "operations": []
+    },
+    {
+      "identity": "ix://example/plant/Tank",
+      "displayName": "Tank",
+      "kind": {
+        "module": "example/plant",
+        "name": "object_type"
+      },
+      "roles": [],
+      "origin": {
+        "generated": {
+          "generatorIdentity": "ix://example/plant/Tank",
+          "generatorVersion": "1.0.0",
+          "inputIdentities": [
+            "ix://example/plant/Tank"
+          ]
+        }
+      },
+      "constraints": [],
+      "extensions": [],
+      "unknownPolicy": "reject",
+      "supertypes": [],
+      "fields": [
+        {
+          "identity": "ix://example/plant/Tank/level",
+          "name": "level",
+          "typeRef": "ix://example/plant/Percent",
+          "presence": "required",
+          "nullable": false,
+          "defaultKind": "none",
+          "multiplicity": {
+            "lower": 1,
+            "upper": 1,
+            "ordered": false,
+            "unique": true
+          },
+          "origin": {
+            "generated": {
+              "generatorIdentity": "ix://example/plant/Tank/level",
+              "generatorVersion": "1.0.0",
+              "inputIdentities": [
+                "ix://example/plant/Tank/level"
+              ]
+            }
+          }
+        }
+      ],
+      "operations": []
+    }
+  ],
+  "populations": [
+    {
+      "identity": "ix://example/plant/valves",
+      "displayName": "valves",
+      "kind": {
+        "module": "example/plant",
+        "name": "population"
+      },
+      "members": [
+        "ix://example/plant/Valve"
+      ],
+      "extent": "closed",
+      "origin": {
+        "generated": {
+          "generatorIdentity": "ix://example/plant/valves",
+          "generatorVersion": "1.0.0",
+          "inputIdentities": [
+            "ix://example/plant/valves"
+          ]
+        }
+      }
+    },
+    {
+      "identity": "ix://example/plant/pumps",
+      "displayName": "pumps",
+      "kind": {
+        "module": "example/plant",
+        "name": "population"
+      },
+      "members": [
+        "ix://example/plant/Pump"
+      ],
+      "extent": "closed",
+      "origin": {
+        "generated": {
+          "generatorIdentity": "ix://example/plant/pumps",
+          "generatorVersion": "1.0.0",
+          "inputIdentities": [
+            "ix://example/plant/pumps"
+          ]
+        }
+      }
+    },
+    {
+      "identity": "ix://example/plant/tanks",
+      "displayName": "tanks",
+      "kind": {
+        "module": "example/plant",
+        "name": "population"
+      },
+      "members": [
+        "ix://example/plant/Tank"
+      ],
+      "extent": "closed",
+      "origin": {
+        "generated": {
+          "generatorIdentity": "ix://example/plant/tanks",
+          "generatorVersion": "1.0.0",
+          "inputIdentities": [
+            "ix://example/plant/tanks"
+          ]
+        }
+      }
+    }
+  ]
+}

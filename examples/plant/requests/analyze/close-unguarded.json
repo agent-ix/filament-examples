@@ -1,0 +1,36 @@
+{
+  "format": "native-analyze/1",
+  "request": {
+    "models": [
+      {
+        "format": "semantic-ir/2.0.0",
+        "source": {
+          "file": "../../model/plant-line.semantic-ir.json",
+          "authority": "example",
+          "identity": "example:plant/line-model",
+          "document": "model",
+          "formal_revision": 1
+        }
+      }
+    ],
+    "program": {
+      "source": {
+        "file": "../../rules/model-checking/unguarded.fsl",
+        "authority": "example",
+        "identity": "example:plant/unguarded",
+        "document": "unguarded",
+        "formal_revision": 1
+      }
+    },
+    "documents": [
+      {
+        "file": "../../data/line-idle.json"
+      }
+    ],
+    "items": [
+      {
+        "claim": "NeverDeadheads"
+      }
+    ]
+  }
+}

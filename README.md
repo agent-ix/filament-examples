@@ -8,7 +8,7 @@ You can read a rule, run it against a passing and a failing case, and compare yo
 
 - **Shop (first steps).** Values, rules about data, and rules about operations, in an online shop.
 - **Enterprise and distributed systems.** Rules over a service architecture, and a protocol for a parts-processing saga.
-- **Safety systems.** A press guard interlock, robot speed and separation, and a delivery rover with failsafe modes and sensor voting.
+- **Safety systems.** A press guard interlock, robot speed and separation, a pump and valve plant, and a delivery rover with failsafe modes and sensor voting.
 
 ## Systems
 
@@ -32,6 +32,7 @@ The table lists each system with the number of cases that run today and the numb
 | [rover](examples/rover) | Safety | 68 | 5 |
 | [run-inputs](examples/run-inputs) | Language | 11 | 21 |
 | [lock](examples/lock) | Safety | 26 | 0 |
+| [plant](examples/plant) | Safety | 8 | 0 |
 | [library](examples/library) | Shop | 6 | 0 |
 
 ## Beyond FSL

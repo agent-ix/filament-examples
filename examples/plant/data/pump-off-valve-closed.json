@@ -1,0 +1,77 @@
+{
+  "format": "filament.state.snapshot/v1",
+  "identity": {
+    "authority": "example",
+    "identity": "ix://example/plant/data/pump-off-valve-closed"
+  },
+  "model": {
+    "identity": "example/plant"
+  },
+  "observation": "current",
+  "anchor": {
+    "kind": "handler",
+    "name": "validate"
+  },
+  "populations": [
+    {
+      "population": "ix://example/plant/valves",
+      "complete": true,
+      "objects": [
+        {
+          "key": "V-2",
+          "type": "ix://example/plant/Valve",
+          "fields": {
+            "open": {
+              "boolean": false
+            }
+          }
+        }
+      ]
+    },
+    {
+      "population": "ix://example/plant/pumps",
+      "complete": true,
+      "objects": [
+        {
+          "key": "P-101",
+          "type": "ix://example/plant/Pump",
+          "fields": {
+            "running": {
+              "boolean": false
+            },
+            "discharge": {
+              "reference": {
+                "population": "ix://example/plant/valves",
+                "key": "V-2"
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "population": "ix://example/plant/tanks",
+      "complete": true,
+      "objects": [
+        {
+          "key": "T-101",
+          "type": "ix://example/plant/Tank",
+          "fields": {
+            "level": {
+              "integer": "62"
+            }
+          }
+        },
+        {
+          "key": "T-102",
+          "type": "ix://example/plant/Tank",
+          "fields": {
+            "level": {
+              "integer": "40"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
