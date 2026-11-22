@@ -45,6 +45,7 @@ fn protocol_docs_examples_run_and_match_records() -> TestResult {
         "protocol-realizable",
         "protocol-choice-repaired",
         "protocol-composition",
+        "protocol-unrealizable",
     ];
     let mut sink = VecSink::default();
     let passed = execute(
@@ -76,7 +77,7 @@ fn protocol_docs_examples_run_and_match_records() -> TestResult {
 
 /// Trace: FR-571-AC-2, FR-571-AC-4.
 #[test]
-#[ignore = "QSL-2214 blocked regression: current driver faults instead of exposing a counterexample"]
+#[ignore = "protocol docs lane: set FSL to a verified filament-driver build"]
 fn protocol_docs_unrealizable_exposes_a_counterexample() -> TestResult {
     let binary = std::env::var_os("FSL").ok_or("set FSL for the protocol docs lane")?;
     let root = Path::new(env!("CARGO_MANIFEST_DIR")).join("../../examples/lock");
