@@ -1,0 +1,9 @@
+language "ix:native" edition "1-draft";
+profile v = "filament.model.complete/v1";
+model Plant = "example/plant";
+
+// The pump runs only while its discharge valve is open. A pump that runs
+// against a closed valve deadheads: it heats the fluid and wears its seals.
+invariant NoDeadhead using v on Plant::Pump at current {
+  self.running implies deref(self.discharge).open
+}

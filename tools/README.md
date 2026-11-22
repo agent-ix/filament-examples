@@ -89,6 +89,8 @@ Regenerate all models with `make models`. The output is identical to the committ
 - architecture: `models/architecture.mjs` writes `examples/architecture/model/architecture.semantic-ir.json`.
 - parts-saga: `models/parts.mjs` writes `examples/parts-saga/model/parts-saga.semantic-ir.json`.
 - cell: `models/cell.mjs` writes `examples/cell/model/cell.semantic-ir.json`.
+- plant: `models/plant.mjs` writes `examples/plant/model/plant.semantic-ir.json`.
+- plant-line: `models/plant-line.mjs` writes `examples/plant/model/plant-line.semantic-ir.json`.
 - rover: `models/rover.mjs` writes `examples/rover/model/rover.semantic-ir.json`.
 - rover-spec: `models/rover-spec.mjs` writes `examples/rover/model/rover-spec.semantic-ir.json`.
 - lock: `models/lock.mjs` writes `examples/lock/model/lock.semantic-ir.json`.

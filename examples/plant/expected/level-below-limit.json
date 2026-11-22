@@ -1,0 +1,65 @@
+{
+  "category": "success",
+  "last_stage": "S6a",
+  "result": null,
+  "first_diagnostic": null,
+  "items": [
+    {
+      "axes": {
+        "activation": "active",
+        "execution": "completed",
+        "settlement": "decisive-witness",
+        "truth": "true"
+      },
+      "category": "success",
+      "cause": null,
+      "clause": "TankBelowHighHigh",
+      "request_index": 0,
+      "result": "tested",
+      "witness": {
+        "deciding_comparison": {
+          "node_id": "{\"ordinal\":0,\"package\":\"example:plant/rules\",\"path\":[\"expression\",\"binary\",{\"ordinal\":0,\"package\":\"example:plant/rules\",\"path\":[\"expression\",\"query\",{\"ordinal\":0,\"package\":\"example:plant/rules\",\"path\":[\"expression\",\"deref\",{\"ordinal\":0,\"package\":\"example:plant/rules\",\"path\":[\"value\",\"parameter\",\"name\",{\"ordinal\":0,\"package\":\"example:plant/rules\",\"path\":[\"scalar_type\",\"text\"]},\"self\",\"level\",{\"ordinal\":0,\"package\":\"example:plant/rules\",\"path\":[\"scalar_type\",\"integer\"]},\"0\",{\"ordinal\":0,\"package\":\"example:plant/rules\",\"path\":[\"composite_type\",\"reference\",{\"ordinal\":0,\"package\":\"example/plant\",\"path\":[\"model\",\"object_type\",\"ix://example/plant/Tank\"]}]}]},\"filament.op.model.deref\",\"deref\",{\"ordinal\":0,\"package\":\"example/plant\",\"path\":[\"model\",\"object_type\",\"ix://example/plant/Tank\"]},{\"ordinal\":0,\"package\":\"example/plant\",\"path\":[\"model\",\"object_type\",\"ix://example/plant/Tank\"]}]},\"filament.op.record.project\",\"false\",\"query\",{\"ordinal\":0,\"package\":\"example:plant/rules\",\"path\":[\"bounded_domain\",\"integer_range\",\"min\",{\"ordinal\":0,\"package\":\"example:plant/rules\",\"path\":[\"scalar_type\",\"integer\"]},\"0\",\"max\",\"100\"]},{\"ordinal\":0,\"package\":\"example:plant/rules\",\"path\":[\"bounded_domain\",\"integer_range\",\"min\",{\"ordinal\":0,\"package\":\"example:plant/rules\",\"path\":[\"scalar_type\",\"integer\"]},\"0\",\"max\",\"100\"]}]},{\"ordinal\":0,\"package\":\"example:plant/rules\",\"path\":[\"value\",\"literal\",{\"ordinal\":0,\"package\":\"example:plant/rules\",\"path\":[\"scalar_type\",\"integer\"]},\"90\"]},\"filament.op.integer.lt\",\"binary\",{\"ordinal\":0,\"package\":\"example:plant/rules\",\"path\":[\"scalar_type\",\"boolean\"]},{\"ordinal\":0,\"package\":\"example:plant/rules\",\"path\":[\"scalar_type\",\"boolean\"]}]}",
+          "ordinal": 0,
+          "role": "expression"
+        },
+        "deciding_element": {
+          "kind": "boolean",
+          "value": true
+        },
+        "decision_path": [
+          {
+            "node_id": "{\"ordinal\":0,\"package\":\"example:plant/rules\",\"path\":[\"expression\",\"binary\",{\"ordinal\":0,\"package\":\"example:plant/rules\",\"path\":[\"expression\",\"query\",{\"ordinal\":0,\"package\":\"example:plant/rules\",\"path\":[\"expression\",\"deref\",{\"ordinal\":0,\"package\":\"example:plant/rules\",\"path\":[\"value\",\"parameter\",\"name\",{\"ordinal\":0,\"package\":\"example:plant/rules\",\"path\":[\"scalar_type\",\"text\"]},\"self\",\"level\",{\"ordinal\":0,\"package\":\"example:plant/rules\",\"path\":[\"scalar_type\",\"integer\"]},\"0\",{\"ordinal\":0,\"package\":\"example:plant/rules\",\"path\":[\"composite_type\",\"reference\",{\"ordinal\":0,\"package\":\"example/plant\",\"path\":[\"model\",\"object_type\",\"ix://example/plant/Tank\"]}]}]},\"filament.op.model.deref\",\"deref\",{\"ordinal\":0,\"package\":\"example/plant\",\"path\":[\"model\",\"object_type\",\"ix://example/plant/Tank\"]},{\"ordinal\":0,\"package\":\"example/plant\",\"path\":[\"model\",\"object_type\",\"ix://example/plant/Tank\"]}]},\"filament.op.record.project\",\"false\",\"query\",{\"ordinal\":0,\"package\":\"example:plant/rules\",\"path\":[\"bounded_domain\",\"integer_range\",\"min\",{\"ordinal\":0,\"package\":\"example:plant/rules\",\"path\":[\"scalar_type\",\"integer\"]},\"0\",\"max\",\"100\"]},{\"ordinal\":0,\"package\":\"example:plant/rules\",\"path\":[\"bounded_domain\",\"integer_range\",\"min\",{\"ordinal\":0,\"package\":\"example:plant/rules\",\"path\":[\"scalar_type\",\"integer\"]},\"0\",\"max\",\"100\"]}]},{\"ordinal\":0,\"package\":\"example:plant/rules\",\"path\":[\"value\",\"literal\",{\"ordinal\":0,\"package\":\"example:plant/rules\",\"path\":[\"scalar_type\",\"integer\"]},\"90\"]},\"filament.op.integer.lt\",\"binary\",{\"ordinal\":0,\"package\":\"example:plant/rules\",\"path\":[\"scalar_type\",\"boolean\"]},{\"ordinal\":0,\"package\":\"example:plant/rules\",\"path\":[\"scalar_type\",\"boolean\"]}]}",
+            "ordinal": 0,
+            "role": "expression"
+          }
+        ],
+        "operands": [
+          {
+            "decimal": "89",
+            "kind": "integer"
+          },
+          {
+            "decimal": "90",
+            "kind": "integer"
+          }
+        ],
+        "value_path": {
+          "kind": "runtime_value",
+          "root": {
+            "observation": {
+              "authority": "example",
+              "identity": "ix://example/plant/data/level-below-limit"
+            },
+            "subject": {
+              "object_identity": "T-101",
+              "tag": "object",
+              "type": "[{\"node\":\"ix://example/plant/Tank\",\"package\":\"example/plant\"}]",
+              "universe": "{\"ordinal\":0,\"package\":\"example/plant\",\"path\":[\"model\",\"object_type\",\"ix://example/plant/Tank\"]}"
+            }
+          },
+          "steps": []
+        }
+      }
+    }
+  ]
+}

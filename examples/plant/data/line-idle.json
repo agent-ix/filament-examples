@@ -1,0 +1,12 @@
+{
+  "format": "filament.state.snapshot/v1",
+  "identity": { "authority": "example", "identity": "ix://example/plant-line/data/line-idle" },
+  "model": { "identity": "example/plant-line" },
+  "observation": "current",
+  "anchor": { "kind": "initialization", "name": "start" },
+  "populations": [
+    { "population": "ix://example/plant-line/lines", "complete": true,
+      "objects": [ { "key": "line1", "type": "ix://example/plant-line/Line",
+        "fields": { "valveOpen": { "boolean": false }, "pumpRunning": { "boolean": false } } } ] }
+  ]
+}

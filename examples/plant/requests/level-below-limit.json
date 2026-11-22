@@ -1,0 +1,45 @@
+{
+  "format": "native-run/1",
+  "request": {
+    "models": [
+      {
+        "format": "semantic-ir/2.0.0",
+        "source": {
+          "file": "../model/plant.semantic-ir.json",
+          "authority": "example",
+          "identity": "example:plant/model",
+          "document": "model",
+          "formal_revision": 1
+        }
+      }
+    ],
+    "program": {
+      "source": {
+        "file": "../rules/tank.fsl",
+        "authority": "example",
+        "identity": "example:plant/rules",
+        "document": "rules",
+        "formal_revision": 1
+      }
+    },
+    "clause": {
+      "selection": {
+        "clause": {
+          "name": "TankBelowHighHigh",
+          "observation": "current",
+          "self": {
+            "population": "ix://example/plant/tanks",
+            "key": "T-101"
+          },
+          "anchor": {
+            "kind": "handler",
+            "name": "validate"
+          }
+        }
+      },
+      "observations": {
+        "current": "../data/level-below-limit.json"
+      }
+    }
+  }
+}

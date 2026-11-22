@@ -8,14 +8,63 @@
       "axes": {
         "activation": "active",
         "execution": "completed",
-        "settlement": "closed-scope",
+        "settlement": "decisive-witness",
         "truth": "true"
       },
       "category": "success",
       "cause": null,
       "clause": "SetupIsSlow",
       "request_index": 0,
-      "result": "tested"
+      "result": "tested",
+      "witness": {
+        "deciding_comparison": {
+          "node_id": "{\"ordinal\":0,\"package\":\"example:cell/press\",\"path\":[\"expression\",\"binary\",{\"ordinal\":0,\"package\":\"example:cell/press\",\"path\":[\"expression\",\"query\",{\"ordinal\":0,\"package\":\"example:cell/press\",\"path\":[\"expression\",\"deref\",{\"ordinal\":0,\"package\":\"example:cell/press\",\"path\":[\"value\",\"parameter\",\"name\",{\"ordinal\":0,\"package\":\"example:cell/press\",\"path\":[\"scalar_type\",\"text\"]},\"self\",\"level\",{\"ordinal\":0,\"package\":\"example:cell/press\",\"path\":[\"scalar_type\",\"integer\"]},\"0\",{\"ordinal\":0,\"package\":\"example:cell/press\",\"path\":[\"composite_type\",\"reference\",{\"ordinal\":0,\"package\":\"example/cell\",\"path\":[\"model\",\"object_type\",\"ix://example/cell/Press\"]}]}]},\"filament.op.model.deref\",\"deref\",{\"ordinal\":0,\"package\":\"example/cell\",\"path\":[\"model\",\"object_type\",\"ix://example/cell/Press\"]},{\"ordinal\":0,\"package\":\"example/cell\",\"path\":[\"model\",\"object_type\",\"ix://example/cell/Press\"]}]},\"filament.op.record.project\",\"false\",\"query\",{\"ordinal\":0,\"package\":\"example:cell/press\",\"path\":[\"bounded_domain\",\"integer_range\",\"min\",{\"ordinal\":0,\"package\":\"example:cell/press\",\"path\":[\"scalar_type\",\"integer\"]},\"0\",\"max\",\"3000\"]},{\"ordinal\":0,\"package\":\"example:cell/press\",\"path\":[\"bounded_domain\",\"integer_range\",\"min\",{\"ordinal\":0,\"package\":\"example:cell/press\",\"path\":[\"scalar_type\",\"integer\"]},\"0\",\"max\",\"3000\"]}]},{\"ordinal\":0,\"package\":\"example:cell/press\",\"path\":[\"value\",\"literal\",{\"ordinal\":0,\"package\":\"example:cell/press\",\"path\":[\"scalar_type\",\"integer\"]},\"10\"]},\"filament.op.integer.le\",\"binary\",{\"ordinal\":0,\"package\":\"example:cell/press\",\"path\":[\"scalar_type\",\"boolean\"]},{\"ordinal\":0,\"package\":\"example:cell/press\",\"path\":[\"scalar_type\",\"boolean\"]}]}",
+          "ordinal": 0,
+          "role": "expression"
+        },
+        "deciding_element": {
+          "kind": "boolean",
+          "value": true
+        },
+        "decision_path": [
+          {
+            "node_id": "{\"ordinal\":0,\"package\":\"example:cell/press\",\"path\":[\"expression\",\"binary\",{\"ordinal\":0,\"package\":\"example:cell/press\",\"path\":[\"expression\",\"binary\",{\"ordinal\":0,\"package\":\"example:cell/press\",\"path\":[\"expression\",\"query\",{\"ordinal\":0,\"package\":\"example:cell/press\",\"path\":[\"expression\",\"deref\",{\"ordinal\":0,\"package\":\"example:cell/press\",\"path\":[\"value\",\"parameter\",\"name\",{\"ordinal\":0,\"package\":\"example:cell/press\",\"path\":[\"scalar_type\",\"text\"]},\"self\",\"level\",{\"ordinal\":0,\"package\":\"example:cell/press\",\"path\":[\"scalar_type\",\"integer\"]},\"0\",{\"ordinal\":0,\"package\":\"example:cell/press\",\"path\":[\"composite_type\",\"reference\",{\"ordinal\":0,\"package\":\"example/cell\",\"path\":[\"model\",\"object_type\",\"ix://example/cell/Press\"]}]}]},\"filament.op.model.deref\",\"deref\",{\"ordinal\":0,\"package\":\"example/cell\",\"path\":[\"model\",\"object_type\",\"ix://example/cell/Press\"]},{\"ordinal\":0,\"package\":\"example/cell\",\"path\":[\"model\",\"object_type\",\"ix://example/cell/Press\"]}]},\"filament.op.record.project\",\"false\",\"query\",{\"ordinal\":0,\"package\":\"example/cell\",\"path\":[\"model\",\"variant_type\",\"ix://example/cell/PressMode\"]},{\"ordinal\":0,\"package\":\"example/cell\",\"path\":[\"model\",\"variant_type\",\"ix://example/cell/PressMode\"]}]},{\"ordinal\":0,\"package\":\"example:cell/press\",\"path\":[\"value\",\"enum_value\",{\"ordinal\":0,\"package\":\"example/cell\",\"path\":[\"model\",\"variant_type\",\"ix://example/cell/PressMode\"]},\"Setup\"]},\"filament.op.enum.eq\",\"binary\",{\"ordinal\":0,\"package\":\"example:cell/press\",\"path\":[\"scalar_type\",\"boolean\"]},{\"ordinal\":0,\"package\":\"example:cell/press\",\"path\":[\"scalar_type\",\"boolean\"]}]},{\"ordinal\":0,\"package\":\"example:cell/press\",\"path\":[\"expression\",\"binary\",{\"ordinal\":0,\"package\":\"example:cell/press\",\"path\":[\"expression\",\"query\",{\"ordinal\":0,\"package\":\"example:cell/press\",\"path\":[\"expression\",\"deref\",{\"ordinal\":0,\"package\":\"example:cell/press\",\"path\":[\"value\",\"parameter\",\"name\",{\"ordinal\":0,\"package\":\"example:cell/press\",\"path\":[\"scalar_type\",\"text\"]},\"self\",\"level\",{\"ordinal\":0,\"package\":\"example:cell/press\",\"path\":[\"scalar_type\",\"integer\"]},\"0\",{\"ordinal\":0,\"package\":\"example:cell/press\",\"path\":[\"composite_type\",\"reference\",{\"ordinal\":0,\"package\":\"example/cell\",\"path\":[\"model\",\"object_type\",\"ix://example/cell/Press\"]}]}]},\"filament.op.model.deref\",\"deref\",{\"ordinal\":0,\"package\":\"example/cell\",\"path\":[\"model\",\"object_type\",\"ix://example/cell/Press\"]},{\"ordinal\":0,\"package\":\"example/cell\",\"path\":[\"model\",\"object_type\",\"ix://example/cell/Press\"]}]},\"filament.op.record.project\",\"false\",\"query\",{\"ordinal\":0,\"package\":\"example:cell/press\",\"path\":[\"bounded_domain\",\"integer_range\",\"min\",{\"ordinal\":0,\"package\":\"example:cell/press\",\"path\":[\"scalar_type\",\"integer\"]},\"0\",\"max\",\"3000\"]},{\"ordinal\":0,\"package\":\"example:cell/press\",\"path\":[\"bounded_domain\",\"integer_range\",\"min\",{\"ordinal\":0,\"package\":\"example:cell/press\",\"path\":[\"scalar_type\",\"integer\"]},\"0\",\"max\",\"3000\"]}]},{\"ordinal\":0,\"package\":\"example:cell/press\",\"path\":[\"value\",\"literal\",{\"ordinal\":0,\"package\":\"example:cell/press\",\"path\":[\"scalar_type\",\"integer\"]},\"10\"]},\"filament.op.integer.le\",\"binary\",{\"ordinal\":0,\"package\":\"example:cell/press\",\"path\":[\"scalar_type\",\"boolean\"]},{\"ordinal\":0,\"package\":\"example:cell/press\",\"path\":[\"scalar_type\",\"boolean\"]}]},\"filament.op.boolean.implies\",\"binary\",{\"ordinal\":0,\"package\":\"example:cell/press\",\"path\":[\"scalar_type\",\"boolean\"]},{\"ordinal\":0,\"package\":\"example:cell/press\",\"path\":[\"scalar_type\",\"boolean\"]}]}",
+            "ordinal": 0,
+            "role": "expression"
+          },
+          {
+            "node_id": "{\"ordinal\":0,\"package\":\"example:cell/press\",\"path\":[\"expression\",\"binary\",{\"ordinal\":0,\"package\":\"example:cell/press\",\"path\":[\"expression\",\"query\",{\"ordinal\":0,\"package\":\"example:cell/press\",\"path\":[\"expression\",\"deref\",{\"ordinal\":0,\"package\":\"example:cell/press\",\"path\":[\"value\",\"parameter\",\"name\",{\"ordinal\":0,\"package\":\"example:cell/press\",\"path\":[\"scalar_type\",\"text\"]},\"self\",\"level\",{\"ordinal\":0,\"package\":\"example:cell/press\",\"path\":[\"scalar_type\",\"integer\"]},\"0\",{\"ordinal\":0,\"package\":\"example:cell/press\",\"path\":[\"composite_type\",\"reference\",{\"ordinal\":0,\"package\":\"example/cell\",\"path\":[\"model\",\"object_type\",\"ix://example/cell/Press\"]}]}]},\"filament.op.model.deref\",\"deref\",{\"ordinal\":0,\"package\":\"example/cell\",\"path\":[\"model\",\"object_type\",\"ix://example/cell/Press\"]},{\"ordinal\":0,\"package\":\"example/cell\",\"path\":[\"model\",\"object_type\",\"ix://example/cell/Press\"]}]},\"filament.op.record.project\",\"false\",\"query\",{\"ordinal\":0,\"package\":\"example:cell/press\",\"path\":[\"bounded_domain\",\"integer_range\",\"min\",{\"ordinal\":0,\"package\":\"example:cell/press\",\"path\":[\"scalar_type\",\"integer\"]},\"0\",\"max\",\"3000\"]},{\"ordinal\":0,\"package\":\"example:cell/press\",\"path\":[\"bounded_domain\",\"integer_range\",\"min\",{\"ordinal\":0,\"package\":\"example:cell/press\",\"path\":[\"scalar_type\",\"integer\"]},\"0\",\"max\",\"3000\"]}]},{\"ordinal\":0,\"package\":\"example:cell/press\",\"path\":[\"value\",\"literal\",{\"ordinal\":0,\"package\":\"example:cell/press\",\"path\":[\"scalar_type\",\"integer\"]},\"10\"]},\"filament.op.integer.le\",\"binary\",{\"ordinal\":0,\"package\":\"example:cell/press\",\"path\":[\"scalar_type\",\"boolean\"]},{\"ordinal\":0,\"package\":\"example:cell/press\",\"path\":[\"scalar_type\",\"boolean\"]}]}",
+            "ordinal": 0,
+            "role": "expression"
+          }
+        ],
+        "operands": [
+          {
+            "decimal": "8",
+            "kind": "integer"
+          },
+          {
+            "decimal": "10",
+            "kind": "integer"
+          }
+        ],
+        "value_path": {
+          "kind": "runtime_value",
+          "root": {
+            "observation": {
+              "authority": "example",
+              "identity": "ix://example/cell/data/setup-slow"
+            },
+            "subject": {
+              "object_identity": "p1",
+              "tag": "object",
+              "type": "[{\"node\":\"ix://example/cell/Press\",\"package\":\"example/cell\"}]",
+              "universe": "{\"ordinal\":0,\"package\":\"example/cell\",\"path\":[\"model\",\"object_type\",\"ix://example/cell/Press\"]}"
+            }
+          },
+          "steps": []
+        }
+      }
     }
   ]
 }

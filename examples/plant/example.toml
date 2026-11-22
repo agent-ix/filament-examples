@@ -1,0 +1,94 @@
+# Pump and valve: no deadheading and a tank level limit
+name = "plant"
+summary = "A process plant with a pump behind a discharge valve and two tanks. Invariants state that the pump never runs against a closed valve and that a tank stays below its high-high alarm level."
+model = "model/plant.semantic-ir.json"
+
+[[case]]
+id = "pump-open-valve"
+rule = "NoDeadhead"
+statement = "The pump runs only while its discharge valve is open."
+file = "rules/pump.fsl"
+command = "run requests/pump-open-valve.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "Landing card: pump and valve logic; tutorial: industrial interlocks"
+
+[[case]]
+id = "pump-closed-valve"
+rule = "NoDeadhead"
+statement = "The pump runs only while its discharge valve is open."
+file = "rules/pump.fsl"
+command = "run requests/pump-closed-valve.json"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
+serves = "Landing card: pump and valve logic; tutorial: industrial interlocks"
+
+[[case]]
+id = "pump-off-valve-closed"
+rule = "NoDeadhead"
+statement = "The pump runs only while its discharge valve is open."
+file = "rules/pump.fsl"
+command = "run requests/pump-off-valve-closed.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "Tutorial: industrial interlocks"
+
+[[case]]
+id = "level-below-limit"
+rule = "TankBelowHighHigh"
+statement = "A tank stays below its high-high alarm level of 90 percent."
+file = "rules/tank.fsl"
+command = "run requests/level-below-limit.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "Tutorial: industrial interlocks"
+
+[[case]]
+id = "level-at-limit"
+rule = "TankBelowHighHigh"
+statement = "A tank stays below its high-high alarm level of 90 percent."
+file = "rules/tank.fsl"
+command = "run requests/level-at-limit.json"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
+serves = "Tutorial: industrial interlocks"
+
+[[case]]
+id = "level-above-limit"
+rule = "TankBelowHighHigh"
+statement = "A tank stays below its high-high alarm level of 90 percent."
+file = "rules/tank.fsl"
+command = "run requests/level-above-limit.json"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
+serves = "Tutorial: industrial interlocks"
+
+[[case]]
+id = "close-guarded"
+rule = "NeverDeadheads"
+statement = "On every behavior of the line, the pump never runs against a closed valve, when the valve closes only while the pump is stopped."
+file = "rules/model-checking/guarded.fsl"
+command = "analyze requests/analyze/close-guarded.json"
+engine = "model-checking"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+serves = "Landing card: pump and valve logic; tutorial: industrial interlocks"
+
+[[case]]
+id = "close-unguarded"
+rule = "NeverDeadheads"
+statement = "On every behavior of the line, the pump never runs against a closed valve, when the valve can close while the pump runs."
+file = "rules/model-checking/unguarded.fsl"
+command = "analyze requests/analyze/close-unguarded.json"
+engine = "model-checking"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
+serves = "Landing card: pump and valve logic; tutorial: industrial interlocks"
