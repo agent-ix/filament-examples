@@ -11,10 +11,7 @@
   },
   "agent": "claude",
   "model": "claude-opus-5-5",
-  "status": "pending",
-  "pending_prerequisite": "Usable existing Claude authentication in the isolated run home.",
   "startup_attempts": 3,
-  "task_samples": 0,
   "model_artifacts": 0,
   "attempts": [
     {
@@ -58,9 +55,61 @@
     }
   ],
   "notes": [
-    "No Claude task or FSL acceptance result is claimed.",
-    "No authentication, device or login flow was initiated by this evaluation.",
-    "No further automatic live retry is authorized.",
+    "No Claude model or FSL result is claimed: 0 scored samples. The three runs of 2026-11-23 are harness errors (QSL-3008) and are recorded with pass_rate null.",
+    "The three earlier startup attempts above were attributed to authentication. The 2026-11-23 runs authenticated and started the task; the startup failures came from a shared tmux server handing sessions a deleted HOME (QSL-3007).",
+    "Remaining acceptance for QSL-2485 (a Claude N=3 re-run) is owned by QSL-3008.",
     "Raw reports, credentials, transcripts and workstation paths are excluded from this scorecard."
-  ]
+  ],
+  "runs_n3": {
+    "date": "2026-11-23",
+    "cohort": {
+      "fsl": "4b743f6760dae7c5d49a363c5754b21a0dc02f5c",
+      "quoin": "0.36.10",
+      "quire": "0.52.1",
+      "claude_code": "2.1.330",
+      "shipped_docs": "filament-docs origin/main at run time (src/content/docs/fsl)",
+      "native_grammar_reference": "docs/fsl/state/domain-models.md (no dedicated published native grammar file exists)"
+    },
+    "n": 3,
+    "turns": null,
+    "failure_class": "harness-error: the SDK reported exit_reason complete after one or two tool calls while Claude was still working; no model.fsl was authored. No FSL, CLI or doc result is claimed for Claude.",
+    "earlier_attempts": [
+      {
+        "harness": "stale shared tmux server",
+        "status": "startup-failed",
+        "classification": "harness-error",
+        "cause": "Six runs showed Claude's first-run theme dialog because the shared tmux server handed the sessions a deleted HOME.",
+        "attempts": 6
+      }
+    ],
+    "model": "claude-opus-5-5",
+    "status": "unscored-harness-error",
+    "pass_rate": null,
+    "harness_errors": 3,
+    "scored_runs": 0,
+    "per_run": [
+      {
+        "run": 1,
+        "outcome": "harness-error",
+        "tool_calls": 1,
+        "wall_ms": 6820
+      },
+      {
+        "run": 2,
+        "outcome": "harness-error",
+        "tool_calls": 1,
+        "wall_ms": 6841
+      },
+      {
+        "run": 3,
+        "outcome": "harness-error",
+        "tool_calls": 2,
+        "wall_ms": 6112
+      }
+    ],
+    "owner": "QSL-3008",
+    "acceptance_pending": "Claude N=3 re-run after QSL-3008"
+  },
+  "status": "harness-error",
+  "scored_samples": 0
 }

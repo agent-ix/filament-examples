@@ -95,6 +95,19 @@ fn mismatch(failures: &mut Vec<String>, ok: bool, description: &str) {
         failures.push(description.to_owned());
     }
 }
+/// The `native-run/1` request for one invariant probe; values use the typed shape `fsl run` accepts.
+fn probe_request(names: (&str, &str), occupied: u64, limit: u64) -> Value {
+    json!({"format":"native-run/1","request":{"models":[],"program":{"source":{"file":"probe.fsl","authority":"eval","identity":"invariant-probe","document":"InvariantProbe","formal_revision":1}},"call":{"function":"gradeInvariant","arguments":[{"parameter":names.0,"value":{"type":"integer","value":occupied.to_string()}},{"parameter":names.1,"value":{"type":"integer","value":limit.to_string()}}]}}})
+}
+/// Read a probe outcome; anything but a completed success with a Boolean value is an error.
+fn probe_outcome(doc: &Value, exit_ok: bool) -> Result<bool, String> {
+    if !exit_ok || doc["category"] != "success" || doc["result"]["kind"] != "completed" {
+        return Err(format!("public invariant probe failed: {doc}"));
+    }
+    doc["result"]["value"]["value"]
+        .as_bool()
+        .ok_or_else(|| "invariant probe did not return a Boolean".to_owned())
+}
 fn value_run(
     tools: &Tools,
     directory: &Path,
@@ -102,25 +115,15 @@ fn value_run(
     limit: u64,
     names: (&str, &str),
 ) -> ScenarioResult<bool> {
-    let request = json!({"format":"native-run/1","request":{"models":[],"program":{"source":{"file":"probe.fsl","authority":"eval","identity":"invariant-probe","document":"InvariantProbe","formal_revision":1}},"call":{"function":"gradeInvariant","arguments":[{"parameter":names.0,"value":{"integer":occupied.to_string()}},{"parameter":names.1,"value":{"integer":limit.to_string()}}]}}});
+    let request = probe_request(names, occupied, limit);
     fs::write(directory.join("run.json"), request.to_string())?;
     let output = Command::new(&tools.fsl)
         .current_dir(directory)
         .args(["run", "run.json", "--format", "json"])
         .output()?;
     let doc: Value = serde_json::from_slice(&output.stdout)?;
-    if output.status.code() != Some(0)
-        || doc["category"] != "success"
-        || doc["result"]["kind"] != "completed"
-    {
-        return Err(format!(
-            "public invariant probe failed for occupied={occupied}, limit={limit}: {doc}"
-        )
-        .into());
-    }
-    doc["result"]["value"]["boolean"]
-        .as_bool()
-        .ok_or_else(|| "invariant probe did not return a Boolean".into())
+    probe_outcome(&doc, output.status.code() == Some(0))
+        .map_err(|e| format!("{e} (occupied={occupied}, limit={limit})").into())
 }
 
 /// Require the real public check, concrete model structure, and independent finite-domain semantics.
@@ -443,6 +446,31 @@ pub fn grade(workspace: &Path, tools: &Tools) -> ScenarioResult<Assertion> {
 mod tests {
     use super::*;
     const REFERENCE: &str = include_str!("../../fixtures/EV-001/reference.fsl");
+    const GOLDEN: &str = include_str!("../../../examples/shop/expected/values-line-total.json");
+    /// Trace: FR-001 AC-6
+    #[test]
+    fn probe_shapes_match_the_shipped_run_golden_and_fail_closed() -> ScenarioResult<()> {
+        let golden: Value = serde_json::from_str(GOLDEN)?;
+        let request = probe_request(("occupied", "limit"), 3, 12);
+        let argument = &request["request"]["call"]["arguments"][0]["value"];
+        assert_eq!(argument["type"], golden["result"]["value"]["type"]);
+        assert_eq!(argument["value"], "3");
+        assert_eq!(argument.as_object().map(|o| o.len()), Some(2));
+        // The golden is a completed success carrying a typed value at result.value.value.
+        assert_eq!(golden["category"], "success");
+        assert_eq!(golden["result"]["kind"], "completed");
+        let boolean = json!({"category":"success","result":{"kind":"completed","value":{"type":"boolean","value":true}}});
+        assert_eq!(probe_outcome(&boolean, true), Ok(true));
+        // A non-Boolean value (the golden's integer), a bad exit or a refusal never grade.
+        assert!(probe_outcome(&golden, true).is_err());
+        assert!(probe_outcome(&boolean, false).is_err());
+        let refusal = json!({"category":"refusal","result":null});
+        assert!(probe_outcome(&refusal, true).is_err());
+        let old_shape =
+            json!({"category":"success","result":{"kind":"completed","value":{"boolean":true}}});
+        assert!(probe_outcome(&old_shape, true).is_err());
+        Ok(())
+    }
     fn tools() -> ScenarioResult<Tools> {
         Ok(Tools {
             fsl: std::env::var_os("FSL")

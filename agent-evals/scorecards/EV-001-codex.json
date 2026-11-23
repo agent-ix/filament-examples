@@ -66,5 +66,73 @@
     "Retained evidence grading did not rerun model checking, semantic probes, or the live agent.",
     "Assistant turns are unavailable in the SDK report.",
     "Full native domain-package authoring remains outside EV-001, pending QSL-1980 under EV-101."
-  ]
+  ],
+  "runs_n3": {
+    "date": "2026-11-23",
+    "cohort": {
+      "fsl": "4b743f6760dae7c5d49a363c5754b21a0dc02f5c",
+      "quoin": "0.36.10",
+      "quire": "0.52.1",
+      "codex_cli": "0.171.0",
+      "shipped_docs": "filament-docs origin/main at run time (src/content/docs/fsl)",
+      "native_grammar_reference": "docs/fsl/state/domain-models.md (no dedicated published native grammar file exists)"
+    },
+    "n": 3,
+    "turns": null,
+    "failure_class": "none in the graded outcome; process friction: each run needed 3 or more refused fsl check attempts to find the object, field, operation and population syntax (doc gap)",
+    "earlier_attempts": [
+      {
+        "harness": "before the grader and tmux fixes",
+        "status": "failed",
+        "classification": "harness-error",
+        "cause": "Valid model: the grader's request used the argument shape fsl no longer accepts, the rg boundary parser refused -i, and a sed replacement containing a lone slash was read as the root path.",
+        "tool_calls": 20,
+        "wall_ms": 58469
+      },
+      {
+        "harness": "stale shared tmux server",
+        "status": "startup-failed",
+        "classification": "harness-error",
+        "cause": "Sessions inherited an earlier run's deleted HOME from a surviving default tmux server, so codex showed its sign-in screen.",
+        "attempts": 4
+      }
+    ],
+    "model": "gpt-6.1-sol",
+    "pass_rate": "3/3",
+    "harness_errors": 0,
+    "status": "scored",
+    "tool_calls_median": 17,
+    "wall_ms_median": 62487,
+    "per_run": [
+      {
+        "run": 1,
+        "outcome": "passed",
+        "tool_calls": 20,
+        "wall_ms": 70498,
+        "total_tokens": 475816,
+        "invariant_bindings": 156
+      },
+      {
+        "run": 2,
+        "outcome": "passed",
+        "tool_calls": 17,
+        "wall_ms": 62487,
+        "total_tokens": 441987,
+        "invariant_bindings": 156
+      },
+      {
+        "run": 3,
+        "outcome": "passed",
+        "tool_calls": 15,
+        "wall_ms": 46442,
+        "total_tokens": 324558,
+        "invariant_bindings": 156
+      }
+    ],
+    "grading": {
+      "boundary": "the transcript boundary as of the first PR commit (rg flags and sed replacement data accepted); the sed allow-list, wrapper refusals and the other boundary rules added in later review rounds were not applied to these runs",
+      "regrade": "not possible: the raw SDK reports and transcripts were deleted with the run directories, and no live re-run was made (codex quota). The three passes stand as graded at run time and are not re-verified under the final boundary.",
+      "rerun_owner": "QSL-3008: re-run Codex EV-001 N=3 under the final boundary (live, when codex quota allows) together with the Claude N=3 re-run, and replace this block with the regraded result"
+    }
+  }
 }
