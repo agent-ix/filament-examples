@@ -47,6 +47,14 @@
               "m": 1
             }
           },
+          "bound": {
+            "comparison": "greater-or-equal",
+            "threshold": {
+              "denominator": "50",
+              "numerator": "49"
+            },
+            "type": "probability"
+          },
           "decision": {
             "type": "accepted"
           },
@@ -256,6 +264,14 @@
             },
             "m": 1
           }
+        },
+        "bound": {
+          "comparison": "greater-or-equal",
+          "threshold": {
+            "denominator": "50",
+            "numerator": "49"
+          },
+          "type": "probability"
         },
         "decision": {
           "type": "accepted"

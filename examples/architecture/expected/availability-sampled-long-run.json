@@ -48,6 +48,14 @@
               "m": 1
             }
           },
+          "bound": {
+            "comparison": "greater-or-equal",
+            "threshold": {
+              "denominator": "50",
+              "numerator": "49"
+            },
+            "type": "long-run-fraction"
+          },
           "decision": {
             "type": "accepted"
           },
@@ -259,6 +267,14 @@
             },
             "m": 1
           }
+        },
+        "bound": {
+          "comparison": "greater-or-equal",
+          "threshold": {
+            "denominator": "50",
+            "numerator": "49"
+          },
+          "type": "long-run-fraction"
         },
         "decision": {
           "type": "accepted"

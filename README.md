@@ -120,7 +120,7 @@ cargo run --quiet --manifest-path tools/fsl-examples/Cargo.toml -- regenerate sh
 
 Each case prints a line such as `shop/paid-short: exit 10 ok`. The exit code is the verdict: 0 holds, 10 violated, 20 refused, 22 incomplete data, 21 not available yet.
 
-A case passes when its exit code and the structure of its outcome match the record: the category, the result value, the last stage, the code and cause of the first diagnostic, and the items with their witness fields. The message text of the diagnostics is kept apart and is not compared, so a reworded message does not fail a case.
+A case passes when its exit code and the structure of its outcome match the record: the category, the result value (a packaged compile result by its kind only, since its byte count depends on the build), the last stage, the code and cause of the first diagnostic, and the items with their witness fields. The message text of the diagnostics is kept apart and is not compared, so a reworded message does not fail a case.
 
 ## How staging works
 
