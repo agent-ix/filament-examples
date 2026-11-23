@@ -32,16 +32,42 @@ struct Plan {
 #[derive(Deserialize)]
 struct Step {
     status: String,
+    #[serde(deserialize_with = "required")]
     blocked_by: Option<String>,
+    #[serde(deserialize_with = "required")]
     evidence: Option<String>,
+    #[serde(deserialize_with = "required")]
     method: Option<String>,
+    #[serde(deserialize_with = "required")]
     result: Option<StepResult>,
 }
 
+/// A step result. `basis` and `certification` appear only on a proof, so they stay optional.
 #[derive(Deserialize)]
 struct StepResult {
+    #[serde(deserialize_with = "required")]
     category: Option<String>,
+    #[serde(deserialize_with = "required")]
     result: Option<String>,
+    #[serde(deserialize_with = "required")]
+    cause: Option<Value>,
+    basis: Option<Basis>,
+    certification: Option<String>,
+}
+
+#[derive(Deserialize)]
+struct Basis {
+    #[serde(rename = "type")]
+    kind: String,
+}
+
+/// A member the driver always prints, even when its value is null: absent is an error, null is `None`.
+fn required<'de, D, T>(deserializer: D) -> Result<Option<T>, D::Error>
+where
+    D: serde::Deserializer<'de>,
+    T: Deserialize<'de>,
+{
+    Option::<T>::deserialize(deserializer)
 }
 
 #[derive(Deserialize)]
@@ -89,6 +115,9 @@ pub fn plan_structure(stdout: &str) -> Option<Value> {
             "method": step.method,
             "category": step.result.as_ref().and_then(|r| r.category.clone()),
             "result": step.result.as_ref().and_then(|r| r.result.clone()),
+            "cause": step.result.as_ref().and_then(|r| r.cause.clone()),
+            "basis": step.result.as_ref().and_then(|r| r.basis.as_ref().map(|b| b.kind.clone())),
+            "certification": step.result.as_ref().and_then(|r| r.certification.clone()),
         }));
     }
     Some(json!({
@@ -135,11 +164,25 @@ pub fn verdict(structure: &Value) -> Option<String> {
             .and_then(Value::as_array)
             .map(|a| a.iter().filter_map(Value::as_str).collect())
             .unwrap_or_default();
-        return Some(if failed.is_empty() {
-            format!("plan {status}")
-        } else {
-            format!("plan {status}: {}", failed.join(", "))
-        });
+        let blocked: Vec<&str> = plan
+            .get("steps")
+            .and_then(Value::as_array)
+            .map(|steps| {
+                steps
+                    .iter()
+                    .filter(|s| s.get("status").and_then(Value::as_str) == Some("blocked"))
+                    .filter_map(|s| s.get("id").and_then(Value::as_str))
+                    .collect()
+            })
+            .unwrap_or_default();
+        let mut line = format!("plan {status}");
+        if !failed.is_empty() {
+            line.push_str(&format!(": {}", failed.join(", ")));
+        }
+        if !blocked.is_empty() {
+            line.push_str(&format!("; blocked: {}", blocked.join(", ")));
+        }
+        return Some(line);
     }
     let items = structure.get("items_outcome")?;
     let list = items.get("items").and_then(Value::as_array)?;

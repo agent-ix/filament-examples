@@ -299,7 +299,7 @@ file = "rules/plan-blocks.fsl"
 command = "run requests/plan-blocks.json"
 status = "running"
 expect_exit = 22
-expect_verdict = "plan failed: low"
+expect_verdict = "plan failed: low; blocked: safe"
 serves = "FR-824 (plan run outcome, severity order)"
 
 [[case]]

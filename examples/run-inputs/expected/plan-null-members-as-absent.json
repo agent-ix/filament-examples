@@ -11,7 +11,10 @@
         "evidence": "proof",
         "method": "model_check",
         "category": "success",
-        "result": "proved"
+        "result": "proved",
+        "cause": null,
+        "basis": "exhaustive",
+        "certification": "certified"
       },
       {
         "id": "safe",
@@ -20,7 +23,10 @@
         "evidence": "proof",
         "method": "model_check",
         "category": "success",
-        "result": "proved"
+        "result": "proved",
+        "cause": null,
+        "basis": "exhaustive",
+        "certification": "certified"
       }
     ]
   }

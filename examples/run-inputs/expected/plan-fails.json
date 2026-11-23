@@ -13,7 +13,10 @@
         "evidence": "refutation",
         "method": "model_check",
         "category": "violation",
-        "result": "refuted"
+        "result": "refuted",
+        "cause": null,
+        "basis": null,
+        "certification": null
       },
       {
         "id": "safe",
@@ -22,7 +25,10 @@
         "evidence": "proof",
         "method": "model_check",
         "category": "success",
-        "result": "proved"
+        "result": "proved",
+        "cause": null,
+        "basis": "exhaustive",
+        "certification": "certified"
       }
     ]
   }

@@ -20789,7 +20789,7 @@
       "data_files": [],
       "request_file": "examples/run-inputs/requests/plan-blocks.json",
       "expected_file": "examples/run-inputs/expected/plan-blocks.json",
-      "verdict": "plan failed: low",
+      "verdict": "plan failed: low; blocked: safe",
       "exit": 22,
       "ready_exit": null,
       "engine": null,
