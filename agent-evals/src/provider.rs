@@ -190,25 +190,48 @@ fn collect_commands(value: &Value, commands: &mut Vec<String>) {
         && parts.iter().all(Value::is_string)
     {
         let words = parts.iter().filter_map(Value::as_str).collect::<Vec<_>>();
-        if words.first().is_some_and(|p| {
-            ["sh", "bash", "zsh"].contains(
-                &Path::new(p)
-                    .file_name()
-                    .unwrap_or_default()
-                    .to_string_lossy()
-                    .as_ref(),
-            )
-        }) && words.iter().any(|w| ["-c", "-lc"].contains(w))
-        {
-            if let Some(script) = words.last() {
-                commands.push((*script).to_owned());
-            }
+        if let Some(script) = shell_wrapper_script(&words) {
+            commands.push(script.to_owned());
         } else {
             commands.push(words.join(" "));
         }
     }
     if let Some(action) = value.get("action") {
         collect_commands(action, commands);
+    }
+}
+/// Every spelling a typed record's command can take in a JavaScript twin: the
+/// joined argv, and the script of a shell `-c` wrapper, also behind `env`.
+fn typed_forms(value: &Value, forms: &mut Vec<String>) {
+    let Some(parts) = value.get("command").and_then(Value::as_array) else {
+        return;
+    };
+    let words = parts.iter().filter_map(Value::as_str).collect::<Vec<_>>();
+    forms.push(words.join(" "));
+    if let Some(script) = shell_wrapper_script(&words) {
+        forms.push(script.to_owned());
+    }
+}
+/// The script of `[env] [VAR=x] sh|bash|zsh|dash [-flags with c] SCRIPT`.
+fn shell_wrapper_script<'a>(words: &[&'a str]) -> Option<&'a str> {
+    let at = words.iter().position(|w| {
+        matches!(
+            Path::new(w).file_name().and_then(|n| n.to_str()),
+            Some("sh" | "bash" | "zsh" | "dash")
+        )
+    })?;
+    if !words[..at].iter().all(|w| {
+        *w == "env" || w.contains('=') || Path::new(w).file_name().is_some_and(|n| n == "env")
+    }) {
+        return None;
+    }
+    let has_c = words[at + 1..]
+        .iter()
+        .any(|w| w.starts_with('-') && !w.starts_with("--") && w.contains('c'));
+    if has_c {
+        words.last().copied().filter(|_| words.len() > at + 2)
+    } else {
+        None
     }
 }
 /// Read actual tool-call commands from the SDK's retained transcript, never assistant prose.
@@ -1449,10 +1472,83 @@ fn inspect_command(
         }
     }
 }
+fn sed_unmatched_message(corroboration: Option<&Corroboration>) -> String {
+    let shapes = match corroboration {
+        None => "the code could not be parsed as JavaScript".to_owned(),
+        Some(c) if c.unmatched.is_empty() => {
+            "sed appears outside any exec_command cmd literal".to_owned()
+        }
+        Some(c) => c.unmatched.join("; "),
+    };
+    format!(
+        "sandbox-breach: sed in a JavaScript tool call has no typed command record behind it (unmatched shape: {shapes}); see QSL-3015"
+    )
+}
+/// The result of matching a JavaScript tool call against typed command records.
+struct Corroboration {
+    /// The code with every command literal that a typed record backs up blanked.
+    masked: String,
+    /// Shapes of `exec_command` calls that no typed record backs up.
+    unmatched: Vec<String>,
+}
+
+/// Decode a JavaScript string, or a template literal without interpolation.
+/// Returns `None` for any form it cannot decode exactly.
+fn decode_js_string(raw: &str) -> Option<String> {
+    let mut chars = raw.chars();
+    let quote = chars.next()?;
+    if !matches!(quote, '"' | '\'' | '`') || raw.len() < 2 || !raw.ends_with(quote) {
+        return None;
+    }
+    let body: Vec<char> = raw[1..raw.len() - 1].chars().collect();
+    let mut out = String::new();
+    let mut i = 0;
+    while i < body.len() {
+        let c = body[i];
+        i += 1;
+        if c != '\\' {
+            out.push(c);
+            continue;
+        }
+        let e = *body.get(i)?;
+        i += 1;
+        match e {
+            'n' => out.push('\n'),
+            't' => out.push('\t'),
+            'r' => out.push('\r'),
+            'b' => out.push('\u{8}'),
+            'f' => out.push('\u{c}'),
+            'v' => out.push('\u{b}'),
+            '0' if !body.get(i).is_some_and(char::is_ascii_digit) => out.push('\0'),
+            '\\' | '\'' | '"' | '`' | '$' => out.push(e),
+            '\n' => {}
+            'x' => {
+                let hex: String = body.get(i..i + 2)?.iter().collect();
+                out.push(char::from_u32(u32::from_str_radix(&hex, 16).ok()?)?);
+                i += 2;
+            }
+            'u' => {
+                if body.get(i) == Some(&'{') {
+                    let end = body[i..].iter().position(|c| *c == '}')? + i;
+                    let hex: String = body[i + 1..end].iter().collect();
+                    out.push(char::from_u32(u32::from_str_radix(&hex, 16).ok()?)?);
+                    i = end + 1;
+                } else {
+                    let hex: String = body.get(i..i + 4)?.iter().collect();
+                    out.push(char::from_u32(u32::from_str_radix(&hex, 16).ok()?)?);
+                    i += 4;
+                }
+            }
+            _ => return None,
+        }
+    }
+    Some(out)
+}
+
 // Only duplicate shell-source literals with an actual typed execution record
 // are removed from the generic path scan. The real command is still checked
 // at its recorded cwd; opaque JavaScript never supplies command evidence.
-fn corroborated_cmd_data(code: &str, executed: &[String]) -> Option<String> {
+fn corroborated_cmd_data(code: &str, executed: &[String]) -> Option<Corroboration> {
     if code.len() > 1_048_576 {
         return None;
     }
@@ -1467,6 +1563,7 @@ fn corroborated_cmd_data(code: &str, executed: &[String]) -> Option<String> {
     }
     let mut pending = vec![root];
     let mut ranges = Vec::new();
+    let mut unmatched = Vec::new();
     while let Some(node) = pending.pop() {
         let mut cursor = node.walk();
         pending.extend(node.named_children(&mut cursor));
@@ -1503,9 +1600,12 @@ fn corroborated_cmd_data(code: &str, executed: &[String]) -> Option<String> {
             continue;
         };
         if argument.kind() != "object" || values.next().is_some() {
+            unmatched
+                .push("an exec_command call whose argument is not one object literal".to_owned());
             continue;
         }
         let mut cursor = argument.walk();
+        let mut found_cmd = false;
         for pair in argument
             .named_children(&mut cursor)
             .filter(|pair| pair.kind() == "pair")
@@ -1516,29 +1616,46 @@ fn corroborated_cmd_data(code: &str, executed: &[String]) -> Option<String> {
             let key_text = key.utf8_text(code.as_bytes()).ok()?;
             let cmd_key = (key.kind() == "property_identifier" && key_text == "cmd")
                 || (key.kind() == "string"
-                    && serde_json::from_str::<String>(key_text).is_ok_and(|key| key == "cmd"));
+                    && decode_js_string(key_text).is_some_and(|key| key == "cmd"));
             if !cmd_key {
                 continue;
             }
+            found_cmd = true;
             let Some(value) = pair.child_by_field_name("value") else {
                 continue;
             };
-            if value.kind() != "string" {
-                continue;
-            }
-            let Ok(command) =
-                serde_json::from_str::<String>(value.utf8_text(code.as_bytes()).ok()?)
-            else {
-                continue;
-            };
-            if executed.contains(&command) {
-                ranges.push(value.byte_range());
+            let text = value.utf8_text(code.as_bytes()).ok()?;
+            match value.kind() {
+                "string" | "template_string" => {
+                    if value.kind() == "template_string" && text.contains("${") {
+                        unmatched.push("a template literal with interpolation as cmd".to_owned());
+                    } else if let Some(command) = decode_js_string(text) {
+                        if executed.contains(&command) {
+                            ranges.push(value.byte_range());
+                        } else {
+                            unmatched.push(
+                                "a cmd string literal that matches no typed command record"
+                                    .to_owned(),
+                            );
+                        }
+                    } else {
+                        unmatched.push(
+                            "a cmd string literal with an escape this scan cannot decode"
+                                .to_owned(),
+                        );
+                    }
+                }
+                _ => unmatched.push(
+                    "a cmd that is a variable or computed expression, not a literal".to_owned(),
+                ),
             }
         }
+        if !found_cmd {
+            unmatched.push("an exec_command call with no literal cmd key".to_owned());
+        }
     }
-    if ranges.is_empty() {
-        return None;
-    }
+    unmatched.sort();
+    unmatched.dedup();
     ranges.sort_unstable_by_key(|range| range.start);
     ranges.dedup();
     let mut masked = String::new();
@@ -1549,7 +1666,7 @@ fn corroborated_cmd_data(code: &str, executed: &[String]) -> Option<String> {
         previous = range.end;
     }
     masked.push_str(code.get(previous..)?);
-    Some(masked)
+    Some(Corroboration { masked, unmatched })
 }
 
 fn boundary_violations(
@@ -1562,6 +1679,7 @@ fn boundary_violations(
     let mut typed_commands = Vec::new();
     for input in inputs.iter().filter(|input| input.typed_execution) {
         collect_commands(&input.value, &mut typed_commands);
+        typed_forms(&input.value, &mut typed_commands);
     }
     let mut persistent_cwd = workspace.to_owned();
     for input in inputs {
@@ -1607,18 +1725,18 @@ fn boundary_violations(
                 );
             }
             if !commands.iter().any(|c| c == text) {
-                let cmd_data = input
-                    .value
-                    .get("code")
-                    .and_then(Value::as_str)
-                    .filter(|code| *code == text)
-                    .and_then(|code| corroborated_cmd_data(code, &typed_commands));
+                let is_code = input.value.get("code").and_then(Value::as_str) == Some(text);
+                let corroboration = if is_code {
+                    corroborated_cmd_data(text, &typed_commands)
+                } else {
+                    None
+                };
+                let cmd_data = corroboration.as_ref().map(|c| c.masked.clone());
                 // Only code strings can run a command. Typed-record twins are masked
                 // above, so a sed word that remains has no typed record behind it.
                 // Descriptions, prompts and file content may mention sed.
-                let is_code = input.value.get("code").and_then(Value::as_str) == Some(text);
                 if is_code && contains_sed_word(cmd_data.as_deref().unwrap_or(text)) {
-                    violations.push(SED_WRAPPER_REFUSAL.to_owned());
+                    violations.push(sed_unmatched_message(corroboration.as_ref()));
                 }
                 inspect_paths(
                     cmd_data.as_deref().unwrap_or(text),
@@ -2064,6 +2182,118 @@ mod tests {
                 .iter()
                 .any(|v| v.starts_with("sandbox-breach:"))
         );
+        Ok(())
+    }
+
+    /// Trace: FR-001 AC-6
+    #[test]
+    fn runtime_codex_twin_matching_accepts_every_js_literal_and_wrapper_form() -> ScenarioResult<()>
+    {
+        let (_temp, workspace, tools) = reference_policy_fixture()?;
+        let typed_argv = |argv: Value| RecordedInput {
+            value: json!({"command":argv,"workdir":workspace}),
+            persistent_cwd: false,
+            writes_files: false,
+            typed_execution: true,
+        };
+        let bash = |script: &str| typed_argv(json!(["/bin/bash", "-lc", script]));
+        let js = |code: &str| recorded(json!({ "code": code }));
+        let breach = |inputs: &[RecordedInput]| {
+            boundary_violations(&workspace, &tools, inputs, true)
+                .into_iter()
+                .filter(|v| v.starts_with("sandbox-breach:"))
+                .collect::<Vec<_>>()
+        };
+        let benign = "sed -n '1,3p' model.fsl";
+        // Accepted: literal forms, each with a typed twin.
+        let accepted = [
+            (
+                "single quoted",
+                "text(await tools.exec_command({cmd:'sed -n \\'1,3p\\' model.fsl'}));",
+            ),
+            (
+                "double quoted",
+                "text(await tools.exec_command({cmd:\"sed -n '1,3p' model.fsl\"}));",
+            ),
+            (
+                "template literal",
+                "text(await tools.exec_command({cmd:`sed -n '1,3p' model.fsl`}));",
+            ),
+            (
+                "hex escape",
+                "text(await tools.exec_command({cmd:\"sed -n \\x271,3p\\x27 model.fsl\"}));",
+            ),
+            (
+                "unicode escape",
+                "text(await tools.exec_command({cmd:\"sed -n \\u00271,3p\\u0027 model.fsl\"}));",
+            ),
+            (
+                "braced unicode escape",
+                "text(await tools.exec_command({cmd:\"sed -n \\u{27}1,3p\\u{27} model.fsl\"}));",
+            ),
+            (
+                "quoted key",
+                "text(await tools.exec_command({'cmd':\"sed -n '1,3p' model.fsl\"}));",
+            ),
+        ];
+        for (name, code) in accepted {
+            let found = breach(&[js(code), bash(benign)]);
+            assert!(found.is_empty(), "{name}: {found:?}");
+            // No twin: breach naming the shape.
+            let found = breach(&[js(code)]);
+            assert!(
+                found
+                    .iter()
+                    .any(|v| v.contains("matches no typed command record")),
+                "{name}: {found:?}"
+            );
+        }
+        // Newline and tab escapes decode.
+        let multi = "sed -n '1,3p' model.fsl\n\tcat model.fsl";
+        let found = breach(&[
+            js(
+                "text(await tools.exec_command({cmd:\"sed -n '1,3p' model.fsl\\n\\tcat model.fsl\"}));",
+            ),
+            bash(multi),
+        ]);
+        assert!(found.is_empty(), "{found:?}");
+        // Typed argv wrapper forms.
+        let code_src = "text(await tools.exec_command({cmd:\"sed -n '1,3p' model.fsl\"}));";
+        for (name, argv) in [
+            ("bare argv", json!(["sed", "-n", "'1,3p'", "model.fsl"])),
+            ("sh -c", json!(["sh", "-c", benign])),
+            ("zsh -lc", json!(["/usr/bin/zsh", "-lc", benign])),
+            ("env bash -lc", json!(["env", "bash", "-lc", benign])),
+            (
+                "env VAR bash -c",
+                json!(["/usr/bin/env", "LANG=C", "bash", "-c", benign]),
+            ),
+        ] {
+            let found = breach(&[js(code_src), typed_argv(argv)]);
+            assert!(found.is_empty(), "{name}: {found:?}");
+        }
+        // Fail closed with a named shape.
+        let cases = [
+            (
+                "a variable",
+                "const c = \"sed -n p model.fsl\"; text(await tools.exec_command({cmd:c}));",
+                "variable or computed",
+            ),
+            (
+                "interpolation",
+                "const n='model.fsl'; text(await tools.exec_command({cmd:`sed -n p ${n}`}));",
+                "template literal with interpolation",
+            ),
+            (
+                "unparseable",
+                "text(await tools.exec_command({cmd: \"sed",
+                "could not be parsed",
+            ),
+        ];
+        for (name, code, shape) in cases {
+            let found = breach(&[js(code), bash(benign)]);
+            assert!(found.iter().any(|v| v.contains(shape)), "{name}: {found:?}");
+        }
         Ok(())
     }
 

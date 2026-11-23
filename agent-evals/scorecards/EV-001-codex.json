@@ -131,7 +131,8 @@
     ],
     "grading": {
       "boundary": "the transcript boundary as of the first PR commit (rg flags and sed replacement data accepted); the sed allow-list, wrapper refusals and the other boundary rules added in later review rounds were not applied to these runs",
-      "regrade": "not possible: the raw SDK reports and transcripts were deleted with the run directories, and no live re-run was made (codex quota). The three passes stand as graded at run time and are not re-verified under the final boundary."
+      "regrade": "not possible: the raw SDK reports and transcripts were deleted with the run directories, and no live re-run was made (codex quota). The three passes stand as graded at run time and are not re-verified under the final boundary.",
+      "rerun_owner": "QSL-3008: re-run Codex EV-001 N=3 under the final boundary (live, when codex quota allows) together with the Claude N=3 re-run, and replace this block with the regraded result"
     }
   }
 }
