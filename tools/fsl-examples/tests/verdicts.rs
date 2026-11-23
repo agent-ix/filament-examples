@@ -306,11 +306,9 @@ fn claim_bound(item: &Value) -> Option<(Direction, Ratio)> {
     Some((direction, Ratio::from_text(word(5)?)?))
 }
 
-/// Checks the measurement of a sampled claim against the decision it states. The estimate lies in
-/// its interval, the samples are a positive count that agrees with the per-test counts, and the
-/// interval lies wholly on the failing side of the claim's bound for a rejection and on the
-/// holding side for an acceptance. The record does not give the indifference rule in a form that
-/// allows a looser reading, so the interval is held to the bound itself.
+/// Checks a sampled claim against the decision it states. Interval methods must place the
+/// estimate inside an interval on the correct side of the claim's bound. SPRT reports no interval,
+/// so its estimate and sample counts must support the decision directly.
 fn sampled_measurement_problem(item: &Value, decision: &str) -> Option<String> {
     let verdict = item.get("verdict")?;
     let stated = verdict
@@ -321,6 +319,46 @@ fn sampled_measurement_problem(item: &Value, decision: &str) -> Option<String> {
         return Some(format!("the decision is {stated:?}, not {decision}"));
     }
     let ratio = |value: Option<&Value>| value.and_then(Ratio::from_members);
+    if verdict
+        .get("basis")
+        .and_then(|basis| basis.get("method"))
+        .and_then(|method| method.get("type"))
+        .and_then(Value::as_str)
+        == Some("sprt")
+    {
+        let Some(estimate) = ratio(verdict.get("estimate").and_then(|e| e.get("value"))) else {
+            return Some("the SPRT estimate is not a rational".to_owned());
+        };
+        if verdict.get("interval").is_some() {
+            return Some("SPRT unexpectedly reports an interval".to_owned());
+        }
+        let samples = count(verdict.get("basis").and_then(|b| b.get("samples")));
+        let tests = verdict.get("tests").and_then(Value::as_array)?;
+        let drawn: Option<u64> = tests.iter().map(|test| count(test.get("samples"))).sum();
+        if tests.is_empty() || !samples.is_some_and(|n| n > 0) || samples != drawn {
+            return Some(format!(
+                "the SPRT samples {samples:?} are not positive and equal to the per-test count {drawn:?}"
+            ));
+        }
+        if tests
+            .iter()
+            .any(|test| ratio(test.get("estimate").and_then(|e| e.get("value"))).is_none())
+        {
+            return Some("an SPRT test estimate is not a rational".to_owned());
+        }
+        let Some((direction, bound)) = claim_bound(item) else {
+            return Some("the claim's bound is not readable from its node path".to_owned());
+        };
+        let satisfies = match (&direction, decision) {
+            (Direction::AtLeast, "accepted") => estimate.cmp(&bound) != Ordering::Less,
+            (Direction::AtMost, "accepted") => estimate.cmp(&bound) != Ordering::Greater,
+            (Direction::AtLeast, _) => estimate.cmp(&bound) == Ordering::Less,
+            (Direction::AtMost, _) => estimate.cmp(&bound) == Ordering::Greater,
+        };
+        return (!satisfies).then(|| {
+            format!("the SPRT estimate is not on the {decision} side of the claim's bound")
+        });
+    }
     let (Some(estimate), Some(lower), Some(upper)) = (
         ratio(verdict.get("estimate").and_then(|e| e.get("value"))),
         ratio(verdict.get("interval").and_then(|i| i.get("lower"))),
