@@ -2,5 +2,6 @@
 install-test
 .github
 README.md
+!README.md
 target
 tools/fsl-examples/target
