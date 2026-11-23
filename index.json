@@ -20678,7 +20678,7 @@
     {
       "system": "shop",
       "case": "claim-function-undefined",
-      "status": "staged",
+      "status": "running",
       "rule": "undefinedClaim",
       "statement": "A function claim with an undefined evaluation is refuted.",
       "rule_file": "examples/shop/rules/claim-functions.fsl",
@@ -20687,13 +20687,13 @@
       ],
       "request_file": "examples/shop/requests/claim-function-undefined.json",
       "expected_file": "examples/shop/expected/claim-function-undefined.json",
-      "verdict": null,
-      "exit": 20,
-      "ready_exit": 10,
+      "verdict": "violated",
+      "exit": 10,
+      "ready_exit": null,
       "engine": null,
       "clock": null,
-      "waits_on": "QSL-2882",
-      "needs": "a request form for Population and reference call arguments"
+      "waits_on": null,
+      "needs": null
     },
     {
       "system": "shop",
@@ -23634,20 +23634,20 @@
     {
       "system": "shop",
       "case": "outcomes-undefined-call",
-      "status": "staged",
+      "status": "running",
       "rule": "missingOrder",
       "statement": "A function call that looks up an order outside the selected population returns undefined.",
       "rule_file": "examples/shop/rules/outcomes/undefined-lookup.fsl",
       "data_files": [],
       "request_file": "examples/shop/requests/outcomes/undefined-lookup.json",
       "expected_file": "examples/shop/expected/outcomes-undefined-call.json",
-      "verdict": null,
-      "exit": 20,
-      "ready_exit": 10,
+      "verdict": "undefined",
+      "exit": 10,
+      "ready_exit": null,
       "engine": null,
       "clock": null,
-      "waits_on": "QSL-2882",
-      "needs": "a request form for Population and reference call arguments"
+      "waits_on": null,
+      "needs": null
     },
     {
       "system": "types-checking",

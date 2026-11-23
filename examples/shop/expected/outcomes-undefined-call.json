@@ -1,10 +1,10 @@
 {
-  "category": "refusal",
+  "category": "undefined",
   "last_stage": "S6a",
-  "result": null,
-  "first_diagnostic": {
-    "code": "invalid_runtime_input",
-    "cause": "wrong-value-kind"
+  "result": {
+    "kind": "undefined",
+    "reason": "absent-key"
   },
+  "first_diagnostic": null,
   "items": []
 }
