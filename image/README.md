@@ -22,16 +22,17 @@ docker run --rm --volume "$PWD:/work" --workdir /work ghcr.io/agent-ix/filament-
 
 ## Commands
 
-The image puts four commands on the path.
+The image puts five commands on the path.
 
 | Command | Program |
 | --- | --- |
 | `fsl` | The FSL driver |
+| `fsl-plugin-launch` | The driver's resource-limited launcher for plugin providers; it must stay beside `fsl` |
 | `fsl-examples` | The example runner from [tools/fsl-examples](../tools/README.md), which `make check` and `make staged` call |
 | `quire` | The Markdown tool from the npm package `@agent-ix/quire-cli` |
 | `quoin` | The quoin command-line tool |
 
-The driver binary is `fsl`. The Markdown tool keeps its own name, `quire`, and no file inside either package is renamed.
+The driver binary is `fsl`, with its sibling `fsl-plugin-launch`. The Markdown tool keeps its own name, `quire`, and no file inside either package is renamed.
 
 ## Building and testing
 

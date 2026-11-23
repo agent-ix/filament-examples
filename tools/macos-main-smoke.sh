@@ -43,11 +43,12 @@ archive_name=$(unzip -Z1 "$run_root/artifact.zip")
 [[ "$archive_name" =~ ^fsl-v[0-9]+\.[0-9]+\.[0-9]+-aarch64-apple-darwin\.tar\.gz$ ]]
 unzip -q "$run_root/artifact.zip" -d "$run_root"
 archive="$run_root/$archive_name"
-[[ "$(tar -tzf "$archive")" == fsl ]]
+[[ "$(tar -tzf "$archive")" == $'fsl\nfsl-plugin-launch' ]]
 [[ "$(tar -tvzf "$archive")" == -* ]]
 mkdir "$run_root/bin"
-tar -xzf "$archive" -C "$run_root/bin" fsl
+tar -xzf "$archive" -C "$run_root/bin" fsl fsl-plugin-launch
 lipo "$run_root/bin/fsl" -verify_arch arm64
+lipo "$run_root/bin/fsl-plugin-launch" -verify_arch arm64
 
 git init --quiet "$run_root/driver"
 git -C "$run_root/driver" remote add origin https://github.com/agent-ix/filament-driver

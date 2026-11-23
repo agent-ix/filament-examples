@@ -4,6 +4,7 @@
 set -eu
 
 fsl --version
+command -v fsl-plugin-launch >/dev/null
 quire --version | grep '^quire '   # the Markdown tool, not the driver
 quoin --version
 jq --version
