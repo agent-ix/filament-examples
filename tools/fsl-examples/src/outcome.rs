@@ -22,6 +22,14 @@ pub struct Recorded {
 
 /// Splits driver output into structure and message text.
 pub fn project(stdout: &str) -> Recorded {
+    if let Some(structure) = crate::run_documents::plan_structure(stdout)
+        .or_else(|| crate::run_documents::items_structure(stdout))
+    {
+        return Recorded {
+            structure,
+            messages: String::new(),
+        };
+    }
     if let Some(structure) = monitor_stream(stdout) {
         return Recorded {
             structure,
@@ -104,6 +112,9 @@ pub fn is_outcome(structure: &Value) -> bool {
 
 /// The short verdict of a structure, as the manifest's `expect_verdict` spells it.
 pub fn verdict_of(structure: &Value) -> String {
+    if let Some(verdict) = crate::run_documents::verdict(structure) {
+        return verdict;
+    }
     if !is_outcome(structure) {
         return "unreadable output".to_owned();
     }

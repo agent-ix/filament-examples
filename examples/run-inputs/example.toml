@@ -277,12 +277,9 @@ id = "plan-passes"
 statement = "Both steps of the plan settle proved, so the plan status is passed, the outcome has one disposition per step and the run exits 0."
 file = "rules/plan-passes.fsl"
 command = "run requests/plan-passes.json"
-status = "staged"
-expect_exit = 20
-ready_exit = 0
-waits_on = "QSL-2760"
-why = "run refuses the verification_plan member as invalid-request (a verification plan is run by the plan coordinator route), exit 20; QSL-2502 was cancelled as a duplicate of QSL-2511 (Done) and the newer driver (FSL f5977125) still refuses the member"
-needs = "a verification plan run through the run verb"
+status = "running"
+expect_exit = 0
+expect_verdict = "plan passed"
 serves = "FR-824 (plan run outcome)"
 
 [[case]]
@@ -290,12 +287,9 @@ id = "plan-fails"
 statement = "The step Low is refuted and the independent step Bounded is proved: the plan status is failed, failed_steps lists low, and the run exits 10."
 file = "rules/plan-fails.fsl"
 command = "run requests/plan-fails.json"
-status = "staged"
-expect_exit = 20
-ready_exit = 10
-waits_on = "QSL-2760"
-why = "run refuses the verification_plan member as invalid-request, exit 20; QSL-2502 was cancelled as a duplicate of QSL-2511 (Done) and the newer driver (FSL f5977125) still refuses the member"
-needs = "a verification plan run through the run verb"
+status = "running"
+expect_exit = 10
+expect_verdict = "plan failed: low"
 serves = "FR-824 (plan run outcome)"
 
 [[case]]
@@ -303,12 +297,9 @@ id = "plan-blocks"
 statement = "Low is refuted and the step that requires it is blocked, never run: the plan status is failed, and the exit is 22 because FR-301 ranks incomplete above a violation."
 file = "rules/plan-blocks.fsl"
 command = "run requests/plan-blocks.json"
-status = "staged"
-expect_exit = 20
-ready_exit = 22
-waits_on = "QSL-2760"
-why = "run refuses the verification_plan member as invalid-request, exit 20; QSL-2502 was cancelled as a duplicate of QSL-2511 (Done) and the newer driver (FSL f5977125) still refuses the member"
-needs = "a verification plan run through the run verb"
+status = "running"
+expect_exit = 22
+expect_verdict = "plan failed: low"
 serves = "FR-824 (plan run outcome, severity order)"
 
 [[case]]
@@ -316,12 +307,9 @@ id = "call-three-items-complete"
 statement = "A request selecting three calls with tagged integer arguments 3, 5 and 7 yields three completed dispositions in selection order and category success."
 file = "rules/calls.fsl"
 command = "run requests/call-three-items-complete.json"
-status = "staged"
-expect_exit = 20
-ready_exit = 0
-waits_on = "QSL-2760"
-why = "run refuses the items member (invalid-request: items is handled by the multi-selection runner), exit 20"
-needs = "a multi-item run through the run verb (FR-550-AC-3)"
+status = "running"
+expect_exit = 0
+expect_verdict = "3 completed"
 serves = "FR-550-AC-3; FR-651 (multi-item request and results)"
 
 [[case]]
@@ -329,10 +317,7 @@ id = "plan-null-members-as-absent"
 statement = "A verification plan whose seed, emit, max_value_bits and max_trace_length members are null runs Release as if the four members were absent: both steps proved, exit 0."
 file = "rules/plan-passes.fsl"
 command = "run requests/plan-null-members-as-absent.json"
-status = "staged"
-expect_exit = 20
-ready_exit = 0
-waits_on = "QSL-2760"
-why = "run refuses the verification_plan member as invalid-request (a verification plan is run by the plan coordinator route), exit 20; QSL-2502 was cancelled as a duplicate of QSL-2511 (Done)"
-needs = "a verification plan run through the run verb"
+status = "running"
+expect_exit = 0
+expect_verdict = "plan passed"
 serves = "FR-824-AC-6 (null members read as absent)"
