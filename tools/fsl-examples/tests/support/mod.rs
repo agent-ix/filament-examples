@@ -15,15 +15,15 @@ pub fn repo_root() -> PathBuf {
 }
 
 /// The verification plan document that `fsl run` prints for a recorded `plan_outcome`.
-fn plan_document(plan: &Value) -> String {
+#[allow(clippy::panic)]
+fn plan_document(case: &str, plan: &Value) -> String {
     let text = |value: &Value, key: &str| value.get(key).cloned().unwrap_or(Value::Null);
     let mut dispositions = serde_json::Map::new();
-    for step in plan
+    let steps = plan
         .get("steps")
         .and_then(Value::as_array)
-        .map(Vec::as_slice)
-        .unwrap_or_default()
-    {
+        .unwrap_or_else(|| panic!("stand-in: {case}: the plan_outcome record has no steps array"));
+    for step in steps {
         let result = if ["category", "result", "cause", "basis", "certification"]
             .iter()
             .all(|key| text(step, key).is_null())
@@ -56,7 +56,7 @@ fn plan_document(plan: &Value) -> String {
         );
     }
     json!({"verification_plan": {
-        "format": fsl_examples::run_documents::PLAN_FORMAT,
+        "format": "filament.verification-plan-outcome/v1",
         "plan": text(plan, "plan"),
         "status": text(plan, "status"),
         "failed_steps": text(plan, "failed_steps"),
@@ -66,12 +66,13 @@ fn plan_document(plan: &Value) -> String {
 }
 
 /// The multi-item document that `fsl run` prints for a recorded `items_outcome`.
-fn items_document(items: &Value) -> String {
-    let list: Vec<Value> = items
+#[allow(clippy::panic)]
+fn items_document(case: &str, items: &Value) -> String {
+    let recorded = items
         .get("items")
         .and_then(Value::as_array)
-        .map(Vec::as_slice)
-        .unwrap_or_default()
+        .unwrap_or_else(|| panic!("stand-in: {case}: the items_outcome record has no items array"));
+    let list: Vec<Value> = recorded
         .iter()
         .map(|item| {
             json!({
@@ -87,7 +88,7 @@ fn items_document(items: &Value) -> String {
         })
         .collect();
     json!({
-        "format": fsl_examples::run_documents::ITEMS_FORMAT,
+        "format": "native-run-items/1",
         "category": items.get("category").cloned().unwrap_or(Value::Null),
         "items": list,
     })
@@ -96,15 +97,15 @@ fn items_document(items: &Value) -> String {
 
 /// An outcome document rebuilt from a recorded structure and message snapshot, as the driver
 /// would print it.
-pub fn outcome_document(structure: &Value, messages: &str) -> String {
+pub fn outcome_document(case: &str, structure: &Value, messages: &str) -> String {
     if structure.get("outcome") == Some(&Value::Null) {
         return messages.to_owned();
     }
     if let Some(plan) = structure.get("plan_outcome") {
-        return plan_document(plan);
+        return plan_document(case, plan);
     }
     if let Some(items) = structure.get("items_outcome") {
-        return items_document(items);
+        return items_document(case, items);
     }
     if let (Some(Value::Array(events)), Some(summary)) =
         (structure.get("events"), structure.get("summary"))
@@ -185,7 +186,11 @@ impl Driver for StandIn {
         let messages = read_messages(&system.dir, &case.id)?;
         let mut run = Run {
             exit: case.expect_exit,
-            stdout: outcome_document(&structure, &messages),
+            stdout: outcome_document(
+                &format!("{}/{}", system.name, case.id),
+                &structure,
+                &messages,
+            ),
         };
         (self.edit)(&format!("{}/{}", system.name, case.id), &mut run);
         Ok(run)

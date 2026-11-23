@@ -32,7 +32,7 @@ fn first_staged(root: &Path) -> Result<(String, i32, PathBuf, String), Box<dyn s
     Err("no staged case".into())
 }
 
-/// A running case whose record carries a diagnostic message: the first one in manifest order. The
+/// A running case whose record carries a diagnostic message: the first by system name and case id. The
 /// message tests exercise the runner's record and regenerate behaviour, which needs such a case;
 /// which example supplies it is not the tests' concern, so it is chosen by that property.
 struct MessageCase {
@@ -47,19 +47,22 @@ impl MessageCase {
 }
 
 fn first_case_with_message(root: &Path) -> Result<MessageCase, Box<dyn std::error::Error>> {
+    let mut found = Vec::new();
     for system in load_all(root)? {
         for case in &system.manifest.cases {
             if matches!(case.status, Status::Running { .. })
                 && !read_messages(&system.dir, &case.id)?.trim().is_empty()
             {
-                return Ok(MessageCase {
-                    system: system.name.clone(),
-                    id: case.id.clone(),
-                });
+                found.push((system.name.clone(), case.id.clone()));
             }
         }
     }
-    Err("no running case has a diagnostic message in its record: the record and regenerate tests need one".into())
+    // The first by system name, then case id, whatever order the manifests load in.
+    found.sort();
+    let (system, id) = found.into_iter().next().ok_or(
+        "no running case has a diagnostic message in its record: the record and regenerate tests need one",
+    )?;
+    Ok(MessageCase { system, id })
 }
 
 /// A driver that rewords the first diagnostic message of `label`.
