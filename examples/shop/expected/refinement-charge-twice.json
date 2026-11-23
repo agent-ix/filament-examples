@@ -258,7 +258,7 @@
             "type": "Precondition"
           },
           "kind": "AbstractStepRejected",
-          "position": 2,
+          "position": "2",
           "transition": {
             "arguments": [],
             "operation": {
