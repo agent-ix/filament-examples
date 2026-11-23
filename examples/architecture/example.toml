@@ -562,7 +562,7 @@ serves = "Probability reference and tutorial"
 [[case]]
 id = "availability-mean-fraction"
 rule = "UpMostly"
-statement = "A service that starts up and fails 1 call in 1,000 is up for 14999/15000 of the first 3 positions on average with a workload and a window of 2 steps, above the 0.99 the claim asks for, and analyze proves it."
+statement = "A service that starts up and fails 1 call in 1,000 is up for 1499/1500 of the first 3 positions on average with a workload and a window of 2 steps, above the 0.99 the claim asks for, and analyze proves it."
 file = "rules/availability-mean-fraction.fsl"
 command = "analyze requests/availability-mean-fraction.json"
 engine = "probability"
