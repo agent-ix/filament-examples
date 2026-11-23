@@ -1741,7 +1741,7 @@ serves = "FR-520 (analyze item naming)"
 
 [[case]]
 id = "model-possible-trap-cyclic"
-statement = "No state of the dial has n above 3, so the possible claim is refuted. The dial can return to 0, so the state graph has a cycle, and analyze does not settle the claim; the deadline stops it."
+statement = "No state of the dial has n above 3, so the possible claim is refuted. The dial can return to 0, so the state graph has a cycle; the four states are explored and the claim settles closed-scope with no deadline."
 file = "rules/dial.fsl"
 command = "analyze requests/model-possible-trap-cyclic.json"
 engine = "model-checking"

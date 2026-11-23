@@ -24,7 +24,7 @@ Set `FSL` to the driver binary. Every record in this system was written by the d
 - `model-*` analyze invariants, temporal claims and state-graph claims (`possible`, `always possible`, `unique path`) over a dial that counts 0 to 3. `rules/dial.fsl` has the full dial, `rules/dial-acyclic.fsl` counts up only, and `rules/dial-branch.fsl` adds a step of two.
 - `refusal-*` compile one claim declaration and record the refusal the standard names, or the successful compile for the boundary beside it: clocks over a model and over a trace, profiles, intervals, Boolean bodies, fairness and probability thresholds.
 
-The running case `model-possible-trap-cyclic` refutes a possible claim whose target no state satisfies, over a dial that can return to 0. It settles closed-scope with exit 10 within its unchanged 2000 ms deadline on an optimized (release) build of fsl. An unoptimized dev build was observed to return incomplete (`cancelled`/`deadline`), exit 22, for the same request.
+The running case `model-possible-trap-cyclic` refutes a possible claim whose target no state satisfies, over a dial that can return to 0. Its request carries no deadline: the exploration of the four states ends on its own, so the verdict does not depend on how fast the machine is.
 
 ## Staged
 
@@ -55,7 +55,7 @@ Not assertable: FR-091-AC-12 says a pending result carries its deadline (5) and 
 | FR-090-AC-2, AC-11, AC-12 profile and clock selection | `refusal-no-clock`, `refusal-*clock*`, `refusal-unknown-profile` |
 | FR-019-AC-6 invariant anchor and Boolean body | `model-invariant-*`, `refusal-invariant-not-boolean` |
 | FR-390, FR-391 state-graph claims (AC-1 to AC-4) | `model-possible-*`, `model-always-possible-*`, `model-unique-path-*` |
-| FR-391-AC-2 trap over a cyclic graph | `model-possible-trap-cyclic` (release build, exit 10) |
+| FR-391-AC-2 trap over a cyclic graph | `model-possible-trap-cyclic` (exit 10) |
 | FR-407 probability threshold strictly between 0 and 1 | `refusal-probability-*` |
 | FR-520 analyze item naming | `model-unknown-claim` |
 

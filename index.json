@@ -3828,7 +3828,7 @@
       "case": "model-possible-trap-cyclic",
       "status": "running",
       "rule": null,
-      "statement": "No state of the dial has n above 3, so the possible claim is refuted. The dial can return to 0, so the state graph has a cycle, and analyze does not settle the claim; the deadline stops it.",
+      "statement": "No state of the dial has n above 3, so the possible claim is refuted. The dial can return to 0, so the state graph has a cycle; the four states are explored and the claim settles closed-scope with no deadline.",
       "rule_file": "examples/claims/rules/dial.fsl",
       "data_files": [],
       "request_file": "examples/claims/requests/model-possible-trap-cyclic.json",

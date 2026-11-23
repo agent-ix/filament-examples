@@ -27,7 +27,6 @@
         "file": "../data/start-0.json"
       }
     ],
-    "deadline_ms": 2000,
     "items": [
       {
         "claim": "ReachesAboveThree"
