@@ -8,8 +8,10 @@ repair the protocol using either the intended terminal state or a corrected
 precondition. The grader runs `fsl analyze` against the agent's own baseline and
 repaired source and compares the saved outcomes with those independent runs.
 It checks the deadlock's structured prefix, both blocked thread paths and
-causes, and the repaired certified exhaustive proof. It does not compare source
-text with a reference implementation.
+causes, and the repaired certified exhaustive proof without requiring
+reference identifiers. It structurally compares the two parsed sources so the
+repair preserves both branches and changes only an intended terminal member
+or the second branch's precondition predicate.
 
 Offline release verification used FSL version 0.2.0, revision
 `5275e5086fec403c4d1a6bce25ab7c3660ea5716`. The baseline analysis exited 10
