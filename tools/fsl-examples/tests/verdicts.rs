@@ -10,7 +10,9 @@
 //! threshold for probability, and the clock for timed rules.
 
 use fsl_examples::manifest::ENGINES;
+use fsl_examples::runner::{absolute, load_all};
 use serde_json::Value;
+use std::cmp::Ordering;
 use std::collections::BTreeSet;
 use std::path::{Path, PathBuf};
 
@@ -22,6 +24,11 @@ fn repo_root() -> PathBuf {
 
 const PASS: i64 = 0;
 const FAIL: i64 = 10;
+/// The exit of an inconclusive answer, such as a sampled claim whose measured value fell in the
+/// indifference region.
+const INCONCLUSIVE: i64 = 22;
+/// The exit of a claim the engine refuses before it analyzes anything.
+const UNSUPPORTED: i64 = 21;
 
 /// One tagged entry of `index.json`.
 struct Entry {
@@ -32,6 +39,7 @@ struct Entry {
     rule: Option<String>,
     rule_file: String,
     expected_file: String,
+    request_file: String,
     /// The exit the verdict gives: the recorded exit when running, the ready exit when staged.
     verdict_exit: i64,
 }
@@ -71,6 +79,7 @@ fn tagged_entries() -> Result<Vec<Entry>, Box<dyn std::error::Error>> {
             rule: text(case, "rule"),
             rule_file: text(case, "rule_file").unwrap_or_default(),
             expected_file: text(case, "expected_file").unwrap_or_default(),
+            request_file: text(case, "request_file").unwrap_or_default(),
             verdict_exit,
         });
     }
@@ -82,6 +91,41 @@ fn record(entry: &Entry) -> Result<Value, Box<dyn std::error::Error>> {
     let text = std::fs::read_to_string(&path)
         .map_err(|e| format!("{}: {}: {e}", entry.label, path.display()))?;
     Ok(serde_json::from_str(&text)?)
+}
+
+/// The schema id of the request a case sends, such as `native-compile/1`.
+fn request_format(entry: &Entry) -> Result<String, Box<dyn std::error::Error>> {
+    let path = repo_root().join(&entry.request_file);
+    let request: Value = serde_json::from_str(
+        &std::fs::read_to_string(&path)
+            .map_err(|e| format!("{}: {}: {e}", entry.label, path.display()))?,
+    )?;
+    Ok(text(&request, "format").unwrap_or_default())
+}
+
+/// The exit of a record whose outcome category is not a verdict: the tool's defined answer for a
+/// claim it could not decide (inconclusive) or does not support (unsupported).
+fn non_verdict_exit(record: &Value) -> Option<i64> {
+    match record.get("category").and_then(Value::as_str) {
+        Some("inconclusive") => Some(INCONCLUSIVE),
+        Some("unsupported") => Some(UNSUPPORTED),
+        _ => None,
+    }
+}
+
+/// Whether a case only compiles. A compile request states no claim, so its record has no verdict
+/// members and its exit 0 says the package compiled, not that a claim holds.
+fn is_compile_only(entry: &Entry) -> Result<bool, Box<dyn std::error::Error>> {
+    Ok(request_format(entry)? == "native-compile/1")
+}
+
+/// Whether an outcome item is the measurement of a sampled claim: its record says it was measured.
+fn is_sampled(verdict: &Value) -> bool {
+    verdict
+        .get("record")
+        .and_then(|r| r.get("result"))
+        .and_then(Value::as_str)
+        == Some("measured")
 }
 
 /// The outcome items of a record, or the clauses of a monitor summary.
@@ -119,10 +163,241 @@ fn has_member(value: &Value, key: &str) -> bool {
     }
 }
 
+/// The arms of a possible claim's graph evidence the documents use.
+const GRAPH_ARMS: [&str; 3] = ["trap", "path-pair", "witness"];
+
+/// A decimal count the documents print as a string or a number.
+fn count(value: Option<&Value>) -> Option<u64> {
+    match value? {
+        Value::String(s) => s.parse().ok(),
+        Value::Number(n) => n.as_u64(),
+        _ => None,
+    }
+}
+
+/// A refuted possible claim has no trace: its counterexample is evidence from the explored state
+/// graph, the arm of the claim it refutes and the path from the initial state, and the item
+/// records the size of the graph it explored and that replaying the evidence reproduced it.
+fn graph_evidence_is_replayed(item: &Value, counterexample: &Value) -> bool {
+    counterexample.get("type").and_then(Value::as_str) == Some("graph-evidence")
+        && counterexample
+            .get("arm")
+            .and_then(Value::as_str)
+            .is_some_and(|arm| GRAPH_ARMS.contains(&arm))
+        && count(counterexample.get("stem").and_then(|s| s.get("initial"))).is_some()
+        && count(item.get("exploration").and_then(|e| e.get("states"))).is_some_and(|n| n > 0)
+        && item
+            .get("replay")
+            .and_then(|r| r.get("reproduced"))
+            .and_then(Value::as_bool)
+            == Some(true)
+}
+
 fn non_empty_array(value: Option<&Value>) -> bool {
     value
         .and_then(Value::as_array)
         .is_some_and(|a| !a.is_empty())
+}
+
+/// A non-negative integer of any size, as little-endian decimal digits.
+struct Nat(Vec<u8>);
+
+impl Nat {
+    fn parse(text: &str) -> Option<Nat> {
+        if text.is_empty() || !text.bytes().all(|b| b.is_ascii_digit()) {
+            return None;
+        }
+        let mut digits: Vec<u8> = text.bytes().rev().map(|b| b - b'0').collect();
+        while digits.last() == Some(&0) {
+            digits.pop();
+        }
+        Some(Nat(digits))
+    }
+
+    fn is_zero(&self) -> bool {
+        self.0.is_empty()
+    }
+
+    fn mul(&self, other: &Nat) -> Nat {
+        let mut sums = vec![0u32; self.0.len() + other.0.len() + 1];
+        for (i, a) in self.0.iter().enumerate() {
+            for (j, b) in other.0.iter().enumerate() {
+                sums[i + j] += u32::from(*a) * u32::from(*b);
+            }
+        }
+        let mut carry = 0u32;
+        let mut digits = Vec::with_capacity(sums.len());
+        for sum in sums {
+            let total = sum + carry;
+            digits.push((total % 10) as u8);
+            carry = total / 10;
+        }
+        while digits.last() == Some(&0) {
+            digits.pop();
+        }
+        Nat(digits)
+    }
+
+    fn cmp(&self, other: &Nat) -> Ordering {
+        self.0
+            .len()
+            .cmp(&other.0.len())
+            .then_with(|| self.0.iter().rev().cmp(other.0.iter().rev()))
+    }
+}
+
+/// A rational number with a non-zero denominator, compared exactly.
+struct Ratio {
+    num: Nat,
+    den: Nat,
+}
+
+impl Ratio {
+    /// A rational written as `{"numerator": "1", "denominator": "2"}`.
+    fn from_members(value: &Value) -> Option<Ratio> {
+        let num = Nat::parse(value.get("numerator")?.as_str()?)?;
+        let den = Nat::parse(value.get("denominator")?.as_str()?)?;
+        (!den.is_zero()).then_some(Ratio { num, den })
+    }
+
+    /// A rational written as `p/q` or as an integer.
+    fn from_text(text: &str) -> Option<Ratio> {
+        let (num, den) = text.split_once('/').unwrap_or((text, "1"));
+        let den = Nat::parse(den)?;
+        (!den.is_zero()).then_some(Ratio {
+            num: Nat::parse(num)?,
+            den,
+        })
+    }
+
+    fn cmp(&self, other: &Ratio) -> Ordering {
+        self.num.mul(&other.den).cmp(&other.num.mul(&self.den))
+    }
+}
+
+/// Which side of its bound a probability claim asks for.
+#[derive(PartialEq)]
+enum Direction {
+    AtLeast,
+    AtMost,
+}
+
+/// The bound a probability claim states, read from the claim node's path, where the document
+/// prints it as the members `bound`, `direction`, a direction and `value`, a number kind and the
+/// number (for example `at_least`, `rational`, `99/100`).
+fn claim_bound(item: &Value) -> Option<(Direction, Ratio)> {
+    let path = item
+        .get("request")?
+        .get("claim")?
+        .get("node")?
+        .get("path")?
+        .as_array()?;
+    let at = path.iter().position(|p| p.as_str() == Some("bound"))?;
+    let word = |offset: usize| path.get(at + offset).and_then(Value::as_str);
+    if word(1)? != "direction" || word(3)? != "value" || !matches!(word(4)?, "rational" | "integer")
+    {
+        return None;
+    }
+    let direction = match word(2)? {
+        "at_least" => Direction::AtLeast,
+        "at_most" => Direction::AtMost,
+        _ => return None,
+    };
+    Some((direction, Ratio::from_text(word(5)?)?))
+}
+
+/// Checks the measurement of a sampled claim against the decision it states. The estimate lies in
+/// its interval, the samples are a positive count that agrees with the per-test counts, and the
+/// interval lies wholly on the failing side of the claim's bound for a rejection and on the
+/// holding side for an acceptance. The record does not give the indifference rule in a form that
+/// allows a looser reading, so the interval is held to the bound itself.
+fn sampled_measurement_problem(item: &Value, decision: &str) -> Option<String> {
+    let verdict = item.get("verdict")?;
+    let stated = verdict
+        .get("decision")
+        .and_then(|d| d.get("type"))
+        .and_then(Value::as_str);
+    if stated != Some(decision) {
+        return Some(format!("the decision is {stated:?}, not {decision}"));
+    }
+    let ratio = |value: Option<&Value>| value.and_then(Ratio::from_members);
+    let (Some(estimate), Some(lower), Some(upper)) = (
+        ratio(verdict.get("estimate").and_then(|e| e.get("value"))),
+        ratio(verdict.get("interval").and_then(|i| i.get("lower"))),
+        ratio(verdict.get("interval").and_then(|i| i.get("upper"))),
+    ) else {
+        return Some("the estimate or its interval is not a rational".to_owned());
+    };
+    if lower.cmp(&estimate) == Ordering::Greater || estimate.cmp(&upper) == Ordering::Greater {
+        return Some("the estimate is outside its interval".to_owned());
+    }
+    let samples = count(verdict.get("basis").and_then(|b| b.get("samples")));
+    let drawn: Option<u64> = verdict
+        .get("tests")
+        .and_then(Value::as_array)
+        .and_then(|tests| {
+            tests
+                .iter()
+                .map(|t| count(t.get("samples")))
+                .sum::<Option<u64>>()
+        });
+    if !samples.is_some_and(|n| n > 0) || samples != drawn {
+        return Some(format!(
+            "the samples {samples:?} are not a positive count equal to the tests' {drawn:?}"
+        ));
+    }
+    let Some((direction, bound)) = claim_bound(item) else {
+        return Some("the claim's bound is not readable from its node path".to_owned());
+    };
+    let holds = match (&direction, decision) {
+        (Direction::AtLeast, "accepted") => lower.cmp(&bound) != Ordering::Less,
+        (Direction::AtMost, "accepted") => upper.cmp(&bound) != Ordering::Greater,
+        (Direction::AtLeast, _) => upper.cmp(&bound) == Ordering::Less,
+        (Direction::AtMost, _) => lower.cmp(&bound) == Ordering::Greater,
+    };
+    (!holds).then(|| format!("the interval is not on the {decision} side of the claim's bound"))
+}
+
+/// Checks an exact proof: the value it computed satisfies the claim's bound in the stated
+/// direction and the certificate was accepted.
+fn exact_proof_problem(item: &Value) -> Option<String> {
+    let Some(value) = item
+        .get("record")
+        .and_then(|r| r.get("basis"))
+        .and_then(|b| b.get("value"))
+        .and_then(Ratio::from_members)
+    else {
+        return Some("the proved value is not a rational".to_owned());
+    };
+    let Some((direction, bound)) = claim_bound(item) else {
+        return Some("the claim's bound is not readable from its node path".to_owned());
+    };
+    let satisfied = match direction {
+        Direction::AtLeast => value.cmp(&bound) != Ordering::Less,
+        Direction::AtMost => value.cmp(&bound) != Ordering::Greater,
+    };
+    if !satisfied {
+        return Some("the proved value does not satisfy the claim's bound".to_owned());
+    }
+    let accepted = item
+        .get("certificate")
+        .and_then(|c| c.get("accepted"))
+        .and_then(Value::as_bool);
+    (accepted != Some(true)).then(|| "the certificate was not accepted".to_owned())
+}
+
+/// What is wrong with a passing probability item that states no threshold member, if anything: a
+/// sampled acceptance or an exact proof is read against the bound in the claim's path.
+fn probability_pass_problem(item: &Value) -> Option<String> {
+    match item
+        .get("record")
+        .and_then(|r| r.get("result"))
+        .and_then(Value::as_str)
+    {
+        Some("measured") => sampled_measurement_problem(item, "accepted"),
+        Some("proved") => exact_proof_problem(item),
+        other => Some(format!("a passing item with result {other:?}")),
+    }
 }
 
 #[test]
@@ -149,10 +424,42 @@ fn every_engine_has_a_passing_and_a_failing_case() -> TestResult {
     Ok(())
 }
 
-/// A verdict case passes with exit 0 or fails with exit 10; any other exit is not a verdict.
+/// Groups the tagged cases by the category of their record and checks that exit and category
+/// agree: a running case whose record is `unsupported` exits 21, one whose record is
+/// `inconclusive` exits 22, and every other case exits 0 or 10 (a staged case is held to its
+/// ready exit). For the 21 and 22 cases it also checks that the manifest's `expect_exit` equals
+/// the exit in `index.json`, so the manifest, the index and the record agree.
+///
+/// It does not pin which cases may be unsupported or inconclusive. Each case's `expect_exit` in
+/// its example.toml pins that, and the runner's `check_systems` compares it with a fresh run of
+/// the driver, so a case that changes category fails there and not here.
 #[test]
 fn every_running_verdict_case_exits_with_a_verdict() -> TestResult {
+    let root = absolute(&repo_root())?;
+    let systems = load_all(&root)?;
     for entry in tagged_entries()? {
+        // A staged case names the exit it will give once fixed, so its record says nothing about it.
+        if entry.running
+            && let Some(exit) = non_verdict_exit(&record(&entry)?)
+        {
+            assert_eq!(
+                entry.verdict_exit, exit,
+                "{}: a record of this category exits {exit}",
+                entry.label
+            );
+            let declared = systems
+                .iter()
+                .flat_map(|s| s.manifest.cases.iter().map(move |c| (s, c)))
+                .find(|(s, c)| format!("{}/{}", s.name, c.id) == entry.label)
+                .map(|(_, c)| i64::from(c.expect_exit))
+                .ok_or_else(|| format!("{}: not in any manifest", entry.label))?;
+            assert_eq!(
+                declared, entry.verdict_exit,
+                "{}: the manifest's expect_exit and the index exit differ",
+                entry.label
+            );
+            continue;
+        }
         assert!(
             entry.verdict_exit == PASS || entry.verdict_exit == FAIL,
             "{}: exit {} is not a verdict",
@@ -265,11 +572,13 @@ fn failing_records_carry_their_witness_or_cause() -> TestResult {
     {
         let record = record(entry)?;
         let found = verdicts(&record);
+        let mut problems: Vec<String> = Vec::new();
         let witnessed = match entry.engine.as_str() {
             "model-checking" => found.iter().any(|v| {
                 counterexample(v).is_some_and(|c| {
-                    c.get("kind").and_then(Value::as_str).is_some()
-                        && (non_empty_array(c.get("prefix")) || non_empty_array(c.get("loop")))
+                    (c.get("kind").and_then(Value::as_str).is_some()
+                        && (non_empty_array(c.get("prefix")) || non_empty_array(c.get("loop"))))
+                        || graph_evidence_is_replayed(v, c)
                 })
             }),
             "refinement" => found.iter().any(|v| {
@@ -291,12 +600,20 @@ fn failing_records_carry_their_witness_or_cause() -> TestResult {
                             })
                         })
             }),
-            "probability" => found.iter().any(|v| has_member(v, "threshold")),
+            "probability" => found.iter().any(|v| {
+                if is_sampled(v) {
+                    let problem = sampled_measurement_problem(v, "rejected");
+                    problems.extend(problem.clone());
+                    problem.is_none()
+                } else {
+                    has_member(v, "threshold")
+                }
+            }),
             _ => found.iter().any(|v| counterexample(v).is_some()),
         };
         assert!(
             witnessed,
-            "{}: the {} record lacks the fields that make its failure checkable",
+            "{}: the {} record lacks the fields that make its failure checkable: {problems:?}",
             entry.label, entry.engine
         );
     }
@@ -313,6 +630,21 @@ fn passing_records_settle_without_a_counterexample() -> TestResult {
     {
         let record = record(entry)?;
         let found = verdicts(&record);
+        if is_compile_only(entry)? {
+            // A compilation states no verdict: it records success and no member to settle.
+            assert!(
+                found.is_empty(),
+                "{}: a compile case records no verdict",
+                entry.label
+            );
+            assert_eq!(
+                record.get("category").and_then(Value::as_str),
+                Some("success"),
+                "{}: a compile case that exits 0 records success",
+                entry.label
+            );
+            continue;
+        }
         assert!(!found.is_empty(), "{}: no verdict recorded", entry.label);
         for verdict in &found {
             assert!(
@@ -328,11 +660,17 @@ fn passing_records_settle_without_a_counterexample() -> TestResult {
             );
         }
         if entry.engine == "probability" {
-            assert!(
-                found.iter().any(|v| has_member(v, "threshold")),
-                "{}: a probability record names its threshold",
-                entry.label
-            );
+            for verdict in &found {
+                if has_member(verdict, "threshold") {
+                    continue;
+                }
+                let problem = probability_pass_problem(verdict);
+                assert!(
+                    problem.is_none(),
+                    "{}: a probability record names no threshold and does not settle against the claim's bound: {problem:?}",
+                    entry.label
+                );
+            }
         }
     }
     Ok(())
