@@ -2,6 +2,15 @@ name = "grammar"
 summary = "Source grammar: lexical boundaries, expressions, declarations, claims, and syntax refusals."
 
 [[case]]
+id = "request-run-arithmetic-grouping"
+statement = "A native run request calls a pure function."
+file = "rules/arithmetic-grouping.fsl"
+command = "run requests/arithmetic-grouping.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "20"
+
+[[case]]
 id = "header-only"
 statement = "A source containing only its header parses; package completeness is checked later."
 file = "rules/header-only.fsl"

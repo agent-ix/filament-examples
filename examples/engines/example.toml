@@ -2,6 +2,24 @@ name = "engines"
 summary = "Analysis engines and CLI verbs: hybrid, timed, probability, schedulability, deadlock, simulation and the verbs a build does not route."
 
 [[case]]
+id = "request-replay-entry"
+statement = "A native replay request replays an input for a pure function."
+file = "rules/replay-entry.fsl"
+command = "replay requests/replay-entry.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "1 input inconclusive"
+
+[[case]]
+id = "request-export-tank"
+statement = "A native run request with an export member exports a model invariant."
+file = "rules/export-tank.fsl"
+command = "export requests/export-tank.json"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
+
+[[case]]
 id = "verb-prove-not-routed"
 statement = "The prove verb is accepted but this build does not route it: the outcome names the verb under unsupported_operation and exits 21."
 file = "rules/hybrid.fsl"
