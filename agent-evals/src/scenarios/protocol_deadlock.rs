@@ -197,7 +197,7 @@ fn analyze(
     })
 }
 
-fn one_item<'a>(document: &'a Value) -> Checked<&'a Value> {
+fn one_item(document: &Value) -> Checked<&Value> {
     document["items"]
         .as_array()
         .filter(|items| items.len() == 1)
