@@ -26,9 +26,13 @@ make -C "$work" check staged
 # Licence notices: the licence directory, Node's licence and the Ubuntu copyright files.
 lic=/usr/share/licenses/filament-toolchain
 for f in README.md THIRD-PARTY.md THIRD-PARTY-LICENSES.txt BUILD-FACTS.txt DRIVER-TAG \
-         texts/filament-driver.LICENSE texts/quire-cli.LICENSE texts/quoin.LICENSE \
+         NPM-PACKAGES.txt texts/filament-driver.LICENSE \
          texts/filament-examples.LICENSE texts/nodejs.LICENSE; do
   [ -s "$lic/$f" ] || { echo "missing $lic/$f"; exit 1; }
 done
+grep -q '^@agent-ix/quire-cli ' "$lic/NPM-PACKAGES.txt" || { echo "missing quire package record"; exit 1; }
+grep -q '^@agent-ix/quoin ' "$lic/NPM-PACKAGES.txt" || { echo "missing quoin package record"; exit 1; }
+[ -s /opt/npm/node_modules/@agent-ix/quire-cli/LICENSE ] || { echo "missing quire-cli licence"; exit 1; }
+[ -s /opt/npm/node_modules/@agent-ix/quoin/LICENSE ] || { echo "missing quoin licence"; exit 1; }
 [ -s /usr/local/LICENSE ] || { echo "missing /usr/local/LICENSE"; exit 1; }
 [ -s /usr/share/doc/git/copyright ] || { echo "missing /usr/share/doc/git/copyright"; exit 1; }

@@ -4,29 +4,22 @@
 //   node tools/licences.mjs collect-runner
 //   node tools/licences.mjs render [--out <dir>]
 //   node tools/licences.mjs check
-//   node tools/licences.mjs verify-installed <node_modules dir> <driver tag>
+//   node tools/licences.mjs verify-installed <driver tag>
+//   node tools/licences.mjs collect-installed <node_modules dir> <package-lock.json> <out file>
 //
-// `collect` reads checkouts of the three programs at the tags the image ships
-// (filament-driver, quire-cli and quoin), and this repository's example runner
-// (tools/fsl-examples, which the image builds from the same commit), and writes
-// image/licenses/data/ with one JSON file for each program: its repository, tag
-// and commit (none for the runner, whose source is the image revision), and every Rust crate
-// that cargo builds into it (from `cargo metadata --locked`, for the two Linux
-// targets of the image, development dependencies left out), with the licence
-// identifier the crate declares and the hashes of the licence files in the crate.
-// It also writes the licence texts (texts.json) and the licence file of each
-// program (image/licenses/texts/). It needs cargo and the network for git
-// dependencies, and is run by hand when a shipped version changes.
+// `collect` reads checkouts of the driver, quire-cli and quoin source tags plus
+// this repository's example runner. It records Rust crate licences in
+// image/licenses/data and the corresponding licence texts. npm package versions
+// and artifact integrity are deliberately excluded from checked-in data.
 // `collect-runner` collects the runner alone, for a change to its Cargo.lock.
 //
 // `render` writes THIRD-PARTY.md and THIRD-PARTY-LICENSES.txt from that data.
 // `check` fails when the files committed in image/licenses differ from what
 // `render` writes, so the notice cannot drift from its data (make test), and
 // when the runner's Cargo.lock names crates its data does not describe.
-// `verify-installed` runs inside the image build: it fails when the installed npm
-// programs or the downloaded driver are not the versions the data describes, or
-// when the runner's Cargo.lock disagrees with its data. A driver built from source
-// (tag "source") is not checked.
+// `verify-installed` checks the driver tag and runner lock data during the image
+// build. `collect-installed` writes npm package records from the installed tree
+// and package lock. A driver built from source (tag "source") is not checked.
 import { spawnSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import { copyFileSync, existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
@@ -49,6 +42,7 @@ const FIRST_PARTY = "https://github.com/agent-ix/";
 const LICENCE_FILE = /^(licen[sc]e|copying|unlicense|notice)/i;
 
 const sha = (text) => createHash("sha256").update(text).digest("hex").slice(0, 16);
+const sha256 = (bytes) => createHash("sha256").update(bytes).digest("hex");
 const git = (dir, ...args) => {
   const r = spawnSync("git", args, { cwd: dir, encoding: "utf8" });
   if (r.status !== 0) throw new Error(`git ${args.join(" ")} failed in ${dir}: ${r.stderr}`);
@@ -151,6 +145,7 @@ function runnerData(prog, texts) {
 
 const writeJson = (file, data) => writeFileSync(join(DIR, "data", file), JSON.stringify(data, null, 2) + "\n");
 const sortedTexts = (texts) => Object.fromEntries(Object.entries(texts).sort(([a], [b]) => a.localeCompare(b)));
+const dynamicNpmProgram = (prog) => ["quire-cli", "quoin"].includes(prog.key);
 
 function collect(args) {
   const texts = {};
@@ -166,19 +161,20 @@ function collect(args) {
     const manifestDir = join(dir, prog.manifestDir);
     const tag = git(dir, "describe", "--tags", "--exact-match");
     const commit = git(dir, "rev-parse", "HEAD");
-    const { crates } = cratesOf(prog, manifestDir, texts);
+    const allCrates = cratesOf(prog, manifestDir, texts).crates;
+    const crates = dynamicNpmProgram(prog)
+      ? allCrates.filter((crate) => crate.name !== prog.root)
+      : allCrates;
     const data = {
       program: prog.id,
       binary: prog.binary,
-      version: releaseVersion(tag),
       repository: `${FIRST_PARTY}${prog.id}`,
-      tag,
-      commit,
       targets: TARGETS,
       crates,
     };
+    if (prog.key === "driver") Object.assign(data, { version: releaseVersion(tag), tag, commit });
     writeJson(`${prog.id}.json`, data);
-    copyFileSync(join(dir, "LICENSE"), join(DIR, "texts", `${prog.id}.LICENSE`));
+    if (!dynamicNpmProgram(prog)) copyFileSync(join(dir, "LICENSE"), join(DIR, "texts", `${prog.id}.LICENSE`));
   }
   writeJson("texts.json", sortedTexts(texts));
 }
@@ -247,11 +243,14 @@ export function renderThirdParty({ programs }) {
   L.push("## Programs of the toolchain", "");
   L.push("| Program | Version | Licence | Licence text in the image | Source repository | Tag | Commit |", "| --- | --- | --- | --- | --- | --- | --- |");
   for (const p of programs) {
+    const dynamicNpm = ["quire-cli", "quoin"].includes(p.program);
     const rootName = programOf(p).root;
     const root = p.crates.find((c) => c.name === rootName);
     const text = programOf(p).text ?? p.program;
     if (p.path) {
       L.push(`| \`${p.binary}\` (${p.path}) | ${p.version} | ${root.licence} | \`texts/${text}.LICENSE\` | ${p.repository} | built from this image's revision | the commit in the image label \`org.opencontainers.image.revision\` |`);
+    } else if (dynamicNpm) {
+      L.push(`| \`${p.binary}\` (${p.program}) | see \`NPM-PACKAGES.txt\` | ${root?.licence ?? licenceOf(p)} | see \`NPM-PACKAGES.txt\` | ${p.repository} | see \`NPM-PACKAGES.txt\` | see \`NPM-PACKAGES.txt\` |`);
     } else {
       L.push(`| \`${p.binary}\` (${p.program}) | ${p.version} | ${root.licence} | \`texts/${text}.LICENSE\` | ${p.repository} | ${p.tag} | ${p.commit} |`);
     }
@@ -261,19 +260,22 @@ export function renderThirdParty({ programs }) {
   L.push("| Component | Licence | Where its notices are |", "| --- | --- | --- |");
   L.push("| Node.js, with the npm and corepack that come with it | as listed in Node's own licence file | `texts/nodejs.LICENSE`; the version is in `BUILD-FACTS.txt` |");
   L.push("| Ubuntu 26.04 packages | the licence of each package | `/usr/share/doc/<package>/copyright`; the package list is in `BUILD-FACTS.txt` |", "");
+  L.push("Npm package versions, artifact integrity, declared licences and installed licence-file digests are generated from the installed package tree in `NPM-PACKAGES.txt`.", "");
   for (const p of programs) {
+    const dynamicNpm = ["quire-cli", "quoin"].includes(p.program);
     const licence = licenceOf(p);
-    const first = p.crates.filter((c) => isFirstParty(c, licence));
-    const third = p.crates.filter((c) => !isFirstParty(c, licence));
+    const crates = dynamicNpm ? p.crates.filter((c) => c.name !== programOf(p).root) : p.crates;
+    const first = crates.filter((c) => isFirstParty(c, licence));
+    const third = crates.filter((c) => !isFirstParty(c, licence));
     const where = p.path ? `${p.path} in ${p.repository} at the image revision` : `${p.repository}/tree/${p.tag}`;
-    L.push(p.path ? `## Rust crates built into \`${p.binary}\` (${p.path})` : `## Rust crates built into \`${p.binary}\` (${p.program} ${p.tag})`, "");
-    L.push(`Taken from \`cargo metadata --locked\` of ${where}, for ${p.targets.join(" and ")}, normal and build dependencies. There are ${p.crates.length} crates: ${first.length} first-party and ${third.length} third-party. Build-time crates (procedural macros, build scripts) are included, so the list may name a few crates that are not linked into the binary.`, "");
+    L.push(p.path ? `## Rust crates built into \`${p.binary}\` (${p.path})` : `## Rust crates built into \`${p.binary}\` (${dynamicNpm ? "installed npm package" : p.tag})`, "");
+    L.push(`Taken from \`cargo metadata --locked\` of ${dynamicNpm ? `the source corresponding to the installed package in \`NPM-PACKAGES.txt\`` : where}, for ${p.targets.join(" and ")}, normal and build dependencies. There are ${crates.length} crates: ${first.length} first-party and ${third.length} third-party. Build-time crates (procedural macros, build scripts) are included, so the list may name a few crates that are not linked into the binary.`, "");
     L.push("Licences of the third-party crates, as the crates declare them:", "");
     L.push("| Declared licence | Crates |", "| --- | --- |");
     for (const [k, n] of kinds(third)) L.push(`| ${cell(k)} | ${n} |`);
     L.push("", `First-party crates (${licence}). The corresponding source is at the repository and commit shown:`, "");
     L.push("| Crate | Version | Repository | Commit |", "| --- | --- | --- | --- |");
-    const commitOf = (c) => c.commit ?? (p.path ? "the image revision" : `${p.commit} (tag ${p.tag})`);
+    const commitOf = (c) => c.commit ?? (p.path ? "the image revision" : dynamicNpm ? "the source corresponding to the installed package" : `${p.commit} (tag ${p.tag})`);
     for (const c of first) L.push(`| ${c.name} | ${c.version} | ${c.repository ?? p.repository} | ${commitOf(c)} |`);
     L.push("", "Third-party crates:", "");
     L.push("| Crate | Version | Declared licence |", "| --- | --- | --- |");
@@ -295,7 +297,7 @@ export function renderTexts({ programs, texts }) {
       if (c.licenceFiles.length === 0) missing.add(`${c.name} ${c.version}`);
       for (const h of c.licenceFiles) {
         if (!users.has(h)) users.set(h, new Set());
-        users.get(h).add(`${c.name} ${c.version}`);
+        users.get(h).add(c.name);
       }
     }
   }
@@ -312,6 +314,79 @@ export function renderTexts({ programs, texts }) {
     out.push("These crates declare a licence in Cargo.toml but their package has no licence file:", [...missing].sort().join(", "), "");
   }
   return out.join("\n");
+}
+
+const NPM_LICENCE_FILE = /^(licen[sc]e|copying|unlicense|notice)/i;
+
+// Records the npm packages that npm ci actually installed. The lockfile supplies
+// each artifact's resolved URL and integrity; package metadata and licence files
+// come from node_modules, the tree the image will ship.
+export function collectInstalledNpm({ modules, lockPath }) {
+  const lock = JSON.parse(readFileSync(lockPath, "utf8"));
+  const manifest = JSON.parse(readFileSync(join(dirname(lockPath), "package.json"), "utf8"));
+  const entries = Object.entries(lock.packages ?? {}).filter(([path]) => path.startsWith("node_modules/"));
+  const installed = [];
+  const installedPaths = new Set();
+  for (const [lockPathKey, locked] of entries) {
+    const packageDir = join(modules, lockPathKey.slice("node_modules/".length));
+    const packageFile = join(packageDir, "package.json");
+    if (!existsSync(packageFile)) continue; // npm omits optional packages for other platforms.
+    const pkg = JSON.parse(readFileSync(packageFile, "utf8"));
+    if (pkg.version !== locked.version) throw new Error(`${pkg.name} is ${pkg.version} in node_modules but ${locked.version} in package-lock.json`);
+    installedPaths.add(lockPathKey);
+    const licenceFiles = readdirSync(packageDir)
+      .filter((name) => NPM_LICENCE_FILE.test(name))
+      .sort()
+      .map((name) => ({ name, digest: sha256(readFileSync(join(packageDir, name))) }));
+    if (Object.hasOwn(manifest.dependencies ?? {}, pkg.name) && licenceFiles.length === 0) {
+      throw new Error(`${pkg.name} has no licence file in its installed package`);
+    }
+    installed.push({
+      name: pkg.name,
+      version: pkg.version,
+      path: lockPathKey.slice("node_modules/".length),
+      direct: Object.hasOwn(manifest.dependencies ?? {}, pkg.name),
+      licence: typeof pkg.license === "string" ? pkg.license : JSON.stringify(pkg.license ?? pkg.licenses ?? "none declared"),
+      repository: typeof pkg.repository === "string" ? pkg.repository : pkg.repository?.url ?? "not declared",
+      resolved: locked.resolved ?? "not recorded",
+      integrity: locked.integrity ?? "not recorded",
+      licenceFiles,
+    });
+  }
+  for (const [name, wanted] of Object.entries(manifest.dependencies ?? {})) {
+    const key = `node_modules/${name}`;
+    const locked = lock.packages?.[key];
+    if (!locked || locked.version !== wanted || !installedPaths.has(key)) {
+      throw new Error(`${name} is not installed at the package.json version recorded in package-lock.json`);
+    }
+  }
+  installed.sort((a, b) => a.name.localeCompare(b.name) || a.version.localeCompare(b.version));
+  const lines = [
+    "Installed npm packages. Generated during image build from node_modules and package-lock.json.",
+    "The package-lock integrity is the downloaded artifact digest; licence-file digests are SHA-256.",
+    "",
+  ];
+  for (const pkg of installed) {
+    lines.push(`${pkg.name} ${pkg.version}`);
+    lines.push(`  Licence: ${pkg.licence}`);
+    lines.push(`  Repository: ${pkg.repository}`);
+    if (pkg.direct) lines.push(`  Source tag: v${pkg.version}`);
+    lines.push(`  Resolved: ${pkg.resolved}`);
+    lines.push(`  Integrity: ${pkg.integrity}`);
+    if (pkg.licenceFiles.length) {
+      lines.push("  Licence files:");
+      for (const file of pkg.licenceFiles) lines.push(`    /opt/npm/node_modules/${pkg.path}/${file.name} sha256:${file.digest}`);
+    } else {
+      lines.push("  Licence files: none found in installed package");
+    }
+    lines.push("");
+  }
+  return lines.join("\n");
+}
+
+function collectInstalledNpmToFile(modules, lockPath, output) {
+  mkdirSync(dirname(output), { recursive: true });
+  writeFileSync(output, collectInstalledNpm({ modules, lockPath }));
 }
 
 function render(out) {
@@ -333,22 +408,12 @@ function check() {
 }
 
 // Run in the image build. `modules` is the global node_modules directory.
-function verifyInstalled(modules, driverTag) {
+function verifyInstalled(driverTag) {
   const { programs } = loadData();
   const errors = runnerDrift(programs, ROOT);
-  for (const p of programs) {
-    if (p.path) continue;
-    if (p.program === "filament-driver") {
-      if (driverTag !== "source" && driverTag !== p.tag) errors.push(`the driver is ${driverTag}, the licence data describes ${p.tag}`);
-      continue;
-    }
-    const base = join(modules, "@agent-ix", p.program);
-    const pkg = JSON.parse(readFileSync(join(base, "package.json"), "utf8"));
-    if (pkg.version !== p.version) errors.push(`@agent-ix/${p.program} is ${pkg.version}, the licence data describes ${p.version}`);
-    if (readFileSync(join(base, "LICENSE"), "utf8") !== readFileSync(join(DIR, "texts", `${p.program}.LICENSE`), "utf8"))
-      errors.push(`the LICENSE of @agent-ix/${p.program} differs from texts/${p.program}.LICENSE`);
-  }
-  if (errors.length) throw new Error(`${errors.join("; ")}. Update image/licenses with node tools/licences.mjs collect.`);
+  const driver = programs.find((p) => p.program === "filament-driver");
+  if (driverTag !== "source" && driverTag !== driver.tag) errors.push(`the driver is ${driverTag}, the licence data describes ${driver.tag}`);
+  if (errors.length) throw new Error(`${errors.join("; ")}. Refresh the driver or runner records if those inputs changed.`);
 }
 
 export function parseArgs(argv) {
@@ -368,8 +433,9 @@ if (import.meta.url === pathToFileURL(process.argv[1] ?? "").href) {
     else if (cmd === "collect-runner") collectRunner();
     else if (cmd === "render") render(args.out ?? DIR);
     else if (cmd === "check") check();
-    else if (cmd === "verify-installed") verifyInstalled(args._[1], args._[2]);
-    else throw new Error("usage: licences.mjs collect|collect-runner|render|check|verify-installed");
+    else if (cmd === "verify-installed") verifyInstalled(args._[1]);
+    else if (cmd === "collect-installed") collectInstalledNpmToFile(args._[1], args._[2], args._[3]);
+    else throw new Error("usage: licences.mjs collect|collect-runner|render|check|verify-installed|collect-installed");
   } catch (e) {
     console.error(e.message);
     process.exit(1);

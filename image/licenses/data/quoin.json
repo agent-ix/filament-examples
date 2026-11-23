@@ -1,10 +1,7 @@
 {
   "program": "quoin",
   "binary": "quoin",
-  "version": "0.36.10",
   "repository": "https://github.com/agent-ix/quoin",
-  "tag": "v0.36.10",
-  "commit": "9de4ddfcff83d3199f52f21ada10e43ab5fea966",
   "targets": [
     "aarch64-unknown-linux-gnu",
     "x86_64-unknown-linux-gnu"
@@ -3044,15 +3041,6 @@
     },
     {
       "name": "quoin-change-assurance",
-      "version": "0.31.1",
-      "licence": "AGPL-3.0-or-later",
-      "source": "workspace",
-      "repository": "https://github.com/agent-ix/quoin",
-      "commit": null,
-      "licenceFiles": []
-    },
-    {
-      "name": "quoin-cli",
       "version": "0.31.1",
       "licence": "AGPL-3.0-or-later",
       "source": "workspace",

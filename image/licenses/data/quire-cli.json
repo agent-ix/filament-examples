@@ -1,10 +1,7 @@
 {
   "program": "quire-cli",
   "binary": "quire",
-  "version": "0.52.1",
   "repository": "https://github.com/agent-ix/quire-cli",
-  "tag": "v0.52.1",
-  "commit": "3adfef308d784238417af7804971e7d1b058cf74",
   "targets": [
     "aarch64-unknown-linux-gnu",
     "x86_64-unknown-linux-gnu"
@@ -1484,17 +1481,6 @@
       "commit": null,
       "licenceFiles": [
         "fd6e8d4faaa8ad58"
-      ]
-    },
-    {
-      "name": "quire-cli",
-      "version": "0.52.1",
-      "licence": "AGPL-3.0-or-later",
-      "source": "workspace",
-      "repository": "https://github.com/agent-ix/quire-cli",
-      "commit": null,
-      "licenceFiles": [
-        "0d96a4ff68ad6d4b"
       ]
     },
     {

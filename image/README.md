@@ -71,7 +71,9 @@ The license texts, a notice for every bundled component, and the places where th
 docker run --rm ghcr.io/agent-ix/filament-toolchain cat /usr/share/licenses/filament-toolchain/README.md
 ```
 
-The same files are in [image/licenses](licenses). The source of the three programs is public, at the tag each was built from:
+The checked-in driver and runner notices are in [image/licenses](licenses). The image also generates `NPM-PACKAGES.txt` from the installed npm tree and lockfile. It records package versions, artifact integrity, declared licences, source and licence-file digests.
+
+The source of the three programs is public:
 
 | Program | Source |
 | --- | --- |
@@ -79,4 +81,4 @@ The same files are in [image/licenses](licenses). The source of the three progra
 | `quire` | [agent-ix/quire-cli](https://github.com/agent-ix/quire-cli) |
 | `quoin` | [agent-ix/quoin](https://github.com/agent-ix/quoin) |
 
-The Ubuntu copyright files stay in `/usr/share/doc/<package>/copyright`. The image build fails when the installed programs are not the versions described in `image/licenses`. After you change a version, run `node tools/licences.mjs collect` on checkouts of the three tags, then `node tools/licences.mjs render`; `make test` fails when the rendered files are stale.
+The Ubuntu copyright files stay in `/usr/share/doc/<package>/copyright`. `npm ci` installs the versions and verifies artifact integrity from `image/package-lock.json`. The image generates npm licence records from that installed tree.
