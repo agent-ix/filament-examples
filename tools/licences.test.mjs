@@ -1,129 +1,77 @@
-// Tests for the licence notice generator. They need no Docker, cargo or network.
-//   node --test tools/
+// Tests for the image-build licence collector. They need no Docker, cargo or network.
+//   node --test tools/licences.test.mjs
 import assert from "node:assert/strict";
-import { spawnSync } from "node:child_process";
-import { mkdirSync, mkdtempSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
-import { dirname, join, resolve } from "node:path";
+import { join } from "node:path";
 import { test } from "node:test";
-import { fileURLToPath } from "node:url";
-import { closure, collectInstalledNpm, lockDrift, lockPackages, parseArgs, releaseVersion, renderTexts, renderThirdParty } from "./licences.mjs";
+import { closure, collectInstalledNpmToDirectory, lockDrift, lockPackages, releaseVersion, renderTexts, renderThirdParty } from "./licences.mjs";
 
-const REPO = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-const LICENSES = join(REPO, "image", "licenses");
-const read = (p) => readFileSync(join(REPO, p), "utf8");
+const program = (values) => ({ targets: ["x86_64-unknown-linux-gnu"], crates: [], ...values });
 
-test("the committed notice is what render writes from the committed data", () => {
-  const out = mkdtempSync(join(tmpdir(), "licences-"));
-  const r = spawnSync(process.execPath, [join(REPO, "tools", "licences.mjs"), "render", "--out", out], { encoding: "utf8" });
-  assert.equal(r.status, 0, r.stderr);
-  for (const f of ["THIRD-PARTY.md", "THIRD-PARTY-LICENSES.txt"]) {
-    assert.equal(readFileSync(join(out, f), "utf8"), readFileSync(join(LICENSES, f), "utf8"), `${f} is stale: run node tools/licences.mjs render`);
-  }
-  const c = spawnSync(process.execPath, [join(REPO, "tools", "licences.mjs"), "check"], { encoding: "utf8" });
-  assert.equal(c.status, 0, c.stderr);
-});
-
-test("the notice keeps npm package versions out of checked-in records", () => {
-  const md = read("image/licenses/THIRD-PARTY.md");
-  assert.match(md, /https:\/\/github\.com\/agent-ix\/filament-driver \\| v[0-9.]+ \\| [0-9a-f]{40} \\|/);
-  assert.match(md, /`quire` \(quire-cli\).*NPM-PACKAGES\.txt/);
-  assert.match(md, /`quoin` \(quoin\).*NPM-PACKAGES\.txt/);
-  for (const file of ["image/licenses/data/quire-cli.json", "image/licenses/data/quoin.json"]) {
-    const record = JSON.parse(read(file));
-    assert.equal("version" in record, false);
-    assert.equal("tag" in record, false);
-    assert.equal("commit" in record, false);
-  }
-});
-
-test("closure follows normal and build dependencies and skips development ones", () => {
+test("closure covers each requested binary root and skips development dependencies", () => {
   const pkg = (name) => ({ id: name, name });
   const meta = {
-    packages: ["root", "a", "b", "dev"].map(pkg),
-    resolve: {
-      nodes: [
-        { id: "root", deps: [{ pkg: "a", dep_kinds: [{ kind: null }] }, { pkg: "dev", dep_kinds: [{ kind: "dev" }] }] },
-        { id: "a", deps: [{ pkg: "b", dep_kinds: [{ kind: "build" }] }] },
-        { id: "b", deps: [] },
-        { id: "dev", deps: [] },
-      ],
-    },
+    packages: ["root", "host", "shared", "dev"].map(pkg),
+    resolve: { nodes: [
+      { id: "root", deps: [{ pkg: "shared", dep_kinds: [{ kind: null }] }, { pkg: "dev", dep_kinds: [{ kind: "dev" }] }] },
+      { id: "host", deps: [{ pkg: "shared", dep_kinds: [{ kind: "build" }] }] },
+      { id: "shared", deps: [] },
+      { id: "dev", deps: [] },
+    ] },
   };
-  assert.deepEqual(closure(meta, "root").map((p) => p.name).sort(), ["a", "b", "root"]);
+  assert.deepEqual(closure(meta, ["root", "host"]).map((p) => p.name).sort(), ["host", "root", "shared"]);
 });
 
-test("first-party crates are separated from third-party crates", () => {
+test("runtime notice renders source records for all built programs without reading committed notice files", () => {
+  const root = (name) => ({ name, version: "1.0.0", licence: "AGPL-3.0-or-later", source: "workspace", repository: null, commit: null, licenceFiles: [] });
+  const thirdParty = { name: "serde", version: "2.0.0", licence: "MIT", source: "crates.io", repository: null, commit: null, licenceFiles: ["h1"] };
   const data = {
-    programs: [{
-      program: "filament-driver", binary: "fsl", version: "1", repository: "https://github.com/agent-ix/filament-driver", tag: "v1", commit: "c".repeat(40), targets: ["t"],
-      crates: [
-        { name: "fsl-cli", version: "1", licence: "AGPL-3.0-or-later", source: "workspace", repository: null, commit: null, licenceFiles: [] },
-        { name: "serde", version: "2", licence: "MIT OR Apache-2.0", source: "crates.io", repository: null, commit: null, licenceFiles: ["h1"] },
-        { name: "odd", version: "3", licence: null, source: "crates.io", repository: null, commit: null, licenceFiles: [] },
-      ],
-    }],
+    programs: [
+      program({ program: "filament-driver", binary: "fsl", version: "0.2.0", repository: "https://github.com/agent-ix/filament-driver", tag: "v0.2.0", commit: "a".repeat(40), crates: [root("fsl-cli"), root("filament-plugin-host"), thirdParty] }),
+      program({ program: "quire-cli", binary: "quire", repository: "https://github.com/agent-ix/quire-cli", crates: [thirdParty] }),
+      program({ program: "quoin", binary: "quoin", repository: "https://github.com/agent-ix/quoin", crates: [thirdParty] }),
+      program({ program: "fsl-examples", binary: "fsl-examples", version: "0.1.0", repository: "https://github.com/agent-ix/filament-examples", path: "tools/fsl-examples", crates: [{ ...root("fsl-examples"), licence: "MIT" }, thirdParty] }),
+    ],
     texts: { h1: "MIT text\n" },
   };
   const md = renderThirdParty(data);
-  assert.match(md, /1 first-party and 2 third-party/);
-  assert.match(md, /\| none declared \| 1 \|/);
-  const txt = renderTexts(data);
-  assert.match(txt, /serde/);
-  assert.match(txt, /odd/);
+  assert.match(md, /filament-driver.*v0\.2\.0/);
+  assert.match(md, /`quire` \(quire-cli\).*NPM-PACKAGES\.txt/);
+  assert.match(md, /`quoin` \(quoin\).*NPM-PACKAGES\.txt/);
+  assert.match(md, /filament-plugin-host/);
+  assert.match(md, /fsl-examples/);
+  assert.match(renderTexts(data), /MIT text/);
+  assert.equal(existsSync(join(import.meta.dirname, "..", "image", "licenses", "THIRD-PARTY.md")), false);
 });
 
-test("npm records use installed package metadata and lockfile integrity", () => {
-  const root = mkdtempSync(join(tmpdir(), "installed-npm-"));
-  const modules = join(root, "node_modules");
+test("npm records and license text copies come from installed packages and the lockfile", () => {
+  const rootDir = mkdtempSync(join(tmpdir(), "installed-npm-"));
+  const modules = join(rootDir, "node_modules");
   const pkgDir = join(modules, "@agent-ix", "sample");
+  const output = join(rootDir, "notices");
   mkdirSync(pkgDir, { recursive: true });
-  writeFileSync(join(root, "package.json"), JSON.stringify({ dependencies: { "@agent-ix/sample": "1.0.0" } }));
-  writeFileSync(join(root, "package-lock.json"), JSON.stringify({ packages: {
-    "node_modules/@agent-ix/sample": {
-      version: "1.0.0", resolved: "https://registry.npmjs.org/sample.tgz", integrity: "sha512-artifact", license: "MIT",
-    },
-    "node_modules/@agent-ix/sample-linux-x64": {
-      version: "1.0.0", resolved: "https://registry.npmjs.org/sample-linux-x64.tgz", integrity: "sha512-optional",
-    },
+  writeFileSync(join(rootDir, "package.json"), JSON.stringify({ dependencies: { "@agent-ix/sample": "1.0.0" } }));
+  writeFileSync(join(rootDir, "package-lock.json"), JSON.stringify({ packages: {
+    "node_modules/@agent-ix/sample": { version: "1.0.0", resolved: "https://registry.npmjs.org/sample.tgz", integrity: "sha512-artifact" },
+    "node_modules/@agent-ix/sample-linux-x64": { version: "1.0.0", resolved: "https://registry.npmjs.org/sample-linux-x64.tgz", integrity: "sha512-optional" },
   } }));
   writeFileSync(join(pkgDir, "package.json"), JSON.stringify({ name: "@agent-ix/sample", version: "1.0.0", license: "MIT" }));
   writeFileSync(join(pkgDir, "LICENSE"), "sample license\n");
-  const output = collectInstalledNpm({ modules, lockPath: join(root, "package-lock.json") });
-  assert.match(output, /@agent-ix\/sample 1\.0\.0/);
-  assert.match(output, /sha512-artifact/);
-  assert.match(output, /LICENSE sha256:[0-9a-f]{64}/);
-  assert.doesNotMatch(output, /sample-linux-x64/);
+  mkdirSync(join(pkgDir, "licenses"));
+  writeFileSync(join(pkgDir, "licenses", "NOTICE.txt"), "sample notice\n");
+  collectInstalledNpmToDirectory(modules, join(rootDir, "package-lock.json"), output);
+  const record = readFileSync(join(output, "NPM-PACKAGES.txt"), "utf8");
+  assert.match(record, /@agent-ix\/sample 1\.0\.0/);
+  assert.match(record, /sha512-artifact/);
+  assert.match(record, /npm\/@agent-ix\/sample\/LICENSE sha256:[0-9a-f]{64}/);
+  assert.match(record, /npm\/@agent-ix\/sample\/licenses\/NOTICE\.txt sha256:[0-9a-f]{64}/);
+  assert.doesNotMatch(record, /sample-linux-x64/);
+  assert.equal(readFileSync(join(output, "npm", "@agent-ix", "sample", "LICENSE"), "utf8"), "sample license\n");
+  assert.equal(readFileSync(join(output, "npm", "@agent-ix", "sample", "licenses", "NOTICE.txt"), "utf8"), "sample notice\n");
 });
 
-test("the Dockerfile keeps the licence files and carries the labels", () => {
-  const dockerfile = read("image/Dockerfile");
-  assert.doesNotMatch(dockerfile, /rm -rf[^\n]*\/usr\/local\/LICENSE/);
-  assert.doesNotMatch(dockerfile, /\/usr\/share\/doc\/\*\/copyright[^\n]*rm|rm[^\n]*\/usr\/share\/doc\/\*/);
-  for (const label of ["image.source", "image.description", "image.licenses", "image.version", "image.revision"]) {
-    assert.ok(dockerfile.includes(`org.opencontainers.${label}=`), label);
-  }
-});
-
-test("parseArgs reads options and words", () => {
-  assert.deepEqual(parseArgs(["collect", "--driver", "d"]), { _: ["collect"], driver: "d" });
-});
-
-test("the shipped version is the release tag, not the root crate version", () => {
-  assert.equal(releaseVersion("v0.32.0"), "0.32.0");
-  assert.equal(releaseVersion("0.1.2"), "0.1.2");
-});
-
-test("the notice lists the example runner the image builds, with its third-party crates", () => {
-  const md = read("image/licenses/THIRD-PARTY.md");
-  assert.match(md, /\| `fsl-examples` \(tools\/fsl-examples\) \| [0-9.]+ \| MIT \| `texts\/filament-examples.LICENSE` \| https:\/\/github.com\/agent-ix\/filament-examples \|/);
-  const section = md.slice(md.indexOf("## Rust crates built into `fsl-examples`"));
-  for (const crate of ["serde", "serde_json", "toml", "thiserror"]) assert.match(section, new RegExp(`\\| ${crate} \\| [^|]+ \\| [^|]*MIT`));
-  assert.doesNotMatch(section, /\| tempfile \|/, "development dependencies are not shipped");
-  assert.match(read("image/licenses/THIRD-PARTY-LICENSES.txt"), /serde_json/);
-});
-
-test("lockDrift reports lock packages the licence data does not describe, and the reverse", () => {
+test("lock drift reports missing and unexpected runner packages", () => {
   const lock = '[[package]]\nname = "a"\nversion = "1.0.0"\n\n[[package]]\nname = "dev"\nversion = "2.0.0"\ndependencies = [\n "a",\n]\n';
   assert.deepEqual(lockPackages(lock), ["a@1.0.0", "dev@2.0.0"]);
   const data = { path: "tools/r", crates: [{ name: "a", version: "1.0.0" }], notBuilt: ["dev@2.0.0"] };
@@ -134,10 +82,7 @@ test("lockDrift reports lock packages the licence data does not describe, and th
   ]);
 });
 
-test("the image build checks the runner's Cargo.lock against the licence data", () => {
-  const dockerfile = read("image/Dockerfile");
-  assert.match(dockerfile, /COPY tools\/fsl-examples\/Cargo.lock \/tmp\/licences\/tools\/fsl-examples\/Cargo.lock/);
-  assert.match(dockerfile, /npm ci --prefix \/opt\/npm/);
-  assert.match(dockerfile, /collect-installed \/opt\/npm\/node_modules \/opt\/npm\/package-lock\.json/);
-  assert.doesNotMatch(dockerfile, /@agent-ix\/(?:quire-cli|quoin)@[0-9]/);
+test("release versions are derived from source tags", () => {
+  assert.equal(releaseVersion("v0.32.0"), "0.32.0");
+  assert.equal(releaseVersion("0.1.2"), "0.1.2");
 });

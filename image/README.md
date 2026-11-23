@@ -71,7 +71,7 @@ The license texts, a notice for every bundled component, and the places where th
 docker run --rm ghcr.io/agent-ix/filament-toolchain cat /usr/share/licenses/filament-toolchain/README.md
 ```
 
-The checked-in driver and runner notices are in [image/licenses](licenses). The image also generates `NPM-PACKAGES.txt` from the installed npm tree and lockfile. It records package versions, artifact integrity, declared licences, source and licence-file digests.
+The image generates its license inventory and notices from the exact driver source, npm packages installed from the lockfile, and runner source built into the image. It records crate versions and source commits, npm artifact integrity, declared licenses, and installed license-file digests.
 
 The source of the three programs is public:
 
@@ -81,4 +81,4 @@ The source of the three programs is public:
 | `quire` | [agent-ix/quire-cli](https://github.com/agent-ix/quire-cli) |
 | `quoin` | [agent-ix/quoin](https://github.com/agent-ix/quoin) |
 
-The Ubuntu copyright files stay in `/usr/share/doc/<package>/copyright`. `npm ci` installs the versions and verifies artifact integrity from `image/package-lock.json`. The image generates npm licence records from that installed tree.
+The Ubuntu copyright files stay in `/usr/share/doc/<package>/copyright`. `npm ci` installs the versions and verifies artifact integrity from `image/package-lock.json`. The license stage generates the notices from those installed packages and the exact Rust sources used in the image.
