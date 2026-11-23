@@ -774,7 +774,29 @@ fn rg_path_operands<'a>(words: &[&'a str]) -> Option<Vec<Option<&'a str>>> {
         }
         if options {
             match word {
-                "-n" | "-L" => {
+                "-n"
+                | "-L"
+                | "-i"
+                | "-S"
+                | "-s"
+                | "-l"
+                | "-c"
+                | "-H"
+                | "-w"
+                | "-F"
+                | "-v"
+                | "-u"
+                | "-uu"
+                | "--no-heading"
+                | "--hidden"
+                | "--follow"
+                | "--ignore-case"
+                | "--smart-case"
+                | "--line-number"
+                | "--files-with-matches"
+                | "--fixed-strings"
+                | "--no-ignore"
+                | "--color=never" => {
                     paths[index] = None;
                     continue;
                 }
@@ -943,6 +965,11 @@ fn inspect_command(
                         Some(word.as_str())
                     };
                     word_index += 1;
+                    let sed_script = program == Some("sed")
+                        && (word.starts_with("s/")
+                            || word.starts_with(':')
+                            || word.contains(";s/"));
+                    let path_word = if sed_script { None } else { path_word };
                     let destination = matches!(program, Some("cp" | "mv" | "ln"))
                         && statement[index + 1..]
                             .iter()
@@ -1491,6 +1518,26 @@ mod tests {
             );
             assert_eq!(result.ok, expected, "{extra_code}: {:?}", result.failures);
             assert_eq!(result.checks["transcript_boundary"]["ok"], expected);
+        }
+        Ok(())
+    }
+
+    /// Trace: FR-001 AC-6
+    #[test]
+    fn runtime_plain_rg_flags_and_sed_replacement_slashes_are_not_breaches() -> ScenarioResult<()> {
+        let (_temp, workspace, tools) = reference_policy_fixture()?;
+        for command in [
+            "rg -n -i 'grammar|native' docs",
+            "sed -i 's/  field /  /' model.fsl",
+            "sed -i ':a;N;$!ba;s/x\\n/y/' model.fsl",
+        ] {
+            let violations = boundary_violations(
+                &workspace,
+                &tools,
+                &[recorded(json!({"cmd":command}))],
+                true,
+            );
+            assert!(violations.is_empty(), "{command}: {violations:?}");
         }
         Ok(())
     }

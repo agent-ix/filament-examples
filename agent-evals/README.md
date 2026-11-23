@@ -28,6 +28,10 @@ The task asks the agent to create an identified StorageBin object with bounded f
 
 Each command invokes the SDK for that scenario and agent. It creates a private run directory outside the checkout, isolates the agent home, and removes the temporary credentials after execution. Claude project trust is set only for the fresh scenario workspace inside that temporary home. The result names the private SDK report for triage.
 
+You also need `tmux` 3.0 or newer on `PATH`; each run starts its own tmux server so no run inherits another run's home.
+
+The N=3 results for EV-001 are in the `runs_n3` block of [the codex](scorecards/EV-001-codex.json) and [the claude](scorecards/EV-001-claude.json) scorecards.
+
 Summarize one actual report:
 
 ```sh

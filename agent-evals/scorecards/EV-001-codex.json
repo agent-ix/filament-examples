@@ -66,5 +66,63 @@
     "Retained evidence grading did not rerun model checking, semantic probes, or the live agent.",
     "Assistant turns are unavailable in the SDK report.",
     "Full native domain-package authoring remains outside EV-001, pending QSL-1980 under EV-101."
-  ]
+  ],
+  "runs_n3": {
+    "date": "2026-11-23",
+    "cohort": {
+      "fsl": "4b743f6760dae7c5d49a363c5754b21a0dc02f5c",
+      "quoin": "0.36.10",
+      "quire": "0.52.1",
+      "codex_cli": "0.171.0",
+      "shipped_docs": "filament-docs origin/main at run time (src/content/docs/fsl)",
+      "native_grammar_reference": "docs/fsl/state/domain-models.md (no dedicated published native grammar file exists)"
+    },
+    "n": 3,
+    "pass_rate": "3/3",
+    "tool_calls": {
+      "runs": [
+        20,
+        17,
+        15
+      ],
+      "median": 17
+    },
+    "wall_ms": {
+      "runs": [
+        70498,
+        62487,
+        46442
+      ],
+      "median": 62487
+    },
+    "turns": null,
+    "total_tokens": [
+      475816,
+      441987,
+      324558
+    ],
+    "independent_invariant_bindings": [
+      156,
+      156,
+      156
+    ],
+    "failure_class": "none in the graded outcome; process friction: each run needed 3 or more refused fsl check attempts to find the object, field, operation and population syntax (doc gap)",
+    "earlier_attempts": [
+      {
+        "harness": "before the grader and tmux fixes",
+        "status": "failed",
+        "classification": "harness-error",
+        "cause": "Valid model: the grader's request used the argument shape fsl no longer accepts, the rg boundary parser refused -i, and a sed replacement containing a lone slash was read as the root path.",
+        "tool_calls": 20,
+        "wall_ms": 58469
+      },
+      {
+        "harness": "stale shared tmux server",
+        "status": "startup-failed",
+        "classification": "harness-error",
+        "cause": "Sessions inherited an earlier run's deleted HOME from a surviving default tmux server, so codex showed its sign-in screen.",
+        "attempts": 4
+      }
+    ]
+  }
 }

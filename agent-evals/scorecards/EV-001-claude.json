@@ -62,5 +62,45 @@
     "No authentication, device or login flow was initiated by this evaluation.",
     "No further automatic live retry is authorized.",
     "Raw reports, credentials, transcripts and workstation paths are excluded from this scorecard."
-  ]
+  ],
+  "runs_n3": {
+    "date": "2026-11-23",
+    "cohort": {
+      "fsl": "4b743f6760dae7c5d49a363c5754b21a0dc02f5c",
+      "quoin": "0.36.10",
+      "quire": "0.52.1",
+      "claude_code": "2.1.330",
+      "shipped_docs": "filament-docs origin/main at run time (src/content/docs/fsl)",
+      "native_grammar_reference": "docs/fsl/state/domain-models.md (no dedicated published native grammar file exists)"
+    },
+    "n": 3,
+    "pass_rate": "0/3",
+    "tool_calls": {
+      "runs": [
+        1,
+        1,
+        2
+      ],
+      "median": 1
+    },
+    "wall_ms": {
+      "runs": [
+        6820,
+        6841,
+        6112
+      ],
+      "median": 6820
+    },
+    "turns": null,
+    "failure_class": "harness-error: the SDK reported exit_reason complete after one or two tool calls while Claude was still working; no model.fsl was authored. No FSL, CLI or doc result is claimed for Claude.",
+    "earlier_attempts": [
+      {
+        "harness": "stale shared tmux server",
+        "status": "startup-failed",
+        "classification": "harness-error",
+        "cause": "Six runs showed Claude's first-run theme dialog because the shared tmux server handed the sessions a deleted HOME.",
+        "attempts": 6
+      }
+    ]
+  }
 }

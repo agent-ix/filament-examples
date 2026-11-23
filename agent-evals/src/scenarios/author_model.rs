@@ -102,7 +102,7 @@ fn value_run(
     limit: u64,
     names: (&str, &str),
 ) -> ScenarioResult<bool> {
-    let request = json!({"format":"native-run/1","request":{"models":[],"program":{"source":{"file":"probe.fsl","authority":"eval","identity":"invariant-probe","document":"InvariantProbe","formal_revision":1}},"call":{"function":"gradeInvariant","arguments":[{"parameter":names.0,"value":{"integer":occupied.to_string()}},{"parameter":names.1,"value":{"integer":limit.to_string()}}]}}});
+    let request = json!({"format":"native-run/1","request":{"models":[],"program":{"source":{"file":"probe.fsl","authority":"eval","identity":"invariant-probe","document":"InvariantProbe","formal_revision":1}},"call":{"function":"gradeInvariant","arguments":[{"parameter":names.0,"value":{"type":"integer","value":occupied.to_string()}},{"parameter":names.1,"value":{"type":"integer","value":limit.to_string()}}]}}});
     fs::write(directory.join("run.json"), request.to_string())?;
     let output = Command::new(&tools.fsl)
         .current_dir(directory)
@@ -118,7 +118,7 @@ fn value_run(
         )
         .into());
     }
-    doc["result"]["value"]["boolean"]
+    doc["result"]["value"]["value"]
         .as_bool()
         .ok_or_else(|| "invariant probe did not return a Boolean".into())
 }

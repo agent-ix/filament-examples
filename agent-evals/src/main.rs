@@ -118,6 +118,11 @@ fn run(scenario: &str, agent: &str) -> ScenarioResult<()> {
     let auth_cleanup = CredentialHome(home.clone());
     let work = root.join("work");
     fs::create_dir_all(&work)?;
+    // tmux sessions inherit a running server's environment, so a shared default
+    // server would hand this run a previous run's deleted HOME. A per-run socket
+    // directory gives every run its own server.
+    let tmux = root.join("tmux");
+    fs::create_dir_all(&tmux)?;
     let raw = root.join("raw-report.json");
     let cli = suite.join("node_modules/.bin/cli-evals");
     let provider_dir = std::env::current_exe()?
@@ -150,6 +155,7 @@ fn run(scenario: &str, agent: &str) -> ScenarioResult<()> {
         .env("FSL_EVAL_HOME", &home)
         .env("FSL_EVAL_AGENT", agent)
         .env("TMPDIR", &work)
+        .env("TMUX_TMPDIR", &tmux)
         .env("PATH", std::env::join_paths(paths)?)
         .env_remove("CLAUDE_CONFIG_DIR")
         .env_remove("CODEX_HOME")
