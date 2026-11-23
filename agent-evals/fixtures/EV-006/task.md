@@ -9,6 +9,9 @@ protocol in `baseline.native`:
 - Run both branches in parallel, join them, then finish.
 - The baseline has no declared terminal state.
 
+Place any terminal member inside the protocol after the role declarations and
+before the run.
+
 Run `fsl analyze deadlock-request.json --format json` and save its complete
 output as `deadlock.json`. Repair the protocol in `protocol.native` so the
 behavior is deadlock-free, either by declaring an intended terminal state or

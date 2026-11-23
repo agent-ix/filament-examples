@@ -183,21 +183,6 @@ fn direct_nodes<'a>(
         .collect()
 }
 
-fn terminal_nodes(parsed: &ParsedSource) -> Vec<&CstNode> {
-    let mut spans = std::collections::BTreeSet::new();
-    parsed
-        .cst()
-        .nodes()
-        .iter()
-        .filter(|node| {
-            tokens_in(parsed, node)
-                .first()
-                .is_some_and(|token| token == "terminal")
-        })
-        .filter(|node| spans.insert((node.span().start, node.span().end)))
-        .collect()
-}
-
 fn parse_protocol(source: &str) -> Checked<(ParsedSource, CstNode)> {
     let parsed = fsl_cst::parse(
         SourceIdentity::new("eval", "protocol-deadlock"),
@@ -205,14 +190,16 @@ fn parse_protocol(source: &str) -> Checked<(ParsedSource, CstNode)> {
         source.as_bytes(),
         fsl_cst::Limits::default(),
     )
-    .map_err(|_| Fault::new(FaultCode::WrongProtocol, "protocol source is not valid FSL"))?;
+    .map_err(|_| {
+        Fault::new(
+            FaultCode::CliGap,
+            "the grader's FSL parser rejected source accepted by the trusted CLI",
+        )
+    })?;
     if !parsed.is_admissible() {
         return Err(Fault::new(
-            FaultCode::WrongProtocol,
-            format!(
-                "protocol source is not admissible FSL: {:?}",
-                parsed.diagnostics()
-            ),
+            FaultCode::CliGap,
+            "the grader's FSL parser does not admit source accepted by the trusted CLI",
         ));
     }
     let protocols = parsed
@@ -273,6 +260,77 @@ fn branch_operation(parsed: &ParsedSource, branch: &CstNode) -> Checked<Vec<Stri
     Ok(tokens[on + 1..contracts].to_vec())
 }
 
+fn branch_contracts(parsed: &ParsedSource, branch: &CstNode) -> Checked<Vec<String>> {
+    let attempts = nodes_within(parsed, branch, Production::EventNode)
+        .into_iter()
+        .filter(|node| {
+            tokens_in(parsed, node)
+                .first()
+                .is_some_and(|token| token == "attempt")
+        })
+        .collect::<Vec<_>>();
+    if attempts.len() != 1 {
+        return Err(Fault::new(
+            FaultCode::WrongProtocol,
+            "each Fill branch must contain one attempt",
+        ));
+    }
+    let tokens = tokens_in(parsed, attempts[0]);
+    let Some(contracts) = tokens.iter().position(|token| token == "contracts") else {
+        return Err(Fault::new(
+            FaultCode::WrongProtocol,
+            "attempt must list its contracts",
+        ));
+    };
+    let Some(end) = tokens.iter().position(|token| token == "as") else {
+        return Err(Fault::new(
+            FaultCode::WrongProtocol,
+            "attempt must declare its result binder",
+        ));
+    };
+    if contracts >= end {
+        return Err(Fault::new(
+            FaultCode::WrongProtocol,
+            "attempt contract list is empty",
+        ));
+    }
+    Ok(tokens[contracts + 1..end]
+        .iter()
+        .filter(|token| !matches!(token.as_str(), "[" | "]" | ","))
+        .cloned()
+        .collect())
+}
+
+fn blocked_precondition_clause(deadlock: &Value) -> Checked<String> {
+    let blocked = deadlock
+        .get("items")
+        .and_then(Value::as_array)
+        .and_then(|items| items.first())
+        .and_then(|item| item.get("counterexample"))
+        .and_then(|counterexample| counterexample.get("blocked"))
+        .and_then(Value::as_array)
+        .ok_or_else(|| {
+            Fault::new(
+                FaultCode::WrongDeadlock,
+                "trusted counterexample has no blocked threads",
+            )
+        })?;
+    let clauses = blocked
+        .iter()
+        .filter(|entry| {
+            entry.pointer("/cause/type").and_then(Value::as_str) == Some("precondition")
+        })
+        .filter_map(|entry| entry.pointer("/cause/clause").and_then(Value::as_str))
+        .collect::<Vec<_>>();
+    if clauses.len() != 1 || clauses[0].is_empty() {
+        return Err(Fault::new(
+            FaultCode::WrongDeadlock,
+            "trusted counterexample must identify one blocked precondition clause",
+        ));
+    }
+    Ok(clauses[0].to_owned())
+}
+
 fn precondition_block<'a>(parsed: &'a ParsedSource, operation: &[String]) -> Checked<&'a CstNode> {
     let matches = parsed
         .cst()
@@ -308,7 +366,7 @@ fn precondition_block<'a>(parsed: &'a ParsedSource, operation: &[String]) -> Che
     if matches.len() != 1 {
         return Err(Fault::new(
             FaultCode::WrongProtocol,
-            "the second branch must have one matching precondition",
+            "the blocked branch must have one matching precondition",
         ));
     }
     let blocks = direct_nodes(parsed, matches[0], Production::Block);
@@ -321,10 +379,12 @@ fn precondition_block<'a>(parsed: &'a ParsedSource, operation: &[String]) -> Che
     Ok(blocks[0])
 }
 
-fn protocol_shape(
-    parsed: &ParsedSource,
-    protocol: &CstNode,
-) -> Checked<(Vec<String>, Vec<String>)> {
+struct BranchShape {
+    operation: Vec<String>,
+    contracts: Vec<String>,
+}
+
+fn protocol_shape(parsed: &ParsedSource, protocol: &CstNode) -> Checked<Vec<BranchShape>> {
     let parallels = nodes_within(parsed, protocol, Production::Parallel);
     if parallels.len() != 1 {
         return Err(Fault::new(
@@ -339,45 +399,93 @@ fn protocol_shape(
             "Fill must have two parallel branches",
         ));
     }
-    let first = branch_operation(parsed, branches[0])?;
-    let second = branch_operation(parsed, branches[1])?;
-    Ok((first, second))
+    branches
+        .into_iter()
+        .map(|branch| {
+            Ok(BranchShape {
+                operation: branch_operation(parsed, branch)?,
+                contracts: branch_contracts(parsed, branch)?,
+            })
+        })
+        .collect()
 }
 
-fn check_protocol_repair(baseline: &str, repaired: &str) -> Checked<()> {
+fn check_protocol_repair(baseline: &str, repaired: &str, deadlock: &Value) -> Checked<()> {
     let (base_parsed, base_protocol) = parse_protocol(baseline)?;
     let (repair_parsed, repair_protocol) = parse_protocol(repaired)?;
-    let (_, base_second_operation) = protocol_shape(&base_parsed, &base_protocol)?;
-    let (_, repair_second_operation) = protocol_shape(&repair_parsed, &repair_protocol)?;
-    if base_second_operation != repair_second_operation {
+    let base_branches = protocol_shape(&base_parsed, &base_protocol)?;
+    let repair_branches = protocol_shape(&repair_parsed, &repair_protocol)?;
+    let blocked_clause = blocked_precondition_clause(deadlock)?;
+    let base_targets = base_branches
+        .iter()
+        .filter(|branch| {
+            branch
+                .contracts
+                .iter()
+                .any(|contract| contract == &blocked_clause)
+        })
+        .collect::<Vec<_>>();
+    let repair_targets = repair_branches
+        .iter()
+        .filter(|branch| {
+            branch
+                .contracts
+                .iter()
+                .any(|contract| contract == &blocked_clause)
+        })
+        .collect::<Vec<_>>();
+    if base_targets.len() != 1 || repair_targets.len() != 1 {
         return Err(Fault::new(
             FaultCode::WrongProtocol,
-            "repair changed a branch operation",
+            "the blocked precondition must identify exactly one protocol branch",
+        ));
+    }
+    let base_target_operation = &base_targets[0].operation;
+    let repair_target_operation = &repair_targets[0].operation;
+    if base_target_operation != repair_target_operation
+        || base_branches
+            .iter()
+            .map(|branch| (&branch.operation, &branch.contracts))
+            .ne(repair_branches
+                .iter()
+                .map(|branch| (&branch.operation, &branch.contracts)))
+    {
+        return Err(Fault::new(
+            FaultCode::WrongProtocol,
+            "repair changed a branch operation or contract",
         ));
     }
 
-    let base_terminals = terminal_nodes(&base_parsed);
-    let repair_terminals = terminal_nodes(&repair_parsed);
+    let base_terminals = direct_nodes(&base_parsed, &base_protocol, Production::ProtocolTerminal);
+    let repair_terminals = direct_nodes(
+        &repair_parsed,
+        &repair_protocol,
+        Production::ProtocolTerminal,
+    );
     if base_terminals.is_empty() && repair_terminals.len() == 1 {
         let span = repair_terminals[0].span();
-        if significant_tokens(&base_parsed)
-            .into_iter()
-            .map(|(_, _, token)| token)
-            .collect::<Vec<_>>()
-            == tokens_outside(&repair_parsed, (span.start, span.end))
+        let predicate = direct_nodes(&repair_parsed, repair_terminals[0], Production::Block);
+        if predicate.len() == 1
+            && terminal_is_false_at_start(&repair_parsed, repair_terminals[0])
+            && significant_tokens(&base_parsed)
+                .into_iter()
+                .map(|(_, _, token)| token)
+                .collect::<Vec<_>>()
+                == tokens_outside(&repair_parsed, (span.start, span.end))
         {
             return Ok(());
         }
     }
 
     if base_terminals.is_empty() && repair_terminals.is_empty() {
-        let base_block = precondition_block(&base_parsed, &base_second_operation)?;
-        let repair_block = precondition_block(&repair_parsed, &repair_second_operation)?;
+        let base_block = precondition_block(&base_parsed, base_target_operation)?;
+        let repair_block = precondition_block(&repair_parsed, repair_target_operation)?;
         let base_span = base_block.span();
         let repair_span = repair_block.span();
         let base_body = tokens_in(&base_parsed, base_block);
         let repair_body = tokens_in(&repair_parsed, repair_block);
         if base_body != repair_body
+            && !is_trivial_true(&repair_body)
             && tokens_outside(&base_parsed, (base_span.start, base_span.end))
                 == tokens_outside(&repair_parsed, (repair_span.start, repair_span.end))
         {
@@ -386,14 +494,87 @@ fn check_protocol_repair(baseline: &str, repaired: &str) -> Checked<()> {
     }
     Err(Fault::new(
         FaultCode::WrongProtocol,
-        format!(
-            "repair may add one intended terminal member or change only the second branch precondition (terminals {} -> {}, protocol {} -> {})",
-            base_terminals.len(),
-            repair_terminals.len(),
-            tokens_in(&base_parsed, &base_protocol).len(),
-            tokens_in(&repair_parsed, &repair_protocol).len()
-        ),
+        "repair may add one non-vacuous terminal member or change only the blocked branch precondition",
     ))
+}
+
+fn is_trivial_true(tokens: &[String]) -> bool {
+    let body = tokens
+        .iter()
+        .filter(|token| !matches!(token.as_str(), "{" | "}" | "(" | ")"))
+        .map(String::as_str)
+        .collect::<Vec<_>>();
+    if body == ["true"] {
+        return true;
+    }
+    if body.iter().any(|token| {
+        token
+            .chars()
+            .any(|character| character.is_ascii_alphabetic() || character == '_')
+    }) {
+        return false;
+    }
+    let Some(operator) = body
+        .iter()
+        .position(|token| matches!(*token, "=" | "==" | "!=" | "<" | "<=" | ">" | ">="))
+    else {
+        return false;
+    };
+    if operator != 1 || body.len() != 3 {
+        return false;
+    }
+    let (Ok(left), Ok(right)) = (body[0].parse::<i128>(), body[2].parse::<i128>()) else {
+        return false;
+    };
+    match body[operator] {
+        "=" | "==" => left == right,
+        "!=" => left != right,
+        "<" => left < right,
+        "<=" => left <= right,
+        ">" => left > right,
+        ">=" => left >= right,
+        _ => false,
+    }
+}
+
+fn terminal_is_false_at_start(parsed: &ParsedSource, terminal: &CstNode) -> bool {
+    let blocks = direct_nodes(parsed, terminal, Production::Block);
+    if blocks.len() != 1 {
+        return false;
+    }
+    let body = tokens_in(parsed, blocks[0])
+        .into_iter()
+        .filter(|token| !matches!(token.as_str(), "{" | "}" | "(" | ")"))
+        .collect::<Vec<_>>();
+    if is_trivial_true(&body) {
+        return false;
+    }
+    let Some(operator) = body
+        .iter()
+        .position(|token| matches!(token.as_str(), "=" | "==" | "!=" | "<" | "<=" | ">" | ">="))
+    else {
+        return true;
+    };
+    if operator == 0
+        || body.len() != operator + 2
+        || !body[..operator].iter().any(|token| token == ".")
+    {
+        return true;
+    }
+    let Ok(right) = body[operator + 1].parse::<i128>() else {
+        return true;
+    };
+    let left = 0_i128;
+    let holds_at_start = match body[operator].as_str() {
+        "=" | "==" => left == right,
+        "!=" => left != right,
+        "<" => left < right,
+        "<=" => left <= right,
+        ">" => left > right,
+        ">=" => left >= right,
+        _ => false,
+    };
+    !holds_at_start
 }
 
 fn command_failure(error: CaptureError) -> Fault {
@@ -724,9 +905,9 @@ fn unordered_json_eq(actual: &Value, expected: &Value) -> bool {
 fn assess(workspace: &Path, tools: &Tools, deadline: Instant) -> Checked<BTreeMap<String, Value>> {
     before_deadline(deadline).map_err(command_failure)?;
     let (baseline_source, repaired_source) = check_inputs(workspace)?;
-    check_protocol_repair(&baseline_source, &repaired_source)?;
     let trusted_deadlock = analyze(workspace, tools, "deadlock-request.json", 10, deadline)?;
     let trusted_repaired = analyze(workspace, tools, "repaired-request.json", 0, deadline)?;
+    check_protocol_repair(&baseline_source, &repaired_source, &trusted_deadlock)?;
     let saved_deadlock = json_file(workspace, "deadlock.json")?;
     let saved_repaired = json_file(workspace, "repaired.json")?;
     check_deadlock(&saved_deadlock)?;
@@ -787,8 +968,8 @@ mod tests {
 
     fn terminal_repair() -> String {
         BASELINE_SOURCE.replace(
-            "protocol Fill using pp over (k: M::Cell) on origin {",
-            "terminal Filled using v on M when { k.v = 1 };\nprotocol Fill using pp over (k: M::Cell) on origin {",
+            "  role w on M::Cell;",
+            "  role w on M::Cell;\n  terminal when { k.v = 1 };",
         )
     }
 
@@ -858,28 +1039,50 @@ mod tests {
     fn structural_repair_accepts_only_terminal_or_second_branch_precondition_changes() {
         let terminal = terminal_repair();
         let precondition = precondition_repair();
-        let terminal_check = check_protocol_repair(BASELINE_SOURCE, &terminal);
+        let deadlock: Value = serde_json::from_str(DEADLOCK_OUTCOME).unwrap();
+        let terminal_check = check_protocol_repair(BASELINE_SOURCE, &terminal, &deadlock);
         assert!(terminal_check.is_ok(), "{terminal_check:?}");
-        let precondition_check = check_protocol_repair(BASELINE_SOURCE, &precondition);
+        let precondition_check = check_protocol_repair(BASELINE_SOURCE, &precondition, &deadlock);
         assert!(precondition_check.is_ok(), "{precondition_check:?}");
 
         let deleted_branch = BASELINE_SOURCE.replace(
             "      branch right attempt B by w on M::Cell::setTwo contracts [TwoPre, TwoPost] as (b: Boolean) { true };\n",
             "",
         );
-        assert!(check_protocol_repair(BASELINE_SOURCE, &deleted_branch).is_err());
+        assert!(check_protocol_repair(BASELINE_SOURCE, &deleted_branch, &deadlock).is_err());
 
         let serialized = BASELINE_SOURCE.replace(
             "    parallel Both {\n      branch left attempt A by w on M::Cell::inc contracts [IncPre, IncPost] as (a: Boolean) { true };\n      branch right attempt B by w on M::Cell::setTwo contracts [TwoPre, TwoPost] as (b: Boolean) { true };\n    } join all [left, right];",
             "    attempt A by w on M::Cell::inc contracts [IncPre, IncPost] as (a: Boolean) { true };\n    attempt B by w on M::Cell::setTwo contracts [TwoPre, TwoPost] as (b: Boolean) { true };",
         );
-        assert!(check_protocol_repair(BASELINE_SOURCE, &serialized).is_err());
+        assert!(check_protocol_repair(BASELINE_SOURCE, &serialized, &deadlock).is_err());
 
         let trivial = BASELINE_SOURCE.replace(
             "    parallel Both {\n      branch left attempt A by w on M::Cell::inc contracts [IncPre, IncPost] as (a: Boolean) { true };\n      branch right attempt B by w on M::Cell::setTwo contracts [TwoPre, TwoPost] as (b: Boolean) { true };\n    } join all [left, right];",
             "    check Done using v { true };",
         );
-        assert!(check_protocol_repair(BASELINE_SOURCE, &trivial).is_err());
+        assert!(check_protocol_repair(BASELINE_SOURCE, &trivial, &deadlock).is_err());
+    }
+
+    #[test]
+    fn vacuous_repairs_fail_and_blocked_branch_order_does_not_matter() {
+        let deadlock: Value = serde_json::from_str(DEADLOCK_OUTCOME).unwrap();
+        let terminal = terminal_repair();
+        let precondition = precondition_repair();
+        let terminal_true = terminal.replace("k.v = 1", "true");
+        assert!(check_protocol_repair(BASELINE_SOURCE, &terminal_true, &deadlock).is_err());
+        let terminal_tautology = terminal.replace("k.v = 1", "k.v >= 0");
+        assert!(check_protocol_repair(BASELINE_SOURCE, &terminal_tautology, &deadlock).is_err());
+        let precondition_true = precondition.replace("self.v <= 1", "true");
+        assert!(check_protocol_repair(BASELINE_SOURCE, &precondition_true, &deadlock).is_err());
+
+        let branches = "      branch left attempt A by w on M::Cell::inc contracts [IncPre, IncPost] as (a: Boolean) { true };\n      branch right attempt B by w on M::Cell::setTwo contracts [TwoPre, TwoPost] as (b: Boolean) { true };";
+        let reversed = "      branch right attempt B by w on M::Cell::setTwo contracts [TwoPre, TwoPost] as (b: Boolean) { true };\n      branch left attempt A by w on M::Cell::inc contracts [IncPre, IncPost] as (a: Boolean) { true };";
+        let reversed_baseline = BASELINE_SOURCE.replace(branches, reversed);
+        let reversed_repair = reversed_baseline.replace("self.v = 0", "self.v <= 1");
+        let reordered_check =
+            check_protocol_repair(&reversed_baseline, &reversed_repair, &deadlock);
+        assert!(reordered_check.is_ok(), "{reordered_check:?}");
     }
 
     #[test]
