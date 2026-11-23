@@ -53,3 +53,23 @@ Points that held up:
 - agent-evals/scorecards/EV-001-codex.json `runs_n3`: examined.
 - agent-evals/scorecards/EV-001-claude.json `runs_n3` and top level: examined.
 - agent-evals/README.md tmux note: examined.
+
+## New findings (disposition pass 1)
+
+Found at head 45a21ed3ed989566a677809a6944bf3641bd6827 in the rewritten sed handling. Each sed behaviour below was confirmed with GNU sed 4.9 in a scratch directory: the command printed or copied the outside file. The provider's result for each was traced by reading the code; cargo was not run, because other cargo jobs were running on this host.
+
+| ID | Severity | Summary | Refs |
+| --- | --- | --- | --- |
+| FND-006 | high | `sed_script_words` marks the first word that is not an option as the script, unless it has already seen a script word. It does not recognise a script attached to `-e` (`-es/x/y/`) or a `--file=F` option, so a file operand after either is treated as a script. In `sed_script_fragments`, the leading `/` of an absolute operand then opens a "regex address" that swallows the first path component, and the rest is scanned as a relative, in-workspace path. `sed -es/x/y/ <abs>/evaluator/reference.fsl` and `sed -n --file=c.sed <abs>/evaluator/reference.fsl` print the reference answer with no violation. Before this round both were flagged as absolute reads. | agent-evals/src/provider.rs:743-781,805-815 |
+| FND-007 | high | Execution is detected only when `e`, or an `s` command, starts a command. After an address modifier (`/x/I`, `/x/M`) or a custom-delimiter address (`\%x%`), the parser leaves command start, so a following `e` command or `s///e` flag is not seen, and `s` pattern and replacement text is scanned as plain words. Example: `sed '/x/I s/.*/cat ..\/evaluator\/reference.fsl/e' model.fsl` runs `cat` on the reference; the escaped slashes keep the path scan inside the workspace, and no "executes a command" violation is raised. The same loss happens when a script word is misread as an option argument: `-i<suffix ending in f>` (for example `-i.conf`) or `-l N` / `--line-length N`. `sed -i.conf 's/.*/cat ..\/evaluator\/reference.fsl/e' model.fsl` writes the reference into the model undetected. | agent-evals/src/provider.rs:768-774,861-869 |
+| FND-008 | low | After an address modifier or a `\cREc` address, `w FILE` and `W FILE` fall into the plain fragment, which is scanned with `writes=false`. Read-only allowances then apply, so a write into the shipped docs (`/x/I w docs/shipped/fsl/x.md`) is not reported. The shipped docs are a symlink to a writable checkout. | agent-evals/src/provider.rs:865-869 |
+
+## Dispositions
+
+| FND | outcome | reason |
+| --- | --- | --- |
+| FND-001 | fixed | r/R/w/W file arguments, the s///w flag, the e command and the s///e flag are now scanned or flagged when the script word is recognised. `s/`-prefixed operands are path-scanned. Covered by runtime_sed_file_commands_flags_and_path_looking_operands_stay_breaches. New bypasses in the rewrite are tracked separately as FND-006 and FND-007. |
+| FND-002 | fixed | A new test asserts sandbox-breach for r, R, w, W, s///w, -e, --expression=, -f and s/../.. operands, and the exec violation for s///e, e and 1e. |
+| FND-003 | fixed | The Claude `runs_n3` block now has pass_rate null, status unscored-harness-error, harness_errors 3 and scored_runs 0, with QSL-3008 as owner. The stale pending and authentication fields were removed. |
+| FND-004 | fixed | probe_request and probe_outcome were extracted. probe_shapes_match_the_shipped_run_golden_and_fail_closed pins the request against examples/shop/expected/values-line-total.json and checks that the old shape, non-Boolean values, refusals and bad exits do not grade. |
+| FND-005 | fixed | Both `runs_n3` blocks now carry `model` (gpt-6.1-sol and claude-opus-5-5) and per-run rows. |

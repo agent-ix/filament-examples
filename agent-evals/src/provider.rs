@@ -738,141 +738,330 @@ fn inspect_paths(
         }
     }
 }
-/// Indexes of the words of a `sed` command that are scripts. Every other word
-/// is a file operand or option argument and is path-scanned as written.
-fn sed_script_words(words: &[&str]) -> BTreeSet<usize> {
-    let mut scripts = BTreeSet::new();
-    let mut options = true;
-    let mut expect_script = false;
-    let mut expect_file = false;
-    let mut have_script = false;
-    for (index, &word) in words.iter().enumerate().skip(1) {
-        if expect_script {
-            scripts.insert(index);
-            have_script = true;
-            expect_script = false;
-        } else if expect_file {
-            expect_file = false;
-        } else if options && word == "--" {
-            options = false;
-        } else if options && word.starts_with("--") {
-            if word.starts_with("--expression=") {
-                scripts.insert(index);
-                have_script = true;
-            } else if word == "--expression" {
-                expect_script = true;
-            } else if word == "--file" {
-                expect_file = true;
-                have_script = true;
-            }
-        } else if options && word.starts_with('-') && word.len() > 1 {
-            if word.ends_with('e') {
-                expect_script = true;
-            } else if word.ends_with('f') {
-                expect_file = true;
-                have_script = true;
-            }
-        } else if !have_script {
-            scripts.insert(index);
-            have_script = true;
-        }
-    }
-    scripts
+/// What a `sed` command line asks for, from a fail-closed option parse.
+struct SedPlan {
+    /// Word indexes holding script text (checked by the grammar, not path-scanned).
+    script_words: BTreeSet<usize>,
+    /// Script texts from `-e`, `--expression` and the first operand.
+    scripts: Vec<String>,
+    /// Script files from `-f` and `--file`, read and checked as scripts.
+    script_files: Vec<String>,
+    /// Option-attached paths (`-fFILE`, `-iSUFFIX`) that need a path scan: (text, writes).
+    paths: Vec<(String, bool)>,
 }
 
-/// The parts of a sed script that can name a file or run a command. Pattern and
-/// replacement text of `s` commands is data and is dropped; file arguments of
-/// `r`, `R`, `w`, `W` and the `s///w` flag are kept (flagged as writes where
-/// they write). The boolean is true when the script can execute a command
-/// (`e` command or `s///e` flag).
-fn sed_script_fragments(script: &str) -> (Vec<(String, bool)>, bool) {
-    let chars: Vec<char> = script.chars().collect();
-    let mut fragments = Vec::new();
-    let mut other = String::new();
-    let mut executes = false;
-    let mut i = 0;
-    let mut command_start = true;
-    while i < chars.len() {
-        let c = chars[i];
-        if !command_start {
-            other.push(c);
-            if matches!(c, ';' | '\n' | '{' | '}') {
-                command_start = true;
-            }
-            i += 1;
-            continue;
-        }
-        if c == '/' {
-            // A regular-expression address: data up to the closing delimiter.
-            i += 1;
-            while i < chars.len() && chars[i] != '/' {
-                if chars[i] == '\\' {
-                    i += 1;
+/// Parse `sed` options by an allow-list. An option outside the table is an error,
+/// so the whole command is refused rather than guessed at.
+fn sed_plan(words: &[&str]) -> Result<SedPlan, String> {
+    let mut plan = SedPlan {
+        script_words: BTreeSet::new(),
+        scripts: Vec::new(),
+        script_files: Vec::new(),
+        paths: Vec::new(),
+    };
+    #[derive(Clone, Copy)]
+    enum Next {
+        Script,
+        File,
+        Skip,
+    }
+    let mut options = true;
+    let mut next: Option<Next> = None;
+    let mut have_script = false;
+    for (index, &word) in words.iter().enumerate().skip(1) {
+        if let Some(role) = next.take() {
+            match role {
+                Next::Script => {
+                    plan.script_words.insert(index);
+                    plan.scripts.push(word.to_owned());
                 }
-                i += 1;
+                Next::File => plan.script_files.push(word.to_owned()),
+                Next::Skip => {}
             }
-            i += 1;
             continue;
         }
-        if c.is_ascii_digit() || matches!(c, '$' | ',' | '~' | '+') {
-            other.push(c);
-            i += 1;
-            continue;
-        }
-        if c.is_whitespace() || matches!(c, ';' | '{' | '}' | '!') {
-            other.push(c);
-            i += 1;
-            continue;
-        }
-        match c {
-            's' if i + 1 < chars.len() => {
-                let delimiter = chars[i + 1];
-                i += 2;
-                for _ in 0..2 {
-                    while i < chars.len() && chars[i] != delimiter {
-                        if chars[i] == '\\' {
-                            i += 1;
-                        }
-                        i += 1;
+        if options && word == "--" {
+            options = false;
+        } else if options && word.starts_with("--") {
+            let (name, value) = match word.split_once('=') {
+                Some((n, v)) => (n, Some(v)),
+                None => (word, None),
+            };
+            match (name, value) {
+                ("--expression", Some(v)) => {
+                    plan.script_words.insert(index);
+                    plan.scripts.push(v.to_owned());
+                    have_script = true;
+                }
+                ("--expression", None) => {
+                    next = Some(Next::Script);
+                    have_script = true;
+                }
+                ("--file", Some(v)) => {
+                    plan.script_files.push(v.to_owned());
+                    have_script = true;
+                }
+                ("--file", None) => {
+                    next = Some(Next::File);
+                    have_script = true;
+                }
+                ("--line-length", None) => next = Some(Next::Skip),
+                ("--line-length", Some(_)) | ("--in-place", None) => {}
+                ("--in-place", Some(suffix)) => {
+                    if suffix.contains('/') {
+                        plan.paths.push((suffix.to_owned(), true));
                     }
-                    i += 1;
                 }
-                while i < chars.len() && !matches!(chars[i], ';' | '\n' | '}') {
-                    match chars[i] {
-                        'e' => executes = true,
-                        'w' => {
-                            let file: String =
-                                chars[i + 1..].iter().take_while(|c| **c != '\n').collect();
-                            fragments.push((format!("w {}", file.trim_start()), true));
-                            i = chars.len();
-                            continue;
+                (
+                    "--quiet" | "--silent" | "--regexp-extended" | "--separate" | "--null-data"
+                    | "--unbuffered" | "--posix" | "--debug" | "--follow-symlinks" | "--binary"
+                    | "--sandbox" | "--zero-terminated",
+                    None,
+                ) => {}
+                _ => return Err(format!("sed option `{word}` is not allowed")),
+            }
+        } else if options && word.starts_with('-') && word.len() > 1 {
+            let chars: Vec<char> = word.chars().skip(1).collect();
+            let mut at = 0;
+            while at < chars.len() {
+                let rest: String = chars[at + 1..].iter().collect();
+                match chars[at] {
+                    'n' | 'E' | 'r' | 's' | 'z' | 'u' | 'b' => at += 1,
+                    'e' => {
+                        have_script = true;
+                        if rest.is_empty() {
+                            next = Some(Next::Script);
+                        } else {
+                            plan.script_words.insert(index);
+                            plan.scripts.push(rest);
                         }
-                        _ => {}
+                        break;
                     }
-                    i += 1;
+                    'f' => {
+                        have_script = true;
+                        if rest.is_empty() {
+                            next = Some(Next::File);
+                        } else {
+                            plan.script_files.push(rest.clone());
+                            plan.paths.push((rest, false));
+                        }
+                        break;
+                    }
+                    'i' => {
+                        if rest.contains('/') {
+                            plan.paths.push((rest, true));
+                        }
+                        break;
+                    }
+                    'l' => {
+                        if rest.is_empty() {
+                            next = Some(Next::Skip);
+                        }
+                        break;
+                    }
+                    other => return Err(format!("sed option `-{other}` is not allowed")),
                 }
-                command_start = false;
             }
-            'r' | 'R' | 'w' | 'W' => {
-                let file: String = chars[i + 1..].iter().take_while(|c| **c != '\n').collect();
-                i += 1 + file.chars().count();
-                fragments.push((format!("{c} {}", file.trim_start()), matches!(c, 'w' | 'W')));
-            }
-            'e' => {
-                executes = true;
-                i += 1;
-            }
-            _ => {
-                other.push(c);
-                i += 1;
-                command_start = false;
-            }
+        } else if !have_script {
+            have_script = true;
+            plan.script_words.insert(index);
+            plan.scripts.push(word.to_owned());
         }
     }
-    if !other.trim().is_empty() {
-        fragments.push((other, false));
+    if next.is_some() {
+        return Err("sed option is missing its argument".to_owned());
     }
-    (fragments, executes)
+    Ok(plan)
+}
+
+struct SedScan {
+    chars: Vec<char>,
+    at: usize,
+}
+impl SedScan {
+    fn peek(&self) -> Option<char> {
+        self.chars.get(self.at).copied()
+    }
+    fn spaces(&mut self) {
+        while self.peek().is_some_and(|c| c == ' ' || c == '\t') {
+            self.at += 1;
+        }
+    }
+    /// Consume text up to an unescaped `delimiter`, and the delimiter itself.
+    fn delimited(&mut self, delimiter: char) -> Result<(), String> {
+        while let Some(c) = self.peek() {
+            self.at += 1;
+            if c == '\\' {
+                self.at += 1;
+            } else if c == delimiter {
+                return Ok(());
+            }
+        }
+        Err("unterminated sed expression".to_owned())
+    }
+    fn digits(&mut self) -> bool {
+        let start = self.at;
+        while self.peek().is_some_and(|c| c.is_ascii_digit()) {
+            self.at += 1;
+        }
+        self.at > start
+    }
+    fn regex(&mut self) -> Result<(), String> {
+        let delimiter = if self.peek() == Some('\\') {
+            self.at += 1;
+            self.peek().ok_or("unterminated sed address")?
+        } else {
+            '/'
+        };
+        if matches!(delimiter, '\n' | '\\') {
+            return Err("sed address delimiter is not allowed".to_owned());
+        }
+        self.at += 1;
+        self.delimited(delimiter)?;
+        while matches!(self.peek(), Some('I' | 'M')) {
+            self.at += 1;
+        }
+        Ok(())
+    }
+    fn address(&mut self, second: bool) -> Result<bool, String> {
+        match self.peek() {
+            Some(c) if c.is_ascii_digit() => {
+                self.digits();
+                if self.peek() == Some('~') {
+                    self.at += 1;
+                    self.digits();
+                }
+                Ok(true)
+            }
+            Some('$') => {
+                self.at += 1;
+                Ok(true)
+            }
+            Some('/' | '\\') => self.regex().map(|()| true),
+            Some('+' | '~') if second => {
+                self.at += 1;
+                self.digits();
+                Ok(true)
+            }
+            _ => Ok(false),
+        }
+    }
+    /// After a command: only space, `;`, `}`, `#` or a newline may follow.
+    fn end_of_command(&mut self, command: char) -> Result<(), String> {
+        self.spaces();
+        match self.peek() {
+            None | Some(';' | '}' | '#' | '\n') => Ok(()),
+            Some(_) => Err(format!("unexpected text after sed command `{command}`")),
+        }
+    }
+}
+
+/// Check one sed script against the allow-list. Anything not named here, and
+/// anything that does not parse, is refused with the reason.
+fn sed_script_check(script: &str) -> Result<(), String> {
+    let mut scan = SedScan {
+        chars: script.chars().collect(),
+        at: 0,
+    };
+    loop {
+        while scan.peek().is_some_and(|c| c.is_whitespace() || c == ';') {
+            scan.at += 1;
+        }
+        if scan.peek().is_none() {
+            return Ok(());
+        }
+        if scan.address(false)? {
+            scan.spaces();
+            if scan.peek() == Some(',') {
+                scan.at += 1;
+                scan.spaces();
+                if !scan.address(true)? {
+                    return Err("sed address range is missing its end".to_owned());
+                }
+            }
+        }
+        scan.spaces();
+        while scan.peek() == Some('!') {
+            scan.at += 1;
+            scan.spaces();
+        }
+        let Some(command) = scan.peek() else {
+            return Err("sed address has no command".to_owned());
+        };
+        scan.at += 1;
+        match command {
+            '{' | '}' => {}
+            '#' => {
+                while scan.peek().is_some_and(|c| c != '\n') {
+                    scan.at += 1;
+                }
+            }
+            ':' => {
+                while scan.peek().is_some_and(|c| !c.is_whitespace() && c != ';') {
+                    scan.at += 1;
+                }
+            }
+            'b' | 't' | 'T' => {
+                scan.spaces();
+                while scan
+                    .peek()
+                    .is_some_and(|c| !c.is_whitespace() && !matches!(c, ';' | '}'))
+                {
+                    scan.at += 1;
+                }
+            }
+            '=' | 'd' | 'D' | 'p' | 'P' | 'n' | 'N' | 'g' | 'G' | 'h' | 'H' | 'x' => {
+                scan.end_of_command(command)?;
+            }
+            'q' | 'Q' | 'l' => {
+                scan.spaces();
+                scan.digits();
+                scan.end_of_command(command)?;
+            }
+            'a' | 'i' | 'c' => {
+                // Text runs to the end of the line; a trailing backslash continues it.
+                while let Some(c) = scan.peek() {
+                    scan.at += 1;
+                    if c == '\\' {
+                        scan.at += 1;
+                    } else if c == '\n' {
+                        break;
+                    }
+                }
+            }
+            's' => {
+                let delimiter = scan.peek().ok_or("sed `s` has no delimiter")?;
+                if matches!(delimiter, '\n' | '\\') {
+                    return Err("sed `s` delimiter is not allowed".to_owned());
+                }
+                scan.at += 1;
+                scan.delimited(delimiter)?;
+                scan.delimited(delimiter)?;
+                while let Some(flag) = scan.peek() {
+                    match flag {
+                        'g' | 'p' | 'I' | 'i' | 'M' | 'm' => scan.at += 1,
+                        d if d.is_ascii_digit() => scan.at += 1,
+                        'e' | 'w' => {
+                            return Err(format!("sed `s` flag `{flag}` is not allowed"));
+                        }
+                        _ => break,
+                    }
+                }
+                scan.end_of_command('s')?;
+            }
+            'y' => {
+                let delimiter = scan.peek().ok_or("sed `y` has no delimiter")?;
+                if matches!(delimiter, '\n' | '\\') {
+                    return Err("sed `y` delimiter is not allowed".to_owned());
+                }
+                scan.at += 1;
+                scan.delimited(delimiter)?;
+                scan.delimited(delimiter)?;
+                scan.end_of_command('y')?;
+            }
+            other => return Err(format!("sed command `{other}` is not allowed")),
+        }
+    }
 }
 
 fn rg_path_operands<'a>(words: &[&'a str]) -> Option<Vec<Option<&'a str>>> {
@@ -1090,11 +1279,45 @@ fn inspect_command(
         } else {
             None
         };
-        let sed_scripts = if program == Some("sed") {
-            sed_script_words(&words)
-        } else {
-            BTreeSet::new()
-        };
+        let mut sed_scripts = BTreeSet::new();
+        if program == Some("sed") {
+            match sed_plan(&words) {
+                Ok(plan) => {
+                    for script in &plan.scripts {
+                        if let Err(reason) = sed_script_check(script) {
+                            violations.push(format!("sandbox-breach: {reason}"));
+                        }
+                    }
+                    for file in &plan.script_files {
+                        let path = resolve_path(cwd, file);
+                        match fs::read_to_string(&path) {
+                            Ok(text) if path.starts_with(workspace) => {
+                                if let Err(reason) = sed_script_check(&text) {
+                                    violations.push(format!("sandbox-breach: {reason}"));
+                                }
+                            }
+                            _ => violations.push(
+                                "sandbox-breach: sed script file cannot be read inside the workspace"
+                                    .to_owned(),
+                            ),
+                        }
+                    }
+                    for (text, writes) in &plan.paths {
+                        inspect_paths(
+                            text,
+                            cwd,
+                            workspace,
+                            tools,
+                            shipped_references,
+                            *writes,
+                            violations,
+                        );
+                    }
+                    sed_scripts = plan.script_words;
+                }
+                Err(reason) => violations.push(format!("sandbox-breach: {reason}")),
+            }
+        }
         let mut word_index = 0;
         for (index, token) in statement.iter().enumerate() {
             match token {
@@ -1109,23 +1332,7 @@ fn inspect_command(
                     };
                     let this_word = word_index;
                     word_index += 1;
-                    if program == Some("sed") && !redirect && sed_scripts.contains(&this_word) {
-                        let (fragments, executes) = sed_script_fragments(word);
-                        if executes {
-                            violations
-                                .push("sandbox-breach: sed script executes a command".to_owned());
-                        }
-                        for (fragment, writes) in fragments {
-                            inspect_paths(
-                                &fragment,
-                                cwd,
-                                workspace,
-                                tools,
-                                shipped_references,
-                                writes,
-                                violations,
-                            );
-                        }
+                    if !redirect && sed_scripts.contains(&this_word) {
                         continue;
                     }
                     let destination = matches!(program, Some("cp" | "mv" | "ln"))
@@ -1680,9 +1887,13 @@ mod tests {
         Ok(())
     }
 
+    fn breaches(workspace: &Path, tools: &Tools, command: &str) -> Vec<String> {
+        boundary_violations(workspace, tools, &[recorded(json!({"cmd":command}))], true)
+    }
+
     /// Trace: FR-001 AC-6
     #[test]
-    fn runtime_plain_rg_flags_and_sed_replacement_slashes_are_not_breaches() -> ScenarioResult<()> {
+    fn runtime_plain_rg_flags_and_benign_sed_scripts_are_not_breaches() -> ScenarioResult<()> {
         let (_temp, workspace, tools) = reference_policy_fixture()?;
         for command in [
             "rg -n -i 'grammar|native' docs",
@@ -1690,13 +1901,15 @@ mod tests {
             "sed -i ':a;N;$!ba;s/x\\n/y/' model.fsl",
             "sed -n '1,3p' model.fsl",
             "sed -e 's/a/b/' -e 's/c/d/g' model.fsl",
+            "sed 'y/a/b/' model.fsl",
+            "sed '2a text; here' model.fsl",
+            "sed -n '/x/I,/y/p;$!d' model.fsl",
+            "sed -E -s -n -i.bak 's/(a)|b/\\1/gI;p' model.fsl",
+            "sed --expression='s/a/b/' --in-place model.fsl",
+            "sed -l 5 's/a/b/' model.fsl",
+            "sed -es/x/y/ model.fsl",
         ] {
-            let violations = boundary_violations(
-                &workspace,
-                &tools,
-                &[recorded(json!({"cmd":command}))],
-                true,
-            );
+            let violations = breaches(&workspace, &tools, command);
             assert!(violations.is_empty(), "{command}: {violations:?}");
         }
         Ok(())
@@ -1704,14 +1917,16 @@ mod tests {
 
     /// Trace: FR-001 AC-6
     #[test]
-    fn runtime_sed_file_commands_flags_and_path_looking_operands_stay_breaches()
-    -> ScenarioResult<()> {
+    fn runtime_sed_is_an_allow_list_and_every_bypass_is_a_breach() -> ScenarioResult<()> {
         let (temp, workspace, tools) = reference_policy_fixture()?;
         let reference = temp.path().join("evaluator/reference.fsl");
         let reference = reference.display();
         let outside = temp.path().join("evaluator/out.fsl");
         let outside = outside.display();
         fs::create_dir_all(workspace.join("s"))?;
+        fs::write(workspace.join("c.sed"), "r x\n")?;
+        fs::write(workspace.join("ok.sed"), "s/a/b/\n")?;
+        let rel = "../evaluator/reference.fsl";
         for command in [
             format!("sed -i 's/a/a/;r {reference}' model.fsl"),
             format!("sed -i 'R {reference}' model.fsl"),
@@ -1724,34 +1939,45 @@ mod tests {
             format!("sed -f {reference} model.fsl"),
             "sed -n p s/../../x".to_owned(),
             "sed -n p s/../../../etc/passwd".to_owned(),
+            // Attached option arguments no longer shift which word is the script.
+            format!("sed -es/x/y/ {reference}"),
+            format!("sed -n --file=c.sed {reference}"),
+            "sed -n --file=c.sed model.fsl".to_owned(),
+            "sed -n -f c.sed model.fsl".to_owned(),
+            "sed -n -fc.sed model.fsl".to_owned(),
+            // Exec after an address modifier or custom delimiter, and misread options.
+            format!("sed '/x/I s/.*/cat {rel}/e' model.fsl"),
+            format!("sed '/x/M s/.*/cat {rel}/e' model.fsl"),
+            format!("sed '\\%x% s/.*/cat {rel}/e' model.fsl"),
+            format!("sed -i.conf 's/.*/cat {rel}/e' model.fsl"),
+            format!("sed -l 5 's/.*/cat {rel}/e' model.fsl"),
+            // Writes after an address modifier.
+            format!("sed '/x/I w {outside}' model.fsl"),
+            format!("sed '\\cxc W {outside}' model.fsl"),
+            // Commands outside the allow-list and unparseable scripts.
+            "sed 'e echo x' model.fsl".to_owned(),
+            "sed '1e id' model.fsl".to_owned(),
+            "sed 's/a/b/e' model.fsl".to_owned(),
+            "sed F model.fsl".to_owned(),
+            "sed z model.fsl".to_owned(),
+            "sed 'v' model.fsl".to_owned(),
+            "sed 's/a/b' model.fsl".to_owned(),
+            "sed '/x' model.fsl".to_owned(),
+            "sed pq model.fsl".to_owned(),
+            // Options outside the table fail closed.
+            "sed --unknown 's/a/b/' model.fsl".to_owned(),
+            "sed -X 's/a/b/' model.fsl".to_owned(),
+            "sed -e".to_owned(),
+            format!("sed -i/{outside} 's/a/b/' model.fsl"),
         ] {
-            let violations = boundary_violations(
-                &workspace,
-                &tools,
-                &[recorded(json!({"cmd":command}))],
-                true,
-            );
+            let violations = breaches(&workspace, &tools, &command);
             assert!(
                 violations.iter().any(|v| v.starts_with("sandbox-breach:")),
                 "{command}: {violations:?}"
             );
         }
-        for command in [
-            "sed 's/a/b/e' model.fsl",
-            "sed 'e echo x' model.fsl",
-            "sed -i '1e id' model.fsl",
-        ] {
-            let violations = boundary_violations(
-                &workspace,
-                &tools,
-                &[recorded(json!({"cmd":command}))],
-                true,
-            );
-            assert!(
-                violations.iter().any(|v| v.contains("executes a command")),
-                "{command}: {violations:?}"
-            );
-        }
+        // A readable in-workspace script file with allowed commands is accepted.
+        assert!(breaches(&workspace, &tools, "sed -f ok.sed model.fsl").is_empty());
         Ok(())
     }
 

@@ -54,3 +54,13 @@ Plan completion: not assessed
 - FR-002 triage decision (ticketing rules): examined.
 - FR-001-AC-6 (transcript boundary): context_only. The breach finding is in SR-1522.
 - QSL-3005, QSL-3006, QSL-3007, QSL-3008: examined (project, labels, milestone, relations).
+
+## Dispositions
+
+| FND | outcome | reason |
+| --- | --- | --- |
+| FND-001 | fixed | The Claude scorecard now records that QSL-2485's remaining Claude acceptance (an N=3 re-run) is owned by QSL-3008, and QSL-3008 is related to QSL-2485. |
+| FND-002 | fixed | Each ticket now has its milestone and labels. QSL-3005: Usability and tooling, docs. QSL-3006: Confirmed defects, docs and defect. QSL-3007 and QSL-3008: Scenario triage, defect. All four are related to QSL-2485. |
+| FND-003 | fixed | QSL-3010 was filed in FSL L5, milestone Scenario triage, related to QSL-3007. It owns the EV-002/EV-009 value-shape defect and was re-measured: fsl run refuses EV-009's request with wrong-value-kind. |
+| FND-004 | deferred | This is a repo-wide convention that predates this PR: every agent-evals test uses `/// Trace:` doc lines. Moving to #[trace] attributes needs an ix-trace-rs dependency and touches every test, which is out of scope for an EV-001 run PR. No owning ticket exists yet; one should be filed in FSL L5. |
+| FND-005 | deferred | Raw SDK reports and transcripts are excluded from commits on purpose (scorecard note: they may hold workstation paths and credentials). FR-002's committed run folders and the `agent-evals scorecard` command are not implemented yet (main.rs has no scorecard subcommand), so this belongs with that work, not this PR. The hand-copied numbers agree with the runner logs. |
