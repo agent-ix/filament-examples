@@ -72,7 +72,7 @@ jobs:
             curl -sSf --location --remote-name "$repo/releases/download/$tag/$archive"
             curl -sSf --location --remote-name "$repo/releases/download/$tag/SHA256SUMS.txt"
             grep " $archive\$" SHA256SUMS.txt | sha256sum --check -
-            tar -xzf "$archive" fsl
+            tar -xzf "$archive" fsl fsl-plugin-launch
             echo "path=$RUNNER_TEMP/fsl-bin/fsl" >> "$GITHUB_OUTPUT"
           else
             git clone --no-checkout --filter=blob:none https://github.com/agent-ix/filament-driver "$RUNNER_TEMP/filament-driver"
