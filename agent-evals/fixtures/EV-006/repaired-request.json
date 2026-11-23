@@ -1,0 +1,25 @@
+{
+  "format": "native-analyze/1",
+  "request": {
+    "models": [{ "format": "semantic-ir/2.0.0", "source": {
+      "file": "cell.semantic-ir.json", "authority": "eval",
+      "identity": "eval:protocol-fill/model", "document": "Cell", "formal_revision": 1
+    }}],
+    "program": { "source": {
+      "file": "protocol.native", "authority": "eval",
+      "identity": "eval:protocol-fill/repaired", "document": "Fill", "formal_revision": 1
+    }},
+    "documents": [{ "file": "start.json" }],
+    "subject": {
+      "initial_states": [{ "authority": "eval", "identity": "eval:protocol-fill/start" }],
+      "universes": [{ "authority": "eval", "identity": "eval:protocol-fill/start" }],
+      "protocol": {
+        "protocol": "Fill",
+        "over": { "reference": { "population": "ix://eval/protocol-fill/cells", "key": "cell" } },
+        "roles": { "w": { "type": "model-binding", "selection": "eval/protocol-fill" } }
+      }
+    },
+    "items": [{ "claim": "Fill", "kind": "global-conformance",
+      "temporal": { "item_kind": "deadlock-freedom" } }]
+  }
+}

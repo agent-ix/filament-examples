@@ -1,7 +1,9 @@
 //! Thin Rust consumer of the SDK's published external-provider protocol.
 use crate::{
     Assertion, ScenarioResult, Tools,
-    scenarios::{author_model, blind_help, refusal_repair, safety_analyze, trace_monitor},
+    scenarios::{
+        author_model, blind_help, protocol_deadlock, refusal_repair, safety_analyze, trace_monitor,
+    },
 };
 use serde::Deserialize;
 use serde_json::{Value, json};
@@ -73,6 +75,18 @@ const ENTRIES: &[Entry] = &[
             ("monitor", "holding.jsonl"),
             ("monitor", "violating.jsonl"),
             ("monitor", "open.jsonl"),
+        ],
+        shipped_references: true,
+    },
+    Entry {
+        id: protocol_deadlock::ID,
+        title: protocol_deadlock::TITLE,
+        use_case: "protocol-deadlock-freedom",
+        prepare: protocol_deadlock::prepare,
+        grade: protocol_deadlock::grade,
+        commands: &[
+            ("analyze", "deadlock-request.json"),
+            ("analyze", "repaired-request.json"),
         ],
         shipped_references: true,
     },

@@ -1,0 +1,5 @@
+id = "EV-006"
+title = "Declare intended protocol termination and prove deadlock freedom"
+use_case = "QSL-2490"
+assert_budget_ms = 30000
+canary = false
