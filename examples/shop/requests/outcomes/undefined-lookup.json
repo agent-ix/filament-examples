@@ -35,10 +35,26 @@
         {
           "parameter": "r",
           "value": {
-            "reference": {
-              "population": "ix://example/shop-outcomes/lookupTargets",
-              "key": "target"
-            }
+            "type": "reference",
+            "universe": {
+              "package": "example/shop-outcomes",
+              "path": [
+                "model",
+                "object_type",
+                "ix://example/shop-outcomes/Order"
+              ],
+              "ordinal": 0
+            },
+            "object_type": {
+              "package": "example/shop-outcomes",
+              "path": [
+                "model",
+                "object_type",
+                "ix://example/shop-outcomes/Order"
+              ],
+              "ordinal": 0
+            },
+            "identity": "746172676574"
           }
         }
       ]
