@@ -1,0 +1,39 @@
+{
+  "format": "native-analyze/1",
+  "request": {
+    "models": [
+      {
+        "format": "semantic-ir/2.0.0",
+        "source": {
+          "file": "../model/architecture.semantic-ir.json",
+          "authority": "example",
+          "identity": "example:architecture/model",
+          "document": "model",
+          "formal_revision": 1
+        }
+      }
+    ],
+    "program": {
+      "source": {
+        "file": "../rules/availability-sampled-rejected.fsl",
+        "authority": "example",
+        "identity": "example:architecture/availability-sampled-rejected",
+        "document": "availabilitysampledrejected",
+        "formal_revision": 1
+      }
+    },
+    "documents": [
+      {
+        "file": "../data/start-service-up.json"
+      }
+    ],
+    "items": [
+      {
+        "claim": "CheckoutAvailable",
+        "probabilistic": {
+          "evidence": "statistical"
+        }
+      }
+    ]
+  }
+}

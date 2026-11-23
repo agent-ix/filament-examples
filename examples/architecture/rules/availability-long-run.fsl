@@ -1,0 +1,17 @@
+language "ix:native" edition "1-draft";
+profile v = "filament.model.complete/v1";
+profile ev = "filament.temporal.event-position.false-extension/v1";
+profile inf = "filament.temporal.infinite-trace/v1";
+model Arch = "example/architecture";
+
+// Each call to a service fails 1 time in 10,000.
+random Arch::Service::call(ok) ~ { true: 9999, false: 1 };
+workload Traffic on Arch { weight Arch::Service::call = 1; }
+
+// A service is up after a call exactly when the call succeeded.
+post UpFollowsCall using v on Arch::Service::call { self.up = ok }
+
+// A service that fails 1 call in 10,000 is up in the long run for the share 9999/10000 of the calls, above the 0.99 the claim asks for.
+probabilistic Availability using inf on Arch over (s: Arch::Service) under Traffic on origin {
+  long_run_fraction holds(s.up) >= 0.99
+}

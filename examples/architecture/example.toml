@@ -522,3 +522,99 @@ status = "running"
 expect_exit = 0
 expect_verdict = "proved"
 serves = "Tutorial: probability"
+
+[[case]]
+id = "availability-sampled-rejected"
+rule = "CheckoutAvailable"
+statement = "Calls that fail 1 time in 100 keep checkout up through 10 calls with probability about 0.904, well below the 0.99 the claim asks for: sampling measures the claim and rejects it, which is a violation."
+file = "rules/availability-sampled-rejected.fsl"
+command = "analyze requests/availability-sampled-rejected.json"
+engine = "probability"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
+serves = "Probability reference and tutorial"
+
+[[case]]
+id = "availability-sampled-undecided"
+rule = "CheckoutAvailable"
+statement = "The true probability, about 0.99004, lies inside the indifference region from 0.985 to 0.995 around the threshold 0.99: sampling stays undecided, so the result is inconclusive."
+file = "rules/availability-sampled-undecided.fsl"
+command = "analyze requests/availability-sampled-undecided.json"
+engine = "probability"
+status = "running"
+expect_exit = 22
+expect_verdict = "inconclusive"
+serves = "Probability reference and tutorial"
+
+[[case]]
+id = "availability-long-run"
+rule = "Availability"
+statement = "A service that fails 1 call in 10,000 is up for 9999/10000 of the time in the long run under a workload, above the 0.99 the claim asks for, and analyze proves it."
+file = "rules/availability-long-run.fsl"
+command = "analyze requests/availability-long-run.json"
+engine = "probability"
+status = "running"
+expect_exit = 0
+expect_verdict = "proved"
+serves = "Probability reference and tutorial"
+
+[[case]]
+id = "availability-mean-fraction"
+rule = "UpMostly"
+statement = "A service that starts up and fails 1 call in 1,000 is up for 14999/15000 of the first 3 positions on average with a workload and a window of 2 steps, above the 0.99 the claim asks for, and analyze proves it."
+file = "rules/availability-mean-fraction.fsl"
+command = "analyze requests/availability-mean-fraction.json"
+engine = "probability"
+status = "running"
+expect_exit = 0
+expect_verdict = "proved"
+serves = "Probability reference and tutorial"
+
+[[case]]
+id = "recovery-quantile"
+rule = "BackInOneCall"
+statement = "A service that starts down comes up on its first call with probability 999/1000, so the 95th percentile of the steps it needs is at most 1, and analyze proves it."
+file = "rules/recovery-quantile.fsl"
+command = "analyze requests/recovery-quantile.json"
+engine = "probability"
+status = "running"
+expect_exit = 0
+expect_verdict = "proved"
+serves = "Probability reference and tutorial"
+
+[[case]]
+id = "availability-sampled-long-run"
+rule = "Availability"
+statement = "The long-run share of time that a service is up is 999/1000 under a workload; with alpha, beta and indifference stated, analyze measures the claim at 0.98 by sampling and accepts it."
+file = "rules/availability-sampled-long-run.fsl"
+command = "analyze requests/availability-sampled-long-run.json"
+engine = "probability"
+status = "running"
+expect_exit = 0
+expect_verdict = "measured"
+serves = "Probability reference and tutorial"
+
+[[case]]
+id = "availability-sampled-every-scheduler"
+rule = "CheckoutAvailable"
+statement = "A claim under every scheduler states alpha, beta and indifference: sampling draws behaviors under one workload and cannot decide it, so analyze refuses it before drawing a sample."
+file = "rules/availability-sampled-every-scheduler.fsl"
+command = "analyze requests/availability-sampled-every-scheduler.json"
+engine = "probability"
+status = "running"
+expect_exit = 21
+expect_verdict = "unsupported"
+serves = "Probability reference and tutorial"
+
+[[case]]
+id = "availability-sampled-reachability"
+rule = "ComesUp"
+statement = "A reachability claim has no finite window to sample: analyze refuses it before drawing a sample, and exact computation decides it."
+file = "rules/availability-sampled-reachability.fsl"
+command = "analyze requests/availability-sampled-reachability.json"
+engine = "probability"
+status = "running"
+expect_exit = 21
+expect_verdict = "unsupported"
+serves = "Probability reference and tutorial"

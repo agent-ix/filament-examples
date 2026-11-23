@@ -1,0 +1,39 @@
+{
+  "format": "native-analyze/1",
+  "request": {
+    "models": [
+      {
+        "format": "semantic-ir/2.0.0",
+        "source": {
+          "file": "../model/architecture.semantic-ir.json",
+          "authority": "example",
+          "identity": "example:architecture/model",
+          "document": "model",
+          "formal_revision": 1
+        }
+      }
+    ],
+    "program": {
+      "source": {
+        "file": "../rules/recovery-quantile.fsl",
+        "authority": "example",
+        "identity": "example:architecture/recovery-quantile",
+        "document": "recoveryquantile",
+        "formal_revision": 1
+      }
+    },
+    "documents": [
+      {
+        "file": "../data/start-service-down.json"
+      }
+    ],
+    "items": [
+      {
+        "claim": "BackInOneCall",
+        "probabilistic": {
+          "evidence": "exact"
+        }
+      }
+    ]
+  }
+}
