@@ -9,8 +9,8 @@ It lists what the image ships, with each component's licence identifier as its o
 | Program | Version | Licence | Licence text in the image | Source repository | Tag | Commit |
 | --- | --- | --- | --- | --- | --- | --- |
 | `fsl` (filament-driver) | 0.1.3 | AGPL-3.0-or-later | `texts/filament-driver.LICENSE` | https://github.com/agent-ix/filament-driver | v0.1.3 | 302044005fde382d481fea3be4b0fec49940015f |
-| `quire` (quire-cli) | 0.45.0 | AGPL-3.0-or-later | `texts/quire-cli.LICENSE` | https://github.com/agent-ix/quire-cli | v0.45.0 | d00ee4be259f07ef054d3fe7663d4a524f366760 |
-| `quoin` (quoin) | 0.35.0 | AGPL-3.0-or-later | `texts/quoin.LICENSE` | https://github.com/agent-ix/quoin | v0.35.0 | 79ae456f162d2b29db06f98f05a7f01ccca1efae |
+| `quire` (quire-cli) | 0.52.1 | AGPL-3.0-or-later | `texts/quire-cli.LICENSE` | https://github.com/agent-ix/quire-cli | v0.52.1 | 3adfef308d784238417af7804971e7d1b058cf74 |
+| `quoin` (quoin) | 0.36.10 | AGPL-3.0-or-later | `texts/quoin.LICENSE` | https://github.com/agent-ix/quoin | v0.36.10 | 9de4ddfcff83d3199f52f21ada10e43ab5fea966 |
 | `fsl-examples` (tools/fsl-examples) | 0.1.0 | MIT | `texts/filament-examples.LICENSE` | https://github.com/agent-ix/filament-examples | built from this image's revision | the commit in the image label `org.opencontainers.image.revision` |
 | Filament examples (`/opt/filament-examples`) | this image | MIT | `texts/filament-examples.LICENSE` | https://github.com/agent-ix/filament-examples | the commit in the image label `org.opencontainers.image.revision` | |
 
@@ -286,9 +286,9 @@ Third-party crates:
 | zerovec | 0.11.9 | Unicode-3.0 |
 | zmij | 1.0.23 | MIT |
 
-## Rust crates built into `quire` (quire-cli v0.45.0)
+## Rust crates built into `quire` (quire-cli v0.52.1)
 
-Taken from `cargo metadata --locked` of https://github.com/agent-ix/quire-cli/tree/v0.45.0, for aarch64-unknown-linux-gnu and x86_64-unknown-linux-gnu, normal and build dependencies. There are 199 crates: 6 first-party and 193 third-party. Build-time crates (procedural macros, build scripts) are included, so the list may name a few crates that are not linked into the binary.
+Taken from `cargo metadata --locked` of https://github.com/agent-ix/quire-cli/tree/v0.52.1, for aarch64-unknown-linux-gnu and x86_64-unknown-linux-gnu, normal and build dependencies. There are 199 crates: 6 first-party and 193 third-party. Build-time crates (procedural macros, build scripts) are included, so the list may name a few crates that are not linked into the binary.
 
 Licences of the third-party crates, as the crates declare them:
 
@@ -317,10 +317,10 @@ First-party crates (AGPL-3.0-or-later). The corresponding source is at the repos
 | --- | --- | --- | --- |
 | agent-ix-semantic-schema | 0.3.0 | https://github.com/agent-ix/filament-core-data | 327a49ca9d7ab2c12269a8db65b75f1331e165bd |
 | ix-cli-kit | 0.1.0 | https://github.com/agent-ix/ix-cli-kit | ec1b26245c8366dfc9abf0c94ad16cba2c779f36 |
-| quire-cli | 0.45.0 | https://github.com/agent-ix/quire-cli | d00ee4be259f07ef054d3fe7663d4a524f366760 (tag v0.45.0) |
-| quire-code-extraction | 0.1.0 | https://github.com/agent-ix/quire-rs | 5a45ec949737a41c69a90f6ac5eefcafb2e10716 |
+| quire-cli | 0.52.1 | https://github.com/agent-ix/quire-cli | 3adfef308d784238417af7804971e7d1b058cf74 (tag v0.52.1) |
+| quire-code-extraction | 0.1.0 | https://github.com/agent-ix/quire-rs | 335be94e8490b1d186a4d168eb5b2e7bab9a4f68 |
 | quire-code-parse | 0.2.2 | https://github.com/agent-ix/quire-code-rs | 108ddda6bdeab1dd97e5c638d41b6df8167b1fa1 |
-| quire-rs | 0.60.0 | https://github.com/agent-ix/quire-rs | 5a45ec949737a41c69a90f6ac5eefcafb2e10716 |
+| quire-rs | 0.62.2 | https://github.com/agent-ix/quire-rs | 335be94e8490b1d186a4d168eb5b2e7bab9a4f68 |
 
 Third-party crates:
 
@@ -520,9 +520,9 @@ Third-party crates:
 | zlib-rs | 0.6.8 | Zlib |
 | zmij | 1.0.23 | MIT |
 
-## Rust crates built into `quoin` (quoin v0.35.0)
+## Rust crates built into `quoin` (quoin v0.36.10)
 
-Taken from `cargo metadata --locked` of https://github.com/agent-ix/quoin/tree/v0.35.0, for aarch64-unknown-linux-gnu and x86_64-unknown-linux-gnu, normal and build dependencies. There are 412 crates: 43 first-party and 369 third-party. Build-time crates (procedural macros, build scripts) are included, so the list may name a few crates that are not linked into the binary.
+Taken from `cargo metadata --locked` of https://github.com/agent-ix/quoin/tree/v0.36.10, for aarch64-unknown-linux-gnu and x86_64-unknown-linux-gnu, normal and build dependencies. There are 414 crates: 45 first-party and 369 third-party. Build-time crates (procedural macros, build scripts) are included, so the list may name a few crates that are not linked into the binary.
 
 Licences of the third-party crates, as the crates declare them:
 
@@ -565,12 +565,12 @@ First-party crates (AGPL-3.0-or-later). The corresponding source is at the repos
 | Crate | Version | Repository | Commit |
 | --- | --- | --- | --- |
 | agent-ix-engineering-assurance-campaign | 0.0.0 | https://github.com/agent-ix/engineering-assurance | 34695afc3cb2e14dbe3619b6dc5d808041d7e6e6 |
-| agent-ix-semantic-schema | 0.3.0 | https://github.com/agent-ix/filament-core-data | ce72bc519945ca4676f1b8f1e19f44f44303513d |
+| agent-ix-semantic-schema | 0.3.0 | https://github.com/agent-ix/filament-core-data | c23980ea9943fc61a1c2b489322e77dec85f3d9d |
 | engineering-assurance | 0.8.2 | https://github.com/agent-ix/engineering-assurance | 34695afc3cb2e14dbe3619b6dc5d808041d7e6e6 |
-| filament-analyze-method-contract | 0.1.0 | https://github.com/agent-ix/filament-analyze | e17fbf0f6c593d32ce2555420d615c5dd862e8ef |
-| filament-analyze | 0.1.0 | https://github.com/agent-ix/filament-analyze | e17fbf0f6c593d32ce2555420d615c5dd862e8ef |
-| filament-contract-model | 0.1.0 | https://github.com/agent-ix/filament-contract-ir | ce1970fb108fe2c07a3c463b4a405dee529a4330 |
-| filament-exact | 0.1.0 | https://github.com/agent-ix/filament-exact | f1ef4963d19e343d19fd85f415b509439126f1da |
+| filament-analyze-method-contract | 0.1.0 | https://github.com/agent-ix/filament-analyze | e2a8d1b2b2ad4ff3ed80201dac1b6c91457e6d3d |
+| filament-analyze | 0.1.0 | https://github.com/agent-ix/filament-analyze | e2a8d1b2b2ad4ff3ed80201dac1b6c91457e6d3d |
+| filament-contract-model | 0.1.0 | https://github.com/agent-ix/filament-contract-ir | 8eb5201f5ac80c877508b76aa862c0846241cc40 |
+| filament-exact | 0.1.0 | https://github.com/agent-ix/filament-exact | 85034c5cbc44fcf47a441cb1cf968564b57cd357 |
 | filament-semantic-value | 0.1.0 | https://github.com/agent-ix/filament-semantic-value | c943d9560f1c614ad6b8512bfe8b8f2963f8122d |
 | filament-verification-contracts | 0.1.0 | https://github.com/agent-ix/filament-verification-contracts | b79af1b550c91288778ee5df1becc6e7388dd66f |
 | filament-walk | 0.1.0 | https://github.com/agent-ix/filament-walk | ab0c37a0a88cf5bf4b45a32fc12a01992abea00d |
@@ -578,35 +578,37 @@ First-party crates (AGPL-3.0-or-later). The corresponding source is at the repos
 | ix-trace-rs | 0.1.2 | https://github.com/agent-ix/ix-trace-rs | 3cd3285055e32e4c08fb124d76e489b9dd412b6b |
 | quire-canonical-derive | 0.3.0 | https://github.com/agent-ix/quire-canonical | 7d2f8389d01fcbf318e658746015b85a31526cc9 |
 | quire-canonical | 0.3.0 | https://github.com/agent-ix/quire-canonical | 7d2f8389d01fcbf318e658746015b85a31526cc9 |
-| quire-code-extraction | 0.1.0 | https://github.com/agent-ix/quire-rs | aac50a6864257f7ea588d2aeb7a337be940b096c |
+| quire-code-extraction | 0.1.0 | https://github.com/agent-ix/quire-rs | 335be94e8490b1d186a4d168eb5b2e7bab9a4f68 |
 | quire-code-parse | 0.2.2 | https://github.com/agent-ix/quire-code-rs | 108ddda6bdeab1dd97e5c638d41b6df8167b1fa1 |
-| quire-rs | 0.60.0 | https://github.com/agent-ix/quire-rs | aac50a6864257f7ea588d2aeb7a337be940b096c |
-| quoin-anomaly | 0.31.0 | https://github.com/agent-ix/quoin | 79ae456f162d2b29db06f98f05a7f01ccca1efae (tag v0.35.0) |
-| quoin-assurance | 0.31.0 | https://github.com/agent-ix/quoin | 79ae456f162d2b29db06f98f05a7f01ccca1efae (tag v0.35.0) |
-| quoin-auditor | 0.31.0 | https://github.com/agent-ix/quoin | 79ae456f162d2b29db06f98f05a7f01ccca1efae (tag v0.35.0) |
-| quoin-catalog | 0.31.0 | https://github.com/agent-ix/quoin | 79ae456f162d2b29db06f98f05a7f01ccca1efae (tag v0.35.0) |
-| quoin-change-assurance | 0.31.0 | https://github.com/agent-ix/quoin | 79ae456f162d2b29db06f98f05a7f01ccca1efae (tag v0.35.0) |
-| quoin-cli | 0.31.0 | https://github.com/agent-ix/quoin | 79ae456f162d2b29db06f98f05a7f01ccca1efae (tag v0.35.0) |
-| quoin-combinatorial | 0.31.0 | https://github.com/agent-ix/quoin | 79ae456f162d2b29db06f98f05a7f01ccca1efae (tag v0.35.0) |
-| quoin-completeness | 0.31.0 | https://github.com/agent-ix/quoin | 79ae456f162d2b29db06f98f05a7f01ccca1efae (tag v0.35.0) |
-| quoin-config | 0.31.0 | https://github.com/agent-ix/quoin | 79ae456f162d2b29db06f98f05a7f01ccca1efae (tag v0.35.0) |
-| quoin-core | 0.31.0 | https://github.com/agent-ix/quoin | 79ae456f162d2b29db06f98f05a7f01ccca1efae (tag v0.35.0) |
-| quoin-delivery | 0.31.0 | https://github.com/agent-ix/quoin | 79ae456f162d2b29db06f98f05a7f01ccca1efae (tag v0.35.0) |
-| quoin-evidence-types | 0.31.0 | https://github.com/agent-ix/quoin | 79ae456f162d2b29db06f98f05a7f01ccca1efae (tag v0.35.0) |
-| quoin-evidence | 0.31.0 | https://github.com/agent-ix/quoin | 79ae456f162d2b29db06f98f05a7f01ccca1efae (tag v0.35.0) |
-| quoin-finding-types | 0.31.0 | https://github.com/agent-ix/quoin | 79ae456f162d2b29db06f98f05a7f01ccca1efae (tag v0.35.0) |
-| quoin-graph-analysis | 0.31.0 | https://github.com/agent-ix/quoin | 79ae456f162d2b29db06f98f05a7f01ccca1efae (tag v0.35.0) |
-| quoin-jsonschema | 0.31.0 | https://github.com/agent-ix/quoin | 79ae456f162d2b29db06f98f05a7f01ccca1efae (tag v0.35.0) |
-| quoin-measurement-graph | 0.31.0 | https://github.com/agent-ix/quoin | 79ae456f162d2b29db06f98f05a7f01ccca1efae (tag v0.35.0) |
-| quoin-measurement | 0.31.0 | https://github.com/agent-ix/quoin | 79ae456f162d2b29db06f98f05a7f01ccca1efae (tag v0.35.0) |
-| quoin-modules | 0.31.0 | https://github.com/agent-ix/quoin | 79ae456f162d2b29db06f98f05a7f01ccca1efae (tag v0.35.0) |
-| quoin-quire-types | 0.31.0 | https://github.com/agent-ix/quoin | 79ae456f162d2b29db06f98f05a7f01ccca1efae (tag v0.35.0) |
-| quoin-quire | 0.31.0 | https://github.com/agent-ix/quoin | 79ae456f162d2b29db06f98f05a7f01ccca1efae (tag v0.35.0) |
-| quoin-risk-advice | 0.31.0 | https://github.com/agent-ix/quoin | 79ae456f162d2b29db06f98f05a7f01ccca1efae (tag v0.35.0) |
-| quoin-semantic | 0.31.0 | https://github.com/agent-ix/quoin | 79ae456f162d2b29db06f98f05a7f01ccca1efae (tag v0.35.0) |
-| quoin-store | 0.31.0 | https://github.com/agent-ix/quoin | 79ae456f162d2b29db06f98f05a7f01ccca1efae (tag v0.35.0) |
-| quoin-validators | 0.31.0 | https://github.com/agent-ix/quoin | 79ae456f162d2b29db06f98f05a7f01ccca1efae (tag v0.35.0) |
-| quoin-yaml | 0.31.0 | https://github.com/agent-ix/quoin | 79ae456f162d2b29db06f98f05a7f01ccca1efae (tag v0.35.0) |
+| quire-rs | 0.62.2 | https://github.com/agent-ix/quire-rs | 335be94e8490b1d186a4d168eb5b2e7bab9a4f68 |
+| quoin-anomaly | 0.31.1 | https://github.com/agent-ix/quoin | 9de4ddfcff83d3199f52f21ada10e43ab5fea966 (tag v0.36.10) |
+| quoin-assurance | 0.31.1 | https://github.com/agent-ix/quoin | 9de4ddfcff83d3199f52f21ada10e43ab5fea966 (tag v0.36.10) |
+| quoin-auditor | 0.31.1 | https://github.com/agent-ix/quoin | 9de4ddfcff83d3199f52f21ada10e43ab5fea966 (tag v0.36.10) |
+| quoin-catalog | 0.31.1 | https://github.com/agent-ix/quoin | 9de4ddfcff83d3199f52f21ada10e43ab5fea966 (tag v0.36.10) |
+| quoin-change-assurance | 0.31.1 | https://github.com/agent-ix/quoin | 9de4ddfcff83d3199f52f21ada10e43ab5fea966 (tag v0.36.10) |
+| quoin-cli | 0.31.1 | https://github.com/agent-ix/quoin | 9de4ddfcff83d3199f52f21ada10e43ab5fea966 (tag v0.36.10) |
+| quoin-combinatorial | 0.31.1 | https://github.com/agent-ix/quoin | 9de4ddfcff83d3199f52f21ada10e43ab5fea966 (tag v0.36.10) |
+| quoin-completeness | 0.31.1 | https://github.com/agent-ix/quoin | 9de4ddfcff83d3199f52f21ada10e43ab5fea966 (tag v0.36.10) |
+| quoin-config | 0.31.1 | https://github.com/agent-ix/quoin | 9de4ddfcff83d3199f52f21ada10e43ab5fea966 (tag v0.36.10) |
+| quoin-core | 0.31.1 | https://github.com/agent-ix/quoin | 9de4ddfcff83d3199f52f21ada10e43ab5fea966 (tag v0.36.10) |
+| quoin-delivery | 0.31.1 | https://github.com/agent-ix/quoin | 9de4ddfcff83d3199f52f21ada10e43ab5fea966 (tag v0.36.10) |
+| quoin-dossier | 0.31.1 | https://github.com/agent-ix/quoin | 9de4ddfcff83d3199f52f21ada10e43ab5fea966 (tag v0.36.10) |
+| quoin-evidence-types | 0.31.1 | https://github.com/agent-ix/quoin | 9de4ddfcff83d3199f52f21ada10e43ab5fea966 (tag v0.36.10) |
+| quoin-evidence | 0.31.1 | https://github.com/agent-ix/quoin | 9de4ddfcff83d3199f52f21ada10e43ab5fea966 (tag v0.36.10) |
+| quoin-finding-types | 0.31.1 | https://github.com/agent-ix/quoin | 9de4ddfcff83d3199f52f21ada10e43ab5fea966 (tag v0.36.10) |
+| quoin-graph-analysis | 0.31.1 | https://github.com/agent-ix/quoin | 9de4ddfcff83d3199f52f21ada10e43ab5fea966 (tag v0.36.10) |
+| quoin-jsonschema | 0.31.1 | https://github.com/agent-ix/quoin | 9de4ddfcff83d3199f52f21ada10e43ab5fea966 (tag v0.36.10) |
+| quoin-measurement-graph | 0.31.1 | https://github.com/agent-ix/quoin | 9de4ddfcff83d3199f52f21ada10e43ab5fea966 (tag v0.36.10) |
+| quoin-measurement | 0.31.1 | https://github.com/agent-ix/quoin | 9de4ddfcff83d3199f52f21ada10e43ab5fea966 (tag v0.36.10) |
+| quoin-modules | 0.31.1 | https://github.com/agent-ix/quoin | 9de4ddfcff83d3199f52f21ada10e43ab5fea966 (tag v0.36.10) |
+| quoin-quire-types | 0.31.1 | https://github.com/agent-ix/quoin | 9de4ddfcff83d3199f52f21ada10e43ab5fea966 (tag v0.36.10) |
+| quoin-quire | 0.31.1 | https://github.com/agent-ix/quoin | 9de4ddfcff83d3199f52f21ada10e43ab5fea966 (tag v0.36.10) |
+| quoin-risk-advice | 0.31.1 | https://github.com/agent-ix/quoin | 9de4ddfcff83d3199f52f21ada10e43ab5fea966 (tag v0.36.10) |
+| quoin-semantic | 0.31.1 | https://github.com/agent-ix/quoin | 9de4ddfcff83d3199f52f21ada10e43ab5fea966 (tag v0.36.10) |
+| quoin-soup | 0.31.1 | https://github.com/agent-ix/quoin | 9de4ddfcff83d3199f52f21ada10e43ab5fea966 (tag v0.36.10) |
+| quoin-store | 0.31.1 | https://github.com/agent-ix/quoin | 9de4ddfcff83d3199f52f21ada10e43ab5fea966 (tag v0.36.10) |
+| quoin-validators | 0.31.1 | https://github.com/agent-ix/quoin | 9de4ddfcff83d3199f52f21ada10e43ab5fea966 (tag v0.36.10) |
+| quoin-yaml | 0.31.1 | https://github.com/agent-ix/quoin | 9de4ddfcff83d3199f52f21ada10e43ab5fea966 (tag v0.36.10) |
 
 Third-party crates:
 
@@ -977,7 +979,7 @@ Third-party crates:
 | zerotrie | 0.2.5 | Unicode-3.0 |
 | zerovec-derive | 0.11.6 | Unicode-3.0 |
 | zerovec | 0.11.8 | Unicode-3.0 |
-| zip | 9.0.0 | MIT |
+| zip | 9.0.5 | MIT |
 | zlib-rs | 0.6.8 | Zlib |
 | zmij | 1.0.23 | MIT |
 | zopfli | 0.8.3 | Apache-2.0 |

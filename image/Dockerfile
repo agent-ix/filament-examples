@@ -96,7 +96,7 @@ RUN set -eu; \
 
 # The Markdown tool and quoin install to /usr/local/bin, where `quire` is the
 # Markdown tool. The driver binaries are `fsl` and its sibling launcher.
-RUN npm i -g @agent-ix/quire-cli @agent-ix/quoin && npm cache clean --force
+RUN npm i -g @agent-ix/quire-cli@0.52.1 @agent-ix/quoin@0.36.10 && npm cache clean --force
 COPY --from=driver /opt/fsl-driver/bin/fsl /usr/local/bin/fsl
 COPY --from=driver /opt/fsl-driver/bin/fsl-plugin-launch /usr/local/bin/fsl-plugin-launch
 COPY --from=runner /opt/fsl-examples/bin/fsl-examples /usr/local/bin/fsl-examples

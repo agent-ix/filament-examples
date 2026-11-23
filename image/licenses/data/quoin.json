@@ -1,10 +1,10 @@
 {
   "program": "quoin",
   "binary": "quoin",
-  "version": "0.35.0",
+  "version": "0.36.10",
   "repository": "https://github.com/agent-ix/quoin",
-  "tag": "v0.35.0",
-  "commit": "79ae456f162d2b29db06f98f05a7f01ccca1efae",
+  "tag": "v0.36.10",
+  "commit": "9de4ddfcff83d3199f52f21ada10e43ab5fea966",
   "targets": [
     "aarch64-unknown-linux-gnu",
     "x86_64-unknown-linux-gnu"
@@ -40,7 +40,7 @@
       "licence": "AGPL-3.0-or-later",
       "source": "git",
       "repository": "https://github.com/agent-ix/filament-core-data",
-      "commit": "ce72bc519945ca4676f1b8f1e19f44f44303513d",
+      "commit": "c23980ea9943fc61a1c2b489322e77dec85f3d9d",
       "licenceFiles": []
     },
     {
@@ -863,7 +863,7 @@
       "licence": "AGPL-3.0-or-later",
       "source": "git",
       "repository": "https://github.com/agent-ix/filament-analyze",
-      "commit": "e17fbf0f6c593d32ce2555420d615c5dd862e8ef",
+      "commit": "e2a8d1b2b2ad4ff3ed80201dac1b6c91457e6d3d",
       "licenceFiles": []
     },
     {
@@ -872,7 +872,7 @@
       "licence": "AGPL-3.0-or-later",
       "source": "git",
       "repository": "https://github.com/agent-ix/filament-analyze",
-      "commit": "e17fbf0f6c593d32ce2555420d615c5dd862e8ef",
+      "commit": "e2a8d1b2b2ad4ff3ed80201dac1b6c91457e6d3d",
       "licenceFiles": [
         "0d96a4ff68ad6d4b"
       ]
@@ -883,7 +883,7 @@
       "licence": "AGPL-3.0-or-later",
       "source": "git",
       "repository": "https://github.com/agent-ix/filament-contract-ir",
-      "commit": "ce1970fb108fe2c07a3c463b4a405dee529a4330",
+      "commit": "8eb5201f5ac80c877508b76aa862c0846241cc40",
       "licenceFiles": []
     },
     {
@@ -892,7 +892,7 @@
       "licence": "AGPL-3.0-or-later",
       "source": "git",
       "repository": "https://github.com/agent-ix/filament-exact",
-      "commit": "f1ef4963d19e343d19fd85f415b509439126f1da",
+      "commit": "85034c5cbc44fcf47a441cb1cf968564b57cd357",
       "licenceFiles": [
         "0d96a4ff68ad6d4b"
       ]
@@ -2983,7 +2983,7 @@
       "licence": "AGPL-3.0-or-later",
       "source": "git",
       "repository": "https://github.com/agent-ix/quire-rs",
-      "commit": "aac50a6864257f7ea588d2aeb7a337be940b096c",
+      "commit": "335be94e8490b1d186a4d168eb5b2e7bab9a4f68",
       "licenceFiles": []
     },
     {
@@ -2997,18 +2997,18 @@
     },
     {
       "name": "quire-rs",
-      "version": "0.60.0",
+      "version": "0.62.2",
       "licence": "AGPL-3.0-or-later",
       "source": "git",
       "repository": "https://github.com/agent-ix/quire-rs",
-      "commit": "aac50a6864257f7ea588d2aeb7a337be940b096c",
+      "commit": "335be94e8490b1d186a4d168eb5b2e7bab9a4f68",
       "licenceFiles": [
         "0d96a4ff68ad6d4b"
       ]
     },
     {
       "name": "quoin-anomaly",
-      "version": "0.31.0",
+      "version": "0.31.1",
       "licence": "AGPL-3.0-or-later",
       "source": "workspace",
       "repository": "https://github.com/agent-ix/quoin",
@@ -3017,7 +3017,7 @@
     },
     {
       "name": "quoin-assurance",
-      "version": "0.31.0",
+      "version": "0.31.1",
       "licence": "AGPL-3.0-or-later",
       "source": "workspace",
       "repository": "https://github.com/agent-ix/quoin",
@@ -3026,7 +3026,7 @@
     },
     {
       "name": "quoin-auditor",
-      "version": "0.31.0",
+      "version": "0.31.1",
       "licence": "AGPL-3.0-or-later",
       "source": "workspace",
       "repository": "https://github.com/agent-ix/quoin",
@@ -3035,7 +3035,7 @@
     },
     {
       "name": "quoin-catalog",
-      "version": "0.31.0",
+      "version": "0.31.1",
       "licence": "AGPL-3.0-or-later",
       "source": "workspace",
       "repository": "https://github.com/agent-ix/quoin",
@@ -3044,7 +3044,7 @@
     },
     {
       "name": "quoin-change-assurance",
-      "version": "0.31.0",
+      "version": "0.31.1",
       "licence": "AGPL-3.0-or-later",
       "source": "workspace",
       "repository": "https://github.com/agent-ix/quoin",
@@ -3053,7 +3053,7 @@
     },
     {
       "name": "quoin-cli",
-      "version": "0.31.0",
+      "version": "0.31.1",
       "licence": "AGPL-3.0-or-later",
       "source": "workspace",
       "repository": "https://github.com/agent-ix/quoin",
@@ -3062,7 +3062,7 @@
     },
     {
       "name": "quoin-combinatorial",
-      "version": "0.31.0",
+      "version": "0.31.1",
       "licence": "AGPL-3.0-or-later",
       "source": "workspace",
       "repository": "https://github.com/agent-ix/quoin",
@@ -3071,7 +3071,7 @@
     },
     {
       "name": "quoin-completeness",
-      "version": "0.31.0",
+      "version": "0.31.1",
       "licence": "AGPL-3.0-or-later",
       "source": "workspace",
       "repository": "https://github.com/agent-ix/quoin",
@@ -3080,7 +3080,7 @@
     },
     {
       "name": "quoin-config",
-      "version": "0.31.0",
+      "version": "0.31.1",
       "licence": "AGPL-3.0-or-later",
       "source": "workspace",
       "repository": "https://github.com/agent-ix/quoin",
@@ -3089,7 +3089,7 @@
     },
     {
       "name": "quoin-core",
-      "version": "0.31.0",
+      "version": "0.31.1",
       "licence": "AGPL-3.0-or-later",
       "source": "workspace",
       "repository": "https://github.com/agent-ix/quoin",
@@ -3098,7 +3098,16 @@
     },
     {
       "name": "quoin-delivery",
-      "version": "0.31.0",
+      "version": "0.31.1",
+      "licence": "AGPL-3.0-or-later",
+      "source": "workspace",
+      "repository": "https://github.com/agent-ix/quoin",
+      "commit": null,
+      "licenceFiles": []
+    },
+    {
+      "name": "quoin-dossier",
+      "version": "0.31.1",
       "licence": "AGPL-3.0-or-later",
       "source": "workspace",
       "repository": "https://github.com/agent-ix/quoin",
@@ -3107,7 +3116,7 @@
     },
     {
       "name": "quoin-evidence-types",
-      "version": "0.31.0",
+      "version": "0.31.1",
       "licence": "AGPL-3.0-or-later",
       "source": "workspace",
       "repository": "https://github.com/agent-ix/quoin",
@@ -3116,7 +3125,7 @@
     },
     {
       "name": "quoin-evidence",
-      "version": "0.31.0",
+      "version": "0.31.1",
       "licence": "AGPL-3.0-or-later",
       "source": "workspace",
       "repository": "https://github.com/agent-ix/quoin",
@@ -3125,7 +3134,7 @@
     },
     {
       "name": "quoin-finding-types",
-      "version": "0.31.0",
+      "version": "0.31.1",
       "licence": "AGPL-3.0-or-later",
       "source": "workspace",
       "repository": "https://github.com/agent-ix/quoin",
@@ -3134,7 +3143,7 @@
     },
     {
       "name": "quoin-graph-analysis",
-      "version": "0.31.0",
+      "version": "0.31.1",
       "licence": "AGPL-3.0-or-later",
       "source": "workspace",
       "repository": "https://github.com/agent-ix/quoin",
@@ -3143,7 +3152,7 @@
     },
     {
       "name": "quoin-jsonschema",
-      "version": "0.31.0",
+      "version": "0.31.1",
       "licence": "AGPL-3.0-or-later",
       "source": "workspace",
       "repository": "https://github.com/agent-ix/quoin",
@@ -3152,7 +3161,7 @@
     },
     {
       "name": "quoin-measurement-graph",
-      "version": "0.31.0",
+      "version": "0.31.1",
       "licence": "AGPL-3.0-or-later",
       "source": "workspace",
       "repository": "https://github.com/agent-ix/quoin",
@@ -3161,7 +3170,7 @@
     },
     {
       "name": "quoin-measurement",
-      "version": "0.31.0",
+      "version": "0.31.1",
       "licence": "AGPL-3.0-or-later",
       "source": "workspace",
       "repository": "https://github.com/agent-ix/quoin",
@@ -3170,7 +3179,7 @@
     },
     {
       "name": "quoin-modules",
-      "version": "0.31.0",
+      "version": "0.31.1",
       "licence": "AGPL-3.0-or-later",
       "source": "workspace",
       "repository": "https://github.com/agent-ix/quoin",
@@ -3179,7 +3188,7 @@
     },
     {
       "name": "quoin-quire-types",
-      "version": "0.31.0",
+      "version": "0.31.1",
       "licence": "AGPL-3.0-or-later",
       "source": "workspace",
       "repository": "https://github.com/agent-ix/quoin",
@@ -3188,7 +3197,7 @@
     },
     {
       "name": "quoin-quire",
-      "version": "0.31.0",
+      "version": "0.31.1",
       "licence": "AGPL-3.0-or-later",
       "source": "workspace",
       "repository": "https://github.com/agent-ix/quoin",
@@ -3197,7 +3206,7 @@
     },
     {
       "name": "quoin-risk-advice",
-      "version": "0.31.0",
+      "version": "0.31.1",
       "licence": "AGPL-3.0-or-later",
       "source": "workspace",
       "repository": "https://github.com/agent-ix/quoin",
@@ -3206,7 +3215,16 @@
     },
     {
       "name": "quoin-semantic",
-      "version": "0.31.0",
+      "version": "0.31.1",
+      "licence": "AGPL-3.0-or-later",
+      "source": "workspace",
+      "repository": "https://github.com/agent-ix/quoin",
+      "commit": null,
+      "licenceFiles": []
+    },
+    {
+      "name": "quoin-soup",
+      "version": "0.31.1",
       "licence": "AGPL-3.0-or-later",
       "source": "workspace",
       "repository": "https://github.com/agent-ix/quoin",
@@ -3215,7 +3233,7 @@
     },
     {
       "name": "quoin-store",
-      "version": "0.31.0",
+      "version": "0.31.1",
       "licence": "AGPL-3.0-or-later",
       "source": "workspace",
       "repository": "https://github.com/agent-ix/quoin",
@@ -3224,7 +3242,7 @@
     },
     {
       "name": "quoin-validators",
-      "version": "0.31.0",
+      "version": "0.31.1",
       "licence": "AGPL-3.0-or-later",
       "source": "workspace",
       "repository": "https://github.com/agent-ix/quoin",
@@ -3233,7 +3251,7 @@
     },
     {
       "name": "quoin-yaml",
-      "version": "0.31.0",
+      "version": "0.31.1",
       "licence": "AGPL-3.0-or-later",
       "source": "workspace",
       "repository": "https://github.com/agent-ix/quoin",
@@ -4698,7 +4716,7 @@
     },
     {
       "name": "zip",
-      "version": "9.0.0",
+      "version": "9.0.5",
       "licence": "MIT",
       "source": "crates.io",
       "repository": "https://github.com/zip-rs/zip2",
