@@ -486,3 +486,39 @@ waits_on = "QSL-2158"
 why = "analyze settles the unbounded always claim under every scheduler as unsupported (not-yet-implemented), where it should refute it; the case starts down because from data/start-service-up.json analyze does not finish (over 11 minutes, QSL-2158): switch back to the up start when QSL-2158 lands"
 needs = "exact unbounded always under every scheduler"
 serves = "Probability reference (exact): a missed claim"
+
+[[case]]
+id = "availability-holds"
+rule = "CheckoutAvailable"
+statement = "Checkout stays up through 10 calls in a row with probability at least 0.99: calls that fail 1 time in 1,000 meet it, because ten of them all succeed with probability 0.999^10, about 0.99004, and analyze proves the claim with that exact value."
+file = "rules/staged-availability.fsl"
+command = "analyze requests/availability-holds.json"
+engine = "probability"
+status = "running"
+expect_exit = 0
+expect_verdict = "proved"
+serves = "Tutorial: probability"
+
+[[case]]
+id = "availability-sampled"
+rule = "CheckoutAvailable"
+statement = "The same service, asked for at least 0.98 over 10 calls with alpha 0.01, beta 0.01 and indifference 0.005: analyze draws samples instead of computing the value, and the result is a measurement, accepted, not a proof."
+file = "rules/availability-sampled.fsl"
+command = "analyze requests/availability-sampled.json"
+engine = "probability"
+status = "running"
+expect_exit = 0
+expect_verdict = "measured"
+serves = "Tutorial: probability"
+
+[[case]]
+id = "recovery-expected-calls"
+rule = "RecoversQuickly"
+statement = "A service that starts down is called until it comes up, and each call brings it up with probability 999 in 1,000: the expected number of calls is 1000/999, below the 2 the claim allows, and analyze proves it."
+file = "rules/recovery-expected-calls.fsl"
+command = "analyze requests/recovery-expected-calls.json"
+engine = "probability"
+status = "running"
+expect_exit = 0
+expect_verdict = "proved"
+serves = "Tutorial: probability"

@@ -1,0 +1,19 @@
+language "ix:native" edition "1-draft";
+profile v = "filament.model.complete/v1";
+profile ev = "filament.temporal.event-position.false-extension/v1";
+model Arch = "example/architecture";
+
+// Each call to a service fails 1 time in 1,000.
+random Arch::Service::call(ok) ~ { true: 999, false: 1 };
+workload Traffic on Arch { weight Arch::Service::call = 1; }
+
+// A service is up after a call exactly when the call succeeded.
+post UpFollowsCall using v on Arch::Service::call { self.up = ok }
+
+// Checkout stays up through 10 calls in a row with probability at least 0.98. The claim states alpha,
+// beta and indifference, so sampling decides it: the true probability, about 0.990, lies outside the
+// indifference region from 0.975 to 0.985.
+probabilistic CheckoutAvailable using ev on Arch over (s: Arch::Service) under Traffic on origin
+  with alpha 0.01, beta 0.01, indifference 0.005 {
+  probability >= 0.98 [ always[0,10] holds(s.up) ]
+}

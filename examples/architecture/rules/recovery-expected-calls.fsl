@@ -1,0 +1,20 @@
+language "ix:native" edition "1-draft";
+profile v = "filament.model.complete/v1";
+profile inf = "filament.temporal.infinite-trace/v1";
+model Arch = "example/architecture";
+
+// Each call to a service fails 1 time in 1,000.
+random Arch::Service::call(ok) ~ { true: 999, false: 1 };
+workload Traffic on Arch { weight Arch::Service::call = 1; }
+
+// A service is up after a call exactly when the call succeeded.
+post UpFollowsCall using v on Arch::Service::call { self.up = ok }
+
+// Every call costs 1.
+reward calls on Arch::Service::call = 1;
+
+// A service that starts down is called until it comes up. The expected number of calls is 1000/999,
+// about 1.001, which is at most 2.
+probabilistic RecoversQuickly using inf on Arch over (s: Arch::Service) under Traffic on origin {
+  expected accumulate calls until holds(s.up) <= 2
+}
