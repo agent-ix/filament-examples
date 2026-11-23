@@ -1,6 +1,6 @@
 #!/bin/sh
 # Smoke test, run inside the image: tool versions, the baked-in examples, and
-# the exit code of verbs the driver does not support yet.
+# the driver's typed response for verbs this build does not route.
 set -eu
 
 fsl --version
@@ -12,10 +12,20 @@ make --version | head -1
 git --version
 node --version
 
-for verb in analyze prove generate monitor replay; do
+# These are the driver's build's unrouted verbs (fsl-cli/tests/verbs.rs).
+for verb in prove generate inspect render; do
   status=0
-  fsl "$verb" x >/dev/null 2>&1 || status=$?
+  result=$(fsl "$verb" --format json) || status=$?
   [ "$status" -eq 21 ] || { echo "fsl $verb exited $status, expected 21"; exit 1; }
+  printf '%s\n' "$result" | jq -e -s --arg verb "$verb" '
+    length == 1 and
+    .[0].operation == $verb and
+    .[0].category == "unsupported" and
+    .[0].diagnostics[0].code == "unsupported_operation" and
+    .[0].diagnostics[0].cause == "operation-not-routed" and
+    .[0].diagnostics[0].detail.verb == $verb and
+    (.[0].diagnostics[0].message | contains($verb))
+  ' >/dev/null || { echo "fsl $verb returned an unexpected unsupported response"; exit 1; }
 done
 
 # The examples write into their folders, so run a scratch copy.
