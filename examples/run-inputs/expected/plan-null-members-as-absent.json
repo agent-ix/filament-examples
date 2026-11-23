@@ -1,10 +1,33 @@
 {
-  "category": "refusal",
-  "last_stage": null,
-  "result": null,
-  "first_diagnostic": {
-    "code": "invalid-request",
-    "cause": null
-  },
-  "items": []
+  "plan_outcome": {
+    "plan": "Release",
+    "status": "passed",
+    "failed_steps": [],
+    "steps": [
+      {
+        "id": "again",
+        "status": "proved",
+        "blocked_by": null,
+        "evidence": "proof",
+        "method": "model_check",
+        "category": "success",
+        "result": "proved",
+        "cause": null,
+        "basis": "exhaustive",
+        "certification": "certified"
+      },
+      {
+        "id": "safe",
+        "status": "proved",
+        "blocked_by": null,
+        "evidence": "proof",
+        "method": "model_check",
+        "category": "success",
+        "result": "proved",
+        "cause": null,
+        "basis": "exhaustive",
+        "certification": "certified"
+      }
+    ]
+  }
 }

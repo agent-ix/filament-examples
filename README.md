@@ -30,7 +30,7 @@ The table lists each system with the number of cases that run today and the numb
 | [parts-saga](examples/parts-saga) | Distributed | 31 | 1 |
 | [cell](examples/cell) | Safety | 13 | 0 |
 | [rover](examples/rover) | Safety | 69 | 4 |
-| [run-inputs](examples/run-inputs) | Language | 27 | 5 |
+| [run-inputs](examples/run-inputs) | Language | 32 | 0 |
 | [lock](examples/lock) | Safety | 26 | 0 |
 | [plant](examples/plant) | Safety | 8 | 0 |
 | [library](examples/library) | Shop | 6 | 0 |

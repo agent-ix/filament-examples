@@ -10,6 +10,7 @@ pub mod error;
 pub mod generated;
 pub mod manifest;
 pub mod outcome;
+pub mod run_documents;
 pub mod runner;
 
 pub use error::{Error, ErrorCode, Result};
