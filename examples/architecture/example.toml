@@ -536,6 +536,18 @@ expect_verdict = "violated"
 serves = "Probability reference and tutorial"
 
 [[case]]
+id = "availability-sampled-sprt"
+rule = "CheckoutAvailable"
+statement = "The bounded probability claim uses the sequential probability ratio test and samples one behavior at a time until its evidence decides the claim."
+file = "rules/availability-sampled-rejected.fsl"
+command = "analyze requests/availability-sampled-sprt.json"
+engine = "probability"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
+serves = "Probability reference"
+
+[[case]]
 id = "availability-sampled-undecided"
 rule = "CheckoutAvailable"
 statement = "The true probability, about 0.99004, lies inside the indifference region from 0.985 to 0.995 around the threshold 0.99: sampling stays undecided, so the result is inconclusive."
