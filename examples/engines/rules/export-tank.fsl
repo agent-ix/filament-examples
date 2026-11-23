@@ -1,0 +1,5 @@
+language "ix:native" edition "1-draft";
+profile v = "filament.value.complete/v1";
+profile m = "filament.model.complete/v1";
+model Tank = "example/tank";
+invariant LevelInRange using m on Tank::Tank at current { self.level >= 0 and self.level <= 3 }

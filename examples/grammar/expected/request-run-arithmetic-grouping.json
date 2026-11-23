@@ -1,0 +1,13 @@
+{
+  "category": "success",
+  "last_stage": "S6a",
+  "result": {
+    "kind": "completed",
+    "value": {
+      "type": "integer",
+      "value": "20"
+    }
+  },
+  "first_diagnostic": null,
+  "items": []
+}

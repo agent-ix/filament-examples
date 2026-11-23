@@ -16,7 +16,7 @@ The table lists each system with the number of cases that run today and the numb
 
 | System | Family | Running | Staged |
 | --- | --- | --- | --- |
-| [grammar](examples/grammar) | Language | 201 | 0 |
+| [grammar](examples/grammar) | Language | 202 | 0 |
 | [types-checking](examples/types-checking) | Language | 204 | 0 |
 | [operations-arithmetic](examples/operations-arithmetic) | Language | 312 | 0 |
 | [declarations-models](examples/declarations-models) | Language | 111 | 0 |
@@ -24,7 +24,7 @@ The table lists each system with the number of cases that run today and the numb
 | [docs-captures](examples/docs-captures) | Language | 7 | 0 |
 | [docs-values](examples/docs-values) | Language | 15 | 0 |
 | [language-values](examples/language-values) | Language | 44 | 0 |
-| [engines](examples/engines) | Language | 46 | 5 |
+| [engines](examples/engines) | Language | 48 | 5 |
 | [shop](examples/shop) | Shop | 160 | 1 |
 | [architecture](examples/architecture) | Enterprise | 49 | 5 |
 | [parts-saga](examples/parts-saga) | Distributed | 31 | 1 |

@@ -1,0 +1,12 @@
+{
+  "replay_outcome": {
+    "results": [
+      {
+        "arm": "input",
+        "category": "success",
+        "settlement": "inconclusive",
+        "value": true
+      }
+    ]
+  }
+}

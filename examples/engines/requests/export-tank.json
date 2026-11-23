@@ -1,0 +1,11 @@
+{
+  "format": "native-run/1",
+  "request": {
+    "models": [{
+      "format": "semantic-ir/2.0.0",
+      "source": {"file": "../model/tank.semantic-ir.json", "authority": "example", "identity": "example:engines/tank-model", "document": "Tank", "formal_revision": 1}
+    }],
+    "program": {"source": {"file": "../rules/export-tank.fsl", "authority": "example", "identity": "example:engines/export-tank", "document": "ExportTank", "formal_revision": 1}},
+    "export": {"profile": "filament.output.tla2/v1", "obligations": ["LevelInRange"], "initial": "../data/tank-0.json"}
+  }
+}
