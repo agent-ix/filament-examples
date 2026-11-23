@@ -45,7 +45,7 @@ RUN set -eu; \
       curl -sSf --location --remote-name "$FSL_REPO/releases/download/$tag/$archive"; \
       curl -sSf --location --remote-name "$FSL_REPO/releases/download/$tag/SHA256SUMS.txt"; \
       grep " $archive\$" SHA256SUMS.txt | sha256sum --check -; \
-      tar -xzf "$archive" -C /opt/fsl-driver/bin fsl; \
+      tar -xzf "$archive" -C /opt/fsl-driver/bin fsl fsl-plugin-launch; \
       echo "$tag" > /opt/fsl-driver/TAG; \
     else \
       if [ -z "$FSL_REVISION" ]; then echo "FSL_REVISION is required when FSL_SOURCE=source" >&2; exit 1; fi; \
@@ -53,7 +53,10 @@ RUN set -eu; \
       curl -sSf https://sh.rustup.rs | sh -s -- -y --profile minimal --default-toolchain "$RUST_VERSION"; \
       PATH=/root/.cargo/bin:$PATH cargo install --git "$FSL_REPO" --rev "$FSL_REVISION" \
         --locked --root /opt/fsl-driver fsl-cli; \
+      PATH=/root/.cargo/bin:$PATH cargo install --git "$FSL_REPO" --rev "$FSL_REVISION" \
+        --locked --root /opt/fsl-driver filament-plugin-host; \
       strip /opt/fsl-driver/bin/fsl; \
+      strip /opt/fsl-driver/bin/fsl-plugin-launch; \
       echo source > /opt/fsl-driver/TAG; \
     fi; \
     rm -rf /var/lib/apt/lists/* /tmp/*
@@ -92,10 +95,10 @@ RUN set -eu; \
     rm -rf /usr/local/include /usr/local/share/doc /usr/local/share/man /usr/local/*.md
 
 # The Markdown tool and quoin install to /usr/local/bin, where `quire` is the
-# Markdown tool. The driver binary is `fsl`. Nothing inside either package is
-# renamed.
+# Markdown tool. The driver binaries are `fsl` and its sibling launcher.
 RUN npm i -g @agent-ix/quire-cli @agent-ix/quoin && npm cache clean --force
 COPY --from=driver /opt/fsl-driver/bin/fsl /usr/local/bin/fsl
+COPY --from=driver /opt/fsl-driver/bin/fsl-plugin-launch /usr/local/bin/fsl-plugin-launch
 COPY --from=runner /opt/fsl-examples/bin/fsl-examples /usr/local/bin/fsl-examples
 ENV FSL_EXAMPLES=fsl-examples
 

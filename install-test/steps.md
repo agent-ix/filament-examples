@@ -68,11 +68,11 @@ else
 fi
 ```
 
-The archive holds one program, `fsl`. Install it in a folder on your path.
+The archive holds two sibling programs, `fsl` and `fsl-plugin-launch`. Install both in a folder on your path; the driver uses the launcher when it starts plugin providers.
 
 ```bash step=driver-install
 mkdir -p "$HOME/.local/bin"
-tar -xzf "$archive" -C "$HOME/.local/bin" fsl
+tar -xzf "$archive" -C "$HOME/.local/bin" fsl fsl-plugin-launch
 export PATH="$HOME/.local/bin:$PATH"
 cd "$HOME"
 fsl --version
@@ -80,18 +80,22 @@ fsl --version
 
 Add `export PATH="$HOME/.local/bin:$PATH"` to your shell profile to keep `fsl` on the path in new terminals. The commands work in bash and zsh.
 
-## Build the FSL driver from source
+## Install the FSL driver from source
 
-The source build is the second path. Skip this section if you installed the release. The driver is a Rust program and uses the toolchain from the prerequisites.
+The source install is the second path. Skip this section if you installed the release. It installs both driver programs from the same revision, beside each other in Cargo's bin directory.
 
-Build the driver. The two `CARGO_PROFILE_RELEASE` settings turn off link-time optimization and use 16 code-generation units. The driver's own release profile needs more than 8 GB of memory and does not finish on a small machine. This step takes several minutes and installs the program as `fsl`.
+The two `CARGO_PROFILE_RELEASE` settings turn off link-time optimization and use 16 code-generation units. The driver's own release profile needs more than 8 GB of memory and does not finish on a small machine. This step takes several minutes.
 
 ```bash step=driver-source
 FSL_REVISION=158bc4735167e75347afbfa883e03c1013d45f2d
 CARGO_INCREMENTAL=0 CARGO_PROFILE_RELEASE_DEBUG=0 CARGO_PROFILE_RELEASE_INCREMENTAL=false \
   CARGO_PROFILE_RELEASE_LTO=off CARGO_PROFILE_RELEASE_CODEGEN_UNITS=16 \
   cargo install --git https://github.com/agent-ix/filament-driver --rev "$FSL_REVISION" --locked fsl-cli
+CARGO_INCREMENTAL=0 CARGO_PROFILE_RELEASE_DEBUG=0 CARGO_PROFILE_RELEASE_INCREMENTAL=false \
+  CARGO_PROFILE_RELEASE_LTO=off CARGO_PROFILE_RELEASE_CODEGEN_UNITS=16 \
+  cargo install --git https://github.com/agent-ix/filament-driver --rev "$FSL_REVISION" --locked filament-plugin-host
 fsl --version
+command -v fsl-plugin-launch
 ```
 
 ## Run the examples
