@@ -1,0 +1,115 @@
+{
+  "category": "unsupported",
+  "last_stage": "S6c",
+  "result": null,
+  "first_diagnostic": null,
+  "items": [
+    {
+      "category": "unsupported",
+      "claim_name": "CheckoutAvailable",
+      "record": {
+        "backend": "en-4",
+        "cause": {
+          "code": "unsupported_projection",
+          "kind": "unsupported-requested-capability",
+          "refusal": "every-scheduler"
+        },
+        "result": "unsupported",
+        "settled_by": "result"
+      },
+      "request": {
+        "candidates": {
+          "backends": [
+            "en-4"
+          ],
+          "type": "set"
+        },
+        "claim": {
+          "node": {
+            "ordinal": 0,
+            "package": "example:architecture/availability-sampled-every-scheduler",
+            "path": [
+              "claim",
+              "probabilistic_claim",
+              "CheckoutAvailable",
+              "subject",
+              {
+                "node": 33
+              },
+              "scheduler",
+              "every",
+              "reward",
+              "distributions",
+              {
+                "node": 34
+              },
+              "delays",
+              "form",
+              "kind",
+              "probability",
+              "event",
+              "kind",
+              "formula",
+              "formula",
+              {
+                "node": 27
+              },
+              "bound",
+              "direction",
+              "at_least",
+              "value",
+              "rational",
+              "49/50",
+              "over",
+              {
+                "node": 23
+              },
+              "activation",
+              "kind",
+              "origin",
+              "confidence",
+              "alpha",
+              "rational",
+              "1/100",
+              "beta",
+              "rational",
+              "1/100",
+              "indifference",
+              "rational",
+              "1/200"
+            ]
+          },
+          "occurrence": {
+            "ordinal": 0,
+            "role": "claim"
+          }
+        },
+        "extent": {
+          "classification": "unbounded",
+          "finite_bound_available": false
+        },
+        "kind": "probabilistic-satisfaction",
+        "probabilistic": {
+          "evidence": "statistical",
+          "limits": {
+            "max_cycle_steps": 16777216,
+            "max_draws": 67108864,
+            "max_samples": 16777216
+          },
+          "max_witnesses": 8,
+          "method": {
+            "type": "okamoto"
+          },
+          "seed": "0",
+          "timed_sampling": {
+            "max_sample_steps": 16777216,
+            "q": 64
+          },
+          "workers": 1
+        },
+        "request_index": 0
+      },
+      "request_index": 0
+    }
+  ]
+}
