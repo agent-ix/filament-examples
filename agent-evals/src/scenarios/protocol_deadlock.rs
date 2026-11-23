@@ -17,13 +17,12 @@ pub const ID: &str = "EV-006";
 /// Human-readable catalogue title.
 pub const TITLE: &str = "Declare intended protocol termination and prove deadlock freedom";
 
-const GIVEN: &str = include_str!("../../fixtures/EV-006/given.native");
+const REFERENCE: &str = include_str!("../../fixtures/EV-006/reference/baseline.native");
 const MODEL: &str = include_str!("../../fixtures/EV-006/cell.semantic-ir.json");
 const START: &str = include_str!("../../fixtures/EV-006/start.json");
 const DEADLOCK_REQUEST: &str = include_str!("../../fixtures/EV-006/deadlock-request.json");
 const REPAIRED_REQUEST: &str = include_str!("../../fixtures/EV-006/repaired-request.json");
 const TASK: &str = include_str!("../../fixtures/EV-006/task.md");
-const TERMINAL: &str = "terminal when { k.v = 1 };";
 const ASSERT_BUDGET: Duration = Duration::from_secs(30);
 const FILE_LIMIT: u64 = 1_048_576;
 
@@ -56,7 +55,7 @@ enum FaultCode {
     InvalidArtifact,
     ChangedInput,
     WrongProtocol,
-    UnsupportedAnalysis,
+    CliGap,
     WrongDeadlock,
     WrongProof,
     WrongSummary,
@@ -81,18 +80,16 @@ impl Fault {
 
 impl std::fmt::Display for Fault {
     fn fmt(&self, out: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(out, "{:?}: {}", self.code, self.detail)
+        write!(out, "{}", self.detail)
     }
 }
 impl std::error::Error for Fault {}
 type Checked<T> = Result<T, Fault>;
 
-/// Write the fixed Fill protocol inputs into the sample workspace.
+/// Write only the fixed model and analysis requests into the sample workspace.
 pub fn prepare(workspace: &Path, _tools: &Tools) -> ScenarioResult<String> {
     fs::create_dir_all(workspace)?;
     for (name, contents) in [
-        ("given.native", GIVEN),
-        ("protocol.native", GIVEN),
         ("cell.semantic-ir.json", MODEL),
         ("start.json", START),
         ("deadlock-request.json", DEADLOCK_REQUEST),
@@ -129,17 +126,8 @@ fn compact(source: &str) -> String {
         .collect()
 }
 
-fn expected_repaired_source() -> String {
-    GIVEN.replacen(
-        "  role w on M::Cell;",
-        &format!("  role w on M::Cell;\n  {TERMINAL}"),
-        1,
-    )
-}
-
 fn check_inputs(workspace: &Path) -> Checked<()> {
     for (name, contents) in [
-        ("given.native", GIVEN),
         ("cell.semantic-ir.json", MODEL),
         ("start.json", START),
         ("deadlock-request.json", DEADLOCK_REQUEST),
@@ -152,11 +140,23 @@ fn check_inputs(workspace: &Path) -> Checked<()> {
             ));
         }
     }
-    let submitted = read_file(workspace, "protocol.native")?;
-    if compact(&submitted) != compact(&expected_repaired_source()) {
+    let baseline = read_file(workspace, "baseline.native")?;
+    let repaired = read_file(workspace, "protocol.native")?;
+    let normalized_baseline = compact(&baseline);
+    let normalized_reference = compact(REFERENCE);
+    let normalized_repaired = compact(&repaired);
+    let terminal_fix = normalized_reference.replace("finishDone", "terminalwhen{k.v=1};finishDone");
+    let precondition_fix = normalized_reference.replace("self.v=0", "self.v<=1");
+    if normalized_baseline != normalized_reference {
         return Err(Fault::new(
             FaultCode::WrongProtocol,
-            "add only terminal when { k.v = 1 }; to the supplied Fill protocol",
+            "baseline.native must model the described Fill protocol without declaring a terminal state",
+        ));
+    }
+    if normalized_repaired != terminal_fix && normalized_repaired != precondition_fix {
+        return Err(Fault::new(
+            FaultCode::WrongProtocol,
+            "protocol.native must repair the deadlock by declaring the intended end state or correcting TwoPre",
         ));
     }
     Ok(())
@@ -185,16 +185,19 @@ fn analyze(
     let output = capture_command(&mut command, deadline).map_err(command_failure)?;
     if output.status.code() != Some(expected_exit) {
         return Err(Fault::new(
-            FaultCode::ToolFailure,
+            FaultCode::CliGap,
             format!("trusted fsl analyze {request} did not exit {expected_exit}"),
         ));
     }
-    serde_json::from_slice(&output.stdout).map_err(|_| {
-        Fault::new(
-            FaultCode::ToolFailure,
-            "trusted fsl analyze did not emit JSON",
-        )
-    })
+    let document: Value = serde_json::from_slice(&output.stdout)
+        .map_err(|_| Fault::new(FaultCode::CliGap, "trusted fsl analyze did not emit JSON"))?;
+    let shape_check = if expected_exit == 10 {
+        check_deadlock(&document).map(|_| ())
+    } else {
+        check_proof(&document).map(|_| ())
+    };
+    shape_check.map_err(|fault| Fault::new(FaultCode::CliGap, fault.to_string()))?;
+    Ok(document)
 }
 
 fn one_item(document: &Value) -> Checked<&Value> {
@@ -202,12 +205,7 @@ fn one_item(document: &Value) -> Checked<&Value> {
         .as_array()
         .filter(|items| items.len() == 1)
         .map(|items| &items[0])
-        .ok_or_else(|| {
-            Fault::new(
-                FaultCode::UnsupportedAnalysis,
-                "expected one deadlock-freedom item",
-            )
-        })
+        .ok_or_else(|| Fault::new(FaultCode::CliGap, "expected one deadlock-freedom item"))
 }
 
 fn check_deadlock(document: &Value) -> Checked<&Value> {
@@ -219,24 +217,28 @@ fn check_deadlock(document: &Value) -> Checked<&Value> {
         || item["record"]["result"] != "refuted"
     {
         return Err(Fault::new(
-            FaultCode::UnsupportedAnalysis,
+            FaultCode::CliGap,
             "the baseline must settle the deadlock-freedom item as refuted",
         ));
     }
     let counterexample = &item["counterexample"];
-    let encoded = counterexample.to_string();
     let prefix = counterexample["prefix"].as_array();
     let blocked = counterexample["blocked"].as_array();
     if counterexample["kind"] != "deadlock"
         || !prefix.is_some_and(|steps| steps.len() == 2)
-        || !encoded.contains("fork")
-        || !encoded.contains("Main/Both")
-        || !encoded.contains("Main/Both/left/A")
-        || !encoded.contains("TwoPre")
-        || !encoded.contains("JoinWaiting")
-        || !encoded.contains("right")
-        || !encoded.contains("B")
         || !blocked.is_some_and(|threads| threads.len() == 2)
+        || prefix.unwrap()[0]["transition"]["step"] != "fork"
+        || prefix.unwrap()[0]["transition"]["node"] != "Main/Both"
+        || prefix.unwrap()[1]["transition"]["step"] != "attempt"
+        || prefix.unwrap()[1]["transition"]["node"] != "Main/Both/left/A"
+        || !blocked.unwrap().iter().any(|entry| {
+            entry["cause"]["type"] == "precondition"
+                && entry["cause"]["clause"] == "TwoPre"
+                && entry["rest"]["node"] == "Main/Both/right/B"
+        })
+        || !blocked.unwrap().iter().any(|entry| {
+            entry["cause"]["type"] == "join-waiting" && entry["rest"]["node"] == "Main/Both"
+        })
     {
         return Err(Fault::new(
             FaultCode::WrongDeadlock,
@@ -255,7 +257,7 @@ fn check_proof(document: &Value) -> Checked<&Value> {
         || item["record"]["result"] != "proved"
     {
         return Err(Fault::new(
-            FaultCode::UnsupportedAnalysis,
+            FaultCode::CliGap,
             "the repaired deadlock-freedom item must settle as proved",
         ));
     }
@@ -318,8 +320,8 @@ fn check_summary(workspace: &Path) -> Checked<()> {
             exit_code: 10,
             steps: vec!["fork(Both)".into(), "attempt(A)".into()],
             blocked: vec![
-                "B: Precondition{TwoPre}".into(),
-                "join Both: JoinWaiting".into(),
+                "(0, Both, right, 0) at B: Precondition{TwoPre}".into(),
+                "(0) at join Both: JoinWaiting{[(0, Both, right, 0)]}".into(),
             ],
         },
         repaired: RepairedSummary {
@@ -328,7 +330,19 @@ fn check_summary(workspace: &Path) -> Checked<()> {
             basis: "Exhaustive".into(),
         },
     };
-    if actual != expected {
+    let blocked_matches = actual.deadlock.blocked.len() == expected.deadlock.blocked.len()
+        && actual
+            .deadlock
+            .blocked
+            .iter()
+            .zip(&expected.deadlock.blocked)
+            .all(|(actual, expected)| compact(actual) == compact(expected));
+    if actual.deadlock.result != expected.deadlock.result
+        || actual.deadlock.exit_code != expected.deadlock.exit_code
+        || actual.deadlock.steps != expected.deadlock.steps
+        || !blocked_matches
+        || actual.repaired != expected.repaired
+    {
         return Err(Fault::new(
             FaultCode::WrongSummary,
             "result.json must report the specified deadlock and exhaustive repair",
@@ -351,10 +365,7 @@ fn assess(workspace: &Path, tools: &Tools, deadline: Instant) -> Checked<BTreeMa
     compare_items(&saved_repaired, &trusted_repaired, true)?;
     before_deadline(deadline).map_err(command_failure)?;
     Ok(BTreeMap::from([
-        (
-            "protocol_and_intended_terminal_state_match".into(),
-            json!(true),
-        ),
+        ("modeled_protocol_and_repair_match".into(), json!(true)),
         (
             "baseline_deadlock_matches_independent_analysis".into(),
             json!(true),
@@ -378,7 +389,12 @@ pub fn grade(workspace: &Path, tools: &Tools) -> ScenarioResult<Assertion> {
         Err(fault) => Ok(Assertion {
             ok: false,
             checks: BTreeMap::new(),
-            failures: vec![format!("{:?}: {fault}", fault.code)],
+            failures: vec![match fault.code {
+                FaultCode::ToolFailure | FaultCode::Timeout | FaultCode::CliGap => {
+                    format!("harness-error: {fault}")
+                }
+                _ => format!("{fault}"),
+            }],
         }),
     }
 }
@@ -386,24 +402,23 @@ pub fn grade(workspace: &Path, tools: &Tools) -> ScenarioResult<Assertion> {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use ix_trace_rs::trace;
+    use std::os::unix::fs::PermissionsExt;
     use tempfile::tempdir;
 
-    #[trace("TC-656", "FR-211-AC-2")]
     #[test]
-    fn only_the_intended_terminal_declaration_is_accepted() -> ScenarioResult<()> {
+    fn source_check_accepts_terminal_and_precondition_repairs() -> ScenarioResult<()> {
         let temp = tempdir()?;
-        fs::write(temp.path().join("given.native"), GIVEN)?;
+        fs::write(temp.path().join("baseline.native"), REFERENCE)?;
         fs::write(temp.path().join("cell.semantic-ir.json"), MODEL)?;
         fs::write(temp.path().join("start.json"), START)?;
         fs::write(temp.path().join("deadlock-request.json"), DEADLOCK_REQUEST)?;
         fs::write(temp.path().join("repaired-request.json"), REPAIRED_REQUEST)?;
         fs::write(
             temp.path().join("protocol.native"),
-            expected_repaired_source(),
+            REFERENCE.replace("self.v = 0", "self.v <= 1"),
         )?;
         assert!(check_inputs(temp.path()).is_ok());
-        let wrong = expected_repaired_source().replace("k.v = 1", "k.v = 2");
+        let wrong = REFERENCE.replace("k.v = 1", "k.v = 2");
         fs::write(temp.path().join("protocol.native"), wrong)?;
         assert!(matches!(
             check_inputs(temp.path()),
@@ -420,21 +435,23 @@ mod tests {
             "category":"violation","claim_name":"Fill","record":{"result":"refuted"},
         "counterexample":{"kind":"deadlock","prefix":[{"transition":{"step":"fork","node":"Main/Both"}},
                 {"transition":{"step":"attempt","node":"Main/Both/left/A"}}],
-                "blocked":[{"thread":"(0, Both, right, 0)","rest_point":"B","cause":{"Precondition":"TwoPre"}},
-                    {"thread":"(0)","rest_point":"join Both","cause":{"JoinWaiting":["(0, Both, right, 0)"]}}]}
+                "blocked":[{"thread":{"instance":"0","steps":[{"branch":"right","node":"Main/Both","ordinal":"0"}]},"rest":{"kind":"node","node":"Main/Both/right/B"},"cause":{"type":"precondition","clause":"TwoPre"}},
+                    {"thread":{"instance":"0","steps":[]},"rest":{"kind":"join","node":"Main/Both"},"cause":{"type":"join-waiting","threads":[]}}]}
         }]})
     }
 
-    #[trace("TC-656", "FR-211-AC-2")]
     #[test]
     fn deadlock_requires_the_expected_protocol_prefix_and_wait_causes() {
         assert!(check_deadlock(&deadlock_result()).is_ok());
         let mut missing_wait = deadlock_result();
         missing_wait["items"][0]["counterexample"]["blocked"] = json!([]);
         assert!(check_deadlock(&missing_wait).is_err());
+        let mut substring_trap = deadlock_result();
+        substring_trap["items"][0]["counterexample"]["blocked"][1]["cause"] =
+            json!({"type":"precondition","clause":"Both"});
+        assert!(check_deadlock(&substring_trap).is_err());
     }
 
-    #[trace("TC-656", "FR-211-AC-2")]
     #[test]
     fn repaired_result_requires_certified_exhaustive_proof() {
         let proved = json!({"format":"filament-outcome/1","category":"success","items":[{
@@ -445,5 +462,91 @@ mod tests {
         let mut uncertified = proved.clone();
         uncertified["items"][0]["record"]["certification"] = json!("uncertified");
         assert!(check_proof(&uncertified).is_err());
+    }
+
+    #[test]
+    fn summary_accepts_the_exact_full_paths_requested_by_task() -> ScenarioResult<()> {
+        let temp = tempdir()?;
+        fs::write(
+            temp.path().join("result.json"),
+            r#"{"deadlock":{"result":"refuted","exit_code":10,"steps":["fork(Both)","attempt(A)"],"blocked":["(0, Both, right, 0) at B: Precondition{TwoPre}","(0) at join Both: JoinWaiting{[(0, Both, right, 0)]}"]},"repaired":{"result":"proved","exit_code":0,"basis":"Exhaustive"}}"#,
+        )?;
+        assert!(check_summary(temp.path()).is_ok());
+        Ok(())
+    }
+
+    #[test]
+    fn compare_items_checks_trusted_fields() {
+        let deadlock = deadlock_result();
+        assert!(compare_items(&deadlock, &deadlock, false).is_ok());
+        let mut changed = deadlock.clone();
+        changed["items"][0]["claim_name"] = json!("Other");
+        assert!(compare_items(&deadlock, &changed, false).is_err());
+        let proof = json!({"format":"filament-outcome/1","category":"success","items":[{
+            "category":"success","claim_name":"Fill","record":{"result":"proved",
+                "basis":{"type":"exhaustive"},"certification":"certified"}, "certificate":{"accepted":true}
+        }]});
+        assert!(compare_items(&proof, &proof, true).is_ok());
+        let mut changed_proof = proof.clone();
+        changed_proof["items"][0]["certificate"]["accepted"] = json!(false);
+        assert!(compare_items(&proof, &changed_proof, true).is_err());
+    }
+
+    #[test]
+    fn full_grade_uses_stub_fsl_and_real_captured_outcomes() -> ScenarioResult<()> {
+        let workspace = tempdir()?;
+        let stub_dir = tempdir()?;
+        prepare(
+            workspace.path(),
+            &Tools {
+                fsl: Path::new("fsl").into(),
+                docs: Path::new(".").into(),
+                quire: Path::new("quire").into(),
+                quoin: Path::new("quoin").into(),
+            },
+        )?;
+        fs::write(workspace.path().join("baseline.native"), REFERENCE)?;
+        fs::write(
+            workspace.path().join("protocol.native"),
+            REFERENCE.replace("self.v = 0", "self.v <= 1"),
+        )?;
+        let reference = Path::new(env!("CARGO_MANIFEST_DIR")).join("fixtures/EV-006/reference");
+        fs::copy(
+            reference.join("deadlock-outcome.json"),
+            workspace.path().join("deadlock.json"),
+        )?;
+        fs::copy(
+            reference.join("repaired-outcome.json"),
+            workspace.path().join("repaired.json"),
+        )?;
+        fs::write(
+            workspace.path().join("result.json"),
+            r#"{"deadlock":{"result":"refuted","exit_code":10,"steps":["fork(Both)","attempt(A)"],"blocked":["(0, Both, right, 0) at B: Precondition{TwoPre}","(0) at join Both: JoinWaiting{[(0, Both, right, 0)]}"]},"repaired":{"result":"proved","exit_code":0,"basis":"Exhaustive"}}"#,
+        )?;
+        let script = format!(
+            "#!/bin/sh\ncase \"$2\" in\n deadlock-request.json) cat '{}'; exit 10 ;;\n repaired-request.json) cat '{}'; exit 0 ;;\n *) exit 21 ;;\nesac\n",
+            reference.join("deadlock-outcome.json").display(),
+            reference.join("repaired-outcome.json").display()
+        );
+        let fsl = stub_dir.path().join("fsl");
+        fs::write(&fsl, script)?;
+        let mut permissions = fs::metadata(&fsl)?.permissions();
+        permissions.set_mode(0o755);
+        fs::set_permissions(&fsl, permissions)?;
+        let tools = Tools {
+            fsl: fsl.clone(),
+            docs: Path::new(".").into(),
+            quire: Path::new("quire").into(),
+            quoin: Path::new("quoin").into(),
+        };
+        let assertion = grade(workspace.path(), &tools)?;
+        assert!(assertion.ok, "{:?}", assertion.failures);
+        assert_eq!(assertion.checks.len(), 3);
+        fs::write(&fsl, "#!/bin/sh\nexit 21\n")?;
+        let assertion = grade(workspace.path(), &tools)?;
+        assert!(!assertion.ok);
+        assert!(assertion.failures[0].starts_with("harness-error:"));
+        assert!(!assertion.failures[0].contains("CliGap:"));
+        Ok(())
     }
 }

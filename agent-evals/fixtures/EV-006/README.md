@@ -1,25 +1,23 @@
 ---
-title: Declare an intended terminal state for a protocol
+title: Model a protocol and repair its deadlock
 type: how-to
 ---
 
-EV-006 exercises FR-211's protocol deadlock-freedom item. The fixed Fill
-protocol has two interleaved branches: `A` increments a cell and `B` sets it to
-2 only when its value is 0. Taking `A` first reaches a terminal state with a
-live protocol instance: `B` is blocked by `TwoPre`, and the root waits at the
-join. Since the state is not declared intended, the baseline deadlock-freedom
-item is refuted.
+EV-006 asks the agent to model Fill from the supplied English behavior, analyze
+the baseline, and repair it by either declaring the intended end state or
+correcting the precondition so it permits the state reached after A. The task
+asks for both full `fsl analyze` outputs and a concise report of the observed
+results, ordered steps, blocked thread paths/causes, and proof basis.
 
-The requested `terminal when { k.v = 1 };` declaration makes that state an
-intended end state. The other terminal state is reached after the protocol
-instance finishes. The repaired deadlock-freedom item therefore proves
-exhaustively.
+The reference source and captured outcomes are provider-only test fixtures.
+They are not copied into the agent workspace. Both captured release outcomes
+were verified with `/home/peter/fsl-rc3/fsl analyze` offline: the baseline
+exited 10 and reported the `Main/Both` fork, `Main/Both/left/A` attempt,
+`TwoPre` block at `Main/Both/right/B`, and join wait; the repaired source with
+the intended terminal declaration exited 0 with a certified exhaustive proof.
+These captures support offline stub tests; grading always compares the agent's
+files with fresh trusted CLI results.
 
-The task retains both full `fsl analyze` outputs. The provider independently
-runs the original fixed baseline and the submitted repaired source, checks the
-counterexample and blocked-thread evidence, and requires the repaired
-exhaustive proof to match the current source.
-
-The protocol analysis route is still subject to release availability. An
-unsupported or incomplete command result is a tool capability outcome and
-never counts as a proof or as an agent failure.
+An unavailable protocol route, unsupported/incomplete result, tool failure, or
+timeout is reported with a `harness-error:` prefix and never counts as an agent
+failure or as proof.

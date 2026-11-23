@@ -1,40 +1,36 @@
-The Fill protocol coordinates two operations on one Cell. The cell starts at
-value 0 and its value is bounded from 0 through 3. Branch left can increment
-the value while it is below 3. Branch right can set it to 2 only while the
-value is 0. Both branches run before the join.
+# Model a protocol, diagnose its deadlock, and repair it
 
-The supplied protocol currently has no terminal declaration. Analyze it with
-the supplied request and save the complete output as `deadlock.json`. Read the
-deadlock counterexample and the blocked threads. The prefix `fork(Both)`,
-`attempt(A)` leaves the right branch waiting at `B` because `TwoPre` is false,
-while the root waits at `join Both`.
+The files describe a finite cell model and its initial state. From the English
+behavior below, write `baseline.native` as a complete `Fill` protocol. It has
+one worker role and two parallel branches. Branch A increments the cell when
+its value is below 3. Branch B sets the cell to 2 only when its value is 0.
+Both branches join, then the protocol finishes. Do not declare terminal states
+in the baseline.
 
-This stop is intentional when the cell value is 1. Add exactly this member to
-the Fill protocol, without changing the model, operation contracts, run, or
-finish:
+Run `fsl analyze deadlock-request.json --format json` and save the complete
+output as `deadlock.json`. Then repair the protocol in `protocol.native` so
+that its intended behavior is deadlock-free. Either declare the reached
+intended end state or correct the precondition so it permits the state reached
+after A. Keep the model, requests, and initial state unchanged.
 
-`terminal when { k.v = 1 };`
-
-Run the same public `fsl analyze` request again and save its complete output as
-`repaired.json`. Write `result.json` with exactly these members and the values
-from the two commands:
+Run `fsl analyze repaired-request.json --format json` and save the complete
+output as `repaired.json`. Write `result.json` with the observed result and
+exit code, the ordered protocol steps, both blocked-thread paths and causes,
+and the repaired proof basis. Use this shape, replacing each placeholder with
+the value observed in your files:
 
 ```json
 {
-  "deadlock": { "result": "refuted", "exit_code": 10,
-    "steps": ["fork(Both)", "attempt(A)"],
-    "blocked": ["(0, Both, right, 0) at B: Precondition{TwoPre}",
-      "(0) at join Both: JoinWaiting{[(0, Both, right, 0)]}"] },
-  "repaired": { "result": "proved", "exit_code": 0,
-    "basis": "Exhaustive" }
+  "deadlock": {
+    "result": "<observed result>",
+    "exit_code": <observed integer>,
+    "steps": ["<step 1>", "<step 2>"],
+    "blocked": ["<full blocked path and cause 1>", "<full blocked path and cause 2>"]
+  },
+  "repaired": {
+    "result": "<observed result>",
+    "exit_code": <observed integer>,
+    "basis": "<observed proof basis>"
+  }
 }
 ```
-
-The recorded baseline is an actual deadlock, not an unsupported or incomplete
-analysis. The repaired claim passes because value 1 is an intended terminal
-state; do not use `terminal any` or change `TwoPre` to suppress the counterexample.
-
-Only after both analyses and the result file are complete, make your final
-action:
-
-`echo '<<<EVAL-COMPLETE>>>'`
