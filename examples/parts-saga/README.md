@@ -47,7 +47,7 @@ The recorded result is:
 <!-- output: protocol-compiles -->
 ```
 exit 0
-success
+result: {"kind":"packaged"}
 ```
 <!-- /output -->
 

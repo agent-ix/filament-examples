@@ -77,7 +77,7 @@ pub fn project(stdout: &str) -> Recorded {
     let mut structure = Map::new();
     structure.insert("category".to_owned(), field("category"));
     structure.insert("last_stage".to_owned(), field("last_stage"));
-    structure.insert("result".to_owned(), field("result"));
+    structure.insert("result".to_owned(), result_field(field("result")));
     structure.insert("first_diagnostic".to_owned(), first_diagnostic);
     structure.insert("items".to_owned(), items);
     Recorded {
@@ -257,4 +257,15 @@ fn differing_fields(live: &Value, expected: &Value) -> Vec<String> {
         }
     }
     out
+}
+
+/// The compared form of an outcome `result`. A packaged compile result carries the size of the
+/// package it built, which depends on the compiler build, so it is compared by its `kind` only.
+/// Every other result is kept exactly as the driver printed it.
+fn result_field(result: Value) -> Value {
+    if result.get("kind").and_then(Value::as_str) == Some("packaged") {
+        json!({ "kind": "packaged" })
+    } else {
+        result
+    }
 }

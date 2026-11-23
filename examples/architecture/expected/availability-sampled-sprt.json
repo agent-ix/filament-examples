@@ -47,6 +47,14 @@
               "m": 1
             }
           },
+          "bound": {
+            "comparison": "greater-or-equal",
+            "threshold": {
+              "denominator": "100",
+              "numerator": "99"
+            },
+            "type": "probability"
+          },
           "decision": {
             "type": "rejected"
           },
@@ -236,6 +244,14 @@
             },
             "m": 1
           }
+        },
+        "bound": {
+          "comparison": "greater-or-equal",
+          "threshold": {
+            "denominator": "100",
+            "numerator": "99"
+          },
+          "type": "probability"
         },
         "decision": {
           "type": "rejected"

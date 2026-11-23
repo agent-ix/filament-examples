@@ -238,3 +238,39 @@ fn changed_monitor_event_fails() {
         evaluation.message
     );
 }
+
+fn compile_outcome(result: Value) -> String {
+    json!({
+        "artifacts": [], "category": "success", "diagnostics": [],
+        "format": "filament-outcome/1", "items": [], "last_stage": "S7",
+        "operation": "compile", "result": result
+    })
+    .to_string()
+}
+
+#[test]
+fn packaged_result_is_compared_by_kind_not_by_bytes() {
+    let packaged = |bytes: u64| {
+        compile_outcome(json!({
+            "kind": "packaged",
+            "package": {"bytes": bytes, "handoff": null, "output": null}
+        }))
+    };
+    let a = project(&packaged(57140)).structure;
+    let b = project(&packaged(170275)).structure;
+    assert_eq!(a, b);
+    assert_eq!(a["result"], json!({"kind": "packaged"}));
+}
+
+#[test]
+fn non_packaged_result_is_unchanged() {
+    assert_eq!(
+        project(&compile_outcome(Value::Null)).structure["result"],
+        Value::Null
+    );
+    let other = json!({"kind": "value", "value": {"type": "boolean", "value": true}});
+    assert_eq!(
+        project(&compile_outcome(other.clone())).structure["result"],
+        other
+    );
+}

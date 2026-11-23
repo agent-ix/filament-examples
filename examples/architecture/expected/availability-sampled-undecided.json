@@ -49,6 +49,14 @@
               "m": 1
             }
           },
+          "bound": {
+            "comparison": "greater-or-equal",
+            "threshold": {
+              "denominator": "100",
+              "numerator": "99"
+            },
+            "type": "probability"
+          },
           "decision": {
             "cause": {
               "type": "indifference-region"
@@ -264,6 +272,14 @@
             },
             "m": 1
           }
+        },
+        "bound": {
+          "comparison": "greater-or-equal",
+          "threshold": {
+            "denominator": "100",
+            "numerator": "99"
+          },
+          "type": "probability"
         },
         "decision": {
           "cause": {
