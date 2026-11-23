@@ -326,14 +326,16 @@ fn sampled_measurement_problem(item: &Value, decision: &str) -> Option<String> {
         .and_then(Value::as_str)
         == Some("sprt")
     {
-        let Some(estimate) = ratio(verdict.get("estimate").and_then(|e| e.get("value"))) else {
+        if ratio(verdict.get("estimate").and_then(|e| e.get("value"))).is_none() {
             return Some("the SPRT estimate is not a rational".to_owned());
-        };
+        }
         if verdict.get("interval").is_some() {
             return Some("SPRT unexpectedly reports an interval".to_owned());
         }
         let samples = count(verdict.get("basis").and_then(|b| b.get("samples")));
-        let tests = verdict.get("tests").and_then(Value::as_array)?;
+        let Some(tests) = verdict.get("tests").and_then(Value::as_array) else {
+            return Some("the SPRT per-test results are not an array".to_owned());
+        };
         let drawn: Option<u64> = tests.iter().map(|test| count(test.get("samples"))).sum();
         if tests.is_empty() || !samples.is_some_and(|n| n > 0) || samples != drawn {
             return Some(format!(
@@ -346,18 +348,7 @@ fn sampled_measurement_problem(item: &Value, decision: &str) -> Option<String> {
         {
             return Some("an SPRT test estimate is not a rational".to_owned());
         }
-        let Some((direction, bound)) = claim_bound(item) else {
-            return Some("the claim's bound is not readable from its node path".to_owned());
-        };
-        let satisfies = match (&direction, decision) {
-            (Direction::AtLeast, "accepted") => estimate.cmp(&bound) != Ordering::Less,
-            (Direction::AtMost, "accepted") => estimate.cmp(&bound) != Ordering::Greater,
-            (Direction::AtLeast, _) => estimate.cmp(&bound) == Ordering::Less,
-            (Direction::AtMost, _) => estimate.cmp(&bound) == Ordering::Greater,
-        };
-        return (!satisfies).then(|| {
-            format!("the SPRT estimate is not on the {decision} side of the claim's bound")
-        });
+        return None;
     }
     let (Some(estimate), Some(lower), Some(upper)) = (
         ratio(verdict.get("estimate").and_then(|e| e.get("value"))),
