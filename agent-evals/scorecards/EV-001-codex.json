@@ -78,34 +78,7 @@
       "native_grammar_reference": "docs/fsl/state/domain-models.md (no dedicated published native grammar file exists)"
     },
     "n": 3,
-    "pass_rate": "3/3",
-    "tool_calls": {
-      "runs": [
-        20,
-        17,
-        15
-      ],
-      "median": 17
-    },
-    "wall_ms": {
-      "runs": [
-        70498,
-        62487,
-        46442
-      ],
-      "median": 62487
-    },
     "turns": null,
-    "total_tokens": [
-      475816,
-      441987,
-      324558
-    ],
-    "independent_invariant_bindings": [
-      156,
-      156,
-      156
-    ],
     "failure_class": "none in the graded outcome; process friction: each run needed 3 or more refused fsl check attempts to find the object, field, operation and population syntax (doc gap)",
     "earlier_attempts": [
       {
@@ -122,6 +95,38 @@
         "classification": "harness-error",
         "cause": "Sessions inherited an earlier run's deleted HOME from a surviving default tmux server, so codex showed its sign-in screen.",
         "attempts": 4
+      }
+    ],
+    "model": "gpt-6.1-sol",
+    "pass_rate": "3/3",
+    "harness_errors": 0,
+    "status": "scored",
+    "tool_calls_median": 17,
+    "wall_ms_median": 62487,
+    "per_run": [
+      {
+        "run": 1,
+        "outcome": "passed",
+        "tool_calls": 20,
+        "wall_ms": 70498,
+        "total_tokens": 475816,
+        "invariant_bindings": 156
+      },
+      {
+        "run": 2,
+        "outcome": "passed",
+        "tool_calls": 17,
+        "wall_ms": 62487,
+        "total_tokens": 441987,
+        "invariant_bindings": 156
+      },
+      {
+        "run": 3,
+        "outcome": "passed",
+        "tool_calls": 15,
+        "wall_ms": 46442,
+        "total_tokens": 324558,
+        "invariant_bindings": 156
       }
     ]
   }

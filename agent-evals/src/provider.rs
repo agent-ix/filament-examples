@@ -5,6 +5,7 @@ use crate::{
 };
 use serde::Deserialize;
 use serde_json::{Value, json};
+use std::collections::BTreeSet;
 use std::fs;
 use std::path::{Path, PathBuf};
 
@@ -737,6 +738,143 @@ fn inspect_paths(
         }
     }
 }
+/// Indexes of the words of a `sed` command that are scripts. Every other word
+/// is a file operand or option argument and is path-scanned as written.
+fn sed_script_words(words: &[&str]) -> BTreeSet<usize> {
+    let mut scripts = BTreeSet::new();
+    let mut options = true;
+    let mut expect_script = false;
+    let mut expect_file = false;
+    let mut have_script = false;
+    for (index, &word) in words.iter().enumerate().skip(1) {
+        if expect_script {
+            scripts.insert(index);
+            have_script = true;
+            expect_script = false;
+        } else if expect_file {
+            expect_file = false;
+        } else if options && word == "--" {
+            options = false;
+        } else if options && word.starts_with("--") {
+            if word.starts_with("--expression=") {
+                scripts.insert(index);
+                have_script = true;
+            } else if word == "--expression" {
+                expect_script = true;
+            } else if word == "--file" {
+                expect_file = true;
+                have_script = true;
+            }
+        } else if options && word.starts_with('-') && word.len() > 1 {
+            if word.ends_with('e') {
+                expect_script = true;
+            } else if word.ends_with('f') {
+                expect_file = true;
+                have_script = true;
+            }
+        } else if !have_script {
+            scripts.insert(index);
+            have_script = true;
+        }
+    }
+    scripts
+}
+
+/// The parts of a sed script that can name a file or run a command. Pattern and
+/// replacement text of `s` commands is data and is dropped; file arguments of
+/// `r`, `R`, `w`, `W` and the `s///w` flag are kept (flagged as writes where
+/// they write). The boolean is true when the script can execute a command
+/// (`e` command or `s///e` flag).
+fn sed_script_fragments(script: &str) -> (Vec<(String, bool)>, bool) {
+    let chars: Vec<char> = script.chars().collect();
+    let mut fragments = Vec::new();
+    let mut other = String::new();
+    let mut executes = false;
+    let mut i = 0;
+    let mut command_start = true;
+    while i < chars.len() {
+        let c = chars[i];
+        if !command_start {
+            other.push(c);
+            if matches!(c, ';' | '\n' | '{' | '}') {
+                command_start = true;
+            }
+            i += 1;
+            continue;
+        }
+        if c == '/' {
+            // A regular-expression address: data up to the closing delimiter.
+            i += 1;
+            while i < chars.len() && chars[i] != '/' {
+                if chars[i] == '\\' {
+                    i += 1;
+                }
+                i += 1;
+            }
+            i += 1;
+            continue;
+        }
+        if c.is_ascii_digit() || matches!(c, '$' | ',' | '~' | '+') {
+            other.push(c);
+            i += 1;
+            continue;
+        }
+        if c.is_whitespace() || matches!(c, ';' | '{' | '}' | '!') {
+            other.push(c);
+            i += 1;
+            continue;
+        }
+        match c {
+            's' if i + 1 < chars.len() => {
+                let delimiter = chars[i + 1];
+                i += 2;
+                for _ in 0..2 {
+                    while i < chars.len() && chars[i] != delimiter {
+                        if chars[i] == '\\' {
+                            i += 1;
+                        }
+                        i += 1;
+                    }
+                    i += 1;
+                }
+                while i < chars.len() && !matches!(chars[i], ';' | '\n' | '}') {
+                    match chars[i] {
+                        'e' => executes = true,
+                        'w' => {
+                            let file: String =
+                                chars[i + 1..].iter().take_while(|c| **c != '\n').collect();
+                            fragments.push((format!("w {}", file.trim_start()), true));
+                            i = chars.len();
+                            continue;
+                        }
+                        _ => {}
+                    }
+                    i += 1;
+                }
+                command_start = false;
+            }
+            'r' | 'R' | 'w' | 'W' => {
+                let file: String = chars[i + 1..].iter().take_while(|c| **c != '\n').collect();
+                i += 1 + file.chars().count();
+                fragments.push((format!("{c} {}", file.trim_start()), matches!(c, 'w' | 'W')));
+            }
+            'e' => {
+                executes = true;
+                i += 1;
+            }
+            _ => {
+                other.push(c);
+                i += 1;
+                command_start = false;
+            }
+        }
+    }
+    if !other.trim().is_empty() {
+        fragments.push((other, false));
+    }
+    (fragments, executes)
+}
+
 fn rg_path_operands<'a>(words: &[&'a str]) -> Option<Vec<Option<&'a str>>> {
     #[derive(Clone, Copy)]
     enum Argument {
@@ -952,6 +1090,11 @@ fn inspect_command(
         } else {
             None
         };
+        let sed_scripts = if program == Some("sed") {
+            sed_script_words(&words)
+        } else {
+            BTreeSet::new()
+        };
         let mut word_index = 0;
         for (index, token) in statement.iter().enumerate() {
             match token {
@@ -964,12 +1107,27 @@ fn inspect_command(
                     } else {
                         Some(word.as_str())
                     };
+                    let this_word = word_index;
                     word_index += 1;
-                    let sed_script = program == Some("sed")
-                        && (word.starts_with("s/")
-                            || word.starts_with(':')
-                            || word.contains(";s/"));
-                    let path_word = if sed_script { None } else { path_word };
+                    if program == Some("sed") && !redirect && sed_scripts.contains(&this_word) {
+                        let (fragments, executes) = sed_script_fragments(word);
+                        if executes {
+                            violations
+                                .push("sandbox-breach: sed script executes a command".to_owned());
+                        }
+                        for (fragment, writes) in fragments {
+                            inspect_paths(
+                                &fragment,
+                                cwd,
+                                workspace,
+                                tools,
+                                shipped_references,
+                                writes,
+                                violations,
+                            );
+                        }
+                        continue;
+                    }
                     let destination = matches!(program, Some("cp" | "mv" | "ln"))
                         && statement[index + 1..]
                             .iter()
@@ -1530,6 +1688,8 @@ mod tests {
             "rg -n -i 'grammar|native' docs",
             "sed -i 's/  field /  /' model.fsl",
             "sed -i ':a;N;$!ba;s/x\\n/y/' model.fsl",
+            "sed -n '1,3p' model.fsl",
+            "sed -e 's/a/b/' -e 's/c/d/g' model.fsl",
         ] {
             let violations = boundary_violations(
                 &workspace,
@@ -1538,6 +1698,59 @@ mod tests {
                 true,
             );
             assert!(violations.is_empty(), "{command}: {violations:?}");
+        }
+        Ok(())
+    }
+
+    /// Trace: FR-001 AC-6
+    #[test]
+    fn runtime_sed_file_commands_flags_and_path_looking_operands_stay_breaches()
+    -> ScenarioResult<()> {
+        let (temp, workspace, tools) = reference_policy_fixture()?;
+        let reference = temp.path().join("evaluator/reference.fsl");
+        let reference = reference.display();
+        let outside = temp.path().join("evaluator/out.fsl");
+        let outside = outside.display();
+        fs::create_dir_all(workspace.join("s"))?;
+        for command in [
+            format!("sed -i 's/a/a/;r {reference}' model.fsl"),
+            format!("sed -i 'R {reference}' model.fsl"),
+            format!("sed -i 's/a/a/;r{reference}' model.fsl"),
+            format!("sed -n 'w {outside}' model.fsl"),
+            format!("sed -n 'W {outside}' model.fsl"),
+            format!("sed 's/a/b/w {outside}' model.fsl"),
+            format!("sed -e 's/a/b/' -e 'r {reference}' model.fsl"),
+            format!("sed --expression='r {reference}' model.fsl"),
+            format!("sed -f {reference} model.fsl"),
+            "sed -n p s/../../x".to_owned(),
+            "sed -n p s/../../../etc/passwd".to_owned(),
+        ] {
+            let violations = boundary_violations(
+                &workspace,
+                &tools,
+                &[recorded(json!({"cmd":command}))],
+                true,
+            );
+            assert!(
+                violations.iter().any(|v| v.starts_with("sandbox-breach:")),
+                "{command}: {violations:?}"
+            );
+        }
+        for command in [
+            "sed 's/a/b/e' model.fsl",
+            "sed 'e echo x' model.fsl",
+            "sed -i '1e id' model.fsl",
+        ] {
+            let violations = boundary_violations(
+                &workspace,
+                &tools,
+                &[recorded(json!({"cmd":command}))],
+                true,
+            );
+            assert!(
+                violations.iter().any(|v| v.contains("executes a command")),
+                "{command}: {violations:?}"
+            );
         }
         Ok(())
     }
