@@ -16,6 +16,12 @@ identified from the precondition clause in the trusted counterexample,
 independent of source branch order. The protocol terminal member follows the
 role declarations and precedes the run.
 
+The grader evaluates the changed terminal or precondition predicate with the
+public `fsl run` command for every cell value in the bounded `0..3` domain. The
+predicate must be false for at least one value, and it must hold at the cell
+value recorded in the trusted deadlock state. This rejects semantic tautologies
+such as `self.v = self.v` as well as literal `true` predicates.
+
 The grader's `fsl-cst` and `fsl-foundation` dependencies pin to FSL default
 branch revision `0443d782436d33bd0a178d2745dca158e8e4acf5`, so the structural
 check uses the current FSL parser. If that parser refuses source accepted by

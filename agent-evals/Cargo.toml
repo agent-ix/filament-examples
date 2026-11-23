@@ -11,6 +11,7 @@ serde_json = "1"
 tempfile = "3"
 toml = "1"
 url = "2"
+base64 = "0.22"
 fsl-cst = { git = "https://github.com/agent-ix/filament-spec-language", rev = "0443d782436d33bd0a178d2745dca158e8e4acf5" }
 fsl-foundation = { git = "https://github.com/agent-ix/filament-spec-language", rev = "0443d782436d33bd0a178d2745dca158e8e4acf5" }
 tree-sitter = "0.27.2"

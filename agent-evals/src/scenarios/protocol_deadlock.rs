@@ -6,6 +6,7 @@ use std::path::Path;
 use std::process::Command;
 use std::time::{Duration, Instant};
 
+use base64::{Engine, engine::general_purpose::URL_SAFE_NO_PAD};
 use fsl_cst::{CstElement, CstNode, ParsedSource, Production, TokenKind};
 use fsl_foundation::SourceIdentity;
 use serde_json::{Value, json};
@@ -384,6 +385,17 @@ struct BranchShape {
     contracts: Vec<String>,
 }
 
+#[derive(Debug, Clone, PartialEq, Eq)]
+enum RepairPredicate {
+    Terminal {
+        expression: Vec<String>,
+        binder: String,
+    },
+    Precondition {
+        expression: Vec<String>,
+    },
+}
+
 fn protocol_shape(parsed: &ParsedSource, protocol: &CstNode) -> Checked<Vec<BranchShape>> {
     let parallels = nodes_within(parsed, protocol, Production::Parallel);
     if parallels.len() != 1 {
@@ -410,7 +422,11 @@ fn protocol_shape(parsed: &ParsedSource, protocol: &CstNode) -> Checked<Vec<Bran
         .collect()
 }
 
-fn check_protocol_repair(baseline: &str, repaired: &str, deadlock: &Value) -> Checked<()> {
+fn check_protocol_repair(
+    baseline: &str,
+    repaired: &str,
+    deadlock: &Value,
+) -> Checked<RepairPredicate> {
     let (base_parsed, base_protocol) = parse_protocol(baseline)?;
     let (repair_parsed, repair_protocol) = parse_protocol(repaired)?;
     let base_branches = protocol_shape(&base_parsed, &base_protocol)?;
@@ -466,14 +482,17 @@ fn check_protocol_repair(baseline: &str, repaired: &str, deadlock: &Value) -> Ch
         let span = repair_terminals[0].span();
         let predicate = direct_nodes(&repair_parsed, repair_terminals[0], Production::Block);
         if predicate.len() == 1
-            && terminal_is_false_at_start(&repair_parsed, repair_terminals[0])
             && significant_tokens(&base_parsed)
                 .into_iter()
                 .map(|(_, _, token)| token)
                 .collect::<Vec<_>>()
                 == tokens_outside(&repair_parsed, (span.start, span.end))
         {
-            return Ok(());
+            let binder = protocol_binder(&repair_parsed, &repair_protocol)?;
+            return Ok(RepairPredicate::Terminal {
+                expression: predicate_tokens(&repair_parsed, predicate[0]),
+                binder,
+            });
         }
     }
 
@@ -485,11 +504,12 @@ fn check_protocol_repair(baseline: &str, repaired: &str, deadlock: &Value) -> Ch
         let base_body = tokens_in(&base_parsed, base_block);
         let repair_body = tokens_in(&repair_parsed, repair_block);
         if base_body != repair_body
-            && !is_trivial_true(&repair_body)
             && tokens_outside(&base_parsed, (base_span.start, base_span.end))
                 == tokens_outside(&repair_parsed, (repair_span.start, repair_span.end))
         {
-            return Ok(());
+            return Ok(RepairPredicate::Precondition {
+                expression: predicate_tokens(&repair_parsed, repair_block),
+            });
         }
     }
     Err(Fault::new(
@@ -498,83 +518,211 @@ fn check_protocol_repair(baseline: &str, repaired: &str, deadlock: &Value) -> Ch
     ))
 }
 
-fn is_trivial_true(tokens: &[String]) -> bool {
-    let body = tokens
+fn protocol_binder(parsed: &ParsedSource, protocol: &CstNode) -> Checked<String> {
+    let tokens = tokens_in(parsed, protocol);
+    let binder = tokens
         .iter()
-        .filter(|token| !matches!(token.as_str(), "{" | "}" | "(" | ")"))
-        .map(String::as_str)
-        .collect::<Vec<_>>();
-    if body == ["true"] {
-        return true;
+        .position(|token| token == "over")
+        .and_then(|over| tokens.get(over + 2))
+        .filter(|name| name.as_str() != ")")
+        .cloned()
+        .ok_or_else(|| Fault::new(FaultCode::WrongProtocol, "Fill must bind its cell"))?;
+    Ok(binder)
+}
+
+fn predicate_tokens(parsed: &ParsedSource, block: &CstNode) -> Vec<String> {
+    tokens_in(parsed, block)
+        .into_iter()
+        .filter(|token| !matches!(token.as_str(), "{" | "}"))
+        .collect()
+}
+
+fn replace_path_reference(tokens: &[String], reference: &[String]) -> Checked<String> {
+    if reference.is_empty() {
+        return Err(Fault::new(
+            FaultCode::WrongProtocol,
+            "predicate binder is empty",
+        ));
     }
-    if body.iter().any(|token| {
-        token
-            .chars()
-            .any(|character| character.is_ascii_alphabetic() || character == '_')
-    }) {
-        return false;
+    let mut rewritten = Vec::with_capacity(tokens.len());
+    let mut index = 0;
+    while index < tokens.len() {
+        if tokens[index..].starts_with(reference) {
+            rewritten.push("probeValue".to_owned());
+            index += reference.len();
+        } else {
+            rewritten.push(tokens[index].clone());
+            index += 1;
+        }
     }
-    let Some(operator) = body
-        .iter()
-        .position(|token| matches!(*token, "=" | "==" | "!=" | "<" | "<=" | ">" | ">="))
-    else {
-        return false;
+    Ok(rewritten.join(" "))
+}
+
+fn predicate_run_request(value: u8) -> Value {
+    json!({"format":"native-run/1","request":{"models":[],"program":{"source":{"file":"predicate.fsl","authority":"eval","identity":"protocol-deadlock-predicate","document":"ProtocolPredicate","formal_revision":1}},"call":{"function":"checkPredicate","arguments":[{"parameter":"probeValue","value":{"type":"integer","value":value.to_string()}}]}}})
+}
+
+fn evaluate_predicate(tools: &Tools, expression: &str, deadline: Instant) -> Checked<[bool; 4]> {
+    let probe = tempfile::tempdir().map_err(|error| {
+        Fault::new(
+            FaultCode::ToolFailure,
+            format!("cannot create predicate probe: {error}"),
+        )
+    })?;
+    let source = format!(
+        "language \"ix:native\" edition \"1-draft\";\nfunction checkPredicate(probeValue: Int[0,3]): Boolean pure {{ {expression} }}\n"
+    );
+    fs::write(probe.path().join("predicate.fsl"), source).map_err(|error| {
+        Fault::new(
+            FaultCode::ToolFailure,
+            format!("cannot write predicate probe: {error}"),
+        )
+    })?;
+    let mut samples = [false; 4];
+    for value in 0..=3 {
+        before_deadline(deadline).map_err(command_failure)?;
+        fs::write(
+            probe.path().join("run.json"),
+            predicate_run_request(value).to_string(),
+        )
+        .map_err(|error| {
+            Fault::new(
+                FaultCode::ToolFailure,
+                format!("cannot write run request: {error}"),
+            )
+        })?;
+        let mut command = Command::new(&tools.fsl);
+        command
+            .current_dir(probe.path())
+            .args(["run", "run.json", "--format", "json"]);
+        let output = capture_command(&mut command, deadline).map_err(command_failure)?;
+        let outcome: Value = serde_json::from_slice(&output.stdout).map_err(|_| {
+            Fault::new(
+                FaultCode::ToolFailure,
+                "fsl run predicate probe did not emit JSON",
+            )
+        })?;
+        if output.status.code() != Some(0)
+            || outcome["category"] != "success"
+            || outcome["result"]["kind"] != "completed"
+        {
+            return Err(Fault::new(
+                FaultCode::CliGap,
+                format!("fsl run could not evaluate repair predicate at v={value}"),
+            ));
+        }
+        samples[usize::from(value)] =
+            outcome["result"]["value"]["value"]
+                .as_bool()
+                .ok_or_else(|| {
+                    Fault::new(
+                        FaultCode::ToolFailure,
+                        "fsl run predicate probe did not return a Boolean",
+                    )
+                })?;
+    }
+    Ok(samples)
+}
+
+fn deadlock_cell_value(deadlock: &Value) -> Checked<u8> {
+    let key = deadlock
+        .pointer("/items/0/counterexample/prefix")
+        .and_then(Value::as_array)
+        .and_then(|prefix| prefix.last())
+        .and_then(|step| step.pointer("/post_state/key"))
+        .and_then(Value::as_str)
+        .ok_or_else(|| Fault::new(FaultCode::WrongDeadlock, "deadlock state key is missing"))?;
+    let bytes = URL_SAFE_NO_PAD.decode(key).map_err(|_| {
+        Fault::new(
+            FaultCode::WrongDeadlock,
+            "deadlock state key is invalid base64",
+        )
+    })?;
+    let state: Value = serde_json::from_slice(&bytes).map_err(|_| {
+        Fault::new(
+            FaultCode::WrongDeadlock,
+            "deadlock state key is invalid JSON",
+        )
+    })?;
+    let mut values = Vec::new();
+    collect_integer_field(&state, "v", &mut values);
+    let [value] = values.as_slice() else {
+        return Err(Fault::new(
+            FaultCode::WrongDeadlock,
+            "deadlock state must identify one cell value",
+        ));
     };
-    if operator != 1 || body.len() != 3 {
-        return false;
-    }
-    let (Ok(left), Ok(right)) = (body[0].parse::<i128>(), body[2].parse::<i128>()) else {
-        return false;
-    };
-    match body[operator] {
-        "=" | "==" => left == right,
-        "!=" => left != right,
-        "<" => left < right,
-        "<=" => left <= right,
-        ">" => left > right,
-        ">=" => left >= right,
-        _ => false,
+    u8::try_from(*value)
+        .ok()
+        .filter(|value| *value <= 3)
+        .ok_or_else(|| Fault::new(FaultCode::WrongDeadlock, "deadlock value is outside 0..3"))
+}
+
+fn collect_integer_field(value: &Value, field_name: &str, found: &mut Vec<i64>) {
+    match value {
+        Value::Object(object) => {
+            if object.get("name").and_then(Value::as_str) == Some(field_name)
+                && let Some(field) = object.get("value")
+                && field.get("type").and_then(Value::as_str) == Some("integer")
+                && let Some(integer) = field
+                    .get("value")
+                    .and_then(Value::as_str)
+                    .and_then(|value| value.parse::<i64>().ok())
+            {
+                found.push(integer);
+            }
+            for child in object.values() {
+                collect_integer_field(child, field_name, found);
+            }
+        }
+        Value::Array(array) => {
+            for child in array {
+                collect_integer_field(child, field_name, found);
+            }
+        }
+        _ => {}
     }
 }
 
-fn terminal_is_false_at_start(parsed: &ParsedSource, terminal: &CstNode) -> bool {
-    let blocks = direct_nodes(parsed, terminal, Production::Block);
-    if blocks.len() != 1 {
-        return false;
+fn validate_predicate_samples(samples: &[bool; 4], deadlock_value: u8) -> Checked<()> {
+    if samples.iter().all(|sample| *sample) {
+        return Err(Fault::new(
+            FaultCode::WrongProtocol,
+            "repair predicate is true throughout the cell's 0..3 domain",
+        ));
     }
-    let body = tokens_in(parsed, blocks[0])
-        .into_iter()
-        .filter(|token| !matches!(token.as_str(), "{" | "}" | "(" | ")"))
-        .collect::<Vec<_>>();
-    if is_trivial_true(&body) {
-        return false;
+    if !samples[usize::from(deadlock_value)] {
+        return Err(Fault::new(
+            FaultCode::WrongProtocol,
+            "repair predicate must hold at the blocked state",
+        ));
     }
-    let Some(operator) = body
-        .iter()
-        .position(|token| matches!(token.as_str(), "=" | "==" | "!=" | "<" | "<=" | ">" | ">="))
-    else {
-        return true;
-    };
-    if operator == 0
-        || body.len() != operator + 2
-        || !body[..operator].iter().any(|token| token == ".")
-    {
-        return true;
+    Ok(())
+}
+
+fn check_repair_predicate(
+    tools: &Tools,
+    repair: &RepairPredicate,
+    deadlock: &Value,
+    deadline: Instant,
+) -> Checked<()> {
+    let deadlock_value = deadlock_cell_value(deadlock)?;
+    let expression = probe_expression(repair)?;
+    let samples = evaluate_predicate(tools, &expression, deadline)?;
+    validate_predicate_samples(&samples, deadlock_value)
+}
+
+fn probe_expression(repair: &RepairPredicate) -> Checked<String> {
+    match repair {
+        RepairPredicate::Terminal { expression, binder } => replace_path_reference(
+            expression,
+            &[binder.clone(), ".".to_owned(), "v".to_owned()],
+        ),
+        RepairPredicate::Precondition { expression } => replace_path_reference(
+            expression,
+            &["self".to_owned(), ".".to_owned(), "v".to_owned()],
+        ),
     }
-    let Ok(right) = body[operator + 1].parse::<i128>() else {
-        return true;
-    };
-    let left = 0_i128;
-    let holds_at_start = match body[operator].as_str() {
-        "=" | "==" => left == right,
-        "!=" => left != right,
-        "<" => left < right,
-        "<=" => left <= right,
-        ">" => left > right,
-        ">=" => left >= right,
-        _ => false,
-    };
-    !holds_at_start
 }
 
 fn command_failure(error: CaptureError) -> Fault {
@@ -907,7 +1055,8 @@ fn assess(workspace: &Path, tools: &Tools, deadline: Instant) -> Checked<BTreeMa
     let (baseline_source, repaired_source) = check_inputs(workspace)?;
     let trusted_deadlock = analyze(workspace, tools, "deadlock-request.json", 10, deadline)?;
     let trusted_repaired = analyze(workspace, tools, "repaired-request.json", 0, deadline)?;
-    check_protocol_repair(&baseline_source, &repaired_source, &trusted_deadlock)?;
+    let repair = check_protocol_repair(&baseline_source, &repaired_source, &trusted_deadlock)?;
+    check_repair_predicate(tools, &repair, &trusted_deadlock, deadline)?;
     let saved_deadlock = json_file(workspace, "deadlock.json")?;
     let saved_repaired = json_file(workspace, "repaired.json")?;
     check_deadlock(&saved_deadlock)?;
@@ -1069,12 +1218,74 @@ mod tests {
         let deadlock: Value = serde_json::from_str(DEADLOCK_OUTCOME).unwrap();
         let terminal = terminal_repair();
         let precondition = precondition_repair();
-        let terminal_true = terminal.replace("k.v = 1", "true");
-        assert!(check_protocol_repair(BASELINE_SOURCE, &terminal_true, &deadlock).is_err());
-        let terminal_tautology = terminal.replace("k.v = 1", "k.v >= 0");
-        assert!(check_protocol_repair(BASELINE_SOURCE, &terminal_tautology, &deadlock).is_err());
-        let precondition_true = precondition.replace("self.v <= 1", "true");
-        assert!(check_protocol_repair(BASELINE_SOURCE, &precondition_true, &deadlock).is_err());
+        assert_eq!(deadlock_cell_value(&deadlock).unwrap(), 1);
+
+        let terminal_repair = check_protocol_repair(BASELINE_SOURCE, &terminal, &deadlock)
+            .expect("intended terminal structure is accepted");
+        assert_eq!(
+            probe_expression(&terminal_repair).unwrap(),
+            "probeValue = 1"
+        );
+        assert!(validate_predicate_samples(&[false, true, false, false], 1).is_ok());
+
+        let precondition_repair = check_protocol_repair(BASELINE_SOURCE, &precondition, &deadlock)
+            .expect("blocked precondition structure is accepted");
+        assert_eq!(
+            probe_expression(&precondition_repair).unwrap(),
+            "probeValue <= 1"
+        );
+        assert!(validate_predicate_samples(&[true, true, false, false], 1).is_ok());
+
+        for (source, expected_probe, label) in [
+            (terminal.replace("k.v = 1", "true"), "true", "terminal true"),
+            (
+                terminal.replace("k.v = 1", "k.v >= 0"),
+                "probeValue >= 0",
+                "terminal k.v >= 0",
+            ),
+            (
+                terminal.replace("k.v = 1", "k.v = k.v"),
+                "probeValue = probeValue",
+                "terminal k.v = k.v",
+            ),
+            (
+                terminal.replace("k.v = 1", "k.v = 1 or true"),
+                "probeValue = 1 or true",
+                "terminal k.v = 1 or true",
+            ),
+            (
+                terminal.replace("k.v = 1", "not (k.v < 0)"),
+                "not ( probeValue < 0 )",
+                "terminal not (k.v < 0)",
+            ),
+            (
+                precondition.replace("self.v <= 1", "self.v >= 0"),
+                "probeValue >= 0",
+                "precondition self.v >= 0",
+            ),
+            (
+                precondition.replace("self.v <= 1", "self.v = self.v"),
+                "probeValue = probeValue",
+                "precondition self.v = self.v",
+            ),
+            (
+                precondition.replace("self.v <= 1", "true"),
+                "true",
+                "precondition true",
+            ),
+        ] {
+            let repair = check_protocol_repair(BASELINE_SOURCE, &source, &deadlock)
+                .unwrap_or_else(|fault| panic!("{label}: {fault}"));
+            assert_eq!(
+                probe_expression(&repair).unwrap(),
+                expected_probe,
+                "{label}"
+            );
+            assert!(
+                validate_predicate_samples(&[true; 4], 1).is_err(),
+                "semantic tautology passed the bounded-domain check: {label}"
+            );
+        }
 
         let branches = "      branch left attempt A by w on M::Cell::inc contracts [IncPre, IncPost] as (a: Boolean) { true };\n      branch right attempt B by w on M::Cell::setTwo contracts [TwoPre, TwoPost] as (b: Boolean) { true };";
         let reversed = "      branch right attempt B by w on M::Cell::setTwo contracts [TwoPre, TwoPost] as (b: Boolean) { true };\n      branch left attempt A by w on M::Cell::inc contracts [IncPre, IncPost] as (a: Boolean) { true };";
@@ -1191,9 +1402,22 @@ mod tests {
         let fsl = stub_dir.path().join("fsl");
         let script = |repaired: &str| {
             format!(
-                "#!/bin/sh\ncase \"$2\" in\n deadlock-request.json) cat '{}'; exit 10 ;;\n repaired-request.json) cat '{}'; exit 0 ;;\n *) exit 21 ;;\nesac\n",
+                r#"#!/bin/sh
+if [ "$1" = run ]; then
+ value=$(sed -n 's/.*"value":"\([0-3]\)".*/\1/p' "$2")
+ result=false
+ if grep -Fq 'probeValue = 1' predicate.fsl; then [ "$value" = 1 ] && result=true; elif grep -Fq 'probeValue <= 1' predicate.fsl; then [ "$value" -le 1 ] && result=true; else exit 21; fi
+ printf '{{"category":"success","result":{{"kind":"completed","value":{{"type":"boolean","value":%s}}}}}}' "$result"
+ exit 0
+fi
+case "$2" in
+ deadlock-request.json) cat '{0}'; exit 10 ;;
+ repaired-request.json) cat '{1}'; exit 0 ;;
+ *) exit 21 ;;
+esac
+"#,
                 reference.join("deadlock-outcome.json").display(),
-                reference.join(repaired).display()
+                reference.join(repaired).display(),
             )
         };
         write_stub(&fsl, &script("repaired-outcome.json"))?;
