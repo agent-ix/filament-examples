@@ -14,11 +14,97 @@ pub fn repo_root() -> PathBuf {
     Path::new(env!("CARGO_MANIFEST_DIR")).join("../..")
 }
 
+/// The verification plan document that `fsl run` prints for a recorded `plan_outcome`.
+fn plan_document(plan: &Value) -> String {
+    let text = |value: &Value, key: &str| value.get(key).cloned().unwrap_or(Value::Null);
+    let mut dispositions = serde_json::Map::new();
+    for step in plan
+        .get("steps")
+        .and_then(Value::as_array)
+        .map(Vec::as_slice)
+        .unwrap_or_default()
+    {
+        let result = if ["category", "result", "cause", "basis", "certification"]
+            .iter()
+            .all(|key| text(step, key).is_null())
+        {
+            Value::Null
+        } else {
+            let mut result = json!({
+                "category": text(step, "category"),
+                "cause": text(step, "cause"),
+                "result": text(step, "result"),
+            });
+            if let Some(kind) = step.get("basis").filter(|b| !b.is_null()) {
+                result["basis"] = json!({ "type": kind });
+            }
+            if let Some(certification) = step.get("certification").filter(|c| !c.is_null()) {
+                result["certification"] = certification.clone();
+            }
+            result
+        };
+        let id = step.get("id").and_then(Value::as_str).unwrap_or_default();
+        dispositions.insert(
+            id.to_owned(),
+            json!({
+                "blocked_by": text(step, "blocked_by"),
+                "evidence": text(step, "evidence"),
+                "method": text(step, "method"),
+                "status": text(step, "status"),
+                "result": result,
+            }),
+        );
+    }
+    json!({"verification_plan": {
+        "format": fsl_examples::run_documents::PLAN_FORMAT,
+        "plan": text(plan, "plan"),
+        "status": text(plan, "status"),
+        "failed_steps": text(plan, "failed_steps"),
+        "dispositions": dispositions,
+    }})
+    .to_string()
+}
+
+/// The multi-item document that `fsl run` prints for a recorded `items_outcome`.
+fn items_document(items: &Value) -> String {
+    let list: Vec<Value> = items
+        .get("items")
+        .and_then(Value::as_array)
+        .map(Vec::as_slice)
+        .unwrap_or_default()
+        .iter()
+        .map(|item| {
+            json!({
+                "selection": item.get("selection").cloned().unwrap_or(Value::Null),
+                "result": {
+                    "function": item.get("function").cloned().unwrap_or(Value::Null),
+                    "outcome": {
+                        "kind": item.get("kind").cloned().unwrap_or(Value::Null),
+                        "value": item.get("value").cloned().unwrap_or(Value::Null),
+                    },
+                },
+            })
+        })
+        .collect();
+    json!({
+        "format": fsl_examples::run_documents::ITEMS_FORMAT,
+        "category": items.get("category").cloned().unwrap_or(Value::Null),
+        "items": list,
+    })
+    .to_string()
+}
+
 /// An outcome document rebuilt from a recorded structure and message snapshot, as the driver
 /// would print it.
 pub fn outcome_document(structure: &Value, messages: &str) -> String {
     if structure.get("outcome") == Some(&Value::Null) {
         return messages.to_owned();
+    }
+    if let Some(plan) = structure.get("plan_outcome") {
+        return plan_document(plan);
+    }
+    if let Some(items) = structure.get("items_outcome") {
+        return items_document(items);
     }
     if let (Some(Value::Array(events)), Some(summary)) =
         (structure.get("events"), structure.get("summary"))

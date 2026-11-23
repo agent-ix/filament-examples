@@ -156,7 +156,7 @@ The models are Semantic IR JSON documents, and no tool in the language can autho
 
 ## Building and testing
 
-The runner tests use a stand-in driver and need no FSL binary:
+The runner tests use a stand-in driver and need no FSL binary. A pull request that changes the runner, the manifests or the recorded outputs runs them, and CI runs them on every pull request:
 
 ```
 make runner-test

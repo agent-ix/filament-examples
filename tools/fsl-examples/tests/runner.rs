@@ -6,6 +6,7 @@ use fsl_examples::manifest::Status;
 use fsl_examples::outcome::Run;
 use fsl_examples::runner::{
     Command, Driver, VecSink, absolute, execute, expected_path, load_all, messages_path,
+    read_messages,
 };
 use serde_json::{Value, json};
 use std::cell::Cell;
@@ -29,6 +30,51 @@ fn first_staged(root: &Path) -> Result<(String, i32, PathBuf, String), Box<dyn s
         }
     }
     Err("no staged case".into())
+}
+
+/// A running case whose record carries a diagnostic message: the first one in manifest order. The
+/// message tests exercise the runner's record and regenerate behaviour, which needs such a case;
+/// which example supplies it is not the tests' concern, so it is chosen by that property.
+struct MessageCase {
+    system: String,
+    id: String,
+}
+
+impl MessageCase {
+    fn label(&self) -> String {
+        format!("{}/{}", self.system, self.id)
+    }
+}
+
+fn first_case_with_message(root: &Path) -> Result<MessageCase, Box<dyn std::error::Error>> {
+    for system in load_all(root)? {
+        for case in &system.manifest.cases {
+            if matches!(case.status, Status::Running { .. })
+                && !read_messages(&system.dir, &case.id)?.trim().is_empty()
+            {
+                return Ok(MessageCase {
+                    system: system.name.clone(),
+                    id: case.id.clone(),
+                });
+            }
+        }
+    }
+    Err("no running case has a diagnostic message in its record: the record and regenerate tests need one".into())
+}
+
+/// A driver that rewords the first diagnostic message of `label`.
+fn rewording(root: &Path, label: String, reworded: &'static str) -> fsl_examples::Result<StandIn> {
+    StandIn::new(root, move |current, run| {
+        if current != label {
+            return;
+        }
+        if let Ok(mut doc) = serde_json::from_str::<Value>(&run.stdout)
+            && let Some(message) = doc.pointer_mut("/diagnostics/0/message")
+        {
+            *message = Value::from(reworded);
+            run.stdout = doc.to_string();
+        }
+    })
 }
 
 fn success_document() -> String {
@@ -273,27 +319,18 @@ fn check_rejects_unknown_case_exclusion_clearly() -> TestResult {
 fn filtered_regenerate_changes_only_selected_record_files() -> TestResult {
     let scratch = scratch_repo()?;
     let root = absolute(scratch.path())?;
-    let label = "shop/misspelled-field";
+    let target = first_case_with_message(&root)?;
+    let label = target.label();
     let reworded = "the selected diagnostic has new wording";
-    let driver = StandIn::new(&root, move |current, run| {
-        if current != label {
-            return;
-        }
-        if let Ok(mut doc) = serde_json::from_str::<Value>(&run.stdout)
-            && let Some(message) = doc.pointer_mut("/diagnostics/0/message")
-        {
-            *message = Value::from(reworded);
-            run.stdout = doc.to_string();
-        }
-    })?;
+    let driver = rewording(&root, label.clone(), reworded)?;
     let before = expected_files(&root)?;
     let readme_before = fs::read(root.join("README.md"))?;
     let index_before = fs::read(root.join("index.json"))?;
     let mut sink = VecSink::default();
     assert!(execute(
         &Command::Record {
-            dirs: vec![PathBuf::from("shop")],
-            cases: vec!["shop/misspelled-field".to_owned()],
+            dirs: vec![PathBuf::from(&target.system)],
+            cases: vec![label.clone()],
             dry_run: false,
         },
         &root,
@@ -301,7 +338,11 @@ fn filtered_regenerate_changes_only_selected_record_files() -> TestResult {
         &mut sink,
     )?);
     let after = expected_files(&root)?;
-    let selected = root.join("examples/shop/expected/misspelled-field.messages.txt");
+    let selected = root
+        .join("examples")
+        .join(&target.system)
+        .join("expected")
+        .join(format!("{}.messages.txt", target.id));
     assert_eq!(
         after.get(&selected).map(String::as_str),
         Some(format!("{reworded}\n").as_str())
@@ -330,25 +371,14 @@ fn filtered_regenerate_changes_only_selected_record_files() -> TestResult {
 fn filtered_regenerate_dry_run_prints_changes_without_writing() -> TestResult {
     let scratch = scratch_repo()?;
     let root = absolute(scratch.path())?;
-    let label = "shop/misspelled-field";
-    let reworded = "dry run wording";
-    let driver = StandIn::new(&root, move |current, run| {
-        if current != label {
-            return;
-        }
-        if let Ok(mut doc) = serde_json::from_str::<Value>(&run.stdout)
-            && let Some(message) = doc.pointer_mut("/diagnostics/0/message")
-        {
-            *message = Value::from(reworded);
-            run.stdout = doc.to_string();
-        }
-    })?;
+    let target = first_case_with_message(&root)?;
+    let driver = rewording(&root, target.label(), "dry run wording")?;
     let before = expected_files(&root)?;
     let mut sink = VecSink::default();
     assert!(execute(
         &Command::Record {
-            dirs: vec![PathBuf::from("shop")],
-            cases: vec!["misspelled-field".to_owned()],
+            dirs: vec![PathBuf::from(&target.system)],
+            cases: vec![target.id.clone()],
             dry_run: true,
         },
         &root,
@@ -497,20 +527,10 @@ fn stale_index_or_readme_region_fails() -> TestResult {
 fn record_refreshes_the_message_snapshot_and_keeps_the_structure() -> TestResult {
     let scratch = scratch_repo()?;
     let root = absolute(scratch.path())?;
-    let label = "shop/misspelled-field";
-    let reworded = "the field name is not declared on this object type";
-    let driver = StandIn::new(&root, move |l, run| {
-        if l != label {
-            return;
-        }
-        if let Ok(mut doc) = serde_json::from_str::<Value>(&run.stdout)
-            && let Some(message) = doc.pointer_mut("/diagnostics/0/message")
-        {
-            *message = Value::from(reworded);
-            run.stdout = doc.to_string();
-        }
-    })?;
-    let snapshot = messages_path(&root.join("examples/shop"), "misspelled-field");
+    let target = first_case_with_message(&root)?;
+    let reworded = "the runner re-recorded this message";
+    let driver = rewording(&root, target.label(), reworded)?;
+    let snapshot = messages_path(&root.join("examples").join(&target.system), &target.id);
     let before_snapshot = fs::read_to_string(&snapshot)?;
     assert_ne!(before_snapshot, format!("{reworded}\n"));
     let before = structure_files(&root)?;

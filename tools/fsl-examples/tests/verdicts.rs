@@ -22,6 +22,11 @@ fn repo_root() -> PathBuf {
 
 const PASS: i64 = 0;
 const FAIL: i64 = 10;
+/// The exit of an inconclusive answer, such as a sampled claim whose measured value fell in the
+/// indifference region.
+const INCONCLUSIVE: i64 = 22;
+/// The exit of a claim the engine refuses before it analyzes anything.
+const UNSUPPORTED: i64 = 21;
 
 /// One tagged entry of `index.json`.
 struct Entry {
@@ -32,6 +37,7 @@ struct Entry {
     rule: Option<String>,
     rule_file: String,
     expected_file: String,
+    request_file: String,
     /// The exit the verdict gives: the recorded exit when running, the ready exit when staged.
     verdict_exit: i64,
 }
@@ -71,6 +77,7 @@ fn tagged_entries() -> Result<Vec<Entry>, Box<dyn std::error::Error>> {
             rule: text(case, "rule"),
             rule_file: text(case, "rule_file").unwrap_or_default(),
             expected_file: text(case, "expected_file").unwrap_or_default(),
+            request_file: text(case, "request_file").unwrap_or_default(),
             verdict_exit,
         });
     }
@@ -82,6 +89,41 @@ fn record(entry: &Entry) -> Result<Value, Box<dyn std::error::Error>> {
     let text = std::fs::read_to_string(&path)
         .map_err(|e| format!("{}: {}: {e}", entry.label, path.display()))?;
     Ok(serde_json::from_str(&text)?)
+}
+
+/// The schema id of the request a case sends, such as `native-compile/1`.
+fn request_format(entry: &Entry) -> Result<String, Box<dyn std::error::Error>> {
+    let path = repo_root().join(&entry.request_file);
+    let request: Value = serde_json::from_str(
+        &std::fs::read_to_string(&path)
+            .map_err(|e| format!("{}: {}: {e}", entry.label, path.display()))?,
+    )?;
+    Ok(text(&request, "format").unwrap_or_default())
+}
+
+/// The exit of a record whose outcome category is not a verdict: the tool's defined answer for a
+/// claim it could not decide (inconclusive) or does not support (unsupported).
+fn non_verdict_exit(record: &Value) -> Option<i64> {
+    match record.get("category").and_then(Value::as_str) {
+        Some("inconclusive") => Some(INCONCLUSIVE),
+        Some("unsupported") => Some(UNSUPPORTED),
+        _ => None,
+    }
+}
+
+/// Whether a case only compiles. A compile request states no claim, so its record has no verdict
+/// members and its exit 0 says the package compiled, not that a claim holds.
+fn is_compile_only(entry: &Entry) -> Result<bool, Box<dyn std::error::Error>> {
+    Ok(request_format(entry)? == "native-compile/1")
+}
+
+/// Whether an outcome item is the measurement of a sampled claim: its record says it was measured.
+fn is_sampled(verdict: &Value) -> bool {
+    verdict
+        .get("record")
+        .and_then(|r| r.get("result"))
+        .and_then(Value::as_str)
+        == Some("measured")
 }
 
 /// The outcome items of a record, or the clauses of a monitor summary.
@@ -119,12 +161,90 @@ fn has_member(value: &Value, key: &str) -> bool {
     }
 }
 
+/// A refuted possible claim has no trace: its counterexample is evidence from the explored state
+/// graph, the arm of the claim it refutes and the path from the initial state, and the item
+/// records the size of the graph it explored and that replaying the evidence reproduced it.
+fn graph_evidence_is_replayed(item: &Value, counterexample: &Value) -> bool {
+    counterexample.get("type").and_then(Value::as_str) == Some("graph-evidence")
+        && counterexample.get("arm").and_then(Value::as_str).is_some()
+        && counterexample
+            .get("stem")
+            .and_then(|s| s.get("initial"))
+            .is_some()
+        && item
+            .get("exploration")
+            .and_then(|e| e.get("states"))
+            .is_some()
+        && item
+            .get("replay")
+            .and_then(|r| r.get("reproduced"))
+            .and_then(Value::as_bool)
+            == Some(true)
+}
+
 fn non_empty_array(value: Option<&Value>) -> bool {
     value
         .and_then(Value::as_array)
         .is_some_and(|a| !a.is_empty())
 }
 
+/// What a probability item that states no threshold member carries. A claim's threshold is printed
+/// only inside the claim node's path, so the item is checkable by what settled it: an accepted
+/// sampled measurement with its estimate and interval, or an exact proof with the value it
+/// computed and a certificate the checker accepted.
+fn probability_is_settled(item: &Value) -> bool {
+    let record = item.get("record");
+    let result = record.and_then(|r| r.get("result")).and_then(Value::as_str);
+    match result {
+        Some("measured") => {
+            let verdict = item.get("verdict");
+            verdict
+                .and_then(|v| v.get("decision"))
+                .and_then(|d| d.get("type"))
+                .and_then(Value::as_str)
+                == Some("accepted")
+                && verdict.and_then(|v| v.get("estimate")).is_some()
+                && verdict.and_then(|v| v.get("interval")).is_some()
+        }
+        Some("proved") => {
+            record
+                .and_then(|r| r.get("basis"))
+                .and_then(|b| b.get("value"))
+                .is_some()
+                && item
+                    .get("certificate")
+                    .and_then(|c| c.get("accepted"))
+                    .and_then(Value::as_bool)
+                    == Some(true)
+        }
+        _ => false,
+    }
+}
+
+/// What a sampled rejection carries. The printed outcome does not state the claim's threshold as a
+/// member (it appears only inside the claim node's path), so a sampled rejection is checkable by
+/// its decision, the estimate, the interval around it and the number of samples drawn.
+fn sampled_rejection_is_checkable(item: &Value) -> bool {
+    let Some(verdict) = item.get("verdict") else {
+        return false;
+    };
+    let decision = verdict
+        .get("decision")
+        .and_then(|d| d.get("type"))
+        .and_then(Value::as_str);
+    let interval = verdict.get("interval");
+    decision == Some("rejected")
+        && verdict
+            .get("estimate")
+            .and_then(|e| e.get("value"))
+            .is_some()
+        && interval.and_then(|i| i.get("lower")).is_some()
+        && interval.and_then(|i| i.get("upper")).is_some()
+        && verdict
+            .get("samples")
+            .or_else(|| verdict.get("basis").and_then(|b| b.get("samples")))
+            .is_some_and(Value::is_u64)
+}
 #[test]
 fn every_engine_has_a_passing_and_a_failing_case() -> TestResult {
     let entries = tagged_entries()?;
@@ -149,10 +269,23 @@ fn every_engine_has_a_passing_and_a_failing_case() -> TestResult {
     Ok(())
 }
 
-/// A verdict case passes with exit 0 or fails with exit 10; any other exit is not a verdict.
+/// A verdict case passes with exit 0 or fails with exit 10; any other exit is not a verdict. A
+/// case whose record is inconclusive or unsupported states no verdict: it exits 22 or 21, as its
+/// category says, and nothing else.
 #[test]
 fn every_running_verdict_case_exits_with_a_verdict() -> TestResult {
     for entry in tagged_entries()? {
+        // A staged case names the exit it will give once fixed, so its record says nothing about it.
+        if entry.running
+            && let Some(exit) = non_verdict_exit(&record(&entry)?)
+        {
+            assert_eq!(
+                entry.verdict_exit, exit,
+                "{}: a record of this category exits {exit}",
+                entry.label
+            );
+            continue;
+        }
         assert!(
             entry.verdict_exit == PASS || entry.verdict_exit == FAIL,
             "{}: exit {} is not a verdict",
@@ -268,8 +401,9 @@ fn failing_records_carry_their_witness_or_cause() -> TestResult {
         let witnessed = match entry.engine.as_str() {
             "model-checking" => found.iter().any(|v| {
                 counterexample(v).is_some_and(|c| {
-                    c.get("kind").and_then(Value::as_str).is_some()
-                        && (non_empty_array(c.get("prefix")) || non_empty_array(c.get("loop")))
+                    (c.get("kind").and_then(Value::as_str).is_some()
+                        && (non_empty_array(c.get("prefix")) || non_empty_array(c.get("loop"))))
+                        || graph_evidence_is_replayed(v, c)
                 })
             }),
             "refinement" => found.iter().any(|v| {
@@ -291,7 +425,13 @@ fn failing_records_carry_their_witness_or_cause() -> TestResult {
                             })
                         })
             }),
-            "probability" => found.iter().any(|v| has_member(v, "threshold")),
+            "probability" => found.iter().any(|v| {
+                if is_sampled(v) {
+                    sampled_rejection_is_checkable(v)
+                } else {
+                    has_member(v, "threshold")
+                }
+            }),
             _ => found.iter().any(|v| counterexample(v).is_some()),
         };
         assert!(
@@ -313,6 +453,21 @@ fn passing_records_settle_without_a_counterexample() -> TestResult {
     {
         let record = record(entry)?;
         let found = verdicts(&record);
+        if is_compile_only(entry)? {
+            // A compilation states no verdict: it records success and no member to settle.
+            assert!(
+                found.is_empty(),
+                "{}: a compile case records no verdict",
+                entry.label
+            );
+            assert_eq!(
+                record.get("category").and_then(Value::as_str),
+                Some("success"),
+                "{}: a compile case that exits 0 records success",
+                entry.label
+            );
+            continue;
+        }
         assert!(!found.is_empty(), "{}: no verdict recorded", entry.label);
         for verdict in &found {
             assert!(
@@ -329,8 +484,10 @@ fn passing_records_settle_without_a_counterexample() -> TestResult {
         }
         if entry.engine == "probability" {
             assert!(
-                found.iter().any(|v| has_member(v, "threshold")),
-                "{}: a probability record names its threshold",
+                found
+                    .iter()
+                    .any(|v| has_member(v, "threshold") || probability_is_settled(v)),
+                "{}: a probability record names its threshold or the value that settled it",
                 entry.label
             );
         }
