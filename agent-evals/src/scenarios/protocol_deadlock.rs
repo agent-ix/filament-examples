@@ -1194,16 +1194,13 @@ fi
             quoin: Path::new("quoin").into(),
         };
 
-        for expression in [
-            "probeValue = probeValue",
-            "not ( probeValue < 0 )",
-        ] {
-            let samples = evaluate_predicate(
-                &tools,
-                expression,
-                Instant::now() + Duration::from_secs(5),
-            )?;
-            assert_eq!(samples, [true; 4], "captured fsl run values for {expression}");
+        for expression in ["probeValue = probeValue", "not ( probeValue < 0 )"] {
+            let samples =
+                evaluate_predicate(&tools, expression, Instant::now() + Duration::from_secs(5))?;
+            assert_eq!(
+                samples, [true; 4],
+                "captured fsl run values for {expression}"
+            );
             assert!(
                 validate_predicate_samples(&samples, 1).is_err(),
                 "the semantic tautology must fail the bounded check: {expression}"
