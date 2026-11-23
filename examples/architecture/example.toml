@@ -353,10 +353,10 @@ file = "rules/probability/claims/claims-mean-of-fraction.fsl"
 command = "analyze requests/probability/claims/claims-mean-of-fraction.json"
 engine = "probability"
 status = "staged"
-expect_exit = 21
+expect_exit = 22
 ready_exit = 0
 waits_on = "QSL-2158"
-why = "analyze settles the mean-of-fraction claim as unsupported (not-yet-implemented), where it should prove it"
+why = "analyze settles the mean-of-fraction claim over 10 steps as incomplete (work_units limit reached, 1,000,000), where it should prove it; over 2 steps it proves it"
 needs = "exact mean of a fraction under every scheduler"
 serves = "Probability reference (claims)"
 

@@ -76,7 +76,7 @@ The case `probability-as-percent` writes the threshold of a probabilistic claim 
 These cases are staged until the language supports them.
 
 - `staged-deploy-bounded`: The deploy rule over a window of five steps. Needs clock selection.
-- `staged-availability-missed` and `staged-exact-reachability-missed`: exact analysis of these availability claims settles unsupported.
+- `staged-exact-reachability-missed`: exact analysis of this unbounded always claim settles unsupported.
 
 `example.toml` records the exact reason and ticket for each.
 
@@ -84,4 +84,8 @@ The unlisted [sampling-negative request](requests/probability/sampling/staged-sa
 
 ## Probability reference cases
 
-The folder `rules/probability` holds one subfolder for each page of the probability reference: `models`, `claims`, `schedulers`, `sampling` and `exact`. The probability cases declare `post UpFollowsCall`, so a service is up after a call exactly when the call succeeded, and a `random` line that makes a call fail 1 time in 10,000. `fsl analyze` decides them from a start snapshot, `data/start-service-up.json` or `data/start-service-down.json`; the two ComesUp cases start down and are proved. A model without a `random` line leaves each call argument to the scheduler, so analyze should refute an every-scheduler claim with value 0 and a replayed counterexample (`claims-every-scheduler-without-random`). Analyze does not yet decide the claims that follow a call transition (bounded always, mean and long-run fractions, the step quantile) or finish the weak-fairness claim, so those cases are staged on QSL-2158.
+The folder `rules/probability` holds one subfolder for each page of the probability reference: `models`, `claims`, `schedulers`, `sampling` and `exact`. The probability cases declare `post UpFollowsCall`, so a service is up after a call exactly when the call succeeded, and a `random` line that makes a call fail 1 time in 10,000. `fsl analyze` decides them from a start snapshot, `data/start-service-up.json` or `data/start-service-down.json`; the two ComesUp cases start down and are proved. A model without a `random` line leaves each call argument to the scheduler, so analyze should refute an every-scheduler claim with value 0 and a replayed counterexample (`claims-every-scheduler-without-random`). Analyze decides the bounded always claim, the step quantile and every-scheduler reachability. It does not yet decide the mean of a fraction over 10 steps (work limit reached), a long-run fraction under every scheduler (unsupported), the weak-fairness claim (work limit reached) or an unbounded always claim (unsupported), so those cases are staged on QSL-2158.
+
+## Probability tutorial cases
+
+The cases `staged-availability`, `availability-holds`, `staged-availability-missed` and `availability-sampled` are the service of the probability tutorial: calls that fail 1 time in 1,000, and a claim about 10 calls in a row. `availability-holds` proves the claim at 0.99 with the exact value 999^10 over 1000^10, `staged-availability-missed` refutes it at 0.999 with a replayed counterexample, and `availability-sampled` measures a claim at 0.98 by sampling. `recovery-expected-calls` proves that a service that starts down is called at most twice on average before it is up.
