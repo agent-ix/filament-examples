@@ -1,0 +1,345 @@
+{
+  "category": "success",
+  "last_stage": "S6c",
+  "result": null,
+  "first_diagnostic": null,
+  "items": [
+    {
+      "category": "success",
+      "claim_name": "Availability",
+      "record": {
+        "backend": "en-4",
+        "cause": null,
+        "measured": "accepted",
+        "result": "measured",
+        "settled_by": "result",
+        "verdict": {
+          "basis": {
+            "confidence": {
+              "alpha": {
+                "denominator": "100",
+                "numerator": "1"
+              },
+              "beta": {
+                "denominator": "100",
+                "numerator": "1"
+              },
+              "iota": {
+                "denominator": "200",
+                "numerator": "1"
+              }
+            },
+            "coverage": "asymptotic",
+            "draws": 466,
+            "method": {
+              "min_cycles": 100,
+              "type": "regenerative"
+            },
+            "samples": 466,
+            "tests": {
+              "alpha": {
+                "denominator": "100",
+                "numerator": "1"
+              },
+              "beta": {
+                "denominator": "100",
+                "numerator": "1"
+              },
+              "m": 1
+            }
+          },
+          "decision": {
+            "type": "accepted"
+          },
+          "estimate": {
+            "value": {
+              "denominator": "1",
+              "numerator": "1"
+            }
+          },
+          "interval": {
+            "lower": {
+              "denominator": "940247901869454778286180499921152071696384",
+              "numerator": "935554031252318796508367863940571786657759"
+            },
+            "upper": {
+              "denominator": "940247901869454778286180499921152071696384",
+              "numerator": "944941772486590760063993135901732356735009"
+            }
+          },
+          "provenance": {
+            "sampler": "filament.simulation.sampler/v1",
+            "seed": "0",
+            "tests": [
+              {
+                "binding": {
+                  "identity": "checkout",
+                  "object_type": {
+                    "original": {
+                      "node": "ix://example/architecture/Service",
+                      "package": "example/architecture"
+                    },
+                    "owner_effective_type": null
+                  },
+                  "type": "reference",
+                  "universe": {
+                    "ordinal": 0,
+                    "package": "example/architecture",
+                    "path": [
+                      "model",
+                      "object_type",
+                      "ix://example/architecture/Service"
+                    ]
+                  }
+                },
+                "first_trace_index": "0",
+                "index": 0,
+                "initial_state": 0,
+                "instance": null,
+                "last_trace_index": "0"
+              }
+            ]
+          },
+          "tests": [
+            {
+              "decision": {
+                "type": "accepted"
+              },
+              "draws": 466,
+              "estimate": {
+                "value": {
+                  "denominator": "1",
+                  "numerator": "1"
+                }
+              },
+              "index": 0,
+              "interval": {
+                "lower": {
+                  "denominator": "940247901869454778286180499921152071696384",
+                  "numerator": "935554031252318796508367863940571786657759"
+                },
+                "upper": {
+                  "denominator": "940247901869454778286180499921152071696384",
+                  "numerator": "944941772486590760063993135901732356735009"
+                }
+              },
+              "samples": 466
+            }
+          ],
+          "witnesses": []
+        }
+      },
+      "request": {
+        "candidates": {
+          "backends": [
+            "en-4"
+          ],
+          "type": "set"
+        },
+        "claim": {
+          "node": {
+            "ordinal": 0,
+            "package": "example:architecture/availability-sampled-long-run",
+            "path": [
+              "claim",
+              "probabilistic_claim",
+              "Availability",
+              "subject",
+              {
+                "node": 31
+              },
+              "scheduler",
+              {
+                "node": 33
+              },
+              "reward",
+              "distributions",
+              {
+                "node": 32
+              },
+              "delays",
+              "form",
+              "kind",
+              "long_run_fraction",
+              "predicate",
+              {
+                "node": 25
+              },
+              "weighting",
+              "kind",
+              "none",
+              "bound",
+              "direction",
+              "at_least",
+              "value",
+              "rational",
+              "49/50",
+              "over",
+              {
+                "node": 23
+              },
+              "activation",
+              "kind",
+              "origin",
+              "confidence",
+              "alpha",
+              "rational",
+              "1/100",
+              "beta",
+              "rational",
+              "1/100",
+              "indifference",
+              "rational",
+              "1/200"
+            ]
+          },
+          "occurrence": {
+            "ordinal": 0,
+            "role": "claim"
+          }
+        },
+        "extent": {
+          "classification": "unbounded",
+          "finite_bound_available": false
+        },
+        "kind": "probabilistic-satisfaction",
+        "probabilistic": {
+          "evidence": "statistical",
+          "limits": {
+            "max_cycle_steps": 16777216,
+            "max_draws": 67108864,
+            "max_samples": 16777216
+          },
+          "max_witnesses": 8,
+          "method": {
+            "min_cycles": 100,
+            "type": "regenerative"
+          },
+          "seed": "0",
+          "timed_sampling": {
+            "max_sample_steps": 16777216,
+            "q": 64
+          },
+          "workers": 1
+        },
+        "request_index": 0
+      },
+      "request_index": 0,
+      "verdict": {
+        "basis": {
+          "confidence": {
+            "alpha": {
+              "denominator": "100",
+              "numerator": "1"
+            },
+            "beta": {
+              "denominator": "100",
+              "numerator": "1"
+            },
+            "iota": {
+              "denominator": "200",
+              "numerator": "1"
+            }
+          },
+          "coverage": "asymptotic",
+          "draws": 466,
+          "method": {
+            "min_cycles": 100,
+            "type": "regenerative"
+          },
+          "samples": 466,
+          "tests": {
+            "alpha": {
+              "denominator": "100",
+              "numerator": "1"
+            },
+            "beta": {
+              "denominator": "100",
+              "numerator": "1"
+            },
+            "m": 1
+          }
+        },
+        "decision": {
+          "type": "accepted"
+        },
+        "estimate": {
+          "value": {
+            "denominator": "1",
+            "numerator": "1"
+          }
+        },
+        "interval": {
+          "lower": {
+            "denominator": "940247901869454778286180499921152071696384",
+            "numerator": "935554031252318796508367863940571786657759"
+          },
+          "upper": {
+            "denominator": "940247901869454778286180499921152071696384",
+            "numerator": "944941772486590760063993135901732356735009"
+          }
+        },
+        "provenance": {
+          "sampler": "filament.simulation.sampler/v1",
+          "seed": "0",
+          "tests": [
+            {
+              "binding": {
+                "identity": "checkout",
+                "object_type": {
+                  "original": {
+                    "node": "ix://example/architecture/Service",
+                    "package": "example/architecture"
+                  },
+                  "owner_effective_type": null
+                },
+                "type": "reference",
+                "universe": {
+                  "ordinal": 0,
+                  "package": "example/architecture",
+                  "path": [
+                    "model",
+                    "object_type",
+                    "ix://example/architecture/Service"
+                  ]
+                }
+              },
+              "first_trace_index": "0",
+              "index": 0,
+              "initial_state": 0,
+              "instance": null,
+              "last_trace_index": "0"
+            }
+          ]
+        },
+        "tests": [
+          {
+            "decision": {
+              "type": "accepted"
+            },
+            "draws": 466,
+            "estimate": {
+              "value": {
+                "denominator": "1",
+                "numerator": "1"
+              }
+            },
+            "index": 0,
+            "interval": {
+              "lower": {
+                "denominator": "940247901869454778286180499921152071696384",
+                "numerator": "935554031252318796508367863940571786657759"
+              },
+              "upper": {
+                "denominator": "940247901869454778286180499921152071696384",
+                "numerator": "944941772486590760063993135901732356735009"
+              }
+            },
+            "samples": 466
+          }
+        ],
+        "witnesses": []
+      }
+    }
+  ]
+}

@@ -1,20 +1,22 @@
 {
-  "category": "unsupported",
-  "last_stage": "S6b",
+  "category": "incomplete",
+  "last_stage": "S6c",
   "result": null,
   "first_diagnostic": null,
   "items": [
     {
-      "category": "unsupported",
+      "category": "incomplete",
       "claim_name": "UpMostly",
       "record": {
-        "diagnostic": {
-          "cause": "not-yet-implemented",
-          "code": "unsupported_construct",
-          "detail": {}
+        "backend": "en-5",
+        "cause": {
+          "kind": "limit-reached",
+          "limit": "work_units",
+          "setting": "accounting.work_units",
+          "value": 1000000
         },
-        "result": "unsupported",
-        "settled_by": "disposition"
+        "result": "incomplete",
+        "settled_by": "result"
       },
       "request": {
         "candidates": {
@@ -33,36 +35,14 @@
               "UpMostly",
               "subject",
               {
-                "ordinal": 0,
-                "package": "example/architecture",
-                "path": [
-                  "model",
-                  "model_root"
-                ]
+                "node": 31
               },
               "scheduler",
               "every",
               "reward",
               "distributions",
               {
-                "ordinal": 0,
-                "package": "example:architecture/claims-mean-of-fraction",
-                "path": [
-                  "probabilistic",
-                  "random_parameter",
-                  {
-                    "ordinal": 0,
-                    "package": "example/architecture",
-                    "path": [
-                      "model",
-                      "object_type",
-                      "ix://example/architecture/Service"
-                    ]
-                  },
-                  "call",
-                  "ok",
-                  "true*9999,false*1"
-                ]
+                "node": 32
               },
               "delays",
               "form",
@@ -73,104 +53,7 @@
               "fraction",
               "predicate",
               {
-                "ordinal": 0,
-                "package": "example:architecture/claims-mean-of-fraction",
-                "path": [
-                  "expression",
-                  "query",
-                  {
-                    "ordinal": 0,
-                    "package": "example:architecture/claims-mean-of-fraction",
-                    "path": [
-                      "expression",
-                      "deref",
-                      {
-                        "ordinal": 0,
-                        "package": "example:architecture/claims-mean-of-fraction",
-                        "path": [
-                          "value",
-                          "parameter",
-                          "name",
-                          {
-                            "ordinal": 0,
-                            "package": "example:architecture/claims-mean-of-fraction",
-                            "path": [
-                              "scalar_type",
-                              "text"
-                            ]
-                          },
-                          "s",
-                          "level",
-                          {
-                            "ordinal": 0,
-                            "package": "example:architecture/claims-mean-of-fraction",
-                            "path": [
-                              "scalar_type",
-                              "integer"
-                            ]
-                          },
-                          "0",
-                          {
-                            "ordinal": 0,
-                            "package": "example:architecture/claims-mean-of-fraction",
-                            "path": [
-                              "composite_type",
-                              "reference",
-                              {
-                                "ordinal": 0,
-                                "package": "example/architecture",
-                                "path": [
-                                  "model",
-                                  "object_type",
-                                  "ix://example/architecture/Service"
-                                ]
-                              }
-                            ]
-                          }
-                        ]
-                      },
-                      "filament.op.model.deref",
-                      "deref",
-                      {
-                        "ordinal": 0,
-                        "package": "example/architecture",
-                        "path": [
-                          "model",
-                          "object_type",
-                          "ix://example/architecture/Service"
-                        ]
-                      },
-                      {
-                        "ordinal": 0,
-                        "package": "example/architecture",
-                        "path": [
-                          "model",
-                          "object_type",
-                          "ix://example/architecture/Service"
-                        ]
-                      }
-                    ]
-                  },
-                  "filament.op.record.project",
-                  "false",
-                  "query",
-                  {
-                    "ordinal": 0,
-                    "package": "example:architecture/claims-mean-of-fraction",
-                    "path": [
-                      "scalar_type",
-                      "boolean"
-                    ]
-                  },
-                  {
-                    "ordinal": 0,
-                    "package": "example:architecture/claims-mean-of-fraction",
-                    "path": [
-                      "scalar_type",
-                      "boolean"
-                    ]
-                  }
-                ]
+                "node": 25
               },
               "window",
               "integer",
@@ -186,49 +69,7 @@
               "9/10",
               "over",
               {
-                "ordinal": 0,
-                "package": "example:architecture/claims-mean-of-fraction",
-                "path": [
-                  "value",
-                  "parameter",
-                  "name",
-                  {
-                    "ordinal": 0,
-                    "package": "example:architecture/claims-mean-of-fraction",
-                    "path": [
-                      "scalar_type",
-                      "text"
-                    ]
-                  },
-                  "s",
-                  "level",
-                  {
-                    "ordinal": 0,
-                    "package": "example:architecture/claims-mean-of-fraction",
-                    "path": [
-                      "scalar_type",
-                      "integer"
-                    ]
-                  },
-                  "0",
-                  {
-                    "ordinal": 0,
-                    "package": "example:architecture/claims-mean-of-fraction",
-                    "path": [
-                      "composite_type",
-                      "reference",
-                      {
-                        "ordinal": 0,
-                        "package": "example/architecture",
-                        "path": [
-                          "model",
-                          "object_type",
-                          "ix://example/architecture/Service"
-                        ]
-                      }
-                    ]
-                  }
-                ]
+                "node": 23
               },
               "activation",
               "kind",

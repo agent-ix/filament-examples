@@ -1,0 +1,16 @@
+language "ix:native" edition "1-draft";
+profile v = "filament.model.complete/v1";
+profile ev = "filament.temporal.event-position.false-extension/v1";
+model Arch = "example/architecture";
+
+// Each call to a service fails 1 time in 1,000.
+random Arch::Service::call(ok) ~ { true: 999, false: 1 };
+workload Traffic on Arch { weight Arch::Service::call = 1; }
+
+// A service is up after a call exactly when the call succeeded.
+post UpFollowsCall using v on Arch::Service::call { self.up = ok }
+
+// A service that starts down is up after one call with probability 999/1000, so at least 95% of the runs bring it up within 1 step.
+probabilistic BackInOneCall using ev on Arch over (s: Arch::Service) under Traffic on origin {
+  quantile 0.95 of ( steps from holds(not s.up) until holds(s.up) within 10 ) <= 1
+}
