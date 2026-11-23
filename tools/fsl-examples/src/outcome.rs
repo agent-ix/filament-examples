@@ -1,4 +1,4 @@
-//! The structure of a `filament-outcome/1` document, and the comparison of a run with its record.
+//! The structure of FSL outcome documents, and the comparison of a run with its record.
 //!
 //! A case is recorded in two files. `expected/<id>.json` holds the structure: the category, the
 //! result value, the last stage, the code and cause of the first diagnostic, and the items with
@@ -24,6 +24,7 @@ pub struct Recorded {
 pub fn project(stdout: &str) -> Recorded {
     if let Some(structure) = crate::run_documents::plan_structure(stdout)
         .or_else(|| crate::run_documents::items_structure(stdout))
+        .or_else(|| crate::run_documents::replay_structure(stdout))
     {
         return Recorded {
             structure,

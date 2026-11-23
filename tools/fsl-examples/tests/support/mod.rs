@@ -107,6 +107,9 @@ pub fn outcome_document(case: &str, structure: &Value, messages: &str) -> String
     if let Some(items) = structure.get("items_outcome") {
         return items_document(case, items);
     }
+    if let Some(replay) = structure.get("replay_outcome") {
+        return json!({ "results": replay.get("results") }).to_string();
+    }
     if let (Some(Value::Array(events)), Some(summary)) =
         (structure.get("events"), structure.get("summary"))
     {

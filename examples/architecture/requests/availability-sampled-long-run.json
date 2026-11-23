@@ -31,7 +31,11 @@
       {
         "claim": "Availability",
         "probabilistic": {
-          "evidence": "statistical"
+          "evidence": "statistical",
+          "method": {
+            "type": "regenerative",
+            "min_cycles": 100
+          }
         }
       }
     ]

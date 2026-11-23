@@ -174,3 +174,17 @@ fn a_vanished_always_present_key_is_unreadable_not_null() {
         unreadable(&doc.to_string());
     }
 }
+
+#[test]
+fn replay_results_are_checked_by_arm_category_settlement_and_value() {
+    let recorded = project(
+        r#"{"results":[{"arm":"input","category":"success","settlement":"inconclusive","value":true}]}"#,
+    );
+
+    assert_eq!(
+        recorded.structure,
+        json!({"replay_outcome":{"results":[{"arm":"input","category":"success","settlement":"inconclusive","value":true}]}})
+    );
+    assert_eq!(recorded.messages, "");
+    assert_eq!(verdict_of(&recorded.structure), "1 input inconclusive");
+}

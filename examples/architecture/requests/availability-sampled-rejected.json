@@ -31,7 +31,10 @@
       {
         "claim": "CheckoutAvailable",
         "probabilistic": {
-          "evidence": "statistical"
+          "evidence": "statistical",
+          "method": {
+            "type": "okamoto"
+          }
         }
       }
     ]

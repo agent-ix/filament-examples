@@ -1,11 +1,9 @@
-//! The structure of the two documents `fsl run` prints besides a `filament-outcome/1`: the outcome of
-//! a verification plan (`filament.verification-plan-outcome/v1`) and the results of a multi-item
-//! request (`native-run-items/1`).
+//! The structure of documents `fsl` prints besides a `filament-outcome/1`: the outcome of a
+//! verification plan (`filament.verification-plan-outcome/v1`), multi-item request results
+//! (`native-run-items/1`), and replay results (`results`).
 //!
-//! Both are read through typed fields and matched by their exact schema id; a document with another
-//! id is not read, so the caller records it as unreadable output. Paths, package identities and the
-//! driver's request indexes are left out of the record: only what a reader of the example cares
-//! about, and what must not change silently, is kept.
+//! These documents are projected to the fields an example needs to keep stable. Paths, package
+//! identities and driver request indexes are left out of the record.
 
 use serde::Deserialize;
 use serde_json::{Value, json};
@@ -152,7 +150,29 @@ pub fn items_structure(stdout: &str) -> Option<Value> {
     Some(json!({ "items_outcome": { "category": doc.category, "items": items } }))
 }
 
-/// The one-line verdict of a plan or multi-item record, `None` for any other structure.
+/// The record of a replay result: each result's arm, category, settlement and value.
+/// `None` when the output is not a replay result document.
+pub fn replay_structure(stdout: &str) -> Option<Value> {
+    let document = serde_json::from_str::<Value>(stdout).ok()?;
+    let results = document.get("results")?.as_array()?;
+    let results = results
+        .iter()
+        .map(|result| {
+            let mut projected = json!({
+                "arm": result.get("arm")?.as_str()?,
+                "category": result.get("category")?.as_str()?,
+                "settlement": result.get("settlement")?.as_str()?,
+            });
+            if let Some(value) = result.get("value") {
+                projected["value"] = value.clone();
+            }
+            Some(projected)
+        })
+        .collect::<Option<Vec<_>>>()?;
+    Some(json!({ "replay_outcome": { "results": results } }))
+}
+
+/// The one-line verdict of a plan, multi-item or replay record, `None` for any other structure.
 pub fn verdict(structure: &Value) -> Option<String> {
     if let Some(plan) = structure.get("plan_outcome") {
         let status = plan
@@ -183,6 +203,32 @@ pub fn verdict(structure: &Value) -> Option<String> {
             line.push_str(&format!("; blocked: {}", blocked.join(", ")));
         }
         return Some(line);
+    }
+    if let Some(results) = structure
+        .get("replay_outcome")
+        .and_then(|outcome| outcome.get("results"))
+        .and_then(Value::as_array)
+    {
+        if results.is_empty() {
+            return Some("0 results".to_owned());
+        }
+        let mut outcomes: Vec<(String, usize)> = Vec::new();
+        for result in results {
+            let arm = result.get("arm")?.as_str()?;
+            let settlement = result.get("settlement")?.as_str()?;
+            let outcome = format!("{arm} {settlement}");
+            match outcomes.iter_mut().find(|(known, _)| known == &outcome) {
+                Some((_, count)) => *count += 1,
+                None => outcomes.push((outcome, 1)),
+            }
+        }
+        return Some(
+            outcomes
+                .iter()
+                .map(|(outcome, count)| format!("{count} {outcome}"))
+                .collect::<Vec<_>>()
+                .join(", "),
+        );
     }
     let items = structure.get("items_outcome")?;
     let list = items.get("items").and_then(Value::as_array)?;
