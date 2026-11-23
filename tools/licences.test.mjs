@@ -2,12 +2,12 @@
 //   node --test tools/
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
-import { mkdtempSync, readFileSync } from "node:fs";
+import { mkdirSync, mkdtempSync, readFileSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { dirname, join, resolve } from "node:path";
 import { test } from "node:test";
 import { fileURLToPath } from "node:url";
-import { closure, lockDrift, lockPackages, parseArgs, releaseVersion, renderTexts, renderThirdParty } from "./licences.mjs";
+import { closure, collectInstalledNpm, lockDrift, lockPackages, parseArgs, releaseVersion, renderTexts, renderThirdParty } from "./licences.mjs";
 
 const REPO = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const LICENSES = join(REPO, "image", "licenses");
@@ -24,10 +24,16 @@ test("the committed notice is what render writes from the committed data", () =>
   assert.equal(c.status, 0, c.stderr);
 });
 
-test("the notice names every shipped program with its repository, tag and commit", () => {
+test("the notice keeps npm package versions out of checked-in records", () => {
   const md = read("image/licenses/THIRD-PARTY.md");
-  for (const repo of ["filament-driver", "quire-cli", "quoin"]) {
-    assert.match(md, new RegExp(`https://github.com/agent-ix/${repo} \\| v[0-9.]+ \\| [0-9a-f]{40} \\|`));
+  assert.match(md, /https:\/\/github\.com\/agent-ix\/filament-driver \\| v[0-9.]+ \\| [0-9a-f]{40} \\|/);
+  assert.match(md, /`quire` \(quire-cli\).*NPM-PACKAGES\.txt/);
+  assert.match(md, /`quoin` \(quoin\).*NPM-PACKAGES\.txt/);
+  for (const file of ["image/licenses/data/quire-cli.json", "image/licenses/data/quoin.json"]) {
+    const record = JSON.parse(read(file));
+    assert.equal("version" in record, false);
+    assert.equal("tag" in record, false);
+    assert.equal("commit" in record, false);
   }
 });
 
@@ -63,8 +69,31 @@ test("first-party crates are separated from third-party crates", () => {
   assert.match(md, /1 first-party and 2 third-party/);
   assert.match(md, /\| none declared \| 1 \|/);
   const txt = renderTexts(data);
-  assert.match(txt, /serde 2/);
-  assert.match(txt, /odd 3/);
+  assert.match(txt, /serde/);
+  assert.match(txt, /odd/);
+});
+
+test("npm records use installed package metadata and lockfile integrity", () => {
+  const root = mkdtempSync(join(tmpdir(), "installed-npm-"));
+  const modules = join(root, "node_modules");
+  const pkgDir = join(modules, "@agent-ix", "sample");
+  mkdirSync(pkgDir, { recursive: true });
+  writeFileSync(join(root, "package.json"), JSON.stringify({ dependencies: { "@agent-ix/sample": "1.0.0" } }));
+  writeFileSync(join(root, "package-lock.json"), JSON.stringify({ packages: {
+    "node_modules/@agent-ix/sample": {
+      version: "1.0.0", resolved: "https://registry.npmjs.org/sample.tgz", integrity: "sha512-artifact", license: "MIT",
+    },
+    "node_modules/@agent-ix/sample-linux-x64": {
+      version: "1.0.0", resolved: "https://registry.npmjs.org/sample-linux-x64.tgz", integrity: "sha512-optional",
+    },
+  } }));
+  writeFileSync(join(pkgDir, "package.json"), JSON.stringify({ name: "@agent-ix/sample", version: "1.0.0", license: "MIT" }));
+  writeFileSync(join(pkgDir, "LICENSE"), "sample license\n");
+  const output = collectInstalledNpm({ modules, lockPath: join(root, "package-lock.json") });
+  assert.match(output, /@agent-ix\/sample 1\.0\.0/);
+  assert.match(output, /sha512-artifact/);
+  assert.match(output, /LICENSE sha256:[0-9a-f]{64}/);
+  assert.doesNotMatch(output, /sample-linux-x64/);
 });
 
 test("the Dockerfile keeps the licence files and carries the labels", () => {
@@ -91,7 +120,7 @@ test("the notice lists the example runner the image builds, with its third-party
   const section = md.slice(md.indexOf("## Rust crates built into `fsl-examples`"));
   for (const crate of ["serde", "serde_json", "toml", "thiserror"]) assert.match(section, new RegExp(`\\| ${crate} \\| [^|]+ \\| [^|]*MIT`));
   assert.doesNotMatch(section, /\| tempfile \|/, "development dependencies are not shipped");
-  assert.match(read("image/licenses/THIRD-PARTY-LICENSES.txt"), /serde_json 1\.0\.\d+/);
+  assert.match(read("image/licenses/THIRD-PARTY-LICENSES.txt"), /serde_json/);
 });
 
 test("lockDrift reports lock packages the licence data does not describe, and the reverse", () => {
@@ -106,5 +135,9 @@ test("lockDrift reports lock packages the licence data does not describe, and th
 });
 
 test("the image build checks the runner's Cargo.lock against the licence data", () => {
-  assert.match(read("image/Dockerfile"), /COPY tools\/fsl-examples\/Cargo.lock \/tmp\/licences\/tools\/fsl-examples\/Cargo.lock/);
+  const dockerfile = read("image/Dockerfile");
+  assert.match(dockerfile, /COPY tools\/fsl-examples\/Cargo.lock \/tmp\/licences\/tools\/fsl-examples\/Cargo.lock/);
+  assert.match(dockerfile, /npm ci --prefix \/opt\/npm/);
+  assert.match(dockerfile, /collect-installed \/opt\/npm\/node_modules \/opt\/npm\/package-lock\.json/);
+  assert.doesNotMatch(dockerfile, /@agent-ix\/(?:quire-cli|quoin)@[0-9]/);
 });

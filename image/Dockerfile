@@ -96,19 +96,17 @@ RUN set -eu; \
 
 # The Markdown tool and quoin install to /usr/local/bin, where `quire` is the
 # Markdown tool. The driver binaries are `fsl` and its sibling launcher.
-RUN npm i -g @agent-ix/quire-cli @agent-ix/quoin && npm cache clean --force
+COPY image/package.json image/package-lock.json /opt/npm/
+RUN npm ci --prefix /opt/npm --omit=dev --no-audit --no-fund && npm cache clean --force
+ENV PATH=/opt/npm/node_modules/.bin:$PATH
 COPY --from=driver /opt/fsl-driver/bin/fsl /usr/local/bin/fsl
 COPY --from=driver /opt/fsl-driver/bin/fsl-plugin-launch /usr/local/bin/fsl-plugin-launch
 COPY --from=runner /opt/fsl-examples/bin/fsl-examples /usr/local/bin/fsl-examples
 ENV FSL_EXAMPLES=fsl-examples
 
-# Licence notices. image/licenses holds the licence texts, the notice for the
-# bundled components and the pointers to the corresponding source of each
-# program; /usr/share/licenses/filament-toolchain is where the image carries
-# them. The check fails the build when the installed npm programs or the driver
-# are not the versions those files describe, or when the example runner's Cargo.lock
-# names crates they do not describe. Ubuntu keeps the copyright file of
-# each package in /usr/share/doc, and this Dockerfile does not remove them.
+# Licence notices. image/licenses holds the driver and runner source records.
+# The npm package record is generated from the installed tree and lockfile during
+# this build. Ubuntu keeps each package's copyright file in /usr/share/doc.
 COPY image/licenses /usr/share/licenses/filament-toolchain
 COPY LICENSE /usr/share/licenses/filament-toolchain/texts/filament-examples.LICENSE
 COPY --from=driver /opt/fsl-driver/TAG /usr/share/licenses/filament-toolchain/DRIVER-TAG
@@ -117,14 +115,13 @@ COPY image/licenses /tmp/licences/image/licenses
 COPY tools/fsl-examples/Cargo.lock /tmp/licences/tools/fsl-examples/Cargo.lock
 RUN set -eu; \
     d=/usr/share/licenses/filament-toolchain; \
-    node /tmp/licences/tools/licences.mjs verify-installed /usr/local/lib/node_modules "$(cat $d/DRIVER-TAG)"; \
+    node /tmp/licences/tools/licences.mjs verify-installed "$(cat $d/DRIVER-TAG)"; \
+    node /tmp/licences/tools/licences.mjs collect-installed /opt/npm/node_modules /opt/npm/package-lock.json "$d/NPM-PACKAGES.txt"; \
     cp /usr/local/LICENSE $d/texts/nodejs.LICENSE; \
     { echo "Facts recorded while this image was built."; echo; \
       echo "node $(node --version)"; echo "npm $(npm --version)"; echo "driver tag: $(cat $d/DRIVER-TAG)"; echo; \
-      echo "npm packages (name, version, declared licence):"; \
-      find /usr/local/lib/node_modules -path '*/node_modules/*/package.json' -not -path '*/test/*' \
-        | sort | xargs jq -r 'select(.name != null) | "\(.name) \(.version) \((.license // .licenses // "none declared") | tostring)"'; \
-      echo; echo "Ubuntu packages (name, version); licences are in /usr/share/doc/<name>/copyright:"; \
+      echo "Installed npm package licence and integrity records: NPM-PACKAGES.txt"; echo; \
+      echo "Ubuntu packages (name, version); licences are in /usr/share/doc/<name>/copyright:"; \
       dpkg-query -W -f='${binary:Package} ${Version}\n'; \
     } > $d/BUILD-FACTS.txt; \
     rm -rf /tmp/licences; \

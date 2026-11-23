@@ -1,0 +1,10 @@
+{
+  "name": "@agent-ix/filament-toolchain-image",
+  "version": "0.0.0",
+  "private": true,
+  "license": "MIT",
+  "dependencies": {
+    "@agent-ix/quire-cli": "0.52.1",
+    "@agent-ix/quoin": "0.36.10"
+  }
+}
