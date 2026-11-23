@@ -607,8 +607,12 @@ fn evaluate_predicate(tools: &Tools, expression: &str, deadline: Instant) -> Che
             || outcome["result"]["kind"] != "completed"
         {
             return Err(Fault::new(
-                FaultCode::CliGap,
-                format!("fsl run could not evaluate repair predicate at v={value}"),
+                FaultCode::ToolFailure,
+                format!(
+                    "grader predicate probe could not evaluate the accepted repair predicate at v={value} (fsl run exit {:?}, category {})",
+                    output.status.code(),
+                    outcome["category"]
+                ),
             ));
         }
         samples[usize::from(value)] =
@@ -1156,6 +1160,64 @@ mod tests {
         let mut permissions = fs::metadata(path)?.permissions();
         permissions.set_mode(0o755);
         fs::set_permissions(path, permissions)?;
+        Ok(())
+    }
+
+    #[test]
+    fn bounded_probe_replays_real_tautology_outputs_and_classifies_probe_refusal()
+    -> ScenarioResult<()> {
+        let temp = tempdir()?;
+        let fsl = temp.path().join("fsl");
+        let captured = Path::new(env!("CARGO_MANIFEST_DIR"))
+            .join("fixtures/EV-006/reference/predicate-run-true.json");
+        let calls = temp.path().join("values.log");
+        let script = r#"#!/bin/sh
+set -eu
+if [ "$1" != run ]; then exit 21; fi
+if grep -Fq 'function checkPredicate(probeValue: Int[0,3]): Boolean pure { probeValue = probeValue }' predicate.fsl ||
+   grep -Fq 'function checkPredicate(probeValue: Int[0,3]): Boolean pure { not ( probeValue < 0 ) }' predicate.fsl; then
+  value=$(sed -n 's/.*"value":"\([0-3]\)".*/\1/p' "$2")
+  printf '%s\n' "$value" >> '@CALLS@'
+  cat '@CAPTURE@'
+else
+  printf '%s\n' '{"category":"refusal","diagnostics":[{"code":"invalid_syntax"}]}'
+  exit 20
+fi
+"#
+        .replace("@CALLS@", &calls.display().to_string())
+        .replace("@CAPTURE@", &captured.display().to_string());
+        write_stub(&fsl, &script)?;
+        let tools = Tools {
+            fsl,
+            docs: Path::new(".").into(),
+            quire: Path::new("quire").into(),
+            quoin: Path::new("quoin").into(),
+        };
+
+        for expression in [
+            "probeValue = probeValue",
+            "not ( probeValue < 0 )",
+        ] {
+            let samples = evaluate_predicate(
+                &tools,
+                expression,
+                Instant::now() + Duration::from_secs(5),
+            )?;
+            assert_eq!(samples, [true; 4], "captured fsl run values for {expression}");
+            assert!(
+                validate_predicate_samples(&samples, 1).is_err(),
+                "the semantic tautology must fail the bounded check: {expression}"
+            );
+        }
+        assert_eq!(fs::read_to_string(calls)?, "0\n1\n2\n3\n0\n1\n2\n3\n");
+
+        let refusal = evaluate_predicate(
+            &tools,
+            "probeValue + 0 = 1",
+            Instant::now() + Duration::from_secs(5),
+        )
+        .expect_err("the stub refuses an expression outside the captured cases");
+        assert!(matches!(refusal.code, FaultCode::ToolFailure));
         Ok(())
     }
 

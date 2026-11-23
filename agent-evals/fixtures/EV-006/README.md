@@ -36,7 +36,14 @@ precondition repair also exited 0. Each returned a certified exhaustive proof.
 The stored CLI outcomes support offline stub tests; grading uses fresh trusted
 CLI results.
 
-The eight EV-006 grader tests remain untagged because agent-evals has no
+The offline FSL 0.2.0 release at the same revision evaluated both
+`probeValue = probeValue` and `not ( probeValue < 0 )` to `true` at every value
+from 0 through 3. `reference/predicate-run-true.json` is the captured
+`fsl run --format json` output replayed by the grader test. A refusal while
+evaluating the generated predicate probe is a grader `harness-error:`, because
+the trusted analysis has already accepted the agent's source.
+
+The nine EV-006 grader tests remain untagged because agent-evals has no
 criterion for this scenario. The spec-first deferral is tracked by
 [QSL-3018](https://linear.app/agent-ix/issue/QSL-3018/agent-evals-add-ev-006-protocol-deadlock-acceptance-criterion-spec).
 
