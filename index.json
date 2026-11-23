@@ -616,7 +616,7 @@
       "request_file": "examples/architecture/requests/probability/claims/claims-mean-of-fraction.json",
       "expected_file": "examples/architecture/expected/claims-mean-of-fraction.json",
       "verdict": null,
-      "exit": 21,
+      "exit": 22,
       "ready_exit": 0,
       "engine": "probability",
       "clock": null,
