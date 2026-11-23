@@ -17,12 +17,14 @@ for verb in prove generate inspect render; do
   status=0
   result=$(fsl "$verb" --format json) || status=$?
   [ "$status" -eq 21 ] || { echo "fsl $verb exited $status, expected 21"; exit 1; }
-  printf '%s\n' "$result" | jq -e --arg verb "$verb" '
-    .operation == $verb and
-    .category == "unsupported" and
-    .diagnostics[0].code == "unsupported_operation" and
-    .diagnostics[0].cause == "operation-not-routed" and
-    .diagnostics[0].detail.verb == $verb
+  printf '%s\n' "$result" | jq -e -s --arg verb "$verb" '
+    length == 1 and
+    .[0].operation == $verb and
+    .[0].category == "unsupported" and
+    .[0].diagnostics[0].code == "unsupported_operation" and
+    .[0].diagnostics[0].cause == "operation-not-routed" and
+    .[0].diagnostics[0].detail.verb == $verb and
+    (.[0].diagnostics[0].message | contains($verb))
   ' >/dev/null || { echo "fsl $verb returned an unexpected unsupported response"; exit 1; }
 done
 
