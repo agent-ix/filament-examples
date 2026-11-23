@@ -48,3 +48,11 @@ Plan completion: not assessed
 - QSL-2490 readiness sweep pass criteria: examined.
 - FSL FR-211-AC-2 and FR-211-AC-3 (filament-spec-language origin/main): context_only.
 - agent-evals FR-001 to FR-003 (no EV-006 mention): examined.
+
+## Dispositions
+
+| FND | outcome | reason |
+| --- | --- | --- |
+| FND-001 | still-open | The false FR-211-AC-2/TC-656 trace tags and the ix-trace-rs dev-dependency were removed, so no test claims FSL coverage any more. But still no agent-evals FR or AC specifies EV-006, and the six new tests bind to no criterion. Add an EV-006 criterion and tag the tests to it. |
+| FND-002 | still-open | The task now asks the agent to model Fill from English and allows either repair. But the grader requires the baseline to match the hidden reference text (SR-1524 FND-006), so modelling from English cannot pass. |
+| FND-003 | deferred | Live codex and claude runs are post-merge acceptance work on QSL-2490 itself. Nothing in the diff claims a run, and QSL-2490 must stay open until N=3 runs per agent are scored and every failure is classified and ticketed. |

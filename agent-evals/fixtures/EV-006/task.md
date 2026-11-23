@@ -1,36 +1,24 @@
-# Model a protocol, diagnose its deadlock, and repair it
+# Model and repair a protocol deadlock
 
-The files describe a finite cell model and its initial state. From the English
-behavior below, write `baseline.native` as a complete `Fill` protocol. It has
-one worker role and two parallel branches. Branch A increments the cell when
-its value is below 3. Branch B sets the cell to 2 only when its value is 0.
-Both branches join, then the protocol finishes. Do not declare terminal states
-in the baseline.
+The supplied model and initial state describe one finite cell whose integer
+value starts at zero. From the behavior below, author a complete `Fill`
+protocol in `baseline.native`:
 
-Run `fsl analyze deadlock-request.json --format json` and save the complete
-output as `deadlock.json`. Then repair the protocol in `protocol.native` so
-that its intended behavior is deadlock-free. Either declare the reached
-intended end state or correct the precondition so it permits the state reached
-after A. Keep the model, requests, and initial state unchanged.
+- Branch A increments the cell by one when its current value is below 3.
+- Branch B sets the cell's value to 2 when the current value is 0.
+- Run those two operations in parallel, join both branches, then finish.
+- The baseline has no declared terminal state.
 
-Run `fsl analyze repaired-request.json --format json` and save the complete
-output as `repaired.json`. Write `result.json` with the observed result and
-exit code, the ordered protocol steps, both blocked-thread paths and causes,
-and the repaired proof basis. Use this shape, replacing each placeholder with
-the value observed in your files:
+Run `fsl analyze deadlock-request.json --format json` and save its complete
+output as `deadlock.json`. Repair the protocol in `protocol.native` so the
+behavior is deadlock-free, either by declaring an intended terminal state or
+by correcting the precondition that blocks the second operation after the
+increment. Keep the model, requests, and initial state unchanged.
 
-```json
-{
-  "deadlock": {
-    "result": "<observed result>",
-    "exit_code": <observed integer>,
-    "steps": ["<step 1>", "<step 2>"],
-    "blocked": ["<full blocked path and cause 1>", "<full blocked path and cause 2>"]
-  },
-  "repaired": {
-    "result": "<observed result>",
-    "exit_code": <observed integer>,
-    "basis": "<observed proof basis>"
-  }
-}
-```
+Run `fsl analyze repaired-request.json --format json` and save its complete
+output as `repaired.json`. In `result.json`, summarize the CLI's structured
+output fields: the exit code and item result; each prefix transition's `step`
+and `node`; each blocked entry's `thread`, `rest`, and `cause`; and the repaired
+item's `basis` and `certification`. Preserve the JSON values and object shapes
+from the CLI output. The prefix is ordered; the blocked entries may be in
+whatever order the CLI emits.

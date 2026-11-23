@@ -43,3 +43,24 @@ The provider change only registers the new entry. It does not touch the transcri
 - fixtures/EV-006 task.md, README.md, given.native, both request files, start.json and scenario.toml: examined.
 - provider.rs ENTRIES row: examined.
 - FSL FR-211-AC-2 and FR-211-AC-3: context_only.
+
+## New findings (disposition pass 1)
+
+Found at head 3a9653225fa4ca95040064a60f7f6afc27e77dc1. This branch is rebased on main with PR 109 merged, and `provider.rs` still changes only the EV-006 entry, so the #109 boundary is not weakened.
+
+| ID | Severity | Summary | Refs |
+| --- | --- | --- | --- |
+| FND-006 | high | `check_inputs` requires `baseline.native` to equal the hidden reference source, ignoring only whitespace. The task's English does not give the identifiers that comparison needs: the profile aliases and URIs (`v`, `pp`, `filament.model.complete/v1`, `filament.protocol.finite-global/v1`), the model alias `M`, the contract names `IncPre`/`IncPost`/`TwoPre`/`TwoPost` and their exact predicates, the `(a: Boolean)`/`(b: Boolean)` binders, `finish Done as (d: Boolean) { true }`, and `on origin`. A correct model written from the English cannot match. The repair is just as rigid. Only `terminal when{k.v=1};` placed immediately before `finish Done`, or the literal `self.v<=1`, is accepted; an equivalent predicate or another member position is refused. | agent-evals/src/scenarios/protocol_deadlock.rs:143-161; agent-evals/fixtures/EV-006/task.md:3-13 |
+| FND-007 | high | `check_summary` expects FR-211's prose notation: steps `fork(Both)` and `attempt(A)`, and blocked `(0, Both, right, 0) at B: Precondition{TwoPre}` and `(0) at join Both: JoinWaiting{[(0, Both, right, 0)]}`. The task now only says "the value observed in your files", and the JSON that `fsl analyze --format json` emits uses a different form. It has `{"step":"fork","node":"Main/Both"}`, thread paths `{"instance":"0","steps":[{"branch":"right","node":"Main/Both","ordinal":"0"}]}`, `rest.node` `Main/Both/right/B` and `cause.type` `precondition`, as the captured `reference/deadlock-outcome.json` shows. No FSL renderer on origin/main formats `JoinWaiting{`/`Precondition{`. An agent that faithfully reports what it observed fails WrongSummary. | agent-evals/src/scenarios/protocol_deadlock.rs:317-350; agent-evals/fixtures/EV-006/task.md:17-36 |
+| FND-008 | medium | `CliGap` is also raised on the agent's own saved files: `one_item`, `check_deadlock` and `check_proof` run on `deadlock.json`/`repaired.json` in `assess` and `compare_items`. A wrong, empty or hand-written saved output is therefore reported as `harness-error:` and excused as not an agent failure. Separately, a genuine CLI gap (the route is unavailable) is also reported as `harness-error:`. The readiness note and FR-002 triage class that as `cli-gap` and file it in the FSL CLI project. Keep `harness-error:` for the trusted run's tool or timeout failures only. | agent-evals/src/scenarios/protocol_deadlock.rs:203-223,251-263,354-361,389-397 |
+| FND-009 | low | The fixture README hard-codes the host path `/home/peter/fsl-rc3/fsl` as verification evidence and names no fsl version or commit. Only the terminal-declaration repair was verified offline; the precondition-fix route the grader now accepts was not run against a release `fsl`. | agent-evals/fixtures/EV-006/README.md:12-18 |
+
+## Dispositions
+
+| FND | outcome | reason |
+| --- | --- | --- |
+| FND-001 | fixed | `check_summary` now expects the full blocked paths `(0, Both, right, 0) at B: Precondition{TwoPre}` and `(0) at join Both: JoinWaiting{[(0, Both, right, 0)]}`, compared ignoring whitespace. A test covers exactly that result.json. The task no longer states the strings, which raises FND-007. |
+| FND-002 | fixed | `task.md` no longer states the terminal line or the result values; it gives placeholders. The precondition repair (`TwoPre` to `self.v <= 1`) is accepted next to the terminal declaration. The new rigidity of the source check is FND-006. |
+| FND-003 | fixed | Route, tool and timeout faults (`ToolFailure`, `Timeout`, `CliGap`) are now reported with a `harness-error:` prefix, `Display` prints only the detail, and the stub test asserts the prefix. Over-mapping is FND-008. |
+| FND-004 | fixed | New tests: `summary_accepts_the_exact_full_paths_requested_by_task`, `compare_items_checks_trusted_fields`, and `full_grade_uses_stub_fsl_and_real_captured_outcomes`. The last one grades a full workspace through a stub `fsl` that replays the captured release outcomes, and asserts a pass and a `harness-error:` failure. The README states that the baseline (exit 10) and terminal repair (exit 0, certified exhaustive) were verified offline. |
+| FND-005 | fixed | `check_deadlock` now checks structured fields: prefix steps and nodes (`fork` `Main/Both`, `attempt` `Main/Both/left/A`), a `precondition` `TwoPre` block at `Main/Both/right/B`, and a `join-waiting` at `Main/Both`. A substring-trap test covers it. |
