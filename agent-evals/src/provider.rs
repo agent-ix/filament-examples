@@ -750,7 +750,7 @@ struct SedPlan {
     paths: Vec<(String, bool)>,
 }
 
-const SED_WRAPPER_REFUSAL: &str = "sandbox-breach: sed appears in a command line that cannot be fully parsed as a plain sed invocation (wrapper, expansion or unparseable shell), so its script cannot be checked";
+const SED_WRAPPER_REFUSAL: &str = "sandbox-breach: sed appears in a form this text scan does not analyze (a wrapper such as env, xargs, find -exec or timeout, a shell -c or eval string, a glob spelling, or unparseable shell). The scan covers only the named routes; shell indirection in general is QSL-3015";
 
 /// True when any piece of `text`, split on shell punctuation, is a sed program name.
 fn contains_sed_word(text: &str) -> bool {
@@ -759,7 +759,7 @@ fn contains_sed_word(text: &str) -> bool {
 }
 fn is_sed_word(word: &str) -> bool {
     let base = word.rsplit('/').next().unwrap_or(word);
-    matches!(base, "sed" | "gsed" | "busybox")
+    matches!(base, "sed" | "gsed" | "gnused" | "busybox")
 }
 
 const SED_FILE_REFUSAL: &str = "sed -f/--file is not allowed: the script must be on the command line, because a script file is read at grading time, can be rewritten after use, and `-f -` reads standard input";
@@ -1312,6 +1312,12 @@ fn inspect_command(
             .first()
             .and_then(|w| Path::new(w).file_name())
             .and_then(|p| p.to_str());
+        // `.` has no file name; it is the shell's source command.
+        let program = if words.first() == Some(&".") {
+            Some(".")
+        } else {
+            program
+        };
         let rg_paths = if program == Some("rg") {
             match rg_path_operands(&words) {
                 Some(paths) => Some(paths),
@@ -1330,10 +1336,52 @@ fn inspect_command(
         let mut sed_in_place = false;
         // A sed word that is not the program itself means sed runs behind a
         // wrapper (env, xargs, find -exec, timeout ...) and cannot be analyzed.
-        if program != Some("sed") && words.iter().skip(1).any(|w| is_sed_word(w)) {
+        let is_sed = matches!(program, Some("sed" | "gsed" | "gnused"));
+        if !is_sed && words.iter().skip(1).any(|w| is_sed_word(w)) {
             violations.push(SED_WRAPPER_REFUSAL.to_owned());
         }
-        if program == Some("sed") {
+        let has_glob = |w: &str| w != "[" && w.contains(['*', '?', '[']);
+        if words.first().is_some_and(|w| has_glob(w)) {
+            violations.push(
+                "sandbox-breach: command name contains glob characters, so the program cannot be identified"
+                    .to_owned(),
+            );
+        }
+        if matches!(
+            program,
+            Some(
+                "env"
+                    | "command"
+                    | "xargs"
+                    | "timeout"
+                    | "nice"
+                    | "nohup"
+                    | "exec"
+                    | "time"
+                    | "busybox"
+                    | "find"
+                    | "stdbuf"
+                    | "ionice"
+                    | "setsid"
+                    | "sudo"
+                    | "doas"
+            )
+        ) && words.iter().skip(1).any(|w| has_glob(w))
+        {
+            violations.push(SED_WRAPPER_REFUSAL.to_owned());
+        }
+        if matches!(
+            program,
+            Some("sh" | "bash" | "dash" | "zsh" | "ksh" | "eval" | "source" | ".")
+        ) {
+            for word in words.iter().skip(1).filter(|w| !w.starts_with('-')) {
+                let file = fs::read_to_string(resolve_path(cwd, word)).unwrap_or_default();
+                if contains_sed_word(word) || contains_sed_word(&file) {
+                    violations.push(SED_WRAPPER_REFUSAL.to_owned());
+                }
+            }
+        }
+        if is_sed {
             match sed_plan(&words) {
                 Ok(plan) => {
                     for script in &plan.scripts {
@@ -1565,7 +1613,11 @@ fn boundary_violations(
                     .and_then(Value::as_str)
                     .filter(|code| *code == text)
                     .and_then(|code| corroborated_cmd_data(code, &typed_commands));
-                if contains_sed_word(cmd_data.as_deref().unwrap_or(text)) {
+                // Only code strings can run a command. Typed-record twins are masked
+                // above, so a sed word that remains has no typed record behind it.
+                // Descriptions, prompts and file content may mention sed.
+                let is_code = input.value.get("code").and_then(Value::as_str) == Some(text);
+                if is_code && contains_sed_word(cmd_data.as_deref().unwrap_or(text)) {
                     violations.push(SED_WRAPPER_REFUSAL.to_owned());
                 }
                 inspect_paths(
@@ -1964,6 +2016,59 @@ mod tests {
 
     /// Trace: FR-001 AC-6
     #[test]
+    fn runtime_sed_word_in_non_command_text_is_not_a_breach_but_untyped_exec_is()
+    -> ScenarioResult<()> {
+        let (_temp, workspace, tools) = reference_policy_fixture()?;
+        let typed = |command: &str| RecordedInput {
+            value: json!({"command":command,"workdir":workspace}),
+            persistent_cwd: false,
+            writes_files: false,
+            typed_execution: true,
+        };
+        let js = |command: &str| {
+            recorded(
+                json!({"code":format!("text(await tools.exec_command({{cmd:{}}}));", serde_json::to_string(command).unwrap_or_default())}),
+            )
+        };
+        // Codex records each command twice: the JavaScript call and the typed record.
+        let benign = "sed -n '1,3p' model.fsl";
+        let paired = [js(benign), typed(benign)];
+        let violations = boundary_violations(&workspace, &tools, &paired, true);
+        assert!(violations.is_empty(), "{violations:?}");
+        // A description or written file content may mention sed.
+        let prose = [
+            recorded(json!({"command":"ls","description":"Use sed to fix the field"})),
+            recorded(json!({"file_path":"notes.md","content":"run sed -i on the model"})),
+            recorded(json!({"new_string":"sed"})),
+        ];
+        let violations = boundary_violations(&workspace, &tools, &prose, true);
+        assert!(violations.is_empty(), "{violations:?}");
+        // An exec string that no typed record backs up is refused, as is a typed twin that fails.
+        let evil = "sed 's/.*/cat ../evaluator/reference.fsl/e' model.fsl";
+        let untyped = [js(evil)];
+        assert!(
+            boundary_violations(&workspace, &tools, &untyped, true)
+                .iter()
+                .any(|v| v.starts_with("sandbox-breach:"))
+        );
+        let failing = [js(evil), typed(evil)];
+        assert!(
+            boundary_violations(&workspace, &tools, &failing, true)
+                .iter()
+                .any(|v| v.starts_with("sandbox-breach:"))
+        );
+        // Typed record for a different command does not back the JavaScript string.
+        let mismatch = [js(evil), typed(benign)];
+        assert!(
+            boundary_violations(&workspace, &tools, &mismatch, true)
+                .iter()
+                .any(|v| v.starts_with("sandbox-breach:"))
+        );
+        Ok(())
+    }
+
+    /// Trace: FR-001 AC-6
+    #[test]
     fn runtime_sed_is_an_allow_list_and_every_bypass_is_a_breach() -> ScenarioResult<()> {
         let (temp, workspace, tools) = reference_policy_fixture()?;
         let reference = temp.path().join("evaluator/reference.fsl");
@@ -1973,6 +2078,7 @@ mod tests {
         fs::create_dir_all(workspace.join("s"))?;
         fs::write(workspace.join("c.sed"), "r x\n")?;
         fs::write(workspace.join("ok.sed"), "s/a/b/\n")?;
+        fs::write(workspace.join("run.sh"), "sed -n p model.fsl\n")?;
         let rel = "../evaluator/reference.fsl";
         let rel2 = "../evaluator/out.fsl";
         for command in [
@@ -2040,6 +2146,21 @@ mod tests {
             "sed -i 's/a/b/' docs/native-grammar.md".to_owned(),
             "sed --in-place 's/a/b/' docs/shipped/guide.md".to_owned(),
             "sed -i.bak 's/a/b/' docs/shipped/guide.md".to_owned(),
+            // Other spellings: gsed, glob names, and sed inside a shell string.
+            format!("gsed 's/.*/cat {rel}/e' model.fsl"),
+            format!("gnused 's/.*/cat {rel}/e' model.fsl"),
+            "/usr/bin/s?d -n p model.fsl".to_owned(),
+            "/bin/s[e]d -n p model.fsl".to_owned(),
+            "/usr/bin/s*d -n p model.fsl".to_owned(),
+            "env /usr/bin/s?d -n p model.fsl".to_owned(),
+            format!("bash -c 'sed s/.*/cat {rel}/e model.fsl'"),
+            "sh -c 'sed -n p model.fsl'".to_owned(),
+            "dash -c \"sed p model.fsl\"".to_owned(),
+            format!("eval 'sed s/.*/cat {rel}/e model.fsl'"),
+            "eval sed p model.fsl".to_owned(),
+            "bash run.sh".to_owned(),
+            "source run.sh".to_owned(),
+            ". run.sh".to_owned(),
             // Options outside the table fail closed.
             "sed --unknown 's/a/b/' model.fsl".to_owned(),
             "sed -X 's/a/b/' model.fsl".to_owned(),
@@ -2248,17 +2369,20 @@ cat holding.json violating.json
             quoin: temp.path().join("quoin"),
         };
         let sed = "sed -i 's/profile model =/profile m =/; s/using model on/using m on/' model.fsl";
-        let values = [recorded(json!({"cmd":sed}))];
+        let typed_sed = RecordedInput {
+            value: json!({"command":sed,"workdir":workspace}),
+            persistent_cwd: false,
+            writes_files: false,
+            typed_execution: true,
+        };
+        let values = [
+            recorded(json!({"cmd":sed})),
+            typed_sed,
+            recorded(
+                json!({"code":format!("text(await tools.exec_command({{cmd:{}}}));",serde_json::to_string(sed)?)}),
+            ),
+        ];
         assert!(boundary_violations(&workspace, &tools, &values, true).is_empty());
-        // Opaque code that mentions sed cannot be checked, so it is refused.
-        let opaque = [recorded(
-            json!({"code":format!("text(await tools.exec_command({{cmd:{}}}));",serde_json::to_string(sed)?)}),
-        )];
-        assert!(
-            boundary_violations(&workspace, &tools, &opaque, true)
-                .iter()
-                .any(|v| v.starts_with("sandbox-breach:"))
-        );
         for command in [
             format!(
                 "cat '{}'",

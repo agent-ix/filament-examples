@@ -128,6 +128,10 @@
         "total_tokens": 324558,
         "invariant_bindings": 156
       }
-    ]
+    ],
+    "grading": {
+      "boundary": "the transcript boundary as of the first PR commit (rg flags and sed replacement data accepted); the sed allow-list, wrapper refusals and the other boundary rules added in later review rounds were not applied to these runs",
+      "regrade": "not possible: the raw SDK reports and transcripts were deleted with the run directories, and no live re-run was made (codex quota). The three passes stand as graded at run time and are not re-verified under the final boundary."
+    }
   }
 }
