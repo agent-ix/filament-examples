@@ -43,8 +43,10 @@ from 0 through 3. `reference/predicate-run-true.json` is the captured
 evaluating the generated predicate probe is a grader `harness-error:`, because
 the trusted analysis has already accepted the agent's source.
 
-The nine EV-006 grader tests remain untagged because agent-evals has no
-criterion for this scenario. The spec-first deferral is tracked by
+The eight EV-006 scenario grader tests carry trace tags to FR-004. The
+standalone `compare_items_checks_trusted_fields` unit test is not one of the
+scenario grader tests and remains untagged. The requirement and test case are
+tracked by
 [QSL-3018](https://linear.app/agent-ix/issue/QSL-3018/agent-evals-add-ev-006-protocol-deadlock-acceptance-criterion-spec).
 
 Tool execution failures and timeouts use the `harness-error:` class. An

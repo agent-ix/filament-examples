@@ -9,6 +9,7 @@ dependencies = [
  "base64",
  "fsl-cst",
  "fsl-foundation",
+ "ix-trace-rs",
  "serde",
  "serde_json",
  "tempfile",
