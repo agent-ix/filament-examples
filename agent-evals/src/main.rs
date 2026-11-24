@@ -230,7 +230,6 @@ fn main() -> ExitCode {
 #[cfg(test)]
 mod tests {
     use super::*;
-    /// Trace: FR-001 AC-6
     #[test]
     fn private_claude_config_retains_only_existing_account_metadata() {
         let account = json!({"accountUuid":"fake-account","organizationUuid":"fake-organization"});

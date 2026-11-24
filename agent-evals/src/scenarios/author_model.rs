@@ -445,9 +445,10 @@ pub fn grade(workspace: &Path, tools: &Tools) -> ScenarioResult<Assertion> {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use ix_trace_rs::trace;
     const REFERENCE: &str = include_str!("../../fixtures/EV-001/reference.fsl");
     const GOLDEN: &str = include_str!("../../../examples/shop/expected/values-line-total.json");
-    /// Trace: FR-001 AC-6
+    #[trace("FR-001-AC-15")]
     #[test]
     fn probe_shapes_match_the_shipped_run_golden_and_fail_closed() -> ScenarioResult<()> {
         let golden: Value = serde_json::from_str(GOLDEN)?;

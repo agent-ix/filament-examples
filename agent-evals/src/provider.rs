@@ -2046,6 +2046,7 @@ pub fn respond(input: &[u8]) -> ScenarioResult<Value> {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use ix_trace_rs::trace;
 
     /// Original two-wrapper/typed-event fixture; never executes JavaScript, shell, or FSL.
     #[test]
@@ -2122,7 +2123,7 @@ mod tests {
         boundary_violations(workspace, tools, &[recorded(json!({"cmd":command}))], true)
     }
 
-    /// Trace: FR-001 AC-6
+    #[trace("FR-001-AC-6")]
     #[test]
     fn runtime_plain_rg_flags_and_benign_sed_scripts_are_not_breaches() -> ScenarioResult<()> {
         let (_temp, workspace, tools) = reference_policy_fixture()?;
@@ -2149,7 +2150,7 @@ mod tests {
         Ok(())
     }
 
-    /// Trace: FR-001 AC-6
+    #[trace("FR-001-AC-6")]
     #[test]
     fn runtime_sed_word_in_non_command_text_is_not_a_breach_but_untyped_exec_is()
     -> ScenarioResult<()> {
@@ -2202,7 +2203,7 @@ mod tests {
         Ok(())
     }
 
-    /// Trace: FR-001 AC-6
+    #[trace("FR-001-AC-6")]
     #[test]
     fn runtime_codex_twin_matching_accepts_every_js_literal_and_wrapper_form() -> ScenarioResult<()>
     {
@@ -2339,7 +2340,7 @@ mod tests {
         Ok(())
     }
 
-    /// Trace: FR-001 AC-6
+    #[trace("FR-001-AC-6")]
     #[test]
     fn runtime_sed_is_an_allow_list_and_every_bypass_is_a_breach() -> ScenarioResult<()> {
         let (temp, workspace, tools) = reference_policy_fixture()?;
@@ -2626,7 +2627,7 @@ cat holding.json violating.json
             typed_execution: false,
         }
     }
-    /// Trace: FR-001 AC-6
+    #[trace("FR-001-AC-6")]
     #[test]
     fn runtime_sed_replacement_is_data_while_absolute_source_operands_are_paths()
     -> ScenarioResult<()> {
@@ -2678,7 +2679,7 @@ cat holding.json violating.json
         }
         Ok(())
     }
-    /// Trace: FR-001 AC-6
+    #[trace("FR-001-AC-6")]
     #[test]
     fn runtime_codex_execution_events_supply_context_but_code_and_output_do_not()
     -> ScenarioResult<()> {
@@ -2725,7 +2726,7 @@ cat holding.json violating.json
         assert!(agent_inputs(&workspace).is_err());
         Ok(())
     }
-    /// Trace: FR-001 AC-6
+    #[trace("FR-001-AC-6")]
     #[test]
     fn runtime_claude_trust_is_scoped_to_one_private_fresh_workspace() -> ScenarioResult<()> {
         let temp = tempfile::tempdir()?;
@@ -2750,7 +2751,7 @@ cat holding.json violating.json
         assert_eq!(fs::read(home.join(".claude.json"))?, before);
         Ok(())
     }
-    /// Trace: FR-001 AC-6
+    #[trace("FR-001-AC-6")]
     #[test]
     fn evidence_context_binds_workspace_model_across_claude_and_codex_calls() -> ScenarioResult<()>
     {
@@ -2814,7 +2815,7 @@ cat holding.json violating.json
         ));
         Ok(())
     }
-    /// Trace: FR-001 AC-6
+    #[trace("FR-001-AC-6")]
     #[test]
     fn integrity_resolution_changes_do_not_supply_trusted_evidence() {
         for command in [
@@ -2846,7 +2847,7 @@ cat holding.json violating.json
             assert!(violations.iter().any(|v| v.starts_with("harness-error:")));
         }
     }
-    /// Trace: FR-001 AC-6
+    #[trace("FR-001-AC-6")]
     #[test]
     fn integrity_cwd_and_write_policy_use_actual_tool_inputs() -> ScenarioResult<()> {
         let temp = tempfile::tempdir()?;
@@ -2930,7 +2931,7 @@ cat holding.json violating.json
         ));
         Ok(())
     }
-    /// Trace: FR-001 AC-6
+    #[trace("FR-001-AC-6")]
     #[test]
     fn integrity_command_evidence_binds_literal_operand_and_trusted_program() -> ScenarioResult<()>
     {
@@ -2979,7 +2980,7 @@ cat holding.json violating.json
         ));
         Ok(())
     }
-    /// Trace: FR-001 AC-6
+    #[trace("FR-001-AC-6")]
     #[test]
     fn integrity_boundary_rejects_reference_reads_source_paths_and_fetches() -> ScenarioResult<()> {
         let temp = tempfile::tempdir()?;
