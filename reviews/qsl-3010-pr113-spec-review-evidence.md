@@ -16,3 +16,9 @@ The criterion appropriately names a Test and TC-001 step 15 exercises both valid
 | ID | Severity | Summary | Refs |
 | --- | --- | --- | --- |
 | FND-001 | medium | The named golden contains only the completed `result.value`, not the EV-002 request; the evidence method must name a separate request fixture/assertion to demonstrate the request's expected member shape. | FR-001-AC-15; TC-001 step 15 |
+
+## Dispositions
+
+| FND | outcome | reason |
+| --- | --- | --- |
+| FND-001 | fixed | The request verification is now separate from the result golden. after_excerpt: `A separate expected native-run/1 request fixture/assertion verifies the request argument shape; the shipped examples/shop/expected/values-line-total.json golden verifies only the completed result shape.` |
