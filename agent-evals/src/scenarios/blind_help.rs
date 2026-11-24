@@ -518,6 +518,37 @@ mod tests {
         Ok(())
     }
 
+    /// Trace: FR-001-AC-15
+    /// Provenance: QSL-3010
+    #[test]
+    #[ignore = "public FSL run refusal lane; set FSL to the accepted executable"]
+    fn public_run_refuses_legacy_integer_argument_shape() -> ScenarioResult<()> {
+        let tools = tools()?;
+        let workspace = tempfile::tempdir()?;
+        prepare(workspace.path(), &tools)?;
+
+        let request_path = workspace.path().join("legacy-run-request.json");
+        let mut request: Value =
+            serde_json::from_str(include_str!("../../fixtures/EV-009/run-request.json"))?;
+        request["request"]["call"]["arguments"][0]["value"] = json!({"integer": "5"});
+        fs::write(&request_path, serde_json::to_vec(&request)?)?;
+
+        let output = Command::new(&tools.fsl)
+            .args(["run", "legacy-run-request.json", "--format", "json"])
+            .current_dir(workspace.path())
+            .output()?;
+        assert!(
+            !output.status.success(),
+            "legacy runtime input must be refused"
+        );
+        let outcome: Value = serde_json::from_slice(&output.stdout)?;
+        assert_eq!(outcome["category"], "refusal");
+        let diagnostic = outcome.to_string();
+        assert!(diagnostic.contains("invalid_runtime_input"));
+        assert!(diagnostic.contains("wrong-value-kind"));
+        Ok(())
+    }
+
     /// Provenance: QSL-2493
     #[test]
     #[ignore = "EV-009 analyze grader with the accepted public FSL executable"]
