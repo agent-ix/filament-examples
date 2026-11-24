@@ -8,6 +8,7 @@ version = "0.1.0"
 dependencies = [
  "fsl-cst",
  "fsl-foundation",
+ "ix-trace-rs",
  "serde",
  "serde_json",
  "tempfile",
