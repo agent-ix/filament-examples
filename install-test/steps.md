@@ -86,6 +86,8 @@ The source install is the second path. Skip this section if you installed the re
 
 The two `CARGO_PROFILE_RELEASE` settings turn off link-time optimization and use 16 code-generation units. The driver's own release profile needs more than 8 GB of memory and does not finish on a small machine. This step takes several minutes.
 
+`FSL_REVISION` is the driver release revision. At release time it must be the frozen release-candidate commit: the full 40-character SHA that the driver `RELEASE.md` calls `DRIVER_SHA`, never a branch name.
+
 ```bash step=driver-source
 FSL_REVISION=158bc4735167e75347afbfa883e03c1013d45f2d
 CARGO_INCREMENTAL=0 CARGO_PROFILE_RELEASE_DEBUG=0 CARGO_PROFILE_RELEASE_INCREMENTAL=false \
