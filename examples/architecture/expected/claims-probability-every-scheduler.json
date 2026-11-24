@@ -268,6 +268,7 @@
               },
               "extremum": "min",
               "initial": 0,
+              "instance": null,
               "value": {
                 "type": "exact",
                 "value": {
