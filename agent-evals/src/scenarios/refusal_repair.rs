@@ -187,11 +187,12 @@ fn read_outcome(output: &Output) -> ScenarioResult<Value> {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use ix_trace_rs::trace;
     use std::fs;
     use std::path::PathBuf;
 
-    /// Trace: FR-001-AC-15
     #[test]
+    #[trace("FR-001-AC-15")]
     fn postage_request_uses_typed_integer_and_outcome_requires_typed_result() {
         let request = postage_request(Path::new("postage.fsl"), "5");
         let argument = &request["request"]["call"]["arguments"][0]["value"];

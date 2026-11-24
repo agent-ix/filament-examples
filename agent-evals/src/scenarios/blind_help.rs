@@ -423,6 +423,7 @@ fn grade_with_budget(
 #[cfg(test)]
 mod tests {
     use super::*;
+    use ix_trace_rs::trace;
 
     fn tools() -> ScenarioResult<Tools> {
         Ok(Tools {
@@ -483,8 +484,8 @@ mod tests {
         Ok(())
     }
 
-    /// Trace: FR-001-AC-15
     #[test]
+    #[trace("FR-001-AC-15")]
     fn run_request_and_shipped_golden_pin_the_typed_integer_shapes() -> ScenarioResult<()> {
         let request: Value =
             serde_json::from_str(include_str!("../../fixtures/EV-009/run-request.json"))?;
@@ -518,9 +519,9 @@ mod tests {
         Ok(())
     }
 
-    /// Trace: FR-001-AC-15
     /// Provenance: QSL-3010
     #[test]
+    #[trace("FR-001-AC-15")]
     #[ignore = "public FSL run refusal lane; set FSL to the accepted executable"]
     fn public_run_refuses_legacy_integer_argument_shape() -> ScenarioResult<()> {
         let tools = tools()?;
