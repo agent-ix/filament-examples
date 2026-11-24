@@ -274,7 +274,9 @@ fn validate_report(report: &Value) -> Result<(), String> {
                     .as_str()
                     .ok_or_else(|| format!("{at}.transcriptPath must be a string"))?;
                 if path.starts_with('/')
+                    || path.as_bytes().get(1) == Some(&b':')
                     || path.contains('\\')
+                    || path.bytes().any(|byte| byte < 0x20 || byte == 0x7f)
                     || path
                         .split('/')
                         .any(|segment| segment.is_empty() || segment == "." || segment == "..")
