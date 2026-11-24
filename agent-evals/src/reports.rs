@@ -68,23 +68,7 @@ pub fn redact_report(mut report: Value, run_root: &Path, home: &Path) -> Result<
     if report["reportVersion"] != "cli-agent-evals.report/v1" || !report.is_object() {
         return Err("expected cli-agent-evals.report/v1 object".into());
     }
-    let allowed = [
-        "reportVersion",
-        "ok",
-        "generatedAt",
-        "suite",
-        "agent",
-        "model",
-        "repeats",
-        "results",
-        "aggregates",
-    ];
-    if report
-        .as_object()
-        .is_some_and(|object| object.keys().any(|key| !allowed.contains(&key.as_str())))
-    {
-        return Err("report/v1 contains an unknown member".into());
-    }
+    validate_report(&report)?;
     let home = home.to_string_lossy().into_owned();
     walk_strings(&mut report, &|s| redact_base_paths(s, run_root, &home));
     if let Some(results) = report["results"].as_array_mut() {
@@ -111,6 +95,139 @@ pub fn redact_report(mut report: Value, run_root: &Path, home: &Path) -> Result<
         }
     }
     Ok(report)
+}
+
+fn validate_report(report: &Value) -> Result<(), String> {
+    fn object(value: &Value, allowed: &[&str], required: &[&str], at: &str) -> Result<(), String> {
+        let map = value
+            .as_object()
+            .ok_or_else(|| format!("{at} must be an object"))?;
+        if let Some(key) = map.keys().find(|key| !allowed.contains(&key.as_str())) {
+            return Err(format!("{at} has unknown member {key}"));
+        }
+        if let Some(key) = required.iter().find(|key| !map.contains_key(**key)) {
+            return Err(format!("{at} is missing {key}"));
+        }
+        Ok(())
+    }
+    object(
+        report,
+        &[
+            "reportVersion",
+            "ok",
+            "generatedAt",
+            "suite",
+            "agent",
+            "model",
+            "repeats",
+            "results",
+            "aggregates",
+        ],
+        &[
+            "reportVersion",
+            "ok",
+            "generatedAt",
+            "suite",
+            "repeats",
+            "results",
+            "aggregates",
+        ],
+        "report",
+    )?;
+    if report["repeats"].as_u64().is_none()
+        || !report["results"].is_array()
+        || !report["aggregates"].is_object()
+    {
+        return Err("report/v1 has malformed repeats, results, or aggregates".into());
+    }
+    for (i, result) in report["results"].as_array().unwrap().iter().enumerate() {
+        let at = format!("results[{i}]");
+        object(
+            result,
+            &["id", "useCase", "ok", "passRate", "aggregate", "runs"],
+            &["id", "ok", "passRate", "aggregate", "runs"],
+            &at,
+        )?;
+        if !result["runs"].is_array() || !result["aggregate"].is_object() {
+            return Err(format!("{at} has malformed runs or aggregate"));
+        }
+        for (j, sample) in result["runs"].as_array().unwrap().iter().enumerate() {
+            let at = format!("{at}.runs[{j}]");
+            object(
+                sample,
+                &[
+                    "ok",
+                    "latencyMs",
+                    "exitReason",
+                    "metricStatus",
+                    "tokenUsage",
+                    "toolCalls",
+                    "toolBreakdown",
+                    "classified",
+                    "checks",
+                    "failures",
+                    "workDir",
+                    "sessionId",
+                    "transcriptDigest",
+                    "transcriptRetention",
+                    "transcriptPath",
+                ],
+                &[
+                    "ok",
+                    "latencyMs",
+                    "exitReason",
+                    "metricStatus",
+                    "tokenUsage",
+                    "toolCalls",
+                    "toolBreakdown",
+                    "classified",
+                    "checks",
+                    "failures",
+                    "workDir",
+                    "sessionId",
+                    "transcriptDigest",
+                    "transcriptRetention",
+                ],
+                &at,
+            )?;
+            if !sample["tokenUsage"].is_object()
+                || !sample["failures"].is_array()
+                || !sample["checks"].is_object()
+                || !sample["workDir"].is_string()
+            {
+                return Err(format!("{at} has malformed required fields"));
+            }
+            object(
+                &sample["tokenUsage"],
+                &[
+                    "input",
+                    "output",
+                    "cacheCreation",
+                    "cacheRead",
+                    "contextInput",
+                    "total",
+                ],
+                &[
+                    "input",
+                    "output",
+                    "cacheCreation",
+                    "cacheRead",
+                    "contextInput",
+                    "total",
+                ],
+                &format!("{at}.tokenUsage"),
+            )?;
+        }
+        for (_, metric) in result["aggregate"].as_object().unwrap() {
+            object(
+                metric,
+                &["p50", "p95"],
+                &["p50", "p95"],
+                &format!("{at}.aggregate metric"),
+            )?;
+        }
+    }
+    Ok(())
 }
 
 fn redact_base_paths(input: &str, run_root: &Path, home: &str) -> String {
@@ -172,6 +289,21 @@ pub fn render_scorecard(reports_dir: &Path) -> Result<String, String> {
                     .map_err(|e| format!("{}: {e}", file.display()))?;
             if report["reportVersion"] != "cli-agent-evals.report/v1" {
                 return Err(format!("{} is not report/v1", file.display()));
+            }
+            validate_report(&report).map_err(|error| format!("{}: {error}", file.display()))?;
+            if report["repeats"].as_u64() != Some(3)
+                || report["results"].as_array().is_some_and(|rows| {
+                    rows.iter().any(|row| {
+                        row["runs"]
+                            .as_array()
+                            .is_none_or(|samples| samples.len() != 3)
+                    })
+                })
+            {
+                return Err(format!(
+                    "{} must contain exactly three samples per scenario",
+                    file.display()
+                ));
             }
             agents.push((agent.to_owned(), report));
         }
@@ -272,19 +404,11 @@ pub fn render_scorecard(reports_dir: &Path) -> Result<String, String> {
                     .as_f64()
                     .map(|v| (v / 1000.0).to_string())
                     .unwrap_or_else(|| "n/a".into());
-                let mut classes = std::collections::BTreeMap::<String, usize>::new();
-                for failure in runs_n
-                    .iter()
-                    .filter(|sample| sample["ok"] == false)
-                    .flat_map(|sample| sample["failures"].as_array().into_iter().flatten())
-                {
-                    let text = failure.as_str().unwrap_or("");
-                    let class = text
-                        .split_once(':')
-                        .map(|(class, _)| class)
-                        .unwrap_or("unclassified");
-                    *classes.entry(class.to_owned()).or_default() += 1;
-                }
+                let classes = triage_classes(
+                    &reports_dir.join(latest_id).join("triage.md"),
+                    scenario,
+                    agent,
+                );
                 let classes = classes
                     .iter()
                     .map(|(class, count)| format!("{class}: {count}"))
@@ -331,6 +455,28 @@ pub fn render_scorecard(reports_dir: &Path) -> Result<String, String> {
         }
     }
     Ok(out)
+}
+
+fn triage_classes(
+    file: &Path,
+    scenario: &str,
+    agent: &str,
+) -> std::collections::BTreeMap<String, usize> {
+    let mut classes = std::collections::BTreeMap::new();
+    let Ok(text) = fs::read_to_string(file) else {
+        return classes;
+    };
+    for line in text.lines().filter(|line| line.starts_with('|')) {
+        let fields: Vec<_> = line.trim_matches('|').split('|').map(str::trim).collect();
+        if fields.len() < 7 || fields[0] != scenario || fields[1] != agent {
+            continue;
+        }
+        let class = fields[4];
+        if class != "" && class != "class" && class != "---" {
+            *classes.entry(class.to_owned()).or_default() += 1;
+        }
+    }
+    classes
 }
 
 fn cell(value: &Value) -> &str {
