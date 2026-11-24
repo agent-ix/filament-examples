@@ -46,10 +46,12 @@ Scope: FR-001-AC-1 through FR-001-AC-15.
     stub runner that records its environment (AC-13).
 14. Read the root `Makefile` `.PHONY` line, run `make -n agent-evals` and
     `make agent-evals` with a stub `cli-evals` (AC-14).
-15. Check the EV-002 grader request and completed-result shapes against the
-    shipped run golden; check the EV-009 `fsl run` fixture and result shape the
-    same way, leaving its snapshot and monitor-observation fixtures in their
-    separate formats; confirm `fsl run` refuses the legacy integer value
+15. Compare the EV-002 grader request and EV-009 `fsl run` fixture with a
+    separate expected `native-run/1` request fixture/assertion whose integer
+    argument is `{"type":"integer","value":"N"}`; separately compare each
+    completed result shape with the shipped `examples/shop/expected/values-line-total.json`
+    golden. Leave EV-009's snapshot and monitor-observation fixtures in their
+    separate formats, and confirm `fsl run` refuses the legacy integer value
     shape as `invalid_runtime_input` / `wrong-value-kind` (AC-15).
 
 ## Expected Results
