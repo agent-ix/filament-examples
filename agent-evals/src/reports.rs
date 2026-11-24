@@ -134,7 +134,13 @@ fn validate_report(report: &Value) -> Result<(), String> {
         ],
         "report",
     )?;
-    if report["repeats"].as_u64().is_none()
+    if !report["ok"].is_boolean()
+        || !report["generatedAt"].is_string()
+        || !report["suite"].is_string()
+        || report.get("agent").is_some_and(|value| !value.is_string())
+        || report.get("model").is_some_and(|value| !value.is_string())
+        || report["repeats"].as_u64().is_none()
+        || report["repeats"].as_u64() == Some(0)
         || !report["results"].is_array()
         || !report["aggregates"].is_object()
     {
@@ -148,7 +154,12 @@ fn validate_report(report: &Value) -> Result<(), String> {
             &["id", "ok", "passRate", "aggregate", "runs"],
             &at,
         )?;
-        if !result["runs"].is_array() || !result["aggregate"].is_object() {
+        if !result["id"].is_string()
+            || !result["ok"].is_boolean()
+            || !result["passRate"].is_string()
+            || !result["runs"].is_array()
+            || !result["aggregate"].is_object()
+        {
             return Err(format!("{at} has malformed runs or aggregate"));
         }
         for (j, sample) in result["runs"].as_array().unwrap().iter().enumerate() {
@@ -217,6 +228,88 @@ fn validate_report(report: &Value) -> Result<(), String> {
                 ],
                 &format!("{at}.tokenUsage"),
             )?;
+            if !sample["ok"].is_boolean()
+                || !sample["latencyMs"].is_number()
+                || !matches!(
+                    sample["exitReason"].as_str(),
+                    Some("complete" | "failed" | "timeout" | "exit" | "error")
+                )
+                || !matches!(
+                    sample["metricStatus"].as_str(),
+                    Some("available" | "unavailable")
+                )
+                || !matches!(
+                    sample["transcriptRetention"].as_str(),
+                    Some("retained" | "not-retained" | "unavailable")
+                )
+                || (!sample["toolCalls"].is_null() && !sample["toolCalls"].is_number())
+                || !sample["failures"]
+                    .as_array()
+                    .unwrap()
+                    .iter()
+                    .all(Value::is_string)
+                || !sample["workDir"].is_string()
+                || !sample["sessionId"].is_string()
+            {
+                return Err(format!("{at} has invalid field values"));
+            }
+            if sample["tokenUsage"]
+                .as_object()
+                .unwrap()
+                .values()
+                .any(|value| !value.is_number())
+            {
+                return Err(format!("{at}.tokenUsage values must be numbers"));
+            }
+            for key in ["toolBreakdown", "classified"] {
+                let values = sample[key]
+                    .as_object()
+                    .ok_or_else(|| format!("{at}.{key} must be an object"))?;
+                if values.values().any(|value| !value.is_number()) {
+                    return Err(format!("{at}.{key} values must be numbers"));
+                }
+            }
+            if let Some(path) = sample.get("transcriptPath") {
+                let path = path
+                    .as_str()
+                    .ok_or_else(|| format!("{at}.transcriptPath must be a string"))?;
+                if path.starts_with('/')
+                    || path.contains('\\')
+                    || path
+                        .split('/')
+                        .any(|segment| segment.is_empty() || segment == "." || segment == "..")
+                {
+                    return Err(format!("{at}.transcriptPath must be a safe relative path"));
+                }
+            }
+            let digest = &sample["transcriptDigest"];
+            if !digest.is_null()
+                && (!digest.is_string()
+                    || digest.as_str().is_none_or(|s| {
+                        s.len() != 64
+                            || !s
+                                .bytes()
+                                .all(|b| b.is_ascii_hexdigit() && !b.is_ascii_uppercase())
+                    }))
+            {
+                return Err(format!("{at}.transcriptDigest is invalid"));
+            }
+            let retained = sample["transcriptRetention"].as_str().unwrap();
+            let has_digest = digest.is_string();
+            let has_path = sample.get("transcriptPath").is_some();
+            if !matches!(
+                (retained, has_digest, has_path),
+                ("retained", true, true)
+                    | ("not-retained", true, false)
+                    | ("unavailable", false, false)
+            ) {
+                return Err(format!("{at} transcript retention fields contradict"));
+            }
+        }
+        if let Some(use_case) = result.get("useCase") {
+            if !use_case.is_string() {
+                return Err(format!("{at}.useCase must be a string"));
+            }
         }
         for (_, metric) in result["aggregate"].as_object().unwrap() {
             object(
@@ -225,6 +318,12 @@ fn validate_report(report: &Value) -> Result<(), String> {
                 &["p50", "p95"],
                 &format!("{at}.aggregate metric"),
             )?;
+            if ["p50", "p95"]
+                .iter()
+                .any(|key| !metric[*key].is_null() && !metric[*key].is_number())
+            {
+                return Err(format!("{at}.aggregate values must be numbers or null"));
+            }
         }
     }
     Ok(())
