@@ -283,6 +283,7 @@ sandbox-breach scan is clean.
 | FR-001-AC-12 | `clean --run <run id>` deletes the run root and the run's kept-transcript folder (FR-002) and nothing else; for an unknown run id it exits non-zero and deletes nothing. | Test (TC-001) |
 | FR-001-AC-13 | With `CLAUDE_CONFIG_DIR`, `CODEX_HOME` and `CLAUDECODE` set in its own environment, `run` starts a stub `cli-evals` that records its environment; the recorded environment holds none of the three, and holds `HOME` = `<root>/home`. | Test (TC-001) |
 | FR-001-AC-14 | The root `Makefile` lists `agent-evals` and `agent-evals-check` in `.PHONY`; with the folder `agent-evals/` present, `make -n agent-evals` prints the `agent-evals run` command (never "is up to date"), and `make agent-evals` with a stub `cli-evals` on `PATH` runs `agent-evals run` to completion. | Test (TC-001) |
+| FR-001-AC-15 | In EV-002 and EV-009, each integer argument sent to `fsl run` has the shape `{"type":"integer","value":"N"}`, and a completed integer result is recognized only with the same shape. A golden-backed test verifies the request and result member shape against the shipped `examples/shop/expected/values-line-total.json` and confirms that the public CLI refuses the legacy `{"integer":"N"}` argument as `invalid_runtime_input` / `wrong-value-kind`. This criterion applies to `fsl run` values only; EV-009's snapshot and monitor-observation values retain their distinct input formats. | Test (TC-001) |
 
 ## Dependencies
 
