@@ -210,11 +210,27 @@ fn execute() -> ScenarioResult<()> {
         },
         [operation,scenario,agent] if operation=="run"=>run(scenario,agent),
         [operation,file] if operation=="summarize"=>summarize(Path::new(file)),
+        [operation, mode] if operation=="scorecard" && (mode=="--check" || mode=="--write")=>{
+            let suite=Path::new(env!("CARGO_MANIFEST_DIR"));
+            agent_evals::reports::scorecard(&suite.join("reports"),&suite.join("SCORECARD.md"),mode=="--check").map_err(std::io::Error::other)?;
+            Ok(())
+        },
+        [operation] if operation=="scorecard"=>{
+            let suite=Path::new(env!("CARGO_MANIFEST_DIR"));
+            agent_evals::reports::scorecard(&suite.join("reports"),&suite.join("SCORECARD.md"),false).map_err(std::io::Error::other)?;
+            Ok(())
+        },
+        [operation,run_id,run_root,home,tools,triage,codex,claude] if operation=="record-run"=>{
+            let suite=Path::new(env!("CARGO_MANIFEST_DIR"));
+            let folder=agent_evals::reports::write_run_folder(&suite.join("reports"),run_id,Path::new(run_root),Path::new(home),Path::new(tools),Path::new(triage),Path::new(codex),Path::new(claude)).map_err(std::io::Error::other)?;
+            println!("{}",folder.display());
+            Ok(())
+        },
         [operation,scenario,workspace] if operation=="evidence"=>{
             let result=provider::retained_evidence(Path::new(workspace),&agent_evals::Tools::from_environment()?,scenario)?;
             println!("{}",serde_json::to_string_pretty(&result)?);Ok(())
         },
-        _=>Err("usage: agent-evals provider | run <EV-ID> <codex|claude> | summarize <private-report.json> | evidence <EV-ID> <retained-workspace>".into()),
+        _=>Err("usage: agent-evals provider | run <EV-ID> <codex|claude> | summarize <private-report.json> | record-run <id> <run-root> <home> <tools.json> <triage.md> <codex.json> <claude.json> | scorecard [--check] | evidence <EV-ID> <retained-workspace>".into()),
     }
 }
 fn main() -> ExitCode {
