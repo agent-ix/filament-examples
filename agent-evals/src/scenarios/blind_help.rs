@@ -189,7 +189,8 @@ fn semantic_result(verb: Verb, outcome: &Value) -> Option<Value> {
             .then(|| json!({"checked":true})),
         Verb::Run => (outcome["operation"] == "execute"
             && outcome["category"] == "success"
-            && outcome["result"] == json!({"kind":"completed","value":{"integer":"29"}}))
+            && outcome["result"]
+                == json!({"kind":"completed","value":{"type":"integer","value":"29"}}))
         .then(|| json!({"value":29})),
         Verb::Analyze => {
             let items = outcome["items"].as_array()?;
@@ -477,8 +478,43 @@ mod tests {
     #[ignore = "EV-009 run grader with the accepted public FSL executable"]
     fn run_reference_rejects_a_different_quote() -> ScenarioResult<()> {
         let mut altered: Value = serde_json::from_slice(&reference_case(Verb::Run)?)?;
-        altered["result"]["value"]["integer"] = json!("28");
+        altered["result"]["value"]["value"] = json!("28");
         assert!(semantic_result(Verb::Run, &altered).is_none());
+        Ok(())
+    }
+
+    /// Trace: FR-001-AC-15
+    #[test]
+    fn run_request_and_shipped_golden_pin_the_typed_integer_shapes() -> ScenarioResult<()> {
+        let request: Value =
+            serde_json::from_str(include_str!("../../fixtures/EV-009/run-request.json"))?;
+        let expected: Value = serde_json::from_str(include_str!(
+            "../../fixtures/EV-009/expected-run-request.json"
+        ))?;
+        let golden: Value = serde_json::from_str(include_str!(
+            "../../../examples/shop/expected/values-line-total.json"
+        ))?;
+        assert_eq!(
+            request["request"]["call"]["arguments"][0]["value"],
+            expected["argument"]
+        );
+        assert_eq!(expected["argument"], json!({"type":"integer","value":"5"}));
+        assert_eq!(golden["result"]["value"]["type"], "integer");
+        assert_eq!(golden["result"]["value"]["value"].as_str().is_some(), true);
+        let outcome = json!({"format":"filament-outcome/1", "operation":"execute", "category":"success", "diagnostics":[], "result":{"kind":"completed","value":{"type":"integer","value":"29"}}});
+        assert_eq!(
+            semantic_result(Verb::Run, &outcome),
+            Some(json!({"value":29}))
+        );
+        let legacy_outcome = json!({"format":"filament-outcome/1", "operation":"execute", "category":"success", "diagnostics":[], "result":{"kind":"completed","value":{"integer":"29"}}});
+        assert!(semantic_result(Verb::Run, &legacy_outcome).is_none());
+
+        let mut legacy = request;
+        legacy["request"]["call"]["arguments"][0]["value"] = json!({"integer":"5"});
+        assert_ne!(
+            legacy["request"]["call"]["arguments"][0]["value"],
+            expected["argument"]
+        );
         Ok(())
     }
 

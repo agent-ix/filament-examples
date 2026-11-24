@@ -131,12 +131,11 @@ fn grade_with_fsl(workspace: &Path, fsl: &Path) -> ScenarioResult<Assertion> {
             && outcome["format"] == "filament-outcome/1"
             && outcome["operation"] == "execute"
             && outcome["category"] == "success"
-            && outcome["result"]["kind"] == "completed"
-            && outcome["result"]["value"] == json!({"integer": expected});
+            && completed_integer(&outcome, expected);
         checks.insert(
             format!("postage({units})"),
             json!({
-                "ok": ok, "expected": {"integer": expected},
+                "ok": ok, "expected": {"type": "integer", "value": expected},
                 "exit": output.status.code(), "outcome": outcome
             }),
         );
@@ -153,6 +152,11 @@ fn grade_with_fsl(workspace: &Path, fsl: &Path) -> ScenarioResult<Assertion> {
     })
 }
 
+fn completed_integer(outcome: &Value, expected: &str) -> bool {
+    outcome["result"]["kind"] == "completed"
+        && outcome["result"]["value"] == json!({"type": "integer", "value": expected})
+}
+
 fn postage_request(source: &Path, units: &str) -> Value {
     json!({
         "format": "native-run/1",
@@ -165,7 +169,7 @@ fn postage_request(source: &Path, units: &str) -> Value {
                 "document": "PostageRepair",
                 "formal_revision": 1
             }},
-            "call": {"function": "postage", "arguments": [{"parameter": "units", "value": {"integer": units}}]}
+            "call": {"function": "postage", "arguments": [{"parameter": "units", "value": {"type": "integer", "value": units}}]}
         }
     })
 }
@@ -185,6 +189,20 @@ mod tests {
     use super::*;
     use std::fs;
     use std::path::PathBuf;
+
+    /// Trace: FR-001-AC-15
+    #[test]
+    fn postage_request_uses_typed_integer_and_outcome_requires_typed_result() {
+        let request = postage_request(Path::new("postage.fsl"), "5");
+        let argument = &request["request"]["call"]["arguments"][0]["value"];
+        assert_eq!(argument, &json!({"type": "integer", "value": "5"}));
+
+        let outcome =
+            json!({"result":{"kind":"completed", "value":{"type":"integer", "value":"60"}}});
+        assert!(completed_integer(&outcome, "60"));
+        let legacy = json!({"result":{"kind":"completed", "value":{"integer":"60"}}});
+        assert!(!completed_integer(&legacy, "60"));
+    }
 
     fn tools() -> ScenarioResult<Tools> {
         let path = std::env::var_os("FSL").ok_or("set FSL for the new repair-grader lane")?;
