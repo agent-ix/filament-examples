@@ -180,6 +180,7 @@
               },
               "extremum": null,
               "initial": 0,
+              "instance": null,
               "value": {
                 "type": "exact",
                 "value": {
