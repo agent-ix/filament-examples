@@ -368,7 +368,7 @@ file = "rules/enum-unknown-member.fsl"
 command = "check rules/enum-unknown-member.fsl"
 status = "running"
 expect_exit = 20
-expect_verdict = "refused: missing_declaration missing-name"
+expect_verdict = "refused: ill_typed type-mismatch"
 
 [[case]]
 id = "enum-duplicate-member"
