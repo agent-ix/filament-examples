@@ -14,7 +14,7 @@ Verify that the `agent-evals` program answers the runner's provider protocol,
 installs only released tools, builds the sandbox, detects a sandbox breach,
 scores EV-000, and that a live EV-000 run passes for both agents.
 
-Scope: FR-001-AC-1 through FR-001-AC-14.
+Scope: FR-001-AC-1 through FR-001-AC-15.
 
 ## Test Procedure
 
@@ -46,6 +46,13 @@ Scope: FR-001-AC-1 through FR-001-AC-14.
     stub runner that records its environment (AC-13).
 14. Read the root `Makefile` `.PHONY` line, run `make -n agent-evals` and
     `make agent-evals` with a stub `cli-evals` (AC-14).
+15. Compare the EV-002 grader request and EV-009 `fsl run` fixture with a
+    separate expected `native-run/1` request fixture/assertion whose integer
+    argument is `{"type":"integer","value":"N"}`; separately compare each
+    completed result shape with the shipped `examples/shop/expected/values-line-total.json`
+    golden. Leave EV-009's snapshot and monitor-observation fixtures in their
+    separate formats, and confirm `fsl run` refuses the legacy integer value
+    shape as `invalid_runtime_input` / `wrong-value-kind` (AC-15).
 
 ## Expected Results
 
