@@ -13,7 +13,7 @@
     },
     "call": {
       "function": "quote",
-      "arguments": [{"parameter": "pallets", "value": {"integer": "5"}}]
+      "arguments": [{"parameter": "pallets", "value": {"type": "integer", "value": "5"}}]
     }
   }
 }

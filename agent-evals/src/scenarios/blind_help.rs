@@ -500,7 +500,7 @@ mod tests {
         );
         assert_eq!(expected["argument"], json!({"type":"integer","value":"5"}));
         assert_eq!(golden["result"]["value"]["type"], "integer");
-        assert_eq!(golden["result"]["value"]["value"].as_str().is_some(), true);
+        assert!(golden["result"]["value"]["value"].as_str().is_some());
         let outcome = json!({"format":"filament-outcome/1", "operation":"execute", "category":"success", "diagnostics":[], "result":{"kind":"completed","value":{"type":"integer","value":"29"}}});
         assert_eq!(
             semantic_result(Verb::Run, &outcome),
