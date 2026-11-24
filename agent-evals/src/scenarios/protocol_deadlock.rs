@@ -1106,6 +1106,7 @@ pub fn grade(workspace: &Path, tools: &Tools) -> ScenarioResult<Assertion> {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use ix_trace_rs::trace;
     use std::os::unix::fs::PermissionsExt;
     use tempfile::tempdir;
 
@@ -1163,6 +1164,7 @@ mod tests {
         Ok(())
     }
 
+    #[trace("FR-004-AC-6", "FR-004-AC-8")]
     #[test]
     fn bounded_probe_replays_real_tautology_outputs_and_classifies_probe_refusal()
     -> ScenarioResult<()> {
@@ -1218,6 +1220,7 @@ fi
         Ok(())
     }
 
+    #[trace("FR-004-AC-1")]
     #[test]
     fn source_check_does_not_require_a_hidden_reference_implementation() -> ScenarioResult<()> {
         let temp = tempdir()?;
@@ -1243,6 +1246,7 @@ fi
         Ok(())
     }
 
+    #[trace("FR-004-AC-4", "FR-004-AC-5")]
     #[test]
     fn structural_repair_accepts_only_terminal_or_second_branch_precondition_changes() {
         let terminal = terminal_repair();
@@ -1272,6 +1276,7 @@ fi
         assert!(check_protocol_repair(BASELINE_SOURCE, &trivial, &deadlock).is_err());
     }
 
+    #[trace("FR-004-AC-4", "FR-004-AC-5", "FR-004-AC-6")]
     #[test]
     fn vacuous_repairs_fail_and_blocked_branch_order_does_not_matter() {
         let deadlock: Value = serde_json::from_str(DEADLOCK_OUTCOME).unwrap();
@@ -1355,6 +1360,7 @@ fi
         assert!(reordered_check.is_ok(), "{reordered_check:?}");
     }
 
+    #[trace("FR-004-AC-2")]
     #[test]
     fn deadlock_requires_the_expected_protocol_prefix_and_both_thread_paths() {
         let deadlock = deadlock_result();
@@ -1372,6 +1378,7 @@ fi
         assert!(check_deadlock(&wrong_path).is_err());
     }
 
+    #[trace("FR-004-AC-7")]
     #[test]
     fn repaired_result_requires_certified_exhaustive_proof() {
         let proved = proof_result();
@@ -1381,6 +1388,7 @@ fi
         assert!(check_proof(&uncertified).is_err());
     }
 
+    #[trace("FR-004-AC-3")]
     #[test]
     fn summary_uses_cli_structures_and_ignores_blocked_order() -> ScenarioResult<()> {
         let temp = tempdir()?;
@@ -1426,6 +1434,7 @@ fi
         assert!(compare_items(&proof, &changed_proof, true).is_err());
     }
 
+    #[trace("FR-004-AC-8")]
     #[test]
     fn full_grade_accepts_both_repairs_and_separates_agent_cli_and_harness_failures()
     -> ScenarioResult<()> {

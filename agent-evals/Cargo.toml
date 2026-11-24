@@ -21,3 +21,6 @@ tree-sitter-javascript = "0.25.0"
 [lints.rust]
 unsafe_code = "forbid"
 missing_docs = "warn"
+
+[dev-dependencies]
+ix-trace-rs = { git = "https://github.com/agent-ix/ix-trace-rs", tag = "v0.1.2" }
