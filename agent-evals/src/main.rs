@@ -199,59 +199,59 @@ fn summarize(file: &Path) -> ScenarioResult<()> {
     );
     Ok(())
 }
-fn execute_args(args: &[String], suite: &Path) -> ScenarioResult<ExitCode> {
+fn execute_args(args: &[String], suite: &Path) -> ScenarioResult<u8> {
     match args {
         [operation] if operation=="provider"=>{
             let mut bytes=Vec::new();std::io::stdin().take(1_048_577).read_to_end(&mut bytes)?;
             let response=provider::respond(&bytes)?;
             let mut output=std::io::stdout().lock();serde_json::to_writer(&mut output,&response)?;writeln!(output)?;
-            Ok(ExitCode::SUCCESS)
+            Ok(0)
         },
-        [operation,scenario,agent] if operation=="run"=>run(scenario,agent).map(|()| ExitCode::SUCCESS),
-        [operation,file] if operation=="summarize"=>summarize(Path::new(file)).map(|()| ExitCode::SUCCESS),
+        [operation,scenario,agent] if operation=="run"=>run(scenario,agent).map(|()| 0),
+        [operation,file] if operation=="summarize"=>summarize(Path::new(file)).map(|()| 0),
         [operation, mode] if operation=="scorecard" && (mode=="--check" || mode=="--write")=>{
             let reports = suite.join("reports");
             let output = suite.join("SCORECARD.md");
             if mode == "--check" {
                 let matches = agent_evals::reports::scorecard_matches(&reports, &output)
                     .map_err(std::io::Error::other)?;
-                Ok(if matches { ExitCode::SUCCESS } else { ExitCode::from(1) })
+                Ok(if matches { 0 } else { 1 })
             } else {
                 agent_evals::reports::scorecard(&reports, &output, false)
                     .map_err(std::io::Error::other)?;
-                Ok(ExitCode::SUCCESS)
+                Ok(0)
             }
         },
         [operation] if operation=="scorecard"=>{
             agent_evals::reports::scorecard(&suite.join("reports"),&suite.join("SCORECARD.md"),false).map_err(std::io::Error::other)?;
-            Ok(ExitCode::SUCCESS)
+            Ok(0)
         },
         [operation,run_id,run_root,home,tools,triage,codex,claude] if operation=="record-run"=>{
             let folder=agent_evals::reports::write_run_folder(&suite.join("reports"),run_id,Path::new(run_root),Path::new(home),Path::new(tools),Path::new(triage),Path::new(codex),Path::new(claude)).map_err(std::io::Error::other)?;
             println!("{}",folder.display());
-            Ok(ExitCode::SUCCESS)
+            Ok(0)
         },
         [operation,scenario,workspace] if operation=="evidence"=>{
             let result=provider::retained_evidence(Path::new(workspace),&agent_evals::Tools::from_environment()?,scenario)?;
-            println!("{}",serde_json::to_string_pretty(&result)?);Ok(ExitCode::SUCCESS)
+            println!("{}",serde_json::to_string_pretty(&result)?);Ok(0)
         },
         _=>Err("usage: agent-evals provider | run <EV-ID> <codex|claude> | summarize <private-report.json> | record-run <id> <run-root> <home> <tools.json> <triage.md> <codex.json> <claude.json> | scorecard [--check] | evidence <EV-ID> <retained-workspace>".into()),
     }
 }
 
-fn main_with_args(args: &[String], suite: &Path) -> ExitCode {
+fn main_with_args(args: &[String], suite: &Path) -> u8 {
     match execute_args(args, suite) {
         Ok(status) => status,
         Err(error) => {
             eprintln!("{error}");
-            ExitCode::from(2)
+            2
         }
     }
 }
 
 fn main() -> ExitCode {
     let args: Vec<_> = std::env::args().skip(1).collect();
-    main_with_args(&args, Path::new(env!("CARGO_MANIFEST_DIR")))
+    ExitCode::from(main_with_args(&args, Path::new(env!("CARGO_MANIFEST_DIR"))))
 }
 
 #[cfg(test)]
@@ -269,10 +269,10 @@ mod tests {
         let output = temp.path().join("SCORECARD.md");
         agent_evals::reports::scorecard(&reports, &output, false).expect("write scorecard");
         let args = vec!["scorecard".to_owned(), "--check".to_owned()];
-        assert_eq!(main_with_args(&args, temp.path()).to_u8(), 0);
+        assert_eq!(main_with_args(&args, temp.path()), 0);
 
         fs::write(&output, "stale scorecard").expect("change scorecard");
-        assert_eq!(main_with_args(&args, temp.path()).to_u8(), 1);
+        assert_eq!(main_with_args(&args, temp.path()), 1);
     }
 
     #[test]
