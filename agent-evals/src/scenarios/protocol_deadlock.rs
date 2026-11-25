@@ -1107,7 +1107,6 @@ pub fn grade(workspace: &Path, tools: &Tools) -> ScenarioResult<Assertion> {
 mod tests {
     use super::*;
     use ix_trace_rs::trace;
-    use std::os::unix::fs::PermissionsExt;
     use tempfile::tempdir;
 
     const DEADLOCK_OUTCOME: &str =
@@ -1156,12 +1155,34 @@ mod tests {
         }]})
     }
 
-    fn write_stub(path: &Path, body: &str) -> ScenarioResult<()> {
-        fs::write(path, body)?;
-        let mut permissions = fs::metadata(path)?.permissions();
-        permissions.set_mode(0o755);
-        fs::set_permissions(path, permissions)?;
+    fn configure_stub(path: &Path, mode: &str, references: &[&Path]) -> ScenarioResult<()> {
+        let config = path.with_extension("config");
+        let mut contents = mode.to_owned();
+        for reference in references {
+            contents.push('\t');
+            contents.push_str(&reference.display().to_string());
+        }
+        fs::write(config, contents)?;
         Ok(())
+    }
+
+    fn write_stub(path: &Path, mode: &str, references: &[&Path]) -> ScenarioResult<()> {
+        let source = path.with_extension("rs");
+        fs::write(&source, include_str!("protocol_deadlock_stub.rs"))?;
+        let output = Command::new("rustc")
+            .args(["--edition=2024"])
+            .arg(&source)
+            .arg("-o")
+            .arg(path)
+            .output()?;
+        if !output.status.success() {
+            return Err(std::io::Error::other(format!(
+                "could not compile Rust CLI test double: {}",
+                String::from_utf8_lossy(&output.stderr)
+            ))
+            .into());
+        }
+        configure_stub(path, mode, references)
     }
 
     #[trace("FR-004-AC-6", "FR-004-AC-8")]
@@ -1173,22 +1194,7 @@ mod tests {
         let captured = Path::new(env!("CARGO_MANIFEST_DIR"))
             .join("fixtures/EV-006/reference/predicate-run-true.json");
         let calls = temp.path().join("values.log");
-        let script = r#"#!/bin/sh
-set -eu
-if [ "$1" != run ]; then exit 21; fi
-if grep -Fq 'function checkPredicate(probeValue: Int[0,3]): Boolean pure { probeValue = probeValue }' predicate.fsl ||
-   grep -Fq 'function checkPredicate(probeValue: Int[0,3]): Boolean pure { not ( probeValue < 0 ) }' predicate.fsl; then
-  value=$(sed -n 's/.*"value":"\([0-3]\)".*/\1/p' "$2")
-  printf '%s\n' "$value" >> '@CALLS@'
-  cat '@CAPTURE@'
-else
-  printf '%s\n' '{"category":"refusal","diagnostics":[{"code":"invalid_syntax"}]}'
-  exit 20
-fi
-"#
-        .replace("@CALLS@", &calls.display().to_string())
-        .replace("@CAPTURE@", &captured.display().to_string());
-        write_stub(&fsl, &script)?;
+        write_stub(&fsl, "predicate", &[&calls, &captured])?;
         let tools = Tools {
             fsl,
             docs: Path::new(".").into(),
@@ -1468,27 +1474,14 @@ fi
         )?;
 
         let fsl = stub_dir.path().join("fsl");
-        let script = |repaired: &str| {
-            format!(
-                r#"#!/bin/sh
-if [ "$1" = run ]; then
- value=$(sed -n 's/.*"value":"\([0-3]\)".*/\1/p' "$2")
- result=false
- if grep -Fq 'probeValue = 1' predicate.fsl; then [ "$value" = 1 ] && result=true; elif grep -Fq 'probeValue <= 1' predicate.fsl; then [ "$value" -le 1 ] && result=true; else exit 21; fi
- printf '{{"category":"success","result":{{"kind":"completed","value":{{"type":"boolean","value":%s}}}}}}' "$result"
- exit 0
-fi
-case "$2" in
- deadlock-request.json) cat '{0}'; exit 10 ;;
- repaired-request.json) cat '{1}'; exit 0 ;;
- *) exit 21 ;;
-esac
-"#,
-                reference.join("deadlock-outcome.json").display(),
-                reference.join(repaired).display(),
-            )
-        };
-        write_stub(&fsl, &script("repaired-outcome.json"))?;
+        write_stub(
+            &fsl,
+            "full-grade",
+            &[
+                &reference.join("deadlock-outcome.json"),
+                &reference.join("repaired-outcome.json"),
+            ],
+        )?;
         let tools = Tools {
             fsl: fsl.clone(),
             docs: Path::new(".").into(),
@@ -1502,7 +1495,14 @@ esac
             workspace.path().join("protocol.native"),
             precondition_repair(),
         )?;
-        write_stub(&fsl, &script("precondition-outcome.json"))?;
+        configure_stub(
+            &fsl,
+            "full-grade",
+            &[
+                &reference.join("deadlock-outcome.json"),
+                &reference.join("precondition-outcome.json"),
+            ],
+        )?;
         let assertion = grade(workspace.path(), &tools)?;
         assert!(assertion.ok, "{:?}", assertion.failures);
 
@@ -1516,18 +1516,15 @@ esac
             workspace.path().join("deadlock.json"),
             r#"{"category":"unsupported","items":[]}"#,
         )?;
-        write_stub(
-            &fsl,
-            "#!/bin/sh\nprintf '%s\\n' '{\"category\":\"unsupported\",\"items\":[]}'\nexit 10\n",
-        )?;
+        configure_stub(&fsl, "unsupported", &[])?;
         let assertion = grade(workspace.path(), &tools)?;
         assert!(assertion.failures[0].starts_with("cli-gap:"));
 
-        write_stub(&fsl, "#!/bin/sh\nexit 127\n")?;
+        configure_stub(&fsl, "exit-127", &[])?;
         let assertion = grade(workspace.path(), &tools)?;
         assert!(assertion.failures[0].starts_with("harness-error:"));
 
-        write_stub(&fsl, "#!/bin/sh\nkill -TERM $$\n")?;
+        configure_stub(&fsl, "terminate", &[])?;
         let assertion = grade(workspace.path(), &tools)?;
         assert!(assertion.failures[0].starts_with("harness-error:"));
         Ok(())
