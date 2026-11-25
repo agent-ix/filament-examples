@@ -68,7 +68,6 @@ pub fn redact_report(mut report: Value, run_root: &Path, home: &Path) -> Result<
     if report["reportVersion"] != "cli-agent-evals.report/v1" || !report.is_object() {
         return Err("expected cli-agent-evals.report/v1 object".into());
     }
-    validate_report(&report)?;
     let home = home.to_string_lossy().into_owned();
     walk_strings(&mut report, &|s| redact_base_paths(s, run_root, &home));
     if let Some(results) = report["results"].as_array_mut() {
@@ -77,7 +76,7 @@ pub fn redact_report(mut report: Value, run_root: &Path, home: &Path) -> Result<
                 for sample in runs {
                     for key in ["workDir", "transcriptPath"] {
                         if let Some(value) = sample[key].as_str() {
-                            if !value.starts_with("$RUN/") && key == "workDir" {
+                            if !value.starts_with("$RUN/") {
                                 return Err(format!("{key} must be run-relative after redaction"));
                             }
                         }
@@ -94,6 +93,7 @@ pub fn redact_report(mut report: Value, run_root: &Path, home: &Path) -> Result<
             }
         }
     }
+    validate_report(&report)?;
     Ok(report)
 }
 
@@ -603,4 +603,321 @@ pub fn scorecard(reports_dir: &Path, output: &Path, check: bool) -> Result<(), S
         fs::write(output, expected).map_err(|e| e.to_string())?;
     }
     Ok(())
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use ix_trace_rs::trace;
+    use serde_json::json;
+    use tempfile::tempdir;
+
+    const DIGEST: &str = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+
+    fn report(
+        model: &str,
+        samples: &[bool],
+        tool_calls: Option<u64>,
+        work_dir: &str,
+        transcript_path: Option<&str>,
+        failure: &str,
+    ) -> Value {
+        let results = vec![result_row(
+            "EV-001",
+            samples,
+            tool_calls,
+            work_dir,
+            failure,
+            transcript_path,
+        )];
+        json!({
+            "reportVersion": "cli-agent-evals.report/v1",
+            "ok": samples.iter().all(|sample| *sample),
+            "generatedAt": "2026-01-12T00:00:00Z",
+            "suite": "agent-evals",
+            "agent": "codex",
+            "model": model,
+            "repeats": samples.len(),
+            "results": results,
+            "aggregates": {},
+        })
+    }
+
+    fn result_row(
+        id: &str,
+        samples: &[bool],
+        tool_calls: Option<u64>,
+        work_dir: &str,
+        failure: &str,
+        transcript_path: Option<&str>,
+    ) -> Value {
+        let runs = samples
+            .iter()
+            .map(|ok| {
+                let mut sample = json!({
+                    "ok": ok,
+                    "latencyMs": 1000,
+                    "exitReason": if *ok { "complete" } else { "failed" },
+                    "metricStatus": "available",
+                    "tokenUsage": { "input": 1, "output": 2, "cacheCreation": 0, "cacheRead": 0, "contextInput": 1, "total": 3 },
+                    "toolCalls": tool_calls,
+                    "toolBreakdown": {},
+                    "classified": {},
+                    "checks": { "detail": failure },
+                    "failures": [failure],
+                    "workDir": work_dir,
+                    "sessionId": "session-1",
+                    "transcriptDigest": if transcript_path.is_some() { Value::String(DIGEST.into()) } else { Value::Null },
+                    "transcriptRetention": if transcript_path.is_some() { "retained" } else { "not-retained" },
+                });
+                if let Some(path) = transcript_path {
+                    sample["transcriptPath"] = json!(path);
+                }
+                sample
+            })
+            .collect::<Vec<_>>();
+        let passes = samples.iter().filter(|sample| **sample).count();
+        json!({
+            "id": id,
+            "ok": passes == samples.len(),
+            "passRate": format!("{passes}/{}", samples.len()),
+            "aggregate": {
+                "toolCalls": { "p50": tool_calls, "p95": tool_calls },
+                "latencyMs": { "p50": 1000, "p95": 1000 },
+            },
+            "runs": runs,
+        })
+    }
+
+    fn write_report(path: &Path, value: &Value) {
+        fs::write(path, serde_json::to_vec(value).expect("serialize report"))
+            .expect("write report");
+    }
+
+    fn scorecard_report(
+        model: &str,
+        ev000: &[bool],
+        ev001: &[bool],
+        tool_calls: Option<u64>,
+    ) -> Value {
+        let results = vec![
+            result_row("EV-000", ev000, tool_calls, "$RUN/workspace", "", None),
+            result_row("EV-001", ev001, tool_calls, "$RUN/workspace", "", None),
+        ];
+        json!({
+            "reportVersion": "cli-agent-evals.report/v1",
+            "ok": ev000.iter().all(|sample| *sample) && ev001.iter().all(|sample| *sample),
+            "generatedAt": "2026-01-12T00:00:00Z",
+            "suite": "agent-evals",
+            "agent": "codex",
+            "model": model,
+            "repeats": 3,
+            "results": results,
+            "aggregates": {},
+        })
+    }
+
+    fn write_scorecard_run(
+        reports: &Path,
+        run_id: &str,
+        codex_model: &str,
+        codex_samples: &[bool],
+        claude: Option<(&str, &[bool])>,
+        tool_calls: Option<u64>,
+    ) {
+        let run = reports.join(run_id);
+        fs::create_dir_all(&run).expect("create run directory");
+        fs::write(
+            run.join("tools.json"),
+            serde_json::to_vec(&json!({
+                "fsl": "fsl-version",
+                "quoin": "quoin-version",
+                "quire_cli": "quire-version",
+                "cli_agent_evals": "evals-version",
+                "docs_commit": "docs-sha",
+            }))
+            .expect("serialize tool versions"),
+        )
+        .expect("write tool versions");
+        let codex_ev000 = [true, true, true];
+        write_report(
+            &run.join("codex.json"),
+            &scorecard_report(codex_model, &codex_ev000, codex_samples, tool_calls),
+        );
+        if let Some((model, samples)) = claude {
+            write_report(
+                &run.join("claude.json"),
+                &scorecard_report(model, samples, &[true, true, true], Some(4)),
+            );
+        }
+        fs::write(
+            run.join("triage.md"),
+            "| EV-001 | codex | 1 | failed | doc-gap | QSL-1234 |\n",
+        )
+        .expect("write triage");
+    }
+
+    #[trace("FR-002-AC-3", "TC-002")]
+    #[test]
+    fn run_folder_redacts_paths_and_rejects_unknown_report_members_before_retaining_output() {
+        let temp = tempdir().expect("temporary directory");
+        let reports = temp.path().join("reports");
+        fs::create_dir_all(&reports).expect("reports directory");
+        let input = temp.path().join("input");
+        fs::create_dir_all(&input).expect("input directory");
+        let run_root = Path::new("/private/var/folders/test/run-root");
+        let home = Path::new("/Users/test-home");
+        let tools = input.join("tools.json");
+        let triage = input.join("triage.md");
+        let codex = input.join("codex.json");
+        let claude = input.join("claude.json");
+        fs::write(&tools, r#"{"fsl":"version","docs_commit":"sha"}"#).expect("write tools");
+        fs::write(
+            &triage,
+            format!(
+                "run {0}; alias /var/folders/test/run-root; home {1}; other /opt/x/y\n",
+                run_root.display(),
+                home.display()
+            ),
+        )
+        .expect("write triage");
+        let input_report = report(
+            "model-A",
+            &[true],
+            Some(2),
+            &format!("{}/workspace", run_root.display()),
+            Some(&format!("{}/transcripts/sample.json", run_root.display())),
+            &format!("{} /opt/x/y", home.display()),
+        );
+        write_report(&codex, &input_report);
+        write_report(&claude, &input_report);
+
+        let folder = write_run_folder(
+            &reports,
+            "2026-01-12",
+            run_root,
+            home,
+            &tools,
+            &triage,
+            &codex,
+            &claude,
+        )
+        .expect("write redacted run");
+        let saved: Value = serde_json::from_slice(
+            &fs::read(folder.join("codex.json")).expect("read committed report"),
+        )
+        .expect("decode committed report");
+        let sample = &saved["results"][0]["runs"][0];
+        assert_eq!(sample["workDir"], "$RUN/workspace");
+        assert_eq!(sample["transcriptPath"], "$RUN/transcripts/sample.json");
+        assert_eq!(sample["failures"][0], "$HOME <path>");
+        assert_eq!(sample["checks"]["detail"], "$HOME <path>");
+        let saved_triage = fs::read_to_string(folder.join("triage.md")).expect("read triage");
+        assert_eq!(
+            saved_triage,
+            "run $RUN; alias $RUN; home $HOME; other <path>\n"
+        );
+        assert!(!saved_triage.contains("/private/var/folders"));
+        assert!(!saved_triage.contains("/var/folders"));
+        assert!(!saved_triage.contains(home.to_str().expect("home path")));
+
+        let mut unknown = input_report;
+        unknown["unexpected"] = json!(true);
+        write_report(&codex, &unknown);
+        let refused = write_run_folder(
+            &reports,
+            "2026-01-13",
+            run_root,
+            home,
+            &tools,
+            &triage,
+            &codex,
+            &claude,
+        );
+        assert!(refused.is_err());
+        assert!(!reports.join("2026-01-13").exists());
+    }
+
+    #[trace("FR-002-AC-3", "TC-002")]
+    #[test]
+    fn redacted_report_rejects_transcript_paths_outside_run_root() {
+        let input = report(
+            "model-A",
+            &[true],
+            Some(2),
+            "$RUN/workspace",
+            Some("transcripts/sample.json"),
+            "",
+        );
+        assert!(redact_report(input, Path::new("/tmp/run"), Path::new("/home/test")).is_err());
+    }
+
+    #[trace("FR-002-AC-4", "TC-002")]
+    #[test]
+    fn scorecard_is_stable_and_reports_latest_trends_history_and_unavailable_metrics() {
+        let temp = tempdir().expect("temporary directory");
+        let reports = temp.path().join("reports");
+        fs::create_dir_all(&reports).expect("reports directory");
+        write_scorecard_run(
+            &reports,
+            "2026-01-05",
+            "model-A",
+            &[true, false, false],
+            Some(("claude-model-A", &[true, true, false])),
+            Some(7),
+        );
+        write_scorecard_run(
+            &reports,
+            "2026-01-12",
+            "model-A",
+            &[true, false, true],
+            Some(("claude-model-B", &[true, true, true])),
+            None,
+        );
+        let output = temp.path().join("SCORECARD.md");
+        scorecard(&reports, &output, false).expect("write scorecard");
+        let first = fs::read(&output).expect("read first scorecard");
+        scorecard(&reports, &output, false).expect("rewrite scorecard");
+        let second = fs::read(&output).expect("read rewritten scorecard");
+        assert_eq!(first, second);
+        let text = String::from_utf8(first).expect("scorecard UTF-8");
+        assert!(text.contains("| 2026-01-05 |"));
+        assert!(text.contains("| 2026-01-12 |"));
+        assert!(text.contains("EV-000 | codex | pass 3/3 | same"));
+        assert!(text.contains("EV-001 | codex | unstable 2/3 | up"));
+        assert!(text.contains("EV-000 | claude | pass 3/3 | new"));
+        assert!(text.contains("| EV-001 | codex | 1/3 2/3 |"));
+        assert!(text.contains("| EV-001 | codex | unstable 2/3 | up | n/a | 1 | doc-gap: 1 |"));
+    }
+
+    #[trace("FR-002-AC-5", "TC-002")]
+    #[test]
+    fn scorecard_check_detects_changed_output_and_new_run_folders() {
+        let temp = tempdir().expect("temporary directory");
+        let reports = temp.path().join("reports");
+        fs::create_dir_all(&reports).expect("reports directory");
+        write_scorecard_run(
+            &reports,
+            "2026-01-12",
+            "model-A",
+            &[true, true, true],
+            Some(("claude-model-B", &[true, true, true])),
+            Some(4),
+        );
+        let output = temp.path().join("SCORECARD.md");
+        scorecard(&reports, &output, false).expect("write scorecard");
+        assert!(scorecard(&reports, &output, true).is_ok());
+        fs::write(&output, "changed").expect("alter scorecard");
+        assert!(scorecard(&reports, &output, true).is_err());
+        scorecard(&reports, &output, false).expect("restore scorecard");
+        write_scorecard_run(
+            &reports,
+            "2026-01-19",
+            "model-A",
+            &[true, true, true],
+            None,
+            Some(4),
+        );
+        assert!(scorecard(&reports, &output, true).is_err());
+    }
 }
