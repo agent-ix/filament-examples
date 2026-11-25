@@ -24649,7 +24649,7 @@
       "data_files": [],
       "request_file": null,
       "expected_file": "examples/types-checking/expected/enum-unknown-member.json",
-      "verdict": "refused: missing_declaration missing-name",
+      "verdict": "refused: ill_typed type-mismatch",
       "exit": 20,
       "ready_exit": null,
       "engine": null,
