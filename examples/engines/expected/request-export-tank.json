@@ -28,32 +28,32 @@
           "name": "fld_level",
           "node": "{\"ordinal\":0,\"package\":\"example/tank\",\"path\":[\"model\",\"object_type\",\"ix://example/tank/Tank\"]}",
           "region": [
-            0,
-            1
+            124,
+            152
           ]
         },
         {
           "name": "op_Tank_drain",
           "node": "{\"ordinal\":0,\"package\":\"example/tank\",\"path\":[\"model\",\"object_type\",\"ix://example/tank/Tank\"]}",
           "region": [
-            0,
-            1
+            124,
+            152
           ]
         },
         {
           "name": "op_Tank_fill",
           "node": "{\"ordinal\":0,\"package\":\"example/tank\",\"path\":[\"model\",\"object_type\",\"ix://example/tank/Tank\"]}",
           "region": [
-            0,
-            1
+            124,
+            152
           ]
         },
         {
           "name": "v_Tank",
           "node": "{\"ordinal\":0,\"package\":\"example/tank\",\"path\":[\"model\",\"object_type\",\"ix://example/tank/Tank\"]}",
           "region": [
-            0,
-            1
+            124,
+            152
           ]
         }
       ],
@@ -82,19 +82,19 @@
           "obligation": "LevelInRange",
           "regions": [
             [
-              2095,
-              2213
+              2127,
+              2245
             ],
             [
-              2388,
-              2439
+              2420,
+              2471
             ]
           ]
         }
       ],
       "status": "assembled",
       "target_family": "tla",
-      "target_text": "---- MODULE M_example_u3A_engines_u2F_export_u2D_tank ----\nEXTENDS Naturals, Integers, Sequences, FiniteSets, TLC\n\n\\* fsl: {\"ordinal\":0,\"package\":\"example/tank\",\"path\":[\"model\",\"object_type\",\"ix://example/tank/Tank\"]} example/example:engines/export-tank:0-1\nVARIABLES v_Tank\n\n\\* fsl: {\"ordinal\":0,\"package\":\"example/tank\",\"path\":[\"model\",\"object_type\",\"ix://example/tank/Tank\"]} example/example:engines/export-tank:0-1\nvars == <<v_Tank>>\n\n\\* fsl: {\"ordinal\":0,\"package\":\"example/tank\",\"path\":[\"model\",\"object_type\",\"ix://example/tank/Tank\"]} example/example:engines/export-tank:0-1\nTypeOK ==\n  /\\ DOMAIN v_Tank \\subseteq Seq(Nat)\n  /\\ \\A k \\in DOMAIN v_Tank : v_Tank[k].fld_level \\in Int /\\ v_Tank[k].fld_level >= 0 /\\ v_Tank[k].fld_level <= 3\n\n\\* fsl: {\"ordinal\":0,\"package\":\"example/tank\",\"path\":[\"model\",\"object_type\",\"ix://example/tank/Tank\"]} example/example:engines/export-tank:0-1\nInit ==\n  /\\ v_Tank = [k \\in {<<116>>} |-> CASE k = <<116>> -> [fld_level |-> 0]]\n\n\\* fsl: {\"ordinal\":0,\"package\":\"example/tank\",\"path\":[\"model\",\"object_type\",\"ix://example/tank/Tank\"]} example/example:engines/export-tank:0-1\nop_Tank_fill(r_self) ==\n  /\\ r_self \\in DOMAIN v_Tank\n  /\\ DOMAIN v_Tank' = DOMAIN v_Tank\n  /\\ TypeOK'\n\n\\* fsl: {\"ordinal\":0,\"package\":\"example/tank\",\"path\":[\"model\",\"object_type\",\"ix://example/tank/Tank\"]} example/example:engines/export-tank:0-1\nop_Tank_drain(r_self) ==\n  /\\ r_self \\in DOMAIN v_Tank\n  /\\ DOMAIN v_Tank' = DOMAIN v_Tank\n  /\\ TypeOK'\n\n\\* fsl: {\"ordinal\":0,\"package\":\"example/tank\",\"path\":[\"model\",\"object_type\",\"ix://example/tank/Tank\"]} example/example:engines/export-tank:0-1\nNext ==\n  \\/ \\E r_self \\in DOMAIN v_Tank : op_Tank_fill(r_self)\n  \\/ \\E r_self \\in DOMAIN v_Tank : op_Tank_drain(r_self)\n\n\\* fsl: {\"ordinal\":0,\"package\":\"example/tank\",\"path\":[\"model\",\"object_type\",\"ix://example/tank/Tank\"]} example/example:engines/export-tank:0-1\nSpec == Init /\\ [][Next]_vars /\\ WF_vars(Next)\n\n\\* fsl: {\"ordinal\":0,\"package\":\"example:engines/export-tank\",\"path\":[\"state\",\"state_clause\",\"invariant\",{\"node\":0},{\"node\":13}]} example/example:engines/export-tank:211-246\nc_LevelInRange == \\A r_self \\in DOMAIN v_Tank : (((v_Tank[r_self].fld_level >= 0) /\\ (v_Tank[r_self].fld_level <= 3)))\n\n\\* fsl: {\"ordinal\":0,\"package\":\"example:engines/export-tank\",\"path\":[\"state\",\"state_clause\",\"invariant\",{\"node\":0},{\"node\":13}]} example/example:engines/export-tank:211-246\nTHEOREM Th_LevelInRange == Spec => []c_LevelInRange\n\n====\n"
+      "target_text": "---- MODULE M_example_u3A_engines_u2F_export_u2D_tank ----\nEXTENDS Naturals, Integers, Sequences, FiniteSets, TLC\n\n\\* fsl: {\"ordinal\":0,\"package\":\"example/tank\",\"path\":[\"model\",\"object_type\",\"ix://example/tank/Tank\"]} example/example:engines/export-tank:124-152\nVARIABLES v_Tank\n\n\\* fsl: {\"ordinal\":0,\"package\":\"example/tank\",\"path\":[\"model\",\"object_type\",\"ix://example/tank/Tank\"]} example/example:engines/export-tank:124-152\nvars == <<v_Tank>>\n\n\\* fsl: {\"ordinal\":0,\"package\":\"example/tank\",\"path\":[\"model\",\"object_type\",\"ix://example/tank/Tank\"]} example/example:engines/export-tank:124-152\nTypeOK ==\n  /\\ DOMAIN v_Tank \\subseteq Seq(Nat)\n  /\\ \\A k \\in DOMAIN v_Tank : v_Tank[k].fld_level \\in Int /\\ v_Tank[k].fld_level >= 0 /\\ v_Tank[k].fld_level <= 3\n\n\\* fsl: {\"ordinal\":0,\"package\":\"example/tank\",\"path\":[\"model\",\"object_type\",\"ix://example/tank/Tank\"]} example/example:engines/export-tank:124-152\nInit ==\n  /\\ v_Tank = [k \\in {<<116>>} |-> CASE k = <<116>> -> [fld_level |-> 0]]\n\n\\* fsl: {\"ordinal\":0,\"package\":\"example/tank\",\"path\":[\"model\",\"object_type\",\"ix://example/tank/Tank\"]} example/example:engines/export-tank:124-152\nop_Tank_fill(r_self) ==\n  /\\ r_self \\in DOMAIN v_Tank\n  /\\ DOMAIN v_Tank' = DOMAIN v_Tank\n  /\\ TypeOK'\n\n\\* fsl: {\"ordinal\":0,\"package\":\"example/tank\",\"path\":[\"model\",\"object_type\",\"ix://example/tank/Tank\"]} example/example:engines/export-tank:124-152\nop_Tank_drain(r_self) ==\n  /\\ r_self \\in DOMAIN v_Tank\n  /\\ DOMAIN v_Tank' = DOMAIN v_Tank\n  /\\ TypeOK'\n\n\\* fsl: {\"ordinal\":0,\"package\":\"example/tank\",\"path\":[\"model\",\"object_type\",\"ix://example/tank/Tank\"]} example/example:engines/export-tank:124-152\nNext ==\n  \\/ \\E r_self \\in DOMAIN v_Tank : op_Tank_fill(r_self)\n  \\/ \\E r_self \\in DOMAIN v_Tank : op_Tank_drain(r_self)\n\n\\* fsl: {\"ordinal\":0,\"package\":\"example/tank\",\"path\":[\"model\",\"object_type\",\"ix://example/tank/Tank\"]} example/example:engines/export-tank:124-152\nSpec == Init /\\ [][Next]_vars /\\ WF_vars(Next)\n\n\\* fsl: {\"ordinal\":0,\"package\":\"example:engines/export-tank\",\"path\":[\"state\",\"state_clause\",\"invariant\",{\"node\":0},{\"node\":13}]} example/example:engines/export-tank:211-246\nc_LevelInRange == \\A r_self \\in DOMAIN v_Tank : (((v_Tank[r_self].fld_level >= 0) /\\ (v_Tank[r_self].fld_level <= 3)))\n\n\\* fsl: {\"ordinal\":0,\"package\":\"example:engines/export-tank\",\"path\":[\"state\",\"state_clause\",\"invariant\",{\"node\":0},{\"node\":13}]} example/example:engines/export-tank:211-246\nTHEOREM Th_LevelInRange == Spec => []c_LevelInRange\n\n====\n"
     },
     "kind": "exported"
   },

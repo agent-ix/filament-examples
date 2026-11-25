@@ -76,15 +76,15 @@ The case `probability-as-percent` writes the threshold of a probabilistic claim 
 These cases are staged until the language supports them.
 
 - `staged-deploy-bounded`: The deploy rule over a window of five steps. Needs clock selection.
-- `staged-exact-reachability-missed`: exact analysis of this unbounded always claim settles unsupported.
+- `schedulers-fair-weak`: exact analysis under weak fairness reaches the work-unit limit.
 
 `example.toml` records the exact reason and ticket for each.
 
-The unlisted [sampling-negative request](requests/probability/sampling/staged-sampling-claim-missed.json) has no reproducible unforced outcome yet; QSL-2158 tracks it.
+The unlisted [sampling-negative request](requests/probability/sampling/staged-sampling-claim-missed.json) has no reproducible unforced outcome yet.
 
 ## Probability reference cases
 
-The folder `rules/probability` holds one subfolder for each page of the probability reference: `models`, `claims`, `schedulers`, `sampling` and `exact`. The probability cases declare `post UpFollowsCall`, so a service is up after a call exactly when the call succeeded, and a `random` line that makes a call fail 1 time in 10,000. `fsl analyze` decides them from a start snapshot, `data/start-service-up.json` or `data/start-service-down.json`; the two ComesUp cases start down and are proved. A model without a `random` line leaves each call argument to the scheduler, so analyze should refute an every-scheduler claim with value 0 and a replayed counterexample (`claims-every-scheduler-without-random`). Analyze decides the bounded always claim, the step quantile and every-scheduler reachability. It does not yet decide the mean of a fraction over 10 steps (work limit reached), a long-run fraction under every scheduler (unsupported), the weak-fairness claim (work limit reached) or an unbounded always claim (unsupported), so those cases are staged on QSL-2158.
+The folder `rules/probability` holds one subfolder for each page of the probability reference: `models`, `claims`, `schedulers`, `sampling` and `exact`. The probability cases declare `post UpFollowsCall`, so a service is up after a call exactly when the call succeeded, and a `random` line that makes a call fail 1 time in 10,000. `fsl analyze` decides them from a start snapshot, `data/start-service-up.json` or `data/start-service-down.json`; the two ComesUp cases start down and are proved. The missed unbounded-always case also starts down and is refuted under every scheduler. A model without a `random` line leaves each call argument to the scheduler, so analyze should refute an every-scheduler claim with value 0 and a replayed counterexample (`claims-every-scheduler-without-random`). Analyze decides the bounded always claim, the step quantile, every-scheduler reachability, the finite mean of a fraction (FR-197-AC-4; FSpec FR-411-AC-9), the long-run fraction (FR-199-AC-1) and unbounded always (FR-198). The weak-fairness case remains staged because its exact calculation reaches the work-unit limit.
 
 ## Probability tutorial cases
 

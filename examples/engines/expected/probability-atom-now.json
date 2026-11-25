@@ -1,20 +1,61 @@
 {
-  "category": "unsupported",
-  "last_stage": "S6b",
+  "category": "violation",
+  "last_stage": "S8",
   "result": null,
   "first_diagnostic": null,
   "items": [
     {
-      "category": "unsupported",
+      "category": "violation",
       "claim_name": "HeadsNow",
-      "record": {
-        "diagnostic": {
-          "cause": "not-yet-implemented",
-          "code": "unsupported_construct",
-          "detail": {}
+      "counterexample": {
+        "binding": {
+          "identity": "c",
+          "object_type": {
+            "original": {
+              "node": "ix://example/coin/Coin",
+              "package": "example/coin"
+            },
+            "owner_effective_type": null
+          },
+          "type": "reference",
+          "universe": {
+            "ordinal": 0,
+            "package": "example/coin",
+            "path": [
+              "model",
+              "object_type",
+              "ix://example/coin/Coin"
+            ]
+          }
         },
-        "result": "unsupported",
-        "settled_by": "disposition"
+        "bound": {
+          "comparison": "greater-or-equal",
+          "threshold": {
+            "denominator": "2",
+            "numerator": "1"
+          },
+          "type": "probability"
+        },
+        "evidence": {
+          "paths": [
+            []
+          ],
+          "type": "path-set"
+        },
+        "initial_state": 0,
+        "type": "probabilistic"
+      },
+      "record": {
+        "backend": "en-5",
+        "cause": null,
+        "result": "refuted",
+        "settled_by": "result"
+      },
+      "replay": {
+        "reproduced": true,
+        "target": {
+          "state_clause": "HeadsNow"
+        }
       },
       "request": {
         "candidates": {

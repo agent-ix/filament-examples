@@ -352,12 +352,9 @@ statement = "A service that starts up and fails 1 call in 10,000 is up for about
 file = "rules/probability/claims/claims-mean-of-fraction.fsl"
 command = "analyze requests/probability/claims/claims-mean-of-fraction.json"
 engine = "probability"
-status = "staged"
-expect_exit = 22
-ready_exit = 0
-waits_on = "QSL-2158"
-why = "analyze settles the mean-of-fraction claim over 10 steps as incomplete (work_units limit reached, 1,000,000), where it should prove it; over 2 steps it proves it"
-needs = "exact mean of a fraction under every scheduler"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
 serves = "Probability reference (claims)"
 
 [[case]]
@@ -367,12 +364,9 @@ statement = "A service that fails 1 call in 10,000 is up about 99.99% of the tim
 file = "rules/probability/claims/claims-long-run-fraction.fsl"
 command = "analyze requests/probability/claims/claims-long-run-fraction.json"
 engine = "probability"
-status = "staged"
-expect_exit = 21
-ready_exit = 0
-waits_on = "QSL-2158"
-why = "analyze settles the long-run fraction claim as unsupported (not-yet-implemented), where it should prove it"
-needs = "exact long-run fraction under every scheduler"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
 serves = "Probability reference (claims)"
 
 [[case]]
@@ -475,16 +469,13 @@ serves = "Learn L7 (probability): a missed claim"
 [[case]]
 id = "staged-exact-reachability-missed"
 rule = "StaysUp"
-statement = "The service starts down, so it is not up forever: the claim is false under every scheduler with value 0 and exact computation refutes it. From an up start it fails too, because a scheduler that keeps calling it makes it fail."
+statement = "The service starts down, so it is not up forever: exact analysis refutes the 90% claim under every scheduler."
 file = "rules/probability/exact/staged-exact-reachability-missed.fsl"
 command = "analyze requests/probability/exact/staged-exact-reachability-missed.json"
 engine = "probability"
-status = "staged"
-expect_exit = 21
-ready_exit = 10
-waits_on = "QSL-2158"
-why = "analyze settles the unbounded always claim under every scheduler as unsupported (not-yet-implemented), where it should refute it; the case starts down because from data/start-service-up.json analyze does not finish (over 11 minutes, QSL-2158): switch back to the up start when QSL-2158 lands"
-needs = "exact unbounded always under every scheduler"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
 serves = "Probability reference (exact): a missed claim"
 
 [[case]]

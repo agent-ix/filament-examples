@@ -328,12 +328,9 @@ statement = "The coin is tails now, so the probability that it is heads now is 0
 file = "rules/coin.fsl"
 command = "analyze requests/probability-atom-now.json"
 engine = "probability"
-status = "staged"
-expect_exit = 21
-ready_exit = 10
-waits_on = "QSL-2158"
-why = "analyze settles the atom claim unsupported (not-yet-implemented), where it should settle refuted"
-needs = "exact probability of an atom and of always over a model operation under every scheduler"
+status = "running"
+expect_exit = 10
+expect_verdict = "violated"
 serves = "FR-407, FR-411 (exact probability)"
 
 [[case]]
@@ -343,12 +340,9 @@ statement = "The probability that the coin is heads now is 0, which meets the up
 file = "rules/coin.fsl"
 command = "analyze requests/probability-atom-now-at-most.json"
 engine = "probability"
-status = "staged"
-expect_exit = 21
-ready_exit = 0
-waits_on = "QSL-2158"
-why = "analyze settles the atom claim unsupported (not-yet-implemented), where it should prove it"
-needs = "exact probability of an atom and of always over a model operation under every scheduler"
+status = "running"
+expect_exit = 0
+expect_verdict = "holds"
 serves = "FR-407, FR-411 (exact probability)"
 
 [[case]]

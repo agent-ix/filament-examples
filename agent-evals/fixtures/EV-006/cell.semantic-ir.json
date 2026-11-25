@@ -1,0 +1,239 @@
+{
+  "contractVersion": "2.0.0",
+  "canonicalization": {
+    "algorithm": "rfc8785-v1"
+  },
+  "source": {
+    "identity": "ix://eval/protocol-fill/spec",
+    "version": "1.0.0",
+    "dialect": "spec-bundle"
+  },
+  "package": {
+    "identity": "eval/protocol-fill",
+    "version": "1.0.0",
+    "mappingVersions": [],
+    "profileVersions": []
+  },
+  "occurrences": [],
+  "extensions": [],
+  "constructs": [
+    {
+      "kind": {
+        "module": "eval/protocol-fill",
+        "name": "object_type"
+      },
+      "moduleVersion": "1.0.0",
+      "construct": {
+        "identity": "none",
+        "shape": "record",
+        "members": {},
+        "meaning": "filament.meaning.model.object-type/v1"
+      }
+    },
+    {
+      "kind": {
+        "module": "eval/protocol-fill",
+        "name": "population"
+      },
+      "moduleVersion": "1.0.0",
+      "construct": {
+        "identity": "none",
+        "shape": "record",
+        "members": {},
+        "meaning": "filament.meaning.model.population/v1"
+      }
+    },
+    {
+      "kind": {
+        "module": "eval/protocol-fill",
+        "name": "value_type"
+      },
+      "moduleVersion": "1.0.0",
+      "construct": {
+        "identity": "none",
+        "shape": "record",
+        "members": {},
+        "meaning": "filament.meaning.model.value-type/v1"
+      }
+    }
+  ],
+  "types": [
+    {
+      "identity": "ix://eval/protocol-fill/Level",
+      "displayName": "Level",
+      "kind": {
+        "module": "eval/protocol-fill",
+        "name": "value_type"
+      },
+      "roles": [],
+      "origin": {
+        "generated": {
+          "generatorIdentity": "ix://eval/protocol-fill/Level",
+          "generatorVersion": "1.0.0",
+          "inputIdentities": [
+            "ix://eval/protocol-fill/Level"
+          ]
+        }
+      },
+      "extensions": [],
+      "unknownPolicy": "reject",
+      "scalar": "integer",
+      "constraints": [
+        {
+          "identity": "ix://eval/protocol-fill/Level/constraints/min",
+          "keyword": "min",
+          "operands": {
+            "value": "0"
+          },
+          "appliesTo": "ix://filament/native/Integer",
+          "diagnosticCode": "bound.min",
+          "origin": {
+            "generated": {
+              "generatorIdentity": "ix://eval/protocol-fill/Level",
+              "generatorVersion": "1.0.0",
+              "inputIdentities": [
+                "ix://eval/protocol-fill/Level"
+              ]
+            }
+          }
+        },
+        {
+          "identity": "ix://eval/protocol-fill/Level/constraints/max",
+          "keyword": "max",
+          "operands": {
+            "value": "3"
+          },
+          "appliesTo": "ix://filament/native/Integer",
+          "diagnosticCode": "bound.max",
+          "origin": {
+            "generated": {
+              "generatorIdentity": "ix://eval/protocol-fill/Level",
+              "generatorVersion": "1.0.0",
+              "inputIdentities": [
+                "ix://eval/protocol-fill/Level"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "identity": "ix://eval/protocol-fill/Cell",
+      "displayName": "Cell",
+      "kind": {
+        "module": "eval/protocol-fill",
+        "name": "object_type"
+      },
+      "roles": [],
+      "origin": {
+        "generated": {
+          "generatorIdentity": "ix://eval/protocol-fill/Cell",
+          "generatorVersion": "1.0.0",
+          "inputIdentities": [
+            "ix://eval/protocol-fill/Cell"
+          ]
+        }
+      },
+      "constraints": [],
+      "extensions": [],
+      "unknownPolicy": "reject",
+      "supertypes": [],
+      "fields": [
+        {
+          "identity": "ix://eval/protocol-fill/Cell/v",
+          "name": "v",
+          "typeRef": "ix://eval/protocol-fill/Level",
+          "presence": "required",
+          "nullable": false,
+          "defaultKind": "none",
+          "multiplicity": {
+            "lower": 1,
+            "upper": 1,
+            "ordered": false,
+            "unique": true
+          },
+          "origin": {
+            "generated": {
+              "generatorIdentity": "ix://eval/protocol-fill/Cell/v",
+              "generatorVersion": "1.0.0",
+              "inputIdentities": [
+                "ix://eval/protocol-fill/Cell/v"
+              ]
+            }
+          }
+        }
+      ],
+      "operations": [
+        {
+          "identity": "ix://eval/protocol-fill/Cell/inc",
+          "name": "inc",
+          "params": [],
+          "pre": [],
+          "post": [],
+          "origin": {
+            "generated": {
+              "generatorIdentity": "ix://eval/protocol-fill/Cell/inc",
+              "generatorVersion": "1.0.0",
+              "inputIdentities": [
+                "ix://eval/protocol-fill/Cell/inc"
+              ]
+            }
+          },
+          "frame": {
+            "modifies": [
+              "ix://eval/protocol-fill/Cell/v"
+            ],
+            "creates": [],
+            "deletes": []
+          }
+        },
+        {
+          "identity": "ix://eval/protocol-fill/Cell/setTwo",
+          "name": "setTwo",
+          "params": [],
+          "pre": [],
+          "post": [],
+          "origin": {
+            "generated": {
+              "generatorIdentity": "ix://eval/protocol-fill/Cell/setTwo",
+              "generatorVersion": "1.0.0",
+              "inputIdentities": [
+                "ix://eval/protocol-fill/Cell/setTwo"
+              ]
+            }
+          },
+          "frame": {
+            "modifies": [
+              "ix://eval/protocol-fill/Cell/v"
+            ],
+            "creates": [],
+            "deletes": []
+          }
+        }
+      ]
+    }
+  ],
+  "populations": [
+    {
+      "identity": "ix://eval/protocol-fill/cells",
+      "displayName": "cells",
+      "kind": {
+        "module": "eval/protocol-fill",
+        "name": "population"
+      },
+      "members": [
+        "ix://eval/protocol-fill/Cell"
+      ],
+      "extent": "closed",
+      "origin": {
+        "generated": {
+          "generatorIdentity": "ix://eval/protocol-fill/cells",
+          "generatorVersion": "1.0.0",
+          "inputIdentities": [
+            "ix://eval/protocol-fill/cells"
+          ]
+        }
+      }
+    }
+  ]
+}

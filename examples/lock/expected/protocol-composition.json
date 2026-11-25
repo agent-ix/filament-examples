@@ -1,7 +1,9 @@
 {
   "category": "success",
   "last_stage": "S4",
-  "result": null,
+  "result": {
+    "kind": "packaged"
+  },
   "first_diagnostic": null,
   "items": []
 }

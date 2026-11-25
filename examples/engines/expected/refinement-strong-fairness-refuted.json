@@ -136,7 +136,7 @@
             "type": "Precondition"
           },
           "kind": "AbstractStepRejected",
-          "position": 1,
+          "position": "1",
           "transition": {
             "arguments": [],
             "operation": {

@@ -3,8 +3,8 @@
   "last_stage": "S3",
   "result": null,
   "first_diagnostic": {
-    "code": "missing_declaration",
-    "cause": "missing-name"
+    "code": "ill_typed",
+    "cause": "type-mismatch"
   },
   "items": []
 }

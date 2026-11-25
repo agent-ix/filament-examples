@@ -26,7 +26,7 @@
       "counterexample": {
         "kind": "recording",
         "recording": "eyJjbG9zdXJlIjp7InByZW1pc2VzIjpbeyJraW5kIjoiZXhlY3V0aW9uIiwibm9kZSI6IkhhbmRvdmVyOjpEb25lIn1dLCJzdGF0ZSI6ImNsb3NlZCJ9LCJjb3JyZWxhdGlvbnMiOltdLCJmb3JtYXQiOiJmaWxhbWVudC5wcm90b2NvbC1yZWNvcmRpbmcvMSIsImxvY2FsX29yZGVyIjp7IkhvbGRlciI6WzAsMV19LCJvYnNlcnZhdGlvbnMiOlt7Imluc3RhbmNlIjoidy0xIiwia2V5cyI6eyJkZWxpdmVyeSI6ImQtMSIsIm1lc3NhZ2UiOiJtLTEifSwia2luZCI6InJlY2VpdmUiLCJub2RlIjoiSGFuZG92ZXI6Ok1haW46OkhlYXJkIiwicmVjb3JkIjp7ImdyYW50ZWQiOnRydWV9LCJyb2xlIjoiSG9sZGVyIn0seyJpbnN0YW5jZSI6InctMSIsImtleXMiOnt9LCJraW5kIjoiZmluaXNoIiwibm9kZSI6IkhhbmRvdmVyOjpEb25lIiwicmVjb3JkIjp7ImRvbmUiOnRydWV9LCJyb2xlIjoiSG9sZGVyIn1dLCJwcm90b2NvbCI6IkhhbmRvdmVyIn0=",
-        "trace_position": null
+        "trace_position": 0
       },
       "global": {
         "basis": "decisive-counterexample",
@@ -36,12 +36,13 @@
       "obligations": [
         {
           "basis": "recording",
+          "cause": "unexpected",
           "obligation": {
             "instance": "w-1",
             "kind": "enabledness",
             "node": "Handover::Main::Heard"
           },
-          "verdict": "satisfied",
+          "verdict": "violated",
           "witness": [
             0
           ]
@@ -143,12 +144,13 @@
         "obligations": [
           {
             "basis": "recording",
+            "cause": "unexpected",
             "obligation": {
               "instance": "w-1",
               "kind": "enabledness",
               "node": "Handover::Main::Heard"
             },
-            "verdict": "satisfied",
+            "verdict": "violated",
             "witness": [
               0
             ]

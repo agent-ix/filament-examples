@@ -1,0 +1,17 @@
+{
+  "format": "filament.state.snapshot/v1",
+  "identity": { "authority": "eval", "identity": "eval:protocol-fill/start" },
+  "observation": "current",
+  "model": { "identity": "eval/protocol-fill" },
+  "anchor": { "kind": "initialization", "name": "zero" },
+  "populations": [
+    {
+      "population": "ix://eval/protocol-fill/cells",
+      "complete": true,
+      "objects": [
+        { "key": "cell", "type": "ix://eval/protocol-fill/Cell",
+          "fields": { "v": { "integer": "0" } } }
+      ]
+    }
+  ]
+}

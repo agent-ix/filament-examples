@@ -29,11 +29,12 @@
           }
         },
         "bound": {
-          "comparison": ">=",
+          "comparison": "greater-or-equal",
           "threshold": {
             "denominator": "25",
             "numerator": "19"
-          }
+          },
+          "type": "probability"
         },
         "evidence": {
           "paths": [

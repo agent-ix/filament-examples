@@ -12,8 +12,9 @@ tempfile = "3"
 toml = "1"
 url = "2"
 regex = "1"
-fsl-cst = { git = "https://github.com/agent-ix/filament-spec-language", rev = "deac8870a05e0b9ae28392f597f829011b44ebb8" }
-fsl-foundation = { git = "https://github.com/agent-ix/filament-spec-language", rev = "deac8870a05e0b9ae28392f597f829011b44ebb8" }
+base64 = "0.22"
+fsl-cst = { git = "https://github.com/agent-ix/filament-spec-language", rev = "0443d782436d33bd0a178d2745dca158e8e4acf5" }
+fsl-foundation = { git = "https://github.com/agent-ix/filament-spec-language", rev = "0443d782436d33bd0a178d2745dca158e8e4acf5" }
 tree-sitter = "0.27.2"
 tree-sitter-bash = "0.25.1"
 tree-sitter-javascript = "0.25.0"
@@ -24,3 +25,6 @@ ix-trace-rs = { git = "https://github.com/agent-ix/ix-trace-rs", tag = "v0.1.2" 
 [lints.rust]
 unsafe_code = "forbid"
 missing_docs = "warn"
+
+[dev-dependencies]
+ix-trace-rs = { git = "https://github.com/agent-ix/ix-trace-rs", tag = "v0.1.2" }
