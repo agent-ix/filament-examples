@@ -12,7 +12,7 @@ On macOS, `git`, `make`, `curl`, `tar` and the C toolchain come with the Xcode c
 
 ```bash step=prerequisites
 apt-get update
-apt-get install -y --no-install-recommends ca-certificates curl git make
+apt-get install -y --no-install-recommends ca-certificates curl git make nodejs
 ```
 
 ```bash step=build-tools
