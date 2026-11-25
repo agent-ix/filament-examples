@@ -34,7 +34,9 @@ pub fn write_run_folder(
     let triage = fs::read_to_string(triage_file).map_err(|e| e.to_string())?;
     let triage = redact_base_paths(&triage, run_root, &home.to_string_lossy());
     let triage = absolute_path_regex()
-        .replace_all(&triage, "<path>")
+        .replace_all(&triage, |captures: &regex::Captures<'_>| {
+            format!("{}<path>", &captures[1])
+        })
         .into_owned();
     fs::create_dir_all(&destination).map_err(|e| e.to_string())?;
     let result = (|| {
@@ -86,7 +88,11 @@ pub fn redact_report(mut report: Value, run_root: &Path, home: &Path) -> Result<
                             continue;
                         }
                         walk_strings(&mut sample[key], &|s| {
-                            absolute_path_regex().replace_all(s, "<path>").into_owned()
+                            absolute_path_regex()
+                                .replace_all(s, |captures: &regex::Captures<'_>| {
+                                    format!("{}<path>", &captures[1])
+                                })
+                                .into_owned()
                         });
                     }
                 }
@@ -349,7 +355,7 @@ fn redact_base_paths(input: &str, run_root: &Path, home: &str) -> String {
 fn absolute_path_regex() -> &'static Regex {
     static REGEX: std::sync::OnceLock<Regex> = std::sync::OnceLock::new();
     REGEX.get_or_init(|| {
-        Regex::new(r#"(?:^|[\s"'=(:])(/(?:[A-Za-z0-9._@+-]+/)*[A-Za-z0-9._@+-]+)"#)
+        Regex::new(r#"(^|[\s"'=(:])(/(?:[A-Za-z0-9._@+-]+/)*[A-Za-z0-9._@+-]+)"#)
             .expect("valid path expression")
     })
 }
@@ -677,7 +683,7 @@ mod tests {
                     "failures": [failure],
                     "workDir": work_dir,
                     "sessionId": "session-1",
-                    "transcriptDigest": if transcript_path.is_some() { Value::String(DIGEST.into()) } else { Value::Null },
+                    "transcriptDigest": Value::String(DIGEST.into()),
                     "transcriptRetention": if transcript_path.is_some() { "retained" } else { "not-retained" },
                 });
                 if let Some(path) = transcript_path {
@@ -762,7 +768,7 @@ mod tests {
         }
         fs::write(
             run.join("triage.md"),
-            "| EV-001 | codex | 1 | failed | doc-gap | QSL-1234 |\n",
+            "| EV-001 | codex | 1 | failed | doc-gap | fsl | QSL-1234 |\n",
         )
         .expect("write triage");
     }
