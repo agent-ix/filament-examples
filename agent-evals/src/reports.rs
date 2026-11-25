@@ -592,8 +592,7 @@ fn report_model(report: &Value) -> &str {
 pub fn scorecard(reports_dir: &Path, output: &Path, check: bool) -> Result<(), String> {
     let expected = render_scorecard(reports_dir)?;
     if check {
-        let actual = fs::read_to_string(output).unwrap_or_default();
-        if actual != expected {
+        if !scorecard_matches_expected(&expected, output)? {
             return Err(format!(
                 "{} differs from generated scorecard",
                 output.display()
@@ -603,6 +602,17 @@ pub fn scorecard(reports_dir: &Path, output: &Path, check: bool) -> Result<(), S
         fs::write(output, expected).map_err(|e| e.to_string())?;
     }
     Ok(())
+}
+
+/// Return whether the existing scorecard matches the reports directory.
+pub fn scorecard_matches(reports_dir: &Path, output: &Path) -> Result<bool, String> {
+    let expected = render_scorecard(reports_dir)?;
+    scorecard_matches_expected(&expected, output)
+}
+
+fn scorecard_matches_expected(expected: &str, output: &Path) -> Result<bool, String> {
+    let actual = fs::read_to_string(output).unwrap_or_default();
+    Ok(actual == expected)
 }
 
 #[cfg(test)]
