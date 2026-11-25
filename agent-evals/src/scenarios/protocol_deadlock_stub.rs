@@ -25,7 +25,7 @@ fn main() {
         }
         Some("exit-127") => exit(127),
         Some("terminate") => {
-            let pid = env::process::id().to_string();
+            let pid = std::process::id().to_string();
             let _ = Command::new("kill").args(["-TERM", &pid]).status();
             std::thread::park();
         }
@@ -34,7 +34,7 @@ fn main() {
 }
 
 fn run_predicate(arguments: &[String], fields: Vec<&str>) -> ! {
-    if arguments.as_slice() != ["run", "run.json", "--format", "json"] {
+    if !matches_args(arguments, &["run", "run.json", "--format", "json"]) {
         exit(21);
     }
     let [calls_path, captured_path] = fields.as_slice() else {
@@ -76,7 +76,7 @@ fn run_predicate(arguments: &[String], fields: Vec<&str>) -> ! {
 
 fn run_full_grade(arguments: &[String], fields: Vec<&str>) -> ! {
     if arguments.first().is_some_and(|arg| arg == "run") {
-        if arguments.as_slice() != ["run", "run.json", "--format", "json"] {
+        if !matches_args(arguments, &["run", "run.json", "--format", "json"]) {
             exit(21);
         }
         let source = match fs::read_to_string("predicate.fsl") {
@@ -105,8 +105,13 @@ fn run_full_grade(arguments: &[String], fields: Vec<&str>) -> ! {
         }
         exit(0);
     }
-    if arguments.as_slice() != ["analyze", "deadlock-request.json", "--format", "json"]
-        && arguments.as_slice() != ["analyze", "repaired-request.json", "--format", "json"]
+    if !matches_args(
+        arguments,
+        &["analyze", "deadlock-request.json", "--format", "json"],
+    ) && !matches_args(
+        arguments,
+        &["analyze", "repaired-request.json", "--format", "json"],
+    )
     {
         exit(21);
     }
@@ -129,6 +134,14 @@ fn run_full_grade(arguments: &[String], fields: Vec<&str>) -> ! {
 fn emit(output: &str) -> bool {
     let mut stdout = io::stdout().lock();
     stdout.write_all(output.as_bytes()).is_ok() && stdout.flush().is_ok()
+}
+
+fn matches_args(arguments: &[String], expected: &[&str]) -> bool {
+    arguments.len() == expected.len()
+        && arguments
+            .iter()
+            .zip(expected)
+            .all(|(actual, expected)| actual.as_bytes() == expected.as_bytes())
 }
 
 fn request_value(request: &str) -> Option<u8> {
