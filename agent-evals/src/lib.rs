@@ -41,6 +41,8 @@ pub mod scenarios {
     pub mod author_model;
     /// Four public CLI tasks learned from help without shipped references.
     pub mod blind_help;
+    /// Protocol deadlock analysis and intended terminal states.
+    pub mod protocol_deadlock;
     /// Refusal-only repair with independent public function executions.
     pub mod refusal_repair;
     /// Finite safety proof and counterexample analysis.

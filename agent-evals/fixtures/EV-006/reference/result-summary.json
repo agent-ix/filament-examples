@@ -1,0 +1,76 @@
+{
+  "deadlock": {
+    "exit_code": 10,
+    "result": "refuted",
+    "prefix": [
+      {
+        "step": "fork",
+        "node": "Main/Both"
+      },
+      {
+        "step": "attempt",
+        "node": "Main/Both/left/A"
+      }
+    ],
+    "blocked": [
+      {
+        "thread": {
+          "instance": "0",
+          "steps": [],
+          "type": "thread-path"
+        },
+        "rest": {
+          "kind": "join",
+          "node": "Main/Both",
+          "type": "rest"
+        },
+        "cause": {
+          "threads": [
+            {
+              "instance": "0",
+              "steps": [
+                {
+                  "branch": "right",
+                  "node": "Main/Both",
+                  "ordinal": "0"
+                }
+              ],
+              "type": "thread-path"
+            }
+          ],
+          "type": "join-waiting"
+        }
+      },
+      {
+        "thread": {
+          "instance": "0",
+          "steps": [
+            {
+              "branch": "right",
+              "node": "Main/Both",
+              "ordinal": "0"
+            }
+          ],
+          "type": "thread-path"
+        },
+        "rest": {
+          "kind": "node",
+          "node": "Main/Both/right/B",
+          "type": "rest"
+        },
+        "cause": {
+          "clause": "TwoPre",
+          "type": "precondition"
+        }
+      }
+    ]
+  },
+  "repaired": {
+    "exit_code": 0,
+    "result": "proved",
+    "basis": {
+      "type": "exhaustive"
+    },
+    "certification": "certified"
+  }
+}
