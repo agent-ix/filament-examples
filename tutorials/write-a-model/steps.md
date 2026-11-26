@@ -42,10 +42,8 @@ JS
 ## Refuse an undeclared field
 
 The misspelled rule reads `copy`, which the model does not declare.
-The undeclared name is refused before any data is read.
-
-<!-- QSL-1980 owns the guide's outdated ill_typed spelling. The runnable
-oracle follows the standard's missing-name diagnostic contract. -->
+The checker refuses the unknown record field as `ill_typed` / `type-mismatch`
+before any data is read.
 
 ```bash step=compile-misspelled expect-exit=20
 "$FSL" compile requests/compile-misspelled.json --format json | tee compile-misspelled-result.json
@@ -60,8 +58,8 @@ assert.equal(result.format, 'filament-outcome/1');
 assert.equal(result.category, 'refusal');
 assert.equal(result.last_stage, 'S3');
 assert.ok(result.diagnostics.length > 0, 'the undeclared field has a diagnostic');
-assert.equal(result.diagnostics[0].code, 'missing_declaration');
-assert.equal(result.diagnostics[0].cause, 'missing-name');
+assert.equal(result.diagnostics[0].code, 'ill_typed');
+assert.equal(result.diagnostics[0].cause, 'type-mismatch');
 assert.deepEqual(result.diagnostics[0].locus, {
   kind: 'region',
   source: { authority: 'example', identity: 'example:library/misspelled' },
