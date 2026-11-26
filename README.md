@@ -81,11 +81,11 @@ You need a Rust toolchain and `make`. Build the driver from the public [filament
 
 ```
 git clone https://github.com/agent-ix/filament-driver
-cargo build --release --locked -p fsl-cli -p filament-plugin-host --manifest-path filament-driver/Cargo.toml
-make check staged FSL=$PWD/filament-driver/target/release/fsl
+cargo build --profile dist --locked -p fsl-cli -p filament-plugin-host --manifest-path filament-driver/Cargo.toml
+make check staged FSL=$PWD/filament-driver/target/dist/fsl
 ```
 
-The build places `fsl-plugin-launch` beside `fsl` in `filament-driver/target/release`.
+The build places `fsl-plugin-launch` beside `fsl` in `filament-driver/target/dist`.
 
 The npm package `@agent-ix/quire-cli` installs a Markdown tool named `quire`. It cannot run these examples.
 
