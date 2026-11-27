@@ -6,7 +6,7 @@ The FSL driver comes from a prebuilt release for Linux on x86_64 and arm64 and f
 
 ## Install the prerequisites
 
-The examples need `git`, `make` and Rust 1.98.1 or later with a C toolchain: the example runner in `tools/fsl-examples` is a Rust program that `make check` builds on its first run. The release download needs `curl` and `tar`.
+The examples need `git`, `make` and Rust 1.100.0 with a C toolchain: the example runner in `tools/fsl-examples` is a Rust program that `make check` builds on its first run. The release download needs `curl` and `tar`.
 
 On macOS, `git`, `make`, `curl`, `tar` and the C toolchain come with the Xcode command line tools; install Rust with rustup as in the third block. Then continue with the driver download.
 
@@ -20,7 +20,7 @@ apt-get install -y --no-install-recommends build-essential pkg-config
 ```
 
 ```bash step=rust
-curl -sSf https://sh.rustup.rs | sh -s -- -y --profile minimal
+curl -sSf https://sh.rustup.rs | sh -s -- -y --profile minimal --default-toolchain 1.100.0
 . "$HOME/.cargo/env"
 cargo --version
 ```

@@ -174,12 +174,18 @@ function runScript(opts, script) {
     // On the host the steps start in a new folder, as a reader's would: a copy
     // of --copy, or an empty one.
     let hostDir = null;
+    const env = { ...process.env };
     if (opts.host) {
+      // Temporary copies and Python build subprocesses must retain this repo's compiler.
+      const toolchainFile = new URL("../rust-toolchain.toml", import.meta.url);
+      const channel = /^\s*channel\s*=\s*"([^"]+)"/m.exec(readFileSync(toolchainFile, "utf8"))?.[1];
+      if (!channel) throw new Error("rust-toolchain.toml must declare a channel");
+      env.RUSTUP_TOOLCHAIN = channel;
       hostDir = mkdtempSync(join(tmpdir(), "steps-"));
       if (opts.copy) cpSync(resolve(opts.copy), hostDir, { recursive: true });
     }
     const { cmd, args, cwd } = shellCommand(opts, hostDir);
-    const child = spawn(cmd, args, { stdio: ["pipe", "pipe", "inherit"], cwd: cwd ?? undefined });
+    const child = spawn(cmd, args, { stdio: ["pipe", "pipe", "inherit"], cwd: cwd ?? undefined, env });
     const lines = [];
     let pending = "";
     child.stdout.on("data", (chunk) => {
