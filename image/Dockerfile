@@ -186,7 +186,7 @@ LABEL org.opencontainers.image.title="Filament toolchain" \
 
 COPY examples /opt/filament-examples/examples
 COPY tools /opt/filament-examples/tools
-COPY Makefile config.mk index.json README.md /opt/filament-examples/
+COPY Makefile config.mk index.json README.md rust-toolchain.toml /opt/filament-examples/
 COPY image/smoke.sh /usr/local/bin/smoke.sh
 
 WORKDIR /opt/filament-examples
