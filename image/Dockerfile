@@ -11,7 +11,7 @@
 #   FSL_REPO     the driver repository
 
 ARG UBUNTU=26.04
-ARG RUST_VERSION=1.98.1
+ARG RUST_VERSION=1.100.0
 ARG NODE_MAJOR=24
 
 # ------------------------------------------------------------ driver stage
@@ -105,6 +105,7 @@ RUN npm ci --prefix /opt/npm --omit=dev --no-audit --no-fund && npm cache clean 
 # -------------------------------------------------------- license data stage
 FROM npm-deps AS licenses
 ARG RUST_VERSION
+ENV RUSTUP_TOOLCHAIN=${RUST_VERSION}
 ARG FSL_REPO=https://github.com/agent-ix/filament-driver
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update \

@@ -78,7 +78,7 @@ jobs:
             git clone --no-checkout --filter=blob:none https://github.com/agent-ix/filament-driver "$RUNNER_TEMP/filament-driver"
             git -C "$RUNNER_TEMP/filament-driver" fetch --depth 1 origin "$FSL_REVISION"
             git -C "$RUNNER_TEMP/filament-driver" checkout --detach FETCH_HEAD
-            rustup toolchain install stable --profile minimal
+            rustup toolchain install 1.100.0 --profile minimal
             CARGO_INCREMENTAL=0 CARGO_PROFILE_DEV_DEBUG=0 cargo build --locked -p fsl-cli --manifest-path "$RUNNER_TEMP/filament-driver/Cargo.toml"
             echo "path=$RUNNER_TEMP/filament-driver/target/debug/fsl" >> "$GITHUB_OUTPUT"
           fi
