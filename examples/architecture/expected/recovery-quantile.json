@@ -23,16 +23,54 @@
                     "BackInOneCall",
                     "subject",
                     {
-                      "node": 32
+                      "ordinal": 0,
+                      "package": "example/architecture",
+                      "path": [
+                        "model",
+                        "model_root"
+                      ]
                     },
                     "scheduler",
                     {
-                      "node": 34
+                      "ordinal": 0,
+                      "package": "example:architecture/recovery-quantile",
+                      "path": [
+                        "probabilistic",
+                        "workload",
+                        {
+                          "ordinal": 0,
+                          "package": "example/architecture",
+                          "path": [
+                            "model",
+                            "object_type",
+                            "ix://example/architecture/Service"
+                          ]
+                        },
+                        "Traffic",
+                        "call*1"
+                      ]
                     },
                     "reward",
                     "distributions",
                     {
-                      "node": 33
+                      "ordinal": 0,
+                      "package": "example:architecture/recovery-quantile",
+                      "path": [
+                        "probabilistic",
+                        "random_parameter",
+                        {
+                          "ordinal": 0,
+                          "package": "example/architecture",
+                          "path": [
+                            "model",
+                            "object_type",
+                            "ix://example/architecture/Service"
+                          ]
+                        },
+                        "call",
+                        "ok",
+                        "true*999,false*1"
+                      ]
                     },
                     "delays",
                     "form",
@@ -46,11 +84,251 @@
                     "steps",
                     "from",
                     {
-                      "node": 26
+                      "ordinal": 0,
+                      "package": "example:architecture/recovery-quantile",
+                      "path": [
+                        "expression",
+                        "unary",
+                        {
+                          "ordinal": 0,
+                          "package": "example:architecture/recovery-quantile",
+                          "path": [
+                            "expression",
+                            "query",
+                            {
+                              "ordinal": 0,
+                              "package": "example:architecture/recovery-quantile",
+                              "path": [
+                                "expression",
+                                "deref",
+                                {
+                                  "ordinal": 0,
+                                  "package": "example:architecture/recovery-quantile",
+                                  "path": [
+                                    "value",
+                                    "parameter",
+                                    "name",
+                                    {
+                                      "ordinal": 0,
+                                      "package": "example:architecture/recovery-quantile",
+                                      "path": [
+                                        "scalar_type",
+                                        "text"
+                                      ]
+                                    },
+                                    "s",
+                                    "level",
+                                    {
+                                      "ordinal": 0,
+                                      "package": "example:architecture/recovery-quantile",
+                                      "path": [
+                                        "scalar_type",
+                                        "integer"
+                                      ]
+                                    },
+                                    "0",
+                                    {
+                                      "ordinal": 0,
+                                      "package": "example:architecture/recovery-quantile",
+                                      "path": [
+                                        "composite_type",
+                                        "reference",
+                                        {
+                                          "ordinal": 0,
+                                          "package": "example/architecture",
+                                          "path": [
+                                            "model",
+                                            "object_type",
+                                            "ix://example/architecture/Service"
+                                          ]
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                },
+                                "filament.op.model.deref",
+                                "deref",
+                                {
+                                  "ordinal": 0,
+                                  "package": "example/architecture",
+                                  "path": [
+                                    "model",
+                                    "object_type",
+                                    "ix://example/architecture/Service"
+                                  ]
+                                },
+                                {
+                                  "ordinal": 0,
+                                  "package": "example/architecture",
+                                  "path": [
+                                    "model",
+                                    "object_type",
+                                    "ix://example/architecture/Service"
+                                  ]
+                                }
+                              ]
+                            },
+                            "filament.op.record.project",
+                            {
+                              "ordinal": 0,
+                              "package": "example/architecture",
+                              "path": [
+                                "model",
+                                "object_type",
+                                "ix://example/architecture/Service"
+                              ]
+                            },
+                            "up",
+                            "bare",
+                            "query",
+                            {
+                              "ordinal": 0,
+                              "package": "example:architecture/recovery-quantile",
+                              "path": [
+                                "scalar_type",
+                                "boolean"
+                              ]
+                            },
+                            {
+                              "ordinal": 0,
+                              "package": "example:architecture/recovery-quantile",
+                              "path": [
+                                "scalar_type",
+                                "boolean"
+                              ]
+                            }
+                          ]
+                        },
+                        "filament.op.boolean.not",
+                        "unary",
+                        {
+                          "ordinal": 0,
+                          "package": "example:architecture/recovery-quantile",
+                          "path": [
+                            "scalar_type",
+                            "boolean"
+                          ]
+                        },
+                        {
+                          "ordinal": 0,
+                          "package": "example:architecture/recovery-quantile",
+                          "path": [
+                            "scalar_type",
+                            "boolean"
+                          ]
+                        }
+                      ]
                     },
                     "until",
                     {
-                      "node": 25
+                      "ordinal": 0,
+                      "package": "example:architecture/recovery-quantile",
+                      "path": [
+                        "expression",
+                        "query",
+                        {
+                          "ordinal": 0,
+                          "package": "example:architecture/recovery-quantile",
+                          "path": [
+                            "expression",
+                            "deref",
+                            {
+                              "ordinal": 0,
+                              "package": "example:architecture/recovery-quantile",
+                              "path": [
+                                "value",
+                                "parameter",
+                                "name",
+                                {
+                                  "ordinal": 0,
+                                  "package": "example:architecture/recovery-quantile",
+                                  "path": [
+                                    "scalar_type",
+                                    "text"
+                                  ]
+                                },
+                                "s",
+                                "level",
+                                {
+                                  "ordinal": 0,
+                                  "package": "example:architecture/recovery-quantile",
+                                  "path": [
+                                    "scalar_type",
+                                    "integer"
+                                  ]
+                                },
+                                "0",
+                                {
+                                  "ordinal": 0,
+                                  "package": "example:architecture/recovery-quantile",
+                                  "path": [
+                                    "composite_type",
+                                    "reference",
+                                    {
+                                      "ordinal": 0,
+                                      "package": "example/architecture",
+                                      "path": [
+                                        "model",
+                                        "object_type",
+                                        "ix://example/architecture/Service"
+                                      ]
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            "filament.op.model.deref",
+                            "deref",
+                            {
+                              "ordinal": 0,
+                              "package": "example/architecture",
+                              "path": [
+                                "model",
+                                "object_type",
+                                "ix://example/architecture/Service"
+                              ]
+                            },
+                            {
+                              "ordinal": 0,
+                              "package": "example/architecture",
+                              "path": [
+                                "model",
+                                "object_type",
+                                "ix://example/architecture/Service"
+                              ]
+                            }
+                          ]
+                        },
+                        "filament.op.record.project",
+                        {
+                          "ordinal": 0,
+                          "package": "example/architecture",
+                          "path": [
+                            "model",
+                            "object_type",
+                            "ix://example/architecture/Service"
+                          ]
+                        },
+                        "up",
+                        "bare",
+                        "query",
+                        {
+                          "ordinal": 0,
+                          "package": "example:architecture/recovery-quantile",
+                          "path": [
+                            "scalar_type",
+                            "boolean"
+                          ]
+                        },
+                        {
+                          "ordinal": 0,
+                          "package": "example:architecture/recovery-quantile",
+                          "path": [
+                            "scalar_type",
+                            "boolean"
+                          ]
+                        }
+                      ]
                     },
                     "within",
                     "integer",
@@ -63,7 +341,49 @@
                     "1",
                     "over",
                     {
-                      "node": 23
+                      "ordinal": 0,
+                      "package": "example:architecture/recovery-quantile",
+                      "path": [
+                        "value",
+                        "parameter",
+                        "name",
+                        {
+                          "ordinal": 0,
+                          "package": "example:architecture/recovery-quantile",
+                          "path": [
+                            "scalar_type",
+                            "text"
+                          ]
+                        },
+                        "s",
+                        "level",
+                        {
+                          "ordinal": 0,
+                          "package": "example:architecture/recovery-quantile",
+                          "path": [
+                            "scalar_type",
+                            "integer"
+                          ]
+                        },
+                        "0",
+                        {
+                          "ordinal": 0,
+                          "package": "example:architecture/recovery-quantile",
+                          "path": [
+                            "composite_type",
+                            "reference",
+                            {
+                              "ordinal": 0,
+                              "package": "example/architecture",
+                              "path": [
+                                "model",
+                                "object_type",
+                                "ix://example/architecture/Service"
+                              ]
+                            }
+                          ]
+                        }
+                      ]
                     },
                     "activation",
                     "kind",
@@ -338,16 +658,54 @@
                     "BackInOneCall",
                     "subject",
                     {
-                      "node": 32
+                      "ordinal": 0,
+                      "package": "example/architecture",
+                      "path": [
+                        "model",
+                        "model_root"
+                      ]
                     },
                     "scheduler",
                     {
-                      "node": 34
+                      "ordinal": 0,
+                      "package": "example:architecture/recovery-quantile",
+                      "path": [
+                        "probabilistic",
+                        "workload",
+                        {
+                          "ordinal": 0,
+                          "package": "example/architecture",
+                          "path": [
+                            "model",
+                            "object_type",
+                            "ix://example/architecture/Service"
+                          ]
+                        },
+                        "Traffic",
+                        "call*1"
+                      ]
                     },
                     "reward",
                     "distributions",
                     {
-                      "node": 33
+                      "ordinal": 0,
+                      "package": "example:architecture/recovery-quantile",
+                      "path": [
+                        "probabilistic",
+                        "random_parameter",
+                        {
+                          "ordinal": 0,
+                          "package": "example/architecture",
+                          "path": [
+                            "model",
+                            "object_type",
+                            "ix://example/architecture/Service"
+                          ]
+                        },
+                        "call",
+                        "ok",
+                        "true*999,false*1"
+                      ]
                     },
                     "delays",
                     "form",
@@ -361,11 +719,251 @@
                     "steps",
                     "from",
                     {
-                      "node": 26
+                      "ordinal": 0,
+                      "package": "example:architecture/recovery-quantile",
+                      "path": [
+                        "expression",
+                        "unary",
+                        {
+                          "ordinal": 0,
+                          "package": "example:architecture/recovery-quantile",
+                          "path": [
+                            "expression",
+                            "query",
+                            {
+                              "ordinal": 0,
+                              "package": "example:architecture/recovery-quantile",
+                              "path": [
+                                "expression",
+                                "deref",
+                                {
+                                  "ordinal": 0,
+                                  "package": "example:architecture/recovery-quantile",
+                                  "path": [
+                                    "value",
+                                    "parameter",
+                                    "name",
+                                    {
+                                      "ordinal": 0,
+                                      "package": "example:architecture/recovery-quantile",
+                                      "path": [
+                                        "scalar_type",
+                                        "text"
+                                      ]
+                                    },
+                                    "s",
+                                    "level",
+                                    {
+                                      "ordinal": 0,
+                                      "package": "example:architecture/recovery-quantile",
+                                      "path": [
+                                        "scalar_type",
+                                        "integer"
+                                      ]
+                                    },
+                                    "0",
+                                    {
+                                      "ordinal": 0,
+                                      "package": "example:architecture/recovery-quantile",
+                                      "path": [
+                                        "composite_type",
+                                        "reference",
+                                        {
+                                          "ordinal": 0,
+                                          "package": "example/architecture",
+                                          "path": [
+                                            "model",
+                                            "object_type",
+                                            "ix://example/architecture/Service"
+                                          ]
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                },
+                                "filament.op.model.deref",
+                                "deref",
+                                {
+                                  "ordinal": 0,
+                                  "package": "example/architecture",
+                                  "path": [
+                                    "model",
+                                    "object_type",
+                                    "ix://example/architecture/Service"
+                                  ]
+                                },
+                                {
+                                  "ordinal": 0,
+                                  "package": "example/architecture",
+                                  "path": [
+                                    "model",
+                                    "object_type",
+                                    "ix://example/architecture/Service"
+                                  ]
+                                }
+                              ]
+                            },
+                            "filament.op.record.project",
+                            {
+                              "ordinal": 0,
+                              "package": "example/architecture",
+                              "path": [
+                                "model",
+                                "object_type",
+                                "ix://example/architecture/Service"
+                              ]
+                            },
+                            "up",
+                            "bare",
+                            "query",
+                            {
+                              "ordinal": 0,
+                              "package": "example:architecture/recovery-quantile",
+                              "path": [
+                                "scalar_type",
+                                "boolean"
+                              ]
+                            },
+                            {
+                              "ordinal": 0,
+                              "package": "example:architecture/recovery-quantile",
+                              "path": [
+                                "scalar_type",
+                                "boolean"
+                              ]
+                            }
+                          ]
+                        },
+                        "filament.op.boolean.not",
+                        "unary",
+                        {
+                          "ordinal": 0,
+                          "package": "example:architecture/recovery-quantile",
+                          "path": [
+                            "scalar_type",
+                            "boolean"
+                          ]
+                        },
+                        {
+                          "ordinal": 0,
+                          "package": "example:architecture/recovery-quantile",
+                          "path": [
+                            "scalar_type",
+                            "boolean"
+                          ]
+                        }
+                      ]
                     },
                     "until",
                     {
-                      "node": 25
+                      "ordinal": 0,
+                      "package": "example:architecture/recovery-quantile",
+                      "path": [
+                        "expression",
+                        "query",
+                        {
+                          "ordinal": 0,
+                          "package": "example:architecture/recovery-quantile",
+                          "path": [
+                            "expression",
+                            "deref",
+                            {
+                              "ordinal": 0,
+                              "package": "example:architecture/recovery-quantile",
+                              "path": [
+                                "value",
+                                "parameter",
+                                "name",
+                                {
+                                  "ordinal": 0,
+                                  "package": "example:architecture/recovery-quantile",
+                                  "path": [
+                                    "scalar_type",
+                                    "text"
+                                  ]
+                                },
+                                "s",
+                                "level",
+                                {
+                                  "ordinal": 0,
+                                  "package": "example:architecture/recovery-quantile",
+                                  "path": [
+                                    "scalar_type",
+                                    "integer"
+                                  ]
+                                },
+                                "0",
+                                {
+                                  "ordinal": 0,
+                                  "package": "example:architecture/recovery-quantile",
+                                  "path": [
+                                    "composite_type",
+                                    "reference",
+                                    {
+                                      "ordinal": 0,
+                                      "package": "example/architecture",
+                                      "path": [
+                                        "model",
+                                        "object_type",
+                                        "ix://example/architecture/Service"
+                                      ]
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            "filament.op.model.deref",
+                            "deref",
+                            {
+                              "ordinal": 0,
+                              "package": "example/architecture",
+                              "path": [
+                                "model",
+                                "object_type",
+                                "ix://example/architecture/Service"
+                              ]
+                            },
+                            {
+                              "ordinal": 0,
+                              "package": "example/architecture",
+                              "path": [
+                                "model",
+                                "object_type",
+                                "ix://example/architecture/Service"
+                              ]
+                            }
+                          ]
+                        },
+                        "filament.op.record.project",
+                        {
+                          "ordinal": 0,
+                          "package": "example/architecture",
+                          "path": [
+                            "model",
+                            "object_type",
+                            "ix://example/architecture/Service"
+                          ]
+                        },
+                        "up",
+                        "bare",
+                        "query",
+                        {
+                          "ordinal": 0,
+                          "package": "example:architecture/recovery-quantile",
+                          "path": [
+                            "scalar_type",
+                            "boolean"
+                          ]
+                        },
+                        {
+                          "ordinal": 0,
+                          "package": "example:architecture/recovery-quantile",
+                          "path": [
+                            "scalar_type",
+                            "boolean"
+                          ]
+                        }
+                      ]
                     },
                     "within",
                     "integer",
@@ -378,7 +976,49 @@
                     "1",
                     "over",
                     {
-                      "node": 23
+                      "ordinal": 0,
+                      "package": "example:architecture/recovery-quantile",
+                      "path": [
+                        "value",
+                        "parameter",
+                        "name",
+                        {
+                          "ordinal": 0,
+                          "package": "example:architecture/recovery-quantile",
+                          "path": [
+                            "scalar_type",
+                            "text"
+                          ]
+                        },
+                        "s",
+                        "level",
+                        {
+                          "ordinal": 0,
+                          "package": "example:architecture/recovery-quantile",
+                          "path": [
+                            "scalar_type",
+                            "integer"
+                          ]
+                        },
+                        "0",
+                        {
+                          "ordinal": 0,
+                          "package": "example:architecture/recovery-quantile",
+                          "path": [
+                            "composite_type",
+                            "reference",
+                            {
+                              "ordinal": 0,
+                              "package": "example/architecture",
+                              "path": [
+                                "model",
+                                "object_type",
+                                "ix://example/architecture/Service"
+                              ]
+                            }
+                          ]
+                        }
+                      ]
                     },
                     "activation",
                     "kind",
@@ -655,16 +1295,54 @@
                 "BackInOneCall",
                 "subject",
                 {
-                  "node": 32
+                  "ordinal": 0,
+                  "package": "example/architecture",
+                  "path": [
+                    "model",
+                    "model_root"
+                  ]
                 },
                 "scheduler",
                 {
-                  "node": 34
+                  "ordinal": 0,
+                  "package": "example:architecture/recovery-quantile",
+                  "path": [
+                    "probabilistic",
+                    "workload",
+                    {
+                      "ordinal": 0,
+                      "package": "example/architecture",
+                      "path": [
+                        "model",
+                        "object_type",
+                        "ix://example/architecture/Service"
+                      ]
+                    },
+                    "Traffic",
+                    "call*1"
+                  ]
                 },
                 "reward",
                 "distributions",
                 {
-                  "node": 33
+                  "ordinal": 0,
+                  "package": "example:architecture/recovery-quantile",
+                  "path": [
+                    "probabilistic",
+                    "random_parameter",
+                    {
+                      "ordinal": 0,
+                      "package": "example/architecture",
+                      "path": [
+                        "model",
+                        "object_type",
+                        "ix://example/architecture/Service"
+                      ]
+                    },
+                    "call",
+                    "ok",
+                    "true*999,false*1"
+                  ]
                 },
                 "delays",
                 "form",
@@ -678,11 +1356,251 @@
                 "steps",
                 "from",
                 {
-                  "node": 26
+                  "ordinal": 0,
+                  "package": "example:architecture/recovery-quantile",
+                  "path": [
+                    "expression",
+                    "unary",
+                    {
+                      "ordinal": 0,
+                      "package": "example:architecture/recovery-quantile",
+                      "path": [
+                        "expression",
+                        "query",
+                        {
+                          "ordinal": 0,
+                          "package": "example:architecture/recovery-quantile",
+                          "path": [
+                            "expression",
+                            "deref",
+                            {
+                              "ordinal": 0,
+                              "package": "example:architecture/recovery-quantile",
+                              "path": [
+                                "value",
+                                "parameter",
+                                "name",
+                                {
+                                  "ordinal": 0,
+                                  "package": "example:architecture/recovery-quantile",
+                                  "path": [
+                                    "scalar_type",
+                                    "text"
+                                  ]
+                                },
+                                "s",
+                                "level",
+                                {
+                                  "ordinal": 0,
+                                  "package": "example:architecture/recovery-quantile",
+                                  "path": [
+                                    "scalar_type",
+                                    "integer"
+                                  ]
+                                },
+                                "0",
+                                {
+                                  "ordinal": 0,
+                                  "package": "example:architecture/recovery-quantile",
+                                  "path": [
+                                    "composite_type",
+                                    "reference",
+                                    {
+                                      "ordinal": 0,
+                                      "package": "example/architecture",
+                                      "path": [
+                                        "model",
+                                        "object_type",
+                                        "ix://example/architecture/Service"
+                                      ]
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            "filament.op.model.deref",
+                            "deref",
+                            {
+                              "ordinal": 0,
+                              "package": "example/architecture",
+                              "path": [
+                                "model",
+                                "object_type",
+                                "ix://example/architecture/Service"
+                              ]
+                            },
+                            {
+                              "ordinal": 0,
+                              "package": "example/architecture",
+                              "path": [
+                                "model",
+                                "object_type",
+                                "ix://example/architecture/Service"
+                              ]
+                            }
+                          ]
+                        },
+                        "filament.op.record.project",
+                        {
+                          "ordinal": 0,
+                          "package": "example/architecture",
+                          "path": [
+                            "model",
+                            "object_type",
+                            "ix://example/architecture/Service"
+                          ]
+                        },
+                        "up",
+                        "bare",
+                        "query",
+                        {
+                          "ordinal": 0,
+                          "package": "example:architecture/recovery-quantile",
+                          "path": [
+                            "scalar_type",
+                            "boolean"
+                          ]
+                        },
+                        {
+                          "ordinal": 0,
+                          "package": "example:architecture/recovery-quantile",
+                          "path": [
+                            "scalar_type",
+                            "boolean"
+                          ]
+                        }
+                      ]
+                    },
+                    "filament.op.boolean.not",
+                    "unary",
+                    {
+                      "ordinal": 0,
+                      "package": "example:architecture/recovery-quantile",
+                      "path": [
+                        "scalar_type",
+                        "boolean"
+                      ]
+                    },
+                    {
+                      "ordinal": 0,
+                      "package": "example:architecture/recovery-quantile",
+                      "path": [
+                        "scalar_type",
+                        "boolean"
+                      ]
+                    }
+                  ]
                 },
                 "until",
                 {
-                  "node": 25
+                  "ordinal": 0,
+                  "package": "example:architecture/recovery-quantile",
+                  "path": [
+                    "expression",
+                    "query",
+                    {
+                      "ordinal": 0,
+                      "package": "example:architecture/recovery-quantile",
+                      "path": [
+                        "expression",
+                        "deref",
+                        {
+                          "ordinal": 0,
+                          "package": "example:architecture/recovery-quantile",
+                          "path": [
+                            "value",
+                            "parameter",
+                            "name",
+                            {
+                              "ordinal": 0,
+                              "package": "example:architecture/recovery-quantile",
+                              "path": [
+                                "scalar_type",
+                                "text"
+                              ]
+                            },
+                            "s",
+                            "level",
+                            {
+                              "ordinal": 0,
+                              "package": "example:architecture/recovery-quantile",
+                              "path": [
+                                "scalar_type",
+                                "integer"
+                              ]
+                            },
+                            "0",
+                            {
+                              "ordinal": 0,
+                              "package": "example:architecture/recovery-quantile",
+                              "path": [
+                                "composite_type",
+                                "reference",
+                                {
+                                  "ordinal": 0,
+                                  "package": "example/architecture",
+                                  "path": [
+                                    "model",
+                                    "object_type",
+                                    "ix://example/architecture/Service"
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        "filament.op.model.deref",
+                        "deref",
+                        {
+                          "ordinal": 0,
+                          "package": "example/architecture",
+                          "path": [
+                            "model",
+                            "object_type",
+                            "ix://example/architecture/Service"
+                          ]
+                        },
+                        {
+                          "ordinal": 0,
+                          "package": "example/architecture",
+                          "path": [
+                            "model",
+                            "object_type",
+                            "ix://example/architecture/Service"
+                          ]
+                        }
+                      ]
+                    },
+                    "filament.op.record.project",
+                    {
+                      "ordinal": 0,
+                      "package": "example/architecture",
+                      "path": [
+                        "model",
+                        "object_type",
+                        "ix://example/architecture/Service"
+                      ]
+                    },
+                    "up",
+                    "bare",
+                    "query",
+                    {
+                      "ordinal": 0,
+                      "package": "example:architecture/recovery-quantile",
+                      "path": [
+                        "scalar_type",
+                        "boolean"
+                      ]
+                    },
+                    {
+                      "ordinal": 0,
+                      "package": "example:architecture/recovery-quantile",
+                      "path": [
+                        "scalar_type",
+                        "boolean"
+                      ]
+                    }
+                  ]
                 },
                 "within",
                 "integer",
@@ -695,7 +1613,49 @@
                 "1",
                 "over",
                 {
-                  "node": 23
+                  "ordinal": 0,
+                  "package": "example:architecture/recovery-quantile",
+                  "path": [
+                    "value",
+                    "parameter",
+                    "name",
+                    {
+                      "ordinal": 0,
+                      "package": "example:architecture/recovery-quantile",
+                      "path": [
+                        "scalar_type",
+                        "text"
+                      ]
+                    },
+                    "s",
+                    "level",
+                    {
+                      "ordinal": 0,
+                      "package": "example:architecture/recovery-quantile",
+                      "path": [
+                        "scalar_type",
+                        "integer"
+                      ]
+                    },
+                    "0",
+                    {
+                      "ordinal": 0,
+                      "package": "example:architecture/recovery-quantile",
+                      "path": [
+                        "composite_type",
+                        "reference",
+                        {
+                          "ordinal": 0,
+                          "package": "example/architecture",
+                          "path": [
+                            "model",
+                            "object_type",
+                            "ix://example/architecture/Service"
+                          ]
+                        }
+                      ]
+                    }
+                  ]
                 },
                 "activation",
                 "kind",
@@ -738,16 +1698,54 @@
               "BackInOneCall",
               "subject",
               {
-                "node": 32
+                "ordinal": 0,
+                "package": "example/architecture",
+                "path": [
+                  "model",
+                  "model_root"
+                ]
               },
               "scheduler",
               {
-                "node": 34
+                "ordinal": 0,
+                "package": "example:architecture/recovery-quantile",
+                "path": [
+                  "probabilistic",
+                  "workload",
+                  {
+                    "ordinal": 0,
+                    "package": "example/architecture",
+                    "path": [
+                      "model",
+                      "object_type",
+                      "ix://example/architecture/Service"
+                    ]
+                  },
+                  "Traffic",
+                  "call*1"
+                ]
               },
               "reward",
               "distributions",
               {
-                "node": 33
+                "ordinal": 0,
+                "package": "example:architecture/recovery-quantile",
+                "path": [
+                  "probabilistic",
+                  "random_parameter",
+                  {
+                    "ordinal": 0,
+                    "package": "example/architecture",
+                    "path": [
+                      "model",
+                      "object_type",
+                      "ix://example/architecture/Service"
+                    ]
+                  },
+                  "call",
+                  "ok",
+                  "true*999,false*1"
+                ]
               },
               "delays",
               "form",
@@ -761,11 +1759,251 @@
               "steps",
               "from",
               {
-                "node": 26
+                "ordinal": 0,
+                "package": "example:architecture/recovery-quantile",
+                "path": [
+                  "expression",
+                  "unary",
+                  {
+                    "ordinal": 0,
+                    "package": "example:architecture/recovery-quantile",
+                    "path": [
+                      "expression",
+                      "query",
+                      {
+                        "ordinal": 0,
+                        "package": "example:architecture/recovery-quantile",
+                        "path": [
+                          "expression",
+                          "deref",
+                          {
+                            "ordinal": 0,
+                            "package": "example:architecture/recovery-quantile",
+                            "path": [
+                              "value",
+                              "parameter",
+                              "name",
+                              {
+                                "ordinal": 0,
+                                "package": "example:architecture/recovery-quantile",
+                                "path": [
+                                  "scalar_type",
+                                  "text"
+                                ]
+                              },
+                              "s",
+                              "level",
+                              {
+                                "ordinal": 0,
+                                "package": "example:architecture/recovery-quantile",
+                                "path": [
+                                  "scalar_type",
+                                  "integer"
+                                ]
+                              },
+                              "0",
+                              {
+                                "ordinal": 0,
+                                "package": "example:architecture/recovery-quantile",
+                                "path": [
+                                  "composite_type",
+                                  "reference",
+                                  {
+                                    "ordinal": 0,
+                                    "package": "example/architecture",
+                                    "path": [
+                                      "model",
+                                      "object_type",
+                                      "ix://example/architecture/Service"
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          "filament.op.model.deref",
+                          "deref",
+                          {
+                            "ordinal": 0,
+                            "package": "example/architecture",
+                            "path": [
+                              "model",
+                              "object_type",
+                              "ix://example/architecture/Service"
+                            ]
+                          },
+                          {
+                            "ordinal": 0,
+                            "package": "example/architecture",
+                            "path": [
+                              "model",
+                              "object_type",
+                              "ix://example/architecture/Service"
+                            ]
+                          }
+                        ]
+                      },
+                      "filament.op.record.project",
+                      {
+                        "ordinal": 0,
+                        "package": "example/architecture",
+                        "path": [
+                          "model",
+                          "object_type",
+                          "ix://example/architecture/Service"
+                        ]
+                      },
+                      "up",
+                      "bare",
+                      "query",
+                      {
+                        "ordinal": 0,
+                        "package": "example:architecture/recovery-quantile",
+                        "path": [
+                          "scalar_type",
+                          "boolean"
+                        ]
+                      },
+                      {
+                        "ordinal": 0,
+                        "package": "example:architecture/recovery-quantile",
+                        "path": [
+                          "scalar_type",
+                          "boolean"
+                        ]
+                      }
+                    ]
+                  },
+                  "filament.op.boolean.not",
+                  "unary",
+                  {
+                    "ordinal": 0,
+                    "package": "example:architecture/recovery-quantile",
+                    "path": [
+                      "scalar_type",
+                      "boolean"
+                    ]
+                  },
+                  {
+                    "ordinal": 0,
+                    "package": "example:architecture/recovery-quantile",
+                    "path": [
+                      "scalar_type",
+                      "boolean"
+                    ]
+                  }
+                ]
               },
               "until",
               {
-                "node": 25
+                "ordinal": 0,
+                "package": "example:architecture/recovery-quantile",
+                "path": [
+                  "expression",
+                  "query",
+                  {
+                    "ordinal": 0,
+                    "package": "example:architecture/recovery-quantile",
+                    "path": [
+                      "expression",
+                      "deref",
+                      {
+                        "ordinal": 0,
+                        "package": "example:architecture/recovery-quantile",
+                        "path": [
+                          "value",
+                          "parameter",
+                          "name",
+                          {
+                            "ordinal": 0,
+                            "package": "example:architecture/recovery-quantile",
+                            "path": [
+                              "scalar_type",
+                              "text"
+                            ]
+                          },
+                          "s",
+                          "level",
+                          {
+                            "ordinal": 0,
+                            "package": "example:architecture/recovery-quantile",
+                            "path": [
+                              "scalar_type",
+                              "integer"
+                            ]
+                          },
+                          "0",
+                          {
+                            "ordinal": 0,
+                            "package": "example:architecture/recovery-quantile",
+                            "path": [
+                              "composite_type",
+                              "reference",
+                              {
+                                "ordinal": 0,
+                                "package": "example/architecture",
+                                "path": [
+                                  "model",
+                                  "object_type",
+                                  "ix://example/architecture/Service"
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      "filament.op.model.deref",
+                      "deref",
+                      {
+                        "ordinal": 0,
+                        "package": "example/architecture",
+                        "path": [
+                          "model",
+                          "object_type",
+                          "ix://example/architecture/Service"
+                        ]
+                      },
+                      {
+                        "ordinal": 0,
+                        "package": "example/architecture",
+                        "path": [
+                          "model",
+                          "object_type",
+                          "ix://example/architecture/Service"
+                        ]
+                      }
+                    ]
+                  },
+                  "filament.op.record.project",
+                  {
+                    "ordinal": 0,
+                    "package": "example/architecture",
+                    "path": [
+                      "model",
+                      "object_type",
+                      "ix://example/architecture/Service"
+                    ]
+                  },
+                  "up",
+                  "bare",
+                  "query",
+                  {
+                    "ordinal": 0,
+                    "package": "example:architecture/recovery-quantile",
+                    "path": [
+                      "scalar_type",
+                      "boolean"
+                    ]
+                  },
+                  {
+                    "ordinal": 0,
+                    "package": "example:architecture/recovery-quantile",
+                    "path": [
+                      "scalar_type",
+                      "boolean"
+                    ]
+                  }
+                ]
               },
               "within",
               "integer",
@@ -778,7 +2016,49 @@
               "1",
               "over",
               {
-                "node": 23
+                "ordinal": 0,
+                "package": "example:architecture/recovery-quantile",
+                "path": [
+                  "value",
+                  "parameter",
+                  "name",
+                  {
+                    "ordinal": 0,
+                    "package": "example:architecture/recovery-quantile",
+                    "path": [
+                      "scalar_type",
+                      "text"
+                    ]
+                  },
+                  "s",
+                  "level",
+                  {
+                    "ordinal": 0,
+                    "package": "example:architecture/recovery-quantile",
+                    "path": [
+                      "scalar_type",
+                      "integer"
+                    ]
+                  },
+                  "0",
+                  {
+                    "ordinal": 0,
+                    "package": "example:architecture/recovery-quantile",
+                    "path": [
+                      "composite_type",
+                      "reference",
+                      {
+                        "ordinal": 0,
+                        "package": "example/architecture",
+                        "path": [
+                          "model",
+                          "object_type",
+                          "ix://example/architecture/Service"
+                        ]
+                      }
+                    ]
+                  }
+                ]
               },
               "activation",
               "kind",
@@ -797,8 +2077,24 @@
           "entries": [
             {
               "binding": {
-                "key": "checkout",
-                "population": "ix://example/architecture/services"
+                "identity": "checkout",
+                "object_type": {
+                  "original": {
+                    "node": "ix://example/architecture/Service",
+                    "package": "example/architecture"
+                  },
+                  "owner_effective_type": null
+                },
+                "type": "reference",
+                "universe": {
+                  "ordinal": 0,
+                  "package": "example/architecture",
+                  "path": [
+                    "model",
+                    "object_type",
+                    "ix://example/architecture/Service"
+                  ]
+                }
               },
               "extremum": null,
               "initial": 0,
@@ -841,7 +2137,7 @@
               "BackInOneCall",
               "subject",
               {
-                "node": 32
+                "node": 38
               },
               "scheduler",
               {

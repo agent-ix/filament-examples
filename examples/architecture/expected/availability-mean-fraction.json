@@ -21,16 +21,54 @@
                 "UpMostly",
                 "subject",
                 {
-                  "node": 31
+                  "ordinal": 0,
+                  "package": "example/architecture",
+                  "path": [
+                    "model",
+                    "model_root"
+                  ]
                 },
                 "scheduler",
                 {
-                  "node": 33
+                  "ordinal": 0,
+                  "package": "example:architecture/availability-mean-fraction",
+                  "path": [
+                    "probabilistic",
+                    "workload",
+                    {
+                      "ordinal": 0,
+                      "package": "example/architecture",
+                      "path": [
+                        "model",
+                        "object_type",
+                        "ix://example/architecture/Service"
+                      ]
+                    },
+                    "Traffic",
+                    "call*1"
+                  ]
                 },
                 "reward",
                 "distributions",
                 {
-                  "node": 32
+                  "ordinal": 0,
+                  "package": "example:architecture/availability-mean-fraction",
+                  "path": [
+                    "probabilistic",
+                    "random_parameter",
+                    {
+                      "ordinal": 0,
+                      "package": "example/architecture",
+                      "path": [
+                        "model",
+                        "object_type",
+                        "ix://example/architecture/Service"
+                      ]
+                    },
+                    "call",
+                    "ok",
+                    "true*999,false*1"
+                  ]
                 },
                 "delays",
                 "form",
@@ -41,7 +79,114 @@
                 "fraction",
                 "predicate",
                 {
-                  "node": 25
+                  "ordinal": 0,
+                  "package": "example:architecture/availability-mean-fraction",
+                  "path": [
+                    "expression",
+                    "query",
+                    {
+                      "ordinal": 0,
+                      "package": "example:architecture/availability-mean-fraction",
+                      "path": [
+                        "expression",
+                        "deref",
+                        {
+                          "ordinal": 0,
+                          "package": "example:architecture/availability-mean-fraction",
+                          "path": [
+                            "value",
+                            "parameter",
+                            "name",
+                            {
+                              "ordinal": 0,
+                              "package": "example:architecture/availability-mean-fraction",
+                              "path": [
+                                "scalar_type",
+                                "text"
+                              ]
+                            },
+                            "s",
+                            "level",
+                            {
+                              "ordinal": 0,
+                              "package": "example:architecture/availability-mean-fraction",
+                              "path": [
+                                "scalar_type",
+                                "integer"
+                              ]
+                            },
+                            "0",
+                            {
+                              "ordinal": 0,
+                              "package": "example:architecture/availability-mean-fraction",
+                              "path": [
+                                "composite_type",
+                                "reference",
+                                {
+                                  "ordinal": 0,
+                                  "package": "example/architecture",
+                                  "path": [
+                                    "model",
+                                    "object_type",
+                                    "ix://example/architecture/Service"
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        "filament.op.model.deref",
+                        "deref",
+                        {
+                          "ordinal": 0,
+                          "package": "example/architecture",
+                          "path": [
+                            "model",
+                            "object_type",
+                            "ix://example/architecture/Service"
+                          ]
+                        },
+                        {
+                          "ordinal": 0,
+                          "package": "example/architecture",
+                          "path": [
+                            "model",
+                            "object_type",
+                            "ix://example/architecture/Service"
+                          ]
+                        }
+                      ]
+                    },
+                    "filament.op.record.project",
+                    {
+                      "ordinal": 0,
+                      "package": "example/architecture",
+                      "path": [
+                        "model",
+                        "object_type",
+                        "ix://example/architecture/Service"
+                      ]
+                    },
+                    "up",
+                    "bare",
+                    "query",
+                    {
+                      "ordinal": 0,
+                      "package": "example:architecture/availability-mean-fraction",
+                      "path": [
+                        "scalar_type",
+                        "boolean"
+                      ]
+                    },
+                    {
+                      "ordinal": 0,
+                      "package": "example:architecture/availability-mean-fraction",
+                      "path": [
+                        "scalar_type",
+                        "boolean"
+                      ]
+                    }
+                  ]
                 },
                 "window",
                 "integer",
@@ -57,7 +202,49 @@
                 "99/100",
                 "over",
                 {
-                  "node": 23
+                  "ordinal": 0,
+                  "package": "example:architecture/availability-mean-fraction",
+                  "path": [
+                    "value",
+                    "parameter",
+                    "name",
+                    {
+                      "ordinal": 0,
+                      "package": "example:architecture/availability-mean-fraction",
+                      "path": [
+                        "scalar_type",
+                        "text"
+                      ]
+                    },
+                    "s",
+                    "level",
+                    {
+                      "ordinal": 0,
+                      "package": "example:architecture/availability-mean-fraction",
+                      "path": [
+                        "scalar_type",
+                        "integer"
+                      ]
+                    },
+                    "0",
+                    {
+                      "ordinal": 0,
+                      "package": "example:architecture/availability-mean-fraction",
+                      "path": [
+                        "composite_type",
+                        "reference",
+                        {
+                          "ordinal": 0,
+                          "package": "example/architecture",
+                          "path": [
+                            "model",
+                            "object_type",
+                            "ix://example/architecture/Service"
+                          ]
+                        }
+                      ]
+                    }
+                  ]
                 },
                 "activation",
                 "kind",
@@ -242,16 +429,54 @@
               "UpMostly",
               "subject",
               {
-                "node": 31
+                "ordinal": 0,
+                "package": "example/architecture",
+                "path": [
+                  "model",
+                  "model_root"
+                ]
               },
               "scheduler",
               {
-                "node": 33
+                "ordinal": 0,
+                "package": "example:architecture/availability-mean-fraction",
+                "path": [
+                  "probabilistic",
+                  "workload",
+                  {
+                    "ordinal": 0,
+                    "package": "example/architecture",
+                    "path": [
+                      "model",
+                      "object_type",
+                      "ix://example/architecture/Service"
+                    ]
+                  },
+                  "Traffic",
+                  "call*1"
+                ]
               },
               "reward",
               "distributions",
               {
-                "node": 32
+                "ordinal": 0,
+                "package": "example:architecture/availability-mean-fraction",
+                "path": [
+                  "probabilistic",
+                  "random_parameter",
+                  {
+                    "ordinal": 0,
+                    "package": "example/architecture",
+                    "path": [
+                      "model",
+                      "object_type",
+                      "ix://example/architecture/Service"
+                    ]
+                  },
+                  "call",
+                  "ok",
+                  "true*999,false*1"
+                ]
               },
               "delays",
               "form",
@@ -262,7 +487,114 @@
               "fraction",
               "predicate",
               {
-                "node": 25
+                "ordinal": 0,
+                "package": "example:architecture/availability-mean-fraction",
+                "path": [
+                  "expression",
+                  "query",
+                  {
+                    "ordinal": 0,
+                    "package": "example:architecture/availability-mean-fraction",
+                    "path": [
+                      "expression",
+                      "deref",
+                      {
+                        "ordinal": 0,
+                        "package": "example:architecture/availability-mean-fraction",
+                        "path": [
+                          "value",
+                          "parameter",
+                          "name",
+                          {
+                            "ordinal": 0,
+                            "package": "example:architecture/availability-mean-fraction",
+                            "path": [
+                              "scalar_type",
+                              "text"
+                            ]
+                          },
+                          "s",
+                          "level",
+                          {
+                            "ordinal": 0,
+                            "package": "example:architecture/availability-mean-fraction",
+                            "path": [
+                              "scalar_type",
+                              "integer"
+                            ]
+                          },
+                          "0",
+                          {
+                            "ordinal": 0,
+                            "package": "example:architecture/availability-mean-fraction",
+                            "path": [
+                              "composite_type",
+                              "reference",
+                              {
+                                "ordinal": 0,
+                                "package": "example/architecture",
+                                "path": [
+                                  "model",
+                                  "object_type",
+                                  "ix://example/architecture/Service"
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      "filament.op.model.deref",
+                      "deref",
+                      {
+                        "ordinal": 0,
+                        "package": "example/architecture",
+                        "path": [
+                          "model",
+                          "object_type",
+                          "ix://example/architecture/Service"
+                        ]
+                      },
+                      {
+                        "ordinal": 0,
+                        "package": "example/architecture",
+                        "path": [
+                          "model",
+                          "object_type",
+                          "ix://example/architecture/Service"
+                        ]
+                      }
+                    ]
+                  },
+                  "filament.op.record.project",
+                  {
+                    "ordinal": 0,
+                    "package": "example/architecture",
+                    "path": [
+                      "model",
+                      "object_type",
+                      "ix://example/architecture/Service"
+                    ]
+                  },
+                  "up",
+                  "bare",
+                  "query",
+                  {
+                    "ordinal": 0,
+                    "package": "example:architecture/availability-mean-fraction",
+                    "path": [
+                      "scalar_type",
+                      "boolean"
+                    ]
+                  },
+                  {
+                    "ordinal": 0,
+                    "package": "example:architecture/availability-mean-fraction",
+                    "path": [
+                      "scalar_type",
+                      "boolean"
+                    ]
+                  }
+                ]
               },
               "window",
               "integer",
@@ -278,7 +610,49 @@
               "99/100",
               "over",
               {
-                "node": 23
+                "ordinal": 0,
+                "package": "example:architecture/availability-mean-fraction",
+                "path": [
+                  "value",
+                  "parameter",
+                  "name",
+                  {
+                    "ordinal": 0,
+                    "package": "example:architecture/availability-mean-fraction",
+                    "path": [
+                      "scalar_type",
+                      "text"
+                    ]
+                  },
+                  "s",
+                  "level",
+                  {
+                    "ordinal": 0,
+                    "package": "example:architecture/availability-mean-fraction",
+                    "path": [
+                      "scalar_type",
+                      "integer"
+                    ]
+                  },
+                  "0",
+                  {
+                    "ordinal": 0,
+                    "package": "example:architecture/availability-mean-fraction",
+                    "path": [
+                      "composite_type",
+                      "reference",
+                      {
+                        "ordinal": 0,
+                        "package": "example/architecture",
+                        "path": [
+                          "model",
+                          "object_type",
+                          "ix://example/architecture/Service"
+                        ]
+                      }
+                    ]
+                  }
+                ]
               },
               "activation",
               "kind",
@@ -297,8 +671,24 @@
           "entries": [
             {
               "binding": {
-                "key": "checkout",
-                "population": "ix://example/architecture/services"
+                "identity": "checkout",
+                "object_type": {
+                  "original": {
+                    "node": "ix://example/architecture/Service",
+                    "package": "example/architecture"
+                  },
+                  "owner_effective_type": null
+                },
+                "type": "reference",
+                "universe": {
+                  "ordinal": 0,
+                  "package": "example/architecture",
+                  "path": [
+                    "model",
+                    "object_type",
+                    "ix://example/architecture/Service"
+                  ]
+                }
               },
               "extremum": null,
               "initial": 0,
@@ -341,7 +731,7 @@
               "UpMostly",
               "subject",
               {
-                "node": 31
+                "node": 37
               },
               "scheduler",
               {
