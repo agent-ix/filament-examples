@@ -49,16 +49,54 @@
                 "Availability",
                 "subject",
                 {
-                  "node": 31
+                  "ordinal": 0,
+                  "package": "example/architecture",
+                  "path": [
+                    "model",
+                    "model_root"
+                  ]
                 },
                 "scheduler",
                 {
-                  "node": 33
+                  "ordinal": 0,
+                  "package": "example:architecture/availability-long-run",
+                  "path": [
+                    "probabilistic",
+                    "workload",
+                    {
+                      "ordinal": 0,
+                      "package": "example/architecture",
+                      "path": [
+                        "model",
+                        "object_type",
+                        "ix://example/architecture/Service"
+                      ]
+                    },
+                    "Traffic",
+                    "call*1"
+                  ]
                 },
                 "reward",
                 "distributions",
                 {
-                  "node": 32
+                  "ordinal": 0,
+                  "package": "example:architecture/availability-long-run",
+                  "path": [
+                    "probabilistic",
+                    "random_parameter",
+                    {
+                      "ordinal": 0,
+                      "package": "example/architecture",
+                      "path": [
+                        "model",
+                        "object_type",
+                        "ix://example/architecture/Service"
+                      ]
+                    },
+                    "call",
+                    "ok",
+                    "true*9999,false*1"
+                  ]
                 },
                 "delays",
                 "form",
@@ -66,7 +104,114 @@
                 "long_run_fraction",
                 "predicate",
                 {
-                  "node": 25
+                  "ordinal": 0,
+                  "package": "example:architecture/availability-long-run",
+                  "path": [
+                    "expression",
+                    "query",
+                    {
+                      "ordinal": 0,
+                      "package": "example:architecture/availability-long-run",
+                      "path": [
+                        "expression",
+                        "deref",
+                        {
+                          "ordinal": 0,
+                          "package": "example:architecture/availability-long-run",
+                          "path": [
+                            "value",
+                            "parameter",
+                            "name",
+                            {
+                              "ordinal": 0,
+                              "package": "example:architecture/availability-long-run",
+                              "path": [
+                                "scalar_type",
+                                "text"
+                              ]
+                            },
+                            "s",
+                            "level",
+                            {
+                              "ordinal": 0,
+                              "package": "example:architecture/availability-long-run",
+                              "path": [
+                                "scalar_type",
+                                "integer"
+                              ]
+                            },
+                            "0",
+                            {
+                              "ordinal": 0,
+                              "package": "example:architecture/availability-long-run",
+                              "path": [
+                                "composite_type",
+                                "reference",
+                                {
+                                  "ordinal": 0,
+                                  "package": "example/architecture",
+                                  "path": [
+                                    "model",
+                                    "object_type",
+                                    "ix://example/architecture/Service"
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        "filament.op.model.deref",
+                        "deref",
+                        {
+                          "ordinal": 0,
+                          "package": "example/architecture",
+                          "path": [
+                            "model",
+                            "object_type",
+                            "ix://example/architecture/Service"
+                          ]
+                        },
+                        {
+                          "ordinal": 0,
+                          "package": "example/architecture",
+                          "path": [
+                            "model",
+                            "object_type",
+                            "ix://example/architecture/Service"
+                          ]
+                        }
+                      ]
+                    },
+                    "filament.op.record.project",
+                    {
+                      "ordinal": 0,
+                      "package": "example/architecture",
+                      "path": [
+                        "model",
+                        "object_type",
+                        "ix://example/architecture/Service"
+                      ]
+                    },
+                    "up",
+                    "bare",
+                    "query",
+                    {
+                      "ordinal": 0,
+                      "package": "example:architecture/availability-long-run",
+                      "path": [
+                        "scalar_type",
+                        "boolean"
+                      ]
+                    },
+                    {
+                      "ordinal": 0,
+                      "package": "example:architecture/availability-long-run",
+                      "path": [
+                        "scalar_type",
+                        "boolean"
+                      ]
+                    }
+                  ]
                 },
                 "weighting",
                 "kind",
@@ -79,7 +224,49 @@
                 "99/100",
                 "over",
                 {
-                  "node": 23
+                  "ordinal": 0,
+                  "package": "example:architecture/availability-long-run",
+                  "path": [
+                    "value",
+                    "parameter",
+                    "name",
+                    {
+                      "ordinal": 0,
+                      "package": "example:architecture/availability-long-run",
+                      "path": [
+                        "scalar_type",
+                        "text"
+                      ]
+                    },
+                    "s",
+                    "level",
+                    {
+                      "ordinal": 0,
+                      "package": "example:architecture/availability-long-run",
+                      "path": [
+                        "scalar_type",
+                        "integer"
+                      ]
+                    },
+                    "0",
+                    {
+                      "ordinal": 0,
+                      "package": "example:architecture/availability-long-run",
+                      "path": [
+                        "composite_type",
+                        "reference",
+                        {
+                          "ordinal": 0,
+                          "package": "example/architecture",
+                          "path": [
+                            "model",
+                            "object_type",
+                            "ix://example/architecture/Service"
+                          ]
+                        }
+                      ]
+                    }
+                  ]
                 },
                 "activation",
                 "kind",
@@ -126,16 +313,54 @@
               "Availability",
               "subject",
               {
-                "node": 31
+                "ordinal": 0,
+                "package": "example/architecture",
+                "path": [
+                  "model",
+                  "model_root"
+                ]
               },
               "scheduler",
               {
-                "node": 33
+                "ordinal": 0,
+                "package": "example:architecture/availability-long-run",
+                "path": [
+                  "probabilistic",
+                  "workload",
+                  {
+                    "ordinal": 0,
+                    "package": "example/architecture",
+                    "path": [
+                      "model",
+                      "object_type",
+                      "ix://example/architecture/Service"
+                    ]
+                  },
+                  "Traffic",
+                  "call*1"
+                ]
               },
               "reward",
               "distributions",
               {
-                "node": 32
+                "ordinal": 0,
+                "package": "example:architecture/availability-long-run",
+                "path": [
+                  "probabilistic",
+                  "random_parameter",
+                  {
+                    "ordinal": 0,
+                    "package": "example/architecture",
+                    "path": [
+                      "model",
+                      "object_type",
+                      "ix://example/architecture/Service"
+                    ]
+                  },
+                  "call",
+                  "ok",
+                  "true*9999,false*1"
+                ]
               },
               "delays",
               "form",
@@ -143,7 +368,114 @@
               "long_run_fraction",
               "predicate",
               {
-                "node": 25
+                "ordinal": 0,
+                "package": "example:architecture/availability-long-run",
+                "path": [
+                  "expression",
+                  "query",
+                  {
+                    "ordinal": 0,
+                    "package": "example:architecture/availability-long-run",
+                    "path": [
+                      "expression",
+                      "deref",
+                      {
+                        "ordinal": 0,
+                        "package": "example:architecture/availability-long-run",
+                        "path": [
+                          "value",
+                          "parameter",
+                          "name",
+                          {
+                            "ordinal": 0,
+                            "package": "example:architecture/availability-long-run",
+                            "path": [
+                              "scalar_type",
+                              "text"
+                            ]
+                          },
+                          "s",
+                          "level",
+                          {
+                            "ordinal": 0,
+                            "package": "example:architecture/availability-long-run",
+                            "path": [
+                              "scalar_type",
+                              "integer"
+                            ]
+                          },
+                          "0",
+                          {
+                            "ordinal": 0,
+                            "package": "example:architecture/availability-long-run",
+                            "path": [
+                              "composite_type",
+                              "reference",
+                              {
+                                "ordinal": 0,
+                                "package": "example/architecture",
+                                "path": [
+                                  "model",
+                                  "object_type",
+                                  "ix://example/architecture/Service"
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      "filament.op.model.deref",
+                      "deref",
+                      {
+                        "ordinal": 0,
+                        "package": "example/architecture",
+                        "path": [
+                          "model",
+                          "object_type",
+                          "ix://example/architecture/Service"
+                        ]
+                      },
+                      {
+                        "ordinal": 0,
+                        "package": "example/architecture",
+                        "path": [
+                          "model",
+                          "object_type",
+                          "ix://example/architecture/Service"
+                        ]
+                      }
+                    ]
+                  },
+                  "filament.op.record.project",
+                  {
+                    "ordinal": 0,
+                    "package": "example/architecture",
+                    "path": [
+                      "model",
+                      "object_type",
+                      "ix://example/architecture/Service"
+                    ]
+                  },
+                  "up",
+                  "bare",
+                  "query",
+                  {
+                    "ordinal": 0,
+                    "package": "example:architecture/availability-long-run",
+                    "path": [
+                      "scalar_type",
+                      "boolean"
+                    ]
+                  },
+                  {
+                    "ordinal": 0,
+                    "package": "example:architecture/availability-long-run",
+                    "path": [
+                      "scalar_type",
+                      "boolean"
+                    ]
+                  }
+                ]
               },
               "weighting",
               "kind",
@@ -156,7 +488,49 @@
               "99/100",
               "over",
               {
-                "node": 23
+                "ordinal": 0,
+                "package": "example:architecture/availability-long-run",
+                "path": [
+                  "value",
+                  "parameter",
+                  "name",
+                  {
+                    "ordinal": 0,
+                    "package": "example:architecture/availability-long-run",
+                    "path": [
+                      "scalar_type",
+                      "text"
+                    ]
+                  },
+                  "s",
+                  "level",
+                  {
+                    "ordinal": 0,
+                    "package": "example:architecture/availability-long-run",
+                    "path": [
+                      "scalar_type",
+                      "integer"
+                    ]
+                  },
+                  "0",
+                  {
+                    "ordinal": 0,
+                    "package": "example:architecture/availability-long-run",
+                    "path": [
+                      "composite_type",
+                      "reference",
+                      {
+                        "ordinal": 0,
+                        "package": "example/architecture",
+                        "path": [
+                          "model",
+                          "object_type",
+                          "ix://example/architecture/Service"
+                        ]
+                      }
+                    ]
+                  }
+                ]
               },
               "activation",
               "kind",
@@ -175,8 +549,24 @@
           "entries": [
             {
               "binding": {
-                "key": "checkout",
-                "population": "ix://example/architecture/services"
+                "identity": "checkout",
+                "object_type": {
+                  "original": {
+                    "node": "ix://example/architecture/Service",
+                    "package": "example/architecture"
+                  },
+                  "owner_effective_type": null
+                },
+                "type": "reference",
+                "universe": {
+                  "ordinal": 0,
+                  "package": "example/architecture",
+                  "path": [
+                    "model",
+                    "object_type",
+                    "ix://example/architecture/Service"
+                  ]
+                }
               },
               "extremum": null,
               "initial": 0,
@@ -219,7 +609,7 @@
               "Availability",
               "subject",
               {
-                "node": 31
+                "node": 37
               },
               "scheduler",
               {

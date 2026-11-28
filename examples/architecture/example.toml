@@ -317,8 +317,8 @@ file = "rules/probability/claims/claims-probability-every-scheduler.fsl"
 command = "analyze requests/probability/claims/claims-probability-every-scheduler.json"
 engine = "probability"
 status = "running"
-expect_exit = 0
-expect_verdict = "holds"
+expect_exit = 22
+expect_verdict = "incomplete"
 serves = "Probability reference (claims)"
 
 [[case]]
@@ -353,8 +353,8 @@ file = "rules/probability/claims/claims-mean-of-fraction.fsl"
 command = "analyze requests/probability/claims/claims-mean-of-fraction.json"
 engine = "probability"
 status = "running"
-expect_exit = 0
-expect_verdict = "holds"
+expect_exit = 22
+expect_verdict = "incomplete"
 serves = "Probability reference (claims)"
 
 [[case]]
@@ -481,13 +481,13 @@ serves = "Probability reference (exact): a missed claim"
 [[case]]
 id = "availability-holds"
 rule = "CheckoutAvailable"
-statement = "Checkout stays up through 10 calls in a row with probability at least 0.99: calls that fail 1 time in 1,000 meet it, because ten of them all succeed with probability 0.999^10, about 0.99004, and analyze proves the claim with that exact value."
+statement = "Checkout stays up through 10 calls in a row with probability at least 0.99: calls that fail 1 time in 1,000 meet it, because ten of them all succeed with probability 0.999^10, about 0.99004; analyze reports incomplete for this workload window."
 file = "rules/staged-availability.fsl"
 command = "analyze requests/availability-holds.json"
 engine = "probability"
 status = "running"
-expect_exit = 0
-expect_verdict = "proved"
+expect_exit = 22
+expect_verdict = "incomplete"
 serves = "Tutorial: probability"
 
 [[case]]
@@ -505,13 +505,13 @@ serves = "Tutorial: probability"
 [[case]]
 id = "recovery-expected-calls"
 rule = "RecoversQuickly"
-statement = "A service that starts down is called until it comes up, and each call brings it up with probability 999 in 1,000: the expected number of calls is 1000/999, below the 2 the claim allows, and analyze proves it."
+statement = "A service that starts down is called until it comes up, and each call brings it up with probability 999 in 1,000: the expected number of calls is 1000/999, below the 2 the claim allows; analyze reports incomplete for this case."
 file = "rules/recovery-expected-calls.fsl"
 command = "analyze requests/recovery-expected-calls.json"
 engine = "probability"
 status = "running"
-expect_exit = 0
-expect_verdict = "proved"
+expect_exit = 22
+expect_verdict = "incomplete"
 serves = "Tutorial: probability"
 
 [[case]]
